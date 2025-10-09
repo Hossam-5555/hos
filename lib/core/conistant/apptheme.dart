@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 
 ThemeData themeEnglish = ThemeData(
-  scaffoldBackgroundColor:Color(0xff0A192F),
+  scaffoldBackgroundColor: Color.fromARGB(206, 18, 34, 52),
   // استخدام نظام ألوان متناسق
   colorScheme: ColorScheme.fromSeed(seedColor: Appcolor.primaryColor),
 
   appBarTheme: AppBarTheme(
     iconTheme: IconThemeData(color: Colors.black, size: 24), // ← الحجم القياسي
     leadingWidth: 56, // ← العرض القياسي
-    actionsIconTheme: IconThemeData(color: Colors.black, size: 24), // ← الحجم القياسي
+    actionsIconTheme: IconThemeData(
+      color: Colors.black,
+      size: 24,
+    ), // ← الحجم القياسي
     titleTextStyle: TextStyle(
       color: Appcolor.grey,
       fontSize: 22, // ← حجم أنسب لعنوان الصفحة
@@ -39,23 +42,26 @@ ThemeData themeEnglish = ThemeData(
       fontSize: 28,
       fontFamily: 'Italic',
     ),
-     headlineSmall: TextStyle(
+    headlineSmall: TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 24,
       fontFamily: 'Italic',
     ),
-    titleLarge: TextStyle( // يمكن استخدامه لعناوين الأقسام
+    titleLarge: TextStyle(
+      // يمكن استخدامه لعناوين الأقسام
       fontWeight: FontWeight.bold,
       fontSize: 22,
       fontFamily: 'Italic',
     ),
-    bodyLarge: TextStyle( // النص الأساسي
+    bodyLarge: TextStyle(
+      // النص الأساسي
       fontSize: 16,
       fontFamily: 'Italic',
       color: Appcolor.grey,
       height: 1.5, // ← ارتفاع سطر مريح للقراءة
     ),
-    bodyMedium: TextStyle( // نص ثانوي
+    bodyMedium: TextStyle(
+      // نص ثانوي
       fontSize: 14,
       fontFamily: 'Italic',
       color: Appcolor.grey.withOpacity(0.8),
@@ -74,7 +80,10 @@ ThemeData themeArabic = ThemeData(
   appBarTheme: AppBarTheme(
     iconTheme: IconThemeData(color: Colors.black, size: 24), // ← الحجم القياسي
     leadingWidth: 56, // ← العرض القياسي
-    actionsIconTheme: IconThemeData(color: Colors.black, size: 24), // ← الحجم القياسي
+    actionsIconTheme: IconThemeData(
+      color: Colors.black,
+      size: 24,
+    ), // ← الحجم القياسي
     titleTextStyle: TextStyle(
       color: Appcolor.grey,
       fontSize: 22, // ← حجم أنسب لعنوان الصفحة
@@ -104,23 +113,26 @@ ThemeData themeArabic = ThemeData(
       fontSize: 28,
       fontFamily: 'cairo',
     ),
-     headlineSmall: TextStyle(
+    headlineSmall: TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 24,
       fontFamily: 'cairo',
     ),
-    titleLarge: TextStyle( // يمكن استخدامه لعناوين الأقسام
+    titleLarge: TextStyle(
+      // يمكن استخدامه لعناوين الأقسام
       fontWeight: FontWeight.bold,
       fontSize: 22,
       fontFamily: 'cairo',
     ),
-    bodyLarge: TextStyle( // النص الأساسي
+    bodyLarge: TextStyle(
+      // النص الأساسي
       fontSize: 16,
       fontFamily: 'cairo',
       color: Appcolor.grey,
       height: 1.5, // ← ارتفاع سطر مريح للقراءة
     ),
-    bodyMedium: TextStyle( // نص ثانوي
+    bodyMedium: TextStyle(
+      // نص ثانوي
       fontSize: 14,
       fontFamily: 'cairo',
       color: Appcolor.grey.withOpacity(0.8),

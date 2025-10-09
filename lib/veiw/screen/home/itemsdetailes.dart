@@ -24,7 +24,7 @@ class Itemsdetailes extends GetView<Itemdetailscontroller> {
           onPressed: () {
             Get.back();
           },
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back_ios,color: Colors.white,),
         ),
       ),
       body: GetBuilder<Itemdetailscontroller>(
