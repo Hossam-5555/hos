@@ -1,0 +1,164 @@
+import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hos/controler/auth/sign_upcontroller.dart';
+import 'package:hos/core/class/handlingdataview.dart';
+import 'package:hos/core/conistant/appcolor.dart';
+import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/core/functions/appexitalert.dart';
+import 'package:hos/core/functions/validinput.dart';
+import 'package:hos/veiw/wedget/animation.dart';
+import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
+import 'package:hos/veiw/wedget/auth/checkbutton.dart';
+
+
+class Signup extends StatelessWidget {
+  const Signup({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final Signupcontroller signUpcontroller = Get.put(Signupcontroller());
+
+    final size = MediaQuery.of(context).size;
+    final height = size.height;
+    final width = size.width;
+
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: WillPopScope(
+        onWillPop: appexitAlert,
+        child: GetBuilder<Signupcontroller>(
+          builder: (controller) => Handlingdatrequest(
+            statusrequest: controller.statusrequest,
+            widget: Stack(
+              alignment: Alignment.center,
+              children: [
+                // 🔹 الخلفية
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(Imageasset.see),
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+
+                // 🔹 الأنيميشن أعلى الشاشة
+                Positioned(
+                  top: height * 0.05,
+                  child: Animationlottie(
+                    animationPath: Imageasset.loginanimation, // أو اعمل signupanimation لو عندك
+                  ),
+                ),
+
+                // 🔹 الفورم الزجاجي
+                Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(25),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      child: Container(
+                        width: width * 0.9,
+                        constraints: BoxConstraints(maxHeight: height * 0.75),
+                        decoration: BoxDecoration(
+                          color: Appcolor.glass.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(25),
+                          border: Border.all(
+                            color: const Color.fromARGB(240, 145, 222, 255)
+                                .withOpacity(0.3),
+                          ),
+                        ),
+                        child: Form(
+                          key: signUpcontroller.signuokey,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.05,
+                            ),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(height: height * 0.03),
+                                  Textfealdauth(
+                                    valid: (val) =>
+                                        validInput(val!, 6, 20, "username"),
+                                    textEditingController:
+                                        signUpcontroller.username,
+                                    label: 'username',
+                                    suffixIcon: Icons.person,
+                                    hint: "Enter Your username",
+                                  ),
+                                  SizedBox(height: height * 0.025),
+                                  Textfealdauth(
+                                    valid: (val) =>
+                                        validInput(val!, 10, 30, "email"),
+                                    textEditingController:
+                                        signUpcontroller.email,
+                                    label: 'email',
+                                    suffixIcon: Icons.email_sharp,
+                                    hint: 'Enter your Email',
+                                  ),
+                                  SizedBox(height: height * 0.025),
+                                  Textfealdauth(
+                                    valid: (val) =>
+                                        validInput(val!, 5, 20, "password"),
+                                    textEditingController:
+                                        signUpcontroller.passward,
+                                    label: 'passward',
+                                    suffixIcon: Icons.password_sharp,
+                                    hint: "Enter Your Passward",
+                                  ),
+                                  SizedBox(height: height * 0.025),
+                                  Checkbutton(
+                                    onTap: () {
+                                      signUpcontroller.signup();
+                                    },
+                                    buttonName: 'Sign Up',
+                                    width: width * 0.75,
+                                    buttonColor: Colors.deepPurple,
+                                  ),
+                                  SizedBox(height: height * 0.02),
+                                  InkWell(
+                                    onTap: () {
+                                      signUpcontroller.gotologinin();
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: height * 0.015),
+                                      child: RichText(
+                                        text: TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: "have An account ? ",
+                                              style: TextStyle(
+                                                  color: Appcolor.black),
+                                            ),
+                                            TextSpan(
+                                              text: 'Login',
+                                              style: TextStyle(
+                                                  color: Appcolor.deepPurple),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: height * 0.03),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
