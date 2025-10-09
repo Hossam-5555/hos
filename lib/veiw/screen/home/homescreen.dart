@@ -57,40 +57,40 @@ class Homescreen extends StatelessWidget {
           ),
           actions: [
             // هذا هو الويدجت الخاص بالزر نفسه
-Padding(
-  // لإضافة مسافة قياسية من حافة الشاشة اليمنى
-  padding: const EdgeInsets.only(right: 16.0),
-  child: Hero(
-    tag: "carttag", // تأكد أن هذا الـ tag فريد
-    child: Container(
-      width: 48,
-      height: 48,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: IconButton(
-        onPressed: () {
-          Get.to(
-            () => ShoppingCartPage(),
-            transition: Transition.fadeIn,
-            duration: const Duration(milliseconds: 800),
-          );
-        },
-        icon: Icon(Icons.shopping_cart_outlined), // أيقونة أنسب
-        iconSize: 24, // حجم قياسي للأيقونة
-        splashRadius: 24, // ليبقى تأثير الضغط داخل الدائرة
-      ),
-    ),
-  ),
-)
+            Padding(
+              // لإضافة مسافة قياسية من حافة الشاشة اليمنى
+              padding: const EdgeInsets.only(right: 16.0),
+              child: Hero(
+                tag: "carttag", // تأكد أن هذا الـ tag فريد
+                child: Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.08),
+                        blurRadius: 10,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      Get.to(
+                        () => ShoppingCartPage(),
+                        transition: Transition.fadeIn,
+                        duration: const Duration(milliseconds: 800),
+                      );
+                    },
+                    icon: Icon(Icons.shopping_cart_outlined), // أيقونة أنسب
+                    iconSize: 24, // حجم قياسي للأيقونة
+                    splashRadius: 24, // ليبقى تأثير الضغط داخل الدائرة
+                  ),
+                ),
+              ),
+            ),
           ],
           title: Text(controller.Appbartitle[controller.Currentpage][0]),
         ),
