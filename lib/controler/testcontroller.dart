@@ -1,39 +1,31 @@
-import 'dart:async';
-
 import 'package:get/get.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:hos/core/class/crud.dart';
-import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/remote/addresdata.dart';
-import 'package:hos/data/model/Addresmodel.dart';
 
 class Testcontroller extends GetxController {
   Addresdata addresdata = Get.put(Addresdata(Get.find()));
   Statusrequest statusrequest = Statusrequest.none;
   Myservisec myservisec = Get.put(Myservisec());
-  List dataaddres = [];
-  getaddress() async {
-    // statusrequest = Statusrequest.loading;
-    // update();
-    var response = await addresdata.viewAddresdata(
-      myservisec.sharedPreferences.getString("id")!,
-    );
-    statusrequest = handling(response);
-    if (Statusrequest.success == statusrequest) {
-      if (response["status"] == "success") {
-        List responsedata = response["data"];
-        dataaddres.addAll(responsedata.map((e) => Addresmodel.fromJson(e)));
-      } else {
-        statusrequest = Statusrequest.failure;
-      }
-    }
+  List categories = [];
+  List displayedProducts = []; // المنتجات المعروضة حاليًا
+  int itemsToShow = 3;
+  void loadProducts() {
+    // مثال لبيانات مؤقتة
+    displayedProducts = categories.take(itemsToShow).toList();
     update();
+  }
+
+  void showMore() {
+    if (itemsToShow < categories.length) {
+      itemsToShow += 6; // كل ضغطة تزود 6 منتجات
+      displayedProducts = categories.take(itemsToShow).toList();
+      update();
+    }
   }
 
   @override
   void onInit() {
-    getaddress();
     // getposition();
     super.onInit();
   }

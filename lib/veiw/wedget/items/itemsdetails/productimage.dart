@@ -15,7 +15,7 @@ class Productimagedetails extends GetView<Itemdetailscontroller> {
                 tag: '${itemdetailscontroller.itemsmodel.itemsId}',
                 child: Image.network(
                   "${LinkApi.imageitems + '/' + controller.itemsmodel.itemsImage!}",
-                  height: 250,
+                  height: 350,
                   width: double.infinity,
                   fit: BoxFit.fill,
                 ),

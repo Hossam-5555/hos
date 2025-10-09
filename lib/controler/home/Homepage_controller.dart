@@ -13,7 +13,7 @@ class HomepageController extends SearchMix {
   String? username;
   List items = [];
   List categories = [];
-
+ 
   List<List> categoresdinformation = [
     ['الكل', Icons.all_inbox],
     ["لابتوبات", Icons.laptop],
@@ -52,7 +52,8 @@ class HomepageController extends SearchMix {
     );
     update();
   }
-//==================================================cart 
+
+  //==================================================cart
   PageController? pageController;
 
   // 2. أنشئ دالة خاصة لإنشاء الـ Controller
@@ -63,21 +64,18 @@ class HomepageController extends SearchMix {
     // لا تحتاج لـ update() هنا لأن GetBuilder سيعيد بناء الواجهة تلقائياً
   }
 
-
-
   @override
   void onClose() {
     // 3. تأكد من التخلص منه عند إغلاق الكونترولر نهائياً
     pageController?.dispose();
     super.onClose();
   }
+
   //=======================================================cart
-    @override
+  @override
   void onInit() {
     getdata();
     username = myservisec.sharedPreferences.getString("username");
     super.onInit();
   }
 }
-
-
