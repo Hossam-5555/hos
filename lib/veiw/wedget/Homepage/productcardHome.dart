@@ -51,21 +51,18 @@ class ItemList extends GetView<HomepageController> {
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(20),
               ),
-              child: Hero(
-                tag: '${items.itemsId}',
-                child: Image.network(
-                  "${LinkApi.imageitems}/${items.itemsImage}",
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: size.height * 0.18,
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    color: Colors.grey[200],
-                    alignment: Alignment.center,
-                    child: const Icon(
-                      Icons.broken_image,
-                      size: 40,
-                      color: Colors.grey,
-                    ),
+              child: Image.network(
+                "${LinkApi.imageitems}/${items.itemsImage}",
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: size.height * 0.18,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  color: Colors.grey[200],
+                  alignment: Alignment.center,
+                  child: const Icon(
+                    Icons.broken_image,
+                    size: 40,
+                    color: Colors.grey,
                   ),
                 ),
               ),

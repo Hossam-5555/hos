@@ -19,7 +19,7 @@ class Handlingdataview extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(height: 200,),
+            Container(height: 100,),
             Center(child: Animationforstatus(animationPath: path)),
           ],
         ),

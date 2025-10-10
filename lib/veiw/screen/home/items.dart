@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/home/favorite/fav_controller.dart';
 import 'package:hos/controler/home/items_controler.dart';
 import 'package:hos/core/class/handlingdataview.dart';
+import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/veiw/screen/searchpage.dart';
 import 'package:hos/veiw/wedget/items/productcard.dart';
 import 'package:hos/veiw/wedget/items/itemslist.dart';
@@ -22,7 +23,7 @@ class Items extends StatelessWidget {
           onPressed: () {
             Get.back();
           },
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back_ios,color: Appcolor.white,),
         ),
       ),
       body: SafeArea(

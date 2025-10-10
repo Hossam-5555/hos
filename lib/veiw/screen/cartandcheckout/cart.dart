@@ -52,7 +52,7 @@ class ShoppingCartPage extends StatelessWidget {
       body: GetBuilder<CartController>(
         builder: (controller) {
           return Handlingdataview(
-            statusrequest: controller.statusrequest,
+            statusrequest: controller.statusrequest!,
             widget: Column(
               children: [
                 Expanded(

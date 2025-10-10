@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/remote/addresdata.dart';
@@ -26,20 +27,20 @@ class Checkoutcontroller extends GetxController {
 
   int? Paymenttype;
   String? deleverytype;
-  int? Addressid;
+  int Addressid = 0;
 
-  choospaymentmethod(val) {
+  void choospaymentmethod(val) {
     Paymenttype = val;
     update();
   }
 
-  choosedeleverytype(val) {
+  void choosedeleverytype(val) {
     // "Delivery" or "Pickup"
     deleverytype = val;
     update();
   }
 
-  chooseAddres(val) {
+  void chooseAddres(val) {
     Addressid = val;
     update();
   }
@@ -77,37 +78,51 @@ class Checkoutcontroller extends GetxController {
   }
 
   Future<void> checkoutoder() async {
-    statusrequest = Statusrequest.loading;
-    update();
-    Map data = {
-      "userid": myservisec.sharedPreferences.getString("id")!,
-      "addressid": Addressid.toString(),
-      "orderstype": "pickup",
-      "pricedelivery": "10",
-      "ordersprice": totalprice,
-      "couponid": couponeid.toString(),
-      "paymentmethod": Paymenttype.toString(),
-    };
-    var response = await checkoutdata.Checkout(data);
+    if (Addressid == 0) {
+            Get.snackbar("خطأ ", "الرجاء ادخال العنوان ");
 
-    statusrequest = handling(response);
-    if (Statusrequest.success == statusrequest) {
-      if (response['status'] == 'success') {
-        print("Order placed successfully");
-        // Get.offAllNamed("/home");
-      } else {
-        statusrequest = Statusrequest.failure;
+    } else if (Paymenttype == null) {
+            Get.snackbar("خطأ ", "الرجاء ادخال وسيله دفع");
+
+    } 
+    else {
+      statusrequest = Statusrequest.loading;
+      update();
+      Map data = {
+        "userid": myservisec.sharedPreferences.getString("id")!,
+        "addressid": Addressid.toString(),
+        "orderstype": "pickup",
+        "pricedelivery": "10",
+        "ordersprice": totalprice,
+        "couponid": couponeid.toString(),
+        "paymentmethod": Paymenttype.toString(),
+      };
+      var response = await checkoutdata.Checkout(data);
+
+      statusrequest = handling(response);
+      if (Statusrequest.success == statusrequest) {
+        if (response['status'] == 'success') {
+          Get.snackbar(
+            "Order",
+            "Order placed successfully",
+            animationDuration: Duration(milliseconds: 800),
+          );
+          Get.offAllNamed(Approute.Homescreen);
+        } else {
+          statusrequest = Statusrequest.none;
+          Get.snackbar("خطأ في البيانات ", "الرجاء المحاوله مره اخري");
+        }
       }
+      update();
     }
-    update();
   }
 
-  late int couponeid;
+  late String couponeid;
   late String totalprice;
 
   @override
   void onInit() {
-    couponeid = Get.arguments['couponeID'];
+    couponeid = Get.arguments['couponeID'].toString();
     totalprice = Get.arguments['totalprice'];
     getaddress();
     super.onInit();

@@ -11,7 +11,7 @@ import 'package:hos/data/model/cartmodel.dart';
 class CartController extends GetxController {
   ///////////////======================ملكش دعوه
   Cartdata cartdata = Cartdata(Get.find());
-  Statusrequest statusrequest = Statusrequest.none;
+  Statusrequest? statusrequest;
   Myservisec myservisec = Get.put(Myservisec());
   cartmodel cart = cartmodel();
   /////===========================
@@ -116,22 +116,24 @@ class CartController extends GetxController {
     }
   }
 
-  view() async {
+  Future<void> view() async {
+    data.clear(); // ✅ تنظيف القديم
     statusrequest = Statusrequest.loading;
-    update();
 
+    update(); // ✅ لازم تتفعل هنا علشان Handlingdataview تعرض الـ loading
     var response = await cartdata.viewcart(
       myservisec.sharedPreferences.getString("id")!,
     );
 
     statusrequest = handling(response);
+    print("=================$statusrequest");
 
     if (Statusrequest.success == statusrequest) {
       if (response["status"] == "success") {
-        data.clear(); // ✅ تنظيف القديم
+        data.clear();
         List datarespons = response["datacart"];
         data.addAll(datarespons.map((e) => cartmodel.fromJson(e)));
-
+     
         Map dataresponsecountprice = response["countprice"];
 
         totalcount =
@@ -139,17 +141,21 @@ class CartController extends GetxController {
               dataresponsecountprice["totalcount"]?.toString() ?? "0",
             ) ??
             0;
+
         totalprice =
             double.tryParse(
               dataresponsecountprice["totalprice"]?.toString() ?? "0",
             ) ??
             0.0;
+            if (data.isEmpty) {
+            statusrequest = Statusrequest.loading;
+
+            }
       } else {
         statusrequest = Statusrequest.failure;
       }
     }
-
-    update();
+    update(); // ✅ لتحديث الواجهة بالبيانات بعد الرد
   }
 
   //coubone========================================

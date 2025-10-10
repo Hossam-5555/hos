@@ -27,8 +27,7 @@ class HomepageController extends SearchMix {
     statusrequest = Statusrequest.loading;
     update();
     var response = await homedata.postdata();
-    print("Response==========================: $response");
-
+    // print("Response==========================: $response");
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response["status"] == "success") {
@@ -56,17 +55,12 @@ class HomepageController extends SearchMix {
   //==================================================cart
   PageController? pageController;
 
-  // 2. أنشئ دالة خاصة لإنشاء الـ Controller
   void initPageController() {
-    // تخلص من القديم إذا كان موجوداً لمنع تسريب الذاكرة
-    pageController?.dispose();
     pageController = PageController(viewportFraction: 0.4);
-    // لا تحتاج لـ update() هنا لأن GetBuilder سيعيد بناء الواجهة تلقائياً
   }
 
   @override
   void onClose() {
-    // 3. تأكد من التخلص منه عند إغلاق الكونترولر نهائياً
     pageController?.dispose();
     super.onClose();
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/utils.dart';
 import 'package:hos/controler/checkout&cart/checkoutcontroller.dart';
+import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/veiw/wedget/shoppage/checkout.dart';
 
@@ -46,95 +47,98 @@ class Checkout extends StatelessWidget {
       ),
       body: GetBuilder<Checkoutcontroller>(
         builder: (controller) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                // 🏠 اختيار العنوان
-                Container(
-                  margin: EdgeInsets.only(bottom: 12),
-                  child: const Text("Select Address"),
-                ),
-
-                Container(
-                  height: 100,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: controller.ListAddresdata.length,
-                    itemBuilder: (context, index) => Listaddrescard(
-                      onTap: () {
-                        controller.chooseAddres(
-                          controller.ListAddresdata[index].addresId,
-                        );
-                      },
-                      isActive:
-                          controller.Addressid ==
-                              controller.ListAddresdata[index].addresId
-                          ? true
-                          : false, // 🔥 مقارنة مباشرة
-
-                      titil: "${controller.ListAddresdata[index].addresName}",
-                      subtitle:
-                          "${controller.ListAddresdata[index].addresStreet}-${controller.ListAddresdata[index].addresCity}",
-                    ),
+          return Handlingdataview(
+            statusrequest: controller.statusrequest!,
+            widget: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  // 🏠 اختيار العنوان
+                  Container(
+                    margin: EdgeInsets.only(bottom: 12),
+                    child: const Text("Select Address"),
                   ),
-                ),
 
-                const Divider(height: 30, thickness: 1),
+                  Container(
+                    height: 100,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: controller.ListAddresdata.length,
+                      itemBuilder: (context, index) => Listaddrescard(
+                        onTap: () {
+                          controller.chooseAddres(
+                            controller.ListAddresdata[index].addresId,
+                          );
+                        },
+                        isActive:
+                            controller.Addressid ==
+                                controller.ListAddresdata[index].addresId
+                            ? true
+                            : false, // 🔥 مقارنة مباشرة
 
-                // 💳 اختيار وسيلة الدفع
-                Container(
-                  margin: EdgeInsets.only(bottom: 12),
-                  child: const Text("Payment Method"),
-                ),
-
-                Container(
-                  height: 100,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: controller.addresses.length,
-                    itemBuilder: (context, index) => Listpaymentcard(
-                      image: controller.paymentMethods[index][1],
-                      onTap: () {
-                        controller.choospaymentmethod(
-                          index,
-                        ); // 🔥 نرسل index المختار
-                      },
-                      isActive:
-                          controller.Paymenttype == index, // 🔥 مقارنة مباشرة
-                    ),
-                  ),
-                ),
-
-                const Divider(height: 32, thickness: 1),
-
-                // 💰 السعر النهائي
-                _buildPriceRow("Subtotal", "${controller.totalprice}"),
-                _buildPriceRow("Tax (10%)", "40.0"),
-                _buildPriceRow("Shipping", "10"),
-                const Divider(height: 32, thickness: 1),
-                _buildPriceRow("Total", controller.totalprice, isTotal: true),
-
-                // ✅ زرار الدفع
-                Container(
-                  margin: EdgeInsets.only(top: 24),
-                  width: 200,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Appcolor.primaryColor,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      textStyle: const TextStyle(fontSize: 18),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        titil: "${controller.ListAddresdata[index].addresName}",
+                        subtitle:
+                            "${controller.ListAddresdata[index].addresStreet}-${controller.ListAddresdata[index].addresCity}",
                       ),
                     ),
-                    onPressed: () {
-                      controller.checkoutoder();
-                    },
-                    child: const Text(" Confirm Order "),
                   ),
-                ),
-              ],
+
+                  const Divider(height: 30, thickness: 1),
+
+                  // 💳 اختيار وسيلة الدفع
+                  Container(
+                    margin: EdgeInsets.only(bottom: 12),
+                    child: const Text("Payment Method"),
+                  ),
+
+                  Container(
+                    height: 100,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: controller.addresses.length,
+                      itemBuilder: (context, index) => Listpaymentcard(
+                        image: controller.paymentMethods[index][1],
+                        onTap: () {
+                          controller.choospaymentmethod(
+                            index,
+                          ); // 🔥 نرسل index المختار
+                        },
+                        isActive:
+                            controller.Paymenttype == index, // 🔥 مقارنة مباشرة
+                      ),
+                    ),
+                  ),
+
+                  const Divider(height: 32, thickness: 1),
+
+                  // 💰 السعر النهائي
+                  _buildPriceRow("Subtotal", "${controller.totalprice}"),
+                  _buildPriceRow("Tax (10%)", "40.0"),
+                  _buildPriceRow("Shipping", "10"),
+                  const Divider(height: 32, thickness: 1),
+                  _buildPriceRow("Total", controller.totalprice, isTotal: true),
+
+                  // ✅ زرار الدفع
+                  Container(
+                    margin: EdgeInsets.only(top: 24),
+                    width: 200,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Appcolor.primaryColor,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        textStyle: const TextStyle(fontSize: 18),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: () {
+                        controller.checkoutoder();
+                      },
+                      child: const Text(" Confirm Order "),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },
