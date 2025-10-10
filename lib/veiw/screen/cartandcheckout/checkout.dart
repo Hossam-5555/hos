@@ -101,7 +101,7 @@ class Checkout extends StatelessWidget {
                         ); // 🔥 نرسل index المختار
                       },
                       isActive:
-                          controller.Paymentmethod == index, // 🔥 مقارنة مباشرة
+                          controller.Paymenttype == index, // 🔥 مقارنة مباشرة
                     ),
                   ),
                 ),
@@ -109,11 +109,11 @@ class Checkout extends StatelessWidget {
                 const Divider(height: 32, thickness: 1),
 
                 // 💰 السعر النهائي
-                _buildPriceRow("Subtotal", 400.0),
-                _buildPriceRow("Tax (10%)", 40.0),
-                _buildPriceRow("Shipping", 20.0),
+                _buildPriceRow("Subtotal", "${controller.totalprice}"),
+                _buildPriceRow("Tax (10%)", "40.0"),
+                _buildPriceRow("Shipping", "10"),
                 const Divider(height: 32, thickness: 1),
-                _buildPriceRow("Total", 460.0, isTotal: true),
+                _buildPriceRow("Total", controller.totalprice, isTotal: true),
 
                 // ✅ زرار الدفع
                 Container(
@@ -129,13 +129,7 @@ class Checkout extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      Get.rawSnackbar(
-                        duration: Duration(milliseconds: 1000),
-                        borderRadius: 20,
-                        margin: EdgeInsets.all(16),
-                        title: "order",
-                        message: "order is oredy done",
-                      );
+                      controller.checkoutoder();
                     },
                     child: const Text(" Confirm Order "),
                   ),
@@ -149,7 +143,7 @@ class Checkout extends StatelessWidget {
   }
 
   // 💰 ويدجت الأسعار
-  Widget _buildPriceRow(String label, double value, {bool isTotal = false}) {
+  Widget _buildPriceRow(String label, String value, {bool isTotal = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
@@ -163,11 +157,13 @@ class Checkout extends StatelessWidget {
             ),
           ),
           Text(
-            "\$${value.toStringAsFixed(2)}",
+            "\$${value}",
             style: TextStyle(
               fontSize: isTotal ? 18 : 16,
               fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-              color: isTotal ? Colors.green : Colors.black,
+              color: isTotal
+                  ? Colors.green
+                  : const Color.fromARGB(255, 131, 188, 98),
             ),
           ),
         ],

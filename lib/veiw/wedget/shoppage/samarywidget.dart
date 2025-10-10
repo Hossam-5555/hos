@@ -1,10 +1,7 @@
 // Widget for the bottom summary and checkout button
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:hos/controler/checkout&cart/CartController.dart';
 import 'package:hos/core/conistant/appcolor.dart';
-import 'package:hos/core/conistant/routs.dart';
 
 class buildOrderSummary extends StatelessWidget {
   buildOrderSummary({super.key, required this.controller});
@@ -89,7 +86,7 @@ class buildOrderSummary extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                Get.toNamed(Approute.Checkout);
+                controller.gotochechout();
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 15),

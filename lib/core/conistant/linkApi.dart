@@ -39,4 +39,6 @@ class LinkApi {
   static String deleteAddres = '$server/address/delete.php';
   static String viewAddres = '$server/address/view.php';
   static String editAddres = '$server/address/edit.php';
+  //orders
+  static String addorder = '$server/orders/add.php';
 }

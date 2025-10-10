@@ -4,6 +4,7 @@ import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/remote/addresdata.dart';
+import 'package:hos/data/datasource/remote/checkoutdata.dart';
 import 'package:hos/data/model/Addresmodel.dart';
 
 class Checkoutcontroller extends GetxController {
@@ -23,16 +24,17 @@ class Checkoutcontroller extends GetxController {
 
   //===============================
 
-  int? Paymentmethod;
+  int? Paymenttype;
   String? deleverytype;
   int? Addressid;
 
   choospaymentmethod(val) {
-    Paymentmethod = val;
+    Paymenttype = val;
     update();
   }
 
   choosedeleverytype(val) {
+    // "Delivery" or "Pickup"
     deleverytype = val;
     update();
   }
@@ -43,6 +45,8 @@ class Checkoutcontroller extends GetxController {
   }
 
   Addresdata addresdata = Addresdata(Get.find());
+  Checkoutdata checkoutdata = Checkoutdata(Get.find());
+
   Myservisec myservisec = Get.find();
   Statusrequest? statusrequest;
   List<Addresmodel> ListAddresdata = [];
@@ -57,13 +61,11 @@ class Checkoutcontroller extends GetxController {
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'success') {
-
         List data = response['data'];
 
         // تنظيف القائمة قبل الإضافة
         ListAddresdata.addAll(data.map((e) => Addresmodel.fromJson(e)));
-                       print("sdadawdwadaw${ListAddresdata[0].addresName}");
-
+        // إذا كانت القائمة غير فارغة، اختر أول عنوان كافتراضي
         if (ListAddresdata.isEmpty) {
           statusrequest = Statusrequest.failure;
         }
@@ -74,8 +76,39 @@ class Checkoutcontroller extends GetxController {
     update();
   }
 
+  Future<void> checkoutoder() async {
+    statusrequest = Statusrequest.loading;
+    update();
+    Map data = {
+      "userid": myservisec.sharedPreferences.getString("id")!,
+      "addressid": Addressid.toString(),
+      "orderstype": "pickup",
+      "pricedelivery": "10",
+      "ordersprice": totalprice,
+      "couponid": couponeid.toString(),
+      "paymentmethod": Paymenttype.toString(),
+    };
+    var response = await checkoutdata.Checkout(data);
+
+    statusrequest = handling(response);
+    if (Statusrequest.success == statusrequest) {
+      if (response['status'] == 'success') {
+        print("Order placed successfully");
+        // Get.offAllNamed("/home");
+      } else {
+        statusrequest = Statusrequest.failure;
+      }
+    }
+    update();
+  }
+
+  late int couponeid;
+  late String totalprice;
+
   @override
   void onInit() {
+    couponeid = Get.arguments['couponeID'];
+    totalprice = Get.arguments['totalprice'];
     getaddress();
     super.onInit();
   }

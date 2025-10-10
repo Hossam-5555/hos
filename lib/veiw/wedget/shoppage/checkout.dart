@@ -64,25 +64,48 @@ class Listpaymentcard extends GetView<Checkoutcontroller> {
   void Function()? onTap;
   bool isActive;
   String? image;
-  // // اختيار افتراضي
-  // String selectedAddress = addresses[0]["title"]!;
-  // String selectedPayment = paymentMethods[0];
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: AnimatedContainer(duration: Duration(milliseconds: 200),
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(color: Colors.black.withAlpha(60), offset: Offset(1, 1)),
-          ],
-          borderRadius: BorderRadius.circular(20),
-        ),
-        margin: EdgeInsets.all(15),
-        height:80 ,
-        width: 100,
-        child: Image.asset(image!, fit: BoxFit.fill,scale: 50,),
+      child: Stack(
+        children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            transform: isActive
+                ? (Matrix4.identity()..scale(1.1))
+                : (Matrix4.identity()..scale(1.0)),
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withAlpha(60),
+                  offset: const Offset(1, 1),
+                ),
+              ],
+              borderRadius: BorderRadius.circular(20),
+            ),
+            margin: const EdgeInsets.all(15),
+            height: 70,
+            width: 100,
+            child: Image.asset(
+              image!,
+              fit: BoxFit.fill,
+              scale: 50,
+            ),
+          ),
+          if (isActive)
+            const Positioned(
+              top: 5,
+              right: 5,
+              child: Icon(
+                Icons.check_circle,
+                color: Colors.green,
+                size: 22,
+              ),
+            ),
+        ],
       ),
     );
   }

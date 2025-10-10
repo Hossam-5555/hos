@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
+import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/remote/cartdata.dart';
@@ -115,41 +116,64 @@ class CartController extends GetxController {
     }
   }
 
-view() async {
-  statusrequest = Statusrequest.loading;
-  update();
+  view() async {
+    statusrequest = Statusrequest.loading;
+    update();
 
-  var response = await cartdata.viewcart(
-    myservisec.sharedPreferences.getString("id")!,
-  );
+    var response = await cartdata.viewcart(
+      myservisec.sharedPreferences.getString("id")!,
+    );
 
-  statusrequest = handling(response);
+    statusrequest = handling(response);
 
-  if (Statusrequest.success == statusrequest) {
-    if (response["status"] == "success") {
-      data.clear(); // ✅ تنظيف القديم
-      List datarespons = response["datacart"];
-      data.addAll(datarespons.map((e) => cartmodel.fromJson(e)));
+    if (Statusrequest.success == statusrequest) {
+      if (response["status"] == "success") {
+        data.clear(); // ✅ تنظيف القديم
+        List datarespons = response["datacart"];
+        data.addAll(datarespons.map((e) => cartmodel.fromJson(e)));
 
-      Map dataresponsecountprice = response["countprice"];
+        Map dataresponsecountprice = response["countprice"];
 
-      totalcount = int.tryParse(dataresponsecountprice["totalcount"]?.toString() ?? "0") ?? 0;
-      totalprice = double.tryParse(dataresponsecountprice["totalprice"]?.toString() ?? "0") ?? 0.0;
-
-    } else {
-      statusrequest = Statusrequest.failure;
+        totalcount =
+            int.tryParse(
+              dataresponsecountprice["totalcount"]?.toString() ?? "0",
+            ) ??
+            0;
+        totalprice =
+            double.tryParse(
+              dataresponsecountprice["totalprice"]?.toString() ?? "0",
+            ) ??
+            0.0;
+      } else {
+        statusrequest = Statusrequest.failure;
+      }
     }
+
+    update();
   }
-
-  update();
-}
-
 
   //coubone========================================
   TextEditingController? coubonecontroller;
   CouponeModel? couponeModel;
   double couponediscount = 0;
   String? couponename;
+  String? couponeID;
+
+  gotochechout() {
+    if (data.isEmpty)
+      // ignore: curly_braces_in_flow_control_structures
+      return Get.snackbar("السلله  فارغه", "لا يمكن إتمام الطلب");
+
+    Get.toNamed(
+      Approute.Checkout,
+      arguments: {
+        "totalprice": totalprice.toString(),
+        "couponeID": couponeID ?? 0,
+        // "couponediscount": couponediscount,
+      },
+    );
+  }
+
   chechcoupone() async {
     statusrequest = Statusrequest.loading;
     update();
@@ -162,9 +186,11 @@ view() async {
         couponeModel = CouponeModel.fromJson(dataCoupone);
         couponediscount = double.parse(couponeModel!.couponDiscount!);
         couponename = couponeModel!.couponName;
+        couponeID = couponeModel!.couponId.toString();
       } else {
         couponediscount = 0;
         couponename = null;
+        couponeID = null;
       }
     }
     update();
