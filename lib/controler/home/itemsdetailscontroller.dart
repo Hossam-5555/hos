@@ -12,11 +12,6 @@ class Itemdetailscontroller extends GetxController {
   Cartdata cartdata = Cartdata(Get.find());
   Myservisec myservisec = Get.find();
 
-
-  void initdata() {
-    itemsmodel = Get.arguments['itemsmodel'];
-  }
-
   addtocart(String itemid, int count) async {
     var statusrequest = Statusrequest.loading;
     update();
@@ -41,9 +36,9 @@ class Itemdetailscontroller extends GetxController {
       }
     }
   }
-   
-// ui ============================
-     int itemcount = 0;
+
+  // ui ============================
+  int itemcount = 0;
 
   add() {
     itemcount++;
@@ -56,10 +51,11 @@ class Itemdetailscontroller extends GetxController {
     }
     update();
   }
-// ui=================================
+
+  // ui=================================
   @override
   void onInit() {
-    initdata();
+    itemsmodel = Get.arguments['itemsmodel'];
     super.onInit();
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 
 ThemeData themeEnglish = ThemeData(
-  scaffoldBackgroundColor: Color.fromARGB(206, 18, 34, 52),
+  scaffoldBackgroundColor: Color.fromARGB(206, 56, 73, 93),
   // استخدام نظام ألوان متناسق
   colorScheme: ColorScheme.fromSeed(seedColor: Appcolor.primaryColor),
 

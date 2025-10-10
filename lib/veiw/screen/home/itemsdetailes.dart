@@ -74,7 +74,6 @@ class Itemsdetailes extends GetView<Itemdetailscontroller> {
                   "مع شرح كامل يساعد المستخدم في معرفة التفاصيل قبل الشراء.",
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.black87,
                     height: 1.5,
                   ),
                 ),

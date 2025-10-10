@@ -72,12 +72,12 @@ class SearchMix extends GetxController {
     getsearhdata();
     update();
   }
-
+  
   void gotoitemsdatails(Itemsmodel itemsmodel) {
     Get.to(
       () => Itemsdetailes(),
-      transition: Transition.cupertinoDialog,
-      duration: const Duration(milliseconds: 500),
+      transition: Transition.fadeIn,
+      duration: const Duration(milliseconds: 400),
       arguments: {"itemsmodel": itemsmodel},
     );
   }

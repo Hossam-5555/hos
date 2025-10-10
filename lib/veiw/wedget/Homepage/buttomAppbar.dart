@@ -12,8 +12,8 @@ class Buttomappbar extends GetView<Homescreencontroller> {
     return GetBuilder<Homescreencontroller>(
       builder: (controller) => Container(
         // ← أضفنا Container هنا ليكون هو المسؤول عن التموضع
-        width: 270,
-        height: 70,
+        width: 260,
+        height: 65,
         margin: const EdgeInsets.only(bottom: 20), // ← نقلنا الـ margin هنا
         child: ClipRRect(
           borderRadius: BorderRadius.circular(30),
@@ -50,14 +50,8 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOut,
-                      width: isSelected ? 70 : 60,
-                      height: isSelected ? 70 : 70,
-                      margin: EdgeInsets.only(
-                        left: index == 0 ? 0 : 4,
-                        right: index == controller.Appbartitle.length - 1
-                            ? 0
-                            : 4,
-                      ),
+                      width: isSelected ? 65 : 60,
+                      height: isSelected ? 65 : 60,
                       decoration: BoxDecoration(
                         color: isSelected
                             ? Colors.white.withOpacity(0.3)

@@ -175,7 +175,7 @@ class CartController extends GetxController {
       arguments: {
         "totalprice": totalprice.toString(),
         "couponeID": couponeID ?? 0,
-        // "couponediscount": couponediscount,
+        "couponediscount": couponediscount.toString(),
       },
     );
   }

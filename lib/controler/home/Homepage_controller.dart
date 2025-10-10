@@ -6,6 +6,7 @@ import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/remote/homedata.dart';
+import 'package:hos/veiw/screen/home/items.dart';
 
 class HomepageController extends SearchMix {
   Myservisec myservisec = Get.put(Myservisec());
@@ -13,7 +14,7 @@ class HomepageController extends SearchMix {
   String? username;
   List items = [];
   List categories = [];
- 
+
   List<List> categoresdinformation = [
     ['الكل', Icons.all_inbox],
     ["لابتوبات", Icons.laptop],
@@ -41,8 +42,11 @@ class HomepageController extends SearchMix {
   }
 
   void gotoitems(List categories, int selecteditem, String catid) {
-    Get.toNamed(
-      Approute.Items,
+    Get.to(
+      () => Items(),
+      transition: Transition.fadeIn,
+
+      duration: Duration(milliseconds: 500),
       arguments: {
         'categories': categories,
         'selecteditem': selecteditem,

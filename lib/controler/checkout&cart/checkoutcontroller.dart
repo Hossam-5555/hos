@@ -79,13 +79,10 @@ class Checkoutcontroller extends GetxController {
 
   Future<void> checkoutoder() async {
     if (Addressid == 0) {
-            Get.snackbar("خطأ ", "الرجاء ادخال العنوان ");
-
+      Get.snackbar("خطأ ", "الرجاء ادخال العنوان ");
     } else if (Paymenttype == null) {
-            Get.snackbar("خطأ ", "الرجاء ادخال وسيله دفع");
-
-    } 
-    else {
+      Get.snackbar("خطأ ", "الرجاء ادخال وسيله دفع");
+    } else {
       statusrequest = Statusrequest.loading;
       update();
       Map data = {
@@ -95,6 +92,7 @@ class Checkoutcontroller extends GetxController {
         "pricedelivery": "10",
         "ordersprice": totalprice,
         "couponid": couponeid.toString(),
+        "coupondiscount": couponediscount.toString(),
         "paymentmethod": Paymenttype.toString(),
       };
       var response = await checkoutdata.Checkout(data);
@@ -119,11 +117,14 @@ class Checkoutcontroller extends GetxController {
 
   late String couponeid;
   late String totalprice;
+  late String couponediscount;
 
   @override
   void onInit() {
     couponeid = Get.arguments['couponeID'].toString();
     totalprice = Get.arguments['totalprice'];
+    couponediscount = Get.arguments['couponediscount'];
+
     getaddress();
     super.onInit();
   }
