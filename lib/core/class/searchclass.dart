@@ -72,12 +72,13 @@ class SearchMix extends GetxController {
     getsearhdata();
     update();
   }
-  
+
   void gotoitemsdatails(Itemsmodel itemsmodel) {
     Get.to(
       () => Itemsdetailes(),
       transition: Transition.fadeIn,
-      duration: const Duration(milliseconds: 400),
+      curve: Curves.fastOutSlowIn,
+      duration: Duration(milliseconds: 320),
       arguments: {"itemsmodel": itemsmodel},
     );
   }

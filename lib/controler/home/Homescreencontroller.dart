@@ -14,17 +14,18 @@ class Homescreencontroller extends GetxController {
   }
 
   void gotoshoppage() {
-    Get.to(() => ShoppingCartPage(), transition: Transition.fadeIn);
+    Get.to(
+      () => ShoppingCartPage(),
+      transition: Transition.fadeIn,
+      curve: Curves.fastOutSlowIn,
+      duration: Duration(milliseconds: 320),
+    );
   }
 
   final List<Widget> pages = [
     HomePage(), // 🔹 صفحة الهوم
     Myfavorite(), // 🔹 صفحة المفضلة
-     Column(
-      children: [
-        
-        Center(child: Text("fuck you"))],
-    ),
+    Column(children: [Center(child: Text("fuck you"))]),
   ];
 
   var x = 20.0.obs;
@@ -37,7 +38,7 @@ class Homescreencontroller extends GetxController {
 
   List<List<dynamic>> Appbartitle = [
     ['FASHION', Icons.home],
-    ['Favorite', Icons.favorite],
-    ['Profile', Icons.person],
+    ['Favorite', Icons.favorite_border],
+    ['Profile', Icons.person_outline_rounded],
   ];
 }

@@ -88,7 +88,7 @@ class Checkoutcontroller extends GetxController {
       Map data = {
         "userid": myservisec.sharedPreferences.getString("id")!,
         "addressid": Addressid.toString(),
-        "orderstype": "pickup",
+        "orderstype": "0",
         "pricedelivery": "10",
         "ordersprice": totalprice,
         "couponid": couponeid.toString(),

@@ -20,14 +20,14 @@ ThemeData themeEnglish = ThemeData(
       fontWeight: FontWeight.bold,
     ),
     elevation: 0.0,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        bottomLeft: Radius.circular(25),
-        bottomRight: Radius.circular(25),
-      ),
-    ),
+    // shape: const RoundedRectangleBorder(
+    //   borderRadius: BorderRadius.only(
+    //     bottomLeft: Radius.circular(25),
+    //     bottomRight: Radius.circular(25),
+    //   ),
+    // ),
     centerTitle: true,
-    backgroundColor: Color(0xff0A192F),
+    backgroundColor:Color.fromARGB(206, 56, 73, 93)
   ),
 
   textTheme: TextTheme(

@@ -45,7 +45,8 @@ class Homescreen extends StatelessWidget {
                     Get.to(
                       () => Settings(),
                       transition: Transition.fadeIn,
-                      duration: const Duration(milliseconds: 800),
+                      curve: Curves.fastOutSlowIn,
+                      duration: Duration(milliseconds: 320),
                     );
                   },
                   icon: Icon(Icons.settings),
@@ -63,8 +64,8 @@ class Homescreen extends StatelessWidget {
               child: Hero(
                 tag: "carttag", // تأكد أن هذا الـ tag فريد
                 child: Container(
-                  width: 48,
-                  height: 48,
+                  width: 42,
+                  height: 42,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,
@@ -81,7 +82,8 @@ class Homescreen extends StatelessWidget {
                       Get.to(
                         () => ShoppingCartPage(),
                         transition: Transition.fadeIn,
-                        duration: const Duration(milliseconds: 800),
+                        curve: Curves.fastOutSlowIn,
+                        duration: Duration(milliseconds: 320),
                       );
                     },
                     icon: Icon(Icons.shopping_cart_outlined), // أيقونة أنسب
@@ -98,10 +100,7 @@ class Homescreen extends StatelessWidget {
 
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
-        body: Padding(
-          padding: const EdgeInsets.all(5),
-          child: controller.pages.elementAt(controller.Currentpage),
-        ),
+        body: controller.pages.elementAt(controller.Currentpage),
       ),
     );
   }

@@ -13,23 +13,19 @@ class Buttomappbar extends GetView<Homescreencontroller> {
       builder: (controller) => Container(
         // ← أضفنا Container هنا ليكون هو المسؤول عن التموضع
         width: 260,
-        height: 65,
+        height: 70,
         margin: const EdgeInsets.only(bottom: 20), // ← نقلنا الـ margin هنا
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(40),
           // نضيف هذا السطر لضمان قص التأثير بشكل صحيح
           clipBehavior: Clip.antiAlias,
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 9, sigmaY: 9),
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
             child: Container(
               // شيلنا العرض والارتفاع والهامش من هنا
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(25),
-                border: Border.all(
-                  color: const Color.fromARGB(255, 0, 0, 0).withAlpha(40),
-                  width: 0.4,
-                ),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withAlpha(60),
@@ -48,32 +44,18 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                       controller.changpage(index);
                     },
                     child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
+                      duration: const Duration(milliseconds: 250),
+                      curve: Curves.slowMiddle,
                       width: isSelected ? 65 : 60,
                       height: isSelected ? 65 : 60,
                       decoration: BoxDecoration(
-                        color: isSelected
-                            ? Colors.white.withOpacity(0.3)
-                            : Colors.transparent,
+                        color: isSelected ? Colors.white : Colors.transparent,
                         shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.white.withOpacity(0.2),
-                        ),
-                        boxShadow: isSelected
-                            ? [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.3),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ]
-                            : [],
                       ),
                       child: Icon(
                         controller.Appbartitle[index][1],
                         color: isSelected
-                            ? Appcolor.primaryColor
+                            ? Appcolor.black
                             : Colors.white.withOpacity(0.7),
                         size: isSelected ? 30 : 26,
                       ),

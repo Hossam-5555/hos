@@ -197,6 +197,7 @@ class CartController extends GetxController {
         couponediscount = 0;
         couponename = null;
         couponeID = null;
+        Get.snackbar("خطأ في البيانات ", "الرجاء المحاوله مره اخري");
       }
     }
     update();
