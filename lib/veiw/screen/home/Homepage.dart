@@ -15,7 +15,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(HomepageController());
-
+    // الحصول على حجم الشاشة
+    // final size = MediaQuery.of(context).size;
+    // final height = size.height;
+    //  final width = size.width;
     return GetBuilder<HomepageController>(
       builder: (controller) => Scaffold(
         body: SingleChildScrollView(

@@ -78,7 +78,7 @@ class SearchMix extends GetxController {
       () => Itemsdetailes(),
       transition: Transition.fadeIn,
       curve: Curves.fastOutSlowIn,
-      duration: Duration(milliseconds: 320),
+      duration: Duration(milliseconds: 400),
       arguments: {"itemsmodel": itemsmodel},
     );
   }

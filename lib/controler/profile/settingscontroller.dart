@@ -15,9 +15,7 @@ class SettingsController extends GetxController {
     loadSettings(); // تحميل الإعدادات عند بدء تشغيل الـ controller
   }
 
-  goaddres() {
-    Get.toNamed(Approute.viewmyaddres);
-  }
+  
 
   //logout تسجيل الخروج من البرنامج
   logout() {

@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/settingscontroller.dart';
+import 'package:hos/controler/profile/settingscontroller.dart';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -66,13 +66,6 @@ class Settings extends StatelessWidget {
                     icon: Icons.lock_outline,
                     title: 'تغيير كلمة المرور',
                     onTap: () {},
-                  ),
-                  _buildSettingsTile(
-                    icon: Icons.location_on,
-                    title: '  address',
-                    onTap: () {
-                      controller.goaddres();
-                    },
                   ),
                 ],
               ),

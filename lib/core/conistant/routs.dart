@@ -16,8 +16,8 @@ import 'package:hos/veiw/screen/home/itemsdetailes.dart';
 import 'package:hos/veiw/screen/onboarding/language.dart';
 import 'package:hos/veiw/screen/myfavorite.dart';
 import 'package:hos/veiw/screen/onboarding/onBoarding.dart';
-import 'package:hos/veiw/screen/settings/addres/add.dart';
-import 'package:hos/veiw/screen/settings/addres/viewaddres.dart';
+import 'package:hos/veiw/screen/profile/settings/addres/add.dart';
+import 'package:hos/veiw/screen/profile/settings/addres/viewaddres.dart';
 
 List<GetPage<dynamic>>? routes = [
   //Homepage

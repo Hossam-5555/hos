@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/veiw/screen/cartandcheckout/cart.dart';
 import 'package:hos/veiw/screen/home/Homepage.dart';
 import 'package:hos/veiw/screen/myfavorite.dart';
+import 'package:hos/veiw/screen/profile/profile.dart';
 
 class Homescreencontroller extends GetxController {
   // ignore: non_constant_identifier_names
@@ -18,14 +19,14 @@ class Homescreencontroller extends GetxController {
       () => ShoppingCartPage(),
       transition: Transition.fadeIn,
       curve: Curves.fastOutSlowIn,
-      duration: Duration(milliseconds: 320),
+      duration: Duration(milliseconds: 400),
     );
   }
 
   final List<Widget> pages = [
     HomePage(), // 🔹 صفحة الهوم
     Myfavorite(), // 🔹 صفحة المفضلة
-    Column(children: [Center(child: Text("fuck you"))]),
+    ProfilePage(),
   ];
 
   var x = 20.0.obs;
