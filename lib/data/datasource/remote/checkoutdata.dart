@@ -5,7 +5,7 @@ class Checkoutdata {
   Crud crud;
   Checkoutdata(this.crud);
   Checkout(Map data) async {
-    var response = await crud.postrequset(LinkApi.addorder, data);
+    var response = await crud.postrequset(LinkApi.checkout, data);
     return response.fold((l) => l, (r) => r);
   }
 }

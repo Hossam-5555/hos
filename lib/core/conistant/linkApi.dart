@@ -40,5 +40,6 @@ class LinkApi {
   static String viewAddres = '$server/address/view.php';
   static String editAddres = '$server/address/edit.php';
   //orders
-  static String addorder = '$server/orders/add.php';
+  static String checkout = '$server/orders/add.php';
+  static String viewmyorder = '$server/orders/vieworders.php';
 }
