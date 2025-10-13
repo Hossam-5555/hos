@@ -76,9 +76,9 @@ class ProfilePage extends StatelessWidget {
           _buildOptionTile(Icons.settings_outlined, "Settings", () {
             Get.to(
               () => Settings(),
-              transition: Transition.fadeIn,
-              curve: Curves.easeIn,
-              duration: Duration(milliseconds: 400),
+              transition: Transition.downToUp,
+              curve: Curves.easeInOutSine,
+              duration: Duration(milliseconds: 500),
             );
           }),
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 
 ThemeData themeEnglish = ThemeData(
-  scaffoldBackgroundColor: Color.fromARGB(206, 56, 73, 93),
+  scaffoldBackgroundColor: Color(0xFF121212),
   // استخدام نظام ألوان متناسق
   colorScheme: ColorScheme.fromSeed(seedColor: Appcolor.primaryColor),
 
@@ -44,7 +44,8 @@ ThemeData themeEnglish = ThemeData(
     ),
     headlineSmall: TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: 24,
+      fontSize: 20,
+      color: Colors.white,
       fontFamily: 'Italic',
     ),
     titleLarge: TextStyle(

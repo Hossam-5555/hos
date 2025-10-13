@@ -11,7 +11,7 @@ final String title;
               child: Text(
                 textAlign: TextAlign.center,
                 title,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
             );
   }

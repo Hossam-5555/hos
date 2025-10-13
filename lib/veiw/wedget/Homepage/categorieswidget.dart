@@ -16,7 +16,7 @@ class listcatigories extends GetView<HomepageController> {
         catig: categoriesmodel.fromJson(controller.categories[index]),
 
         icon: controller.categoresdinformation[index][1],
-        selected: index == 0 ? true : false,
+        // selected: index == 0 ? true : false,
         i: index,
       ),
     );
@@ -29,11 +29,11 @@ class buildCategory extends StatelessWidget {
   buildCategory({
     super.key,
     required this.i,
-    required this.selected,
+    // required this.selected,
     this.icon,
     required this.catig,
   });
-  final bool selected;
+  // final bool selected;
   IconData? icon;
   final int i;
   @override
@@ -42,37 +42,36 @@ class buildCategory extends StatelessWidget {
       builder: (contriller) {
         return InkWell(
           onTap: () {
-            contriller.gotoitems(contriller.categories, i,catig.categoriesId!);
+            contriller.gotoitems(contriller.categories, i, catig.categoriesId!);
           },
           child: Container(
-            margin: const EdgeInsets.only(right: 10),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            decoration: BoxDecoration(
-              color: selected
-                  ? Appcolor.primaryColor
-                  : const Color.fromARGB(255, 171, 173, 173),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Center(
-              child:  Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          icon,
-                          color: selected ? Colors.white : Colors.white70,
-                          size: 18,
-                        ),
-                        const SizedBox(width: 6),
-                        Text(
-                          catig.categoriesName!,
-                          style: TextStyle(
-                            color: selected ? Colors.white : Colors.white70,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
+            height: 60,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  height: 60,
+                  width: 70,
+                  margin: const EdgeInsets.only(right: 5),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 5,
+                    vertical: 5,
+                  ),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.blueAccent[100],
+                  ),
+                  child: Icon(icon, color: Colors.white, size: 18),
+                ),
+                Text(
+                  catig.categoriesName!,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
           ),
         );

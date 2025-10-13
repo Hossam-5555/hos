@@ -60,7 +60,7 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                       ),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? Colors.white.withOpacity(0.3)
+                            ? Colors.white
                             : Colors.transparent,
                         shape: BoxShape.circle,
                        

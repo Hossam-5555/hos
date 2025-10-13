@@ -48,7 +48,7 @@ class HomePage extends StatelessWidget {
                         child: ListView(
                           children: [
                             Titles(title: "Catigories"),
-                            SizedBox(height: 38, child: listcatigories()),
+                            SizedBox(height: 80, child: listcatigories()),
 
                             OfferCard(
                               title: 'خصم على الأجهزة',
