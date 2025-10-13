@@ -101,21 +101,19 @@ class Checkoutcontroller extends GetxController {
     statusrequest = Statusrequest.loading;
     update();
 
-    Map<String,dynamic> data = {
+    Map<String, dynamic> data = {
       "userid": myservisec.sharedPreferences.getString("id")!,
       "addressid": Addressid.toString(),
       "orderstype": "0", // ← لاحظ التحويل
       "pricedelivery": "10",
       "ordersprice": totalprice.toString(),
       "couponid": couponeid.toString(),
-      "couponediscount":"0",
+      "couponediscount": couponediscount.toString(),
       "paymentmethod": Paymenttype.toString(), // ← هنا برضه
     };
 
     var response = await checkoutdata.Checkout(data);
     statusrequest = handling(response);
-    print("============================");
-    print(statusrequest);
     if (statusrequest == Statusrequest.success) {
       if (response['status'] == 'success') {
         // ✅ نجاح العملية
@@ -141,9 +139,9 @@ class Checkoutcontroller extends GetxController {
   }
 
   //============================ متغيرات الكوبون والسعر
-   String? couponeid;
+  String? couponeid;
   late String totalprice;
-   String couponediscount="0";
+  String couponediscount = "0";
 
   @override
   void onInit() {
