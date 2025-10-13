@@ -20,7 +20,7 @@ class Homescrenaction extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: IconButton(
-                icon: const Icon(Icons.shopping_cart_outlined, size: 26),
+                icon: const Icon(Icons.shopping_bag_rounded, size: 26),
                 onPressed: () {
                   Get.to(
                     () => ShoppingCartPage(),

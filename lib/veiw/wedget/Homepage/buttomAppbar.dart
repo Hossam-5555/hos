@@ -11,6 +11,7 @@ class Buttomappbar extends GetView<Homescreencontroller> {
   Widget build(BuildContext context) {
     return GetBuilder<Homescreencontroller>(
       builder: (controller) => Container(
+        padding: const EdgeInsets.symmetric(vertical: 3),
         // ← أضفنا Container هنا ليكون هو المسؤول عن التموضع
         width: 270,
         height: 70,
@@ -48,22 +49,13 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                       controller.changpage(index);
                     },
                     child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: 320),
                       curve: Curves.easeInOut,
-                      width: isSelected ? 70 : 60,
-                      height: isSelected ? 70 : 70,
-                      margin: EdgeInsets.only(
-                        left: index == 0 ? 0 : 4,
-                        right: index == controller.Appbartitle.length - 1
-                            ? 0
-                            : 4,
-                      ),
+                      width: isSelected ? 65 : 60,
+                      height: isSelected ? 65 : 60,
                       decoration: BoxDecoration(
-                        color: isSelected
-                            ? Colors.white
-                            : Colors.transparent,
+                        color: isSelected ? Colors.white : Colors.transparent,
                         shape: BoxShape.circle,
-                       
                       ),
                       child: Icon(
                         controller.Appbartitle[index][1],
