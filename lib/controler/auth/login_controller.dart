@@ -13,13 +13,13 @@ class LoginController extends GetxController {
     Get.toNamed(Approute.checkemailpage);
   }
 
-void gotosignup() {
-  Get.off(
-    () => Signup() ,
-    transition: Transition. rightToLeft,
-    duration: const Duration(milliseconds: 800),
-  );
-}
+  void gotosignup() {
+    Get.off(
+      () => Signup(),
+      transition: Transition.rightToLeft,
+      duration: const Duration(milliseconds: 800),
+    );
+  }
 
   GlobalKey<FormState> loginkey = GlobalKey();
   TextEditingController email = TextEditingController();
@@ -28,8 +28,7 @@ void gotosignup() {
   bool showpass = true;
   @override
   void onInit() {
-    FirebaseMessaging.instance.getToken().then((val) {
-    });
+    FirebaseMessaging.instance.getToken().then((val) {});
     super.onInit();
   }
 
@@ -60,6 +59,7 @@ void gotosignup() {
               "id",
               response["data"]['users_id'].toString(),
             );
+            String id = myservisec.sharedPreferences.getString("id") ?? "";
             myservisec.sharedPreferences.setString(
               "usersname",
               response["data"]['users_name'],
@@ -69,25 +69,24 @@ void gotosignup() {
               response["data"]['users_email'],
             );
             myservisec.sharedPreferences.setString("step", '2');
+            FirebaseMessaging.instance.subscribeToTopic("users");
+            FirebaseMessaging.instance.subscribeToTopic("users${id}");
 
             Get.offNamed(Approute.Homescreen);
-          }
-           else {
+          } else {
             Get.toNamed(Approute.veryfisign, arguments: {"email": email.text});
           }
 
-
           print(response["data"]);
-        }
-         else {
+        } else {
           Get.rawSnackbar(
-          duration: Duration(milliseconds: 800),
+            duration: Duration(milliseconds: 800),
 
-          margin: EdgeInsets.all(12),
-          borderRadius: 16,
-          title: "إشعار",
-          messageText: const Text(" هناك خطأ في السيرفر"),
-        );
+            margin: EdgeInsets.all(12),
+            borderRadius: 16,
+            title: "إشعار",
+            messageText: const Text(" هناك خطأ في السيرفر"),
+          );
           statusrequest = Statusrequest.failure;
         }
       }

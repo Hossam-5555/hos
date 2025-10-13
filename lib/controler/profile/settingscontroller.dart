@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/serveces/myservisec.dart';
@@ -15,10 +16,11 @@ class SettingsController extends GetxController {
     loadSettings(); // تحميل الإعدادات عند بدء تشغيل الـ controller
   }
 
-  
-
   //logout تسجيل الخروج من البرنامج
   logout() {
+    String id = myservisec.sharedPreferences.getString("id")!;
+    FirebaseMessaging.instance.subscribeToTopic("users");
+    FirebaseMessaging.instance.subscribeToTopic("users${id}");
     myservisec.sharedPreferences.clear();
     Get.offAndToNamed(Approute.login);
   }

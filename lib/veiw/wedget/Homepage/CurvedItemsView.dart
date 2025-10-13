@@ -21,7 +21,7 @@ class CurvedItemsView extends StatelessWidget {
         }
 
         return SizedBox(
-          height: 250,
+          height: 260,
           child: PageView.builder(
             controller: controller.pageController,
             itemCount: controller.items.length,

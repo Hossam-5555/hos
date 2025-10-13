@@ -5,7 +5,7 @@ class OrderModel {
   final int ordersType;
   final int ordersPriceDelivery;
   final int ordersPrice;
-  final int ordersTotalPrice;
+  final String ordersTotalPrice;
   final int ordersCoupon;
   final int ordersPaymentMethod;
   final int ordersStatus;
@@ -33,7 +33,7 @@ class OrderModel {
       ordersType: json['orders_type'],
       ordersPriceDelivery: json['orders_pricedelivery'],
       ordersPrice: json['orders_price'],
-      ordersTotalPrice: json['orders_totalprice'],
+      ordersTotalPrice: json['orders_totalprice'].toString(),
       ordersCoupon: json['orders_coupon'],
       ordersPaymentMethod: json['orders_paymentmethod'],
       ordersStatus: json['orders_status'],

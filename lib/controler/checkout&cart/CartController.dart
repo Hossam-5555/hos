@@ -174,7 +174,7 @@ class CartController extends GetxController {
       Approute.Checkout,
       arguments: {
         "totalprice": totalprice.toString(),
-        "couponeID": couponeID ?? 0,
+        "couponeID": couponeID ?? "0",
         "couponediscount": couponediscount.toString(),
       },
     );

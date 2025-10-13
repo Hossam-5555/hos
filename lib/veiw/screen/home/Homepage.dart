@@ -43,12 +43,13 @@ class HomePage extends StatelessWidget {
               Handlingdataview(
                 statusrequest: controller.statusrequest,
                 widget: !controller.issearch
-                    ? Container(height: 680,
-                      child: ListView(
+                    ? Container(
+                        height: 680,
+                        child: ListView(
                           children: [
                             Titles(title: "Catigories"),
                             SizedBox(height: 38, child: listcatigories()),
-                                    
+
                             OfferCard(
                               title: 'خصم على الأجهزة',
                               description:
@@ -56,7 +57,7 @@ class HomePage extends StatelessWidget {
                               discount: "50% OFF",
                               onTap: () {},
                             ),
-                                    
+
                             SizedBox(height: 10),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -72,10 +73,9 @@ class HomePage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                                    
+
                             CurvedItemsView(),
-                                    
-                            SizedBox(height: 10),
+
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -90,7 +90,7 @@ class HomePage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                                    
+
                             // SizedBox(
                             //   height: 250,
                             //   child: ListView.builder(
@@ -111,7 +111,7 @@ class HomePage extends StatelessWidget {
                             // ),
                           ],
                         ),
-                    )
+                      )
                     : Searchpage(searchdata: controller.searchlist),
               ),
             ],
@@ -121,4 +121,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-

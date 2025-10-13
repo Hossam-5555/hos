@@ -65,6 +65,7 @@ dependencies:
   responsive_builder: ^0.7.1
   lottie: ^3.3.1
   flutter_otp_text_field: ^1.5.1+1
+  flutter_ringtone_player: ^4.0.0+4
 
 dev_dependencies:
   flutter_test:
