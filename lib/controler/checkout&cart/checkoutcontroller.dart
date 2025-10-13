@@ -101,15 +101,15 @@ class Checkoutcontroller extends GetxController {
     statusrequest = Statusrequest.loading;
     update();
 
-    Map data = {
+    Map<String,dynamic> data = {
       "userid": myservisec.sharedPreferences.getString("id")!,
       "addressid": Addressid.toString(),
-      "orderstype": 0, // ممكن تغيرها لاحقًا حسب نوع الطلب (توصيل / استلام)
+      "orderstype": "0", // ← لاحظ التحويل
       "pricedelivery": "10",
-      "ordersprice": totalprice,
-      "couponid": couponeid,
-      "coupondiscount": couponediscount,
-      "paymentmethod": Paymenttype,
+      "ordersprice": totalprice.toString(),
+      "couponid": couponeid.toString(),
+      "couponediscount":"0",
+      "paymentmethod": Paymenttype.toString(), // ← هنا برضه
     };
 
     var response = await checkoutdata.Checkout(data);
@@ -127,29 +127,23 @@ class Checkoutcontroller extends GetxController {
           duration: const Duration(seconds: 2),
         );
 
-        statusrequest = Statusrequest.success;
-        update();
-
-        await Future.delayed(const Duration(seconds: 2));
         Get.offAllNamed(Approute.Homescreen);
       } else {
-        // ❌ لو السيرفر رجع status = failure
         statusrequest = Statusrequest.failure;
         update();
         Get.snackbar("خطأ في البيانات", "الرجاء المحاولة مرة أخرى");
       }
     } else {
-      // ❌ في حالة فشل الاتصال أو استجابة غير متوقعة
-      statusrequest = Statusrequest.failure;
+      statusrequest = Statusrequest.serverfailure;
       update();
       Get.snackbar("خطأ", "حدث خطأ أثناء إرسال الطلب");
     }
   }
 
   //============================ متغيرات الكوبون والسعر
-  late String couponeid;
+   String? couponeid;
   late String totalprice;
-  late String couponediscount;
+   String couponediscount="0";
 
   @override
   void onInit() {

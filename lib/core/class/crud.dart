@@ -12,6 +12,8 @@ class Crud {
     try {
       if (await checkinterner()) {
         var response = await http.post(Uri.parse(linkUrl), body: data);
+          print("Response body: ${response.body}");
+
         if (response.statusCode == 200 || response.statusCode == 201) {
           var responsebody = jsonDecode(response.body);
           return Right(responsebody);
@@ -21,10 +23,17 @@ class Crud {
       } else {
         return Left(Statusrequest.checkinterner);
       }
-    } catch (e) {print('fuck you nman ${e}');
+    } catch (e) {
       return Left(Statusrequest.serverfailure);
     }
   }
 }
 
-enum Statusrequest { loading,checkinterner, failure, serverfailure ,success,none}
+enum Statusrequest {
+  loading,
+  checkinterner,
+  failure,
+  serverfailure,
+  success,
+  none,
+}
