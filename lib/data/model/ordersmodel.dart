@@ -1,57 +1,57 @@
 class OrderModel {
-  final int ordersId;
-  final int ordersUsersId;
-  final int ordersAddress;
-  final int ordersType;
-  final int ordersPriceDelivery;
-  final int ordersPrice;
-  final String ordersTotalPrice;
-  final int ordersCoupon;
-  final int ordersPaymentMethod;
-  final int ordersStatus;
-  final String ordersDatetime;
+  String? ordersId;
+  String? ordersUsersid;
+  String? ordersAddress;
+  String? ordersType;
+  String? ordersPricedelivery;
+  String? ordersPrice;
+  String? ordersTotalprice;
+  String? ordersCoupon;
+  String? ordersPaymentmethod;
+  String? ordersStatus;
+  String? ordersDatetime;
 
   OrderModel({
-    required this.ordersId,
-    required this.ordersUsersId,
-    required this.ordersAddress,
-    required this.ordersType,
-    required this.ordersPriceDelivery,
-    required this.ordersPrice,
-    required this.ordersTotalPrice,
-    required this.ordersCoupon,
-    required this.ordersPaymentMethod,
-    required this.ordersStatus,
-    required this.ordersDatetime,
+    this.ordersId,
+    this.ordersUsersid,
+    this.ordersAddress,
+    this.ordersType,
+    this.ordersPricedelivery,
+    this.ordersPrice,
+    this.ordersTotalprice,
+    this.ordersCoupon,
+    this.ordersPaymentmethod,
+    this.ordersStatus,
+    this.ordersDatetime,
   });
 
   factory OrderModel.fromJson(Map<String, dynamic> json) {
     return OrderModel(
-      ordersId: json['orders_id'],
-      ordersUsersId: json['orders_usersid'],
-      ordersAddress: json['orders_address'],
-      ordersType: json['orders_type'],
-      ordersPriceDelivery: json['orders_pricedelivery'],
-      ordersPrice: json['orders_price'],
-      ordersTotalPrice: json['orders_totalprice'].toString(),
-      ordersCoupon: json['orders_coupon'],
-      ordersPaymentMethod: json['orders_paymentmethod'],
-      ordersStatus: json['orders_status'],
-      ordersDatetime: json['orders_datetime'],
+      ordersId: json['orders_id']?.toString(),
+      ordersUsersid: json['orders_usersid']?.toString(),
+      ordersAddress: json['orders_address']?.toString(),
+      ordersType: json['orders_type']?.toString(),
+      ordersPricedelivery: json['orders_pricedelivery']?.toString(),
+      ordersPrice: json['orders_price']?.toString(),
+      ordersTotalprice: json['orders_totalprice']?.toString(),
+      ordersCoupon: json['orders_coupon']?.toString(),
+      ordersPaymentmethod: json['orders_paymentmethod']?.toString(),
+      ordersStatus: json['orders_status']?.toString(),
+      ordersDatetime: json['orders_datetime']?.toString(),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'orders_id': ordersId,
-      'orders_usersid': ordersUsersId,
+      'orders_usersid': ordersUsersid,
       'orders_address': ordersAddress,
       'orders_type': ordersType,
-      'orders_pricedelivery': ordersPriceDelivery,
+      'orders_pricedelivery': ordersPricedelivery,
       'orders_price': ordersPrice,
-      'orders_totalprice': ordersTotalPrice,
+      'orders_totalprice': ordersTotalprice,
       'orders_coupon': ordersCoupon,
-      'orders_paymentmethod': ordersPaymentMethod,
+      'orders_paymentmethod': ordersPaymentmethod,
       'orders_status': ordersStatus,
       'orders_datetime': ordersDatetime,
     };

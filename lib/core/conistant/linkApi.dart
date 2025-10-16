@@ -42,4 +42,6 @@ class LinkApi {
   //orders
   static String checkout = '$server/orders/add.php';
   static String viewmyorder = '$server/orders/vieworders.php';
+  //notification
+  static String notification = '$server/notification.php';
 }

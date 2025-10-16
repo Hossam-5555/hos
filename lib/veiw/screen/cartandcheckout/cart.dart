@@ -18,13 +18,14 @@ class ShoppingCartPage extends StatelessWidget {
         title: Text("Cart "),
         leading: Padding(
           // الخطوة 1: إضافة هامش قياسي ليكون بعيدًا عن الحافة
-          padding: const EdgeInsets.only(left: 16.0),
+          padding: const EdgeInsets.only(left: 8.0),
           child: Hero(
             // الخطوة 2: جعل الـ Hero يلتف حول الدائرة بالكامل
             tag: 'carttag',
             child: Container(
               width: 48, // الخطوة 3: تحديد حجم قياسي (لمسة مريحة للمستخدم)
               height: 48,
+              padding: EdgeInsets.only(left: 4),
               decoration: BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,

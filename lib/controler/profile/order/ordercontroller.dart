@@ -6,6 +6,7 @@ import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/remote/orderdata.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/data/model/ordersmodel.dart';
+import 'package:hos/veiw/screen/profile/order/orderdetailes.dart';
 
 class Ordercontroller extends GetxController {
   List<OrderModel> orders = [];
@@ -13,7 +14,7 @@ class Ordercontroller extends GetxController {
   Myservisec myservisec = Get.find();
   Orderdata orderdata = Orderdata(Get.find());
 
- Color getStatusColor(String status) {
+  Color getStatusColor(String status) {
     switch (status) {
       case "0":
         return Colors.orange;
@@ -72,6 +73,7 @@ class Ordercontroller extends GetxController {
     }
     update();
   }
+
 
   @override
   void onInit() {
