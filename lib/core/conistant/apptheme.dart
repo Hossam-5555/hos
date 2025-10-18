@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 
 ThemeData themeEnglish = ThemeData(
-  scaffoldBackgroundColor: Color(0xFF121212),
+  scaffoldBackgroundColor: Color.fromARGB(255, 1, 6, 39),
   // استخدام نظام ألوان متناسق
   colorScheme: ColorScheme.fromSeed(seedColor: Appcolor.primaryColor),
 
@@ -14,7 +14,7 @@ ThemeData themeEnglish = ThemeData(
       size: 24,
     ), // ← الحجم القياسي
     titleTextStyle: TextStyle(
-      color: Appcolor.grey,
+      color: Appcolor.primaryColor,
       fontSize: 22, // ← حجم أنسب لعنوان الصفحة
       fontFamily: 'Italic', // ← استخدم اسم الخط هنا
       fontWeight: FontWeight.bold,
@@ -27,7 +27,7 @@ ThemeData themeEnglish = ThemeData(
     //   ),
     // ),
     centerTitle: true,
-    backgroundColor:Color.fromARGB(206, 56, 73, 93)
+    backgroundColor: Color.fromARGB(255, 1, 6, 39)
   ),
 
   textTheme: TextTheme(
@@ -74,7 +74,7 @@ ThemeData themeEnglish = ThemeData(
 // for Arabic
 
 ThemeData themeArabic = ThemeData(
-  scaffoldBackgroundColor: Color(0xffede6fb),
+  scaffoldBackgroundColor: Color.fromARGB(255, 230, 251, 235),
   // استخدام نظام ألوان متناسق
   colorScheme: ColorScheme.fromSeed(seedColor: Appcolor.primaryColor),
 

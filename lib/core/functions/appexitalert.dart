@@ -1,27 +1,26 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
 
-Future<bool> appexitAlert() {
-  Get.defaultDialog(
+Future<bool> appexitAlert() async {
+  bool? shouldExit = await Get.defaultDialog<bool>(
     title: 'تنبيه',
-    middleText: "هل تريد الخروج حقا 🥲",
+    middleText: "هل تريد الخروج حقًا 🥲",
+    barrierDismissible: false, // يمنع إغلاق النافذة بالنقر خارجها
     actions: [
       ElevatedButton(
         onPressed: () {
-          exit(0);
+          Get.back(result: true); // ✅ يرجع true
         },
-        child: Text('Confairm'),
+        child: const Text('تأكيد'),
       ),
       ElevatedButton(
         onPressed: () {
-          Get.back();
+          Get.back(result: false); // ✅ يرجع false
         },
-        child: Text('Cancel'),
+        child: const Text('إلغاء'),
       ),
     ],
   );
 
-  return Future.value(true);
+  return shouldExit ?? false;
 }

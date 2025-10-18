@@ -13,7 +13,7 @@ class Buttomappbar extends GetView<Homescreencontroller> {
       builder: (controller) => Container(
         padding: const EdgeInsets.symmetric(vertical: 3),
         // ← أضفنا Container هنا ليكون هو المسؤول عن التموضع
-        width: 270,
+        width: 290 ,
         height: 70,
         margin: const EdgeInsets.only(bottom: 20), // ← نقلنا الـ margin هنا
         child: ClipRRect(

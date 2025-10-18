@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/home/Homescreencontroller.dart';
-import 'package:hos/veiw/wedget/Homepage/buttomAppbar.dart'; 
+import 'package:hos/core/functions/appexitalert.dart';
+import 'package:hos/veiw/wedget/Homepage/buttomAppbar.dart';
 import 'package:hos/veiw/wedget/Homepage/homescrenAction.dart';
 
 class Homescreen extends StatelessWidget {
@@ -11,27 +14,38 @@ class Homescreen extends StatelessWidget {
     Get.put(Homescreencontroller());
 
     return GetBuilder<Homescreencontroller>(
-      builder: (controller) => Scaffold(
-        appBar: AppBar(
-          actions: [Homescrenaction()],
-          title: Text(controller.Appbartitle[controller.Currentpage][0]),
+      builder: (controller) => PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) async {
+          if (didPop) return;
+
+          final bool? shouldExit = await appexitAlert();
+
+          if (shouldExit == true) {
+            exit(0);
+          }
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            actions: [Homescrenaction()],
+            title: Text(controller.Appbartitle[controller.Currentpage][0]),
+          ),
+
+          extendBody: true,
+
+          // ================== التعديل هنا ==================
+
+          // نضع شريط التنقل داخل Row لنجبره على التمركز وأخذ عرضه الطبيعي
+          bottomNavigationBar: Row(
+            mainAxisAlignment: MainAxisAlignment.center, // للتوسيط الأفقي
+            children: [
+              Buttomappbar(), // الـ Widget الخاص بك كما هو
+            ],
+          ),
+
+          // ===============================================
+          body: controller.pages.elementAt(controller.Currentpage),
         ),
-        
-        extendBody: true, 
-        
-        // ================== التعديل هنا ==================
-        
-        // نضع شريط التنقل داخل Row لنجبره على التمركز وأخذ عرضه الطبيعي
-        bottomNavigationBar: Row(
-          mainAxisAlignment: MainAxisAlignment.center, // للتوسيط الأفقي
-          children: [
-            Buttomappbar(), // الـ Widget الخاص بك كما هو
-          ],
-        ),
-        
-        // ===============================================
-        
-        body: controller.pages.elementAt(controller.Currentpage),
       ),
     );
   }

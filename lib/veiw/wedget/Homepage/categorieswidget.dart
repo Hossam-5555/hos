@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/home/Homepage_controller.dart';
-import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 
-// ignore: must_be_immutable
+// ignore: must_be_immutable, camel_case_types
 class listcatigories extends GetView<HomepageController> {
+  const listcatigories({super.key});
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       itemCount: controller.categories.length,
@@ -23,7 +23,7 @@ class listcatigories extends GetView<HomepageController> {
   }
 }
 
-// ignore: must_be_immutable
+// ignore: must_be_immutable, camel_case_types
 class buildCategory extends StatelessWidget {
   final categoriesmodel catig;
   buildCategory({
@@ -44,7 +44,7 @@ class buildCategory extends StatelessWidget {
           onTap: () {
             contriller.gotoitems(contriller.categories, i, catig.categoriesId!);
           },
-          child: Container(
+          child: SizedBox(
             height: 60,
             child: Column(
               mainAxisSize: MainAxisSize.min,
