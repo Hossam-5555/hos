@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:hos/core/class/crud.dart';
-import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/data/datasource/remote/homedata.dart';
 import 'package:hos/data/model/itemsmodel.dart';
