@@ -6,7 +6,16 @@ class Orderdata {
   Orderdata(this.crud);
 
   order(String userid) async {
-    var response = await crud.postrequset(LinkApi.viewmyorder, {"userid": userid});
+    var response = await crud.postrequset(LinkApi.viewmyorder, {
+      "userid": userid,
+    });
+    return response.fold((l) => l, (r) => r);
+  }
+
+  orderdetailsdata(String orderid) async {
+    var response = await crud.postrequset(LinkApi.orderdetails, {
+      "orderid": orderid,
+    });
     return response.fold((l) => l, (r) => r);
   }
 }

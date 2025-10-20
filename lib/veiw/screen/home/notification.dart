@@ -20,7 +20,7 @@ class NotificationPage extends StatelessWidget {
               itemCount: controller.NotificationList.length,
               itemBuilder: (context, i) {
                 final item = controller.NotificationList[i];
-                return Card(color: Colors.brown,
+                return Card(color: Color.fromARGB(120, 255, 255, 255),
                   elevation: 3,
                   margin: const EdgeInsets.symmetric(vertical: 8),
                   shape: RoundedRectangleBorder(
@@ -40,11 +40,11 @@ class NotificationPage extends StatelessWidget {
                     ),
                     subtitle: Text(
                       item['notification_body'] ?? 'لا يوجد محتوى',
-                      style: TextStyle(color: Colors.grey[700]),
+                      style: TextStyle(color:Color.fromARGB(255, 120, 150, 255)),
                     ),
                     trailing: Text(
                       _formatDate(item['notification_datetime']),
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                      style: const TextStyle(fontSize: 12, color: Colors.white70),
                     ),
                   ),
                 );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hos/controler/profile/order/orderdetailescontroller.dart';
 
 class Orderdetailes extends StatelessWidget {
@@ -48,23 +49,90 @@ class Orderdetailes extends StatelessWidget {
             return const Center(child: Text("❌ لم يتم استلام بيانات الطلب"));
           }
 
-          return Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('رقم الطلب: ${order.ordersId ?? "غير معروف"}'),
-                const SizedBox(height: 8),
-                Text('السعر الكلي: ${order.ordersTotalprice ?? "غير متاح"}'),
-                const SizedBox(height: 8),
-                Text('الحالة: ${order.ordersStatus ?? "غير محددة"}'),
-                const SizedBox(height: 8),
-                Text('تاريخ الطلب: ${order.ordersDatetime ?? "غير متاح"}'),
-              ],
-            ),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              OrderDetailsCard(
+                orderId: '${order.ordersId}',
+                customerName: '${order.ordersUsersid}',
+                address: '${order.addresName}',
+                status: '${order.ordersStatus}',
+                // location: null,
+              ),
+            ],
           );
         },
       ),
+    );
+  }
+}
+
+class OrderDetailsCard extends StatelessWidget {
+  final String orderId;
+  final String customerName;
+  final String address;
+  final String status;
+  // final LatLng location;
+
+  const OrderDetailsCard({
+    Key? key,
+    required this.orderId,
+    required this.customerName,
+    required this.address,
+    required this.status,
+    // required this.location,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Header
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "رقم الطلب: $orderId",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              Text("العميل: $customerName"),
+              Text("العنوان: $address"),
+              Text("الحالة: $status"),
+            ],
+          ),
+        ),
+
+        // Divider
+        Divider(height: 10),
+
+        // Google Map
+        SizedBox(
+          height: 200,
+          child: Text("Google map disabled for demo purposes"),
+          //  GoogleMap(
+          //   initialCameraPosition: CameraPosition(
+          //     target: location,
+          //     zoom: 14.0,
+          //   ),
+          //   markers: {
+          //     Marker(
+          //       markerId: MarkerId('deliveryLocation'),
+          //       position: location,
+          //       infoWindow: InfoWindow(title: "موقع التوصيل"),
+          //     ),
+          //   },
+          //   zoomControlsEnabled: false,
+          //   myLocationEnabled: false,
+          //   onMapCreated: (GoogleMapController controller) {
+          //     // ممكن تتحكم بالخريطة هنا
+          //   },
+          // ),
+        ),
+      ],
     );
   }
 }
