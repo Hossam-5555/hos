@@ -52,13 +52,15 @@ class Orderdetailes extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              OrderDetailsCard(
-                orderId: '${order.ordersId}',
-                customerName: '${order.ordersUsersid}',
-                address: '${order.addresName}',
-                status: '${order.ordersStatus}',
-                // location: null,
-              ),
+              ...List.generate(controller.data.length, (index) {
+                return OrderDetailsCard(
+                  orderId: '${controller.data[index].itemsPrice}',
+                  customerName: '${controller.data[index].itemsName}',
+                  address: '${order.addresName}',
+                  status: '${order.ordersStatus}',
+                  // location: null,
+                );
+              }),
             ],
           );
         },
@@ -109,30 +111,31 @@ class OrderDetailsCard extends StatelessWidget {
         // Divider
         Divider(height: 10),
 
-        // Google Map
-        SizedBox(
-          height: 200,
-          child: Text("Google map disabled for demo purposes"),
-          //  GoogleMap(
-          //   initialCameraPosition: CameraPosition(
-          //     target: location,
-          //     zoom: 14.0,
-          //   ),
-          //   markers: {
-          //     Marker(
-          //       markerId: MarkerId('deliveryLocation'),
-          //       position: location,
-          //       infoWindow: InfoWindow(title: "موقع التوصيل"),
-          //     ),
-          //   },
-          //   zoomControlsEnabled: false,
-          //   myLocationEnabled: false,
-          //   onMapCreated: (GoogleMapController controller) {
-          //     // ممكن تتحكم بالخريطة هنا
-          //   },
-          // ),
-        ),
+      
       ],
     );
   }
 }
+  // Google Map
+        // SizedBox(
+        //   height: 200,
+        //   child: Text("Google map disabled for demo purposes"),
+        //   //  GoogleMap(
+        //   //   initialCameraPosition: CameraPosition(
+        //   //     target: location,
+        //   //     zoom: 14.0,
+        //   //   ),
+        //   //   markers: {
+        //   //     Marker(
+        //   //       markerId: MarkerId('deliveryLocation'),
+        //   //       position: location,
+        //   //       infoWindow: InfoWindow(title: "موقع التوصيل"),
+        //   //     ),
+        //   //   },
+        //   //   zoomControlsEnabled: false,
+        //   //   myLocationEnabled: false,
+        //   //   onMapCreated: (GoogleMapController controller) {
+        //   //     // ممكن تتحكم بالخريطة هنا
+        //   //   },
+        //   // ),
+        // ),

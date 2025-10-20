@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/data/datasource/remote/orderdata.dart';
+import 'package:hos/data/model/cartmodel.dart';
 import 'package:hos/data/model/ordersmodel.dart';
 
 class Orderdetailescontroller extends GetxController {
@@ -9,7 +10,7 @@ class Orderdetailescontroller extends GetxController {
 
   Orderdata orderdata = Get.put(Orderdata(Get.find()));
   Statusrequest statusrequest = Statusrequest.none;
-  List data = [];
+  List<cartmodel> data = [];
 
   Future<void> getordersdetailsdata() async {
     statusrequest = Statusrequest.loading;
@@ -19,7 +20,7 @@ class Orderdetailescontroller extends GetxController {
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'success') {
         List orderdata = response["data"];
-        data.addAll(data.map((e) => OrderModel.fromJson(e)));
+        data.addAll(orderdata.map((e) => cartmodel.fromJson(e)));
       } else {
         statusrequest = Statusrequest.failure;
       }
