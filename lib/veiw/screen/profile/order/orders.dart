@@ -68,9 +68,11 @@ class Orders extends StatelessWidget {
 
                 return InkWell(
                   onTap: () {
-               
-                    Get.to(() => Orderdetailes(), arguments: {"order": order},
-                    transition: Transition.rightToLeft);
+                    Get.to(
+                      () => Orderdetailes(),
+                      arguments: {"order": order},
+                      transition: Transition.rightToLeft,
+                    );
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -138,23 +140,18 @@ class Orders extends StatelessWidget {
                           ],
                         ),
                       ),
-                      trailing: IconButton(
-                        icon: const Icon(
-                          Icons.arrow_forward_ios,
-                          color: Colors.grey,
-                          size: 18,
-                        ),
-                        onPressed: () {
-                          // لاحقًا نضيف صفحة تفاصيل الطلب
-                          Get.snackbar(
-                            "قريبًا",
-                            "سيتم عرض تفاصيل الطلب",
-                            backgroundColor: Colors.black.withOpacity(0.7),
-                            colorText: Colors.white,
-                            snackPosition: SnackPosition.BOTTOM,
-                          );
-                        },
-                      ),
+                      trailing: order.ordersStatus == "0"
+                          ? IconButton(
+                              icon: const Icon(
+                                Icons.delete_outline_outlined,
+                                color: Colors.grey,
+                                size: 25,
+                              ),
+                              onPressed: () {
+                                controller.deleteorders(order.ordersId!);
+                              },
+                            )
+                          : SizedBox.shrink(),
                     ),
                   ),
                 );

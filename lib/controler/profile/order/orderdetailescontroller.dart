@@ -28,6 +28,8 @@ class Orderdetailescontroller extends GetxController {
     update();
   }
 
+
+
   @override
   void onInit() {
     // تأكد إن Get.arguments مش null

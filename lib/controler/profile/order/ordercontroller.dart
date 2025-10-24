@@ -74,6 +74,20 @@ class Ordercontroller extends GetxController {
     update();
   }
 
+  Future<void> deleteorders(String orderid) async {
+    statusrequest = Statusrequest.loading;
+    update();
+    var response = await orderdata.deletedata(orderid);
+    statusrequest = handling(response);
+    if (Statusrequest.success == statusrequest) {
+      if (response['status'] == 'success') {
+        viewmyorders();
+      } else {
+        statusrequest = Statusrequest.failure;
+      }
+    }
+    update();
+  }
 
   @override
   void onInit() {
