@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/profile/profilepagecontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/veiw/screen/myfavorite.dart';
 import 'package:hos/veiw/screen/profile/settings/settings.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -66,7 +67,14 @@ class ProfilePage extends StatelessWidget {
           _buildOptionTile(Icons.shopping_bag, "طلباتي", () {
             controller.gotoorders();
           }),
-
+        _buildOptionTile(Icons.favorite_outline_outlined, "المفضله", () {
+            Get.to(
+              () => Myfavorite(),
+              transition: Transition.downToUp,
+              curve: Curves.easeInOutSine,
+              duration: Duration(milliseconds: 500),
+            );
+          }),
           _buildOptionTile(Icons.location_on, "العناوين", () {
             controller.goaddres();
           }),
@@ -81,7 +89,7 @@ class ProfilePage extends StatelessWidget {
               duration: Duration(milliseconds: 500),
             );
           }),
-
+          
           const SizedBox(height: 30),
 
           // زر تسجيل خروج
@@ -114,19 +122,6 @@ class ProfilePage extends StatelessWidget {
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
         onTap: onTap,
       ),
-    );
-  }
-}
-
-// صفحة إعدادات مؤقتة للتجربة
-class SettingsPage extends StatelessWidget {
-  const SettingsPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("الإعدادات")),
-      body: const Center(child: Text("صفحة الإعدادات")),
     );
   }
 }

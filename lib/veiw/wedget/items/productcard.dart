@@ -2,19 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/home/favorite/fav_controller.dart';
 import 'package:hos/controler/home/items_controler.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/linkApi.dart';
 import 'package:hos/data/model/itemsmodel.dart';
+import 'package:lottie/lottie.dart';
 
 class ItemsCard extends GetView<ItemsControler> {
-  final int index;
-  const ItemsCard({super.key, required this.index});
+  final int i;
+  const ItemsCard({super.key, required this.i});
 
   @override
   Widget build(BuildContext context) {
-    return ItemList(
-      active: true,
-      items: Itemsmodel.fromJson(controller.data[index]),
-    );
+    return ItemList(index: i, active: true, items: controller.data[i]);
   }
 }
 
@@ -22,7 +21,13 @@ class ItemsCard extends GetView<ItemsControler> {
 class ItemList extends GetView<ItemsControler> {
   final Itemsmodel items;
   bool active;
-  ItemList({super.key, required this.items, required this.active});
+  ItemList({
+    super.key,
+    required this.items,
+    required this.active,
+    required this.index,
+  });
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +104,22 @@ class ItemList extends GetView<ItemsControler> {
                     );
                   },
                 ),
+              ),
+              Positioned(
+                top: 0,
+                left: 0,
+                child: controller.data[index].itemsDiscount != "0.00"
+                    ? Container(
+                        height: 70,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        child: Transform.rotate(
+                          angle: 0.70,
+                          child: Lottie.asset(Imageasset.sale),
+                        ),
+                      )
+                    : SizedBox.shrink(),
               ),
 
               /// خلفية شفافة للنصوص

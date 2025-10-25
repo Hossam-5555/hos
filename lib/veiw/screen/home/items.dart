@@ -23,7 +23,7 @@ class Items extends StatelessWidget {
           onPressed: () {
             Get.back();
           },
-          icon: Icon(Icons.arrow_back_ios,color: Appcolor.white,),
+          icon: Icon(Icons.arrow_back_ios, color: Appcolor.white),
         ),
       ),
       body: SafeArea(
@@ -72,8 +72,9 @@ class Items extends StatelessWidget {
                             itemCount: controller.data.length,
                             itemBuilder: (context, i) {
                               favController.isfavorite[controller
-                                      .data[i]['items_id']] ==
-                                  controller.data[i]['favorite'];
+                                      .data[i]
+                                      .itemsId] ==
+                                  controller.data[i].favorite;
                               return _buildItemCard(i);
                             },
                           ),
@@ -104,7 +105,7 @@ class Items extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: ItemsCard(index: index), // الكارت الأصلي بتاعك
+        child: ItemsCard(i: index), // الكارت الأصلي بتاعك
       ),
     );
   }

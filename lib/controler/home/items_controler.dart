@@ -5,12 +5,13 @@ import 'package:hos/core/class/searchclass.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/remote/items.dart';
+import 'package:hos/data/model/itemsmodel.dart';
 
 class ItemsControler extends SearchMix {
   List categories = [];
   int? selecteditem;
   late String catid;
-  List data = [];
+  List<Itemsmodel> data = [];
   Statusrequest statusrequest = Statusrequest.none;
   Myservisec myservisec = Get.find();
   itemsdata itemdata = itemsdata(Get.find());
@@ -40,7 +41,8 @@ class ItemsControler extends SearchMix {
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'success') {
-        data.addAll(response["data"]);
+        List itemlist = response["data"];
+        data.addAll(itemlist.map((e) => Itemsmodel.fromJson(e)));
       } else {
         statusrequest = Statusrequest.failure;
       }

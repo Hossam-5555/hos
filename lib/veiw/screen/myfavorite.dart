@@ -13,6 +13,39 @@ class Myfavorite extends StatelessWidget {
   Widget build(BuildContext context) {
     Myfavcontroler controller = Get.put(Myfavcontroler());
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("المفضله"),
+        leading: Padding(
+          // الخطوة 1: إضافة هامش قياسي ليكون بعيدًا عن الحافة
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Container(
+            width: 48, // الخطوة 3: تحديد حجم قياسي (لمسة مريحة للمستخدم)
+            height: 48,
+            padding: EdgeInsets.only(left: 4),
+
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              boxShadow: [
+                // إضافة ظل خفيف ليعطي عمقاً
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.08),
+                  blurRadius: 10,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: Icon(Icons.arrow_back_ios),
+              iconSize: 24, // الخطوة 4: تحديد حجم قياسي للأيقونة
+              splashRadius: 24, // لجعل تأثير الضغط لا يخرج عن الدائرة
+            ),
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

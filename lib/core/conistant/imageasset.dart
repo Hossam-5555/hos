@@ -19,4 +19,6 @@ class Imageasset {
   static String Visa = "$routeImage/visa.png";
   static String cash = "$routeImage/cash.jpg";
   static String googlepay = "$routeImage/googlepayjpg.jpg";
+    static String sale = "$routeImage/Sale.json";
+
 }

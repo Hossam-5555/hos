@@ -47,4 +47,7 @@ class LinkApi {
 
   //notification
   static String notification = '$server/notification.php';
+  //offer
+    static String offer = '$server/offer.php';
+
 }
