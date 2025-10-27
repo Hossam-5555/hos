@@ -55,7 +55,6 @@ class HomePage extends StatelessWidget {
                               ),
 
                               // SizedBox(height: height * 0.02),
-
                               OfferCard(
                                 title: 'خصم على الأجهزة',
                                 description:
@@ -64,9 +63,7 @@ class HomePage extends StatelessWidget {
                                 onTap: () {},
                               ),
 
-
                               CurvedItemsView(),
-
 
                               Row(
                                 mainAxisAlignment:
@@ -78,8 +75,9 @@ class HomePage extends StatelessWidget {
                                     icon: const Text(
                                       "عرض الكل",
                                       style: TextStyle(
-                                          color: Colors.cyanAccent,
-                                          fontSize: 14),
+                                        color: Colors.cyanAccent,
+                                        fontSize: 14,
+                                      ),
                                     ),
                                     label: const Icon(
                                       Icons.arrow_forward,
@@ -89,6 +87,7 @@ class HomePage extends StatelessWidget {
                                   ),
                                 ],
                               ),
+                            
 
                               SizedBox(height: height * 0.02),
                               // هنا تقدر تضيف مثلاً آخر المنتجات أو الكروت
