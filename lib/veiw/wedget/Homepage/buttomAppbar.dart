@@ -14,24 +14,24 @@ class Buttomappbar extends GetView<Homescreencontroller> {
         padding: const EdgeInsets.symmetric(vertical: 3),
         // ← أضفنا Container هنا ليكون هو المسؤول عن التموضع
         width: 290 ,
-        height: 70,
+        height: 85,
         margin: const EdgeInsets.only(bottom: 20), // ← نقلنا الـ margin هنا
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(50),
           // نضيف هذا السطر لضمان قص التأثير بشكل صحيح
           clipBehavior: Clip.antiAlias,
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 9, sigmaY: 9),
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
             child: Container(
               // شيلنا العرض والارتفاع والهامش من هنا
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 218, 219, 216).withAlpha(50),
+                color: Colors.white.withAlpha(77),
                 borderRadius: BorderRadius.circular(25),
              
                 boxShadow: [
                   BoxShadow(
-                    color: const Color.fromARGB(255, 66, 66, 66).withAlpha(60),
-                    blurRadius: 5,
+                    color: const Color.fromARGB(255, 125, 125, 125).withAlpha(102),
+                    blurRadius: 1,
                     offset: const Offset(0, 1),
                   ),
                 ],
@@ -48,8 +48,8 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 320),
                       curve: Curves.easeInOut,
-                      width: isSelected ? 65 : 60,
-                      height: isSelected ? 65 : 60,
+                      width: isSelected ? 63 : 58,
+                      height: isSelected ? 63 : 58,
                       decoration: BoxDecoration(
                         color: isSelected ? Colors.white : Colors.transparent,
                         shape: BoxShape.circle,

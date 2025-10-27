@@ -13,24 +13,25 @@ class ShoppingCartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(CartController());
 
+    final size = MediaQuery.of(context).size;
+    final height = size.height;
+    final width = size.width;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("Cart "),
+        title: const Text("Cart"),
         leading: Padding(
-          // الخطوة 1: إضافة هامش قياسي ليكون بعيدًا عن الحافة
           padding: const EdgeInsets.only(left: 8.0),
           child: Hero(
-            // الخطوة 2: جعل الـ Hero يلتف حول الدائرة بالكامل
             tag: 'carttag',
             child: Container(
-              width: 48, // الخطوة 3: تحديد حجم قياسي (لمسة مريحة للمستخدم)
+              width: 48,
               height: 48,
-              padding: EdgeInsets.only(left: 4),
+              padding: const EdgeInsets.only(left: 4),
               decoration: BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
                 boxShadow: [
-                  // إضافة ظل خفيف ليعطي عمقاً
                   BoxShadow(
                     color: Colors.black.withOpacity(0.08),
                     blurRadius: 10,
@@ -39,12 +40,10 @@ class ShoppingCartPage extends StatelessWidget {
                 ],
               ),
               child: IconButton(
-                onPressed: () {
-                  Get.back();
-                },
-                icon: Icon(Icons.arrow_back_ios),
-                iconSize: 24, // الخطوة 4: تحديد حجم قياسي للأيقونة
-                splashRadius: 24, // لجعل تأثير الضغط لا يخرج عن الدائرة
+                onPressed: () => Get.back(),
+                icon: const Icon(Icons.arrow_back_ios),
+                iconSize: 24,
+                splashRadius: 24,
               ),
             ),
           ),
@@ -56,6 +55,7 @@ class ShoppingCartPage extends StatelessWidget {
             statusrequest: controller.statusrequest!,
             widget: Column(
               children: [
+                // 🔹 قائمة العناصر (تاخد كل المساحة المتاحة فوق)
                 Expanded(
                   child: ListView.builder(
                     padding: const EdgeInsets.all(8.0),
@@ -72,11 +72,25 @@ class ShoppingCartPage extends StatelessWidget {
                   ),
                 ),
 
-                // 🔹 مكان الكوبون + زر Apply
-                Coubone(),
+                // 🔹 الكوبون
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: width * 0.04,
+                    vertical: height * 0.015,
+                  ),
+                  child:  Coubone(),
+                ),
 
-                // 🔹 ملخص الطلب
-                buildOrderSummary(controller: controller),
+                // 🔹 ملخص الطلب (Responsive)
+                SafeArea(
+                  top: false,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      bottom: height * 0.01,
+                    ),
+                    child: BuildOrderSummary(controller: controller),
+                  ),
+                ),
               ],
             ),
           );

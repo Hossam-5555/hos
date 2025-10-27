@@ -10,111 +10,96 @@ import 'package:hos/veiw/wedget/Homepage/titles.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final height = size.height;
+    final width = size.width;
+
     Get.put(HomepageController());
-    // الحصول على حجم الشاشة
-    // final size = MediaQuery.of(context).size;
-    // final height = size.height;
-    //  final width = size.width;
+
     return GetBuilder<HomepageController>(
       builder: (controller) => Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              // 🔍 شريط البحث
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Searchbar(
-                  onPressedIcon: () {
-                    controller.onsearch();
-                  },
-                  onChanged: (val) {
-                    controller.checksearch(val);
-                  },
-                  title: "ابحث عن منتج...",
-                  mycontroller: controller.search!,
-                ),
-              ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: width * 0.04),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// 🔍 شريط البحث
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Searchbar(
+                      onPressedIcon: controller.onsearch,
+                      onChanged: controller.checksearch,
+                      title: "ابحث عن منتج...",
+                      mycontroller: controller.search!,
+                    ),
+                  ),
 
-              // ✅ المحتوى القابل للتمدد داخل Column
-              Handlingdataview(
-                statusrequest: controller.statusrequest,
-                widget: !controller.issearch
-                    ? Container(
-                        height: 680,
-                        child: ListView(
-                          children: [
-                            Titles(title: "Catigories"),
-                            SizedBox(height: 80, child: listcatigories()),
+                  /// ✅ عرض البيانات أو نتيجة البحث
+                  Handlingdataview(
+                    statusrequest: controller.statusrequest,
+                    widget: !controller.issearch
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Titles(title: "Categories"),
+                              SizedBox(
+                                height: height * 0.080,
+                                child: listcatigories(),
+                              ),
 
-                            OfferCard(
-                              title: 'خصم على الأجهزة',
-                              description:
-                                  "خصم يصل إلى 50% على الهواتف واللابتوبات",
-                              discount: "50% OFF",
-                              onTap: () {},
-                            ),
+                              // SizedBox(height: height * 0.02),
 
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Titles(title: "Most Recent"),
-                                TextButton.icon(
-                                  icon: Text("view more"),
-                                  onPressed: () {},
-                                  label: Icon(
-                                    Icons.arrow_forward,
-                                    color: Colors.cyanAccent,
+                              OfferCard(
+                                title: 'خصم على الأجهزة',
+                                description:
+                                    "خصم يصل إلى 50% على الهواتف واللابتوبات",
+                                discount: "50% OFF",
+                                onTap: () {},
+                              ),
+
+
+                              CurvedItemsView(),
+
+
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Titles(title: "شوهد مؤخراً"),
+                                  TextButton.icon(
+                                    onPressed: () {},
+                                    icon: const Text(
+                                      "عرض الكل",
+                                      style: TextStyle(
+                                          color: Colors.cyanAccent,
+                                          fontSize: 14),
+                                    ),
+                                    label: const Icon(
+                                      Icons.arrow_forward,
+                                      color: Colors.cyanAccent,
+                                      size: 18,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
 
-                            CurvedItemsView(),
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Titles(title: "last seen"),
-                                TextButton.icon(
-                                  icon: Text("See All"),
-                                  onPressed: () {},
-                                  label: Icon(
-                                    Icons.arrow_forward,
-                                    color: Colors.cyanAccent,
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            // SizedBox(
-                            //   height: 250,
-                            //   child: ListView.builder(
-                            //     scrollDirection: Axis.horizontal,
-                            //     itemCount: 4,
-                            //     itemBuilder: (context, i) {
-                            //       return Container(
-                            //         decoration: BoxDecoration(
-                            //           borderRadius: BorderRadius.circular(20),
-                            //         ),
-                            //         width: 150,
-                            //         margin:
-                            //             EdgeInsets.symmetric(horizontal: 8),
-                            //         child: ItemsCardhome(index: i),
-                            //       );
-                            //     },
-                            //   ),
-                            // ),
-                          ],
-                        ),
-                      )
-                    : Searchpage(searchdata: controller.searchlist),
+                              SizedBox(height: height * 0.02),
+                              // هنا تقدر تضيف مثلاً آخر المنتجات أو الكروت
+                              // ItemsCardhome(index: i)
+                            ],
+                          )
+                        : Searchpage(searchdata: controller.searchlist),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

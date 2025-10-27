@@ -21,6 +21,8 @@ class HomepageController extends SearchMix {
     ["لابتوبات", Icons.laptop],
     ["هواتف", Icons.phone_iphone],
     ["كاميرات", Icons.camera],
+      ["لابتوبات", Icons.laptop],
+   
   ];
 
   Homedata homedata = Homedata(Get.find());
@@ -61,7 +63,7 @@ class HomepageController extends SearchMix {
   PageController? pageController;
 
   void initPageController() {
-    pageController = PageController(viewportFraction: 0.4);
+    pageController = PageController(viewportFraction: 0.60);
   }
 
   @override

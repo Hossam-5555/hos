@@ -21,7 +21,7 @@ class CurvedItemsView extends StatelessWidget {
         }
 
         return SizedBox(
-          height: 260,width: 260,
+          height: 300,
           child: PageView.builder(
             controller: controller.pageController,
             itemCount: controller.items.length,
@@ -34,8 +34,13 @@ class CurvedItemsView extends StatelessWidget {
                   final pageController = controller.pageController!;
 
                   if (pageController.position.haveDimensions) {
-                    final currentPage = pageController.page ?? pageController.initialPage.toDouble();
-                    value = (1 - ((currentPage - index).abs() * 0.4)).clamp(0.0, 1.0);
+                    final currentPage =
+                        pageController.page ??
+                        pageController.initialPage.toDouble();
+                    value = (1 - ((currentPage - index).abs() * 0.4)).clamp(
+                      0.0,
+                      1.0,
+                    );
                   }
 
                   return Transform.translate(
@@ -43,7 +48,12 @@ class CurvedItemsView extends StatelessWidget {
                     child: Transform.scale(
                       scale: value,
                       child: Transform.rotate(
-                        angle: (index - (pageController.page ?? pageController.initialPage.toDouble()).round()) * 0.2,
+                        angle:
+                            (index -
+                                (pageController.page ??
+                                        pageController.initialPage.toDouble())
+                                    .round()) *
+                            0.2,
                         child: Opacity(
                           opacity: value,
                           child: ItemsCardhome(index: index),

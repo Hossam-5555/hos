@@ -41,10 +41,10 @@ class Homescreencontroller extends GetxController {
   }
 
   List<List<dynamic>> Appbartitle = [
-    ['FASHION', Icons.home],
+    ['FASHION', Icons.home_outlined],
     ['Offer', Icons.card_giftcard],
     ['notification', Icons.notifications_outlined],
 
-    ['Profile', Icons.person_outline_rounded],
+    ['Profile', Icons.person],
   ];
 }

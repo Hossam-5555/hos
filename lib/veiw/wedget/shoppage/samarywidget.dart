@@ -1,107 +1,108 @@
-// Widget for the bottom summary and checkout button
 import 'package:flutter/material.dart';
 import 'package:hos/controler/checkout&cart/CartController.dart';
-import 'package:hos/core/conistant/appcolor.dart';
 
-class buildOrderSummary extends StatelessWidget {
-  buildOrderSummary({super.key, required this.controller});
+class BuildOrderSummary extends StatelessWidget {
   final CartController controller;
+  const BuildOrderSummary({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final width = size.width;
+    final height = size.height;
+
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(width * 0.04),
+      // margin: EdgeInsets.symmetric(horizontal: width * 0.03),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
+            color: Colors.grey.withOpacity(0.25),
             spreadRadius: 1,
-            blurRadius: 10,
-            offset: const Offset(0, -3),
+            blurRadius: 8,
+            offset: const Offset(0, -2),
           ),
         ],
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          // الإجمالي
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'الإجمالي',
-                style: TextStyle(fontSize: 16, color: Colors.grey),
-              ),
-              Text(
-                '${controller.totalprice}جنيه',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              Text('الإجمالي',
+                  style: TextStyle(fontSize: width * 0.04, color: Colors.grey)),
+              Text('${controller.totalprice} جنيه',
+                  style: TextStyle(
+                      fontSize: width * 0.045, fontWeight: FontWeight.bold)),
             ],
           ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                ' الخصم',
-                style: TextStyle(fontSize: 16, color: Colors.grey),
-              ),
-              Text(
-                '${controller.couponediscount} %',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          const Divider(height: 24, thickness: 1),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'المجموع الكلي',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                '${controller.gettotalprice()}',
+          SizedBox(height: height * 0.01),
 
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).primaryColor,
+          // الخصم
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('الخصم',
+                  style: TextStyle(fontSize: width * 0.04, color: Colors.grey)),
+              Text('${controller.couponediscount} %',
+                  style: TextStyle(
+                      fontSize: width * 0.045, fontWeight: FontWeight.bold)),
+            ],
+          ),
+          Divider(height: height * 0.03),
+
+          // المجموع الكلي
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('المجموع الكلي',
+                  style: TextStyle(
+                      fontSize: width * 0.048, fontWeight: FontWeight.bold)),
+              Text('${controller.gettotalprice()} جنيه',
+                  style: TextStyle(
+                      fontSize: width * 0.05,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).primaryColor)),
+            ],
+          ),
+
+          SizedBox(height: height * 0.025),
+
+          // زر إتمام الشراء
+          Row(
+            children: [
+              Container(
+                height: height * 0.07,
+                width: height * 0.07,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: const Color.fromARGB(255, 146, 146, 146).withAlpha(35),
+                ),
+                child: const Icon(Icons.shopify_outlined,
+                    color: Colors.black, size: 24),
+              ),
+              SizedBox(width: width * 0.03),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () => controller.gotochechout(),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: height * 0.02),
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(80),
+                    ),
+                    textStyle: TextStyle(
+                        fontSize: width * 0.045, fontWeight: FontWeight.bold),
+                  ),
+                  child: const Text('إتمام الشراء'),
                 ),
               ),
             ],
-          ),
-          const SizedBox(height: 20),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                controller.gotochechout();
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                backgroundColor: Appcolor.primaryColor,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                textStyle: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              child: const Text('إتمام الشراء'),
-            ),
           ),
         ],
       ),

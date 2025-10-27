@@ -11,7 +11,7 @@ class ItemsCardhome extends GetView<HomepageController> {
   @override
   Widget build(BuildContext context) {
     if (controller.items.isEmpty || controller.items[index] == null) {
-      return const SizedBox(); // تجنب الكراش
+      return const SizedBox();
     }
     return ItemList(items: Itemsmodel.fromJson(controller.items[index]));
   }
@@ -24,99 +24,120 @@ class ItemList extends GetView<HomepageController> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final width = size.width;
+    final height = size.height;
 
     return GestureDetector(
-      onTap: () {
-        controller.gotoitemsdatails(items);
-      },
+      onTap: () => controller.gotoitemsdatails(items),
       child: Container(
-        height: 220,
-        width: 250,
-        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
+        margin: EdgeInsets.symmetric(
+          horizontal: width * 0.03,
+          vertical: height * 0.008,
+        ),
+        height: height * 0.32, // ✨ خففنا الارتفاع العام للكارت
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 10,
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 8,
               spreadRadius: 2,
               offset: const Offset(0, 4),
             ),
           ],
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            /// 🖼 صورة المنتج مع Hero + ClipRRect
+            // 🖼 الصورة
             ClipRRect(
               borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(20),
+                top: Radius.circular(18),
               ),
-              child: Card(
-                child: Image.network(
-                  "${LinkApi.imageitems}/${items.itemsImage}",
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: size.height * 0.18,
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    color: Colors.grey[200],
-                    alignment: Alignment.center,
-                    child: const Icon(
-                      Icons.broken_image,
-                      size: 40,
-                      color: Colors.grey,
-                    ),
-                  ),
+              child: Image.network(
+                "${LinkApi.imageitems}/${items.itemsImage}",
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: height * 0.21, // ✨ قللنا ارتفاع الصورة
+                errorBuilder: (context, error, stackTrace) => Container(
+                  color: Colors.grey[200],
+                  alignment: Alignment.center,
+                  child: const Icon(Icons.broken_image,
+                      size: 40, color: Colors.grey),
                 ),
               ),
             ),
 
-            /// 📝 اسم المنتج
+            // 🔹 الجزء السفلي (أعرض وبارز)
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(
+                  horizontal: width * 0.04,
+                  vertical: height * 0.012,
+                ),
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 245, 245, 245),
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(18),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // 📝 اسم المنتج والسعر
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            items.itemsName ?? "بدون اسم",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: width * 0.038,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          SizedBox(height: height * 0.004),
+                          Text(
+                            "${items.itemsPrice ?? "0"} ج.م",
+                            style: TextStyle(
+                              fontSize: width * 0.042,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
 
-            /// 💰 السعر وزرار صغير
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      Text(
-                        items.itemsName ?? "بدون اسم",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: size.width * 0.035,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
+                    // 🛒 زر الشراء (أكبر شوية وواضح)
+                    Container(
+                      height: height * 0.06,
+                      width: height * 0.06,
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.15),
+                            blurRadius: 6,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
                       ),
-                      Text(
-                        "${items.itemsPrice ?? "0"} ج.م",
-                        style: TextStyle(
-                          fontSize: size.width * 0.033,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.blueAccent,
-                        ),
+                      child: const Icon(
+                        Icons.shopping_basket_outlined,
+                        color: Colors.white,
+                        size: 22,
                       ),
-                    ],
-                  ),
-                  Container(
-                    height: 40,
-                    width: 40,
-                    // padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 4, 4, 4),
-                      borderRadius: BorderRadius.circular(15),
                     ),
-                    child: const Icon(
-                      Icons.add_shopping_cart,
-                      color: Colors.white,
-                      size: 18,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
