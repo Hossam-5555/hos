@@ -59,9 +59,9 @@ class buildCategory extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.blueAccent[100],
+                    color: const Color.fromARGB(255, 146, 146, 146).withAlpha(35),
                   ),
-                  child: Icon(icon, color: Colors.white, size: 18),
+                  child: Icon(icon, color: Colors.black, size: 20),
                 ),
                 Text(
                   catig.categoriesName!,

@@ -29,7 +29,9 @@ class ItemList extends GetView<HomepageController> {
       onTap: () {
         controller.gotoitemsdatails(items);
       },
-      child: Container(height: 220,
+      child: Container(
+        height: 220,
+        width: 250,
         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -51,37 +53,26 @@ class ItemList extends GetView<HomepageController> {
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(20),
               ),
-              child: Image.network(
-                "${LinkApi.imageitems}/${items.itemsImage}",
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: size.height * 0.18,
-                errorBuilder: (context, error, stackTrace) => Container(
-                  color: Colors.grey[200],
-                  alignment: Alignment.center,
-                  child: const Icon(
-                    Icons.broken_image,
-                    size: 40,
-                    color: Colors.grey,
+              child: Card(
+                child: Image.network(
+                  "${LinkApi.imageitems}/${items.itemsImage}",
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: size.height * 0.18,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    color: Colors.grey[200],
+                    alignment: Alignment.center,
+                    child: const Icon(
+                      Icons.broken_image,
+                      size: 40,
+                      color: Colors.grey,
+                    ),
                   ),
                 ),
               ),
             ),
 
             /// 📝 اسم المنتج
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              child: Text(
-                items.itemsName ?? "بدون اسم",
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: size.width * 0.035,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-            ),
 
             /// 💰 السعر وزرار صغير
             Padding(
@@ -89,19 +80,35 @@ class ItemList extends GetView<HomepageController> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "${items.itemsPrice ?? "0"} ج.م",
-                    style: TextStyle(
-                      fontSize: size.width * 0.033,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blueAccent,
-                    ),
+                  Column(
+                    children: [
+                      Text(
+                        items.itemsName ?? "بدون اسم",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: size.width * 0.035,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      Text(
+                        "${items.itemsPrice ?? "0"} ج.م",
+                        style: TextStyle(
+                          fontSize: size.width * 0.033,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.blueAccent,
+                        ),
+                      ),
+                    ],
                   ),
                   Container(
-                    padding: const EdgeInsets.all(6),
+                    height: 40,
+                    width: 40,
+                    // padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                      color: Colors.blueAccent,
-                      borderRadius: BorderRadius.circular(12),
+                      color: const Color.fromARGB(255, 4, 4, 4),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     child: const Icon(
                       Icons.add_shopping_cart,

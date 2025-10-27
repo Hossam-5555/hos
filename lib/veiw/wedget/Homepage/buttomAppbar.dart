@@ -25,17 +25,14 @@ class Buttomappbar extends GetView<Homescreencontroller> {
             child: Container(
               // شيلنا العرض والارتفاع والهامش من هنا
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.15),
+                color: const Color.fromARGB(255, 218, 219, 216).withAlpha(50),
                 borderRadius: BorderRadius.circular(25),
-                border: Border.all(
-                  color: const Color.fromARGB(255, 0, 0, 0).withAlpha(40),
-                  width: 0.4,
-                ),
+             
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withAlpha(60),
+                    color: const Color.fromARGB(255, 66, 66, 66).withAlpha(60),
                     blurRadius: 5,
-                    offset: const Offset(-1, 1),
+                    offset: const Offset(0, 1),
                   ),
                 ],
               ),
@@ -59,9 +56,7 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                       ),
                       child: Icon(
                         controller.Appbartitle[index][1],
-                        color: isSelected
-                            ? Appcolor.black
-                            : Colors.white.withOpacity(0.7),
+                        color:Appcolor.black,
                         size: isSelected ? 30 : 26,
                       ),
                     ),
