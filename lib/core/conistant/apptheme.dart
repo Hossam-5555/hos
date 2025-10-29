@@ -45,7 +45,7 @@ ThemeData themeEnglish = ThemeData(
     headlineSmall: TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 20,
-      color: Colors.white,
+      color: Colors.blueGrey,
       fontFamily: 'Italic',
     ),
     titleLarge: TextStyle(

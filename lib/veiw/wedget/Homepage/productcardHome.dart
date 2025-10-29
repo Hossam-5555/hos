@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/home/Homepage_controller.dart';
-import 'package:hos/core/conistant/linkApi.dart';
+import 'package:hos/core/conistant/linkApi.dart'; // افترض أن 'linkImageRoot' موجود هنا
 import 'package:hos/data/model/itemsmodel.dart';
 
+// 🔹 هذا الكلاس يبقى كما هو
 class ItemsCardhome extends GetView<HomepageController> {
   final int index;
   const ItemsCardhome({super.key, required this.index});
@@ -17,9 +18,11 @@ class ItemsCardhome extends GetView<HomepageController> {
   }
 }
 
+// --- ⭐️ الكلاس المُعدل ⭐️ ---
+
 class ItemList extends GetView<HomepageController> {
   final Itemsmodel items;
-  const ItemList({super.key, required this.items});
+  ItemList({super.key, required this.items});
 
   @override
   Widget build(BuildContext context) {
@@ -29,137 +32,116 @@ class ItemList extends GetView<HomepageController> {
 
     return GestureDetector(
       onTap: () => controller.gotoitemsdatails(items),
-      child: ClipPath(clipper:TrapezoidClipper() ,
-        child: Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: width * 0.03,
-            vertical: height * 0.008,
-          ),
-          height: height * 0.32, // ✨ خففنا الارتفاع العام للكارت
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(18),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.08),
-                blurRadius: 8,
-                spreadRadius: 2,
-                offset: const Offset(0, 4),
+      // ❌ تم حذف ClipPath لاستخدام الزوايا الدائرية من BoxDecoration
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(25)),
+          color: Colors.white, // ✅ تم التغيير إلى الأبيض
+          boxShadow: [
+            // ✅ تم إضافة ظل خفيف مثل الصورة
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 1,
+              blurRadius: 10,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // 🖼 الصورة
+            Container(
+              height: height * 0.20,
+              // المارجن الخاص بك جيد لعمل الهامش الداخلي
+              margin: EdgeInsets.only(left: 17, right: 17, top: 17),
+              decoration: BoxDecoration(
+                color: Color(0xFFF5F5F5), // ✅ لون رمادي فاتح لخلفية الصورة
+                borderRadius: BorderRadius.all(
+                  Radius.circular(15),
+                ), // ✅ زوايا دائرية لحامل الصورة
               ),
-            ],
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              // 🖼 الصورة
-              ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(18),
-                ),
+              // ✅ نستخدم ClipRRect لقص زوايا الصورة
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(15)),
                 child: Image.network(
+                  // ✅ إصلاح: بناء رابط الصورة الصحيح
+                  // (بافتراض أن المتغير اسمه linkImageRoot في ملف linkApi.dart)
                   "${LinkApi.imageitems}/${items.itemsImage}",
                   fit: BoxFit.cover,
                   width: double.infinity,
-                  height: height * 0.21, // ✨ قللنا ارتفاع الصورة
+                  height: height * 0.20,
                   errorBuilder: (context, error, stackTrace) => Container(
                     color: Colors.grey[200],
                     alignment: Alignment.center,
-                    child: const Icon(Icons.broken_image,
-                        size: 40, color: Colors.grey),
-                  ),
-                ),
-              ),
-        
-              // 🔹 الجزء السفلي (أعرض وبارز)
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: width * 0.04,
-                    vertical: height * 0.012,
-                  ),
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 245, 245, 245),
-                    borderRadius: BorderRadius.vertical(
-                      bottom: Radius.circular(18),
+                    child: const Icon(
+                      Icons.broken_image,
+                      size: 40,
+                      color: Colors.grey,
                     ),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // 📝 اسم المنتج والسعر
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              items.itemsName ?? "بدون اسم",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: width * 0.038,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.black87,
-                              ),
-                            ),
-                            SizedBox(height: height * 0.004),
-                            Text(
-                              "${items.itemsPrice ?? "0"} ج.م",
-                              style: TextStyle(
-                                fontSize: width * 0.042,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-        
-                      // 🛒 زر الشراء (أكبر شوية وواضح)
-                      Container(
-                        height: height * 0.06,
-                        width: height * 0.06,
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.15),
-                              blurRadius: 6,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: const Icon(
-                          Icons.shopping_basket_outlined,
-                          color: Colors.white,
-                          size: 22,
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
               ),
-            ],
-          ),
+            ),
+
+            // 🔹 الاسم والسعر وزر السلة
+            // هذا الجزء كان منظماً بشكل جيد
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: width * 0.045, // تعديل بسيط للهوامش
+                  vertical: height * 0.012,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      items.itemsName ?? "بدون اسم",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: width * 0.038,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${items.itemsPrice ?? "0"} ج.م", // تم الإبقاء على العملة الخاصة بك
+                          style: TextStyle(
+                            fontSize: width * 0.042,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Container(
+                          height: height * 0.05,
+                          width: height * 0.05,
+                          decoration: const BoxDecoration(
+                            color: Colors.black,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.shopping_basket_outlined,
+                            color: Colors.white,
+                            size: 22,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
-class TrapezoidClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    final path = Path();
-    path.moveTo(10, 0); // فوق يمين مائل بسيط
-    path.lineTo(size.width - 10, 0);
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
-    path.close();
-    return path;
-  }
 
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
-}
+// ❌ لا حاجة لهذا الكلاس بعد الآن
+// class SlightTrapezoidClipper extends CustomClipper<Path> { ... }

@@ -63,7 +63,7 @@ class HomepageController extends SearchMix {
   PageController? pageController;
 
   void initPageController() {
-    pageController = PageController(viewportFraction: 0.60);
+    pageController = PageController(viewportFraction: 0.68);
   }
 
   @override
