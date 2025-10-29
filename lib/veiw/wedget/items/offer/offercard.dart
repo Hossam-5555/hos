@@ -91,7 +91,7 @@ class ItemList extends GetView<Offercontroller> {
                           controller.isfavorite[items.itemsId] == "1"
                               ? Icons.favorite
                               : Icons.favorite_border_outlined,
-                          color: Colors.red,
+                          color: const Color.fromARGB(255, 0, 0, 0),
                           size: 25,
                         ),
                       ),
