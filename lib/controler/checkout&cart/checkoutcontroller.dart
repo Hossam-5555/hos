@@ -122,7 +122,7 @@ class Checkoutcontroller extends GetxController {
           "سيتم توصيل طلبك في أقرب وقت",
           backgroundColor: Colors.green.withOpacity(0.8),
           colorText: Colors.white,
-          duration: const Duration(seconds: 2),
+          duration: const Duration(seconds: 1),
         );
 
         Get.offAllNamed(Approute.Homescreen);

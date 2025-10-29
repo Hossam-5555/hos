@@ -27,7 +27,7 @@ class ShoppingCartPage extends StatelessWidget {
             child: Container(
               width: 48,
               height: 48,
-              padding: const EdgeInsets.only(left: 4),
+              padding: const EdgeInsets.only(left: 2),
               decoration: BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
@@ -41,7 +41,7 @@ class ShoppingCartPage extends StatelessWidget {
               ),
               child: IconButton(
                 onPressed: () => Get.back(),
-                icon: const Icon(Icons.arrow_back_ios),
+                icon: const Icon(Icons.arrow_back),
                 iconSize: 24,
                 splashRadius: 24,
               ),

@@ -24,7 +24,7 @@ class Itemsdetailes extends GetView<Itemdetailscontroller> {
           onPressed: () {
             Get.back();
           },
-          icon: Icon(Icons.arrow_back_ios,color: Colors.white,),
+          icon: Icon(Icons.arrow_back, color: Colors.white),
         ),
       ),
       body: GetBuilder<Itemdetailscontroller>(
@@ -39,13 +39,26 @@ class Itemsdetailes extends GetView<Itemdetailscontroller> {
                 const SizedBox(height: 20),
 
                 // اسم المنتج
-                Text(
-                  '${itemsdetailscontroller.itemsmodel.itemsName}',
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      '${itemsdetailscontroller.itemsmodel.itemsName}',
 
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      "السعر: ${itemsdetailscontroller.itemsmodel.itemspricediscount}",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.green,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
                 ),
 
                 const SizedBox(height: 10),
@@ -54,12 +67,15 @@ class Itemsdetailes extends GetView<Itemdetailscontroller> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text(
-                      "السعر: ${itemsdetailscontroller.itemsmodel.itemspricediscount}",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.green,
-                        fontWeight: FontWeight.w600,
+                    Container(
+                      height: 30,
+                      width: 100,
+                      child: ListView.builder(
+                        itemCount: 4,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return Icon(Icons.star_rounded, color: Colors.amber);
+                        },
                       ),
                     ),
                     Countofproduct(count: itemsdetailscontroller.itemcount),
@@ -72,16 +88,13 @@ class Itemsdetailes extends GetView<Itemdetailscontroller> {
                 const Text(
                   "هذا وصف تفصيلي للمنتج يوضح كل الخصائص والمميزات "
                   "مع شرح كامل يساعد المستخدم في معرفة التفاصيل قبل الشراء.",
-                  style: TextStyle(
-                    fontSize: 16,
-                    height: 1.5,
-                  ),
+                  style: TextStyle(fontSize: 16, height: 1.5),
                 ),
 
                 const SizedBox(height: 30),
 
                 // زر الشراء
-                Buttom(),
+                Center(child: Buttom()),
               ],
             ),
           );

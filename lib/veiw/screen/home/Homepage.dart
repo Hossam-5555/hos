@@ -75,7 +75,7 @@ class HomePage extends StatelessWidget {
                                     icon: const Text(
                                       "عرض الكل",
                                       style: TextStyle(
-                                        color: Colors.cyanAccent,
+                                        color: Color.fromARGB(255, 109, 109, 109),
                                         fontSize: 14,
                                       ),
                                     ),

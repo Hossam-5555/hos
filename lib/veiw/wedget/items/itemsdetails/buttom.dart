@@ -10,13 +10,14 @@ class Buttom extends StatelessWidget {
     Itemdetailscontroller itemdetailscontroller = Get.put(
       Itemdetailscontroller(),
     );
-    return Center(
+    return Container(
+      width: 250,
+      height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
-          backgroundColor: Colors.deepPurple,
+          backgroundColor: Colors.black,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(20),
           ),
         ),
         onPressed: () {
