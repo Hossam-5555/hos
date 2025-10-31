@@ -44,6 +44,7 @@ class LinkApi {
   static String viewmyorder = '$server/orders/vieworders.php';
   static String orderdetails = '$server/orders/ordersdetails.php';
   static String deleteorder = '$server/orders/delete.php';
+  static String rating = '$server/rating.php';
 
   //notification
   static String notification = '$server/notification.php';

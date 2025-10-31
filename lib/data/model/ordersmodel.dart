@@ -17,26 +17,31 @@ class OrderModel {
   String? addresStreet;
   double? addresLat;
   double? addresLang;
+  String? rating;
+  String? comment;
 
-  OrderModel(
-      {this.ordersId,
-      this.ordersUsersid,
-      this.ordersAddress,
-      this.ordersType,
-      this.ordersPricedelivery,
-      this.ordersPrice,
-      this.ordersTotalprice,
-      this.ordersCoupon,
-      this.ordersPaymentmethod,
-      this.ordersStatus,
-      this.ordersDatetime,
-      this.addresId,
-      this.addresUserid,
-      this.addresName,
-      this.addresCity,
-      this.addresStreet,
-      this.addresLat,
-      this.addresLang});
+  OrderModel({
+    this.ordersId,
+    this.ordersUsersid,
+    this.ordersAddress,
+    this.ordersType,
+    this.ordersPricedelivery,
+    this.ordersPrice,
+    this.ordersTotalprice,
+    this.ordersCoupon,
+    this.ordersPaymentmethod,
+    this.ordersStatus,
+    this.ordersDatetime,
+    this.addresId,
+    this.addresUserid,
+    this.addresName,
+    this.addresCity,
+    this.addresStreet,
+    this.addresLat,
+    this.addresLang,
+    this.rating,
+    this.comment,
+  });
 
   OrderModel.fromJson(Map<String, dynamic> json) {
     ordersId = json['orders_id'].toString();
@@ -57,6 +62,8 @@ class OrderModel {
     addresStreet = json['addres_street'].toString();
     addresLat = json['addres_lat'];
     addresLang = json['addres_lang'];
+    rating = json['order_rating'].toString();
+    comment = json['comment'];
   }
 
   Map<String, dynamic> toJson() {

@@ -4,15 +4,21 @@ import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/remote/orderdata.dart';
-import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/data/model/ordersmodel.dart';
-import 'package:hos/veiw/screen/profile/order/orderdetailes.dart';
 
 class Ordercontroller extends GetxController {
   List<OrderModel> orders = [];
   Statusrequest statusrequest = Statusrequest.none;
   Myservisec myservisec = Get.find();
   Orderdata orderdata = Orderdata(Get.find());
+  TextEditingController? comment;
+
+  int selectedRating = 0;
+
+  void changeRatingColor(int i) {
+    selectedRating = i + 1; // خزن رقم النجمة اللي المستخدم ضغطها
+    update(); // يحدث الواجهة
+  }
 
   Color getStatusColor(String status) {
     switch (status) {
@@ -55,6 +61,23 @@ class Ordercontroller extends GetxController {
     }
   }
 
+  Future<void> viewrating(String id, String rating, String comment) async {
+    orders.clear();
+    statusrequest = Statusrequest.loading;
+    update();
+    var response = await orderdata.ratingdata(id, rating, comment);
+    statusrequest = handling(response);
+    if (Statusrequest.success == statusrequest) {
+      if (response['status'] == 'success') {
+        viewmyorders();
+        Get.back();
+      } else {
+        statusrequest = Statusrequest.failure;
+      }
+    }
+    update();
+  }
+
   Future<void> viewmyorders() async {
     orders.clear();
     statusrequest = Statusrequest.loading;
@@ -91,6 +114,7 @@ class Ordercontroller extends GetxController {
 
   @override
   void onInit() {
+    comment = TextEditingController();
     viewmyorders();
     super.onInit();
   }

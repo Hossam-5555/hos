@@ -4,6 +4,7 @@ import 'package:hos/controler/profile/order/ordercontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/veiw/screen/profile/order/orderdetailes.dart';
+import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 import 'package:jiffy/jiffy.dart';
 
 class Orders extends StatelessWidget {
@@ -124,34 +125,133 @@ class Orders extends StatelessWidget {
                       ),
                       subtitle: Padding(
                         padding: const EdgeInsets.only(top: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("المجموع: ${order.ordersPrice} ج.م"),
-                            Text("طريقة الدفع: $payment"),
-                            Text(
-                              "الحالة: $status",
-                              style: TextStyle(
-                                color: color,
-                                fontWeight: FontWeight.w600,
-                              ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("المجموع: ${order.ordersPrice} ج.م"),
+                                Text("طريقة الدفع: $payment"),
+                                Text(
+                                  "الحالة: $status",
+                                  style: TextStyle(
+                                    color: color,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                              ],
                             ),
-                            const SizedBox(height: 5),
+                            order.ordersStatus == "0"
+                                ? IconButton(
+                                    icon: const Icon(
+                                      Icons.delete_outline_outlined,
+                                      color: Colors.grey,
+                                      size: 25,
+                                    ),
+                                    onPressed: () {
+                                      controller.deleteorders(order.ordersId!);
+                                    },
+                                  )
+                                : order.ordersStatus == "3" &&
+                                      order.rating == '0'
+                                ? TextButton(
+                                    child: Text("rating"),
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            actionsAlignment:
+                                                MainAxisAlignment.center,
+                                            title: Text("rating"),
+                                            content: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                GetBuilder<Ordercontroller>(
+                                                  builder: (controller) {
+                                                    return Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        ...List.generate(5, (
+                                                          index,
+                                                        ) {
+                                                          int starIndex =
+                                                              index + 1;
+                                                          return IconButton(
+                                                            onPressed: () {
+                                                              controller
+                                                                  .changeRatingColor(
+                                                                    index,
+                                                                  );
+                                                            },
+                                                            icon: Icon(
+                                                              Icons.star,
+                                                              color:
+                                                                  starIndex <=
+                                                                      controller
+                                                                          .selectedRating
+                                                                  ? Colors.amber
+                                                                  : Colors.grey,
+                                                              size: 35,
+                                                            ),
+                                                          );
+                                                        }),
+                                                      ],
+                                                    );
+                                                  },
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                    top: 40,
+                                                  ),
+                                                  height: 100,
+                                                  width: 250,
+                                                  child: Textfealdauth(
+                                                    label: 'comment',
+                                                    suffixIcon: Icons.comment,
+                                                    hint: "comment",
+                                                    textEditingController:
+                                                        controller.comment!,
+                                                    valid: (p0) {
+                                                      return null;
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  controller.viewrating(
+                                                    order.ordersId!,
+                                                    controller.selectedRating
+                                                        .toString(),
+                                                    controller.comment
+                                                        .toString(),
+                                                  );
+                                                },
+                                                child: Text("submet"),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  Get.back();
+                                                },
+                                                child: Text("cancel"),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                  )
+                                : Text("${order.rating}" + "⭐"),
                           ],
                         ),
                       ),
-                      trailing: order.ordersStatus == "0"
-                          ? IconButton(
-                              icon: const Icon(
-                                Icons.delete_outline_outlined,
-                                color: Colors.grey,
-                                size: 25,
-                              ),
-                              onPressed: () {
-                                controller.deleteorders(order.ordersId!);
-                              },
-                            )
-                          : SizedBox.shrink(),
                     ),
                   ),
                 );
