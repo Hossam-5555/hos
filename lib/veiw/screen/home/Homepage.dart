@@ -49,12 +49,14 @@ class HomePage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Titles(title: "Categories"),
+                              SizedBox(height: height * 0.01),
+
                               SizedBox(
                                 height: height * 0.080,
                                 child: listcatigories(),
                               ),
 
-                              // SizedBox(height: height * 0.02),
+                              SizedBox(height: height * 0.01),
                               OfferCard(
                                 title: 'خصم على الأجهزة',
                                 description:
@@ -69,13 +71,18 @@ class HomePage extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Titles(title: "شوهد مؤخراً"),
+                                  Titles(title: " New Collections"),
                                   TextButton.icon(
                                     onPressed: () {},
                                     icon: const Text(
                                       "عرض الكل",
                                       style: TextStyle(
-                                        color: Color.fromARGB(255, 109, 109, 109),
+                                        color: Color.fromARGB(
+                                          255,
+                                          109,
+                                          109,
+                                          109,
+                                        ),
                                         fontSize: 14,
                                       ),
                                     ),
@@ -87,7 +94,6 @@ class HomePage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                            
 
                               SizedBox(height: height * 0.02),
                               // هنا تقدر تضيف مثلاً آخر المنتجات أو الكروت

@@ -11,7 +11,7 @@ class Buttom extends StatelessWidget {
       Itemdetailscontroller(),
     );
     return Container(
-      width: 250,
+      width: 300,
       height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -38,7 +38,7 @@ class Buttom extends StatelessWidget {
           }
         },
         child: const Text(
-          "اشتري الآن",
+          " Buy Now",
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,

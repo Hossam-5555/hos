@@ -112,7 +112,7 @@ class Checkout extends StatelessWidget {
                   const Divider(height: 32, thickness: 1),
 
                   // 💰 السعر النهائي
-                  _buildPriceRow("Subtotal", "${controller.totalprice}"),
+                  _buildPriceRow("Subtotal", controller.totalprice),
                   _buildPriceRow("Tax (10%)", "40.0"),
                   _buildPriceRow("Shipping", "10"),
                   const Divider(height: 32, thickness: 1),

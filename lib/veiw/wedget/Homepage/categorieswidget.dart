@@ -66,7 +66,7 @@ class buildCategory extends StatelessWidget {
                 Text(
                   catig.categoriesName!,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 10,
                     fontWeight: FontWeight.w600,
                   ),
