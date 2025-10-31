@@ -31,18 +31,17 @@ class Homescreen extends StatelessWidget {
             title: Text(controller.Appbartitle[controller.Currentpage][0]),
           ),
 
-          extendBody: true,
 
           // ================== التعديل هنا ==================
 
           // نضع شريط التنقل داخل Row لنجبره على التمركز وأخذ عرضه الطبيعي
-          bottomNavigationBar: Row(
+          floatingActionButton: Row(
             mainAxisAlignment: MainAxisAlignment.center, // للتوسيط الأفقي
             children: [
               Buttomappbar(), // الـ Widget الخاص بك كما هو
             ],
           ),
-
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           // ===============================================
           body: controller.pages.elementAt(controller.Currentpage),
         ),

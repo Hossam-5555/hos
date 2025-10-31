@@ -11,9 +11,8 @@ class BuildOrderSummary extends StatelessWidget {
     final width = size.width;
     final height = size.height;
 
-    return Container(
+    return Container(height: height*0.30,
       padding: EdgeInsets.all(width * 0.04),
-      // margin: EdgeInsets.symmetric(horizontal: width * 0.03),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [

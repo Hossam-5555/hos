@@ -82,15 +82,7 @@ class ShoppingCartPage extends StatelessWidget {
                 ),
 
                 // 🔹 ملخص الطلب (Responsive)
-                SafeArea(
-                  top: false,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      bottom: height * 0.01,
-                    ),
-                    child: BuildOrderSummary(controller: controller),
-                  ),
-                ),
+                BuildOrderSummary(controller: controller),
               ],
             ),
           );

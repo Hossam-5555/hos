@@ -136,7 +136,7 @@ class Itemsdetailes extends StatelessWidget {
                       // ===== الزر =====
                       Container(
                         alignment: Alignment.center,
-                        padding: EdgeInsets.only(bottom: h * 0.03),
+                        padding: EdgeInsets.only(bottom: h * 0.04),
                         child: Buttom(),
                       ),
                     ],

@@ -24,7 +24,6 @@ class HomePage extends StatelessWidget {
       builder: (controller) => Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: width * 0.04),
               child: Column(
@@ -52,11 +51,10 @@ class HomePage extends StatelessWidget {
                               SizedBox(height: height * 0.01),
 
                               SizedBox(
-                                height: height * 0.080,
+                                height: height * 0.090,
                                 child: listcatigories(),
                               ),
 
-                              SizedBox(height: height * 0.01),
                               OfferCard(
                                 title: 'خصم على الأجهزة',
                                 description:
@@ -93,6 +91,15 @@ class HomePage extends StatelessWidget {
                                     ),
                                   ),
                                 ],
+                              ),SizedBox(
+                                height: height * 0.090,
+                                child: listcatigories(),
+                              ), OfferCard(
+                                title: 'خصم على الأجهزة',
+                                description:
+                                    "خصم يصل إلى 50% على الهواتف واللابتوبات",
+                                discount: "50% OFF",
+                                onTap: () {},
                               ),
 
                               SizedBox(height: height * 0.02),
