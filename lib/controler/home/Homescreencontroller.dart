@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:hos/veiw/screen/cartandcheckout/cart.dart';
 import 'package:hos/veiw/screen/home/Homepage.dart';
 import 'package:hos/veiw/screen/home/notification.dart';
-import 'package:hos/veiw/screen/myfavorite.dart';
 import 'package:hos/veiw/screen/offer.dart';
 import 'package:hos/veiw/screen/profile/profile.dart';
 
@@ -38,6 +38,31 @@ class Homescreencontroller extends GetxController {
   void fun(DragUpdateDetails details) {
     x.value += details.delta.dx;
     y.value += details.delta.dy;
+  }
+
+  final ScrollController scrollController = ScrollController();
+  bool upordown = true;
+  void secrolcotroller() {
+    if (scrollController.position.userScrollDirection ==
+        ScrollDirection.reverse) {
+      upordown = false;
+    } else if (scrollController.position.userScrollDirection ==
+        ScrollDirection.forward) {
+      upordown = true;
+    }
+    update();
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    scrollController.addListener(secrolcotroller);
+  }
+
+  @override
+  void onClose() {
+    scrollController.removeListener(secrolcotroller);
+    scrollController.dispose();
   }
 
   List<List<dynamic>> Appbartitle = [

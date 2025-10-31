@@ -10,58 +10,66 @@ class Buttomappbar extends GetView<Homescreencontroller> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<Homescreencontroller>(
-      builder: (controller) => Container(
-        padding: const EdgeInsets.symmetric(vertical: 3),
-        // ← أضفنا Container هنا ليكون هو المسؤول عن التموضع
-        width: 290 ,
-        height: 85,
-        margin: const EdgeInsets.only(bottom: 20), // ← نقلنا الـ margin هنا
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(50),
-          // نضيف هذا السطر لضمان قص التأثير بشكل صحيح
-          clipBehavior: Clip.antiAlias,
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: Container(
-              // شيلنا العرض والارتفاع والهامش من هنا
-              decoration: BoxDecoration(
-                color: Colors.white.withAlpha(77),
-                borderRadius: BorderRadius.circular(25),
-             
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color.fromARGB(255, 125, 125, 125).withAlpha(102),
-                    blurRadius: 1,
-                    offset: const Offset(0, 1),
+      builder: (controller) => AnimatedSlide(
+        offset: controller.upordown ? Offset.zero : const Offset(0, 2),
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+        child: IgnorePointer(
+          ignoring: !controller.upordown,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 3),
+            // ← أضفنا Container هنا ليكون هو المسؤول عن التموضع
+            width: 290 ,
+            height: 80,
+            margin: const EdgeInsets.only(bottom: 10), // ← نقلنا الـ margin هنا
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              // نضيف هذا السطر لضمان قص التأثير بشكل صحيح
+              clipBehavior: Clip.antiAlias,
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: Container(
+                  // شيلنا العرض والارتفاع والهامش من هنا
+                  decoration: BoxDecoration(
+                    color: Colors.white.withAlpha(77),
+                    borderRadius: BorderRadius.circular(25),
+                 
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color.fromARGB(255, 125, 125, 125).withAlpha(102),
+                        blurRadius: 1,
+                        offset: const Offset(0, 1),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: List.generate(controller.pages.length, (index) {
-                  final isSelected = controller.Currentpage == index;
-
-                  return GestureDetector(
-                    onTap: () {
-                      controller.changpage(index);
-                    },
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 320),
-                      curve: Curves.easeInOut,
-                      width: isSelected ? 63 : 58,
-                      height: isSelected ? 63 : 58,
-                      decoration: BoxDecoration(
-                        color: isSelected ? Colors.white : Colors.transparent,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        controller.Appbartitle[index][1],
-                        color:Appcolor.black,
-                        size: isSelected ? 30 : 26,
-                      ),
-                    ),
-                  );
-                }),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: List.generate(controller.pages.length, (index) {
+                      final isSelected = controller.Currentpage == index;
+          
+                      return GestureDetector(
+                        onTap: () {
+                          controller.changpage(index);
+                        },
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 320),
+                          curve: Curves.easeInOut,
+                          width: isSelected ? 63 : 58,
+                          height: isSelected ? 63 : 58,
+                          decoration: BoxDecoration(
+                            color: isSelected ? Colors.white : Colors.transparent,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            controller.Appbartitle[index][1],
+                            color:Appcolor.black,
+                            size: isSelected ? 30 : 26,
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                ),
               ),
             ),
           ),

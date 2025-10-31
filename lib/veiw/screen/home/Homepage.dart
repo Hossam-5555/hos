@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/home/Homepage_controller.dart';
+import 'package:hos/controler/home/Homescreencontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/veiw/screen/searchpage.dart';
 import 'package:hos/veiw/wedget/Homepage/CurvedItemsView.dart';
@@ -19,11 +20,13 @@ class HomePage extends StatelessWidget {
     final width = size.width;
 
     Get.put(HomepageController());
+    Homescreencontroller homescreencontroller = Get.put(Homescreencontroller());
 
     return GetBuilder<HomepageController>(
       builder: (controller) => Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
+            controller: homescreencontroller.scrollController,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: width * 0.04),
               child: Column(
@@ -91,10 +94,12 @@ class HomePage extends StatelessWidget {
                                     ),
                                   ),
                                 ],
-                              ),SizedBox(
+                              ),
+                              SizedBox(
                                 height: height * 0.090,
                                 child: listcatigories(),
-                              ), OfferCard(
+                              ),
+                              OfferCard(
                                 title: 'خصم على الأجهزة',
                                 description:
                                     "خصم يصل إلى 50% على الهواتف واللابتوبات",
