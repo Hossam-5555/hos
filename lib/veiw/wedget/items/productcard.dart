@@ -63,7 +63,7 @@ class ItemList extends GetView<ItemsControler> {
                   tag: '${items.itemsId}',
                   child: Image.network(
                     "${LinkApi.imageitems}/${items.itemsImage}",
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                     errorBuilder: (context, error, stackTrace) => const Icon(
                       Icons.broken_image,
                       size: 50,

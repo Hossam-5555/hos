@@ -32,13 +32,19 @@ class Itemsdetailes extends StatelessWidget {
                 top: h * 0.10, // عشان تكون في منتصف الجزء العلوي
                 left: 0,
                 right: 0,
-                child: Hero(
-                  tag: '${item.itemsId}',
-                  child: Image.network(
-                    "${LinkApi.imageitems}/${item.itemsImage!}",
-                    height: h * 0.40, // ارتفاع متوسط يناسب النص العلوي
-                    width: w * 0.8,
-                    fit: BoxFit.fill,
+                child: Container(alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 255, 240, 213).withAlpha(50),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Hero(
+                    tag: '${item.itemsId}',
+                    child: Image.network(
+                      "${LinkApi.imageitems}/${item.itemsImage!}",
+                      height: h * 0.38, // ارتفاع متوسط يناسب النص العلوي
+                      width: w * 0.7,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),
@@ -62,7 +68,7 @@ class Itemsdetailes extends StatelessWidget {
                       SizedBox(height: h * 0.03),
                       // ===== الاسم والسعر =====
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
@@ -87,7 +93,7 @@ class Itemsdetailes extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "${item.itemspricediscount ?? '100\$'}",
+                            "${(item.itemspricediscount ?? '100').toString().substring(0, (item.itemspricediscount ?? '100').length.clamp(0, 6))}\$",
                             style: TextStyle(
                               fontSize: w * 0.055,
                               color: Colors.green,

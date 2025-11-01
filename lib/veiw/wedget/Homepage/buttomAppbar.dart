@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/home/Homescreencontroller.dart';
-import 'package:hos/core/conistant/appcolor.dart';
 
 class Buttomappbar extends GetView<Homescreencontroller> {
   const Buttomappbar({super.key});
@@ -19,7 +19,7 @@ class Buttomappbar extends GetView<Homescreencontroller> {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 3),
             // ← أضفنا Container هنا ليكون هو المسؤول عن التموضع
-            width: 290 ,
+            width: 290,
             height: 80,
             margin: const EdgeInsets.only(bottom: 10), // ← نقلنا الـ margin هنا
             child: ClipRRect(
@@ -33,10 +33,15 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                   decoration: BoxDecoration(
                     color: Colors.white.withAlpha(77),
                     borderRadius: BorderRadius.circular(25),
-                 
+
                     boxShadow: [
                       BoxShadow(
-                        color: const Color.fromARGB(255, 125, 125, 125).withAlpha(102),
+                        color: const Color.fromARGB(
+                          255,
+                          125,
+                          125,
+                          125,
+                        ).withAlpha(102),
                         blurRadius: 1,
                         offset: const Offset(0, 1),
                       ),
@@ -46,7 +51,7 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: List.generate(controller.pages.length, (index) {
                       final isSelected = controller.Currentpage == index;
-          
+
                       return GestureDetector(
                         onTap: () {
                           controller.changpage(index);
@@ -57,13 +62,20 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                           width: isSelected ? 63 : 58,
                           height: isSelected ? 63 : 58,
                           decoration: BoxDecoration(
-                            color: isSelected ? Colors.white : Colors.transparent,
+                            color: isSelected
+                                ? Colors.white
+                                : Colors.transparent,
                             shape: BoxShape.circle,
                           ),
-                          child: Icon(
-                            controller.Appbartitle[index][1],
-                            color:Appcolor.black,
-                            size: isSelected ? 30 : 26,
+                          child: Center(
+                            // علشان الأيقونة تكون في النص
+                            child: SvgPicture.asset(
+                              controller.Appbartitle[index][1],
+                              height: isSelected
+                                  ? 30
+                                  : 25, // حجم الأيقونة لما تتحدد أو لا
+                              width: isSelected ? 30 : 25,
+                            ),
                           ),
                         ),
                       );

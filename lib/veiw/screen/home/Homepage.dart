@@ -65,18 +65,20 @@ class HomePage extends StatelessWidget {
                                 discount: "50% OFF",
                                 onTap: () {},
                               ),
+                              SizedBox(height: 10),
 
                               CurvedItemsView(),
-
+                              SizedBox(height: 10),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Titles(title: " New Collections"),
                                   TextButton.icon(
+                                    iconAlignment: IconAlignment.start,
                                     onPressed: () {},
                                     icon: const Text(
-                                      "عرض الكل",
+                                      " See All",
                                       style: TextStyle(
                                         color: Color.fromARGB(
                                           255,
@@ -89,12 +91,15 @@ class HomePage extends StatelessWidget {
                                     ),
                                     label: const Icon(
                                       Icons.arrow_forward,
-                                      color: Colors.cyanAccent,
+                                      color: Color.fromARGB(255, 0, 0, 0),
                                       size: 18,
                                     ),
                                   ),
                                 ],
                               ),
+                              //top selling دي هتتعمل في قاعده البيانات عن طريق انك هتجمع العمود بتاع
+                              //cart_order,
+                              // هتعمل view تجيبه و تعرضه تنازلي من الكبير للضغير dcs
                               SizedBox(
                                 height: height * 0.090,
                                 child: listcatigories(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/screen/cartandcheckout/cart.dart';
 import 'package:hos/veiw/screen/home/Homepage.dart';
 import 'package:hos/veiw/screen/home/notification.dart';
@@ -66,10 +67,9 @@ class Homescreencontroller extends GetxController {
   }
 
   List<List<dynamic>> Appbartitle = [
-    ['FASHION', Icons.home_outlined],
-    ['Offer', Icons.card_giftcard],
-    ['notification', Icons.notifications_outlined],
-
-    ['Profile', Icons.person],
+    ['FASHION', Imageasset.Homesvg],
+    ['Offer', Imageasset.offer],
+    ['notification', Imageasset.notification],
+    ['Profile', Imageasset.profile],
   ];
 }
