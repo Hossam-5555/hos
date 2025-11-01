@@ -71,13 +71,6 @@ class Checkoutcontroller extends GetxController {
         // تنظيف القائمة قبل الإضافة
         ListAddresdata.clear();
         ListAddresdata.addAll(data.map((e) => Addresmodel.fromJson(e)));
-
-        // في حالة عدم وجود عناوين
-        if (ListAddresdata.isEmpty) {
-          statusrequest = Statusrequest.failure;
-        }
-      } else {
-        statusrequest = Statusrequest.failure;
       }
     } else {
       statusrequest = Statusrequest.failure;
@@ -98,6 +91,9 @@ class Checkoutcontroller extends GetxController {
       return;
     }
 
+    if (ListAddresdata.isEmpty) {
+      Get.snackbar("  تنبيه", "الرجاء اضافه  عنوان ");
+    }
     statusrequest = Statusrequest.loading;
     update();
 

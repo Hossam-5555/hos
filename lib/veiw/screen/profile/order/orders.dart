@@ -8,12 +8,10 @@ import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 import 'package:jiffy/jiffy.dart';
 
 class Orders extends StatelessWidget {
-  const Orders({super.key});
-
+  Orders({super.key});
+  final Ordercontroller controller = Get.put(Ordercontroller());
   @override
   Widget build(BuildContext context) {
-    Get.put(Ordercontroller());
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("My Orders"),
@@ -229,8 +227,6 @@ class Orders extends StatelessWidget {
                                                   controller.viewrating(
                                                     order.ordersId!,
                                                     controller.selectedRating
-                                                        .toString(),
-                                                    controller.comment
                                                         .toString(),
                                                   );
                                                 },

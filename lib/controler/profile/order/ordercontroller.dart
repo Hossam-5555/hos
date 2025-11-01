@@ -61,11 +61,11 @@ class Ordercontroller extends GetxController {
     }
   }
 
-  Future<void> viewrating(String id, String rating, String comment) async {
+  Future<void> viewrating(String id, String rating) async {
     orders.clear();
     statusrequest = Statusrequest.loading;
     update();
-    var response = await orderdata.ratingdata(id, rating, comment);
+    var response = await orderdata.ratingdata(id, rating, comment!.text);
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'success') {

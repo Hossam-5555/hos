@@ -4,6 +4,7 @@ import 'package:get/utils.dart';
 import 'package:hos/controler/checkout&cart/checkoutcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
+import 'package:hos/veiw/screen/profile/settings/addres/add.dart';
 import 'package:hos/veiw/wedget/shoppage/checkout.dart';
 
 class Checkout extends StatelessWidget {
@@ -58,7 +59,17 @@ class Checkout extends StatelessWidget {
                     margin: EdgeInsets.only(bottom: 12),
                     child: const Text("Select Address"),
                   ),
-
+                  if (controller.ListAddresdata.isEmpty)
+                    GestureDetector(
+                      onTap: () {
+                        Get.offAll(
+                          () => addnewaddres(),
+                          transition: Transition.fadeIn,
+                          duration: Duration(milliseconds: 400),
+                        );
+                      },
+                      child: Card(child: ListTile(title: Text('Add Address'))),
+                    ),
                   Container(
                     height: 100,
                     child: ListView.builder(
