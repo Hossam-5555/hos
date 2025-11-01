@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hos/controler/profile/addres/addrescontroller.dart';
+import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 
 class addnewaddres extends StatelessWidget {
@@ -11,7 +12,10 @@ class addnewaddres extends StatelessWidget {
   Widget build(BuildContext context) {
     AddressController controller = Get.put(AddressController());
     return Scaffold(
-      appBar: AppBar(title: const Text("إضافة عنوان")),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60),
+        child: Appbarbackicon(herotag: '', title: "Add Address"),
+      ),
       body: Column(
         children: [
           // الجزء العلوي (الخريطة أو Placeholder)

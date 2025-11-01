@@ -26,9 +26,11 @@ class Homescreen extends StatelessWidget {
           }
         },
         child: Scaffold(
-          appBar: AppBar(
-            actions: [Homescrenaction()],
-            title: Text(controller.Appbartitle[controller.Currentpage][0]),
+          appBar: PreferredSize(preferredSize: Size.fromHeight(60),
+            child: AppBar(
+              actions: [Homescrenaction()],
+              title: Text(controller.Appbartitle[controller.Currentpage][0]),
+            ),
           ),
 
 

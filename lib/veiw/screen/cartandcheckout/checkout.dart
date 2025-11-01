@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/utils.dart';
 import 'package:hos/controler/checkout&cart/checkoutcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/veiw/screen/profile/settings/addres/add.dart';
+import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/shoppage/checkout.dart';
 
 class Checkout extends StatelessWidget {
@@ -12,142 +12,146 @@ class Checkout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // عناوين افتراضية (Placeholder)
     Get.put(Checkoutcontroller());
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Checkout'),
-        leading: Padding(
-          // الخطوة 1: إضافة هامش قياسي ليكون بعيدًا عن الحافة
-          padding: const EdgeInsets.only(left: 16.0),
-          child: Container(
-            width: 48, // الخطوة 3: تحديد حجم قياسي (لمسة مريحة للمستخدم)
-            height: 48,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              boxShadow: [
-                // إضافة ظل خفيف ليعطي عمقاً
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.08),
-                  blurRadius: 10,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: IconButton(
-              onPressed: () {
-                Get.back();
-              },
-              icon: Icon(Icons.arrow_back_ios),
-              iconSize: 24, // الخطوة 4: تحديد حجم قياسي للأيقونة
-              splashRadius: 24, // لجعل تأثير الضغط لا يخرج عن الدائرة
-            ),
-          ),
-        ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(65),
+        child: Appbarbackicon(herotag: '', title: "Checkout"),
       ),
       body: GetBuilder<Checkoutcontroller>(
         builder: (controller) {
           return Handlingdataview(
             statusrequest: controller.statusrequest!,
-            widget: Padding(
-              padding: const EdgeInsets.all(8.0),
+            widget: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 🏠 اختيار العنوان
-                  Container(
-                    margin: EdgeInsets.only(bottom: 12),
-                    child: const Text("Select Address"),
+                  // 💳 Payment Section
+                  const Text(
+                    "Payment Method",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    height: 100,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: controller.paymentMethods.length,
+                      separatorBuilder: (_, __) => const SizedBox(width: 10),
+                      itemBuilder: (context, index) => Listpaymentcard(
+                        image: controller.paymentMethods[index][1],
+                        onTap: () => controller.choospaymentmethod(index),
+                        isActive: controller.Paymenttype == index,
+                      ),
+                    ),
+                  ),
+                  const Divider(height: 40, thickness: 1),
+
+                  // 🏠 Address Section
+                  const Text(
+                    "Select Address",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+
                   if (controller.ListAddresdata.isEmpty)
                     GestureDetector(
                       onTap: () {
                         Get.offAll(
                           () => addnewaddres(),
                           transition: Transition.fadeIn,
-                          duration: Duration(milliseconds: 400),
+                          duration: const Duration(milliseconds: 400),
                         );
                       },
-                      child: Card(child: ListTile(title: Text('Add Address'))),
-                    ),
-                  Container(
-                    height: 100,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: controller.ListAddresdata.length,
-                      itemBuilder: (context, index) => Listaddrescard(
-                        onTap: () {
-                          controller.chooseAddres(
-                            controller.ListAddresdata[index].addresId,
-                          );
-                        },
-                        isActive:
-                            controller.Addressid ==
-                                controller.ListAddresdata[index].addresId
-                            ? true
-                            : false, // 🔥 مقارنة مباشرة
-
-                        titil: "${controller.ListAddresdata[index].addresName}",
-                        subtitle:
-                            "${controller.ListAddresdata[index].addresStreet}-${controller.ListAddresdata[index].addresCity}",
+                      child: Card(
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 4, vertical: 6),
+                        child: const ListTile(
+                          leading: Icon(Icons.add_location_alt_rounded,
+                              color: Colors.blueAccent),
+                          title: Text(
+                            'Add Address',
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                          subtitle:
+                              Text('No addresses found, tap to add one.'),
+                        ),
+                      ),
+                    )
+                  else
+                    SizedBox(
+                      height: 110,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        separatorBuilder: (_, __) =>
+                            const SizedBox(width: 10),
+                        itemCount: controller.ListAddresdata.length,
+                        itemBuilder: (context, index) => Listaddrescard(
+                          onTap: () {
+                            controller.chooseAddres(
+                              controller.ListAddresdata[index].addresId,
+                            );
+                          },
+                          isActive: controller.Addressid ==
+                              controller.ListAddresdata[index].addresId,
+                          titil:
+                              "${controller.ListAddresdata[index].addresName}",
+                          subtitle:
+                              "${controller.ListAddresdata[index].addresStreet} - ${controller.ListAddresdata[index].addresCity}",
+                        ),
                       ),
                     ),
-                  ),
 
-                  const Divider(height: 30, thickness: 1),
+                  const Divider(height: 40, thickness: 1),
 
-                  // 💳 اختيار وسيلة الدفع
-                  Container(
-                    margin: EdgeInsets.only(bottom: 12),
-                    child: const Text("Payment Method"),
-                  ),
-
-                  Container(
-                    height: 100,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: controller.addresses.length,
-                      itemBuilder: (context, index) => Listpaymentcard(
-                        image: controller.paymentMethods[index][1],
-                        onTap: () {
-                          controller.choospaymentmethod(
-                            index,
-                          ); // 🔥 نرسل index المختار
-                        },
-                        isActive:
-                            controller.Paymenttype == index, // 🔥 مقارنة مباشرة
-                      ),
-                    ),
-                  ),
-
-                  const Divider(height: 32, thickness: 1),
-
-                  // 💰 السعر النهائي
+                  // 💰 Price Summary
                   _buildPriceRow("Subtotal", controller.totalprice),
                   _buildPriceRow("Tax (10%)", "40.0"),
                   _buildPriceRow("Shipping", "10"),
                   const Divider(height: 32, thickness: 1),
                   _buildPriceRow("Total", controller.totalprice, isTotal: true),
 
-                  // ✅ زرار الدفع
-                  Container(
-                    margin: EdgeInsets.only(top: 24),
-                    width: 200,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Appcolor.primaryColor,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        textStyle: const TextStyle(fontSize: 18),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                  // ✅ Confirm Button
+                  const SizedBox(height: 30),
+                  Center(
+                    child: SizedBox(
+                      width: 220,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Appcolor.primaryColor,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 4,
+                        ),
+                        onPressed: () {
+                          controller.checkoutoder();
+                        },
+                        child: const Text(
+                          "Confirm Order",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                      onPressed: () {
-                        controller.checkoutoder();
-                      },
-                      child: const Text(" Confirm Order "),
                     ),
                   ),
+                  const SizedBox(height: 30),
                 ],
               ),
             ),
@@ -157,10 +161,10 @@ class Checkout extends StatelessWidget {
     );
   }
 
-  // 💰 ويدجت الأسعار
+  // 💰 Price Row Widget
   Widget _buildPriceRow(String label, String value, {bool isTotal = false}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -168,17 +172,16 @@ class Checkout extends StatelessWidget {
             label,
             style: TextStyle(
               fontSize: isTotal ? 18 : 16,
-              fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
+              fontWeight: isTotal ? FontWeight.bold : FontWeight.w500,
+              color: isTotal ? Colors.black : Colors.grey[800],
             ),
           ),
           Text(
-            "\$${value}",
+            "\$$value",
             style: TextStyle(
               fontSize: isTotal ? 18 : 16,
-              fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-              color: isTotal
-                  ? Colors.green
-                  : const Color.fromARGB(255, 131, 188, 98),
+              fontWeight: isTotal ? FontWeight.bold : FontWeight.w500,
+              color: isTotal ? Colors.green[700] : Colors.grey[700],
             ),
           ),
         ],

@@ -8,7 +8,7 @@ ThemeData themeEnglish = ThemeData(
 
   appBarTheme: AppBarTheme(
     iconTheme: IconThemeData(color: Colors.black, size: 24), // ← الحجم القياسي
-    leadingWidth: 56, // ← العرض القياسي
+    leadingWidth: 70, // ← العرض القياسي
     actionsIconTheme: IconThemeData(
       color: Colors.black,
       size: 24,

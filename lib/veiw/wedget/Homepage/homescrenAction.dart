@@ -17,12 +17,23 @@ class Homescrenaction extends StatelessWidget {
         child: Stack(
           children: [
             Container(
+              height: 60,
+              width: 60,
+              margin: EdgeInsets.only(right: 12),
               decoration: BoxDecoration(
                 color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    blurStyle: BlurStyle.normal,blurRadius: 5,
+                    color: Colors.black.withAlpha(55),
+                    offset: Offset(0.1, 0.1),
+                  ),
+                ],
                 shape: BoxShape.circle,
               ),
-              child: MaterialButton(shape: CircleBorder(),
-                child: SvgPicture.asset(Imageasset.cart,height: 25,width: 25,),
+              child: MaterialButton(
+                shape: CircleBorder(),
+                child: SvgPicture.asset(Imageasset.cart, height: 25, width: 25),
                 onPressed: () {
                   Get.to(
                     () => ShoppingCartPage(),

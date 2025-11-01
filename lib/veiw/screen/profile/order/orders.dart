@@ -4,6 +4,7 @@ import 'package:hos/controler/profile/order/ordercontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/veiw/screen/profile/order/orderdetailes.dart';
+import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 import 'package:jiffy/jiffy.dart';
 
@@ -13,36 +14,9 @@ class Orders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("My Orders"),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Container(
-            width: 48, // الخطوة 3: تحديد حجم قياسي (لمسة مريحة للمستخدم)
-            height: 48,
-            padding: EdgeInsets.only(left: 4),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              boxShadow: [
-                // إضافة ظل خفيف ليعطي عمقاً
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.08),
-                  blurRadius: 10,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: IconButton(
-              onPressed: () {
-                Get.back();
-              },
-              icon: Icon(Icons.arrow_back_ios),
-              iconSize: 24, // الخطوة 4: تحديد حجم قياسي للأيقونة
-              splashRadius: 24, // لجعل تأثير الضغط لا يخرج عن الدائرة
-            ),
-          ),
-        ),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60),
+        child: Appbarbackicon(herotag: '', title: "My Orders"),
       ),
       body: GetBuilder<Ordercontroller>(
         builder: (controller) => Handlingdataview(

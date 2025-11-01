@@ -6,6 +6,8 @@ import 'package:hos/veiw/wedget/shoppage/carditem.dart';
 import 'package:hos/veiw/wedget/shoppage/coubone.dart';
 import 'package:hos/veiw/wedget/shoppage/samarywidget.dart';
 
+import '../../wedget/appbarbackicon.dart';
+
 class ShoppingCartPage extends StatelessWidget {
   const ShoppingCartPage({super.key});
 
@@ -18,36 +20,9 @@ class ShoppingCartPage extends StatelessWidget {
     final width = size.width;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Cart"),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Hero(
-            tag: 'carttag',
-            child: Container(
-              width: 48,
-              height: 48,
-              padding: const EdgeInsets.only(left: 2),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    blurRadius: 10,
-                    color: Colors.black.withAlpha(55),
-                    offset: Offset(0.5, 1),
-                  ),
-                ],
-              ),
-              child: IconButton(
-                onPressed: () => Get.back(),
-                icon: const Icon(Icons.arrow_back),
-                iconSize: 24,
-                splashRadius: 24,
-              ),
-            ),
-          ),
-        ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: Appbarbackicon(title: "Cart", herotag: "carttag"),
       ),
       body: GetBuilder<CartController>(
         builder: (controller) {
