@@ -10,8 +10,8 @@ class Offer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Offercontroller controller = Get.put(Offercontroller());
-    FavController favController = Get.put(FavController());
+    Offercontroller _ = Get.put(Offercontroller());
+    FavController _ = Get.put(FavController());
 
     return Scaffold(
       body: GetBuilder<Offercontroller>(

@@ -1,9 +1,9 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
+// ignore_for_file: overridden_fields
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/searchclass.dart';
-import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/remote/homedata.dart';
@@ -25,6 +25,7 @@ class HomepageController extends SearchMix {
    
   ];
 
+  @override
   Homedata homedata = Homedata(Get.find());
 
   Future<void> getdata() async {
