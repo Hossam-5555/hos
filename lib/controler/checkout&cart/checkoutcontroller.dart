@@ -100,7 +100,7 @@ class Checkoutcontroller extends GetxController {
     Map<String, dynamic> data = {
       "userid": myservisec.sharedPreferences.getString("id")!,
       "addressid": Addressid.toString(),
-      "orderstype": "0", // ← لاحظ التحويل
+      "orderstype": "0", 
       "pricedelivery": "10",
       "ordersprice": totalprice.toString(),
       "couponid": couponeid.toString(),

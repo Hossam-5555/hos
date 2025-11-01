@@ -4,7 +4,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/static/static.dart';
-import 'package:hos/veiw/screen/auth/login.dart';
+import 'package:hos/veiw/userscreen/screen/auth/login.dart';
 
 class OnboardingControler extends GetxController {
   Myservisec myservisec = Get.find();

@@ -4,7 +4,7 @@ import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/data/datasource/remote/homedata.dart';
 import 'package:hos/data/model/itemsmodel.dart';
-import 'package:hos/veiw/screen/home/itemsdetailes.dart';
+import 'package:hos/veiw/userscreen/screen/home/itemsdetailes.dart';
 
 class SearchMix extends GetxController {
   List<Itemsmodel> searchlist = [];

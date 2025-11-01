@@ -6,7 +6,7 @@ import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/remote/auth/logindata.dart';
-import 'package:hos/veiw/screen/auth/signup%20.dart';
+import 'package:hos/veiw/userscreen/screen/auth/signup%20.dart';
 
 class LoginController extends GetxController {
   void checkemailpage() {

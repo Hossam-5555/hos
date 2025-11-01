@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/profile/order/ordercontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
-import 'package:hos/veiw/screen/profile/order/orderdetailes.dart';
+import 'package:hos/veiw/userscreen/screen/profile/order/orderdetailes.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 import 'package:jiffy/jiffy.dart';

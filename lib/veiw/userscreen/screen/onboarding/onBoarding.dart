@@ -2,7 +2,7 @@ import 'package:flutter/material.dart' hide Slider;
 import 'package:get/get.dart';
 import 'package:hos/controler/onpoarding/onboarding_controler.dart';
 import 'package:hos/core/conistant/appcolor.dart';
-import 'package:hos/veiw/screen/auth/login.dart';
+import 'package:hos/veiw/userscreen/screen/auth/login.dart';
 
 import 'package:hos/veiw/wedget/onpording/costumButton.dart';
 import 'package:hos/veiw/wedget/onpording/dotcontroller.dart';

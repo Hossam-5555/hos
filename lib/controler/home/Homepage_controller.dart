@@ -7,7 +7,7 @@ import 'package:hos/core/class/searchclass.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/remote/homedata.dart';
-import 'package:hos/veiw/screen/home/items.dart';
+import 'package:hos/veiw/userscreen/screen/home/items.dart';
 
 class HomepageController extends SearchMix {
   Myservisec myservisec = Get.put(Myservisec());

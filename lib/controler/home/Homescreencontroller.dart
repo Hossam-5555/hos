@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/conistant/imageasset.dart';
-import 'package:hos/veiw/screen/cartandcheckout/cart.dart';
-import 'package:hos/veiw/screen/home/Homepage.dart';
-import 'package:hos/veiw/screen/home/notification.dart';
-import 'package:hos/veiw/screen/offer.dart';
-import 'package:hos/veiw/screen/profile/profile.dart';
+import 'package:hos/veiw/userscreen/screen/cartandcheckout/cart.dart';
+import 'package:hos/veiw/userscreen/screen/home/Homepage.dart';
+import 'package:hos/veiw/userscreen/screen/home/notification.dart';
+import 'package:hos/veiw/userscreen/screen/offer.dart';
+import 'package:hos/veiw/userscreen/screen/profile/profile.dart';
 
 class Homescreencontroller extends GetxController {
   // ignore: non_constant_identifier_names

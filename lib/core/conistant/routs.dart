@@ -1,23 +1,23 @@
 import 'package:get/get.dart';
-import 'package:hos/veiw/screen/cartandcheckout/cart.dart';
-import 'package:hos/veiw/screen/cartandcheckout/checkout.dart';
-import 'package:hos/veiw/screen/home/items.dart';
+import 'package:hos/veiw/userscreen/screen/cartandcheckout/cart.dart';
+import 'package:hos/veiw/userscreen/screen/cartandcheckout/checkout.dart';
+import 'package:hos/veiw/userscreen/screen/home/items.dart';
 import 'package:hos/core/middilware/midelware.dart';
-import 'package:hos/veiw/screen/auth/forgetpass/forgetpass.dart';
-import 'package:hos/veiw/screen/auth/forgetpass/resetpass.dart';
-import 'package:hos/veiw/screen/auth/forgetpass/succesresetpass.dart';
-import 'package:hos/veiw/screen/auth/forgetpass/veryficode.dart';
-import 'package:hos/veiw/screen/auth/login.dart';
-import 'package:hos/veiw/screen/auth/signup%20.dart';
-import 'package:hos/veiw/screen/auth/successignup.dart';
-import 'package:hos/veiw/screen/auth/veryfisign.dart';
-import 'package:hos/veiw/screen/home/homescreen.dart';
-import 'package:hos/veiw/screen/home/itemsdetailes.dart';
-import 'package:hos/veiw/screen/onboarding/language.dart';
-import 'package:hos/veiw/screen/myfavorite.dart';
-import 'package:hos/veiw/screen/onboarding/onBoarding.dart';
-import 'package:hos/veiw/screen/profile/settings/addres/add.dart';
-import 'package:hos/veiw/screen/profile/settings/addres/viewaddres.dart';
+import 'package:hos/veiw/userscreen/screen/auth/forgetpass/forgetpass.dart';
+import 'package:hos/veiw/userscreen/screen/auth/forgetpass/resetpass.dart';
+import 'package:hos/veiw/userscreen/screen/auth/forgetpass/succesresetpass.dart';
+import 'package:hos/veiw/userscreen/screen/auth/forgetpass/veryficode.dart';
+import 'package:hos/veiw/userscreen/screen/auth/login.dart';
+import 'package:hos/veiw/userscreen/screen/auth/signup%20.dart';
+import 'package:hos/veiw/userscreen/screen/auth/successignup.dart';
+import 'package:hos/veiw/userscreen/screen/auth/veryfisign.dart';
+import 'package:hos/veiw/userscreen/screen/home/homescreen.dart';
+import 'package:hos/veiw/userscreen/screen/home/itemsdetailes.dart';
+import 'package:hos/veiw/userscreen/screen/onboarding/language.dart';
+import 'package:hos/veiw/userscreen/screen/myfavorite.dart';
+import 'package:hos/veiw/userscreen/screen/onboarding/onBoarding.dart';
+import 'package:hos/veiw/userscreen/screen/profile/settings/addres/add.dart';
+import 'package:hos/veiw/userscreen/screen/profile/settings/addres/viewaddres.dart';
 
 List<GetPage<dynamic>>? routes = [
   //Homepage

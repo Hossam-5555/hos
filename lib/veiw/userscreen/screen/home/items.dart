@@ -4,7 +4,7 @@ import 'package:hos/controler/home/favorite/fav_controller.dart';
 import 'package:hos/controler/home/items_controler.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
-import 'package:hos/veiw/screen/searchpage.dart';
+import 'package:hos/veiw/userscreen/screen/searchpage.dart';
 import 'package:hos/veiw/wedget/items/productcard.dart';
 import 'package:hos/veiw/wedget/items/itemslist.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';

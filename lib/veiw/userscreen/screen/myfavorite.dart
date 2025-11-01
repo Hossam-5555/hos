@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/home/favorite/myfavcontroler.dart';
 import 'package:hos/core/class/handlingdataview.dart';
-import 'package:hos/veiw/screen/searchpage.dart';
+import 'package:hos/veiw/userscreen/screen/searchpage.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/myfavcard.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';

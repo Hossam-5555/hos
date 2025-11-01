@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/home/Homepage_controller.dart';
 import 'package:hos/controler/home/Homescreencontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
-import 'package:hos/veiw/screen/searchpage.dart';
+import 'package:hos/veiw/userscreen/screen/searchpage.dart';
 import 'package:hos/veiw/wedget/Homepage/CurvedItemsView.dart';
 import 'package:hos/veiw/wedget/Homepage/categorieswidget.dart';
 import 'package:hos/veiw/wedget/Homepage/dicountcard.dart';

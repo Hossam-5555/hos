@@ -6,7 +6,7 @@ import 'package:hos/veiw/wedget/shoppage/carditem.dart';
 import 'package:hos/veiw/wedget/shoppage/coubone.dart';
 import 'package:hos/veiw/wedget/shoppage/samarywidget.dart';
 
-import '../../wedget/appbarbackicon.dart';
+import '../../../wedget/appbarbackicon.dart';
 
 class ShoppingCartPage extends StatelessWidget {
   const ShoppingCartPage({super.key});

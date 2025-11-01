@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/conistant/imageasset.dart';
-import 'package:hos/veiw/screen/cartandcheckout/cart.dart';
+import 'package:hos/veiw/userscreen/screen/cartandcheckout/cart.dart';
 
 class Homescrenaction extends StatelessWidget {
   const Homescrenaction({super.key});
