@@ -33,9 +33,9 @@ class ShoppingCartPage extends StatelessWidget {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
                     blurRadius: 10,
-                    offset: const Offset(0, 2),
+                    color: Colors.black.withAlpha(55),
+                    offset: Offset(0.5, 1),
                   ),
                 ],
               ),
@@ -78,7 +78,7 @@ class ShoppingCartPage extends StatelessWidget {
                     horizontal: width * 0.04,
                     vertical: height * 0.015,
                   ),
-                  child:  Coubone(),
+                  child: Coubone(),
                 ),
 
                 // 🔹 ملخص الطلب (Responsive)

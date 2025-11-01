@@ -32,9 +32,15 @@ class Itemsdetailes extends StatelessWidget {
                 top: h * 0.10, // عشان تكون في منتصف الجزء العلوي
                 left: 0,
                 right: 0,
-                child: Container(alignment: Alignment.center,
+                child: Container(
+                  alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 255, 240, 213).withAlpha(50),
+                    color: const Color.fromARGB(
+                      255,
+                      255,
+                      240,
+                      213,
+                    ).withAlpha(50),
                     shape: BoxShape.circle,
                   ),
                   child: Hero(
@@ -154,9 +160,11 @@ class Itemsdetailes extends StatelessWidget {
                 top: h * 0.05,
                 left: w * 0.05,
                 child: Container(
-                  height: 50,
-                  width: 50,
+                  height: 60,
+                  width: 60,
                   decoration: BoxDecoration(
+                    boxShadow: [BoxShadow(blurRadius: 10,
+                      color: Colors.black.withAlpha(55),offset: Offset(0.5, 1))],
                     color: Colors.white,
                     shape: BoxShape.circle,
                   ),

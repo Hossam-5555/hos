@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/home/Homepage_controller.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/linkApi.dart'; // افترض أن 'linkImageRoot' موجود هنا
 import 'package:hos/data/model/itemsmodel.dart';
 
@@ -117,18 +119,14 @@ class ItemList extends GetView<HomepageController> {
                             color: Colors.black,
                           ),
                         ),
-                        Container(
+                        Container(padding: EdgeInsets.all(8),
                           height: height * 0.05,
                           width: height * 0.05,
                           decoration: const BoxDecoration(
                             color: Colors.black,
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(
-                            Icons.shopping_basket_outlined,
-                            color: Colors.white,
-                            size: 22,
-                          ),
+                          child: SvgPicture.asset(Imageasset.cart,height: 20,width: 20,color: Colors.white,)
                         ),
                       ],
                     ),

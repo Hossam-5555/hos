@@ -23,5 +23,7 @@ class Imageasset {
   static String Homesvg = "$routeImage/home-1-svgrepo-com.svg";
   static String offer = "$routeImage/offer-svgrepo-com.svg";
   static String notification = "$routeImage/notification-svgrepo-com.svg";
-  static String profile = "$routeImage/user-profile-account-person-svgrepo-com.svg";
+  static String profile =
+      "$routeImage/user-profile-account-person-svgrepo-com.svg";
+  static String cart = "$routeImage/cart-5-svgrepo-com.svg";
 }
