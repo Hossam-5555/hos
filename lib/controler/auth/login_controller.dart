@@ -91,26 +91,19 @@ class LoginController extends GetxController {
             String userType = response["data"]["users_type"];
 
             if (userType == "admin") {
-              Get.offNamed(AdminApproate.adminHome);
+              Get.offAllNamed(AdminApproate.adminHome);
             } else if (userType == "driver") {
-              Get.offNamed(AdminApproate.driverHome);
+              Get.offAllNamed(AdminApproate.driverHome);
             } else {
-              Get.offNamed(Approute.Homescreen);
+              Get.offAllNamed(Approute.Homescreen);
             }
           } else {
             Get.toNamed(Approute.veryfisign, arguments: {"email": email.text});
           }
 
           print(response["data"]);
-        } else {
-          Get.rawSnackbar(
-            duration: Duration(milliseconds: 800),
 
-            margin: EdgeInsets.all(12),
-            borderRadius: 16,
-            title: "إشعار",
-            messageText: const Text(" هناك خطأ في السيرفر"),
-          );
+        } else {
           statusrequest = Statusrequest.failure;
         }
       }

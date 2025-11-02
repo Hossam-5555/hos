@@ -22,7 +22,7 @@ class Driverhome extends StatelessWidget {
               color: Colors.amber,
               elevation: 3,
               height: 100,
-              child: Text(" تستطيع تسجيل الخروج ايها العرص "),
+              child: Text(" تستطيع تسجيل الخروج   "),
               onPressed: () {
                 String id = myservisec.sharedPreferences.getString("id")!;
                 FirebaseMessaging.instance.subscribeToTopic("users");

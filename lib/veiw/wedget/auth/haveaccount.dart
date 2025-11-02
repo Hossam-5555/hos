@@ -19,7 +19,7 @@ class Haveaccount extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Dont Have Accont ?"),
+            Text("Dont Have Accont ?",style: TextStyle(color: Colors.black),),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 2),
               child: TextButton(

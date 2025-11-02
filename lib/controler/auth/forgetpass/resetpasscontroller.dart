@@ -14,11 +14,12 @@ class Resetpasscontroller extends GetxController {
   Statusrequest statusrequest = Statusrequest.none;
   ResetPassData resetPassData = ResetPassData(crud: Get.find());
   gotosuccesreset() async {
-    if (password.text != repassword.text)
+    if (password.text != repassword.text) {
       return Get.defaultDialog(
         title: "Warning",
         middleText: "passWord Not Mach",
       );
+    }
     if (formstate.currentState!.validate()) {
       statusrequest = Statusrequest.loading;
       update();

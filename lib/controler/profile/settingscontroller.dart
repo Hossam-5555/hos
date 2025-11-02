@@ -23,7 +23,7 @@ class SettingsController extends GetxController {
     FirebaseMessaging.instance.subscribeToTopic("users");
     FirebaseMessaging.instance.subscribeToTopic("users${id}");
     myservisec.sharedPreferences.clear();
-    Get.offAndToNamed(Approute.login);
+    Get.offAllNamed(Approute.login);
   }
 
   // دالة لتحميل الإعدادات المحفوظة

@@ -23,6 +23,11 @@ class Textfealdauth extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: TextStyle(
+        color: const Color.fromARGB(255, 10, 10, 10), // 👈 هنا اللون اللي المستخدم هيكتب بيه
+        fontSize: 16, // ممكن كمان تتحكم في حجم الخط
+        fontWeight: FontWeight.w500,
+      ),
       obscureText: obscureText == null || obscureText == false ? false : true,
       validator: valid,
       controller: textEditingController,
@@ -55,7 +60,7 @@ class Textfealdauth extends StatelessWidget {
         hint: Text(
           hint,
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.black26),
+          style: TextStyle(color: Colors.black),
         ),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         enabledBorder: UnderlineInputBorder(

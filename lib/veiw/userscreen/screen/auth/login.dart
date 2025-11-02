@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/auth/login_controller.dart';
+import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/imageasset.dart';
@@ -19,85 +20,78 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 🔹 وضعنا الـ Controller هنا ليبقى متاحاً
     final LoginController loginController = Get.put(LoginController());
-
-    // 🔹 الحصول على حجم الشاشة
     final size = MediaQuery.of(context).size;
     final height = size.height;
     final width = size.width;
 
     return Scaffold(
-      // 🔹 resizeToAvoidBottomInset: false لتجنب تغيير حجم الخلفية عند ظهور الكيبورد
       resizeToAvoidBottomInset: false,
       body: WillPopScope(
         onWillPop: appexitAlert,
         child: GetBuilder<LoginController>(
-          builder: (controller) => Handlingdatrequest(
-            statusrequest: controller.statusrequest,
-            // 🔹 الهيكل الرئيسي: Stack ليغطي الشاشة بأكملها
-            widget: Stack(
+          builder: (controller) {
+            // ✅ الحالة loading فقط نعرض فيها Handlingdatrequest
+            if (controller.statusrequest == Statusrequest.loading ||
+                controller.statusrequest == Statusrequest.checkinterner) {
+              return Handlingdatrequest(
+                statusrequest: controller.statusrequest,
+                widget: const SizedBox.shrink(),
+              );
+            }
+
+            // ✅ باقي الحالات (success أو failure أو none)
+            return Stack(
               alignment: Alignment.center,
               children: [
-                // 🔹 الخلفية: ستملأ الشاشة بالكامل
+                // الخلفية
                 Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(
-                        Imageasset.see,
-                      ), // تأكد من أن هذا المسار صحيح 100%
+                      image: AssetImage(Imageasset.see),
                       fit: BoxFit.fill,
                     ),
                   ),
                 ),
 
-                // 🔹 الأنيميشن: يظهر في المنتصف فوق الخلفية
+                // أنميشن العلوية
                 Positioned(
-                  top: height * 0.05, // تحديد موقعه في الأعلى قليلاً
+                  top: height * 0.05,
                   child: Animationlottie(
                     animationPath: Imageasset.loginanimation,
                   ),
                 ),
 
-                // 🔹 نموذج تسجيل الدخول الزجاجي
-                // تم وضعه داخل Center ليتم توسيطه تلقائياً بدلاً من Positioned
+                // نموذج تسجيل الدخول الزجاجي
                 Center(
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(
-                      25,
-                    ), // تعديل بسيط لشكل الحواف
+                    borderRadius: BorderRadius.circular(25),
                     child: BackdropFilter(
                       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                       child: Container(
                         width: width * 0.9,
-                        // 🔹 استخدمنا maxHeight لمنع التمدد الزائد
                         constraints: BoxConstraints(maxHeight: height * 0.65),
                         decoration: BoxDecoration(
                           color: Appcolor.glass.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(25),
                           border: Border.all(
-                            color: const Color.fromARGB(
-                              240,
-                              145,
-                              222,
-                              255,
-                            ).withOpacity(0.3),
+                            color: const Color.fromARGB(240, 145, 222, 255)
+                                .withOpacity(0.3),
                           ),
                         ),
-                        // 🔹 تمت إضافة Form هنا
                         child: Form(
                           key: loginController.loginkey,
                           child: Padding(
                             padding: EdgeInsets.symmetric(
                               horizontal: width * 0.05,
                             ),
-                            // 🔹 مهم جداً: SingleChildScrollView يكون هنا بالداخل
                             child: SingleChildScrollView(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  // 🔹 مسافة علوية داخل النموذج
                                   SizedBox(height: height * 0.03),
+
+                                  // 📩 البريد الإلكتروني
                                   Textfealdauth(
                                     valid: (val) =>
                                         validInput(val!, 9, 50, 'email'),
@@ -108,7 +102,8 @@ class Login extends StatelessWidget {
                                     hint: 'Enter your Email',
                                   ),
                                   SizedBox(height: height * 0.025),
-                                  // 🔹 لا داعي لـ GetBuilder آخر هنا
+
+                                  // 🔐 كلمة المرور
                                   Textfealdauth(
                                     obscureText: controller.showpass,
                                     onTapIcon: () {
@@ -118,16 +113,33 @@ class Login extends StatelessWidget {
                                         validInput(val!, 5, 30, 'password'),
                                     textEditingController:
                                         loginController.passward,
-                                    label: 'passward',
+                                    label: 'password',
                                     suffixIcon: Icons.password_sharp,
-                                    hint: "Enter Your Passward",
+                                    hint: "Enter Your Password",
                                   ),
+
+                                  // 🔹 رسالة الخطأ (في حالة failure فقط)
+                                  if (controller.statusrequest ==
+                                      Statusrequest.failure)
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 8.0),
+                                      child: Text(
+                                        " البريد الإلكتروني أو كلمة المرور غير صحيحة",
+                                        style: TextStyle(
+                                          color: Colors.red.shade400,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+
                                   Forgetpassbutton(
                                     onPressed: () {
                                       loginController.checkemailpage();
                                     },
                                   ),
+
                                   SizedBox(height: height * 0.01),
+
                                   Checkbutton(
                                     onTap: () {
                                       loginController.login();
@@ -136,6 +148,7 @@ class Login extends StatelessWidget {
                                     width: width * 0.75,
                                     buttonColor: Colors.deepPurple,
                                   ),
+
                                   Container(
                                     alignment: Alignment.center,
                                     margin: EdgeInsets.symmetric(
@@ -151,8 +164,8 @@ class Login extends StatelessWidget {
                                       ],
                                     ),
                                   ),
+
                                   Haveaccount(),
-                                  // 🔹 مسافة سفلية داخل النموذج
                                   SizedBox(height: height * 0.03),
                                 ],
                               ),
@@ -164,8 +177,8 @@ class Login extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-          ),
+            );
+          },
         ),
       ),
     );

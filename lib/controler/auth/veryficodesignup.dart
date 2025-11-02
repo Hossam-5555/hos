@@ -16,17 +16,20 @@ class veryfisigncontroler extends GetxController {
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'success') {
-        // data.addAll(response['data']);
-        Get.offNamed(Approute.Successignup);
+        Get.snackbar("success", "تم انشاء حساب بنجاح");
+        gotologin();
       } else {
         Get.defaultDialog(
           title: "Warning",
           middleText: "veryfi code not correct",
         );
-        statusrequest = Statusrequest.failure;
       }
       update();
     }
+  }
+
+  void gotologin() {
+    Get.offAllNamed(Approute.login);
   }
 
   resendcode() {

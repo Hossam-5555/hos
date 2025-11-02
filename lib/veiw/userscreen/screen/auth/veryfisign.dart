@@ -36,12 +36,12 @@ class Veryfisign extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
+                Container(margin: EdgeInsets.only(bottom: 20),
                   child: OtpTextField(
-                    numberOfFields: 5,
+                    numberOfFields: 5,enabledBorderColor: Colors.black,
                     fieldWidth: 40.0,
                     borderRadius: BorderRadius.circular(30),
-                    borderColor: Color(0xFF512DA8),
+                    borderColor: Color.fromARGB(255, 0, 0, 0),
                     showFieldAsBox: true,
                     onCodeChanged: (String code) {},
                     onSubmit: (String verificationCode) {

@@ -43,7 +43,7 @@ class ProfilePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
                       Text(
-                        "حسام الدوانسي",
+                        " Hossam",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
