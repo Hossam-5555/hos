@@ -1,24 +1,7 @@
-import 'package:flutter/src/widgets/navigator.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/serveces/myservisec.dart';
-
-// class Midelware extends GetMiddleware {
-//   int? get priority => 1;
-//   Myservisec myservisec = Get.find();
-//   @override
-//   RouteSettings? redirect(String? route) {
-//     if (myservisec.sharedPreferences.getString("step") == "2") {
-//       return RouteSettings(name:Approute.Homescreen);
-//     }
-//     if (myservisec.sharedPreferences.getString("step") == "1") {
-//       return RouteSettings(name:Approute.login);
-//     }
-//     return null;
-//   }
-// }
-import 'package:flutter/material.dart';
-
 
 class Midelware extends GetMiddleware {
   @override
@@ -31,25 +14,40 @@ class Midelware extends GetMiddleware {
     String? step = myservisec.sharedPreferences.getString("step");
     String? userType = myservisec.sharedPreferences.getString("usertype");
 
-    // 🔹 أول تشغيل للتطبيق — لسه محددش اللغة
+    print("🔹 Step = $step | UserType = $userType | Route = $route");
+
+    // ✅ أول مرة يفتح التطبيق — لسه محددش اللغة
     if (step == null) {
-      return  RouteSettings(name: Approute.language);
+      if (route != Approute.language) {
+        return RouteSettings(name: Approute.language);
+      }
+      return null;
     }
 
-    // 🔹 بعد ما يختار اللغة (step = 1) — يروح يسجل الدخول
+    // ✅ بعد اختيار اللغة — يروح لتسجيل الدخول
     if (step == "1") {
-      return  RouteSettings(name: Approute.login);
+      if (route != Approute.login) {
+        return RouteSettings(name: Approute.login);
+      }
+      return null;
     }
 
-    // 🔹 بعد تسجيل الدخول (step = 2) — نحدد الواجهة حسب نوع المستخدم
+    // ✅ بعد تسجيل الدخول — يروح حسب نوع المستخدم
     if (step == "2") {
       if (userType == "admin") {
-        return RouteSettings(name: AdminApproate.adminHome);
+        if (route != AdminApproate.adminHome) {
+          return const RouteSettings(name: AdminApproate.adminHome);
+        }
       } else if (userType == "driver") {
-        return  RouteSettings(name: AdminApproate.driverHome);
+        if (route != AdminApproate.driverHome) {
+          return const RouteSettings(name: AdminApproate.driverHome);
+        }
       } else {
-        return  RouteSettings(name: Approute.Homescreen);
+        if (route != Approute.Homescreen) {
+          return RouteSettings(name: Approute.Homescreen);
+        }
       }
+      return null;
     }
 
     return null;

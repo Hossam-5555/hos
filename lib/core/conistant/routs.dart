@@ -21,6 +21,8 @@ import 'package:hos/veiw/userscreen/screen/profile/settings/addres/add.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/viewaddres.dart';
 
 List<GetPage<dynamic>>? routes = [
+  GetPage(name: '/', page: () => Language(), middlewares: [Midelware()]),
+
   //Admin=================================================================
   GetPage(name: AdminApproate.adminHome, page: () => AdminHome()),
   //====================================================================
@@ -29,7 +31,6 @@ List<GetPage<dynamic>>? routes = [
 
   //=========================================================
   //onBording
-  GetPage(name: '/', page: () => Language(), middlewares: [Midelware()]),
   GetPage(name: Approute.Onboarding, page: () => Onboarding()),
 
   //Homepage
