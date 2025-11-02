@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 
+// ignore: must_be_immutable
 class Driverhome extends StatelessWidget {
   Driverhome({super.key});
   Myservisec myservisec = Get.put(Myservisec());

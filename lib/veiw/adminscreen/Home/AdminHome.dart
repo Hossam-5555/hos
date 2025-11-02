@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 
+// ignore: must_be_immutable
 class AdminHome extends StatelessWidget {
   AdminHome({super.key});
   Myservisec myservisec = Get.put(Myservisec());
