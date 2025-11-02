@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:hos/controler/home/favorite/fav_controller.dart';
 import 'package:hos/controler/home/items_controler.dart';
 import 'package:hos/core/class/handlingdataview.dart';
-import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/veiw/userscreen/screen/searchpage.dart';
+import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/items/productcard.dart';
 import 'package:hos/veiw/wedget/items/itemslist.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';
@@ -18,13 +18,9 @@ class Items extends StatelessWidget {
     ItemsControler controller = Get.put(ItemsControler());
     FavController favController = Get.put(FavController());
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: Icon(Icons.arrow_back_ios, color: Appcolor.white),
-        ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: Appbarbackicon(title: "Items", herotag: "carttag"),
       ),
       body: SafeArea(
         child: Padding(

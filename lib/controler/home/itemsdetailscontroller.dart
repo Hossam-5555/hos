@@ -23,13 +23,12 @@ class Itemdetailscontroller extends GetxController {
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response["status"] == "success") {
-        Get.rawSnackbar(
-          duration: Duration(milliseconds: 800),
-          margin: EdgeInsets.all(16),
-          snackStyle: SnackStyle.FLOATING,
-          borderRadius: 16,
-          title: "إشعار",
-          messageText: const Text("تم إضافة المنتج للسلة ✅"),
+        Get.snackbar(
+          "إشعار",
+          "تم إضافة المنتج للسلة ✅",
+          duration: Duration(seconds: 1),
+          backgroundColor: Colors.white,
+          colorText: Colors.black,
         );
       } else {
         statusrequest = Statusrequest.failure;

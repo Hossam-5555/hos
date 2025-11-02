@@ -100,7 +100,7 @@ class Checkoutcontroller extends GetxController {
     Map<String, dynamic> data = {
       "userid": myservisec.sharedPreferences.getString("id")!,
       "addressid": Addressid.toString(),
-      "orderstype": "0", 
+      "orderstype": "0",
       "pricedelivery": "10",
       "ordersprice": totalprice.toString(),
       "couponid": couponeid.toString(),
@@ -116,9 +116,14 @@ class Checkoutcontroller extends GetxController {
         Get.snackbar(
           "تم الطلب بنجاح ✅",
           "سيتم توصيل طلبك في أقرب وقت",
-          backgroundColor: Colors.green.withOpacity(0.8),
-          colorText: Colors.white,
-          duration: const Duration(seconds: 1),
+          backgroundColor: const Color.fromARGB(
+            255,
+            242,
+            245,
+            242,
+          ).withOpacity(0.8),
+          colorText: const Color.fromARGB(255, 0, 0, 0),
+          duration: const Duration(seconds: 2),
         );
 
         Get.offAllNamed(Approute.Homescreen);
