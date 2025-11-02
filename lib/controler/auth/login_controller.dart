@@ -47,6 +47,17 @@ class LoginController extends GetxController {
   logindata Logindata = logindata(Get.find());
   Statusrequest statusrequest = Statusrequest.none;
   Future<void> login() async {
+    //لقد انشأت عمود في قواعد البيانات ب نوع المستخدم )(admin,user,driver)
+    //ثم عند تسجيل الدخول بنحفظها ب شيرد برفرانس usertypeثم نعمل داله
+
+    // if (userType == "admin") {ادمن يروح صفحه admin ,user=>user,driver=driver
+    //             Get.offNamed(AdminApproate.adminHome);
+    //           } else if (userType == "driver") {
+    //             Get.offNamed(AdminApproate.driverHome);
+    //           } else {
+    //             Get.offNamed(Approute.Homescreen);
+    //           }
+
     if (loginkey.currentState!.validate()) {
       statusrequest = Statusrequest.loading;
       update();
@@ -68,11 +79,24 @@ class LoginController extends GetxController {
               "email",
               response["data"]['users_email'],
             );
+            myservisec.sharedPreferences.setString(
+              "usertype",
+              response["data"]["users_type"],
+            );
+
             myservisec.sharedPreferences.setString("step", '2');
             FirebaseMessaging.instance.subscribeToTopic("users");
             FirebaseMessaging.instance.subscribeToTopic("users${id}");
 
-            Get.offNamed(Approute.Homescreen);
+            String userType = response["data"]["users_type"];
+
+            if (userType == "admin") {
+              Get.offNamed(AdminApproate.adminHome);
+            } else if (userType == "driver") {
+              Get.offNamed(AdminApproate.driverHome);
+            } else {
+              Get.offNamed(Approute.Homescreen);
+            }
           } else {
             Get.toNamed(Approute.veryfisign, arguments: {"email": email.text});
           }

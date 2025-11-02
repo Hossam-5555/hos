@@ -36,7 +36,7 @@ class Veryficode extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  child: OtpTextField(
+                  child: OtpTextField(enabledBorderColor: Colors.black,
                     numberOfFields: 5,
                     fieldWidth: 40.0,
                     borderRadius: BorderRadius.circular(30),

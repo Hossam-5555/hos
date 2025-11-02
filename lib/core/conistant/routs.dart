@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
+import 'package:hos/veiw/adminscreen/Home/AdminHome.dart';
+import 'package:hos/veiw/driverscreen/driverHome.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/cart.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/checkout.dart';
 import 'package:hos/veiw/userscreen/screen/home/items.dart';
 import 'package:hos/core/middilware/midelware.dart';
 import 'package:hos/veiw/userscreen/screen/auth/forgetpass/forgetpass.dart';
 import 'package:hos/veiw/userscreen/screen/auth/forgetpass/resetpass.dart';
-import 'package:hos/veiw/userscreen/screen/auth/forgetpass/succesresetpass.dart';
 import 'package:hos/veiw/userscreen/screen/auth/forgetpass/veryficode.dart';
 import 'package:hos/veiw/userscreen/screen/auth/login.dart';
 import 'package:hos/veiw/userscreen/screen/auth/signup%20.dart';
@@ -20,6 +21,17 @@ import 'package:hos/veiw/userscreen/screen/profile/settings/addres/add.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/viewaddres.dart';
 
 List<GetPage<dynamic>>? routes = [
+  //Admin=================================================================
+  GetPage(name: AdminApproate.adminHome, page: () => AdminHome()),
+  //====================================================================
+  //dreiver
+  GetPage(name: AdminApproate.driverHome, page: () => Driverhome()),
+
+  //=========================================================
+  //onBording
+  GetPage(name: '/', page: () => Language(), middlewares: [Midelware()]),
+  GetPage(name: Approute.Onboarding, page: () => Onboarding()),
+
   //Homepage
   GetPage(name: Approute.Homescreen, page: () => Homescreen()),
   GetPage(name: Approute.Items, page: () => Items()),
@@ -31,10 +43,6 @@ List<GetPage<dynamic>>? routes = [
   //myfavorite
   GetPage(name: Approute.myfavorite, page: () => Myfavorite()),
 
-  //onBording
-  GetPage(name: '/', page: () => Language(), middlewares: [Midelware()]),
-  GetPage(name: Approute.Onboarding, page: () => Onboarding()),
-
   //Auth
   GetPage(name: Approute.login, page: () => Login()),
   GetPage(name: Approute.signup, page: () => Signup()),
@@ -44,7 +52,6 @@ List<GetPage<dynamic>>? routes = [
   GetPage(name: Approute.checkemailpage, page: () => forgetpass()),
   GetPage(name: Approute.Veryficode, page: () => Veryficode()),
   GetPage(name: Approute.Resetpass, page: () => Resetpass()),
-  GetPage(name: Approute.Succesresetpass, page: () => Succesresetpass()),
 
   //settings
   GetPage(name: Approute.viewmyaddres, page: () => viewmyaddres()),
@@ -80,4 +87,11 @@ class Approute {
   // settengs
   static String viewmyaddres = "/viewmyaddres";
   static String addnewaddres = "/addnewaddres";
+}
+
+class AdminApproate {
+  //Admin Home
+  static const String adminHome = "/adminHome";
+  //deleveryHome
+  static const String driverHome = "/driverHome";
 }

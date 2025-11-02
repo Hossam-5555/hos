@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
@@ -9,38 +10,42 @@ class Resetpasscontroller extends GetxController {
   late TextEditingController password;
   late TextEditingController repassword;
   String? email;
-  GlobalKey<FormState>formstate =GlobalKey();
-Statusrequest statusrequest=Statusrequest.none;
-ResetPassData resetPassData =ResetPassData(crud: Get.find());
-  gotosuccesreset()async {
-    if(password.text!=repassword.text)return Get.defaultDialog(title: "Warning" ,middleText:"passWord Not Mach" );
-   if(formstate.currentState!.validate()){
-          statusrequest = Statusrequest.loading;
-    update();
-    var response = await resetPassData.postdata(email!,password.text);
-    statusrequest = handling(response);
-    if (Statusrequest.success == statusrequest) {
-      if (response['status'] == 'success') {
-        // data.addAll(response['data']);
-        Get.offNamed(Approute.Succesresetpass);
-      } else {
-        Get.defaultDialog(title: "Warning", middleText: "try Again");
-        statusrequest = Statusrequest.failure;
-      }
+  GlobalKey<FormState> formstate = GlobalKey();
+  Statusrequest statusrequest = Statusrequest.none;
+  ResetPassData resetPassData = ResetPassData(crud: Get.find());
+  gotosuccesreset() async {
+    if (password.text != repassword.text)
+      return Get.defaultDialog(
+        title: "Warning",
+        middleText: "passWord Not Mach",
+      );
+    if (formstate.currentState!.validate()) {
+      statusrequest = Statusrequest.loading;
       update();
+      var response = await resetPassData.postdata(email!, password.text);
+      statusrequest = handling(response);
+      if (Statusrequest.success == statusrequest) {
+        if (response['status'] == 'success') {
+          Get.snackbar("success", "تم إعادة تعيين كلمة المرور بنجاح");
+          gotologin();
+        } else {
+          Get.defaultDialog(title: "Warning", middleText: "try Again");
+          statusrequest = Statusrequest.failure;
+        }
+        update();
+      }
     }
-   }
   }
 
-  ressetpass() {
-    Get.offNamed(Approute.login);
+  void gotologin() {
+    Get.offAllNamed(Approute.login);
   }
 
   @override
   void onInit() {
     password = TextEditingController();
     repassword = TextEditingController();
-    email=Get.arguments['email'];
+    email = Get.arguments['email'];
     super.onInit();
   }
 
