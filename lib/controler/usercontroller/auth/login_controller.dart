@@ -5,7 +5,7 @@ import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
-import 'package:hos/data/datasource/remote/auth/logindata.dart';
+import 'package:hos/data/datasource/remote/userdata/auth/logindata.dart';
 import 'package:hos/veiw/userscreen/screen/auth/signup%20.dart';
 
 class LoginController extends GetxController {

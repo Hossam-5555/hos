@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
-import 'package:hos/data/datasource/remote/cartdata.dart';
+import 'package:hos/data/datasource/remote/userdata/cartdata.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 
 // ignore: camel_case_types

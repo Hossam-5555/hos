@@ -49,6 +49,11 @@ class LinkApi {
   //notification
   static String notification = '$server/notification.php';
   //offer
-    static String offer = '$server/offer.php';
+  static String offer = '$server/offer.php';
 
+  // driver
+  static String driverpendingorder = '$server/driver/orders/pending.php';
+  static String driveraccebtedorder = '$server/driver/orders/accepted.php';
+  static String driverarchiveorder = '$server/driver/orders/archive.php';
+  static String driverorderdetails = '$server/driver/orders/details.php';
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
-import 'package:hos/data/datasource/remote/homedata.dart';
+import 'package:hos/data/datasource/remote/userdata/homedata.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/veiw/userscreen/screen/home/itemsdetailes.dart';
 

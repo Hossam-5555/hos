@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
-import 'package:hos/data/datasource/remote/offerdata.dart';
+import 'package:hos/data/datasource/remote/userdata/offerdata.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 
 class Offercontroller extends GetxController {
