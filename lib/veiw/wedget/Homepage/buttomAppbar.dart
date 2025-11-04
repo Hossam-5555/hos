@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/home/Homescreencontroller.dart';
+import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
 
 class Buttomappbar extends GetView<Homescreencontroller> {
   const Buttomappbar({super.key});

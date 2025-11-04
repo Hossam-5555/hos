@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/profile/profilepagecontroller.dart';
+import 'package:hos/controler/usercontroller/profile/profilepagecontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/userscreen/screen/myfavorite.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';

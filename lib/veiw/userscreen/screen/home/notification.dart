@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/notificationcontroller.dart';
+import 'package:hos/controler/usercontroller/notificationcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:intl/intl.dart';
 

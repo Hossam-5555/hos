@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hos/controler/profile/addres/addrescontroller.dart';
+import 'package:hos/controler/usercontroller/profile/addres/addrescontroller.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 

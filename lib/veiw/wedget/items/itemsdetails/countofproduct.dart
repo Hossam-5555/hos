@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/home/itemsdetailscontroller.dart';
+import 'package:hos/controler/usercontroller/home/itemsdetailscontroller.dart';
 
 class Countofproduct extends GetView<Itemdetailscontroller> {
   const Countofproduct({super.key, this.count});

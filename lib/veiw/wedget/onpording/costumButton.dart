@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/onpoarding/onboarding_controler.dart';
+import 'package:hos/controler/usercontroller/onpoarding/onboarding_controler.dart';
 
 class CustomButton extends GetView<OnboardingControler> {
   final String buttonName;

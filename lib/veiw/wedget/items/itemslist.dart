@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/home/items_controler.dart';
+import 'package:hos/controler/usercontroller/home/items_controler.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/profile/settingscontroller.dart';
+import 'package:hos/controler/usercontroller/profile/settingscontroller.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
 class Settings extends StatelessWidget {

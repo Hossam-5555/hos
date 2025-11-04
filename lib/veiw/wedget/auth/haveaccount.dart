@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
-import 'package:hos/controler/auth/login_controller.dart';
+import 'package:hos/controler/usercontroller/auth/login_controller.dart';
 
 class Haveaccount extends StatelessWidget {
   const Haveaccount({super.key});

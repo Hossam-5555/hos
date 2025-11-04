@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/home/Homepage_controller.dart';
+import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 
 // ignore: must_be_immutable, camel_case_types

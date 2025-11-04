@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/auth/forgetpass/checkemail_controller.dart';
+import 'package:hos/controler/usercontroller/auth/forgetpass/checkemail_controller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/functions/validinput.dart';

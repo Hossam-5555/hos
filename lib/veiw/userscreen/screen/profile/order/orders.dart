@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/profile/order/ordercontroller.dart';
+import 'package:hos/controler/usercontroller/profile/order/ordercontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/veiw/userscreen/screen/profile/order/orderdetailes.dart';

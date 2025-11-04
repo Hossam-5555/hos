@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/auth/forgetpass/veryficodecontroller.dart';
+import 'package:hos/controler/usercontroller/auth/forgetpass/veryficodecontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 
 class Veryficode extends StatelessWidget {

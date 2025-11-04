@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:hos/controler/checkout&cart/CartController.dart';
+import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/core/conistant/linkApi.dart';
 import 'package:hos/data/model/cartmodel.dart';
 

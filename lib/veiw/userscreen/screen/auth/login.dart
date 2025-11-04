@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/auth/login_controller.dart';
+import 'package:hos/controler/usercontroller/auth/login_controller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';

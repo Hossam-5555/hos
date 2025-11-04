@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/home/Homescreencontroller.dart';
+import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
 import 'package:hos/core/functions/appexitalert.dart';
 import 'package:hos/veiw/wedget/Homepage/buttomAppbar.dart';
 import 'package:hos/veiw/wedget/Homepage/homescrenAction.dart';

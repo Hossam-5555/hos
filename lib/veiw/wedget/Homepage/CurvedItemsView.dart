@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/home/Homepage_controller.dart';
+import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
 import 'package:hos/veiw/wedget/Homepage/productcardHome.dart';
 
 class CurvedItemsView extends StatelessWidget {

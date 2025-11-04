@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:hos/controler/auth/forgetpass/resetpasscontroller.dart';
+import 'package:hos/controler/usercontroller/auth/forgetpass/resetpasscontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/functions/validinput.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/auth/veryficodesignup.dart';
+import 'package:hos/controler/usercontroller/auth/veryficodesignup.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 
