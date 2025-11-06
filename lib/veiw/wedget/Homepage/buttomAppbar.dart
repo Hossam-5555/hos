@@ -2,14 +2,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
+import 'package:hos/controler/drivercontroller/homescreencontroller.dart';
 
-class Buttomappbar extends GetView<Homescreencontroller> {
+class Buttomappbar extends GetView<driverHomecontroller> {
   const Buttomappbar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<Homescreencontroller>(
+    return GetBuilder<driverHomecontroller>(
       builder: (controller) => AnimatedSlide(
         offset: controller.upordown ? Offset.zero : const Offset(0, 2),
         duration: const Duration(milliseconds: 200),
@@ -49,7 +49,7 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: List.generate(controller.pages.length, (index) {
+                    children: List.generate(controller.driverpage.length, (index) {
                       final isSelected = controller.Currentpage == index;
 
                       return GestureDetector(
@@ -70,7 +70,7 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                           child: Center(
                             // علشان الأيقونة تكون في النص
                             child: SvgPicture.asset(
-                              controller.Appbartitle[index][1],
+                              controller.driverAppbartitle[index][1],
                               height: isSelected
                                   ? 30
                                   : 25, // حجم الأيقونة لما تتحدد أو لا

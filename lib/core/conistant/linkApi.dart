@@ -56,4 +56,6 @@ class LinkApi {
   static String driveraccebtedorder = '$server/driver/orders/accepted.php';
   static String driverarchiveorder = '$server/driver/orders/archive.php';
   static String driverorderdetails = '$server/driver/orders/details.php';
+    static String driverapproveorder = '$server/driver/orders/approve.php';
+
 }

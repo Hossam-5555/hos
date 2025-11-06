@@ -5,25 +5,33 @@ class Driverorderdata {
   Crud crud;
   Driverorderdata(this.crud);
 
-  pendingdata(String userid) async {
-    var response = await crud.postrequset(LinkApi.viewmyorder, {
-      "userid": userid,
+  pendingdata(String driverid) async {
+    var response = await crud.postrequset(LinkApi.driverpendingorder, {
+      "driverid": driverid,
+    });
+    return response.fold((l) => l, (r) => r);
+  }
+
+  acceptedorderdata(String driverid) async {
+    var response = await crud.postrequset(LinkApi.driveraccebtedorder, {
+      "driverid": driverid,
     });
     return response.fold((l) => l, (r) => r);
   }
 
   orderdetailsdata(String orderid) async {
-    var response = await crud.postrequset(LinkApi.orderdetails, {
+    var response = await crud.postrequset(LinkApi.driverorderdetails, {
       "orderid": orderid,
     });
     return response.fold((l) => l, (r) => r);
   }
 
-  acceptedorderdata(String orderid, String rating, String comment) async {
-    var response = await crud.postrequset(LinkApi.rating, {
+  //approveorder
+  approveorder(String orderid, String userid, String driverid) async {
+    var response = await crud.postrequset(LinkApi.driverapproveorder, {
       "orderid": orderid,
-      "rating": rating,
-      "comment": comment,
+      "userid": userid,
+      "driverid": driverid,
     });
     return response.fold((l) => l, (r) => r);
   }
