@@ -111,6 +111,15 @@ class Driveraccepted extends StatelessWidget {
                                 const SizedBox(height: 5),
                               ],
                             ),
+                            MaterialButton(
+                              onPressed: () {
+                                controller.orderdone(
+                                  order.ordersId!,
+                                  order.ordersUsersid!,
+                                );
+                              },
+                              child: Icon(Icons.ac_unit),
+                            ),
                           ],
                         ),
                       ),

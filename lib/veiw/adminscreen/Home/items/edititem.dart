@@ -1,0 +1,10 @@
+import 'package:flutter/material.dart';
+
+class edititem extends StatelessWidget {
+  const edititem({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(body: Container(child: Text(" edititem")));
+  }
+}

@@ -28,6 +28,14 @@ class Driverhome extends StatelessWidget {
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(60),
             child: AppBar(
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    controller.Logout();
+                  },
+                  icon: Icon(Icons.exit_to_app),
+                ),
+              ],
               title: Text(
                 controller.driverAppbartitle[controller.Currentpage][0],
               ),

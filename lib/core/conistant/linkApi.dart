@@ -56,6 +56,17 @@ class LinkApi {
   static String driveraccebtedorder = '$server/driver/orders/accepted.php';
   static String driverarchiveorder = '$server/driver/orders/archive.php';
   static String driverorderdetails = '$server/driver/orders/details.php';
-    static String driverapproveorder = '$server/driver/orders/approve.php';
+  static String driverapproveorder = '$server/driver/orders/approve.php';
+  static String driverdoneorder = '$server/driver/orders/done.php';
 
+  //Admin
+  static String adminaddcat = '$server/admin/categories/add.php';
+  static String admineditcat = '$server/admin/categories/edit.php';
+  static String adminviewcat = '$server/admin/categories/view.php';
+  static String admindeletecat = '$server/admin/categories/delete.php';
+  //categores
+  static String adminadditem = '$server/admin/items/add.php';
+  static String adminviewitem = '$server/admin/items/view.php';
+  static String adminedititem = '$server/admin/items/edit.php';
+  static String admindeleteitems = '$server/admin/items/delete.php';
 }

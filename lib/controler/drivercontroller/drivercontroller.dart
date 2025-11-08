@@ -24,13 +24,15 @@ class driverviewordercontroller extends GetxController {
   Color getStatusColor(String status) {
     switch (status) {
       case "0":
-        return Colors.orange;
+        return const Color.fromARGB(255, 222, 40, 26);
       case "1":
         return Colors.blue;
       case "2":
         return Colors.purple;
       case "3":
-        return Colors.green;
+        return const Color.fromARGB(255, 171, 156, 22);
+      case "4":
+        return const Color.fromARGB(255, 44, 183, 23);
       default:
         return Colors.grey;
     }
@@ -41,11 +43,13 @@ class driverviewordercontroller extends GetxController {
       case "0":
         return "في انتظار الموافقة";
       case "1":
-        return "يتم تجهيز الطلب";
+        return "تمت الموافقه   ";
       case "2":
-        return "في الطريق";
+        return " يجهز";
       case "3":
-        return "تم التسليم";
+        return "في الطريق ";
+      case "4":
+        return "تم  التسليم";
       default:
         return "غير معروف";
     }

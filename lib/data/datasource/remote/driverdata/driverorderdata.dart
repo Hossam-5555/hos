@@ -35,4 +35,12 @@ class Driverorderdata {
     });
     return response.fold((l) => l, (r) => r);
   }
+
+  orderhasdone(String orderid, String userid) async {
+    var response = await crud.postrequset(LinkApi.driverdoneorder, {
+      "orderid": orderid,
+      "userid": userid,
+    });
+    return response.fold((l) => l, (r) => r);
+  }
 }

@@ -1,7 +1,10 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/core/conistant/routs.dart';
+import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/veiw/driverscreen/driveraccepted.dart';
 import 'package:hos/veiw/driverscreen/driverpending.dart';
 
@@ -12,6 +15,15 @@ class driverHomecontroller extends GetxController {
   void changpage(int i) {
     Currentpage = i;
     update();
+  }
+
+  Myservisec myservisec = Get.put(Myservisec());
+  Logout() {
+    String id = myservisec.sharedPreferences.getString("id")!;
+    FirebaseMessaging.instance.subscribeToTopic("users");
+    FirebaseMessaging.instance.subscribeToTopic("users${id}");
+    myservisec.sharedPreferences.clear();
+    Get.offAndToNamed(Approute.login);
   }
 
   final List<Widget> driverpage = [
