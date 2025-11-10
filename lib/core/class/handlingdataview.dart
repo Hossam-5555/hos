@@ -9,33 +9,32 @@ class Handlingdataview extends StatelessWidget {
     required this.statusrequest,
     required this.widget,
   });
+
   final Statusrequest statusrequest;
   final Widget widget;
+
   @override
   Widget build(BuildContext context) {
-    Widget buildAnimation(String path) {
-      return SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(height: 100,),
-            Center(child: Animationforstatus(animationPath: path)),
-          ],
-        ),
+    Widget buildOverlay(String path) {
+      return Container(
+        alignment: Alignment.center,
+        child: Animationforstatus(animationPath: path),
       );
     }
 
-    switch (statusrequest) {
-      case Statusrequest.checkinterner:
-        return buildAnimation(Imageasset.loading);
-      case Statusrequest.failure:
-        return buildAnimation(Imageasset.nodata);
-      case Statusrequest.serverfailure:
-        return buildAnimation(Imageasset.loading);
-      default:
-        return widget;
-    }
+    return Stack(
+      children: [
+        widget, // 👈 الصفحة الأصلية دايمًا بتتعرض
+        if (statusrequest == Statusrequest.loading)
+          buildOverlay(Imageasset.loading), // تحميل فوق الصفحة
+        if (statusrequest == Statusrequest.failure)
+          buildOverlay(Imageasset.nodata), // خطأ أو فشل
+        if (statusrequest == Statusrequest.serverfailure)
+          buildOverlay(Imageasset.loading), // فشل السيرفر
+        if (statusrequest == Statusrequest.checkinterner)
+          buildOverlay(Imageasset.loading), // تحقق الإنترنت
+      ],
+    );
   }
 }
 
@@ -49,51 +48,57 @@ class Handlingdatrequest extends StatelessWidget {
 
   final Statusrequest statusrequest;
   final Widget widget;
-  final VoidCallback? onRetry; // عشان لو عايز تضيف زرار Retry
+  final VoidCallback? onRetry;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final height = size.height;
     final width = size.width;
-    Widget buildAnimation(String path, String message) {
-      return SingleChildScrollView(
+
+    Widget buildOverlay(String path, String message) {
+      return Container(
+        width: width,
+        height: height,
+        color: Colors.black.withOpacity(0.5), // خلفية شفافة
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              width: width,
-              height: height * 0.75,
-              alignment: Alignment.center,
-              child: Animationforstatus(animationPath: path),
+            Animationforstatus(animationPath: path),
+            const SizedBox(height: 20),
+            Text(
+              message,
+              style: Theme.of(
+                context,
+              ).textTheme.headlineMedium?.copyWith(color: Colors.white),
+              textAlign: TextAlign.center,
             ),
-            Container(
-              width: width,
-              alignment: Alignment.center,
-              child: Text(
-                "$message",
-                style: Theme.of(context).textTheme.headlineLarge,
+            if (onRetry != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: ElevatedButton(
+                  onPressed: onRetry,
+                  child: const Text("إعادة المحاولة"),
+                ),
               ),
-            ),
-            SizedBox(height: 200),
           ],
         ),
       );
     }
 
-    switch (statusrequest) {
-      case Statusrequest.checkinterner:
-        return buildAnimation(
-          Imageasset.loading,
-          "جاري  التحقق من وجود انترنت ...",
-        );
-      case Statusrequest.loading:
-        return buildAnimation(Imageasset.animation2, "جاري التحميل ...");
-      case Statusrequest.failure:
-        return buildAnimation(Imageasset.animation3, "حدث خطأ في الخادم");
-      default:
-        return widget;
-    }
+    return Stack(
+      children: [
+        widget, // الصفحة الأصلية دايمًا ظاهرة
+        if (statusrequest == Statusrequest.checkinterner)
+          buildOverlay(Imageasset.loading, "جاري التحقق من وجود انترنت ..."),
+        if (statusrequest == Statusrequest.loading)
+          buildOverlay(Imageasset.animation2, "جاري التحميل ..."),
+        if (statusrequest == Statusrequest.failure)
+          buildOverlay(Imageasset.animation3, "حدث خطأ في الخادم"),
+        if (statusrequest == Statusrequest.serverfailure)
+          buildOverlay(Imageasset.animation3, "فشل الاتصال بالخادم"),
+      ],
+    );
   }
 }

@@ -7,7 +7,7 @@ class adminHomecontroller extends GetxController {
 
   gotocategories() {
     Get.to(
-      () => viewcategories(),
+      () => ViewCategories(),
       duration: Duration(milliseconds: 700),
       transition: Transition.fadeIn,
     );

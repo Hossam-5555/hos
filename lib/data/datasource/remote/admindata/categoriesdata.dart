@@ -1,15 +1,16 @@
+import 'dart:io';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/linkApi.dart';
 
-class admindatacaregores {
+class AdmindaTaCaregores {
   Crud crud;
-  admindatacaregores(this.crud);
+  AdmindaTaCaregores(this.crud);
 
-  addcat(String name, String namear) async {
-    var response = await crud.postrequset(LinkApi.adminaddcat, {
+  addcat(String name, String namear, File file) async {
+    var response = await crud.addRequestWithImageOne(LinkApi.adminaddcat, {
       "name": name,
       "namear": namear,
-    });
+    }, file);
     return response.fold((l) => l, (r) => r);
   }
 
