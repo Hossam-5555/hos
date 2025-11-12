@@ -5,6 +5,7 @@ import 'package:hos/data/datasource/remote/admindata/categoriesdata.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/veiw/adminscreen/Home/AdminHome.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/addcat.dart';
+import 'package:hos/veiw/adminscreen/Home/categories/editcat.dart';
 
 class ViewCatController extends GetxController {
   AdmindaTaCaregores admindata = AdmindaTaCaregores(Get.find());
@@ -38,6 +39,23 @@ class ViewCatController extends GetxController {
     }
     update();
   }
+
+  delete(String catid, String imagename) {
+    admindata.deletecat(catid, imagename);
+
+    catdata.removeWhere((element) => element.categoriesId == catid);
+    update();
+  }
+
+ GotoEditpage(categoriesmodel catmodel) {
+  Get.to(
+    () => const Editcat(),
+    arguments: {"catmodel": catmodel},
+    transition: Transition.fadeIn,
+    duration: const Duration(milliseconds: 300),
+  );
+}
+
 
   void goToAddPage() async {
     /// ✳️ بعد ما ترجع من صفحة الإضافة، اعمل refresh تلقائي

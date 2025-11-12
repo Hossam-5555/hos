@@ -9,54 +9,146 @@ class Addcategories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Addcatcontroller controller = Get.put(Addcatcontroller());
+    final controller = Get.put(Addcatcontroller());
+
     return Scaffold(
-      appBar: AppBar(title: Text("Add categories")),
+      backgroundColor: const Color(0xFFF6F8FB),
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        title: const Text(
+          "إضافة فئة جديدة",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87),
+          onPressed: () => Get.back(),
+        ),
+      ),
       body: GetBuilder<Addcatcontroller>(
-        builder: (controller) => Form(
-          key: controller.validkey,
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.all(10),
-                child: Textfealdauth(
-                  hint: "catregories name",
-                  label: 'name',
-                  suffixIcon: Icons.abc,
+        builder: (controller) => SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+          child: Form(
+            key: controller.validkey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "معلومات الفئة",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // اسم الفئة
+                Textfealdauth(
+                  hint: "اكتب اسم الفئة بالإنجليزية",
+                  label: "Category Name",
+                  suffixIcon: Icons.category_outlined,
                   textEditingController: controller.name,
-                  valid: (String? val) {},
+                  valid: (val) {
+                    if (val!.isEmpty) return "الاسم مطلوب";
+                    return null;
+                  },
                 ),
-              ),
-              SizedBox(height: 30),
-              Container(
-                margin: EdgeInsets.all(10),
-                child: Textfealdauth(
-                  hint: "catregories name(Arabic)",
-                  label: 'name',
-                  suffixIcon: Icons.add_ic_call_outlined,
+
+                const SizedBox(height: 20),
+
+                // اسم الفئة بالعربية
+                Textfealdauth(
+                  hint: "اكتب اسم الفئة بالعربية",
+                  label: "الاسم بالعربية",
+                  suffixIcon: Icons.language_outlined,
                   textEditingController: controller.namear,
-                  valid: (String? val) {},
+                  valid: (val) {
+                    if (val!.isEmpty) return "الاسم بالعربية مطلوب";
+                    return null;
+                  },
                 ),
-              ),
-              TextButton.icon(
-                onPressed: () {
-                  controller.chooseimage();
-                },
-                icon: Icon(Icons.add_a_photo),
-                label: Text("add a photo"),
-              ),
-              if (controller.file != null)
-                SvgPicture.file(controller.file!, height: 70, width: 70),
-              MaterialButton(
-                color: Colors.black,
-                minWidth: 200,
-                height: 50,
-                onPressed: () {
-                  controller.addcategories();
-                },
-                child: Text("add ", style: TextStyle(color: Colors.white)),
-              ),
-            ],
+
+                const SizedBox(height: 30),
+                const Divider(height: 1, thickness: 1),
+                const SizedBox(height: 30),
+
+                // رفع الصورة
+                Center(
+                  child: Column(
+                    children: [
+                      TextButton.icon(
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 25,
+                            vertical: 15,
+                          ),
+                          backgroundColor: Colors.blueAccent.withOpacity(0.1),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        onPressed: () => controller.chooseimage(),
+                        icon: const Icon(Icons.add_a_photo, color: Colors.blue),
+                        label: const Text(
+                          "اختر صورة للفئة",
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      if (controller.file != null)
+                        Container(
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(color: Colors.blueAccent),
+                          ),
+                          child: SvgPicture.file(controller.file!),
+                        ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 40),
+
+                // زر الإضافة
+                Center(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black87,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 50,
+                        vertical: 14,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      elevation: 3,
+                    ),
+                    onPressed: () {
+                      controller.addcategories();
+                    },
+                    child: const Text(
+                      "إضافة الفئة",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

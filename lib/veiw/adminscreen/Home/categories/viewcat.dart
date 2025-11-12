@@ -10,61 +10,135 @@ class ViewCategories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 🟢 أنشئ الـ controller هنا مرة واحدة فقط
-    final controller = Get.put(ViewCatController(), permanent: false);
+    final controller = Get.put(ViewCatController());
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: controller.goToAddPage,
-        child: const Icon(Icons.add),
-      ),
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        title: const Text("الفئات"),
+        elevation: 2,
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: const Text(
+          "الفئات",
+          style: TextStyle(
+            color: Colors.black87,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.5,
+          ),
+        ),
         leading: IconButton(
-          onPressed: () {
-            controller.backtohomebage();
-          },
-          icon: Icon(Icons.arrow_back),
+          onPressed: controller.backtohomebage,
+          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87),
         ),
       ),
 
-      // 🟢 استخدم GetBuilder علشان يحدث الواجهة لما الداتا تتغير
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: controller.goToAddPage,
+        backgroundColor: Colors.black,
+        icon: const Icon(Icons.add, color: Colors.white),
+        label: const Text("إضافة فئة", style: TextStyle(color: Colors.white)),
+      ),
+
       body: GetBuilder<ViewCatController>(
         builder: (controller) {
           return Handlingdataview(
             statusrequest: controller.statusrequest,
-            widget: ListView.builder(
+            widget: ListView.separated(
+              padding: const EdgeInsets.all(16),
               itemCount: controller.catdata.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
                 final item = controller.catdata[index];
-                return Card(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: ListTile(
-                          title: Text(item.categoriesName ?? "بدون اسم"),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 80,
-                        width: 80,
-                        child:
-                            (item.categoriesImage != null &&
-                                item.categoriesImage!.toLowerCase().endsWith(
-                                  ".svg",
-                                ))
-                            ? SvgPicture.network(
-                                "${LinkApi.imagecategories}/${item.categoriesImage}",
-                                fit: BoxFit.contain,
-                              )
-                            : Image.network(
-                                "${LinkApi.imagecategories}/${item.categoriesImage}",
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    const Icon(Icons.image_not_supported),
-                              ),
+                final imageUrl =
+                    "${LinkApi.imagecategories}/${item.categoriesImage}";
+
+                return Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade300,
+                        blurRadius: 8,
+                        offset: const Offset(0, 3),
                       ),
                     ],
+                  ),
+                  child: ListTile(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: (item.categoriesImage != null &&
+                              item.categoriesImage!
+                                  .toLowerCase()
+                                  .endsWith(".svg"))
+                          ? SvgPicture.network(
+                              imageUrl,
+                              width: 60,
+                              height: 60,
+                              fit: BoxFit.contain,
+                            )
+                          : Image.network(
+                              imageUrl,
+                              width: 60,
+                              height: 60,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) => Container(
+                                width: 60,
+                                height: 60,
+                                color: Colors.grey[200],
+                                child: const Icon(Icons.image_not_supported,
+                                    color: Colors.grey),
+                              ),
+                            ),
+                    ),
+                    title: Text(
+                      item.categoriesName ?? "بدون اسم",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    subtitle: Text(
+                      item.categoriesNameAr ?? "",
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.edit, color: Colors.blueAccent),
+                          onPressed: () => controller.GotoEditpage(item),
+                          tooltip: "تعديل",
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.redAccent),
+                          onPressed: () {
+                            Get.defaultDialog(
+                              title: "تحذير ⚠️",
+                              middleText: "هل تريد حذف هذا القسم؟",
+                              textCancel: "إلغاء",
+                              textConfirm: "حذف",
+                              confirmTextColor: Colors.white,
+                              buttonColor: Colors.redAccent,
+                              onConfirm: () {
+                                controller.delete(
+                                  item.categoriesId!,
+                                  item.categoriesImage!,
+                                );
+                                Get.back();
+                              },
+                            );
+                          },
+                          tooltip: "حذف",
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
