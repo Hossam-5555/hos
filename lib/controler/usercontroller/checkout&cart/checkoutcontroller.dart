@@ -5,8 +5,8 @@ import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
-import 'package:hos/data/datasource/remote/userdata/addresdata.dart';
-import 'package:hos/data/datasource/remote/userdata/checkoutdata.dart';
+import 'package:hos/data/datasource/userdata/addresdata.dart';
+import 'package:hos/data/datasource/userdata/checkoutdata.dart';
 import 'package:hos/data/model/Addresmodel.dart';
 
 class Checkoutcontroller extends GetxController {

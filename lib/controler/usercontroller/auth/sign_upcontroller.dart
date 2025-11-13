@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/handlingdata.dart';
-import 'package:hos/data/datasource/remote/userdata/auth/signupdata.dart';
+import 'package:hos/data/datasource/userdata/auth/signupdata.dart';
 import 'package:hos/veiw/userscreen/screen/auth/login.dart';
 
 class Signupcontroller extends GetxController {

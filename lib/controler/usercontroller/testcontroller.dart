@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/serveces/myservisec.dart';
-import 'package:hos/data/datasource/remote/userdata/addresdata.dart';
+import 'package:hos/data/datasource/userdata/addresdata.dart';
 
 class Testcontroller extends GetxController {
   Addresdata addresdata = Get.put(Addresdata(Get.find()));

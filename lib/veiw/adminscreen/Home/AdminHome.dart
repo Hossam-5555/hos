@@ -21,10 +21,7 @@ class AdminHome extends StatelessWidget {
         centerTitle: true,
         title: const Text(
           "لوحة تحكم المدير",
-          style: TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
         ),
         actions: [
           Padding(
@@ -56,7 +53,7 @@ class AdminHome extends StatelessWidget {
               icon: Icons.shopping_cart_outlined,
               title: "المنتجات",
               onTap: () {
-                // ممكن تضيف صفحة المنتجات هنا
+                controller.gotoitemsview();
               },
             ),
             _buildDashboardCard(

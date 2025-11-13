@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/handlingdata.dart';
-import 'package:hos/data/datasource/remote/userdata/auth/forgetpass/resetpass.dart';
+import 'package:hos/data/datasource/userdata/auth/forgetpass/resetpass.dart';
 
 class Resetpasscontroller extends GetxController {
   late TextEditingController password;

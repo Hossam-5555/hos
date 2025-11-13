@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/functions/upload_image.dart';
-import 'package:hos/data/datasource/remote/admindata/categoriesdata.dart';
+import 'package:hos/data/datasource/admindata/categoriesdata.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/viewcat.dart';
 

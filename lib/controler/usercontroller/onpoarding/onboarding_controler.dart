@@ -3,10 +3,16 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:hos/core/serveces/myservisec.dart';
-import 'package:hos/data/datasource/static/static.dart';
 import 'package:hos/veiw/userscreen/screen/auth/login.dart';
+import 'package:hos/veiw/wedget/onpording/silder.dart';
 
 class OnboardingControler extends GetxController {
+
+
+
+
+
+  
   Myservisec myservisec = Get.find();
   int curentpage = 0;
   late PageController pageController;

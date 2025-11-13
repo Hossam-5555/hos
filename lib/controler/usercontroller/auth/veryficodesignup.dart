@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/handlingdata.dart';
-import 'package:hos/data/datasource/remote/userdata/auth/veryvicodesign.dart';
+import 'package:hos/data/datasource/userdata/auth/veryvicodesign.dart';
 
 class veryfisigncontroler extends GetxController {
   String? email;
