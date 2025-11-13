@@ -91,7 +91,9 @@ class Editcat extends StatelessWidget {
                   label: 'English Name',
                   suffixIcon: Icons.text_fields,
                   textEditingController: controller.name,
-                  valid: (val) {},
+                  valid: (val) {
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 20),
 
@@ -101,7 +103,9 @@ class Editcat extends StatelessWidget {
                   label: 'Arabic Name',
                   suffixIcon: Icons.language,
                   textEditingController: controller.namear,
-                  valid: (val) {},
+                  valid: (val) {
+                    return null;
+                  },
                 ),
 
                 const SizedBox(height: 40),

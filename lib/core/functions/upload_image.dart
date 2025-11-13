@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 imageUploadCamera() async {
@@ -27,4 +29,39 @@ fileUploadGallery({isSvg = false}) async {
   } else {
     return null;
   }
+}
+
+void showImagePickerBottomSheet(File file) {
+  Get.bottomSheet(
+    Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Get.theme.scaffoldBackgroundColor,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      child: Wrap(
+        children: [
+          ListTile(
+            leading: const Icon(Icons.camera_alt),
+            title: const Text("التقاط صورة بالكاميرا"),
+            onTap: () {
+              imageUploadCamera();
+              Get.back();
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.photo_library),
+            title: const Text("اختيار من المعرض"),
+            onTap: () {
+              fileUploadGallery(isSvg: true);
+              Get.back();
+            },
+          ),
+        ],
+      ),
+    ),
+  );
 }

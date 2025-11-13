@@ -2,16 +2,16 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hos/controler/admincontroller/categories/editcontroller.dart';
+import 'package:hos/controler/admincontroller/items/edititemcontroller.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 
-class Editcat extends StatelessWidget {
-  const Editcat({super.key});
+class EditItem extends StatelessWidget {
+  const EditItem({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    Get.put(Editcontroller());
+    Get.put(Edititemcontroller());
 
     return Scaffold(
       backgroundColor: Colors.grey[100],
@@ -20,7 +20,7 @@ class Editcat extends StatelessWidget {
         elevation: 2,
         centerTitle: true,
         title: Text(
-          "Edit Category",
+          "Edit item",
           style: TextStyle(
             color: Colors.black87,
             fontWeight: FontWeight.bold,
@@ -29,7 +29,7 @@ class Editcat extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.black87),
       ),
-      body: GetBuilder<Editcontroller>(
+      body: GetBuilder<Edititemcontroller>(
         builder: (controller) => Form(
           key: controller.editkey,
           child: SingleChildScrollView(
@@ -87,7 +87,7 @@ class Editcat extends StatelessWidget {
 
                 // اسم القسم
                 Textfealdauth(
-                  hint: "Category name",
+                  hint: "item name",
                   label: 'English Name',
                   suffixIcon: Icons.text_fields,
                   textEditingController: controller.name,
@@ -97,7 +97,7 @@ class Editcat extends StatelessWidget {
 
                 // الاسم بالعربية
                 Textfealdauth(
-                  hint: "اسم القسم بالعربية",
+                  hint: "اسم المنتج بالعربية",
                   label: 'Arabic Name',
                   suffixIcon: Icons.language,
                   textEditingController: controller.namear,

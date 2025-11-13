@@ -6,12 +6,13 @@ import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/functions/upload_image.dart';
 import 'package:hos/data/datasource/admindata/categoriesdata.dart';
+import 'package:hos/data/datasource/admindata/itemdata.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/viewcat.dart';
 
-class Editcontroller extends GetxController {
+class Edititemcontroller extends GetxController {
   Statusrequest statusrequest = Statusrequest.none;
-  AdmindaTaCaregores admindaTaCaregores = AdmindaTaCaregores(Get.find());
+  admindataitem dataitem = admindataitem(Get.find());
   late TextEditingController name;
   late TextEditingController namear;
   GlobalKey<FormState> editkey = GlobalKey<FormState>();
@@ -29,12 +30,12 @@ class Editcontroller extends GetxController {
     update();
 
     try {
-      var responseRaw = await admindaTaCaregores.editcat(
+      var responseRaw = await dataitem.edititem(
         catmodel!.categoriesId!,
         name.text,
         namear.text,
-        catmodel!.categoriesImage!,
-        file,
+        // catmodel!.categoriesImage!,
+        // file,
       );
 
       // لو response من السيرفر Map صالح

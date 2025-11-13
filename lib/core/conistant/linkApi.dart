@@ -59,12 +59,12 @@ class LinkApi {
   static String driverapproveorder = '$server/driver/orders/approve.php';
   static String driverdoneorder = '$server/driver/orders/done.php';
 
-  //Admin
+  //Admin //categores
   static String adminaddcat = '$server/admin/categories/add.php';
   static String admineditcat = '$server/admin/categories/edit.php';
   static String adminviewcat = '$server/admin/categories/view.php';
   static String admindeletecat = '$server/admin/categories/delete.php';
-  //categores
+  //Admin //items
   static String adminadditem = '$server/admin/items/add.php';
   static String adminviewitem = '$server/admin/items/view.php';
   static String adminedititem = '$server/admin/items/edit.php';

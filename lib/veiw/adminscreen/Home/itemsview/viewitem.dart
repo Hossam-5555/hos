@@ -51,7 +51,7 @@ class viewitem extends StatelessWidget {
               itemBuilder: (context, index) {
                 final item = controller.itemlist[index];
                 final imageUrl =
-                    "${LinkApi.imagecategories}/${item.categoriesImage}";
+                    "${LinkApi.imageitems}/${item.itemsImage}";
 
                 return Container(
                   decoration: BoxDecoration(
@@ -73,8 +73,8 @@ class viewitem extends StatelessWidget {
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child:
-                          (item.categoriesImage != null &&
-                              item.categoriesImage!.toLowerCase().endsWith(
+                          (item.itemsImage != null &&
+                              item.itemsImage!.toLowerCase().endsWith(
                                 ".svg",
                               ))
                           ? SvgPicture.network(
@@ -130,7 +130,7 @@ class viewitem extends StatelessWidget {
                           onPressed: () {
                             Get.defaultDialog(
                               title: "تحذير ⚠️",
-                              middleText: "هل تريد حذف هذا القسم؟",
+                              middleText: "هل تريد حذف هذا المنتج",
                               textCancel: "إلغاء",
                               textConfirm: "حذف",
                               confirmTextColor: Colors.white,

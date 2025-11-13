@@ -9,6 +9,7 @@ class Addcategories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final controller = Get.put(Addcatcontroller());
 
     return Scaffold(
@@ -47,37 +48,7 @@ class Addcategories extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
 
-                // اسم الفئة
-                Textfealdauth(
-                  hint: "اكتب اسم الفئة بالإنجليزية",
-                  label: "Category Name",
-                  suffixIcon: Icons.category_outlined,
-                  textEditingController: controller.name,
-                  valid: (val) {
-                    if (val!.isEmpty) return "الاسم مطلوب";
-                    return null;
-                  },
-                ),
 
-                const SizedBox(height: 20),
-
-                // اسم الفئة بالعربية
-                Textfealdauth(
-                  hint: "اكتب اسم الفئة بالعربية",
-                  label: "الاسم بالعربية",
-                  suffixIcon: Icons.language_outlined,
-                  textEditingController: controller.namear,
-                  valid: (val) {
-                    if (val!.isEmpty) return "الاسم بالعربية مطلوب";
-                    return null;
-                  },
-                ),
-
-                const SizedBox(height: 30),
-                const Divider(height: 1, thickness: 1),
-                const SizedBox(height: 30),
-
-                // رفع الصورة
                 Center(
                   child: Column(
                     children: [
@@ -116,6 +87,40 @@ class Addcategories extends StatelessWidget {
                     ],
                   ),
                 ),
+                SizedBox(height: 20,),
+
+                // اسم الفئة
+                Textfealdauth(
+                  hint: "اكتب اسم الفئة بالإنجليزية",
+                  label: "Category Name",
+                  suffixIcon: Icons.category_outlined,
+                  textEditingController: controller.name,
+                  valid: (val) {
+                    if (val!.isEmpty) return "الاسم مطلوب";
+                    return null;
+                  },
+                ),
+
+                const SizedBox(height: 20),
+
+                // اسم الفئة بالعربية
+                Textfealdauth(
+                  hint: "اكتب اسم الفئة بالعربية",
+                  label: "الاسم بالعربية",
+                  suffixIcon: Icons.language_outlined,
+                  textEditingController: controller.namear,
+                  valid: (val) {
+                    if (val!.isEmpty) return "الاسم بالعربية مطلوب";
+                    return null;
+                  },
+                ),
+
+                const SizedBox(height: 30),
+                const Divider(height: 1, thickness: 1),
+                const SizedBox(height: 30),
+
+                // رفع الصورة
+                
 
                 const SizedBox(height: 40),
 

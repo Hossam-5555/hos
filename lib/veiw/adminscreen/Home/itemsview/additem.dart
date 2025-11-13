@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/admincontroller/categories/addcatcontroller.dart';
+import 'package:hos/controler/admincontroller/items/additemcontroller.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 
-class Addcategories extends StatelessWidget {
-  const Addcategories({super.key});
+class Additem extends StatelessWidget {
+  const Additem({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(Addcatcontroller());
+    // ignore: unused_local_variable
+    final controller = Get.put(Additemcontroller());
 
     return Scaffold(
       backgroundColor: const Color(0xFFF6F8FB),
@@ -17,11 +18,8 @@ class Addcategories extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         title: const Text(
-          "إضافة فئة جديدة",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
+          "إضافة عنصر جديدة",
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
         ),
         backgroundColor: Colors.white,
         leading: IconButton(
@@ -29,7 +27,7 @@ class Addcategories extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
       ),
-      body: GetBuilder<Addcatcontroller>(
+      body: GetBuilder<Additemcontroller>(
         builder: (controller) => SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
           child: Form(
@@ -37,19 +35,12 @@ class Addcategories extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "معلومات الفئة",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
+             
                 const SizedBox(height: 20),
 
                 // اسم الفئة
                 Textfealdauth(
-                  hint: "اكتب اسم الفئة بالإنجليزية",
+                  hint: "اكتب اسم العنصر بالإنجليزية",
                   label: "Category Name",
                   suffixIcon: Icons.category_outlined,
                   textEditingController: controller.name,
@@ -63,8 +54,88 @@ class Addcategories extends StatelessWidget {
 
                 // اسم الفئة بالعربية
                 Textfealdauth(
-                  hint: "اكتب اسم الفئة بالعربية",
+                  hint: "اكتب اسم العنصر بالعربية",
                   label: "الاسم بالعربية",
+                  suffixIcon: Icons.language_outlined,
+                  textEditingController: controller.namear,
+                  valid: (val) {
+                    if (val!.isEmpty) return "الاسم بالعربية مطلوب";
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+
+                Textfealdauth(
+                  hint: "Description",
+                  label: "Description English ",
+                  suffixIcon: Icons.language_outlined,
+                  textEditingController: controller.namear,
+                  valid: (val) {
+                    if (val!.isEmpty) return "الاسم بالعربية مطلوب";
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                Textfealdauth(
+                  hint: "الوصف",
+                  label: " الوصف ب اللغه العربيه",
+                  suffixIcon: Icons.language_outlined,
+                  textEditingController: controller.namear,
+                  valid: (val) {
+                    if (val!.isEmpty) return "الاسم بالعربية مطلوب";
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+
+                Textfealdauth(
+                  hint: "active",
+                  label: " active ",
+                  suffixIcon: Icons.language_outlined,
+                  textEditingController: controller.namear,
+                  valid: (val) {
+                    if (val!.isEmpty) return "الاسم بالعربية مطلوب";
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+
+                Textfealdauth(
+                  hint: "count",
+                  label: "item count ",
+                  suffixIcon: Icons.language_outlined,
+                  textEditingController: controller.namear,
+                  valid: (val) {
+                    if (val!.isEmpty) return "الاسم بالعربية مطلوب";
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                Textfealdauth(
+                  hint: "price",
+                  label: " item price ",
+                  suffixIcon: Icons.language_outlined,
+                  textEditingController: controller.namear,
+                  valid: (val) {
+                    if (val!.isEmpty) return "الاسم بالعربية مطلوب";
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                Textfealdauth(
+                  hint: "Descount",
+                  label: "discount  ",
+                  suffixIcon: Icons.language_outlined,
+                  textEditingController: controller.namear,
+                  valid: (val) {
+                    if (val!.isEmpty) return "الاسم بالعربية مطلوب";
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                Textfealdauth(
+                  hint: "date",
+                  label: "date now ",
                   suffixIcon: Icons.language_outlined,
                   textEditingController: controller.namear,
                   valid: (val) {
@@ -92,10 +163,10 @@ class Addcategories extends StatelessWidget {
                             borderRadius: BorderRadius.circular(15),
                           ),
                         ),
-                        onPressed: () => controller.chooseimage(),
+                        onPressed: () => controller.showoptionimage(),
                         icon: const Icon(Icons.add_a_photo, color: Colors.blue),
                         label: const Text(
-                          "اختر صورة للفئة",
+                          "اختر صورة للعنصر",
                           style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.w600,
@@ -137,7 +208,7 @@ class Addcategories extends StatelessWidget {
                       controller.addcategories();
                     },
                     child: const Text(
-                      "إضافة الفئة",
+                      "إضافة عنصر",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,

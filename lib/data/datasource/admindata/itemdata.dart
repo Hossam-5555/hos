@@ -6,7 +6,7 @@ class admindataitem {
   admindataitem(this.crud);
 
   additem(String name, String namear) async {
-    var response = await crud.postrequset(LinkApi.adminaddcat, {
+    var response = await crud.postrequset(LinkApi.adminadditem, {
       "name": name,
       "namear": namear,
     });
@@ -14,7 +14,7 @@ class admindataitem {
   }
 
   edititem(String catid, String name, String namear) async {
-    var response = await crud.postrequset(LinkApi.admineditcat, {
+    var response = await crud.postrequset(LinkApi.adminedititem, {
       "catid": catid,
       "name": name,
       "namear": namear,
@@ -23,14 +23,14 @@ class admindataitem {
   }
 
   deleteitem(String catid) async {
-    var response = await crud.postrequset(LinkApi.admindeletecat, {
+    var response = await crud.postrequset(LinkApi.admindeleteitems, {
       "catid": catid,
     });
     return response.fold((l) => l, (r) => r);
   }
 
   viewitem() async {
-    var response = await crud.postrequset(LinkApi.adminviewcat, {});
+    var response = await crud.postrequset(LinkApi.adminviewitem, {});
     return response.fold((l) => l, (r) => r);
   }
 }

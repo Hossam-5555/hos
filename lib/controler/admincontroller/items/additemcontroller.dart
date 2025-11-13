@@ -5,19 +5,19 @@ import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/functions/upload_image.dart';
-import 'package:hos/data/datasource/admindata/categoriesdata.dart';
+import 'package:hos/data/datasource/admindata/itemdata.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/viewcat.dart';
 
-class Addcatcontroller extends GetxController {
+class Additemcontroller extends GetxController {
   Statusrequest statusrequest = Statusrequest.none;
-  AdmindaTaCaregores admindaTaCaregores = AdmindaTaCaregores(Get.find());
+  admindataitem dataitem = admindataitem(Get.find());
   late TextEditingController name;
   late TextEditingController namear;
   GlobalKey<FormState> validkey = GlobalKey<FormState>();
   File? file;
 
-  chooseimage() async {
-    file = await fileUploadGallery(isSvg: true);
+  showoptionimage() {
+    showImagePickerBottomSheet(file!);
     update();
   }
 
@@ -31,10 +31,10 @@ class Addcatcontroller extends GetxController {
       statusrequest = Statusrequest.loading;
       update();
 
-      var response = await admindaTaCaregores.addcat(
+      var response = await dataitem.additem(
         name.text,
         namear.text,
-        file!, // دلوقتي آمن نستخدمها
+        // file!, // دلوقتي آمن نستخدمها
       );
 
       statusrequest = handling(response);
