@@ -106,9 +106,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Italic
+    - family: RobotoMono
       fonts:
-        - asset: assets/fonts/Italic/PlayfairDisplay-Italic.ttf
+        - asset: assets/fonts/RobotoMono/RobotoMono-Light.ttf
         - asset: assets/fonts/Italic/PlayfairDisplay-SemiBold.ttf
   #         style: italic
   #   - family: Trajan Pro

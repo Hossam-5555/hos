@@ -16,7 +16,7 @@ ThemeData themeEnglish = ThemeData(
     titleTextStyle: TextStyle(
       color: Appcolor.black,
       fontSize: 22, // ← حجم أنسب لعنوان الصفحة
-      fontFamily: 'Italic', // ← استخدم اسم الخط هنا
+      fontFamily: 'RobotoMono', // ← استخدم اسم الخط هنا
       fontWeight: FontWeight.bold,
     ),
     elevation: 0.0,
@@ -35,36 +35,36 @@ ThemeData themeEnglish = ThemeData(
     headlineLarge: TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 32,
-      fontFamily: 'Italic',
+      fontFamily: 'RobotoMono',
     ),
     headlineMedium: TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 28,
-      fontFamily: 'Italic',
+      fontFamily: 'RobotoMono',
     ),
     headlineSmall: TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 20,
       color: Colors.black,
-      fontFamily: 'Italic',
+      fontFamily: 'RobotoMono',
     ),
     titleLarge: TextStyle(
       // يمكن استخدامه لعناوين الأقسام
       fontWeight: FontWeight.bold,
       fontSize: 22,
-      fontFamily: 'Italic',
+      fontFamily: 'RobotoMono',
     ),
     bodyLarge: TextStyle(
       // النص الأساسي
       fontSize: 16,
-      fontFamily: 'Italic',
+      fontFamily: 'RobotoMono',
       color: Appcolor.grey,
       height: 1.5, // ← ارتفاع سطر مريح للقراءة
     ),
     bodyMedium: TextStyle(
       // نص ثانوي
       fontSize: 14,
-      fontFamily: 'Italic',
+      fontFamily: 'RobotoMono',
       color: Appcolor.grey.withOpacity(0.8),
       height: 1.4,
     ),

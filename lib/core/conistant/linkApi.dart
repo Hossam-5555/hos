@@ -1,11 +1,11 @@
 class LinkApi {
-  // static String server = 'http://10.0.2.2/ecommerce';
-  static String server = "http://192.168.1.8/ecommerce";
+  static String server = 'http://10.0.2.2/ecommerce';
+  // static String server = "http://192.168.1.8/ecommerce";
 
   static String linktest = "$server/test.php";
   //imagelink=============================
-  // static String imagelink = 'http://10.0.2.2/ecommerce/upload';
-  static String imagelink = 'http://192.168.1.8/ecommerce/upload';
+  static String imagelink = 'http://10.0.2.2/ecommerce/upload';
+  // static String imagelink = 'http://192.168.1.8/ecommerce/upload';
 
   static String imagecategories = '$imagelink/categories';
   static String imageitems = '$imagelink/items';
