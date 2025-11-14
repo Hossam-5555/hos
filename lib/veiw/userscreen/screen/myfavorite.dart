@@ -12,10 +12,14 @@ class Myfavorite extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final height = size.height;
+    final width = size.width;
+
     Myfavcontroler controller = Get.put(Myfavcontroler());
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
+        preferredSize: Size.fromHeight(height * 0.085), // ارتفاع نسبي
         child: Appbarbackicon(herotag: '', title: "My Favorite"),
       ),
       body: SafeArea(
@@ -23,7 +27,7 @@ class Myfavorite extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(width * 0.03), // Padding نسبي
               child: Searchbar(
                 onPressedIcon: () {
                   controller.onsearch();
@@ -36,25 +40,28 @@ class Myfavorite extends StatelessWidget {
               ),
             ),
             Expanded(
-              // ✅ أضفت Expanded هنا
               child: GetBuilder<Myfavcontroler>(
                 builder: (controller) => Handlingdataview(
                   statusrequest: controller.statusrequest,
                   widget: !controller.issearch
                       ? GridView.builder(
-                          shrinkWrap: true, // ✅ يمنع التضارب مع Expanded
-                          physics:
-                              const BouncingScrollPhysics(), // ✅ للسكرول الطبيعي
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
                           itemCount: controller.data.length,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: width * 0.03,
+                            vertical: height * 0.015,
+                          ),
                           gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                childAspectRatio: 0.75,
-                                crossAxisSpacing: 12,
-                                mainAxisSpacing: 12,
-                              ),
-                          itemBuilder: (context, i) =>
-                              favcard(items: controller.data[i]),
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: width / (height * 0.60), // نسبي
+                            crossAxisSpacing: width * 0.03,
+                            mainAxisSpacing: height * 0.015,
+                          ),
+                          itemBuilder: (context, i) => favcard(
+                            items: controller.data[i],
+                          ),
                         )
                       : Searchpage(searchdata: controller.searchlist),
                 ),

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/Homecontroller.dart';
-import 'package:hos/core/conistant/routs.dart';
-import 'package:hos/core/serveces/myservisec.dart';
+
 
 class AdminHome extends StatelessWidget {
   AdminHome({super.key});
 
-  final Myservisec myservisec = Myservisec();
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(adminHomecontroller());
+    final size = MediaQuery.of(context).size;
+    final height = size.height;
+    final width = size.width;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F6FA),
@@ -19,14 +20,20 @@ class AdminHome extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.white,
         centerTitle: true,
+        toolbarHeight: height * 0.08, // ارتفاع نسبي
         title: const Text(
           "لوحة تحكم المدير",
-          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: Colors.black87,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 12.0),
+            padding: EdgeInsets.only(right: width * 0.03),
             child: CircleAvatar(
+              radius: width * 0.06,
               backgroundColor: Colors.grey.shade200,
               child: const Icon(Icons.person, color: Colors.black87),
             ),
@@ -35,12 +42,12 @@ class AdminHome extends StatelessWidget {
       ),
 
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(width * 0.04), // Padding نسبي
         child: GridView.count(
           crossAxisCount: 2,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-          childAspectRatio: 1.1,
+          mainAxisSpacing: height * 0.02,
+          crossAxisSpacing: width * 0.04,
+          childAspectRatio: width / (height * 0.35), // نسبي للعرض والارتفاع
           children: [
             _buildDashboardCard(
               color: Colors.blueAccent,
@@ -52,25 +59,20 @@ class AdminHome extends StatelessWidget {
               color: Colors.green,
               icon: Icons.shopping_cart_outlined,
               title: "المنتجات",
-              onTap: () {
-                controller.gotoitemsview();
-              },
+              onTap: () => controller.gotoitemsview(),
             ),
             _buildDashboardCard(
               color: Colors.orange,
               icon: Icons.analytics_outlined,
               title: "التقارير",
-              onTap: () {
-                // صفحة التحليلات أو الإحصائيات
-              },
+              onTap: () {},
             ),
             _buildDashboardCard(
               color: Colors.redAccent,
               icon: Icons.logout,
               title: "تسجيل الخروج",
               onTap: () {
-                myservisec.sharedPreferences.clear();
-                Get.offAllNamed(Approute.login);
+                controller.logout();
               },
             ),
           ],
@@ -85,43 +87,51 @@ class AdminHome extends StatelessWidget {
     required String title,
     required VoidCallback onTap,
   }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeInOut,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.15),
-              spreadRadius: 2,
-              blurRadius: 8,
-              offset: const Offset(0, 3),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        final height = constraints.maxHeight;
+
+        return GestureDetector(
+          onTap: onTap,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(18),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.15),
+                  spreadRadius: 2,
+                  blurRadius: 8,
+                  offset: const Offset(0, 3),
+                ),
+              ],
             ),
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              radius: 32,
-              backgroundColor: color.withOpacity(0.15),
-              child: Icon(icon, color: color, size: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  radius: width * 0.18, // نسبي للعرض
+                  backgroundColor: color.withOpacity(0.15),
+                  child: Icon(icon, color: color, size: width * 0.12),
+                ),
+                SizedBox(height: height * 0.08),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: width * 0.045, // حجم نص نسبي
+                    color: Colors.black87,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
-            const SizedBox(height: 10),
-            Text(
-              title,
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 15,
-                color: Colors.black87,
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

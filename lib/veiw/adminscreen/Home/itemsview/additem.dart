@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/items/additemcontroller.dart';
@@ -10,133 +8,121 @@ class Additem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: unused_local_variable
-    final controller = Get.put(Additemcontroller());
+    final size = MediaQuery.of(context).size;
+    final height = size.height;
+    final width = size.width;
+
+    Get.put(Additemcontroller());
 
     return Scaffold(
       backgroundColor: const Color(0xFFF6F8FB),
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
+        toolbarHeight: height * 0.08, // ارتفاع نسبي
         title: const Text(
           "إضافة عنصر جديدة",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+            fontSize: 20,
+          ),
         ),
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87),
+          icon: Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.black87,
+            size: width * 0.06,
+          ),
           onPressed: () => Get.back(),
         ),
       ),
       body: GetBuilder<Additemcontroller>(
         builder: (controller) => SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+          padding: EdgeInsets.symmetric(
+            horizontal: width * 0.05,
+            vertical: height * 0.03,
+          ),
           child: Form(
             key: controller.itemvalidKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 20),
+                SizedBox(height: height * 0.025),
 
-                // اسم الفئة
+                // اسم العنصر بالإنجليزية
                 Textfealdauth(
                   hint: "اكتب اسم العنصر بالإنجليزية",
                   label: "Category Name",
                   suffixIcon: Icons.category_outlined,
                   textEditingController: controller.name,
-                  valid: (val) {
-                    if (val!.isEmpty) return "الاسم مطلوب";
-                    return null;
-                  },
+                  valid: (val) => val!.isEmpty ? "الاسم مطلوب" : null,
                 ),
 
-                const SizedBox(height: 20),
-
-                // اسم الفئة بالعربية
+                // اسم العنصر بالعربية
                 Textfealdauth(
                   hint: "اكتب اسم العنصر بالعربية",
                   label: "الاسم بالعربية",
                   suffixIcon: Icons.language_outlined,
                   textEditingController: controller.namear,
-                  valid: (val) {
-                    if (val!.isEmpty) return "الاسم بالعربية مطلوب";
-                    return null;
-                  },
+                  valid: (val) => val!.isEmpty ? "الاسم بالعربية مطلوب" : null,
                 ),
-                const SizedBox(height: 20),
 
+                // Description English
                 Textfealdauth(
                   hint: "Description",
-                  label: "Description English ",
-                  suffixIcon: Icons.language_outlined,
+                  label: "Description English",
+                  suffixIcon: Icons.description_outlined,
                   textEditingController: controller.namear,
-                  valid: (val) {
-                    if (val!.isEmpty) return "الاسم بالعربية مطلوب";
-                    return null;
-                  },
+                  valid: (val) => val!.isEmpty ? "الوصف مطلوب" : null,
                 ),
-                const SizedBox(height: 20),
+
+                // Description Arabic
                 Textfealdauth(
                   hint: "الوصف",
-                  label: " الوصف ب اللغه العربيه",
+                  label: "الوصف بالعربية",
                   suffixIcon: Icons.language_outlined,
                   textEditingController: controller.namear,
-                  valid: (val) {
-                    if (val!.isEmpty) return "الاسم بالعربية مطلوب";
-                    return null;
-                  },
+                  valid: (val) => val!.isEmpty ? "الوصف بالعربية مطلوب" : null,
                 ),
-                const SizedBox(height: 20),
 
+                // Active
                 Textfealdauth(
                   hint: "active",
-                  label: " active ",
-                  suffixIcon: Icons.language_outlined,
+                  label: "Active",
+                  suffixIcon: Icons.toggle_on_outlined,
                   textEditingController: controller.namear,
-                  valid: (val) {
-                    if (val!.isEmpty) return "الاسم بالعربية مطلوب";
-                    return null;
-                  },
+                  valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
                 ),
-                const SizedBox(height: 20),
 
+                // Count
                 Textfealdauth(
                   hint: "count",
-                  label: "item count ",
-                  suffixIcon: Icons.language_outlined,
+                  label: "Item count",
+                  suffixIcon: Icons.format_list_numbered,
                   textEditingController: controller.namear,
-                  valid: (val) {
-                    if (val!.isEmpty) return "الاسم بالعربية مطلوب";
-                    return null;
-                  },
+                  valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
                 ),
-                const SizedBox(height: 20),
+
+                // Price
                 Textfealdauth(
                   hint: "price",
-                  label: " item price ",
-                  suffixIcon: Icons.language_outlined,
+                  label: "Item price",
+                  suffixIcon: Icons.attach_money_outlined,
                   textEditingController: controller.namear,
-                  valid: (val) {
-                    if (val!.isEmpty) return "الاسم بالعربية مطلوب";
-                    return null;
-                  },
+                  valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
                 ),
-                const SizedBox(height: 20),
-                Textfealdauth(
-                  hint: "Descount",
-                  label: "discount  ",
-                  suffixIcon: Icons.language_outlined,
-                  textEditingController: controller.namear,
-                  valid: (val) {
-                    if (val!.isEmpty) return "الاسم بالعربية مطلوب";
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
 
-                const SizedBox(height: 30),
-                const Divider(height: 1, thickness: 1),
-                const SizedBox(height: 30),
+                // Discount
+                Textfealdauth(
+                  hint: "Discount",
+                  label: "Discount",
+                  suffixIcon: Icons.discount_outlined,
+                  textEditingController: controller.namear,
+                  valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
+                ),
+                SizedBox(height: height * 0.035),
 
                 // رفع الصورة
                 Center(
@@ -144,9 +130,9 @@ class Additem extends StatelessWidget {
                     children: [
                       TextButton.icon(
                         style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 25,
-                            vertical: 15,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: width * 0.06,
+                            vertical: height * 0.015,
                           ),
                           backgroundColor: Colors.blueAccent.withOpacity(0.1),
                           shape: RoundedRectangleBorder(
@@ -155,39 +141,43 @@ class Additem extends StatelessWidget {
                         ),
                         onPressed: () => controller.showoptionimage(),
                         icon: const Icon(Icons.add_a_photo, color: Colors.blue),
-                        label: const Text(
+                        label: Text(
                           "اختر صورة للعنصر",
                           style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.w600,
+                            fontSize: width * 0.04,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 15),
+                      SizedBox(height: height * 0.02),
                       if (controller.file != null)
                         Container(
-                          height: 100,
-                          width: 100,
+                          height: height * 0.15,
+                          width: width * 0.35,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(color: Colors.blueAccent),
                           ),
-                          child: Image.file(controller.file!),
+                          child: Image.file(
+                            controller.file!,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                     ],
                   ),
                 ),
 
-                const SizedBox(height: 40),
+                SizedBox(height: height * 0.05),
 
                 // زر الإضافة
                 Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black87,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 50,
-                        vertical: 14,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: width * 0.1,
+                        vertical: height * 0.018,
                       ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25),
@@ -197,17 +187,18 @@ class Additem extends StatelessWidget {
                     onPressed: () {
                       controller.addcategories();
                     },
-                    child: const Text(
+                    child: Text(
                       "إضافة عنصر",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: width * 0.045,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1,
                       ),
                     ),
                   ),
                 ),
+                SizedBox(height: height * 0.05),
               ],
             ),
           ),

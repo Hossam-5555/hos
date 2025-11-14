@@ -33,13 +33,11 @@ class Homescreen extends StatelessWidget {
           ),
 
           // ============= تعديل مكان الـ BottomAppbar =================
-          floatingActionButton: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.65, // عرض مناسب
-            child: Buttomappbar(), // widget الخاص بك كما هو
+          bottomNavigationBar: Container(
+            padding: EdgeInsets.only(left: 50,right: 50,bottom: 20),
+            child: Buttomappbar(),    
           ),
 
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
 
           // =================================================================
           body: controller.pages.elementAt(controller.Currentpage),

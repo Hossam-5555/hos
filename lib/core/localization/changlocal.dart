@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/get_navigation.dart';
@@ -12,6 +11,7 @@ class LocalController extends GetxController {
   Myservisec myservisec = Get.find();
   ThemeData apptheme = themeEnglish;
   late Locale language;
+  // ignore: non_constant_identifier_names
   void Changelang(String Codelang) {
     Locale locale = Locale(Codelang);
     myservisec.sharedPreferences.setString('lang', Codelang);

@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/viewcat.dart';
 import 'package:hos/veiw/adminscreen/Home/itemsview/viewitem.dart';
+import 'package:hos/veiw/userscreen/screen/auth/login.dart';
 
 class adminHomecontroller extends GetxController {
   Myservisec myservisec = Get.put(Myservisec());
@@ -17,6 +18,15 @@ class adminHomecontroller extends GetxController {
   gotoitemsview() {
     Get.to(
       () => viewitem(),
+      duration: Duration(milliseconds: 700),
+      transition: Transition.fadeIn,
+    );
+  }
+
+  logout() {
+    myservisec.sharedPreferences.clear();
+    Get.to(
+      () => Login(),
       duration: Duration(milliseconds: 700),
       transition: Transition.fadeIn,
     );
