@@ -13,16 +13,24 @@ class Additemcontroller extends GetxController {
   admindataitem dataitem = admindataitem(Get.find());
   late TextEditingController name;
   late TextEditingController namear;
-  GlobalKey<FormState> validkey = GlobalKey<FormState>();
+  late TextEditingController description;
+  late TextEditingController descriptionar;
+  late TextEditingController active;
+  late TextEditingController count;
+  late TextEditingController price;
+  late TextEditingController Descount;
+  late TextEditingController date;
+
+  GlobalKey<FormState> itemvalidKey = GlobalKey<FormState>();
   File? file;
 
   showoptionimage() {
-    showImagePickerBottomSheet(file!);
+    showImagePickerBottomSheet(file);
     update();
   }
 
   addcategories() async {
-    if (validkey.currentState!.validate()) {
+    if (itemvalidKey.currentState!.validate()) {
       if (file == null) {
         Get.snackbar("تنبيه", "من فضلك اختر صورة أولاً");
         return;

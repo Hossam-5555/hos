@@ -34,7 +34,7 @@ class HomePage extends StatelessWidget {
                 children: [
                   /// 🔍 شريط البحث
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
                     child: Searchbar(
                       onPressedIcon: controller.onsearch,
                       onChanged: controller.checksearch,
@@ -53,11 +53,13 @@ class HomePage extends StatelessWidget {
                               Titles(title: "Categories"),
                               SizedBox(height: height * 0.01),
 
+                              /// 🔥 كاتيجوريز
                               SizedBox(
-                                height: height * 0.090,
+                                height: height * 0.10, // تعديل نسبي
                                 child: listcatigories(),
                               ),
 
+                              /// 🔥 كارت الخصم
                               OfferCard(
                                 title: 'خصم على الأجهزة',
                                 description:
@@ -65,15 +67,17 @@ class HomePage extends StatelessWidget {
                                 discount: "50% OFF",
                                 onTap: () {},
                               ),
-                              SizedBox(height: 10),
+                              SizedBox(height: height * 0.010),
 
+                              /// 🔥 الكيرفيد ايتيمز
                               CurvedItemsView(),
-                              SizedBox(height: 10),
+                              SizedBox(height: height * 0.015),
+
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Titles(title: " New Collections"),
+                                  Expanded(
+                                    child: Titles(title: " New Collections"),
+                                  ),
                                   TextButton.icon(
                                     iconAlignment: IconAlignment.start,
                                     onPressed: () {},
@@ -86,35 +90,16 @@ class HomePage extends StatelessWidget {
                                           109,
                                           109,
                                         ),
-                                        fontSize: 14,
                                       ),
                                     ),
                                     label: const Icon(
                                       Icons.arrow_forward,
                                       color: Color.fromARGB(255, 0, 0, 0),
-                                      size: 18,
                                     ),
                                   ),
                                 ],
                               ),
-                              //top selling دي هتتعمل في قاعده البيانات عن طريق انك هتجمع العمود بتاع
-                              //cart_order,
-                              // هتعمل view تجيبه و تعرضه تنازلي من الكبير للضغير dcs
-                              SizedBox(
-                                height: height * 0.090,
-                                child: listcatigories(),
-                              ),
-                              OfferCard(
-                                title: 'خصم على الأجهزة',
-                                description:
-                                    "خصم يصل إلى 50% على الهواتف واللابتوبات",
-                                discount: "50% OFF",
-                                onTap: () {},
-                              ),
 
-                              SizedBox(height: height * 0.02),
-                              // هنا تقدر تضيف مثلاً آخر المنتجات أو الكروت
-                              // ItemsCardhome(index: i)
                             ],
                           )
                         : Searchpage(searchdata: controller.searchlist),

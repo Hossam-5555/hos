@@ -15,28 +15,29 @@ class Items extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size; // مقاسات الشاشة
+    final height = size.height;
+    final width = size.width;
+
     ItemsControler controller = Get.put(ItemsControler());
     FavController favController = Get.put(FavController());
+
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
+        preferredSize: Size.fromHeight(height * 0.08), // نسبي
         child: Appbarbackicon(title: "Items", herotag: "carttag"),
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.symmetric(horizontal: width * 0.03),
           child: Column(
             children: [
               /// 🔍 شريط البحث
               Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: EdgeInsets.symmetric(
+                    vertical: height * 0.015, horizontal: width * 0.01),
                 child: Searchbar(
-                  onPressedIcon: () {
-                    controller.onsearch();
-                  },
-                  onChanged: (val) {
-                    controller.checksearch(val);
-                  },
+                  onPressedIcon: controller.onsearch,
+                  onChanged: controller.checksearch,
                   title: "ابحث عن منتج...",
                   mycontroller: controller.search!,
                 ),
@@ -44,38 +45,36 @@ class Items extends StatelessWidget {
 
               /// 📂 القائمة الأفقية للأقسام
               Container(
-                margin: const EdgeInsets.only(top: 15, bottom: 10),
-                height: size.height * 0.07, // متجاوبة مع أي شاشة
-                width: size.width,
+                margin: EdgeInsets.only(top: height * 0.02, bottom: height * 0.015),
+                height: height * 0.08, // متجاوبة مع أي شاشة
+                width: width,
                 child: listcatigoriesitem(),
               ),
 
               /// 🛍 شبكة العناصر (المنتجات)
-              GetBuilder<ItemsControler>(
-                builder: (controller) => Handlingdataview(
-                  statusrequest: controller.statusrequest,
-                  widget: !controller.issearch
-                      ? Expanded(
-                          child: GridView.builder(
-                            padding: const EdgeInsets.all(12),
+              Expanded(
+                child: GetBuilder<ItemsControler>(
+                  builder: (controller) => Handlingdataview(
+                    statusrequest: controller.statusrequest,
+                    widget: !controller.issearch
+                        ? GridView.builder(
+                            padding: EdgeInsets.all(width * 0.03),
                             gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 0.70,
-                                  crossAxisSpacing: 12,
-                                  mainAxisSpacing: 12,
-                                ),
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: width / (height * 0.55),
+                              crossAxisSpacing: width * 0.03,
+                              mainAxisSpacing: height * 0.02,
+                            ),
                             itemCount: controller.data.length,
                             itemBuilder: (context, i) {
-                              favController.isfavorite[controller
-                                      .data[i]
-                                      .itemsId] ==
+                              favController.isfavorite[controller.data[i].itemsId] =
                                   controller.data[i].favorite;
-                              return _buildItemCard(i);
+                              return _buildItemCard(context, i, width, height);
                             },
-                          ),
-                        )
-                      : Searchpage(searchdata: controller.searchlist),
+                          )
+                        : Searchpage(searchdata: controller.searchlist),
+                  ),
                 ),
               ),
             ],
@@ -86,22 +85,26 @@ class Items extends StatelessWidget {
   }
 
   /// 🖼️ كارت بعرض ثلاثي الأبعاد
-  Widget _buildItemCard(int index) {
+  Widget _buildItemCard(BuildContext context, int index, double width, double height) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16), // حواف ناعمة
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2), // ظل خفيف
-            blurRadius: 8, // مدى الانتشار
-            offset: const Offset(2, 4), // اتجاه الظل (يمين وتحت)
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 8,
+            offset: Offset(2, 4),
           ),
         ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: ItemsCard(i: index), // الكارت الأصلي بتاعك
+        child: SizedBox(
+          width: width * 0.45, // عرض نسبي لكل كارت
+          height: height * 0.28, // ارتفاع نسبي لكل كارت
+          child: ItemsCard(i: index),
+        ),
       ),
     );
   }

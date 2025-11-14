@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/items/additemcontroller.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
@@ -31,11 +32,10 @@ class Additem extends StatelessWidget {
         builder: (controller) => SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
           child: Form(
-            key: controller.validkey,
+            key: controller.itemvalidKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-             
                 const SizedBox(height: 20),
 
                 // اسم الفئة
@@ -133,16 +133,6 @@ class Additem extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 20),
-                Textfealdauth(
-                  hint: "date",
-                  label: "date now ",
-                  suffixIcon: Icons.language_outlined,
-                  textEditingController: controller.namear,
-                  valid: (val) {
-                    if (val!.isEmpty) return "الاسم بالعربية مطلوب";
-                    return null;
-                  },
-                ),
 
                 const SizedBox(height: 30),
                 const Divider(height: 1, thickness: 1),
@@ -182,7 +172,7 @@ class Additem extends StatelessWidget {
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(color: Colors.blueAccent),
                           ),
-                          child: SvgPicture.file(controller.file!),
+                          child: Image.file(controller.file!),
                         ),
                     ],
                   ),

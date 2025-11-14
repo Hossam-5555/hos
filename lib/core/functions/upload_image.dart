@@ -31,7 +31,7 @@ fileUploadGallery({isSvg = false}) async {
   }
 }
 
-void showImagePickerBottomSheet(File file) {
+void showImagePickerBottomSheet(File? file) {
   Get.bottomSheet(
     Container(
       padding: const EdgeInsets.all(16),
@@ -49,6 +49,7 @@ void showImagePickerBottomSheet(File file) {
             title: const Text("التقاط صورة بالكاميرا"),
             onTap: () {
               imageUploadCamera();
+              
               Get.back();
             },
           ),
@@ -56,7 +57,8 @@ void showImagePickerBottomSheet(File file) {
             leading: const Icon(Icons.photo_library),
             title: const Text("اختيار من المعرض"),
             onTap: () {
-              fileUploadGallery(isSvg: true);
+              fileUploadGallery(isSvg: false);
+              
               Get.back();
             },
           ),

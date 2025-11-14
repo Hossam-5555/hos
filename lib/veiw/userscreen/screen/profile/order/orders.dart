@@ -24,7 +24,7 @@ class Orders extends StatelessWidget {
           widget: RefreshIndicator(
             onRefresh: () async => await controller.viewmyorders(),
             child: ListView.separated(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(15),
               itemCount: controller.orders.length,
               separatorBuilder: (_, __) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
