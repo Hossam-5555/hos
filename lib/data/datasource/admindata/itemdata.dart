@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/linkApi.dart';
 
@@ -5,11 +7,12 @@ class admindataitem {
   Crud crud;
   admindataitem(this.crud);
 
-  additem(String name, String namear) async {
-    var response = await crud.postrequset(LinkApi.adminadditem, {
-      "name": name,
-      "namear": namear,
-    });
+  additem(Map data, File file) async {
+    var response = await crud.addRequestWithImageOne(
+      LinkApi.adminadditem,
+      data,
+      file,
+    );
     return response.fold((l) => l, (r) => r);
   }
 

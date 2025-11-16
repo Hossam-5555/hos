@@ -49,81 +49,6 @@ class Additem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: height * 0.025),
-
-                // اسم العنصر بالإنجليزية
-                Textfealdauth(
-                  hint: "اكتب اسم العنصر بالإنجليزية",
-                  label: "Category Name",
-                  suffixIcon: Icons.category_outlined,
-                  textEditingController: controller.name,
-                  valid: (val) => val!.isEmpty ? "الاسم مطلوب" : null,
-                ),
-
-                // اسم العنصر بالعربية
-                Textfealdauth(
-                  hint: "اكتب اسم العنصر بالعربية",
-                  label: "الاسم بالعربية",
-                  suffixIcon: Icons.language_outlined,
-                  textEditingController: controller.namear,
-                  valid: (val) => val!.isEmpty ? "الاسم بالعربية مطلوب" : null,
-                ),
-
-                // Description English
-                Textfealdauth(
-                  hint: "Description",
-                  label: "Description English",
-                  suffixIcon: Icons.description_outlined,
-                  textEditingController: controller.namear,
-                  valid: (val) => val!.isEmpty ? "الوصف مطلوب" : null,
-                ),
-
-                // Description Arabic
-                Textfealdauth(
-                  hint: "الوصف",
-                  label: "الوصف بالعربية",
-                  suffixIcon: Icons.language_outlined,
-                  textEditingController: controller.namear,
-                  valid: (val) => val!.isEmpty ? "الوصف بالعربية مطلوب" : null,
-                ),
-
-                // Active
-                Textfealdauth(
-                  hint: "active",
-                  label: "Active",
-                  suffixIcon: Icons.toggle_on_outlined,
-                  textEditingController: controller.namear,
-                  valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
-                ),
-
-                // Count
-                Textfealdauth(
-                  hint: "count",
-                  label: "Item count",
-                  suffixIcon: Icons.format_list_numbered,
-                  textEditingController: controller.namear,
-                  valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
-                ),
-
-                // Price
-                Textfealdauth(
-                  hint: "price",
-                  label: "Item price",
-                  suffixIcon: Icons.attach_money_outlined,
-                  textEditingController: controller.namear,
-                  valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
-                ),
-
-                // Discount
-                Textfealdauth(
-                  hint: "Discount",
-                  label: "Discount",
-                  suffixIcon: Icons.discount_outlined,
-                  textEditingController: controller.namear,
-                  valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
-                ),
-                SizedBox(height: height * 0.035),
-
                 // رفع الصورة
                 Center(
                   child: Column(
@@ -167,9 +92,77 @@ class Additem extends StatelessWidget {
                     ],
                   ),
                 ),
+                SizedBox(height: height * 0.025),
 
-                SizedBox(height: height * 0.05),
+                // اسم العنصر بالإنجليزية
+                Textfealdauth(
+                  hint: "اكتب اسم العنصر بالإنجليزية",
+                  label: "Category Name",
+                  suffixIcon: Icons.category_outlined,
+                  textEditingController: controller.name,
+                  valid: (val) => val!.isEmpty ? "الاسم مطلوب" : null,
+                ),
 
+                // اسم العنصر بالعربية
+                Textfealdauth(
+                  hint: "اكتب اسم العنصر بالعربية",
+                  label: "الاسم بالعربية",
+                  suffixIcon: Icons.language_outlined,
+                  textEditingController: controller.namear,
+                  valid: (val) => val!.isEmpty ? "الاسم بالعربية مطلوب" : null,
+                ),
+
+                // Description English
+                Textfealdauth(
+                  hint: "Description",
+                  label: "Description English",
+                  suffixIcon: Icons.description_outlined,
+                  textEditingController: controller.description,
+                  valid: (val) => val!.isEmpty ? "الوصف مطلوب" : null,
+                ),
+
+                // Description Arabic
+                Textfealdauth(
+                  hint: "الوصف",
+                  label: "الوصف بالعربية",
+                  suffixIcon: Icons.language_outlined,
+                  textEditingController: controller.descriptionar,
+                  valid: (val) => val!.isEmpty ? "الوصف بالعربية مطلوب" : null,
+                ),
+
+                // Count
+                Textfealdauth(
+                  hint: "count",
+                  label: "Item count",
+                  suffixIcon: Icons.format_list_numbered,
+                  textEditingController: controller.count,
+                  valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
+                ),
+
+                // Price
+                Textfealdauth(
+                  hint: "price",
+                  label: "Item price",
+                  suffixIcon: Icons.attach_money_outlined,
+                  textEditingController: controller.price,
+                  valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
+                ),
+
+                // Discount
+                Textfealdauth(
+                  hint: "Discount",
+                  label: "Discount",
+                  suffixIcon: Icons.discount_outlined,
+                  textEditingController: controller.descount,
+                  valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
+                ),
+                Textfealdauth(
+                  hint: "القسم",
+                  label: "ادخل اسم القسم",
+                  suffixIcon: Icons.discount_outlined,
+                  textEditingController: controller.itemcat,
+                  valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
+                ),
                 // زر الإضافة
                 Center(
                   child: ElevatedButton(
@@ -185,7 +178,7 @@ class Additem extends StatelessWidget {
                       elevation: 3,
                     ),
                     onPressed: () {
-                      controller.addcategories();
+                      controller.additem();
                     },
                     child: Text(
                       "إضافة عنصر",

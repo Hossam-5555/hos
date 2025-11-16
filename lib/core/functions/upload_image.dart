@@ -31,13 +31,13 @@ fileUploadGallery({isSvg = false}) async {
   }
 }
 
-void showImagePickerBottomSheet(File? file) {
+void showImagePickerBottomSheet(VoidCallback camera, VoidCallback galry) {
   Get.bottomSheet(
     Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Get.theme.scaffoldBackgroundColor,
-        borderRadius: const BorderRadius.only(
+        borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
         ),
@@ -45,20 +45,18 @@ void showImagePickerBottomSheet(File? file) {
       child: Wrap(
         children: [
           ListTile(
-            leading: const Icon(Icons.camera_alt),
-            title: const Text("التقاط صورة بالكاميرا"),
+            leading: Icon(Icons.camera_alt),
+            title: Text("التقاط صورة بالكاميرا"),
             onTap: () {
-              imageUploadCamera();
-              
+              camera();
               Get.back();
             },
           ),
           ListTile(
-            leading: const Icon(Icons.photo_library),
-            title: const Text("اختيار من المعرض"),
+            leading: Icon(Icons.photo_library),
+            title: Text("اختيار من المعرض"),
             onTap: () {
-              fileUploadGallery(isSvg: false);
-              
+              galry();
               Get.back();
             },
           ),

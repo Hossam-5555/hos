@@ -6,7 +6,7 @@ import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/functions/upload_image.dart';
 import 'package:hos/data/datasource/admindata/itemdata.dart';
-import 'package:hos/veiw/adminscreen/Home/categories/viewcat.dart';
+import 'package:hos/veiw/adminscreen/Home/itemsview/viewitem.dart';
 
 class Additemcontroller extends GetxController {
   Statusrequest statusrequest = Statusrequest.none;
@@ -15,42 +15,56 @@ class Additemcontroller extends GetxController {
   late TextEditingController namear;
   late TextEditingController description;
   late TextEditingController descriptionar;
-  late TextEditingController active;
   late TextEditingController count;
   late TextEditingController price;
-  late TextEditingController Descount;
-  late TextEditingController date;
+  late TextEditingController descount;
+  late TextEditingController itemcat;
 
   GlobalKey<FormState> itemvalidKey = GlobalKey<FormState>();
-  File? file;
+File? file;
 
-  showoptionimage() {
-    showImagePickerBottomSheet(file);
-    update();
-  }
+showoptionimage() {
+  showImagePickerBottomSheet(chooseimagecamera, chooseimagegalary);
+}
 
-  addcategories() async {
+chooseimagecamera() async {
+  file = await imageUploadCamera();
+  update();
+}
+
+chooseimagegalary() async {
+  file = await fileUploadGallery(isSvg: false);
+  update();
+}
+
+  additem() async {
     if (itemvalidKey.currentState!.validate()) {
       if (file == null) {
         Get.snackbar("تنبيه", "من فضلك اختر صورة أولاً");
         return;
       }
-
       statusrequest = Statusrequest.loading;
       update();
+      Map data = {
+        "itemname": name.text,
+        "itemnamear": namear.text,
+        "itemdesc": description.text,
+        "itemdescar": descriptionar.text,
+        "itemscount": count.text,
+        "itemsprice": price.text,
+        "itemsdiscount": descount.text,
+        "itemscat": itemcat.text,
+        "datenow": DateTime.now().toString(),
+      };
 
-      var response = await dataitem.additem(
-        name.text,
-        namear.text,
-        // file!, // دلوقتي آمن نستخدمها
-      );
+      var response = await dataitem.additem(data, file!);
 
       statusrequest = handling(response);
       if (statusrequest == Statusrequest.success) {
         if (response['status'] == 'success') {
           Get.snackbar("success", "    تم اضافه القسم بنجاح");
 
-          Get.off(() => ViewCategories());
+          Get.off(() => viewitem());
         }
       } else {
         statusrequest = Statusrequest.failure;
@@ -62,6 +76,12 @@ class Additemcontroller extends GetxController {
   void onInit() {
     name = TextEditingController();
     namear = TextEditingController();
+    description = TextEditingController();
+    descriptionar = TextEditingController();
+    count = TextEditingController();
+    price = TextEditingController();
+    descount = TextEditingController();
+    itemcat = TextEditingController();
     super.onInit();
   }
 
@@ -69,6 +89,12 @@ class Additemcontroller extends GetxController {
   void onClose() {
     name.dispose();
     namear.dispose();
+    description.dispose();
+    descriptionar.dispose();
+    count.dispose();
+    price.dispose();
+    descount.dispose();
+    itemcat.dispose();
     super.onClose();
   }
 }
