@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/Homecontroller.dart';
-
+import 'package:hos/veiw/wedget/admindrawer.dart';
 
 class AdminHome extends StatelessWidget {
   AdminHome({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +14,7 @@ class AdminHome extends StatelessWidget {
     final width = size.width;
 
     return Scaffold(
+      drawer:AdminDrawer(),
       backgroundColor: const Color(0xFFF5F6FA),
       appBar: AppBar(
         elevation: 0,
@@ -29,16 +29,6 @@ class AdminHome extends StatelessWidget {
             fontSize: 18,
           ),
         ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: width * 0.03),
-            child: CircleAvatar(
-              radius: width * 0.06,
-              backgroundColor: Colors.grey.shade200,
-              child: const Icon(Icons.person, color: Colors.black87),
-            ),
-          ),
-        ],
       ),
 
       body: Padding(
@@ -57,7 +47,7 @@ class AdminHome extends StatelessWidget {
             ),
             _buildDashboardCard(
               color: Colors.green,
-              icon: Icons.shopping_cart_outlined,
+              icon: Icons.shopping_bag_outlined,
               title: "المنتجات",
               onTap: () => controller.gotoitemsview(),
             ),
@@ -68,11 +58,11 @@ class AdminHome extends StatelessWidget {
               onTap: () {},
             ),
             _buildDashboardCard(
-              color: Colors.redAccent,
-              icon: Icons.logout,
-              title: "تسجيل الخروج",
+              color: const Color.fromARGB(255, 82, 255, 203),
+              icon: Icons.shopping_cart_outlined,
+              title: " الطلبات",
               onTap: () {
-                controller.logout();
+                
               },
             ),
           ],

@@ -15,6 +15,7 @@ class ViewItemController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    
     viewallitems();
   }
 
@@ -41,9 +42,8 @@ class ViewItemController extends GetxController {
   }
 
   delete(String itemid, String imagename) {
-    // admindata.deleteitem(itemid, imagename);
-
-    itemlist.removeWhere((element) => element.itemsId == itemid);
+    admindata.deleteitem(itemid, imagename);
+    itemlist.removeWhere((element) => element.itemsId.toString() == itemid);
     update();
   }
 
@@ -57,12 +57,11 @@ class ViewItemController extends GetxController {
   }
 
   void goToAddPage() async {
-    /// ✳️ بعد ما ترجع من صفحة الإضافة، اعمل refresh تلقائي
     await Get.to(() => Additem());
-    viewallitems(); // أعد تحميل البيانات بعد العودة
+    viewallitems();     
   }
 
-  backtohomebage() {
+  void backtohomebage() {
     Get.offAll(
       AdminHome(),
       transition: Transition.fadeIn,

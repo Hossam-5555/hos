@@ -5,21 +5,38 @@ import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/functions/upload_image.dart';
-import 'package:hos/data/datasource/admindata/categoriesdata.dart';
 import 'package:hos/data/datasource/admindata/itemdata.dart';
-import 'package:hos/data/model/categoriesmodel.dart';
-import 'package:hos/veiw/adminscreen/Home/categories/viewcat.dart';
+import 'package:hos/data/model/itemsmodel.dart';
+import 'package:hos/veiw/adminscreen/Home/itemsview/viewitem.dart';
 
 class Edititemcontroller extends GetxController {
   Statusrequest statusrequest = Statusrequest.none;
   admindataitem dataitem = admindataitem(Get.find());
+  String? itemid;
+  String? active;
+  String? imagename;
   late TextEditingController name;
   late TextEditingController namear;
+  late TextEditingController description;
+  late TextEditingController descriptionar;
+  late TextEditingController count;
+  late TextEditingController price;
+  late TextEditingController descount;
+  late TextEditingController itemcat;
   GlobalKey<FormState> editkey = GlobalKey<FormState>();
   File? file;
-  categoriesmodel? catmodel;
-  chooseimage() async {
-    file = await fileUploadGallery(isSvg: true);
+  Itemsmodel? itemsmodel;
+  void showoptionimage() {
+    showImagePickerBottomSheet(chooseimagecamera, chooseimagegalary);
+  }
+
+  Future<void> chooseimagecamera() async {
+    file = await imageUploadCamera();
+    update();
+  }
+
+  Future<void> chooseimagegalary() async {
+    file = await fileUploadGallery(isSvg: false);
     update();
   }
 
@@ -28,41 +45,32 @@ class Edititemcontroller extends GetxController {
 
     statusrequest = Statusrequest.loading;
     update();
+    Map data = {
+      "itemid": itemid,
+      "itemscat": itemcat.text,
+      "itemname": name.text,
+      "itemnamear": namear.text,
+      "itemdesc": description.text,
+      "itemdescar": descriptionar.text,
+      "itemscount": count.text,
+      // "itemsactive": active,
+      "itemsprice": price.text,
+      "itemsdiscount": descount.text,
+      "oldimage": imagename,
+    };
+    var response = await dataitem.edititem(data, file);
+    statusrequest = handling(response);
+    if (statusrequest == Statusrequest.success) {
+      if (response['status'] == 'success') {
+        Get.snackbar("success", "    تم تعديل العنصر بنجاح");
 
-    try {
-      var responseRaw = await dataitem.edititem(
-        catmodel!.categoriesId!,
-        name.text,
-        namear.text,
-        // catmodel!.categoriesImage!,
-        // file,
-      );
-
-      // لو response من السيرفر Map صالح
-      Map<String, dynamic> response;
-      if (responseRaw is Map<String, dynamic>) {
-        response = responseRaw;
-      } else {
-        // لو response مش Map، اعتبر العملية نجحت لو ما فيه صورة جديدة
-        if (file == null) {
-          response = {"status": "success"};
-        } else {
-          statusrequest = Statusrequest.failure;
-          update();
-          return;
-        }
+        Get.offAll(
+          () => viewitem(),
+          transition: Transition.fadeIn,
+          duration: Duration(milliseconds: 250),
+        );
       }
-
-      statusrequest = handling(response);
-
-      if (statusrequest == Statusrequest.success) {
-        Get.snackbar("نجاح", "تم حفظ التعديلات بنجاح");
-        Get.offAll(() => ViewCategories());
-      } else {
-        statusrequest = Statusrequest.failure;
-      }
-    } catch (e) {
-      print("خطأ في EditController: $e");
+    } else {
       statusrequest = Statusrequest.failure;
     }
 
@@ -71,12 +79,26 @@ class Edititemcontroller extends GetxController {
 
   @override
   void onInit() {
-    catmodel = Get.arguments['catmodel'];
+    itemsmodel = Get.arguments['itemsmodel'];
+    itemid = itemsmodel!.itemsId.toString();
+    active = itemsmodel!.itemsActive.toString();
+    imagename = itemsmodel!.itemsImage;
     name = TextEditingController();
     namear = TextEditingController();
-    name.text = catmodel!.categoriesName!;
-    namear.text = catmodel!.categoriesNameAr!;
-
+    description = TextEditingController();
+    descriptionar = TextEditingController();
+    count = TextEditingController();
+    price = TextEditingController();
+    descount = TextEditingController();
+    itemcat = TextEditingController();
+    name.text = itemsmodel!.itemsName!;
+    namear.text = itemsmodel!.itemsNameAr!;
+    description.text = itemsmodel!.itemsDesc!;
+    descriptionar.text = itemsmodel!.itemsDescAr!;
+    count.text = itemsmodel!.itemsCount.toString();
+    price.text = itemsmodel!.itemsPrice!;
+    descount.text = itemsmodel!.itemsDiscount!;
+    itemcat.text = itemsmodel!.itemsCat.toString();
     super.onInit();
   }
 

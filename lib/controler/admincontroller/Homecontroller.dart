@@ -31,4 +31,12 @@ class adminHomecontroller extends GetxController {
       transition: Transition.fadeIn,
     );
   }
+
+  GotoOrder() {
+    Get.to(
+      () => Login(),
+      duration: Duration(milliseconds: 700),
+      transition: Transition.fadeIn,
+    );
+  }
 }

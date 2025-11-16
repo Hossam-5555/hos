@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dartz/dartz.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/linkApi.dart';
 
@@ -16,18 +17,24 @@ class admindataitem {
     return response.fold((l) => l, (r) => r);
   }
 
-  edititem(String catid, String name, String namear) async {
-    var response = await crud.postrequset(LinkApi.adminedititem, {
-      "catid": catid,
-      "name": name,
-      "namear": namear,
-    });
+  edititem(Map data, File? file) async {
+    Either<Statusrequest, Map<dynamic, dynamic>> response;
+    if (file == null) {
+      response = await crud.postrequset(LinkApi.adminedititem, data);
+    } else {
+      response = await crud.addRequestWithImageOne(
+        LinkApi.adminedititem,
+        data,
+        file,
+      );
+    }
     return response.fold((l) => l, (r) => r);
   }
 
-  deleteitem(String catid) async {
+  deleteitem(String itemid, String imagename) async {
     var response = await crud.postrequset(LinkApi.admindeleteitems, {
-      "catid": catid,
+      "itemid": itemid,
+      "imagename": imagename,
     });
     return response.fold((l) => l, (r) => r);
   }

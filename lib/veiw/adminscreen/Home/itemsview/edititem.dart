@@ -11,6 +11,14 @@ class EditItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final size = MediaQuery.of(context).size;
+
+    // نسب حسب حجم الشاشة
+    final double imgSize = size.width * 0.32; // بديل الـ 120
+    final double padding = size.width * 0.05;
+    final double verticalSpace = size.height * 0.03;
+    final double textFieldSpacing = size.height * 0.02;
+
     Get.put(Edititemcontroller());
 
     return Scaffold(
@@ -21,7 +29,7 @@ class EditItem extends StatelessWidget {
         centerTitle: true,
         title: Text(
           "Edit item",
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black87,
             fontWeight: FontWeight.bold,
             letterSpacing: 0.5,
@@ -33,83 +41,145 @@ class EditItem extends StatelessWidget {
         builder: (controller) => Form(
           key: controller.editkey,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(padding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // صورة أو شعار القسم
+                // صورة العنصر
                 GestureDetector(
-                  onTap: () => controller.chooseimage(),
+                  onTap: () => controller.showoptionimage(),
                   child: Container(
-                    height: 120,
-                    width: 120,
+                    height: imgSize,
+                    width: imgSize,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.shade300,
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
+                          blurRadius: 8,
+                          offset: const Offset(0, 3),
                         ),
                       ],
                     ),
                     child: controller.file != null
                         ? (controller.file!.path.endsWith(".svg")
-                            ? SvgPicture.file(
-                                controller.file!,
-                                fit: BoxFit.cover,
-                              )
+                            ? SvgPicture.file(controller.file!, fit: BoxFit.cover)
                             : ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
                                 child: Image.file(
                                   File(controller.file!.path),
                                   fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Container(
+                                        color: Colors.grey[200],
+                                        child: const Icon(Icons.image, size: 35),
+                                      ),
                                 ),
                               ))
                         : Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(Icons.add_a_photo_outlined,
-                                  size: 40, color: Colors.grey[600]),
+                                  size: size.width * 0.1,
+                                  color: Colors.grey[600]),
                               const SizedBox(height: 8),
-                              Text(
-                                "Add Photo",
-                                style: TextStyle(
-                                    color: Colors.grey[600], fontSize: 14),
-                              )
+                              Text("Add Photo",
+                                  style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: size.width * 0.035)),
                             ],
                           ),
                   ),
                 ),
 
-                const SizedBox(height: 40),
+                SizedBox(height: verticalSpace),
 
-                // اسم القسم
+                _space(textFieldSpacing),
+
                 Textfealdauth(
-                  hint: "item name",
-                  label: 'English Name',
-                  suffixIcon: Icons.text_fields,
+                  hint: "القسم",
+                  label: "ادخل اسم القسم",
+                  suffixIcon: Icons.discount_outlined,
+                  textEditingController: controller.itemcat,
+                  valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
+                ),
+
+                _space(textFieldSpacing),
+
+                Textfealdauth(
+                  hint: "اكتب اسم العنصر بالإنجليزية",
+                  label: "Category Name",
+                  suffixIcon: Icons.category_outlined,
                   textEditingController: controller.name,
-                  valid: (val) {},
+                  valid: (val) => val!.isEmpty ? "الاسم مطلوب" : null,
                 ),
-                const SizedBox(height: 20),
 
-                // الاسم بالعربية
+                _space(textFieldSpacing),
+
                 Textfealdauth(
-                  hint: "اسم المنتج بالعربية",
-                  label: 'Arabic Name',
-                  suffixIcon: Icons.language,
+                  hint: "اكتب اسم العنصر بالعربية",
+                  label: "الاسم بالعربية",
+                  suffixIcon: Icons.language_outlined,
                   textEditingController: controller.namear,
-                  valid: (val) {},
+                  valid: (val) => val!.isEmpty ? "الاسم بالعربية مطلوب" : null,
                 ),
 
-                const SizedBox(height: 40),
+                _space(textFieldSpacing),
 
-                // زر الحفظ
+                Textfealdauth(
+                  hint: "Description",
+                  label: "Description English",
+                  suffixIcon: Icons.description_outlined,
+                  textEditingController: controller.description,
+                  valid: (val) => val!.isEmpty ? "الوصف مطلوب" : null,
+                ),
+
+                _space(textFieldSpacing),
+
+                Textfealdauth(
+                  hint: "الوصف",
+                  label: "الوصف بالعربية",
+                  suffixIcon: Icons.language_outlined,
+                  textEditingController: controller.descriptionar,
+                  valid: (val) => val!.isEmpty ? "الوصف بالعربية مطلوب" : null,
+                ),
+
+                _space(textFieldSpacing),
+
+                Textfealdauth(
+                  hint: "count",
+                  label: "Item count",
+                  suffixIcon: Icons.format_list_numbered,
+                  textEditingController: controller.count,
+                  valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
+                ),
+
+                _space(textFieldSpacing),
+
+                Textfealdauth(
+                  hint: "price",
+                  label: "Item price",
+                  suffixIcon: Icons.attach_money_outlined,
+                  textEditingController: controller.price,
+                  valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
+                ),
+
+                _space(textFieldSpacing),
+
+                Textfealdauth(
+                  hint: "Discount",
+                  label: "Discount",
+                  suffixIcon: Icons.discount_outlined,
+                  textEditingController: controller.descount,
+                  valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
+                ),
+
+                SizedBox(height: size.height * 0.05),
+
                 SizedBox(
                   width: double.infinity,
-                  height: 55,
+                  height: size.height * 0.065,
                   child: ElevatedButton(
                     onPressed: () => controller.Edit(),
                     style: ElevatedButton.styleFrom(
@@ -117,16 +187,14 @@ class EditItem extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
-                      shadowColor: Colors.black26,
                       elevation: 5,
                     ),
-                    child: const Text(
+                    child: Text(
                       "💾 Save Changes",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: size.width * 0.045,
                         fontWeight: FontWeight.bold,
-                        letterSpacing: 0.5,
                       ),
                     ),
                   ),
@@ -138,4 +206,6 @@ class EditItem extends StatelessWidget {
       ),
     );
   }
+
+  Widget _space(double height) => SizedBox(height: height);
 }
