@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/drivercontroller/orderdetailscontroller.dart';
+import 'package:hos/controler/admincontroller/order/orderdetailscontroller.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
@@ -9,14 +9,14 @@ class AdminOrderdetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(driverOrderdetailescontroller());
+    final controller = Get.put(adminOrderdetailescontroller());
 
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
         child: Appbarbackicon(herotag: '', title: "Order Details"),
       ),
-      body: GetBuilder<driverOrderdetailescontroller>(
+      body: GetBuilder<adminOrderdetailescontroller>(
         builder: (_) {
           final order = controller.order;
           if (order == null) {

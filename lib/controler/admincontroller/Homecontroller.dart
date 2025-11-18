@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/viewcat.dart';
 import 'package:hos/veiw/adminscreen/Home/itemsview/viewitem.dart';
+import 'package:hos/veiw/adminscreen/Home/orders/adminorderscrean.dart';
 import 'package:hos/veiw/userscreen/screen/auth/login.dart';
 
 class adminHomecontroller extends GetxController {
@@ -34,7 +35,7 @@ class adminHomecontroller extends GetxController {
 
   GotoOrder() {
     Get.to(
-      () => Login(),
+      () => orderscreen(),
       duration: Duration(milliseconds: 700),
       transition: Transition.fadeIn,
     );

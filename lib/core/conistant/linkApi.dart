@@ -73,4 +73,12 @@ class LinkApi {
   static String adminviewitem = '$server/admin/items/view.php';
   static String adminedititem = '$server/admin/items/edit.php';
   static String admindeleteitems = '$server/admin/items/delete.php';
+
+  //Admin//orders
+    static String adminorderpending = '$server/admin/orders/pending.php';
+  static String adminorderaccepted = '$server/admin/orders/accepted.php';
+  static String adminorderdetails = '$server/admin/orders/details.php';
+  static String adminaprovedorder = '$server/admin/orders/approve.php';
+    static String prepareorder = '$server/admin/orders/prepare.php';
+
 }

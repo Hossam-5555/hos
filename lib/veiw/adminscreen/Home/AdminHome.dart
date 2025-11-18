@@ -62,7 +62,7 @@ class AdminHome extends StatelessWidget {
               icon: Icons.shopping_cart_outlined,
               title: " الطلبات",
               onTap: () {
-                
+                controller.GotoOrder();
               },
             ),
           ],
