@@ -90,26 +90,24 @@ class OrderDetailsCard extends StatelessWidget {
     );
   }
 }
-  // Google Map
         // SizedBox(
         //   height: 200,
         //   child: Text("Google map disabled for demo purposes"),
-        //   //  GoogleMap(
-        //   //   initialCameraPosition: CameraPosition(
-        //   //     target: location,
-        //   //     zoom: 14.0,
-        //   //   ),
-        //   //   markers: {
-        //   //     Marker(
-        //   //       markerId: MarkerId('deliveryLocation'),
-        //   //       position: location,
-        //   //       infoWindow: InfoWindow(title: "موقع التوصيل"),
-        //   //     ),
-        //   //   },
-        //   //   zoomControlsEnabled: false,
-        //   //   myLocationEnabled: false,
-        //   //   onMapCreated: (GoogleMapController controller) {
-        //   //     // ممكن تتحكم بالخريطة هنا
-        //   //   },
-        //   // ),
+        //    GoogleMap(
+        //     initialCameraPosition: CameraPosition(
+        //       target: location,
+        //       zoom: 14.0,
+        //     ),
+        //     markers: {
+        //       Marker(
+        //         markerId: MarkerId('deliveryLocation'),
+        //         position: location,
+        //         infoWindow: InfoWindow(title: "موقع التوصيل"),
+        //       ),
+        //     },
+        //     zoomControlsEnabled: false,
+        //     myLocationEnabled: false,
+        //     onMapCreated: (GoogleMapController controller) {
+        //     },
+        //   ),
         // ),

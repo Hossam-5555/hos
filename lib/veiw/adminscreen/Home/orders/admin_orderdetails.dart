@@ -35,6 +35,15 @@ class AdminOrderdetails extends StatelessWidget {
                   // location: null,
                 );
               }),
+
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    controller.gototrackingorder();
+                  },
+                  child: Text("tracking"),
+                ),
+              ),
             ],
           );
         },
@@ -48,7 +57,6 @@ class OrderDetailsCard extends StatelessWidget {
   final String customerName;
   final String address;
   final String status;
-  // final LatLng location;
 
   const OrderDetailsCard({
     Key? key,

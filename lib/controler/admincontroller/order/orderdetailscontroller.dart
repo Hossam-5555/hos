@@ -4,6 +4,7 @@ import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/data/datasource/userdata/orderdata.dart';
 import 'package:hos/data/model/cartmodel.dart';
 import 'package:hos/data/model/ordersmodel.dart';
+import 'package:hos/veiw/adminscreen/Home/orders/trackingorder.dart';
 
 class adminOrderdetailescontroller extends GetxController {
   OrderModel? order;
@@ -26,6 +27,10 @@ class adminOrderdetailescontroller extends GetxController {
       }
     }
     update();
+  }
+
+  gototrackingorder() {
+    Get.to(() => Trackingorder(), transition: Transition.fadeIn);
   }
 
   @override

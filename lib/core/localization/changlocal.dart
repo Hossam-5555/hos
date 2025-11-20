@@ -24,6 +24,7 @@ class LocalController extends GetxController {
   void onInit() {
     requestpermition();
     appmassging();
+    determinePosition();
     String? sharedPreflang = myservisec.sharedPreferences.getString("lang");
     if (sharedPreflang == "ar") {
       language = Locale('ar');
