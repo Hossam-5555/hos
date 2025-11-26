@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/order/orderdetailscontroller.dart';
@@ -24,7 +26,7 @@ class AdminOrderdetails extends StatelessWidget {
           }
 
           return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ...List.generate(controller.data.length, (index) {
                 return OrderDetailsCard(
@@ -36,12 +38,38 @@ class AdminOrderdetails extends StatelessWidget {
                 );
               }),
 
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    controller.gototrackingorder();
-                  },
-                  child: Text("tracking"),
+              ClipOval(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaY: 15, sigmaX: 15),
+                  child: Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black.withAlpha(50)),
+                      color: Colors.white.withAlpha(20),
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black.withAlpha(50)),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          controller.gototrackingorder();
+                        },
+                        child: Text(
+                          "Track",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],

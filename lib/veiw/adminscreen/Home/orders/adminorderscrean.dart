@@ -17,7 +17,9 @@ class orderscreen extends StatelessWidget {
     return GetBuilder<Orderscreencontroller>(
       builder: (controller) => Scaffold(
         backgroundColor: Colors.grey[100],
-        appBar: AppBar( backgroundColor: Colors.grey[100],
+        appBar: AppBar(
+          backgroundColor: const Color(0xFFF5F6FA),
+
           title: Text(controller.orderscreen[controller.Currentpage][0]),
         ),
 

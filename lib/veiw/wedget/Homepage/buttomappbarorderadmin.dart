@@ -29,48 +29,68 @@ class Buttomappbarorderadmin extends GetView<Orderscreencontroller> {
                 filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white.withAlpha(77),
+                    color: const Color.fromARGB(
+                      255,
+                      210,
+                      191,
+                      18,
+                    ).withAlpha(77),
                     borderRadius: BorderRadius.circular(40),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.15),
+                        color: Colors.black.withOpacity(0.20),
                         blurRadius: 6,
-                        offset: const Offset(0, 3),
+                        offset: const Offset(1, 1),
                       ),
                     ],
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: List.generate(
-                      controller.pages.length,
-                      (index) {
-                        final bool isSelected =
-                            controller.Currentpage == index;
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: List.generate(controller.pages.length, (index) {
+                      final bool isSelected = controller.Currentpage == index;
 
-                        return GestureDetector(
-                          onTap: () => controller.changpage(index),
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 250),
-                            curve: Curves.easeInOut,
-                            width: isSelected ? 55 : 48,
-                            height: isSelected ? 55 : 48,
-                            decoration: BoxDecoration(
-                              color: isSelected
-                                  ? Colors.white
-                                  : Colors.transparent,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: SvgPicture.asset(
-                                controller.orderscreen[index][1],
-                                height: isSelected ? 28 : 23,
-                                width: isSelected ? 28 : 23,
+                      return GestureDetector(
+                        onTap: () => controller.changpage(index),
+                        child: ClipOval(
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            child: AnimatedContainer(
+                              margin: EdgeInsets.symmetric(
+                                horizontal: !isSelected ? 10 : 0,
+                              ),
+                              duration: const Duration(milliseconds: 250),
+                              curve: Curves.fastEaseInToSlowEaseOut,
+                              width: isSelected ? 70 : 70,
+                              height: isSelected ? 70 : 70,
+                              decoration: BoxDecoration(
+                                border: isSelected
+                                    ? Border.all(
+                                        width: 0.1,
+                                        color:  Colors.black.withAlpha(20),
+                                      )
+                                    : Border(),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: isSelected
+                                      ? Colors.white
+                                      : Colors.transparent,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: SvgPicture.asset(
+                                  controller.orderscreen[index][1],
+                                  height: isSelected ? 28 : 23,
+                                  width: isSelected ? 28 : 23,
+                                ),
                               ),
                             ),
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    }),
                   ),
                 ),
               ),
