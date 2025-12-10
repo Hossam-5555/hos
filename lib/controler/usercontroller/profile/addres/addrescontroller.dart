@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -20,9 +22,26 @@ class AddressController extends GetxController {
   TextEditingController? city;
   TextEditingController? street;
   double lat = 23.3344;
-  double lang = 23.3344;
+  double long = 23.3344;
 
   /////////////////////////
+  ///
+  ///
+  ///
+  ///
+  ///
+  Completer<GoogleMapController>? completercontroller;
+
+  List<Marker> markers = [];
+
+  addMarkers(LatLng latLng) {
+    markers.clear();
+    markers.add(Marker(markerId: MarkerId("1"), position: latLng));
+    lat = latLng.latitude;
+    long = latLng.longitude;
+    update();
+  }
+
   @override
   void onInit() {
     name = TextEditingController();
@@ -44,7 +63,7 @@ class AddressController extends GetxController {
       city!.text,
       street!.text,
       lat.toString(),
-      lang.toString(),
+      long.toString(),
     );
 
     statusrequest = handling(response);

@@ -30,7 +30,11 @@ class adminOrderdetailescontroller extends GetxController {
   }
 
   gototrackingorder() {
-    Get.to(() => Trackingorder(), transition: Transition.fadeIn);
+    Get.to(
+      () => Trackingorder(),
+      transition: Transition.fadeIn,
+      arguments: {"order": order},
+    );
   }
 
   @override

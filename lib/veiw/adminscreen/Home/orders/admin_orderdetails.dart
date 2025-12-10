@@ -38,33 +38,35 @@ class AdminOrderdetails extends StatelessWidget {
                 );
               }),
 
-              ClipOval(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaY: 15, sigmaX: 15),
-                  child: Container(
-                    height: 80,
-                    width: 80,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black.withAlpha(50)),
-                      color: Colors.white.withAlpha(20),
-                      borderRadius: BorderRadius.circular(40),
-                    ),
+              Center(
+                child: ClipOval(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaY: 15, sigmaX: 15),
                     child: Container(
-                      margin: EdgeInsets.all(5),
+                      height: 80,
+                      width: 80,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black.withAlpha(50)),
-                        color: Colors.white,
+                        color: Colors.white.withAlpha(20),
                         borderRadius: BorderRadius.circular(40),
                       ),
-                      child: TextButton(
-                        onPressed: () {
-                          controller.gototrackingorder();
-                        },
-                        child: Text(
-                          "Track",
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
+                      child: Container(
+                        margin: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black.withAlpha(50)),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        child: TextButton(
+                          onPressed: () {
+                            controller.gototrackingorder();
+                          },
+                          child: Text(
+                            "Track",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),

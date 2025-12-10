@@ -29,12 +29,7 @@ class Buttomappbarorderadmin extends GetView<Orderscreencontroller> {
                 filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(
-                      255,
-                      210,
-                      191,
-                      18,
-                    ).withAlpha(77),
+                    color: const Color.fromARGB(255, 216, 216, 213).withAlpha(77),
                     borderRadius: BorderRadius.circular(40),
                     boxShadow: [
                       BoxShadow(

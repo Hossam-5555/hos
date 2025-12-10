@@ -12,7 +12,7 @@ class Addresdata {
     String street,
     String city,
     String lat,
-    String lang,
+    String long,
   ) async {
     var response = await crud.postrequset(LinkApi.AddAddres, {
       "userid": userid,
@@ -20,7 +20,7 @@ class Addresdata {
       "street": street,
       "city": city,
       "lat": lat,
-      "lang": lang,
+      "lang": long,
     });
     return response.fold((l) => l, (r) => r);
   }
