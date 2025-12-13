@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/wedget/animation.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class Handlingdataview extends StatelessWidget {
   const Handlingdataview({
@@ -24,9 +25,14 @@ class Handlingdataview extends StatelessWidget {
 
     return Stack(
       children: [
-        widget, // 👈 الصفحة الأصلية دايمًا بتتعرض
-        if (statusrequest == Statusrequest.loading)
-          buildOverlay(Imageasset.loading), // تحميل فوق الصفحة
+        Skeletonizer(enableSwitchAnimation: true,
+          ignoreContainers: false,
+          containersColor: Colors.grey,
+          enabled: statusrequest == Statusrequest.loading,
+          child: widget,
+        ), // 👈 الصفحة الأصلية دايمًا بتتعرض
+        // if (statusrequest == Statusrequest.loading)
+        //   buildOverlay(Imageasset.loading), // تحميل فوق الصفحة
         if (statusrequest == Statusrequest.failure)
           buildOverlay(Imageasset.nodata), // خطأ أو فشل
         if (statusrequest == Statusrequest.serverfailure)

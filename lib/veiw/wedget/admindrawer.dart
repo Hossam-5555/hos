@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/Homecontroller.dart';
+import 'package:hos/core/class/gotoanypage.dart';
+import 'package:hos/veiw/userscreen/screen/auth/login.dart';
 
+// ignore: must_be_immutable
 class AdminDrawer extends GetView<adminHomecontroller> {
-  const AdminDrawer({super.key});
-
+   AdminDrawer({super.key});
+Gotoanypagecalss go=Gotoanypagecalss();
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -89,7 +92,7 @@ class AdminDrawer extends GetView<adminHomecontroller> {
                 ),
               ),
               onTap: () {
-                controller.logout();
+                go.Gotoanypage(Login(),true);
               },
             ),
           ),

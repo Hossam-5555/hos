@@ -67,6 +67,7 @@ dependencies:
   flutter_otp_text_field: ^1.5.1+1
   flutter_ringtone_player: ^4.0.0+4
   file_picker: ^10.3.3
+  skeletonizer: ^2.1.1
 
 dev_dependencies:
   flutter_test:

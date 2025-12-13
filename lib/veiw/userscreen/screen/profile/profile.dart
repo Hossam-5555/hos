@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/profilepagecontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/core/class/gotoanypage.dart';
 import 'package:hos/veiw/userscreen/screen/myfavorite.dart';
+import 'package:hos/veiw/userscreen/screen/profile/order/orders.dart';
+import 'package:hos/veiw/userscreen/screen/profile/settings/addres/viewaddres.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
 
+// ignore: must_be_immutable
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
-
+  ProfilePage({super.key});
+  Gotoanypagecalss go = Gotoanypagecalss();
   @override
   Widget build(BuildContext context) {
-    Profilepagecontroller controller = Get.put(Profilepagecontroller());
+    Get.put(Profilepagecontroller());
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -65,35 +69,24 @@ class ProfilePage extends StatelessWidget {
 
           // قائمة الخيارات
           _buildOptionTile(Icons.shopping_bag, "طلباتي", () {
-            controller.gotoorders();
+            go.Gotoanypage(Orders(), false);
           }),
-        _buildOptionTile(Icons.favorite_outline_outlined, "المفضله", () {
-            Get.to(
-              () => Myfavorite(),
-              transition: Transition.downToUp,
-              curve: Curves.easeInOutSine,
-              duration: Duration(milliseconds: 500),
-            );
+          _buildOptionTile(Icons.favorite_outline_outlined, "المفضله", () {
+            go.Gotoanypage(Myfavorite(), false);
           }),
           _buildOptionTile(Icons.location_on, "العناوين", () {
-            controller.goaddres();
+            go.Gotoanypage(viewmyaddres(), false);
           }),
 
           _buildOptionTile(Icons.credit_card, "طرق الدفع", () {}),
 
           _buildOptionTile(Icons.settings_outlined, "Settings", () {
-            Get.to(
-              () => Settings(),
-              transition: Transition.downToUp,
-              curve: Curves.easeInOutSine,
-              duration: Duration(milliseconds: 500),
-            );
+            go.Gotoanypage(Settings(), false);
           }),
-          
-          const SizedBox(height: 30),
+
+          const SizedBox(height: 50),
 
           // زر تسجيل خروج
-          const SizedBox(height: 30),
         ],
       ),
     );
