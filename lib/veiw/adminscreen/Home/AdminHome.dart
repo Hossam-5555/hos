@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:hos/controler/admincontroller/Homecontroller.dart';
 import 'package:hos/core/class/gotoanypage.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/viewcat.dart';
 import 'package:hos/veiw/adminscreen/Home/itemsview/viewitem.dart';
@@ -10,16 +8,30 @@ import 'package:hos/veiw/wedget/admindrawer.dart';
 // ignore: must_be_immutable
 class AdminHome extends StatelessWidget {
   AdminHome({super.key});
-Gotoanypagecalss go=Gotoanypagecalss();
+  Gotoanypagecalss go = Gotoanypagecalss();
   @override
   Widget build(BuildContext context) {
-   Get.put(adminHomecontroller());
     final size = MediaQuery.of(context).size;
     final height = size.height;
     final width = size.width;
 
     return Scaffold(
-      drawer: AdminDrawer(),
+      drawer: Align(
+        alignment:
+            Alignment.topLeft, // هذا السطر يجبر الـ Drawer يبدأ من سقف الشاشة
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height / 1.2, // الطول المطلوب
+          child: ClipRRect(
+            // قمنا بتدوير الزاويتين السفليتين فقط ليكون الشكل منسدلاً من الأعلى
+            borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(20),
+              bottomLeft: Radius.circular(20),
+            ),
+            // تأكد أن AdminDrawer لا يحتوي على Scaffold داخلي يملأ الطول
+            child: AdminDrawer(),
+          ),
+        ),
+      ),
       backgroundColor: const Color(0xFFF5F6FA),
       appBar: AppBar(
         elevation: 0,
@@ -48,13 +60,13 @@ Gotoanypagecalss go=Gotoanypagecalss();
               color: Colors.blueAccent,
               icon: Icons.category_outlined,
               title: "الفئات",
-              onTap: () => go.Gotoanypage(ViewCategories(), false),
+              onTap: () => go.Gotoanypage(ViewCategories(), false,null),
             ),
             _buildDashboardCard(
               color: Colors.green,
               icon: Icons.shopping_bag_outlined,
               title: "المنتجات",
-              onTap: () => go.Gotoanypage(viewitem(), false),
+              onTap: () => go.Gotoanypage(viewitem(), false,null),
             ),
             _buildDashboardCard(
               color: Colors.orange,
@@ -67,7 +79,7 @@ Gotoanypagecalss go=Gotoanypagecalss();
               icon: Icons.shopping_cart_outlined,
               title: " الطلبات",
               onTap: () {
-                go.Gotoanypage(orderscreen(), false);
+                go.Gotoanypage(orderscreen(), false,  null);
               },
             ),
           ],

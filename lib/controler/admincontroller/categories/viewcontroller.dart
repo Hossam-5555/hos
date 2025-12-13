@@ -11,7 +11,7 @@ class ViewCatController extends GetxController {
   AdmindaTaCaregores admindata = AdmindaTaCaregores(Get.find());
   Statusrequest statusrequest = Statusrequest.none;
   List<categoriesmodel> catdata = [];
-
+  
   @override
   void onInit() {
     super.onInit();

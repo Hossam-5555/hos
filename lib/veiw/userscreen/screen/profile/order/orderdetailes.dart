@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hos/controler/usercontroller/profile/order/orderdetailescontroller.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
@@ -9,105 +8,218 @@ class Orderdetailes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // حقن الكنترولر
     final controller = Get.put(Orderdetailescontroller());
 
     return Scaffold(
-        appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
-        child: Appbarbackicon(herotag: '', title: "Order Details"),
+      backgroundColor: Colors.grey[100], // خلفية رمادية فاتحة لإبراز البطاقات
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child:  Appbarbackicon(herotag: '', title: "Order Details"),
       ),
       body: GetBuilder<Orderdetailescontroller>(
         builder: (_) {
           final order = controller.order;
           if (order == null) {
-            return const Center(child: Text("❌ لم يتم استلام بيانات الطلب"));
+            return const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.error_outline, size: 60, color: Colors.grey),
+                  SizedBox(height: 10),
+                  Text("❌ لم يتم استلام بيانات الطلب", style: TextStyle(fontSize: 18, color: Colors.grey)),
+                ],
+              ),
+            );
           }
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ...List.generate(controller.data.length, (index) {
-                return OrderDetailsCard(
-                  orderId: '${controller.data[index].itemsPrice}',
-                  customerName: '${controller.data[index].itemsName}',
-                  address: '${order.addresName}',
-                  status: '${order.ordersStatus}',
-                  // location: null,
-                );
-              }),
-            ],
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 1. قسم معلومات الطلب الأساسية (الحالة والتاريخ)
+                _buildStatusSection(order.ordersStatus!),
+                
+                const SizedBox(height: 15),
+
+                // 2. قسم عنوان التوصيل والمعلومات الشخصية
+                _buildAddressCard(
+                  address: order.addresName ?? "غير محدد",
+                  // يمكنك إضافة اسم العميل هنا إذا كان متوفراً في موديل الطلب العام
+                  // customerName: order.userName, 
+                ),
+
+                const SizedBox(height: 20),
+                const Text(
+                  "المنتجات",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
+                ),
+                const SizedBox(height: 10),
+
+                // 3. قائمة المنتجات (Items List)
+                // بدلاً من تكرار العنوان، نعرض قائمة المنتجات فقط هنا
+                ListView.separated(
+                  shrinkWrap: true, // ضروري داخل SingleChildScrollView
+                  physics: const NeverScrollableScrollPhysics(), // منع السكرول الداخلي
+                  itemCount: controller.data.length,
+                  separatorBuilder: (context, index) => const Divider(height: 1),
+                  itemBuilder: (context, index) {
+                    final item = controller.data[index];
+                    return Container(
+                      color: Colors.white,
+                      child: ListTile(
+                        leading: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.blue[50],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Icon(Icons.shopping_bag_outlined, color: Colors.blue),
+                        ),
+                        title: Text(
+                          "${item.itemsName}",
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text("الكمية: ${item.itemsCount}"), 
+                        trailing: Text(
+                          "${item.itemsPrice} \$", // تنسيق السعر
+                          style: const TextStyle(
+                              color: Colors.green, fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+
+                const SizedBox(height: 20),
+
+                // 4. ملخص الفاتورة (السعر الإجمالي)
+                _buildPriceSummary(order.ordersTotalprice ?? "0"),
+                
+                const SizedBox(height: 30),
+              ],
+            ),
           );
         },
       ),
     );
   }
-}
 
-class OrderDetailsCard extends StatelessWidget {
-  final String orderId;
-  final String customerName;
-  final String address;
-  final String status;
-  // final LatLng location;
+  // --- Widgets مساعدة للتصميم ---
 
-  const OrderDetailsCard({
-    Key? key,
-    required this.orderId,
-    required this.customerName,
-    required this.address,
-    required this.status,
-    // required this.location,
-  }) : super(key: key);
+  // ودجت لعرض الحالة بشكل جميل
+  Widget _buildStatusSection(String status) {
+    // تحديد لون الحالة بناءً على النص
+    Color statusColor;
+    String statusText;
+    
+    if (status == "0") {
+      statusColor = Colors.orange;
+      statusText = "قيد الانتظار";
+    } else if (status == "1") {
+       statusColor = Colors.blue;
+      statusText = "تم التأكيد";
+    } else if (status == "4") {
+      statusColor = Colors.green;
+      statusText = "تم التوصيل";
+    } else {
+      statusColor = Colors.grey;
+      statusText = "أرشيف";
+    }
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        // Header
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(color: Colors.grey.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, 5)),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            "حالة الطلب",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: statusColor.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: statusColor.withOpacity(0.5)),
+            ),
+            child: Text(
+              statusText,
+              style: TextStyle(color: statusColor, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ودجت لعنوان التوصيل
+  Widget _buildAddressCard({required String address}) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(color: Colors.grey.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, 5)),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
             children: [
-              Text(
-                "رقم الطلب: $orderId",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8),
-              Text("العميل: $customerName"),
-              Text("العنوان: $address"),
-              Text("الحالة: $status"),
+              Icon(Icons.location_on_outlined, color: Colors.redAccent),
+              SizedBox(width: 8),
+              Text("عنوان التوصيل", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             ],
           ),
-        ),
+          const Divider(height: 25),
+          Text(
+            address,
+            style: TextStyle(color: Colors.grey[700], height: 1.5, fontSize: 15),
+          ),
+        ],
+      ),
+    );
+  }
 
-        // Divider
-        Divider(height: 10),
-
-      
-      ],
+  // ودجت لملخص السعر
+  Widget _buildPriceSummary(String total) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(color: Colors.grey.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, 5)),
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text("الإجمالي الكلي", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text(
+                "$total \$", 
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
-        // SizedBox(
-        //   height: 200,
-        //   child: Text("Google map disabled for demo purposes"),
-        //    GoogleMap(
-        //     initialCameraPosition: CameraPosition(
-        //       target: location,
-        //       zoom: 14.0,
-        //     ),
-        //     markers: {
-        //       Marker(
-        //         markerId: MarkerId('deliveryLocation'),
-        //         position: location,
-        //         infoWindow: InfoWindow(title: "موقع التوصيل"),
-        //       ),
-        //     },
-        //     zoomControlsEnabled: false,
-        //     myLocationEnabled: false,
-        //     onMapCreated: (GoogleMapController controller) {
-        //     },
-        //   ),
-        // ),

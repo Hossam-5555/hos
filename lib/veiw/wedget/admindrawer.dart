@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/admincontroller/Homecontroller.dart';
 import 'package:hos/core/class/gotoanypage.dart';
 import 'package:hos/veiw/userscreen/screen/auth/login.dart';
 
 // ignore: must_be_immutable
-class AdminDrawer extends GetView<adminHomecontroller> {
-   AdminDrawer({super.key});
-Gotoanypagecalss go=Gotoanypagecalss();
+class AdminDrawer extends StatelessWidget {
+  AdminDrawer({super.key});
+  Gotoanypagecalss go = Gotoanypagecalss();
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -21,7 +20,9 @@ Gotoanypagecalss go=Gotoanypagecalss();
           //      USER HEADER
           // =======================
           UserAccountsDrawerHeader(
-            decoration: const BoxDecoration(color: Colors.blueAccent),
+            decoration: const BoxDecoration(
+              color: Color.fromARGB(255, 92, 95, 99),
+            ),
             accountName: const Text("Admin Panel"),
             accountEmail: const Text("admin@example.com"),
             currentAccountPicture: const CircleAvatar(
@@ -92,7 +93,7 @@ Gotoanypagecalss go=Gotoanypagecalss();
                 ),
               ),
               onTap: () {
-                go.Gotoanypage(Login(),true);
+                go.Gotoanypage(Login(), true,null);
               },
             ),
           ),
