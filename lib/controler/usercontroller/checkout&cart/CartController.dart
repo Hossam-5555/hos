@@ -11,7 +11,7 @@ import 'package:hos/data/model/cartmodel.dart';
 class CartController extends GetxController {
   ///////////////======================ملكش دعوه
   Cartdata cartdata = Cartdata(Get.find());
-  Statusrequest? statusrequest;
+  Statusrequest statusrequest=Statusrequest.loading;
   Myservisec myservisec = Get.put(Myservisec());
   cartmodel cart = cartmodel();
   /////===========================

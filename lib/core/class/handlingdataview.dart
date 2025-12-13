@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/wedget/animation.dart';
-import 'package:skeletonizer/skeletonizer.dart';
+// استورد ويدجت الانيميشن الخاصة بك
 
 class Handlingdataview extends StatelessWidget {
   const Handlingdataview({
@@ -16,31 +16,27 @@ class Handlingdataview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget buildOverlay(String path) {
-      return Container(
-        alignment: Alignment.center,
-        child: Animationforstatus(animationPath: path),
+    // 1. في حالة الخطأ أو الفشل، نعرض رسالة الخطأ فقط ولا نبني الصفحة الأصلية
+    // هذا يمنع الـ Crash الناتج عن محاولة قراءة بيانات فارغة
+
+    if (statusrequest == Statusrequest.checkinterner) {
+      return Center(
+        child: Animationforstatus(animationPath: Imageasset.loading),
+      );
+    } else if (statusrequest == Statusrequest.serverfailure) {
+      return Center(
+        child: Animationforstatus(animationPath: Imageasset.nodata),
+      );
+    } else if (statusrequest == Statusrequest.failure) {
+      // لا توجد بيانات
+      return Center(
+        child: Animationforstatus(animationPath: Imageasset.nodata),
       );
     }
 
-    return Stack(
-      children: [
-        Skeletonizer(enableSwitchAnimation: true,
-          ignoreContainers: false,
-          containersColor: Colors.grey,
-          enabled: statusrequest == Statusrequest.loading,
-          child: widget,
-        ), // 👈 الصفحة الأصلية دايمًا بتتعرض
-        // if (statusrequest == Statusrequest.loading)
-        //   buildOverlay(Imageasset.loading), // تحميل فوق الصفحة
-        if (statusrequest == Statusrequest.failure)
-          buildOverlay(Imageasset.nodata), // خطأ أو فشل
-        if (statusrequest == Statusrequest.serverfailure)
-          buildOverlay(Imageasset.loading), // فشل السيرفر
-        if (statusrequest == Statusrequest.checkinterner)
-          buildOverlay(Imageasset.loading), // تحقق الإنترنت
-      ],
-    );
+    // 2. في حالة التحميل (Loading) أو النجاح (Success)
+    // نعرض الصفحة الأصلية (التي تحتوي على Skeletonizer)
+    return widget;
   }
 }
 

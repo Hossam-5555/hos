@@ -13,73 +13,132 @@ class Offercard extends GetView<Offercontroller> {
 
   @override
   Widget build(BuildContext context) {
-    return ItemList(index, active: true, items: controller.offerList[index]);
+    // تم إزالة active لأنه غير مستخدم في الكود الأصلي
+    return ItemList(index: index, items: controller.offerList[index]);
   }
 }
 
-// ignore: must_be_immutable
 class ItemList extends GetView<Offercontroller> {
   final Itemsmodel items;
-  bool active;
-  ItemList(this.index, {super.key, required this.items, required this.active});
   final int index;
+
+  // قمت بإزالة active لأنه لم يكن مستخدماً ويسبب تحذير must_be_immutable
+  const ItemList({super.key, required this.items, required this.index});
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final cardWidth = screenWidth * 0.40; // 45% من عرض الشاشة
-    final cardHeight = cardWidth * 1.3; // نسبة طول للكارت
+    // تعديل بسيط في الأبعاد لتكون أكثر تناسقاً
+    final cardWidth = screenWidth * 0.42;
+    final cardHeight = cardWidth * 1.4;
+
+    // افتراض للتقييم في حال عدم وجوده في الموديل (يمكنك استبداله بقيمة حقيقية)
+    final double rating = 4.5;
 
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        // أضف هنا الانتقال لتفاصيل المنتج
+      },
       child: Container(
-        margin: EdgeInsets.all(10),
+        // تقليل المارجن قليلاً لاستغلال المساحة
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
         width: cardWidth,
         height: cardHeight,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 119, 119, 121),
-          borderRadius: BorderRadius.circular(20),
+          color: Colors.white, // خلفية بيضاء نظيفة
+          borderRadius: BorderRadius.circular(16), // حواف أنعم
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.15),
-              blurRadius: 6,
+              color: Colors.black.withOpacity(0.08), // ظل أخف وأنعم
+              blurRadius: 10,
+              spreadRadius: 1,
               offset: const Offset(0, 4),
             ),
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(16),
           child: Stack(
             children: [
-              /// صورة المنتج
+              /// 1. صورة المنتج (الخلفية)
               Positioned.fill(
                 child: Hero(
                   tag: '${items.itemsId}',
                   child: Image.network(
                     "${LinkApi.imageitems}/${items.itemsImage}",
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => const Icon(
-                      Icons.broken_image,
-                      size: 50,
-                      color: Colors.white,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      color: Colors.grey[200],
+                      child: const Icon(
+                        Icons.broken_image_rounded,
+                        size: 50,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    // إضافة loadingBuilder لتحسين تجربة المستخدم أثناء تحميل الصورة
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                              : null,
+                          strokeWidth: 2,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+
+              /// 2. تدرج لوني داكن في الأسفل لجعل النص مقروءاً (أفضل من بوكس مصمت)
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: cardHeight * 0.5, // يغطي نصف الكارد السفلي
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [
+                        Colors.black.withOpacity(0.9), // أسود داكن في الأسفل
+                        Colors.black.withOpacity(0.5),
+                        Colors.transparent, // شفاف في الأعلى
+                      ],
+                      stops: const [0.0, 0.6, 1.0],
                     ),
                   ),
                 ),
               ),
+
+              /// 3. زر المفضلة (أعلى اليمين)
               Positioned(
-                top: 5,
-                right: 5,
+                top: 8,
+                right: 8,
                 child: GetBuilder<FavController>(
                   builder: (controller) {
+                    bool isFav = controller.isfavorite[items.itemsId] == "1";
                     return Container(
-                      height: 40,
+                      height: 36,
+                      width: 36,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.white.withAlpha(70),
+                        // خلفية بيضاء شبه شفافة (Glass effect)
+                        color: Colors.white.withOpacity(0.85),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 4,
+                          ),
+                        ],
                       ),
                       child: IconButton(
+                        padding: EdgeInsets.zero,
                         onPressed: () {
-                          if (controller.isfavorite[items.itemsId] == "1") {
+                          if (isFav) {
                             controller.chasngfav(items.itemsId, "0");
                             controller.removefromfav(items.itemsId!.toString());
                           } else {
@@ -88,44 +147,39 @@ class ItemList extends GetView<Offercontroller> {
                           }
                         },
                         icon: Icon(
-                          controller.isfavorite[items.itemsId] == "1"
+                          isFav
                               ? Icons.favorite
-                              : Icons.favorite_border_outlined,
-                          color: const Color.fromARGB(255, 0, 0, 0),
-                          size: 25,
+                              : Icons.favorite_border_rounded,
+                          color: isFav ? Colors.red : Colors.grey[800],
+                          size: 22,
                         ),
                       ),
                     );
                   },
                 ),
               ),
+
+              /// 4. علامة العرض (أعلى اليسار)
               Positioned(
                 top: 0,
-                left: 5,
-                child: Container(
-                  height: 70,
-                  decoration: BoxDecoration(shape: BoxShape.circle),
-                  child: Transform.rotate(
-                    angle: 0.70,
-                    child: Lottie.asset(Imageasset.sale),
-                  ),
+                left: 4,
+                child: SizedBox(
+                  height: 50,
+                  width: 50,
+                  // تم إزالة التدوير (Rotation) ليكون شكله طبيعي أكثر
+                  child: Lottie.asset(Imageasset.sale, fit: BoxFit.contain),
                 ),
               ),
 
-              /// خلفية شفافة للنصوص
+              /// 5. النصوص والمعلومات (في الأسفل)
               Positioned(
                 bottom: 0,
                 left: 0,
                 right: 0,
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.5),
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(20),
-                    ),
-                  ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       /// اسم المنتج
@@ -135,60 +189,57 @@ class ItemList extends GetView<Offercontroller> {
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 24, // ارتفاع مناسب للنجوم + النص
-                        width: cardWidth * 0.9,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            /// نجوم التقييم
-                            Row(
-                              children: List.generate(
-                                5,
-                                (index) => Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 1,
-                                  ),
-                                  child: Icon(
-                                    index <
-                                            4 // لو التقييم 4.3 → يلون أول 4 نجوم
-                                        ? Icons.star
-                                        : Icons.star_border_outlined,
-                                    color: Colors.amber,
-                                    size: 16,
-                                  ),
-                                ),
-                              ),
-                            ),
-
-                            const SizedBox(width: 6),
-
-                            /// الرقم بجانب النجوم
-                            const Text(
-                              "4.3",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                              ),
-                            ),
+                          fontWeight: FontWeight.w700, // خط أعرض قليلاً
+                          fontSize: 15,
+                          shadows: [
+                            Shadow(color: Colors.black45, blurRadius: 2),
                           ],
                         ),
                       ),
+                      const SizedBox(height: 6),
 
-                      /// السعر + المفضلة
+                      /// السعر والتقييم في نفس السطر
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          /// السعر (مميز بلون وحجم)
                           Text(
                             "${items.itemspricediscount ?? "0"} ج.م",
                             style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13,
+                              // لون برتقالي/ذهبي لتمييز السعر
+                              color: Color(0xFFFFC107),
+                              fontWeight: FontWeight.w900,
+                              fontSize: 16,
+                            ),
+                          ),
+
+                          /// التقييم (مدمج ومختصر)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "$rating",
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                                const SizedBox(width: 2),
+                                const Icon(
+                                  Icons.star_rounded,
+                                  color: Colors.amber,
+                                  size: 14,
+                                ),
+                              ],
                             ),
                           ),
                         ],

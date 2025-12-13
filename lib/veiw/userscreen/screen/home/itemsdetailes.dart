@@ -32,24 +32,28 @@ class Itemsdetailes extends StatelessWidget {
                 top: h * 0.10, // عشان تكون في منتصف الجزء العلوي
                 left: 0,
                 right: 0,
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(
-                      255,
-                      255,
-                      240,
-                      213,
-                    ).withAlpha(50),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Hero(
-                    tag: '${item.itemsId}',
-                    child: Image.network(
-                      "${LinkApi.imageitems}/${item.itemsImage!}",
-                      height: h * 0.38, // ارتفاع متوسط يناسب النص العلوي
-                      width: w * 0.7,
-                      fit: BoxFit.contain,
+                child: SizedBox(
+                  height: h * 0.35, // ارتفاع متوسط يناسب النص العلوي
+                  width: w * 0.7,
+                  child: Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(
+                        255,
+                        233,
+                        228,
+                        219,
+                      ).withAlpha(50),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Hero(
+                      tag: '${item.itemsId}',
+                      child: Image.network(
+                        "${LinkApi.imageitems}/${item.itemsImage!}",
+                        height: h * 0.38, // ارتفاع متوسط يناسب النص العلوي
+                        width: w * 0.7,
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 ),
@@ -57,9 +61,9 @@ class Itemsdetailes extends StatelessWidget {
 
               // ✅ التفاصيل (النصف السفلي)
               Positioned(
-                top: h * 0.55,
+                top: h * 0.50,
                 child: Container(
-                  height: h * 0.45,
+                  height: h * 0.50,
                   width: w,
                   padding: EdgeInsets.symmetric(horizontal: w * 0.05),
                   decoration: const BoxDecoration(
@@ -142,9 +146,7 @@ class Itemsdetailes extends StatelessWidget {
                         "مع شرح كامل يساعد المستخدم في معرفة التفاصيل قبل الشراء.",
                         style: TextStyle(fontSize: w * 0.04, height: 1.6),
                       ),
-
-                      const Spacer(),
-
+                      Spacer(),
                       // ===== الزر =====
                       Container(
                         alignment: Alignment.center,
@@ -163,8 +165,13 @@ class Itemsdetailes extends StatelessWidget {
                   height: 60,
                   width: 60,
                   decoration: BoxDecoration(
-                    boxShadow: [BoxShadow(blurRadius: 10,
-                      color: Colors.black.withAlpha(55),offset: Offset(0.5, 1))],
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 10,
+                        color: Colors.black.withAlpha(55),
+                        offset: Offset(0.5, 1),
+                      ),
+                    ],
                     color: Colors.white,
                     shape: BoxShape.circle,
                   ),
@@ -177,7 +184,7 @@ class Itemsdetailes extends StatelessWidget {
                 ),
               ),
               Positioned(
-                top: h * 0.520,
+                top: h * 0.480,
                 left: w * 0.05,
                 child: Transform.rotate(
                   angle: -math.pi / 30.0,

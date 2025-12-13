@@ -21,8 +21,7 @@ class HomepageController extends SearchMix {
     ["لابتوبات", Icons.laptop],
     ["هواتف", Icons.phone_iphone],
     ["كاميرات", Icons.camera],
-      ["لابتوبات", Icons.laptop],
-   
+    ["لابتوبات", Icons.laptop],
   ];
 
   @override
@@ -61,14 +60,12 @@ class HomepageController extends SearchMix {
   }
 
   //==================================================cart
+  // داخل HomepageController
   PageController? pageController;
-
-  void initPageController() {
-    pageController = PageController(viewportFraction: 0.68);
-  }
 
   @override
   void onClose() {
+    // تم التعديل هنا: استخدام ?.dispose() لتجنب Null check operator used on a null value
     pageController?.dispose();
     super.onClose();
   }
@@ -76,6 +73,11 @@ class HomepageController extends SearchMix {
   //=======================================================cart
   @override
   void onInit() {
+    pageController = PageController(
+      initialPage: 0,
+      viewportFraction:
+          0.8, // مهم جداً: هذا الرقم هو ما يظهر جزءاً من الكروت الجانبية
+    );
     getdata();
     username = myservisec.sharedPreferences.getString("username");
     super.onInit();

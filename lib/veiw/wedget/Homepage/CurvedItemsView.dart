@@ -9,53 +9,75 @@ class CurvedItemsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomepageController>(
-      // 1. استدعِ دالة الإنشاء عند تهيئة الـ GetBuilder لأول مرة
-      initState: (state) {
-        Get.find<HomepageController>().initPageController();
-      },
       builder: (controller) {
-        // 2. أضف شرطاً للتأكد من أن الـ Controller ليس فارغاً
-        if (controller.pageController == null) {
-          // يمكنك إظهار مؤشر تحميل هنا بينما يتم إنشاؤه
-          return const Center(child: CircularProgressIndicator());
+        // 1. فحص أمان: إذا لم يتم تهيئة الكنترولر أو القائمة فارغة، لا نرسم الـ PageView
+        if (controller.pageController == null || controller.items.isEmpty) {
+          return const SizedBox(
+            height: 310,
+            child: Center(child: CircularProgressIndicator()),
+          );
         }
+
+        // تخزين الكنترولر في متغير ثابت لسهولة الاستخدام
+        final PageController pageController = controller.pageController!;
 
         return SizedBox(
           height: 310,
           child: PageView.builder(
-            controller: controller.pageController,
+            controller: pageController,
             itemCount: controller.items.length,
             scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
               return AnimatedBuilder(
-                animation: controller.pageController!,
+                animation: pageController,
                 builder: (context, child) {
                   double value = 1.0;
-                  final pageController = controller.pageController!;
+                  double rotation = 0.0;
+                  double translateY = 0.0;
 
-                  if (pageController.position.haveDimensions) {
-                    final currentPage =
-                        pageController.page ??
-                        pageController.initialPage.toDouble();
-                    value = (1 - ((currentPage - index).abs() * 0.4)).clamp(
-                      0.0,
-                      1.0,
-                    );
+                  // 2. التأكد من أن الكنترولر مرتبط بالواجهة قبل طلب القيم
+                  if (pageController.hasClients &&
+                      pageController.position.haveDimensions) {
+                    
+                    // المتغير page قد يكون null في اللحظات الأولى، لذا نستخدم initialPage كبديل
+                    double currentPage = pageController.page ?? pageController.initialPage.toDouble();
+                    
+                    // حساب الفرق بين مكان العنصر والصفحة الحالية
+                    double diff = (index - currentPage); 
+                    
+                    // حساب التحجيم (Scale): كلما بعد العنصر عن المركز، صغر حجمه
+                    // الرقم 0.2 يتحكم في سرعة التصغير
+                    value = (1 - (diff.abs() * 0.25)).clamp(0.75, 1.0);
+                    
+                    // حساب الدوران (Rotation)
+                    rotation = diff * 0.1;
+
+                    // حساب الإزاحة العمودية (لعمل شكل الكيرف)
+                    // كلما صغر العنصر، نزل للأسفل أكثر
+                    translateY = 60 * (1 - value); 
+
+                  } else {
+                    // القيمة الافتراضية عند بدء التشغيل قبل السكرول
+                    if (index == pageController.initialPage) {
+                      value = 1.0;
+                      translateY = 0.0;
+                    } else {
+                      value = 0.75; // حجم العناصر الجانبية
+                      translateY = 60 * (1 - value);
+                    }
                   }
 
+                  // 3. تطبيق التحويلات
                   return Transform.translate(
-                    offset: Offset(0, 50 * (1 - value)),
+                    offset: Offset(0, translateY), // النزول للأسفل
                     child: Transform.scale(
-                      scale: value,
+                      scale: value, // التصغير والتكبير
                       child: Transform.rotate(
-                        angle:
-                            (index -
-                                (pageController.page ??
-                                        pageController.initialPage.toDouble())
-                                    .round()) *
-                            0.2,
+                        angle: rotation, // الدوران الخفيف
                         child: Opacity(
-                          opacity: value,
+                          // تغيير الشفافية للعناصر البعيدة لتركيز النظر على المنتصف
+                          opacity: value.clamp(0.5, 1.0), 
                           child: ItemsCardhome(index: index),
                         ),
                       ),
@@ -70,9 +92,3 @@ class CurvedItemsView extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
