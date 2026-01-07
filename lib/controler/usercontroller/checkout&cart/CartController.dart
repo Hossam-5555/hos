@@ -11,7 +11,7 @@ import 'package:hos/data/model/cartmodel.dart';
 class CartController extends GetxController {
   ///////////////======================ملكش دعوه
   Cartdata cartdata = Cartdata(Get.find());
-  Statusrequest statusrequest=Statusrequest.loading;
+  Statusrequest statusrequest = Statusrequest.loading;
   Myservisec myservisec = Get.put(Myservisec());
   cartmodel cart = cartmodel();
   /////===========================
@@ -133,7 +133,7 @@ class CartController extends GetxController {
         data.clear();
         List datarespons = response["datacart"];
         data.addAll(datarespons.map((e) => cartmodel.fromJson(e)));
-     
+
         Map dataresponsecountprice = response["countprice"];
 
         totalcount =
@@ -147,10 +147,9 @@ class CartController extends GetxController {
               dataresponsecountprice["totalprice"]?.toString() ?? "0",
             ) ??
             0.0;
-            if (data.isEmpty) {
-            statusrequest = Statusrequest.loading;
-
-            }
+        if (data.isEmpty) {
+          statusrequest = Statusrequest.loading;
+        }
       } else {
         statusrequest = Statusrequest.failure;
       }
@@ -165,50 +164,54 @@ class CartController extends GetxController {
   String? couponename;
   String? couponeID;
 
-  gotochechout() {
-    if (data.isEmpty)
-      // ignore: curly_braces_in_flow_control_structures
-      return Get.snackbar("السلله  فارغه", "لا يمكن إتمام الطلب");
-
-    Get.toNamed(
-      Approute.Checkout,
-      arguments: {
-        "totalprice": totalprice.toString(),
-        "couponeID": couponeID ?? "0",
-        "couponediscount": couponediscount.toString(),
-      },
-    );
+  void gotochechout() {
+    if (data.isEmpty) {
+      Get.snackbar("السلله  فارغه", "لا يمكن إتمام الطلب");
+    } else {
+      Get.toNamed(
+        Approute.Checkout,
+        arguments: {
+          "totalprice": totalprice.toString(),
+          "couponeID": couponeID ?? "0",
+          "couponediscount": couponediscount.toString(),
+        },
+      );
+    }
   }
 
-  chechcoupone() async {
+  Future<void> chechcoupone() async {
     statusrequest = Statusrequest.loading;
     update();
-    var response = await cartdata.couponedata(coubonecontroller!.text);
-    print(response);
-    statusrequest = handling(response);
-    if (Statusrequest.success == statusrequest) {
-      if (response["status"] == "success") {
-        Map<String, dynamic> dataCoupone = response['data'];
-        couponeModel = CouponeModel.fromJson(dataCoupone);
-        couponediscount = double.parse(couponeModel!.couponDiscount!);
-        couponename = couponeModel!.couponName;
-        couponeID = couponeModel!.couponId.toString();
-      } else {
-        couponediscount = 0;
-        couponename = null;
-        couponeID = null;
-        Get.snackbar("خطأ في البيانات ", "الرجاء المحاوله مره اخري");
+    if (data.isNotEmpty) {
+      var response = await cartdata.couponedata(coubonecontroller!.text);
+      statusrequest = handling(response);
+      if (Statusrequest.success == statusrequest) {
+        if (response["status"] == "success") {
+          Map<String, dynamic> dataCoupone = response['data'];
+          couponeModel = CouponeModel.fromJson(dataCoupone);
+          couponediscount = double.parse(couponeModel!.couponDiscount!);
+          couponename = couponeModel!.couponName;
+          couponeID = couponeModel!.couponId.toString();
+          Get.snackbar("الكوبون", "✅تم تطبيق الكوبون ");
+        } else {
+          couponediscount = 0;
+          couponename = null;
+          couponeID = null;
+          Get.snackbar("خطأ في البيانات ", "الرجاء المحاوله مره اخري");
+        }
       }
+      update();
+    } else {
+      Get.snackbar("السلله  فارغه", "لا يمكن تطبيق الكوبون");
     }
-    update();
   }
 
-  gettotalprice() {
+  double gettotalprice() {
     return (totalprice - totalprice * couponediscount / 100);
   }
 
   bool value = false;
-  onchangcheckbox(val) {
+  void onchangcheckbox(bool? val) {
     value = val ?? false; // يتغير مع الضغط
     update();
   }

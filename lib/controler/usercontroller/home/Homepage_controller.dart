@@ -7,6 +7,7 @@ import 'package:hos/core/class/searchclass.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/homedata.dart';
+import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/veiw/userscreen/screen/home/items.dart';
 
 class HomepageController extends SearchMix {
@@ -14,15 +15,9 @@ class HomepageController extends SearchMix {
 
   String? username;
   List items = [];
-  List categories = [];
+  List<categoriesmodel> categories = [];
 
-  List<List> categoresdinformation = [
-    ['الكل', Icons.all_inbox],
-    ["لابتوبات", Icons.laptop],
-    ["هواتف", Icons.phone_iphone],
-    ["كاميرات", Icons.camera],
-    ["لابتوبات", Icons.laptop],
-  ];
+
 
   @override
   Homedata homedata = Homedata(Get.find());
@@ -35,7 +30,8 @@ class HomepageController extends SearchMix {
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response["status"] == "success") {
-        categories.addAll(response["categories"]);
+        List categorylist = response["categories"];
+        categories.addAll(categorylist.map((e) => categoriesmodel.fromJson(e)));
         items.addAll(response["items"]);
       } else {
         statusrequest = Statusrequest.failure;

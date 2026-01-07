@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 
 class BuildOrderSummary extends StatelessWidget {
@@ -11,7 +12,8 @@ class BuildOrderSummary extends StatelessWidget {
     final width = size.width;
     final height = size.height;
 
-    return Container(height: height*0.30,
+    return Container(
+      height: height * 0.30,
       padding: EdgeInsets.all(width * 0.04),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -32,11 +34,17 @@ class BuildOrderSummary extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('الإجمالي',
-                  style: TextStyle(fontSize: width * 0.04, color: Colors.grey)),
-              Text('${controller.totalprice} جنيه',
-                  style: TextStyle(
-                      fontSize: width * 0.045, fontWeight: FontWeight.bold)),
+              Text(
+                'الإجمالي',
+                style: TextStyle(fontSize: width * 0.04, color: Colors.grey),
+              ),
+              Text(
+                '${controller.totalprice} جنيه',
+                style: TextStyle(
+                  fontSize: width * 0.045,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
           SizedBox(height: height * 0.01),
@@ -45,11 +53,17 @@ class BuildOrderSummary extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('الخصم',
-                  style: TextStyle(fontSize: width * 0.04, color: Colors.grey)),
-              Text('${controller.couponediscount} %',
-                  style: TextStyle(
-                      fontSize: width * 0.045, fontWeight: FontWeight.bold)),
+              Text(
+                'الخصم',
+                style: TextStyle(fontSize: width * 0.04, color: Colors.grey),
+              ),
+              Text(
+                '${controller.couponediscount} %',
+                style: TextStyle(
+                  fontSize: width * 0.045,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
           Divider(height: height * 0.03),
@@ -58,14 +72,21 @@ class BuildOrderSummary extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('المجموع الكلي',
-                  style: TextStyle(
-                      fontSize: width * 0.048, fontWeight: FontWeight.bold)),
-              Text('${controller.gettotalprice()} جنيه',
-                  style: TextStyle(
-                      fontSize: width * 0.05,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor)),
+              Text(
+                'المجموع الكلي',
+                style: TextStyle(
+                  fontSize: width * 0.048,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                '${controller.gettotalprice()} جنيه',
+                style: TextStyle(
+                  fontSize: width * 0.05,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
             ],
           ),
 
@@ -81,13 +102,23 @@ class BuildOrderSummary extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: const Color.fromARGB(255, 146, 146, 146).withAlpha(35),
                 ),
-                child: const Icon(Icons.shopify_outlined,
-                    color: Colors.black, size: 24),
+                child: const Icon(
+                  Icons.shopify_outlined,
+                  color: Colors.black,
+                  size: 24,
+                ),
               ),
               SizedBox(width: width * 0.03),
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () => controller.gotochechout(),
+                  onPressed: () {
+                    controller.data.isNotEmpty
+                        ? controller.gotochechout()
+                        : Get.snackbar(
+                            "السلله  فارغه",
+                            "لا يمكن تنفيذ العمليه",
+                          );
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: height * 0.02),
                     backgroundColor: Colors.black,
@@ -96,7 +127,9 @@ class BuildOrderSummary extends StatelessWidget {
                       borderRadius: BorderRadius.circular(80),
                     ),
                     textStyle: TextStyle(
-                        fontSize: width * 0.045, fontWeight: FontWeight.bold),
+                      fontSize: width * 0.045,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   child: const Text('إتمام الشراء'),
                 ),

@@ -5,10 +5,11 @@ import 'package:hos/core/class/searchclass.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/items.dart';
+import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 
 class ItemsControler extends SearchMix {
-  List categories = [];
+  List<categoriesmodel> categories = [];
   int? selecteditem;
   late String catid;
   List<Itemsmodel> data = [];
@@ -20,17 +21,17 @@ class ItemsControler extends SearchMix {
     selecteditem = val;
     catid = catigid;
     update(); // يحدث الواجهة مباشرة
-    Getitem(catid); // بعدين يجيب البيانات
+    getitems(catid); // بعدين يجيب البيانات
   }
 
   void initdata() {
     catid = Get.arguments['catid'];
     categories = Get.arguments["categories"];
     selecteditem = Get.arguments['selecteditem'] ?? 0; // قيمة افتراضية
-    Getitem(catid);
+    getitems(catid);
   }
 
-  Getitem(String catid) async {
+  Future<void> getitems(String catid) async {
     data.clear();
     statusrequest = Statusrequest.loading;
     update();
@@ -50,15 +51,6 @@ class ItemsControler extends SearchMix {
     update();
   }
 
-  List<List> categoresdinformation = [
-    ['الكل', Icons.all_inbox],
-    ["لابتوبات", Icons.laptop],
-    ["هواتف", Icons.phone_iphone],
-    ["كاميرات", Icons.camera],
-  ];
-
-  IconData get currentIcon =>
-      categoresdinformation[selecteditem ?? 0][1] as IconData;
   @override
   void onInit() {
     search = TextEditingController();

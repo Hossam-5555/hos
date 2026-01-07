@@ -48,7 +48,7 @@ class Items extends StatelessWidget {
                 margin: EdgeInsets.only(top: height * 0.02, bottom: height * 0.015),
                 height: height * 0.08, // متجاوبة مع أي شاشة
                 width: width,
-                child: listcatigoriesitem(),
+                child: ListCatigoriesItem(),
               ),
 
               /// 🛍 شبكة العناصر (المنتجات)

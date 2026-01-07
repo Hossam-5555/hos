@@ -41,7 +41,7 @@ class favcard extends GetView<Myfavcontroler> {
               /// صورة المنتج
               Positioned.fill(
                 child: Hero(
-                  tag: '${items.itemsId}',
+                  tag: '${items.itemsId.toString()}',
                   child: Image.network(
                     "${LinkApi.imageitems}/${items.itemsImage}",
                     fit: BoxFit.contain,

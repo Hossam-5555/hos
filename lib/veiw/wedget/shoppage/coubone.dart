@@ -54,7 +54,6 @@ class Coubone extends GetView<CartController> {
                             ElevatedButton(
                               onPressed: () {
                                 controller.chechcoupone();
-                                Get.snackbar("الكوبون", "✅تم تطبيق الكوبون ");
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.black,

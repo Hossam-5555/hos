@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
-import 'package:hos/data/model/categoriesmodel.dart';
+import 'package:hos/core/conistant/linkApi.dart';
 
 // ignore: must_be_immutable, camel_case_types
 class listcatigories extends GetView<HomepageController> {
@@ -13,9 +14,9 @@ class listcatigories extends GetView<HomepageController> {
       scrollDirection: Axis.horizontal,
       itemCount: controller.categories.length,
       itemBuilder: (context, index) => buildCategory(
-        catig: categoriesmodel.fromJson(controller.categories[index]),
-
-        icon: controller.categoresdinformation[index][1],
+        catname: controller.categories[index].categoriesName,
+        urlimge:
+            "${LinkApi.imagecategories}/${controller.categories[index].categoriesImage}",
         // selected: index == 0 ? true : false,
         i: index,
       ),
@@ -25,16 +26,15 @@ class listcatigories extends GetView<HomepageController> {
 
 // ignore: must_be_immutable, camel_case_types
 class buildCategory extends StatelessWidget {
-  final categoriesmodel catig;
   buildCategory({
     super.key,
     required this.i,
-    // required this.selected,
-    this.icon,
-    required this.catig,
+    required this.catname,
+    this.urlimge,
   });
   // final bool selected;
-  IconData? icon;
+  String? urlimge;
+  String? catname;
   final int i;
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,11 @@ class buildCategory extends StatelessWidget {
       builder: (contriller) {
         return InkWell(
           onTap: () {
-            contriller.gotoitems(contriller.categories, i, catig.categoriesId!);
+            contriller.gotoitems(
+              contriller.categories,
+              i,
+              contriller.categories[i].categoriesId!,
+            );
           },
           child: SizedBox(
             height: 60,
@@ -54,17 +58,26 @@ class buildCategory extends StatelessWidget {
                   width: 70,
                   margin: const EdgeInsets.only(right: 5),
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 5,
-                    vertical: 5,
+                    horizontal: 10,
+                    vertical: 10,
                   ),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: const Color.fromARGB(255, 146, 146, 146).withAlpha(35),
+                    color: const Color.fromARGB(
+                      255,
+                      146,
+                      146,
+                      146,
+                    ).withAlpha(35),
                   ),
-                  child: Icon(icon, color: Colors.black, size: 20),
+                  child: SvgPicture.network(
+                    urlimge!,
+                    errorBuilder: (context, error, stackTrace) =>
+                        const Icon(Icons.error),
+                  ),
                 ),
                 Text(
-                  catig.categoriesName!,
+                  catname!,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 10,

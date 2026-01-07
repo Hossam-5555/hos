@@ -1,5 +1,5 @@
 class myfavoritemodel {
-  int? favId;
+  String? favId;
   int? favUsersid;
   int? favItemsid;
   int? itemsId;
@@ -35,7 +35,7 @@ class myfavoritemodel {
       this.usersId});
 
   myfavoritemodel.fromJson(Map<String, dynamic> json) {
-    favId = json['fav_id'];
+    favId = json['fav_id'].toString();
     favUsersid = json['fav_usersid'];
     favItemsid = json['fav_itemsid'];
     itemsId = json['items_id'];

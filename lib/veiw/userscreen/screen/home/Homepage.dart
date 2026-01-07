@@ -99,6 +99,13 @@ class HomePage extends StatelessWidget {
                                   ),
                                 ],
                               ),
+                               OfferCard(
+                                title: 'خصم على الأجهزة',
+                                description:
+                                    "خصم يصل إلى 50% على الهواتف واللابتوبات",
+                                discount: "50% OFF",
+                                onTap: () {},
+                              ),
 
                             ],
                           )
