@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/add.dart';
+import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/shoppage/checkout.dart';
 
@@ -31,10 +33,7 @@ class Checkout extends StatelessWidget {
                   // 💳 Payment Section
                   const Text(
                     "Payment Method",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 8),
                   SizedBox(
@@ -51,14 +50,11 @@ class Checkout extends StatelessWidget {
                     ),
                   ),
                   const Divider(height: 40, thickness: 1),
-
+                  
                   // 🏠 Address Section
                   const Text(
                     "Select Address",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 8),
 
@@ -77,16 +73,19 @@ class Checkout extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         margin: const EdgeInsets.symmetric(
-                            horizontal: 4, vertical: 6),
+                          horizontal: 4,
+                          vertical: 6,
+                        ),
                         child: const ListTile(
-                          leading: Icon(Icons.add_location_alt_rounded,
-                              color: Colors.blueAccent),
+                          leading: Icon(
+                            Icons.add_location_alt_rounded,
+                            color: Colors.blueAccent,
+                          ),
                           title: Text(
                             'Add Address',
                             style: TextStyle(fontWeight: FontWeight.w500),
                           ),
-                          subtitle:
-                              Text('No addresses found, tap to add one.'),
+                          subtitle: Text('No addresses found, tap to add one.'),
                         ),
                       ),
                     )
@@ -95,8 +94,7 @@ class Checkout extends StatelessWidget {
                       height: 110,
                       child: ListView.separated(
                         scrollDirection: Axis.horizontal,
-                        separatorBuilder: (_, __) =>
-                            const SizedBox(width: 10),
+                        separatorBuilder: (_, __) => const SizedBox(width: 10),
                         itemCount: controller.ListAddresdata.length,
                         itemBuilder: (context, index) => Listaddrescard(
                           onTap: () {
@@ -104,7 +102,8 @@ class Checkout extends StatelessWidget {
                               controller.ListAddresdata[index].addresId,
                             );
                           },
-                          isActive: controller.Addressid ==
+                          isActive:
+                              controller.Addressid ==
                               controller.ListAddresdata[index].addresId,
                           titil:
                               "${controller.ListAddresdata[index].addresName}",

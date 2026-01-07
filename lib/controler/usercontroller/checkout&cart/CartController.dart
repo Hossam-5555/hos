@@ -148,7 +148,7 @@ class CartController extends GetxController {
             ) ??
             0.0;
         if (data.isEmpty) {
-          statusrequest = Statusrequest.loading;
+          statusrequest = Statusrequest.failure;
         }
       } else {
         statusrequest = Statusrequest.failure;

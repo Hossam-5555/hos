@@ -4,7 +4,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/itemsdetailscontroller.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/linkApi.dart';
+import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/buttom.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/countofproduct.dart';
 
@@ -103,7 +105,7 @@ class Itemsdetailes extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "${(item.itemspricediscount ?? '100').toString().substring(0, (item.itemspricediscount ?? '100').length.clamp(0, 6))}\$",
+                            "${(double.parse(item.itemspricediscount.toString()).toStringAsFixed(2))}\$",
                             style: TextStyle(
                               fontSize: w * 0.055,
                               color: Colors.green,
@@ -183,6 +185,39 @@ class Itemsdetailes extends StatelessWidget {
                   ),
                 ),
               ),
+              //#####################################Animation##########################################
+              controller.isadded
+                  ? Stack(
+                      children: [
+                        Positioned(
+                          top: h * 0.2,
+                          left: w * 0.010,
+                          child: Container(
+                            height: 200,
+                            width: 200,
+
+                            child: Animationforstatus(
+                              animationPath: Imageasset.celebiration,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: h * 0.2,
+                          right: w * 0.010,
+                          child: Container(
+                            height: 200,
+                            width: 200,
+
+                            child: Animationforstatus(
+                              animationPath: Imageasset.celebiration,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : SizedBox.shrink(),
+
+              //#####################################Animation##########################################
               Positioned(
                 top: h * 0.480,
                 left: w * 0.05,

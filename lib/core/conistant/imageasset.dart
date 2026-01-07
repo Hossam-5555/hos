@@ -12,6 +12,7 @@ class Imageasset {
   static String nodata = "$routeImage/nodata.json";
   static String loading = "$routeImage/loading.json";
   static String mail = "$routeImage/mail.json";
+  static String celebiration = "$routeImage/Confetti.json";
 
   //cc
   static String borcha = "$routeImage/borcha.jpg";

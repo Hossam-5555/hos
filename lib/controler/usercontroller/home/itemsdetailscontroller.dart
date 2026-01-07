@@ -11,7 +11,9 @@ class Itemdetailscontroller extends GetxController {
   late Itemsmodel itemsmodel;
   Cartdata cartdata = Cartdata(Get.find());
   Myservisec myservisec = Get.find();
-
+//
+bool isadded = false;
+//
   addtocart(String itemid, int count) async {
     var statusrequest = Statusrequest.loading;
     update();

@@ -35,6 +35,7 @@ class Buttom extends StatelessWidget {
               duration: const Duration(seconds: 1),
             );
           } else {
+            itemdetailscontroller.isadded=true;
             itemdetailscontroller.addtocart(
               itemdetailscontroller.itemsmodel.itemsId!.toString(),
               itemdetailscontroller.itemcount,

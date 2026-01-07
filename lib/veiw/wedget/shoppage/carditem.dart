@@ -44,7 +44,10 @@ Widget buildCartItemCard(
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    '${controller.data[i].totalprice} جنيه',
+                    // 1. double.parse: تحول النص لرقم
+                    // 2. toStringAsFixed(2): تضبط الرقم ليكون خانتين فقط
+                    '${double.parse(controller.data[i].totalprice.toString()).toStringAsFixed(2)} \$',
+
                     style: TextStyle(
                       fontSize: 15,
                       color: Theme.of(context).primaryColor,
