@@ -114,9 +114,9 @@ class Itemsdetailes extends StatelessWidget {
                           ),
                         ],
                       ),
-
+                
                       SizedBox(height: h * 0.02),
-
+                
                       // ===== التقييم وعدد القطع =====
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -134,16 +134,16 @@ class Itemsdetailes extends StatelessWidget {
                           Countofproduct(count: controller.itemcount),
                         ],
                       ),
-
+                
                       SizedBox(height: h * 0.03),
-
+                
                       // ===== الوصف =====
                       Text(
                         "Description",
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const SizedBox(height: 8),
-                      Text(
+                      Text(maxLines: 2,
                         "هذا وصف تفصيلي للمنتج يوضح كل الخصائص والمميزات "
                         "مع شرح كامل يساعد المستخدم في معرفة التفاصيل قبل الشراء.",
                         style: TextStyle(fontSize: w * 0.04, height: 1.6),

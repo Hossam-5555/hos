@@ -15,6 +15,15 @@ class CartController extends GetxController {
   Myservisec myservisec = Get.put(Myservisec());
   cartmodel cart = cartmodel();
   /////===========================
+  ///
+
+  double gettotalprice() {
+    return (totalprice - totalprice * couponediscount / 100);
+  }
+
+  late AnimationController controllerAnimation;
+  late Animation<double> priceAnimation;
+
 
   ///////////////////ملكش دعوه بدول  //view data
   List<cartmodel> data = [];
@@ -204,10 +213,6 @@ class CartController extends GetxController {
     } else {
       Get.snackbar("السلله  فارغه", "لا يمكن تطبيق الكوبون");
     }
-  }
-
-  double gettotalprice() {
-    return (totalprice - totalprice * couponediscount / 100);
   }
 
   bool value = false;

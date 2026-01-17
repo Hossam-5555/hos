@@ -20,7 +20,7 @@ class Buttomappbar extends GetView<Homescreencontroller> {
           ignoring: !controller.upordown,
           child: Container(
             margin: const EdgeInsets.only(bottom: 10),
-            width: width * 0.85, // ← متجاوب يعرض 85% من الشاشة
+            width: width * 0.75, // ← متجاوب يعرض 85% من الشاشة
             height: 75, // ← ارتفاع ثابت ومناسب
             child: ClipRRect(
               borderRadius: BorderRadius.circular(40),
@@ -29,11 +29,11 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                 filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white.withAlpha(77),
+                    color: Colors.white.withAlpha(70),
                     borderRadius: BorderRadius.circular(40),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.15),
+                        color: Colors.black.withOpacity(0.3),
                         blurRadius: 6,
                         offset: const Offset(0, 3),
                       ),

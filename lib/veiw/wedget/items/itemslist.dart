@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/items_controler.dart';
-import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/linkApi.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 
@@ -52,10 +51,13 @@ class BuildCategoryItems extends StatelessWidget {
           onTap: () => controller.changcat(i, catmodel.categoriesId!),
           child: Container(
             alignment: Alignment.center,
-            margin: const EdgeInsets.only(right: 10),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            margin: const EdgeInsets.only(right: 9),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: selected ? Appcolor.primaryColor : Colors.grey[400],
+              color:  Colors.grey.withAlpha(60),border: Border.all(
+                color: selected ? Colors.black : Colors.transparent,
+                width: 2,
+              ),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
@@ -64,7 +66,7 @@ class BuildCategoryItems extends StatelessWidget {
                 Container(
                   height: 40,
                   width: 40,
-                  margin: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(8),
                   child: SvgPicture.network(
                     urlIcon,
                     errorBuilder: (context, error, stackTrace) =>
@@ -75,7 +77,7 @@ class BuildCategoryItems extends StatelessWidget {
                 Text(
                   catmodel.categoriesName ?? '',
                   style: TextStyle(
-                    color: selected ? Colors.white : Colors.white70,
+                    color: selected ? const Color.fromARGB(255, 56, 56, 56) : const Color.fromARGB(179, 148, 146, 146),
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),

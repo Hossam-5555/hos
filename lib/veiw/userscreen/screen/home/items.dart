@@ -23,7 +23,7 @@ class Items extends StatelessWidget {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(height * 0.08), // نسبي
+        preferredSize: Size.fromHeight(height * 0.07), // نسبي
         child: Appbarbackicon(title: "Items", herotag: "carttag"),
       ),
       body: SafeArea(
@@ -34,19 +34,56 @@ class Items extends StatelessWidget {
               /// 🔍 شريط البحث
               Padding(
                 padding: EdgeInsets.symmetric(
-                    vertical: height * 0.015, horizontal: width * 0.01),
-                child: Searchbar(
-                  onPressedIcon: controller.onsearch,
-                  onChanged: controller.checksearch,
-                  title: "ابحث عن منتج...",
-                  mycontroller: controller.search!,
+                  vertical: height * 0.01,
+                  horizontal: width * 0.01,
+                ),
+                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: width * 0.65,
+                      child: Searchbar(
+                        onPressedIcon: controller.onsearch,
+                        onChanged: controller.checksearch,
+                        title: "ابحث عن منتج...",
+                        mycontroller: controller.search!,
+                      ),
+                    ),
+                    OutlinedButton.icon(
+                      onPressed: () {
+
+
+                        
+                      },
+                      icon: Icon(Icons.filter_list),
+                      label: Text("Filter"),
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all<Color>(
+                          const Color.fromARGB(221, 14, 15, 14),
+                        ),
+                        side: MaterialStateProperty.all<BorderSide>(
+                          BorderSide(
+                            color: const Color.fromARGB(255, 147, 161, 140),
+                          ),
+                        ),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
               /// 📂 القائمة الأفقية للأقسام
               Container(
-                margin: EdgeInsets.only(top: height * 0.02, bottom: height * 0.015),
-                height: height * 0.08, // متجاوبة مع أي شاشة
+                margin: EdgeInsets.only(
+                  top: height * 0.01,
+                  bottom: height * 0.01,
+                ),
+                height: height * 0.07, // متجاوبة مع أي شاشة
                 width: width,
                 child: ListCatigoriesItem(),
               ),
@@ -61,14 +98,16 @@ class Items extends StatelessWidget {
                             padding: EdgeInsets.all(width * 0.03),
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: width / (height * 0.55),
-                              crossAxisSpacing: width * 0.03,
-                              mainAxisSpacing: height * 0.02,
-                            ),
+                                  crossAxisCount: 2,
+                                  childAspectRatio: width / (height * 0.60),
+                                  crossAxisSpacing: width * 0.03,
+                                  mainAxisSpacing: height * 0.02,
+                                ),
                             itemCount: controller.data.length,
                             itemBuilder: (context, i) {
-                              favController.isfavorite[controller.data[i].itemsId] =
+                              favController.isfavorite[controller
+                                      .data[i]
+                                      .itemsId] =
                                   controller.data[i].favorite;
                               return _buildItemCard(context, i, width, height);
                             },
@@ -85,7 +124,12 @@ class Items extends StatelessWidget {
   }
 
   /// 🖼️ كارت بعرض ثلاثي الأبعاد
-  Widget _buildItemCard(BuildContext context, int index, double width, double height) {
+  Widget _buildItemCard(
+    BuildContext context,
+    int index,
+    double width,
+    double height,
+  ) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,

@@ -81,7 +81,7 @@ class ItemList extends GetView<ItemsControler> {
                       height: 40,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.white.withAlpha(70),
+                        color: Colors.white.withAlpha(90),
                       ),
                       child: IconButton(
                         onPressed: () {
@@ -111,9 +111,7 @@ class ItemList extends GetView<ItemsControler> {
                 child: controller.data[index].itemsDiscount != "0.00"
                     ? Container(
                         height: 70,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                        ),
+                        decoration: BoxDecoration(shape: BoxShape.circle),
                         child: Transform.rotate(
                           angle: 0.70,
                           child: Lottie.asset(Imageasset.sale),
@@ -194,7 +192,7 @@ class ItemList extends GetView<ItemsControler> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "${items.itemspricediscount ?? "0"} ج.م",
+                            "${double.parse(items.itemspricediscount.toString()).toStringAsFixed(2)} ج.م",
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

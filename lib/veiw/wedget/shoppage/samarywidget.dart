@@ -79,12 +79,34 @@ class BuildOrderSummary extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                '${controller.gettotalprice()} جنيه',
-                style: TextStyle(
-                  fontSize: width * 0.05,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).primaryColor,
+
+              /// 🔥 الحل هنا
+              SizedBox(
+                height: 40, // تثبيت الارتفاع
+                child: GetBuilder<CartController>(
+                  builder: (controller) => TweenAnimationBuilder<double>(
+                    tween: Tween<double>(
+                      begin: controller.totalprice,
+                      end:
+                          controller.totalprice -
+                          controller.totalprice *
+                              controller.couponediscount /
+                              100,
+                    ),
+                    duration: const Duration(seconds: 1),
+                    curve: Curves.easeOut,
+                    builder: (context, value, child) {
+                      return Text(
+                        '${value.toStringAsFixed(0)} جنيه',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ],

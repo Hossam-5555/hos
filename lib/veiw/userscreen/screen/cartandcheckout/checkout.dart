@@ -3,9 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
-import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/add.dart';
-import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/shoppage/checkout.dart';
 

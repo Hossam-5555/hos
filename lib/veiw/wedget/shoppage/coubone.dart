@@ -74,7 +74,7 @@ class Coubone extends GetView<CartController> {
                     : Container(alignment: Alignment.center,
                         margin: EdgeInsets.only(bottom: 10),
                         child: Text(
-                          "${controller.couponename}تم تفعيل ",
+                          "${controller.couponename} applied ",
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,

@@ -34,7 +34,7 @@ class Homescreen extends StatelessWidget {
 
           // ============= تعديل مكان الـ BottomAppbar =================
           bottomNavigationBar: Container(
-            padding: EdgeInsets.only(left: 50,right: 50,bottom: 20),
+            margin: EdgeInsets.only(left: 50,right: 50,bottom: 10),
             child: Buttomappbar(),    
           ),
 

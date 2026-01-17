@@ -12,7 +12,7 @@ class Orderdetailes extends StatelessWidget {
     final controller = Get.put(Orderdetailescontroller());
 
     return Scaffold(
-      backgroundColor: Colors.grey[100], // خلفية رمادية فاتحة لإبراز البطاقات
+      // backgroundColor: Colors.grey[100], // خلفية رمادية فاتحة لإبراز البطاقات
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child:  Appbarbackicon(herotag: '', title: "Order Details"),
