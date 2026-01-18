@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/cart.dart';
 import 'package:hos/veiw/userscreen/screen/home/Homepage.dart';
-import 'package:hos/veiw/userscreen/screen/home/notification.dart';
 import 'package:hos/veiw/userscreen/screen/offer.dart';
 import 'package:hos/veiw/userscreen/screen/profile/profile.dart';
 
@@ -29,7 +28,7 @@ class Homescreencontroller extends GetxController {
   final List<Widget> pages = [
     HomePage(), // 🔹 صفحة الهوم
     Offer(),
-    NotificationPage(), // 🔹 صفحة المفضلة
+    // NotificationPage(), // 🔹 صفحة المفضلة
     ProfilePage(),
   ];
 
@@ -69,7 +68,7 @@ class Homescreencontroller extends GetxController {
   List<List<dynamic>> Appbartitle = [
     ['FASHION', Imageasset.Homesvg],
     ['Offer', Imageasset.offer],
-    ['notification', Imageasset.notification],
+    // ['notification', Imageasset.notification],
     ['Profile', Imageasset.profile],
   ];
 }

@@ -13,6 +13,7 @@ import 'package:hos/veiw/userscreen/screen/auth/signup%20.dart';
 import 'package:hos/veiw/userscreen/screen/auth/veryfisign.dart';
 import 'package:hos/veiw/userscreen/screen/home/homescreen.dart';
 import 'package:hos/veiw/userscreen/screen/home/itemsdetailes.dart';
+import 'package:hos/veiw/userscreen/screen/home/notification.dart';
 import 'package:hos/veiw/userscreen/screen/onboarding/language.dart';
 import 'package:hos/veiw/userscreen/screen/myfavorite.dart';
 import 'package:hos/veiw/userscreen/screen/onboarding/onBoarding.dart';
@@ -36,6 +37,8 @@ List<GetPage<dynamic>>? routes = [
   GetPage(name: Approute.Homescreen, page: () => Homescreen()),
   GetPage(name: Approute.Items, page: () => Items()),
   GetPage(name: Approute.Itemsdetailes, page: () => Itemsdetailes()),
+    GetPage(name: Approute.notificationPage, page: () => NotificationPage()),
+
   //cart
   GetPage(name: Approute.ShoppingCartPage, page: () => ShoppingCartPage()),
   GetPage(name: Approute.Checkout, page: () => Checkout()),
@@ -62,6 +65,8 @@ class Approute {
   static String Homescreen = "/Homescreen";
   static String Items = "/Items";
   static String Itemsdetailes = "/Itemsdetailes";
+ static String notificationPage = "/notificationPage";
+
   //cart
   static String ShoppingCartPage = "/ShoppingCartPage";
   static String Checkout = "/checkout";

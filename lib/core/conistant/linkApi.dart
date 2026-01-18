@@ -52,6 +52,8 @@ class LinkApi {
 
   //notification
   static String notification = '$server/notification.php';
+  static String deletnotification = '$server/deletenotification.php';
+
   //offer
   static String offer = '$server/offer.php';
 
@@ -75,10 +77,9 @@ class LinkApi {
   static String admindeleteitems = '$server/admin/items/delete.php';
 
   //Admin//orders
-    static String adminorderpending = '$server/admin/orders/pending.php';
+  static String adminorderpending = '$server/admin/orders/pending.php';
   static String adminorderaccepted = '$server/admin/orders/accepted.php';
   static String adminorderdetails = '$server/admin/orders/details.php';
   static String adminaprovedorder = '$server/admin/orders/approve.php';
-    static String prepareorder = '$server/admin/orders/prepare.php';
-
+  static String prepareorder = '$server/admin/orders/prepare.php';
 }

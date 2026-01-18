@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/instance_manager.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/veiw/wedget/animation.dart';
 // استورد ويدجت الانيميشن الخاصة بك
 
@@ -18,16 +21,37 @@ class Handlingdataview extends StatelessWidget {
   Widget build(BuildContext context) {
     // 1. في حالة الخطأ أو الفشل، نعرض رسالة الخطأ فقط ولا نبني الصفحة الأصلية
     // هذا يمنع الـ Crash الناتج عن محاولة قراءة بيانات فارغة
+    String getEmptyMessage() {
+      final Map<String, String> routeMessages = {
+        "//NotificationPage": "لا توجد إشعارات",
+        "/ShoppingCartPage": "السلة فارغة",
+        "/myfavorite": "المفضلة فارغة",
+      };
+      print(Get.currentRoute);
+      // بيحاول يجيب الرسالة بناءً على الـ route، ولو مش موجودة بيرجع الرسالة الافتراضية
+      return routeMessages[Get.currentRoute] ?? "لا توجد بيانات";
+    }
 
     if (statusrequest == Statusrequest.checkinterner) {
       return Center(
         child: Animationforstatus(animationPath: Imageasset.loading),
       );
-    } else if (statusrequest == Statusrequest.serverfailure) {
-      return Center(
-        child: Animationforstatus(animationPath: Imageasset.nodata),
-      );
     } else if (statusrequest == Statusrequest.failure) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Animationforstatus(animationPath: Imageasset.nodata),
+            const SizedBox(height: 20),
+            Text(
+              getEmptyMessage(),
+              style: Theme.of(context).textTheme.headlineMedium,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
+    } else if (statusrequest == Statusrequest.serverfailure) {
       // لا توجد بيانات
       return Center(
         child: Animationforstatus(animationPath: Imageasset.nodata),
