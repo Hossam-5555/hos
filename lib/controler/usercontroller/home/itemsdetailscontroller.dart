@@ -11,9 +11,9 @@ class Itemdetailscontroller extends GetxController {
   late Itemsmodel itemsmodel;
   Cartdata cartdata = Cartdata(Get.find());
   Myservisec myservisec = Get.find();
-//
-bool isadded = false;
-//
+  //
+  bool isadded = false;
+  //
   addtocart(String itemid, int count) async {
     var statusrequest = Statusrequest.loading;
     update();
@@ -36,6 +36,13 @@ bool isadded = false;
         statusrequest = Statusrequest.failure;
       }
     }
+  }
+
+  bool isExpanded = false;
+
+  void toggleDescription() {
+    isExpanded = !isExpanded;
+    update();
   }
 
   // ui ============================
