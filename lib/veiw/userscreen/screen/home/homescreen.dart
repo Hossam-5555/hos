@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
+import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/appexitalert.dart';
 import 'package:hos/veiw/userscreen/screen/home/notification.dart';
@@ -15,13 +16,16 @@ class Homescreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(Homescreencontroller());
-
+    final size = MediaQuery.of(context).size;
+    // final h = size.height;
+    final w = size.width;
     return GetBuilder<Homescreencontroller>(
       builder: (controller) => PopScope(
         canPop: false,
+        // ignore: deprecated_member_use
         onPopInvoked: (didPop) async {
           if (didPop) return;
-          final bool? shouldExit = await appexitAlert();
+          final bool shouldExit = await appexitAlert();
           if (shouldExit == true) {
             exit(0);
           }
@@ -30,40 +34,58 @@ class Homescreen extends StatelessWidget {
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(60),
             child: AppBar(
-              leading: GestureDetector(
-                onTap: () {
-                  Get.to(
-                    () => NotificationPage(),
-                    transition: Transition.fadeIn,
-                    duration: Duration(milliseconds: 400),
-                  );
-                },
-                child: Container(
-                  height: 60,
-                  width: 60,
-                  padding: EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        offset: Offset(0.1, 0.1),
-                        blurRadius: 5,
-                        color: Colors.black.withAlpha(55),
-                        blurStyle: BlurStyle.normal,
+              actions: [
+                Container(padding: EdgeInsets.symmetric(horizontal: 5),height: 60,
+                  width: w,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(
+                            () => NotificationPage(),
+                            transition: Transition.fadeIn,
+                            duration: Duration(milliseconds: 400),
+                          );
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          padding: EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                offset: Offset(0, 0.2),
+                                blurRadius: 6,
+                                color: Colors.black.withAlpha(60),
+                                blurStyle: BlurStyle.normal,
+                              ),
+                            ],
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                          ),
+                          margin: EdgeInsets.only(left: 10, top: 1, bottom: 1),
+                          child: SvgPicture.asset(
+                            Imageasset.notification,
+                            height: 20,
+                            width: 20,
+                          ),
+                        ),
                       ),
+                      Text(
+                        controller.Appbartitle[controller.Currentpage][0],
+                        style: TextStyle(
+                          color: Appcolor.black,
+                          fontSize: 22, // ← حجم أنسب لعنوان الصفحة
+                          fontFamily: 'RobotoMono', // ← استخدم اسم الخط هنا
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Homescrenaction(),
                     ],
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                  ),
-                  margin: EdgeInsets.only(left: 10),
-                  child: SvgPicture.asset(
-                    Imageasset.notification,
-                    height: 20,
-                    width: 20,
                   ),
                 ),
-              ),
-              actions: [Homescrenaction()],
-              title: Text(controller.Appbartitle[controller.Currentpage][0]),
+              ],
             ),
           ),
 

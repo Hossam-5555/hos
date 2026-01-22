@@ -17,16 +17,16 @@ class Homescrenaction extends StatelessWidget {
         child: Stack(
           children: [
             Container(
-              height: 60,
-              width: 60,
+              height: 52,
+              width: 52,
               margin: EdgeInsets.only(right: 12),
               decoration: BoxDecoration(
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
                     blurStyle: BlurStyle.normal,blurRadius: 5,
-                    color: Colors.black.withAlpha(55),
-                    offset: Offset(0.1, 0.1),
+                    color: Colors.black.withAlpha(60),
+                    offset: Offset(0, 0.2),
                   ),
                 ],
                 shape: BoxShape.circle,

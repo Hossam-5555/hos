@@ -9,6 +9,7 @@ import 'package:hos/core/conistant/linkApi.dart';
 import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/buttom.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/countofproduct.dart';
+import 'package:hos/veiw/wedget/items/itemsdetails/description.dart';
 
 class Itemsdetailes extends StatelessWidget {
   final Itemdetailscontroller controller = Get.put(Itemdetailscontroller());
@@ -164,13 +165,10 @@ class Itemsdetailes extends StatelessWidget {
                                         padding: EdgeInsets.all(16),
                                         height: h * 0.6,
                                         child: SingleChildScrollView(
-                                          child: Text(
-                                            "هذا وصف تفصيلي للمنتج    يوضح كل  يوضح كل الخصصفوالمميزاذا وصف والمميزا"
-                                            "مع شرح كامل يساعد المستخدم في معرفة التفاصيل قبل الشراء.",
-                                            style: TextStyle(
-                                              fontSize: w * 0.04,
-                                              height: 1.6,
-                                            ),
+                                          child: SmartDescriptionView(
+                                            rawText:
+                                                "هذا وصف تفصيلي للمنتج يوضح كل الخصائص والمميزات \n Good product ,perfect for daily use"
+                                                "مع شرح كامل يساعد المستخدم في معرفة التفاصيل قبل الشراء.",
                                           ),
                                         ),
                                       );
@@ -189,21 +187,19 @@ class Itemsdetailes extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           Container(
-                            height: 100,
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  Text(
-                                    maxLines: 2,
-                                    "هذا وصف تفصيلي للمنتج يوضح كل الخصائص والمميزات \n Good product ,perfect for daily use"
-                                    "مع شرح كامل يساعد المستخدم في معرفة التفاصيل قبل الشراء.",
-                                    style: TextStyle(
-                                      fontSize: w * 0.04,
-                                      height: 1.6,
-                                    ),
+                            child: Column(
+                              children: [
+                        
+                                Text(
+                                  maxLines: 2,
+                                  "هذا وصف تفصيلي للمنتج يوضح كل الخصائص والمميزات \n Good product ,perfect for daily use"
+                                  "مع شرح كامل يساعد المستخدم في معرفة التفاصيل قبل الشراء.",
+                                  style: TextStyle(
+                                    fontSize: w * 0.04,
+                                    height: 1.6,
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                           Spacer(),

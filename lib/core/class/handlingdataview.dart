@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/imageasset.dart';
-import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/veiw/wedget/animation.dart';
 // استورد ويدجت الانيميشن الخاصة بك
 
@@ -23,7 +21,7 @@ class Handlingdataview extends StatelessWidget {
     // هذا يمنع الـ Crash الناتج عن محاولة قراءة بيانات فارغة
     String getEmptyMessage() {
       final Map<String, String> routeMessages = {
-        "//NotificationPage": "لا توجد إشعارات",
+        "/NotificationPage": "لا توجد إشعارات",
         "/ShoppingCartPage": "السلة فارغة",
         "/myfavorite": "المفضلة فارغة",
       };
