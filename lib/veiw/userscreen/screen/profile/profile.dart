@@ -69,19 +69,19 @@ class ProfilePage extends StatelessWidget {
 
           // قائمة الخيارات
           _buildOptionTile(Icons.shopping_bag, "طلباتي", () {
-            go.Gotoanypage(Orders(), false,null);
+            go.Gotoanypage(Orders(), false,{});
           }),
           _buildOptionTile(Icons.favorite_outline_outlined, "المفضله", () {
-            go.Gotoanypage(Myfavorite(), false, null);
+            go.Gotoanypage(Myfavorite(), false, {});
           }),
           _buildOptionTile(Icons.location_on, "العناوين", () {
-            go.Gotoanypage(viewmyaddres(), false, null);
+            go.Gotoanypage(viewmyaddres(), false, {});
           }),
 
           _buildOptionTile(Icons.credit_card, "طرق الدفع", () {}),
 
           _buildOptionTile(Icons.settings_outlined, "Settings", () {
-            go.Gotoanypage(Settings(), false, null);
+            go.Gotoanypage(Settings(), false, {});
           }),
 
           const SizedBox(height: 50),

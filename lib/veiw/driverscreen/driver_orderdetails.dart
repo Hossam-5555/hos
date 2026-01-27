@@ -9,14 +9,14 @@ class DriverOrderdetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(driverOrderdetailescontroller());
+    final controller = Get.put(DriverOrderDetailesController());
 
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
         child: Appbarbackicon(herotag: '', title: "Order Details"),
       ),
-      body: GetBuilder<driverOrderdetailescontroller>(
+      body: GetBuilder<DriverOrderDetailesController>(
         builder: (_) {
           final order = controller.order;
           if (order == null) {

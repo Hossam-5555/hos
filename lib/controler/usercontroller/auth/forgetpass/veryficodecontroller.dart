@@ -17,7 +17,6 @@ class veryficontroler extends GetxController {
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'success') {
-        // data.addAll(response['data']);
         Get.offNamed(Approute.Resetpass, arguments: {"email": email});
       } else {
         Get.defaultDialog(

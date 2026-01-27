@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
-import 'package:hos/core/conistant/routs.dart';
+import 'package:hos/core/class/gotoanypage.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/cartdata.dart';
 import 'package:hos/data/model/Couponemodel.dart';
 import 'package:hos/data/model/cartmodel.dart';
+import 'package:hos/veiw/userscreen/screen/cartandcheckout/checkout.dart';
 
 class CartController extends GetxController {
   ///////////////======================ملكش دعوه
@@ -23,7 +24,6 @@ class CartController extends GetxController {
 
   late AnimationController controllerAnimation;
   late Animation<double> priceAnimation;
-
 
   ///////////////////ملكش دعوه بدول  //view data
   List<cartmodel> data = [];
@@ -173,18 +173,16 @@ class CartController extends GetxController {
   String? couponename;
   String? couponeID;
 
+  Gotoanypagecalss gotoanypagecalss = Get.put(Gotoanypagecalss());
   void gotochechout() {
     if (data.isEmpty) {
       Get.snackbar("السلله  فارغه", "لا يمكن إتمام الطلب");
     } else {
-      Get.toNamed(
-        Approute.Checkout,
-        arguments: {
-          "totalprice": totalprice.toString(),
-          "couponeID": couponeID ?? "0",
-          "couponediscount": couponediscount.toString(),
-        },
-      );
+      gotoanypagecalss.Gotoanypage(Checkout(), false, {
+        "totalprice": totalprice.toString(),
+        "couponeID": couponeID ?? "0",
+        "couponediscount": couponediscount.toString(),
+      });
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
@@ -101,7 +102,9 @@ class LoginController extends GetxController {
             Get.toNamed(Approute.veryfisign, arguments: {"email": email.text});
           }
 
-          print(response["data"]);
+          if (kDebugMode) {
+            print(response["data"]);
+          }
 
         } else {
           statusrequest = Statusrequest.failure;

@@ -36,7 +36,6 @@ class Orderdetailescontroller extends GetxController {
     final args = Get.arguments;
     if (args != null && args["order"] != null) {
       order = args["order"];
-      print("✅ تم استلام الطلب: ${order?.ordersId}");
     } else {
       print("⚠️ لم يتم استلام أي بيانات من الصفحة السابقة");
     }

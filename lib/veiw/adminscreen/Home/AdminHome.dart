@@ -60,13 +60,13 @@ class AdminHome extends StatelessWidget {
               color: Colors.blueAccent,
               icon: Icons.category_outlined,
               title: "الفئات",
-              onTap: () => go.Gotoanypage(ViewCategories(), false,null),
+              onTap: () => go.Gotoanypage(ViewCategories(), false, {}),
             ),
             _buildDashboardCard(
               color: Colors.green,
               icon: Icons.shopping_bag_outlined,
               title: "المنتجات",
-              onTap: () => go.Gotoanypage(viewitem(), false,null),
+              onTap: () => go.Gotoanypage(viewitem(), false, {}),
             ),
             _buildDashboardCard(
               color: Colors.orange,
@@ -79,7 +79,7 @@ class AdminHome extends StatelessWidget {
               icon: Icons.shopping_cart_outlined,
               title: " الطلبات",
               onTap: () {
-                go.Gotoanypage(orderscreen(), false,  null);
+                go.Gotoanypage(orderscreen(), false,  {});
               },
             ),
           ],

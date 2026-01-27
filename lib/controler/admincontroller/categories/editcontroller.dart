@@ -61,7 +61,6 @@ class Editcontroller extends GetxController {
         statusrequest = Statusrequest.failure;
       }
     } catch (e) {
-      print("خطأ في EditController: $e");
       statusrequest = Statusrequest.failure;
     }
 

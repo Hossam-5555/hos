@@ -28,7 +28,7 @@ class Resetpasscontroller extends GetxController {
       if (Statusrequest.success == statusrequest) {
         if (response['status'] == 'success') {
           Get.snackbar("success", "تم إعادة تعيين كلمة المرور بنجاح");
-          gotologin();
+          Get.offAllNamed(Approute.login);
         } else {
           Get.defaultDialog(title: "Warning", middleText: "try Again");
           statusrequest = Statusrequest.failure;
@@ -36,10 +36,6 @@ class Resetpasscontroller extends GetxController {
         update();
       }
     }
-  }
-
-  void gotologin() {
-    Get.offAllNamed(Approute.login);
   }
 
   @override

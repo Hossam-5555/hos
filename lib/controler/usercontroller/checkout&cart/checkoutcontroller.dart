@@ -121,7 +121,7 @@ class Checkoutcontroller extends GetxController {
             242,
             245,
             242,
-          ).withOpacity(0.8),
+          ).withAlpha(70),
           colorText: const Color.fromARGB(255, 0, 0, 0),
           duration: const Duration(seconds: 2),
         );

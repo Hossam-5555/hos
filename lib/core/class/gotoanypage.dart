@@ -4,7 +4,8 @@ import 'package:hos/core/serveces/myservisec.dart';
 
 class Gotoanypagecalss extends GetxController {
   Myservisec myservisec=Get.put(Myservisec());
-   Gotoanypage(Widget wedget, bool islogout,dynamic arguments) {
+   // ignore: non_constant_identifier_names
+   void Gotoanypage(Widget wedget, bool islogout,Map arguments) {
     if (islogout) {
       myservisec.sharedPreferences.clear();
     }

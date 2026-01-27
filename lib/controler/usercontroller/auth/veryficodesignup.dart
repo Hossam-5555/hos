@@ -17,7 +17,8 @@ class veryfisigncontroler extends GetxController {
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'success') {
         Get.snackbar("success", "تم انشاء حساب بنجاح");
-        gotologin();
+            Get.offAllNamed(Approute.login);
+
       } else {
         Get.defaultDialog(
           title: "Warning",
@@ -28,9 +29,7 @@ class veryfisigncontroler extends GetxController {
     }
   }
 
-  void gotologin() {
-    Get.offAllNamed(Approute.login);
-  }
+
 
   resendcode() {
     veryficodesign.resend(email!);
