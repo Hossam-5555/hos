@@ -113,7 +113,7 @@ class ViewCategories extends StatelessWidget {
                       children: [
                         IconButton(
                           icon: const Icon(Icons.edit, color: Colors.blueAccent),
-                          onPressed: () => controller.GotoEditpage(item),
+                          onPressed: () => controller.gotoeditpage(item),
                           tooltip: "تعديل",
                         ),
                         IconButton(

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
+import 'package:hos/core/class/gotoanypage.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/data/datasource/admindata/itemdata.dart';
 import 'package:hos/data/model/itemsmodel.dart';
@@ -15,7 +16,7 @@ class ViewItemController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    
+
     viewallitems();
   }
 
@@ -47,18 +48,15 @@ class ViewItemController extends GetxController {
     update();
   }
 
+  Gotoanypagecalss gotoanypagecalss = Gotoanypagecalss();
+
   GotoEditpage(Itemsmodel itemsmodel) {
-    Get.to(
-      () => const EditItem(),
-      arguments: {"itemsmodel": itemsmodel},
-      transition: Transition.fadeIn,
-      duration: const Duration(milliseconds: 300),
-    );
+    gotoanypagecalss.Gotoanypage(EditItem(), false, {"itemsmodel": itemsmodel});
   }
 
   void goToAddPage() async {
     await Get.to(() => Additem());
-    viewallitems();     
+    viewallitems();
   }
 
   void backtohomebage() {

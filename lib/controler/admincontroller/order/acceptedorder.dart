@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
+import 'package:hos/core/class/gotoanypage.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/admindata/orderdata.dart';
@@ -100,12 +101,10 @@ class Acceptedordercontroller extends GetxController {
     update();
   }
 
-  gotodetails(OrderModel order) {
-    Get.to(
-      () => AdminOrderdetails(),
-      arguments: {"order": order},
-      transition: Transition.fadeIn,
-    );
+  Gotoanypagecalss gotoanypagecalss = Gotoanypagecalss();
+
+  void gotodetails(OrderModel order) {
+    gotoanypagecalss.Gotoanypage(AdminOrderdetails(), false, {"order": order});
   }
 
   @override

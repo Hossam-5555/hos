@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
+import 'package:hos/core/class/gotoanypage.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/data/datasource/userdata/orderdata.dart';
 import 'package:hos/data/model/cartmodel.dart';
@@ -29,12 +30,9 @@ class adminOrderdetailescontroller extends GetxController {
     update();
   }
 
-  gototrackingorder() {
-    Get.to(
-      () => Trackingorder(),
-      transition: Transition.fadeIn,
-      arguments: {"order": order},
-    );
+  Gotoanypagecalss gotoanypagecalss = Gotoanypagecalss();
+  void gototrackingorder() {
+    gotoanypagecalss.Gotoanypage(Trackingorder(), false, {"order": order});
   }
 
   @override
@@ -43,7 +41,6 @@ class adminOrderdetailescontroller extends GetxController {
     final args = Get.arguments;
     if (args != null && args["order"] != null) {
       order = args["order"];
-      print("✅ تم استلام الطلب: ${order?.ordersId}");
     } else {
       print("⚠️ لم يتم استلام أي بيانات من الصفحة السابقة");
     }

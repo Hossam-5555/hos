@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
+import 'package:hos/core/class/gotoanypage.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/data/datasource/admindata/categoriesdata.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
@@ -11,7 +12,7 @@ class ViewCatController extends GetxController {
   AdmindaTaCaregores admindata = AdmindaTaCaregores(Get.find());
   Statusrequest statusrequest = Statusrequest.none;
   List<categoriesmodel> catdata = [];
-  
+
   @override
   void onInit() {
     super.onInit();
@@ -47,15 +48,12 @@ class ViewCatController extends GetxController {
     update();
   }
 
- GotoEditpage(categoriesmodel catmodel) {
-  Get.to(
-    () => const Editcat(),
-    arguments: {"catmodel": catmodel},
-    transition: Transition.fadeIn,
-    duration: const Duration(milliseconds: 300),
-  );
-}
-
+  Gotoanypagecalss gotoanypagecalss = Gotoanypagecalss();
+  void gotoeditpage(categoriesmodel catmodel) {
+    gotoanypagecalss.Gotoanypage(const Editcat(), false, {
+      "catmodel": catmodel,
+    });
+  }
 
   void goToAddPage() async {
     /// ✳️ بعد ما ترجع من صفحة الإضافة، اعمل refresh تلقائي
