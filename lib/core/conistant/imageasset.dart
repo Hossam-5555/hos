@@ -15,7 +15,6 @@ class Imageasset {
   static String celebiration = "$routeImage/Confetti.json";
 
   //cc
-  static String borcha = "$routeImage/borcha.jpg";
   static String see = "$routeImage/f22d.jpg";
   static String Visa = "$routeImage/visa.png";
   static String cash = "$routeImage/cash.jpg";

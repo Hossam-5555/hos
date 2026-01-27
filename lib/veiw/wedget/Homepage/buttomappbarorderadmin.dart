@@ -33,9 +33,9 @@ class Buttomappbarorderadmin extends GetView<Orderscreencontroller> {
                     borderRadius: BorderRadius.circular(40),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.20),
+                        color: Colors.black.withAlpha(40),
                         blurRadius: 6,
-                        offset: const Offset(1, 1),
+                        offset: const Offset(0, 1),
                       ),
                     ],
                   ),
@@ -47,39 +47,34 @@ class Buttomappbarorderadmin extends GetView<Orderscreencontroller> {
                       return GestureDetector(
                         onTap: () => controller.changpage(index),
                         child: ClipOval(
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                            child: AnimatedContainer(
-                              margin: EdgeInsets.symmetric(
-                                horizontal: !isSelected ? 10 : 0,
-                              ),
-                              duration: const Duration(milliseconds: 250),
-                              curve: Curves.fastEaseInToSlowEaseOut,
-                              width: isSelected ? 70 : 70,
-                              height: isSelected ? 70 : 70,
+                          child: AnimatedContainer(
+                         
+                            duration: const Duration(milliseconds: 250),
+                            curve: Curves.fastOutSlowIn,
+                            width: 70,
+                            height: 70,
+                            decoration: BoxDecoration(
+                              border: isSelected
+                                  ? Border.all(
+                                      width: 0.1,
+                                      color:  Colors.black.withAlpha(20),
+                                    )
+                                  : Border(),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.all(4),
                               decoration: BoxDecoration(
-                                border: isSelected
-                                    ? Border.all(
-                                        width: 0.1,
-                                        color:  Colors.black.withAlpha(20),
-                                      )
-                                    : Border(),
+                                color: isSelected
+                                    ? Colors.white
+                                    : Colors.transparent,
                                 shape: BoxShape.circle,
                               ),
-                              child: Container(
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? Colors.white
-                                      : Colors.transparent,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: SvgPicture.asset(
-                                  controller.orderscreen[index][1],
-                                  height: isSelected ? 28 : 23,
-                                  width: isSelected ? 28 : 23,
-                                ),
+                              child: SvgPicture.asset(
+                                controller.orderscreen[index][1],
+                                height: isSelected ? 28 : 22,
+                                width: isSelected ? 28 : 22,
                               ),
                             ),
                           ),

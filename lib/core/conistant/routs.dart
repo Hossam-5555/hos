@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:get/get.dart';
 import 'package:hos/veiw/adminscreen/Home/AdminHome.dart';
 import 'package:hos/veiw/driverscreen/driverHome.dart';
@@ -77,13 +79,11 @@ class Approute {
   //Auth
   static String login = "/login";
   static String signup = "/signup";
-  static String Successignup = "/Successignup";
   static String veryfisign = "/veryfisign";
   //Auth//forgetpass
   static String checkemailpage = "/checkemailpage";
   static String Veryficode = "/Veryficode";
   static String Resetpass = "/Resetpass";
-  static String Succesresetpass = "/Succesresetpass";
   //onBoarding
   static String Onboarding = "/Onboarding";
   static String language = "/language";
