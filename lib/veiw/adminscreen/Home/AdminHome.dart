@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hos/core/class/gotoanypage.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/viewcat.dart';
 import 'package:hos/veiw/adminscreen/Home/itemsview/viewitem.dart';
@@ -8,7 +9,8 @@ import 'package:hos/veiw/wedget/admindrawer.dart';
 // ignore: must_be_immutable
 class AdminHome extends StatelessWidget {
   AdminHome({super.key});
-  Gotoanypagecalss go = Gotoanypagecalss();
+
+  final gotoany = Get.put(Gotoanypagecalss());
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -60,13 +62,13 @@ class AdminHome extends StatelessWidget {
               color: Colors.blueAccent,
               icon: Icons.category_outlined,
               title: "الفئات",
-              onTap: () => go.Gotoanypage(ViewCategories(), false, {}),
+              onTap: () => gotoany.Gotoanypage(ViewCategories(), false, {}),
             ),
             _buildDashboardCard(
               color: Colors.green,
               icon: Icons.shopping_bag_outlined,
               title: "المنتجات",
-              onTap: () => go.Gotoanypage(viewitem(), false, {}),
+              onTap: () => gotoany.Gotoanypage(viewitem(), false, {}),
             ),
             _buildDashboardCard(
               color: Colors.orange,
@@ -79,7 +81,7 @@ class AdminHome extends StatelessWidget {
               icon: Icons.shopping_cart_outlined,
               title: " الطلبات",
               onTap: () {
-                go.Gotoanypage(orderscreen(), false,  {});
+                gotoany.Gotoanypage(orderscreen(), false, {});
               },
             ),
           ],

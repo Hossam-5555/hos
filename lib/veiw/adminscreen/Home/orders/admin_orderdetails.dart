@@ -14,9 +14,10 @@ class AdminOrderdetails extends StatelessWidget {
     final controller = Get.put(adminOrderdetailescontroller());
 
     return Scaffold(
+    backgroundColor: const Color(0xFFF5F6FA),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
-        child: Appbarbackicon(herotag: '', title: "Order Details"),
+        child: Appbarbackicon(herotag: '', title: "Order Details",),
       ),
       body: GetBuilder<adminOrderdetailescontroller>(
         builder: (_) {
@@ -39,38 +40,13 @@ class AdminOrderdetails extends StatelessWidget {
               }),
 
               Center(
-                child: ClipOval(
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaY: 15, sigmaX: 15),
-                    child: Container(
-                      height: 80,
-                      width: 80,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black.withAlpha(50)),
-                        color: Colors.white.withAlpha(20),
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                      child: Container(
-                        margin: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black.withAlpha(50)),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(40),
-                        ),
-                        child: TextButton(
-                          onPressed: () {
-                            controller.gototrackingorder();
-                          },
-                          child: Text(
-                            "Track",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    controller.gototrackingorder();
+                  },
+                  child: Text(
+                    "Track",
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -104,48 +80,48 @@ class OrderDetailsCard extends StatelessWidget {
       children: [
         // Header
         Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "price : $orderprice",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          padding: const EdgeInsets.all(10),
+          child: Card(color: Colors.grey.withAlpha(30),
+            child: ListTile(
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "price : $orderprice",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 8),
+                  Text("محتويات الطلب: $customerName"),
+                  Text("العنوان: $address"),
+                  Text("الحالة: $status"),
+                ],
               ),
-              SizedBox(height: 8),
-              Text("محتويات الطلب: $customerName"),
-              Text("العنوان: $address"),
-              Text("الحالة: $status"),
-            ],
+            ),
           ),
         ),
-
-        // Divider
-        Divider(height: 10),
       ],
     );
   }
 }
-  // Google Map
         // SizedBox(
         //   height: 200,
         //   child: Text("Google map disabled for demo purposes"),
-        //   //  GoogleMap(
-        //   //   initialCameraPosition: CameraPosition(
-        //   //     target: location,
-        //   //     zoom: 14.0,
-        //   //   ),
-        //   //   markers: {
-        //   //     Marker(
-        //   //       markerId: MarkerId('deliveryLocation'),
-        //   //       position: location,
-        //   //       infoWindow: InfoWindow(title: "موقع التوصيل"),
-        //   //     ),
-        //   //   },
-        //   //   zoomControlsEnabled: false,
-        //   //   myLocationEnabled: false,
-        //   //   onMapCreated: (GoogleMapController controller) {
-        //   //     // ممكن تتحكم بالخريطة هنا
-        //   //   },
-        //   // ),
-        // ),
+        //     GoogleMap(
+        //      initialCameraPosition: CameraPosition(
+        //        target: location,
+        //        zoom: 14.0,
+        //      ),
+        //      markers: {
+        //        Marker(
+        //          markerId: MarkerId('deliveryLocation'),
+        //          position: location,
+        //          infoWindow: InfoWindow(title: "موقع التوصيل"),
+        //        ),
+        //      },
+        //      zoomControlsEnabled: false,
+        //      myLocationEnabled: false,
+        //      onMapCreated: (GoogleMapController controller) {
+        //        // ممكن تتحكم بالخريطة هنا
+        //      },
+        //    ),
+        // )

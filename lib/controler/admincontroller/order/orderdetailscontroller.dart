@@ -6,6 +6,7 @@ import 'package:hos/data/datasource/userdata/orderdata.dart';
 import 'package:hos/data/model/cartmodel.dart';
 import 'package:hos/data/model/ordersmodel.dart';
 import 'package:hos/veiw/adminscreen/Home/orders/trackingorder.dart';
+import 'package:http/http.dart';
 
 class adminOrderdetailescontroller extends GetxController {
   OrderModel? order;
@@ -30,9 +31,9 @@ class adminOrderdetailescontroller extends GetxController {
     update();
   }
 
-  Gotoanypagecalss gotoanypagecalss = Gotoanypagecalss();
+  final gotoanypage = Get.put(Gotoanypagecalss());
   void gototrackingorder() {
-    gotoanypagecalss.Gotoanypage(Trackingorder(), false, {"order": order});
+    gotoanypage.Gotoanypage(Trackingorder(), false, {"order": order});
   }
 
   @override

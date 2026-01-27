@@ -6,9 +6,10 @@ import 'package:hos/veiw/userscreen/screen/auth/login.dart';
 // ignore: must_be_immutable
 class AdminDrawer extends StatelessWidget {
   AdminDrawer({super.key});
-  Gotoanypagecalss go = Gotoanypagecalss();
   @override
   Widget build(BuildContext context) {
+    final gotoany = Get.put(Gotoanypagecalss());
+
     return Drawer(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.horizontal(right: Radius.circular(20)),
@@ -93,7 +94,7 @@ class AdminDrawer extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                go.Gotoanypage(Login(), true,{});
+                gotoany.Gotoanypage(Login(), true, {});
               },
             ),
           ),

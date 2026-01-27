@@ -172,18 +172,15 @@ class CartController extends GetxController {
   double couponediscount = 0;
   String? couponename;
   String? couponeID;
+  
+  final Gotoanypage = Get.put(Gotoanypagecalss());
 
-  Gotoanypagecalss gotoanypagecalss = Get.put(Gotoanypagecalss());
   void gotochechout() {
-    if (data.isEmpty) {
-      Get.snackbar("السلله  فارغه", "لا يمكن إتمام الطلب");
-    } else {
-      gotoanypagecalss.Gotoanypage(Checkout(), false, {
-        "totalprice": totalprice.toString(),
-        "couponeID": couponeID ?? "0",
-        "couponediscount": couponediscount.toString(),
-      });
-    }
+    Gotoanypage.Gotoanypage(Checkout(), false, {
+      "totalprice": totalprice.toString(),
+      "couponeID": couponeID ?? "0",
+      "couponediscount": couponediscount.toString(),
+    });
   }
 
   Future<void> chechcoupone() async {

@@ -7,6 +7,7 @@ import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/admindata/orderdata.dart';
 import 'package:hos/data/model/ordersmodel.dart';
 import 'package:hos/veiw/adminscreen/Home/orders/admin_orderdetails.dart';
+import 'package:http/http.dart';
 
 class Acceptedordercontroller extends GetxController {
   List<OrderModel> ordersaccepted = [];
@@ -101,10 +102,9 @@ class Acceptedordercontroller extends GetxController {
     update();
   }
 
-  Gotoanypagecalss gotoanypagecalss = Gotoanypagecalss();
-
+  final gotoanypage = Get.put(Gotoanypagecalss());
   void gotodetails(OrderModel order) {
-    gotoanypagecalss.Gotoanypage(AdminOrderdetails(), false, {"order": order});
+    gotoanypage.Gotoanypage(AdminOrderdetails(), false, {"order": order});
   }
 
   @override

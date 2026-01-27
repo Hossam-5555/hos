@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:hos/core/class/gotoanypage.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/cart.dart';
 import 'package:hos/veiw/userscreen/screen/home/Homepage.dart';
@@ -17,12 +18,7 @@ class Homescreencontroller extends GetxController {
   }
 
   void gotoshoppage() {
-    Get.to(
-      () => ShoppingCartPage(),
-      transition: Transition.fadeIn,
-      curve: Curves.fastOutSlowIn,
-      duration: Duration(milliseconds: 400),
-    );
+    Gotoanypagecalss().Gotoanypage(ShoppingCartPage(), false, {});
   }
 
   final List<Widget> pages = [

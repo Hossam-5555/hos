@@ -11,10 +11,10 @@ import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
 // ignore: must_be_immutable
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
-  Gotoanypagecalss go = Gotoanypagecalss();
   @override
   Widget build(BuildContext context) {
     Get.put(Profilepagecontroller());
+    final gotoany = Get.put(Gotoanypagecalss());
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -69,19 +69,19 @@ class ProfilePage extends StatelessWidget {
 
           // قائمة الخيارات
           _buildOptionTile(Icons.shopping_bag, "طلباتي", () {
-            go.Gotoanypage(Orders(), false,{});
+            gotoany.Gotoanypage(Orders(), false, {});
           }),
           _buildOptionTile(Icons.favorite_outline_outlined, "المفضله", () {
-            go.Gotoanypage(Myfavorite(), false, {});
+            gotoany.Gotoanypage(Myfavorite(), false, {});
           }),
           _buildOptionTile(Icons.location_on, "العناوين", () {
-            go.Gotoanypage(viewmyaddres(), false, {});
+            gotoany.Gotoanypage(viewmyaddres(), false, {});
           }),
 
           _buildOptionTile(Icons.credit_card, "طرق الدفع", () {}),
 
           _buildOptionTile(Icons.settings_outlined, "Settings", () {
-            go.Gotoanypage(Settings(), false, {});
+            gotoany.Gotoanypage(Settings(), false, {});
           }),
 
           const SizedBox(height: 50),

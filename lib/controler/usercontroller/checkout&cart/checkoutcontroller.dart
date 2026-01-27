@@ -10,14 +10,7 @@ import 'package:hos/data/datasource/userdata/checkoutdata.dart';
 import 'package:hos/data/model/Addresmodel.dart';
 
 class Checkoutcontroller extends GetxController {
-  //============================ العناوين الافتراضية
-  final List<Map<String, String>> addresses = [
-    {"title": "Home Address", "subtitle": "123 Main St, Cairo"},
-    {"title": "Work Address", "subtitle": "Downtown, Nasr City"},
-    {"title": "Other Address", "subtitle": "Alexandria, Corniche"},
-  ];
 
-  //============================ وسائل الدفع الافتراضية
   final List<List> paymentMethods = [
     ["Cash", Imageasset.cash],
     ["Visa", Imageasset.Visa],

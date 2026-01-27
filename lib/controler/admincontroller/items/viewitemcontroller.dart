@@ -48,10 +48,9 @@ class ViewItemController extends GetxController {
     update();
   }
 
-  Gotoanypagecalss gotoanypagecalss = Gotoanypagecalss();
-
+  final gotoanypage = Get.put(Gotoanypagecalss());
   GotoEditpage(Itemsmodel itemsmodel) {
-    gotoanypagecalss.Gotoanypage(EditItem(), false, {"itemsmodel": itemsmodel});
+    gotoanypage.Gotoanypage(EditItem(), false, {"itemsmodel": itemsmodel});
   }
 
   void goToAddPage() async {

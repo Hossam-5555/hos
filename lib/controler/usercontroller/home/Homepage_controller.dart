@@ -39,7 +39,7 @@ class HomepageController extends SearchMix {
     update();
   }
 
-  Gotoanypagecalss gotoanypagecalss = Get.find();
+  Gotoanypagecalss gotoanypagecalss = Get.put(Gotoanypagecalss());
   void gotoitems(List categories, int selecteditem, String catid) {
     gotoanypagecalss.Gotoanypage(Items(), false, {
       'categories': categories,

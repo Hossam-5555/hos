@@ -7,6 +7,7 @@ import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/veiw/adminscreen/Home/AdminHome.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/addcat.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/editcat.dart';
+import 'package:http/http.dart';
 
 class ViewCatController extends GetxController {
   AdmindaTaCaregores admindata = AdmindaTaCaregores(Get.find());
@@ -48,11 +49,9 @@ class ViewCatController extends GetxController {
     update();
   }
 
-  Gotoanypagecalss gotoanypagecalss = Gotoanypagecalss();
+  final GotoAnypage = Get.put(Gotoanypagecalss());
   void gotoeditpage(categoriesmodel catmodel) {
-    gotoanypagecalss.Gotoanypage(const Editcat(), false, {
-      "catmodel": catmodel,
-    });
+    GotoAnypage.Gotoanypage(const Editcat(), false, {"catmodel": catmodel});
   }
 
   void goToAddPage() async {
