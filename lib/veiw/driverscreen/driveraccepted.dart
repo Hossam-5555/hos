@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/drivercontroller/driveracceptedcontroller.dart';
+import 'package:hos/core/class/gotoanypage.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/veiw/driverscreen/driver_orderdetails.dart';
@@ -25,22 +26,19 @@ class Driveraccepted extends StatelessWidget {
               separatorBuilder: (_, __) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
                 final order = controller.ordersaccepted[index];
-                final color = controller.getStatusColor(
-                  order.ordersStatus.toString(),
-                );
+                controller.Getcolorandstause(order.ordersStatus!);
+                final color = controller.statusColor;
+
                 final payment = controller.translatePayment(
                   order.ordersPaymentmethod.toString(),
                 );
-                final status = controller.translateStatus(
-                  order.ordersStatus.toString(),
-                );
-
+                final status = controller.statusText;
                 return InkWell(
                   onTap: () {
-                    Get.to(
-                      () => DriverOrderdetails(),
-                      arguments: {"order": order},
-                      transition: Transition.rightToLeft,
+                    Gotoanypagecalss().Gotoanypage(
+                      DriverOrderdetails(),
+                      false,
+                      {"order": order},
                     );
                   },
                   child: Container(

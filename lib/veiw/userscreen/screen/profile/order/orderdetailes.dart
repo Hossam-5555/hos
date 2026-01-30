@@ -15,7 +15,7 @@ class Orderdetailes extends StatelessWidget {
       // backgroundColor: Colors.grey[100], // خلفية رمادية فاتحة لإبراز البطاقات
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
-        child:  Appbarbackicon(herotag: '', title: "Order Details"),
+        child: Appbarbackicon(herotag: '', title: "Order Details"),
       ),
       body: GetBuilder<Orderdetailescontroller>(
         builder: (_) {
@@ -27,7 +27,10 @@ class Orderdetailes extends StatelessWidget {
                 children: [
                   Icon(Icons.error_outline, size: 60, color: Colors.grey),
                   SizedBox(height: 10),
-                  Text("❌ لم يتم استلام بيانات الطلب", style: TextStyle(fontSize: 18, color: Colors.grey)),
+                  Text(
+                    "❌ لم يتم استلام بيانات الطلب",
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
                 ],
               ),
             );
@@ -40,20 +43,25 @@ class Orderdetailes extends StatelessWidget {
               children: [
                 // 1. قسم معلومات الطلب الأساسية (الحالة والتاريخ)
                 _buildStatusSection(order.ordersStatus!),
-                
+
                 const SizedBox(height: 15),
 
                 // 2. قسم عنوان التوصيل والمعلومات الشخصية
                 _buildAddressCard(
                   address: order.addresName ?? "غير محدد",
+                  status: order.ordersStatus!,
                   // يمكنك إضافة اسم العميل هنا إذا كان متوفراً في موديل الطلب العام
-                  // customerName: order.userName, 
+                  // customerName: order.userName,
                 ),
 
                 const SizedBox(height: 20),
                 const Text(
                   "المنتجات",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
                 ),
                 const SizedBox(height: 10),
 
@@ -61,9 +69,11 @@ class Orderdetailes extends StatelessWidget {
                 // بدلاً من تكرار العنوان، نعرض قائمة المنتجات فقط هنا
                 ListView.separated(
                   shrinkWrap: true, // ضروري داخل SingleChildScrollView
-                  physics: const NeverScrollableScrollPhysics(), // منع السكرول الداخلي
+                  physics:
+                      const NeverScrollableScrollPhysics(), // منع السكرول الداخلي
                   itemCount: controller.data.length,
-                  separatorBuilder: (context, index) => const Divider(height: 1),
+                  separatorBuilder: (context, index) =>
+                      const Divider(height: 1),
                   itemBuilder: (context, index) {
                     final item = controller.data[index];
                     return Container(
@@ -76,17 +86,23 @@ class Orderdetailes extends StatelessWidget {
                             color: Colors.blue[50],
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: const Icon(Icons.shopping_bag_outlined, color: Colors.blue),
+                          child: const Icon(
+                            Icons.shopping_bag_outlined,
+                            color: Colors.blue,
+                          ),
                         ),
                         title: Text(
                           "${item.itemsName}",
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        subtitle: Text("الكمية: ${item.itemsCount}"), 
+                        subtitle: Text("الكمية: ${item.itemsCount}"),
                         trailing: Text(
                           "${item.itemsPrice} \$", // تنسيق السعر
                           style: const TextStyle(
-                              color: Colors.green, fontWeight: FontWeight.bold, fontSize: 15),
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
                         ),
                       ),
                     );
@@ -97,7 +113,7 @@ class Orderdetailes extends StatelessWidget {
 
                 // 4. ملخص الفاتورة (السعر الإجمالي)
                 _buildPriceSummary(order.ordersTotalprice ?? "0"),
-                
+
                 const SizedBox(height: 30),
               ],
             ),
@@ -114,16 +130,22 @@ class Orderdetailes extends StatelessWidget {
     // تحديد لون الحالة بناءً على النص
     Color statusColor;
     String statusText;
-    
+
     if (status == "0") {
       statusColor = Colors.orange;
       statusText = "قيد الانتظار";
     } else if (status == "1") {
-       statusColor = Colors.blue;
+      statusColor = Colors.blue;
       statusText = "تم التأكيد";
-    } else if (status == "4") {
+    } else if (status == "2") {
       statusColor = Colors.green;
-      statusText = "تم التوصيل";
+      statusText = " يجهز";
+    } else if (status == "3") {
+      statusColor = Colors.green;
+      statusText = "في الطريق";
+    } else if (status == "4") {
+      statusColor = Colors.grey;
+      statusText = "مكتمل";
     } else {
       statusColor = Colors.grey;
       statusText = "أرشيف";
@@ -136,7 +158,11 @@ class Orderdetailes extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
-          BoxShadow(color: Colors.grey.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, 5)),
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
         ],
       ),
       child: Row(
@@ -164,7 +190,7 @@ class Orderdetailes extends StatelessWidget {
   }
 
   // ودجت لعنوان التوصيل
-  Widget _buildAddressCard({required String address}) {
+  Widget _buildAddressCard({required String address, required String status}) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -172,23 +198,52 @@ class Orderdetailes extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
-          BoxShadow(color: Colors.grey.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, 5)),
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(Icons.location_on_outlined, color: Colors.redAccent),
-              SizedBox(width: 8),
-              Text("عنوان التوصيل", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              Container(
+                child: Row(
+                  children: [
+                    Icon(Icons.location_on_outlined, color: Colors.redAccent),
+                    SizedBox(width: 8),
+                    Text(
+                      "عنوان التوصيل",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              status == '3'
+                  ? ElevatedButton.icon(
+                      onPressed: () {},
+                      icon: Icon(Icons.location_searching),
+                      label: Text("Trake"),
+                    )
+                  : SizedBox.shrink(),
             ],
           ),
           const Divider(height: 25),
           Text(
             address,
-            style: TextStyle(color: Colors.grey[700], height: 1.5, fontSize: 15),
+            style: TextStyle(
+              color: Colors.grey[700],
+              height: 1.5,
+              fontSize: 15,
+            ),
           ),
         ],
       ),
@@ -203,7 +258,11 @@ class Orderdetailes extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
-          BoxShadow(color: Colors.grey.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, 5)),
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
         ],
       ),
       child: Column(
@@ -211,10 +270,17 @@ class Orderdetailes extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("الإجمالي الكلي", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const Text(
+                "الإجمالي الكلي",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
               Text(
-                "$total \$", 
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+                "$total \$",
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                ),
               ),
             ],
           ),

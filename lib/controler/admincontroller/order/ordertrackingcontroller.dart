@@ -6,20 +6,16 @@ import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/getpolyline.dart';
 import 'package:hos/data/model/ordersmodel.dart';
 
-class Trackingordercontroller extends GetxController {
-
+class Trackingorderadmin extends GetxController {
   double? destlat;
   double? destlong;
 
   double? currentlat;
   double? currentlong;
 
-
-
-
-//  final Completer<GoogleMapController> completercontroller =
+  //  final Completer<GoogleMapController> completercontroller =
   Statusrequest statusrequest = Statusrequest.none;
-  late Completer<GoogleMapController> completercontroller;
+  GoogleMapController? completercontroller;
   late OrderModel order;
   StreamSubscription<Position>? positionStream;
   CameraPosition? cameraPosition;
@@ -37,6 +33,7 @@ class Trackingordercontroller extends GetxController {
       ),
       zoom: 19.151926040649414,
     );
+    // هذا الماركر من اجل مكان التوصيل
     marker.add(
       Marker(
         markerId: MarkerId('destination'),
@@ -47,67 +44,70 @@ class Trackingordercontroller extends GetxController {
         infoWindow: InfoWindow(title: 'destination'),
       ),
     );
+
     // supply location settings to getPositionStream
     positionStream =
         Geolocator.getPositionStream(
           locationSettings: locationSettings,
         ).listen((Position? position) {
-          print(
-            position == null
-                ? 'Unknown'
-                : '${position.latitude.toString()}, ${position.longitude.toString()}',
-          );
+          // print(
+          //   position == null
+          //       ? 'Unknown'
+          //       : '${position.latitude.toString()}, ${position.longitude.toString()}',
+          // );
           currentlat = position!.latitude;
           currentlong = position.longitude;
           /*هنا بنمسح المكان القديم ونحط المكان الجديد عن طريق id */
           marker.removeWhere(
             (element) => element.mapsId.value == MarkerId('current'),
           );
+          //هذا الماركر من اجل المكان الحالي  للساءق
           marker.add(
             Marker(
               markerId: MarkerId('current'),
-              position: LatLng(
-                double.parse(order.addresLat.toString()),
-                double.parse(order.addresLang.toString()),
-              ),
+              position: LatLng(currentlat!, currentlong!),
               infoWindow: InfoWindow(title: 'My Location'),
             ),
           );
-          completercontroller.future.then((value) {
-            value.animateCamera(
-              CameraUpdate.newCameraPosition(
-                CameraPosition(
-                  target: LatLng(position.latitude, position.longitude),
-                  zoom: 19.151926040649414,
-                ),
+
+          completercontroller!.animateCamera(
+            CameraUpdate.newCameraPosition(
+              CameraPosition(
+                target: LatLng(position.latitude, position.longitude),
+                zoom: 19.151926040649414,
               ),
-            );
-          });
+            ),
+          );
           update();
         });
   }
-//===================================================================================
-//===================================================================================
-//===================================================================================
+
+  //===================================================================================
+  //===================================================================================
+  //===================================================================================
+  Set<Polyline> polylines = {};
 
   inintpolyline() async {
     destlat = double.parse(order.addresLat.toString());
     destlong = double.parse(order.addresLang.toString());
     Future.delayed(Duration(seconds: 1));
-    await Getpolyline(currentlat, currentlong, destlat, destlong);
+    polylines = await Getpolyline(currentlat, currentlong, destlat, destlong);
     update();
   }
 
   @override
   void onInit() {
     order = Get.arguments["order"];
-    completercontroller = Completer<GoogleMapController>();
+
+    // Getcurrentlocation();
+    // inintpolyline();
     super.onInit();
   }
 
-  omclose() {
+  @override
+  void onClose() {
     positionStream?.cancel();
-    completercontroller.future.then((value) => value.dispose());
+    completercontroller?.dispose();
     super.onClose();
   }
 }

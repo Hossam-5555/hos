@@ -12,7 +12,7 @@ class Gotoanypagecalss  {
     Get.to(fullscreenDialog: true,
       () => wedget,
       arguments:arguments ,
-      duration: Duration(milliseconds: 700),
+      duration: Duration(milliseconds: 400),
       transition: Transition.fadeIn,
     );
   }

@@ -7,7 +7,6 @@ import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/admindata/orderdata.dart';
 import 'package:hos/data/model/ordersmodel.dart';
 import 'package:hos/veiw/adminscreen/Home/orders/admin_orderdetails.dart';
-import 'package:http/http.dart';
 
 class Acceptedordercontroller extends GetxController {
   List<OrderModel> ordersaccepted = [];
