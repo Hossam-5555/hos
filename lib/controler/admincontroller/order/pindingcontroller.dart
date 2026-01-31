@@ -7,7 +7,7 @@ import 'package:hos/data/datasource/admindata/orderdata.dart';
 import 'package:hos/data/model/ordersmodel.dart';
 import 'package:hos/veiw/adminscreen/Home/orders/admin_orderdetails.dart';
 
-class adminpindingcontroller extends GetxController {
+class AdminPindingController extends GetxController {
   List<OrderModel> orderspending = [];
 
   Statusrequest statusrequest = Statusrequest.none;
@@ -22,7 +22,7 @@ class adminpindingcontroller extends GetxController {
     update(); // يحدث الواجهة
   }
 
-  gotodetails(OrderModel order) {
+  void gotodetails(OrderModel order) {
     Get.to(
       () => AdminOrderdetails(),
       arguments: {"order": order},

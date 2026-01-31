@@ -7,10 +7,10 @@ import 'package:jiffy/jiffy.dart';
 
 class Adminpending extends StatelessWidget {
   Adminpending({super.key});
-  final adminpindingcontroller controller = Get.put(adminpindingcontroller());
+  final AdminPindingController controller = Get.put(AdminPindingController());
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<adminpindingcontroller>(
+    return GetBuilder<AdminPindingController>(
       builder: (controller) => Handlingdataview(
         statusrequest: controller.statusrequest,
         widget: RefreshIndicator(
@@ -18,7 +18,7 @@ class Adminpending extends StatelessWidget {
           child: ListView.separated(
             padding: const EdgeInsets.all(12),
             itemCount: controller.orderspending.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 10),
+            separatorBuilder: (_, _) => const SizedBox(height: 10),
             itemBuilder: (context, index) {
               final order = controller.orderspending[index];
               final color = controller.getStatusColor(
@@ -41,7 +41,7 @@ class Adminpending extends StatelessWidget {
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withAlpha(13),
                         blurRadius: 6,
                         offset: const Offset(0, 3),
                       ),
@@ -53,7 +53,7 @@ class Adminpending extends StatelessWidget {
                       horizontal: 16,
                     ),
                     leading: CircleAvatar(
-                      backgroundColor: Appcolor.primaryColor.withOpacity(0.1),
+                      backgroundColor: Appcolor.primaryColor.withAlpha(26),
                       radius: 28,
                       child: Icon(
                         Icons.shopping_bag,

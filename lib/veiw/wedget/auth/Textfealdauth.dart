@@ -79,7 +79,7 @@ class Textfealdauth extends StatelessWidget {
           ),
           hintText: hint,
           hintStyle: TextStyle(
-            color: Colors.black.withOpacity(0.6),
+            color: Colors.black.withAlpha(153), // 0.6 * 255 = 153
             fontSize: width * 0.04,
           ),
           floatingLabelBehavior: FloatingLabelBehavior.always,

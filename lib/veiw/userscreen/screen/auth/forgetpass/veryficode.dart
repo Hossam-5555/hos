@@ -9,10 +9,10 @@ class Veryficode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(veryficontroler());
+    Get.put(VeryFiControler());
     return Scaffold(
       appBar: AppBar(title: const Text('Veryficode')),
-      body: GetBuilder<veryficontroler>(
+      body: GetBuilder<VeryFiControler>(
         builder: (controller) => Handlingdatrequest(
           statusrequest: controller.statusrequest,
           widget: SingleChildScrollView(

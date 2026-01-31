@@ -20,33 +20,28 @@ class Ordercontroller extends GetxController {
     update(); // يحدث الواجهة
   }
 
-  Color getStatusColor(String status) {
-    switch (status) {
-      case "0":
-        return Colors.orange;
-      case "1":
-        return Colors.blue;
-      case "2":
-        return Colors.purple;
-      case "3":
-        return Colors.green;
-      default:
-        return Colors.grey;
-    }
-  }
-
-  String translateStatus(String val) {
-    switch (val) {
-      case "0":
-        return "في انتظار الموافقة";
-      case "1":
-        return "يتم تجهيز الطلب";
-      case "2":
-        return "في الطريق";
-      case "3":
-        return "تم التسليم";
-      default:
-        return "غير معروف";
+  Color? statusColor;
+  String? statusText;
+  // ignore: non_constant_identifier_names
+  void Getcolorandstause(String status) {
+    if (status == "0") {
+      statusColor = Colors.orange;
+      statusText = "قيد الانتظار";
+    } else if (status == "1") {
+      statusColor = Colors.blue;
+      statusText = "تم التأكيد";
+    } else if (status == "2") {
+      statusColor = const Color.fromARGB(255, 180, 65, 30);
+      statusText = " يجهز";
+    } else if (status == "3") {
+      statusColor = const Color.fromARGB(255, 179, 123, 39);
+      statusText = "في الطريق";
+    } else if (status == "4") {
+      statusColor = const Color.fromARGB(255, 33, 201, 10);
+      statusText = "مكتمل";
+    } else {
+      statusColor = const Color.fromARGB(200, 226, 226, 226);
+      statusText = "أرشيف";
     }
   }
 

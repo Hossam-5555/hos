@@ -63,25 +63,25 @@ class Itemsmodel {
     categoriesDatetime = json['categories_datetime'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['items_id'] = this.itemsId;
-    data['items_name'] = this.itemsName;
-    data['items_name_ar'] = this.itemsNameAr;
-    data['items_desc'] = this.itemsDesc;
-    data['items_desc_ar'] = this.itemsDescAr;
-    data['items_image'] = this.itemsImage;
-    data['items_count'] = this.itemsCount;
-    data['items_active'] = this.itemsActive;
-    data['items_price'] = this.itemsPrice;
-    data['items_discount'] = this.itemsDiscount;
-    data['items_date'] = this.itemsDate;
-    data['items_cat'] = this.itemsCat;
-    data['categories_id'] = this.categoriesId;
-    data['categories_name'] = this.categoriesName;
-    data['categories_name_ar'] = this.categoriesNameAr;
-    data['categories_image'] = this.categoriesImage;
-    data['categories_datetime'] = this.categoriesDatetime;
-    return data;
-  }
+  // Map<String, dynamic> toJson() {
+  //   final Map<String, dynamic> data = new Map<String, dynamic>();
+  //   data['items_id'] = this.itemsId;
+  //   data['items_name'] = this.itemsName;
+  //   data['items_name_ar'] = this.itemsNameAr;
+  //   data['items_desc'] = this.itemsDesc;
+  //   data['items_desc_ar'] = this.itemsDescAr;
+  //   data['items_image'] = this.itemsImage;
+  //   data['items_count'] = this.itemsCount;
+  //   data['items_active'] = this.itemsActive;
+  //   data['items_price'] = this.itemsPrice;
+  //   data['items_discount'] = this.itemsDiscount;
+  //   data['items_date'] = this.itemsDate;
+  //   data['items_cat'] = this.itemsCat;
+  //   data['categories_id'] = this.categoriesId;
+  //   data['categories_name'] = this.categoriesName;
+  //   data['categories_name_ar'] = this.categoriesNameAr;
+  //   data['categories_image'] = this.categoriesImage;
+  //   data['categories_datetime'] = this.categoriesDatetime;
+  //   return data;
+  // }
 }

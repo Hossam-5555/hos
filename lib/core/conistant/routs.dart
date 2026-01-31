@@ -58,8 +58,8 @@ List<GetPage<dynamic>>? routes = [
   GetPage(name: Approute.Resetpass, page: () => Resetpass()),
 
   //settings
-  GetPage(name: Approute.viewmyaddres, page: () => viewmyaddres()),
-  GetPage(name: Approute.addnewaddres, page: () => addnewaddres()),
+  GetPage(name: Approute.viewmyaddres, page: () => ViewMyAddres()),
+  GetPage(name: Approute.addnewaddres, page: () => AddNewAddres()),
 ];
 
 class Approute {

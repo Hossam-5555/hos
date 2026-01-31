@@ -23,21 +23,21 @@ class Additemcontroller extends GetxController {
   GlobalKey<FormState> itemvalidKey = GlobalKey<FormState>();
 File? file;
 
-showoptionimage() {
+void showoptionimage() {
   showImagePickerBottomSheet(chooseimagecamera, chooseimagegalary);
 }
 
-chooseimagecamera() async {
+Future<void> chooseimagecamera() async {
   file = await imageUploadCamera();
   update();
 }
 
-chooseimagegalary() async {
+Future<void> chooseimagegalary() async {
   file = await fileUploadGallery(isSvg: false);
   update();
 }
 
-  additem() async {
+  Future<void> additem() async {
     if (itemvalidKey.currentState!.validate()) {
       if (file == null) {
         Get.snackbar("تنبيه", "من فضلك اختر صورة أولاً");

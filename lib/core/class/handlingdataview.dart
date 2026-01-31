@@ -25,7 +25,6 @@ class Handlingdataview extends StatelessWidget {
         "/ShoppingCartPage": "السلة فارغة",
         "/myfavorite": "المفضلة فارغة",
       };
-      print(Get.currentRoute);
       // بيحاول يجيب الرسالة بناءً على الـ route، ولو مش موجودة بيرجع الرسالة الافتراضية
       return routeMessages[Get.currentRoute] ?? "لا توجد بيانات";
     }
@@ -84,7 +83,7 @@ class Handlingdatrequest extends StatelessWidget {
       return Container(
         width: width,
         height: height,
-        color: Colors.black.withOpacity(0.5), // خلفية شفافة
+        color: Colors.black.withAlpha(50), // خلفية شفافة
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

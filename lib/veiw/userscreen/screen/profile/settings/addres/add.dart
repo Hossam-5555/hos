@@ -5,8 +5,8 @@ import 'package:hos/controler/usercontroller/profile/addres/addrescontroller.dar
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 
-class addnewaddres extends StatelessWidget {
-  const addnewaddres({super.key});
+class AddNewAddres extends StatelessWidget {
+  const AddNewAddres({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +86,7 @@ class addnewaddres extends StatelessWidget {
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
-                        controller.Addadres();
+                        controller.addaddres();
                       },
                       child: const Text("حفظ العنوان"),
                     ),

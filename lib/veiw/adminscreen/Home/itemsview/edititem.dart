@@ -181,7 +181,7 @@ class EditItem extends StatelessWidget {
                   width: double.infinity,
                   height: size.height * 0.065,
                   child: ElevatedButton(
-                    onPressed: () => controller.Edit(),
+                    onPressed: () => controller.edit(),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: theme.primaryColor,
                       shape: RoundedRectangleBorder(

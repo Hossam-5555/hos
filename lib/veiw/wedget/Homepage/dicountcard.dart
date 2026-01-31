@@ -8,20 +8,20 @@ class OfferCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const OfferCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.description,
     required this.discount,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 140,
       child: PageView.builder(
         itemCount: 4,
-        itemBuilder: (Context, i) => GestureDetector(
+        itemBuilder: (context, i) => GestureDetector(
           onTap: onTap,
           child: Card(
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -45,7 +45,7 @@ class OfferCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        Colors.black.withOpacity(0.6),
+                        Colors.black.withAlpha(153), // 0.6 * 255 = 153
                         Colors.transparent,
                       ],
                       begin: Alignment.bottomCenter,

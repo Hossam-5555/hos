@@ -13,6 +13,8 @@ class ItemsControler extends SearchMix {
   int? selecteditem;
   late String catid;
   List<Itemsmodel> data = [];
+  @override
+  // ignore: overridden_fields
   Statusrequest statusrequest = Statusrequest.none;
   Myservisec myservisec = Get.find();
   itemsdata itemdata = itemsdata(Get.find());

@@ -159,7 +159,7 @@ class Orderdetailes extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withAlpha(26), // 0.1 * 255 = 26
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -175,9 +175,9 @@ class Orderdetailes extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: statusColor.withOpacity(0.1),
+              color: statusColor.withAlpha(26), // 0.1 * 255 = 26
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: statusColor.withOpacity(0.5)),
+              border: Border.all(color: statusColor.withAlpha(128)), // 0.5 * 255 = 128
             ),
             child: Text(
               statusText,
@@ -199,7 +199,7 @@ class Orderdetailes extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withAlpha(26), // 0.1 * 255 = 26
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -211,6 +211,7 @@ class Orderdetailes extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // ignore: avoid_unnecessary_containers
               Container(
                 child: Row(
                   children: [
@@ -259,7 +260,7 @@ class Orderdetailes extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withAlpha(26), // 0.1 * 255 = 26
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),

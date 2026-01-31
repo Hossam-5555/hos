@@ -10,15 +10,15 @@ class Notificationcontroller extends GetxController {
   Myservisec myservisec = Get.put(Myservisec());
   Notificationdata notificationdata = Get.put(Notificationdata(Get.find()));
 
-  List NotificationList = [];
+  List notificationlist = [];
 
   /// ====== MULTI SELECT ======
   bool selectionMode = false;
   List<String> selectedIds = [];
 
   /// جلب الإشعارات
-  GetNotifier() async {
-    NotificationList.clear();
+  Future<void> getnotifier() async {
+    notificationlist.clear();
     statusrequest = Statusrequest.loading;
     update();
 
@@ -30,7 +30,7 @@ class Notificationcontroller extends GetxController {
 
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'success') {
-        NotificationList = response["data"];
+        notificationlist = response["data"];
       } else {
         statusrequest = Statusrequest.failure;
       }
@@ -70,19 +70,19 @@ class Notificationcontroller extends GetxController {
   Future<void> deleteSelected() async {
     await notificationdata.removeNotification(selectedIds);
 
-    NotificationList.removeWhere(
+    notificationlist.removeWhere(
       (item) => selectedIds.contains(item["notification_id"].toString()),
     );
 
     selectedIds.clear();
     selectionMode = false;
-    if(NotificationList.isEmpty){
+    if(notificationlist.isEmpty){
       statusrequest = Statusrequest.failure;
     }
     update();
   }
 
-  closeselected() {
+  void closeselected() {
     selectionMode = false;
     selectedIds.clear();
     update();
@@ -90,7 +90,7 @@ class Notificationcontroller extends GetxController {
 
   @override
   void onInit() {
-    GetNotifier();
+    getnotifier();
     super.onInit();
   }
 }

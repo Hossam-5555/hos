@@ -11,7 +11,7 @@ class AdminOrderdetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(adminOrderdetailescontroller());
+    final controller = Get.put(AdminOrderDetailesController());
 
     return Scaffold(
     backgroundColor: const Color(0xFFF5F6FA),
@@ -19,7 +19,7 @@ class AdminOrderdetails extends StatelessWidget {
         preferredSize: Size.fromHeight(60),
         child: Appbarbackicon(herotag: '', title: "Order Details",),
       ),
-      body: GetBuilder<adminOrderdetailescontroller>(
+      body: GetBuilder<AdminOrderDetailesController>(
         builder: (_) {
           final order = controller.order;
           if (order == null) {
@@ -65,13 +65,13 @@ class OrderDetailsCard extends StatelessWidget {
   final String status;
 
   const OrderDetailsCard({
-    Key? key,
+    super.key,
     required this.orderprice,
     required this.customerName,
     required this.address,
     required this.status,
     // required this.location,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

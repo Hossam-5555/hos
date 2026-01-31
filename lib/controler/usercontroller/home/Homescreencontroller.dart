@@ -61,10 +61,9 @@ class Homescreencontroller extends GetxController {
     scrollController.dispose();
   }
 
-  List<List<dynamic>> Appbartitle = [
-    ['FASHION', Imageasset.Homesvg],
+  List<List<dynamic>> appbartitle = [
+    ['FASHION', Imageasset.homesvg],
     ['Offer', Imageasset.offer],
-    // ['notification', Imageasset.notification],
     ['Profile', Imageasset.profile],
   ];
 }

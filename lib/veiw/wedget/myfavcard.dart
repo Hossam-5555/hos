@@ -6,9 +6,9 @@ import 'package:hos/core/conistant/linkApi.dart';
 import 'package:hos/data/model/myfavorite.dart';
 
 // ignore: must_be_immutable
-class favcard extends GetView<Myfavcontroler> {
+class FavCard extends GetView<Myfavcontroler> {
   final myfavoritemodel items;
-  favcard({super.key, required this.items});
+  const FavCard({super.key, required this.items});
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +28,9 @@ class favcard extends GetView<Myfavcontroler> {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.15),
+              color: Colors.black.withAlpha(38), // 15% transparency
               blurRadius: 6,
-              offset: const Offset(0, 4),
+              offset: const Offset(0, 3),
             ),
           ],
         ),
@@ -41,7 +41,7 @@ class favcard extends GetView<Myfavcontroler> {
               /// صورة المنتج
               Positioned.fill(
                 child: Hero(
-                  tag: '${items.itemsId.toString()}',
+                  tag: items.itemsId.toString(),
                   child: Image.network(
                     "${LinkApi.imageitems}/${items.itemsImage}",
                     fit: BoxFit.contain,
@@ -62,7 +62,7 @@ class favcard extends GetView<Myfavcontroler> {
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.5),
+                    color: Colors.black.withAlpha(128), // 50% transparency
                     borderRadius: const BorderRadius.vertical(
                       top: Radius.circular(20),
                     ),
@@ -139,7 +139,8 @@ class favcard extends GetView<Myfavcontroler> {
                                 items.favId.toString(),
                               );
                             },
-                            icon: Icon(Icons.delete_outline),
+                            icon: Icon(Icons.delete_outline,
+                                color: Colors.red.shade400),
                           ),
                         ],
                       ),

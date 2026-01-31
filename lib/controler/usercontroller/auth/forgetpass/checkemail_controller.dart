@@ -16,7 +16,7 @@ class CheckemailController extends GetxController {
 
   Statusrequest statusrequest = Statusrequest.none;
   Checkemaildata checkemaildata = Checkemaildata(Get.find());
-  checkemail() async {
+  Future<void> checkemail() async {
     if (formstate.currentState!.validate()) {
       statusrequest = Statusrequest.loading;
       update();

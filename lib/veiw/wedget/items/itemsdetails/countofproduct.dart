@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/itemsdetailscontroller.dart';
 
 class Countofproduct extends GetView<Itemdetailscontroller> {
-  const Countofproduct({super.key, this.count});
-  final count;
+  const Countofproduct({super.key, required this.count});
+  final  count;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -17,7 +17,7 @@ class Countofproduct extends GetView<Itemdetailscontroller> {
             icon: Icon(Icons.add),
           ),
           Text(
-            "$count",
+            " $count ",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
           ),

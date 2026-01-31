@@ -39,7 +39,7 @@ class Items extends StatelessWidget {
                 ),
                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
+                    SizedBox(
                       width: width * 0.65,
                       child: Searchbar(
                         onPressedIcon: controller.onsearch,
@@ -57,15 +57,18 @@ class Items extends StatelessWidget {
                       icon: Icon(Icons.filter_list),
                       label: Text("Filter"),
                       style: ButtonStyle(
+                        // ignore: deprecated_member_use
                         foregroundColor: MaterialStateProperty.all<Color>(
                           const Color.fromARGB(221, 14, 15, 14),
                         ),
+                        // ignore: deprecated_member_use
                         side: MaterialStateProperty.all<BorderSide>(
                           BorderSide(
                             color: const Color.fromARGB(255, 147, 161, 140),
                           ),
                         ),
                         shape:
+                            // ignore: deprecated_member_use
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
@@ -136,7 +139,7 @@ class Items extends StatelessWidget {
         borderRadius: BorderRadius.circular(16), // حواف ناعمة
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withAlpha(51), // 0.2 * 255 = 51
             blurRadius: 8,
             offset: Offset(2, 4),
           ),

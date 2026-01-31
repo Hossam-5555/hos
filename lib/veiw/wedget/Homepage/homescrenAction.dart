@@ -40,7 +40,7 @@ class Homescrenaction extends StatelessWidget {
                     transition: Transition.fadeIn,
                     duration: Duration(milliseconds: 400),
                   );
-                  ;
+                  
                 },
               ),
             ),

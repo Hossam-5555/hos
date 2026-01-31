@@ -59,7 +59,7 @@ class Myfavorite extends StatelessWidget {
                             crossAxisSpacing: width * 0.03,
                             mainAxisSpacing: height * 0.015,
                           ),
-                          itemBuilder: (context, i) => favcard(
+                          itemBuilder: (context, i) => FavCard(
                             items: controller.data[i],
                           ),
                         )

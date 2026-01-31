@@ -58,7 +58,7 @@ class Addcategories extends StatelessWidget {
                             horizontal: 25,
                             vertical: 15,
                           ),
-                          backgroundColor: Colors.blueAccent.withOpacity(0.1),
+                          backgroundColor: Colors.blueAccent.withAlpha(26),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),

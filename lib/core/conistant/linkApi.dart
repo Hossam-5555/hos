@@ -11,7 +11,7 @@ class LinkApi {
   static String imageitems = '$imagelink/items';
 
   //Auth=============================
-  static String Signup = '$server/auth/signup.php';
+  static String signup = '$server/auth/signup.php';
   static String login = '$server/auth/login.php';
   static String veryfisign = '$server/auth/veryfi.php';
   static String resend = '$server/auth/resend.php';
@@ -39,7 +39,7 @@ class LinkApi {
   static String getcount = '$server/cart/getcountitems.php';
   static String coupone = '$server/coupone/chechcoupone.php';
   // AddresLink
-  static String AddAddres = '$server/address/add.php';
+  static String addaddres = '$server/address/add.php';
   static String deleteAddres = '$server/address/delete.php';
   static String viewAddres = '$server/address/view.php';
   static String editAddres = '$server/address/edit.php';

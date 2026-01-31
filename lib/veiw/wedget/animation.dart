@@ -4,7 +4,7 @@ import 'package:lottie/lottie.dart';
 class Animationlottie extends StatefulWidget {
   final String animationPath;
 
-  Animationlottie({required this.animationPath});
+  const Animationlottie({super.key, required this.animationPath});
 
   @override
   State<Animationlottie> createState() => AnimationlottieState();
@@ -57,7 +57,7 @@ class AnimationlottieState extends State<Animationlottie>
 class Animationforstatus extends StatefulWidget {
   final String animationPath;
 
-  Animationforstatus({required this.animationPath});
+  const Animationforstatus({super.key, required this.animationPath});
 
   @override
   State<Animationforstatus> createState() => _Animationforstatus();

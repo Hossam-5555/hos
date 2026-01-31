@@ -33,19 +33,16 @@ class Orders extends StatelessWidget {
             child: ListView.separated(
               padding: EdgeInsets.all(w * 0.04),
               itemCount: controller.orders.length,
-              separatorBuilder: (_, __) => SizedBox(height: h * 0.015),
+              separatorBuilder: (_, _) => SizedBox(height: h * 0.015),
 
               itemBuilder: (context, index) {
                 final order = controller.orders[index];
-                final color = controller.getStatusColor(
-                  order.ordersStatus.toString(),
-                );
+                controller.Getcolorandstause(order.ordersStatus!);
+                final color = controller.statusColor;
                 final payment = controller.translatePayment(
                   order.ordersPaymentmethod.toString(),
                 );
-                final status = controller.translateStatus(
-                  order.ordersStatus.toString(),
-                );
+                final status = controller.statusText;
 
                 return GestureDetector(
                   onTap: () {
@@ -59,7 +56,7 @@ class Orders extends StatelessWidget {
                       borderRadius: BorderRadius.circular(w * 0.04),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
+                          color: Colors.black.withAlpha(13), // 0.05 * 255 = 13
                           blurRadius: 6,
                           offset: Offset(0, 3),
                         ),
@@ -96,7 +93,7 @@ class Orders extends StatelessWidget {
                           ),
 
                           Text(
-                            "${Jiffy.parse(order.ordersDatetime.toString()).fromNow()}",
+                            Jiffy.parse(order.ordersDatetime.toString()).fromNow(),
                             style: TextStyle(
                               color: Colors.green,
                               fontSize: w * 0.035,

@@ -10,14 +10,14 @@ class Dotcontroller extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<OnboardingControler>(
-      builder: (Controller) => Row(
+      builder: (controller) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ...List.generate(
             onBoarding.length,
             (index) => AnimatedContainer(
               margin: EdgeInsets.all(10),
-              width: Controller.curentpage == index ? 20 : 5,
+              width: controller.curentpage == index ? 20 : 5,
               height: 6,
               decoration: BoxDecoration(
                 color: Appcolor.deepPurple,

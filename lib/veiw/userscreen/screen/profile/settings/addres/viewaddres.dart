@@ -5,8 +5,8 @@ import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
-class viewmyaddres extends StatelessWidget {
-  const viewmyaddres({super.key});
+class ViewMyAddres extends StatelessWidget {
+  const ViewMyAddres({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,18 +30,18 @@ class viewmyaddres extends StatelessWidget {
             widget: Container(
               padding: EdgeInsets.all(10),
               child: ListView.builder(
-                itemCount: controller.ListAddresdata.length,
+                itemCount: controller.listaddresdata.length,
                 itemBuilder: (context, index) => InkWell(
                   onTap: () {},
                   child: Card(
                     child: ListTile(
                       title: Text(
-                        "${controller.ListAddresdata[index].addresName}",
+                        "${controller.listaddresdata[index].addresName}",
                       ),
                       trailing: IconButton(
                         onPressed: () {
                           controller.deleteAddres(
-                            controller.ListAddresdata[index].addresId
+                            controller.listaddresdata[index].addresId
                                 .toString(),
                           );
                         },

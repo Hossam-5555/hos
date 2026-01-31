@@ -6,7 +6,7 @@ import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/driverdata/driverorderdata.dart';
 import 'package:hos/data/model/ordersmodel.dart';
 
-class driverviewordercontroller extends GetxController {
+class DriverViewOrderController extends GetxController {
   List<OrderModel> orderspending = [];
 
   Statusrequest statusrequest = Statusrequest.none;

@@ -8,7 +8,7 @@ import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/shoppage/checkout.dart';
 
 class Checkout extends StatelessWidget {
-  Checkout({super.key});
+  const Checkout({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +39,11 @@ class Checkout extends StatelessWidget {
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemCount: controller.paymentMethods.length,
-                      separatorBuilder: (_, __) => const SizedBox(width: 10),
+                      separatorBuilder: (_, _) => const SizedBox(width: 10),
                       itemBuilder: (context, index) => Listpaymentcard(
                         image: controller.paymentMethods[index][1],
                         onTap: () => controller.choospaymentmethod(index),
-                        isActive: controller.Paymenttype == index,
+                        isActive: controller.paymenttype == index,
                       ),
                     ),
                   ),
@@ -56,11 +56,11 @@ class Checkout extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
 
-                  if (controller.ListAddresdata.isEmpty)
+                  if (controller.listaddresdata.isEmpty)
                     GestureDetector(
                       onTap: () {
                         Get.offAll(
-                          () => addnewaddres(),
+                          () => AddNewAddres(),
                           transition: Transition.fadeIn,
                           duration: const Duration(milliseconds: 400),
                         );
@@ -92,21 +92,21 @@ class Checkout extends StatelessWidget {
                       height: 110,
                       child: ListView.separated(
                         scrollDirection: Axis.horizontal,
-                        separatorBuilder: (_, __) => const SizedBox(width: 10),
-                        itemCount: controller.ListAddresdata.length,
+                        separatorBuilder: (_, _) => const SizedBox(width: 10),
+                        itemCount: controller.listaddresdata.length,
                         itemBuilder: (context, index) => Listaddrescard(
                           onTap: () {
                             controller.chooseAddres(
-                              controller.ListAddresdata[index].addresId,
+                              controller.listaddresdata[index].addresId!.toInt(),
                             );
                           },
                           isActive:
-                              controller.Addressid ==
-                              controller.ListAddresdata[index].addresId,
+                              controller.addressid ==
+                              controller.listaddresdata[index].addresId,
                           titil:
-                              "${controller.ListAddresdata[index].addresName}",
+                              "${controller.listaddresdata[index].addresName}",
                           subtitle:
-                              "${controller.ListAddresdata[index].addresStreet} - ${controller.ListAddresdata[index].addresCity}",
+                              "${controller.listaddresdata[index].addresStreet} - ${controller.listaddresdata[index].addresCity}",
                         ),
                       ),
                     ),

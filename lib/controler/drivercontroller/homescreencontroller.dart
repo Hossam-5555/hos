@@ -8,7 +8,7 @@ import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/veiw/driverscreen/driveraccepted.dart';
 import 'package:hos/veiw/driverscreen/driverpending.dart';
 
-class driverHomecontroller extends GetxController {
+class DriverHomeController extends GetxController {
   // ignore: non_constant_identifier_names
   int Currentpage = 0;
 
@@ -18,10 +18,10 @@ class driverHomecontroller extends GetxController {
   }
 
   Myservisec myservisec = Get.put(Myservisec());
-  Logout() {
+  void logout() {
     String id = myservisec.sharedPreferences.getString("id")!;
     FirebaseMessaging.instance.subscribeToTopic("users");
-    FirebaseMessaging.instance.subscribeToTopic("users${id}");
+    FirebaseMessaging.instance.subscribeToTopic("users$id");
     myservisec.sharedPreferences.clear();
     Get.offAndToNamed(Approute.login);
   }
@@ -68,6 +68,6 @@ class driverHomecontroller extends GetxController {
   List<List<dynamic>> driverAppbartitle = [
     ['Pending', Imageasset.offer],
 
-    ['Accepted', Imageasset.Homesvg],
+    ['Accepted', Imageasset.homesvg],
   ];
 }

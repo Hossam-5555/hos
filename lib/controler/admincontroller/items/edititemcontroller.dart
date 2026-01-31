@@ -40,7 +40,7 @@ class Edititemcontroller extends GetxController {
     update();
   }
 
-  Edit() async {
+  Future<void> edit() async {
     if (!editkey.currentState!.validate()) return;
 
     statusrequest = Statusrequest.loading;

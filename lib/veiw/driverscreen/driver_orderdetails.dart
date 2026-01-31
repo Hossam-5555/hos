@@ -157,7 +157,7 @@ Widget _buildStatusSection(
       borderRadius: BorderRadius.circular(15),
       boxShadow: [
         BoxShadow(
-          color: Colors.grey.withOpacity(0.1),
+          color: Colors.grey.withAlpha(26),
           blurRadius: 10,
           offset: const Offset(0, 5),
         ),
@@ -173,9 +173,9 @@ Widget _buildStatusSection(
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-            color: statusColor.withOpacity(0.1),
+            color: statusColor.withAlpha(26),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: statusColor.withOpacity(0.5)),
+            border: Border.all(color: statusColor.withAlpha(130)),
           ),
           child: Text(
             statusText,
@@ -201,7 +201,7 @@ Widget _buildAddressCard({
       borderRadius: BorderRadius.circular(15),
       boxShadow: [
         BoxShadow(
-          color: Colors.grey.withOpacity(0.1),
+          color: Colors.grey.withAlpha(26),
           blurRadius: 10,
           offset: const Offset(0, 5),
         ),
@@ -213,6 +213,7 @@ Widget _buildAddressCard({
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            // ignore: avoid_unnecessary_containers
             Container(
               child: Row(
                 children: [
@@ -256,7 +257,7 @@ Widget _buildPriceSummary(String total) {
       borderRadius: BorderRadius.circular(15),
       boxShadow: [
         BoxShadow(
-          color: Colors.grey.withOpacity(0.1),
+          color: Colors.grey.withAlpha(26),
           blurRadius: 10,
           offset: const Offset(0, 5),
         ),

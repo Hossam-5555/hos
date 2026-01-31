@@ -6,14 +6,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http show post;
 
 
-Getpolyline(currentlat, currentlong, destlat, destlong) async {
+Future<Set<Polyline>> getpolyline(currentlat, currentlong, destlat, destlong) async {
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints = PolylinePoints();
   Set<Polyline> polylines = {};
 
 
   String Url =
-      "https://maps.googleapis.com/maps/api/directions/json?origin=${currentlat},${currentlong}&destination=${destlat},${destlong}&key=YOUR_GOOGLE";
+      "https://maps.googleapis.com/maps/api/directions/json?origin=$currentlat,$currentlong&destination=$destlat,$destlong&key=YOUR_GOOGLE";
   final response = await http.post(Uri.parse(Url));
 
   var responsebody = jsonDecode(response.body);

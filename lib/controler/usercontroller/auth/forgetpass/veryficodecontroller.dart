@@ -4,13 +4,13 @@ import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/data/datasource/userdata/auth/forgetpass/verifycode.dart';
 
-class veryficontroler extends GetxController {
+class VeryFiControler extends GetxController {
   String? email;
   Statusrequest statusrequest=Statusrequest.none;
   VerifyCodeForgetpassdata verifyCodeForgetpassdata = VerifyCodeForgetpassdata(
     crud: Get.find(),
   );
-  chekCode(String verifycode) async {
+  Future<void> chekCode(String verifycode) async {
     statusrequest = Statusrequest.loading;
     update();
     var response = await verifyCodeForgetpassdata.postdata(email!, verifycode);

@@ -10,7 +10,7 @@ class Offercontroller extends GetxController {
   Myservisec myservisec = Get.put(Myservisec());
   Offerdata notificationdata = Get.put(Offerdata(Get.find()));
   List offerList = [];
-  getoffer() async {
+  Future<void> getoffer() async {
     offerList.clear();
     statusrequest = Statusrequest.loading;
     update();
@@ -18,9 +18,7 @@ class Offercontroller extends GetxController {
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'success') {
-        
         List data = response["data"];
-        print(data);
         offerList.addAll(data.map((e) => Itemsmodel.fromJson(e)).toList());
       } else {
         statusrequest = Statusrequest.failure;

@@ -62,6 +62,7 @@ class Trakingdrivercontroller extends GetxController {
           currentlong = position.longitude;
           /*هنا بنمسح المكان القديم ونحط المكان الجديد عن طريق id */
           marker.removeWhere(
+            // ignore: unrelated_type_equality_checks
             (element) => element.mapsId.value == MarkerId('current'),
           );
           // هنا بنضيف الماركر بتاع المكان الحالي
@@ -100,13 +101,16 @@ class Trakingdrivercontroller extends GetxController {
     });
   }
 
+
+
+
   Set<Polyline> polylines = {};
 
   Future<void> inintpolyline() async {
     destlat = double.parse(order.addresLat.toString());
     destlong = double.parse(order.addresLang.toString());
     Future.delayed(Duration(seconds: 1));
-    polylines = await Getpolyline(currentlat, currentlong, destlat, destlong);
+    polylines = await getpolyline(currentlat, currentlong, destlat, destlong);
     update();
   }
 

@@ -42,7 +42,7 @@ class FavController extends GetxController {
   }
 
   // 🔹 إزالة من المفضلة
-  removefromfav(String itemid) async {
+  Future<void> removefromfav(String itemid) async {
     statusrequest = Statusrequest.loading;
     var response = await favdata.removefav(
       myservisec.sharedPreferences.getString("id")!,

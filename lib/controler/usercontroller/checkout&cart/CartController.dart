@@ -57,7 +57,7 @@ class CartController extends GetxController {
     update();
   }
 
-  addtocart(String itemid, int count) async {
+  Future<void> addtocart(String itemid, int count) async {
     statusrequest = Statusrequest.loading;
     update();
     var response = await cartdata.addcartdata(
@@ -82,7 +82,7 @@ class CartController extends GetxController {
     }
   }
 
-  delete(String itemid) async {
+  Future<void> delete(String itemid) async {
     statusrequest = Statusrequest.loading;
     update();
     var response = await cartdata.deletcartdata(
@@ -106,7 +106,7 @@ class CartController extends GetxController {
     }
   }
 
-  getcountitem(String itemid) async {
+  Future<dynamic> getcountitem(String itemid) async {
     statusrequest = Statusrequest.loading;
     update();
     var response = await cartdata.getcount(
@@ -135,7 +135,6 @@ class CartController extends GetxController {
     );
 
     statusrequest = handling(response);
-    print("=================$statusrequest");
 
     if (Statusrequest.success == statusrequest) {
       if (response["status"] == "success") {
@@ -173,10 +172,10 @@ class CartController extends GetxController {
   String? couponename;
   String? couponeID;
   
-  final Gotoanypage = Get.put(Gotoanypagecalss());
+  final gotoanypage = Get.put(Gotoanypagecalss());
 
   void gotochechout() {
-    Gotoanypage.Gotoanypage(Checkout(), false, {
+    gotoanypage.Gotoanypage(Checkout(), false, {
       "totalprice": totalprice.toString(),
       "couponeID": couponeID ?? "0",
       "couponediscount": couponediscount.toString(),

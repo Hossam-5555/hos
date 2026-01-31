@@ -14,7 +14,7 @@ class Addresdata {
     String lat,
     String long,
   ) async {
-    var response = await crud.postrequset(LinkApi.AddAddres, {
+    var response = await crud.postrequset(LinkApi.addaddres, {
       "userid": userid,
       "name": name,
       "street": street,

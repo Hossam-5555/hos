@@ -29,7 +29,6 @@ class ViewItemController extends GetxController {
 
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'success') {
-        print(response);
         List data = response["data"];
 
         /// ✳️ المهم هنا:
@@ -42,14 +41,14 @@ class ViewItemController extends GetxController {
     update();
   }
 
-  delete(String itemid, String imagename) {
+  void delete(String itemid, String imagename) {
     admindata.deleteitem(itemid, imagename);
     itemlist.removeWhere((element) => element.itemsId.toString() == itemid);
     update();
   }
 
   final gotoanypage = Get.put(Gotoanypagecalss());
-  GotoEditpage(Itemsmodel itemsmodel) {
+  void gotoeditpage(Itemsmodel itemsmodel) {
     gotoanypage.Gotoanypage(EditItem(), false, {"itemsmodel": itemsmodel});
   }
 

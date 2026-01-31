@@ -115,7 +115,7 @@ class Editcat extends StatelessWidget {
                   width: double.infinity,
                   height: 55,
                   child: ElevatedButton(
-                    onPressed: () => controller.Edit(),
+                    onPressed: () => controller.edit(),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: theme.primaryColor,
                       shape: RoundedRectangleBorder(

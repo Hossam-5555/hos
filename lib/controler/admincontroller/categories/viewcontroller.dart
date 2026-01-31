@@ -28,9 +28,7 @@ class ViewCatController extends GetxController {
 
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'success') {
-        print(response);
         List data = response["data"];
-
         /// ✳️ المهم هنا:
         catdata.clear(); // فضي الليست القديمة
         catdata.addAll(data.map((e) => categoriesmodel.fromJson(e)));
@@ -41,16 +39,16 @@ class ViewCatController extends GetxController {
     update();
   }
 
-  delete(String catid, String imagename) {
+  void delete(String catid, String imagename) {
     admindata.deletecat(catid, imagename);
 
     catdata.removeWhere((element) => element.categoriesId == catid);
     update();
   }
 
-  final GotoAnypage = Get.put(Gotoanypagecalss());
+  final gotoanypage = Get.put(Gotoanypagecalss());
   void gotoeditpage(categoriesmodel catmodel) {
-    GotoAnypage.Gotoanypage(const Editcat(), false, {"catmodel": catmodel});
+    gotoanypage.Gotoanypage(const Editcat(), false, {"catmodel": catmodel});
   }
 
   void goToAddPage() async {
@@ -59,7 +57,7 @@ class ViewCatController extends GetxController {
     viewCat(); // أعد تحميل البيانات بعد العودة
   }
 
-  backtohomebage() {
+  void backtohomebage() {
     Get.offAll(
       AdminHome(),
       transition: Transition.fadeIn,

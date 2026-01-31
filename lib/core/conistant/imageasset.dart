@@ -16,11 +16,11 @@ class Imageasset {
 
   //cc
   static String see = "$routeImage/f22d.jpg";
-  static String Visa = "$routeImage/visa.png";
+  static String visa = "$routeImage/visa.png";
   static String cash = "$routeImage/cash.jpg";
   static String googlepay = "$routeImage/googlepayjpg.jpg";
   static String sale = "$routeImage/Sale.json";
-  static String Homesvg = "$routeImage/home-1-svgrepo-com.svg";
+  static String homesvg = "$routeImage/home-1-svgrepo-com.svg";
   static String offer = "$routeImage/offer-svgrepo-com.svg";
   static String notification = "$routeImage/notification-svgrepo-com.svg";
   static String profile =

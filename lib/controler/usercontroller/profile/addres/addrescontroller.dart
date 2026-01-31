@@ -14,7 +14,7 @@ class AddressController extends GetxController {
   Addresdata addresdata = Addresdata(Get.find());
   Myservisec myservisec = Get.find();
   Statusrequest? statusrequest;
-  List<Addresmodel> ListAddresdata = [];
+  List<Addresmodel> listaddresdata = [];
   GlobalKey<FormState> addadredKey = GlobalKey();
 
   // متغيرات الحقول
@@ -34,7 +34,7 @@ class AddressController extends GetxController {
 
   List<Marker> markers = [];
 
-  addMarkers(LatLng latLng) {
+  void addMarkers(LatLng latLng) {
     markers.clear();
     markers.add(Marker(markerId: MarkerId("1"), position: latLng));
     lat = latLng.latitude;
@@ -53,7 +53,7 @@ class AddressController extends GetxController {
 
   /////////////////////
 
-  Addadres() async {
+  Future<void> addaddres() async {
     statusrequest = Statusrequest.loading;
     update();
 
@@ -95,10 +95,10 @@ class AddressController extends GetxController {
         List data = response['data'];
 
         // تنظيف القائمة قبل الإضافة
-        ListAddresdata.clear();
-        ListAddresdata.addAll(data.map((e) => Addresmodel.fromJson(e)));
+        listaddresdata.clear();
+        listaddresdata.addAll(data.map((e) => Addresmodel.fromJson(e)));
 
-        if (ListAddresdata.isEmpty) {
+        if (listaddresdata.isEmpty) {
           statusrequest = Statusrequest.failure;
         }
       } else {
@@ -111,7 +111,7 @@ class AddressController extends GetxController {
   // deleteAddres
   void deleteAddres(String addresid) {
     addresdata.deleteAddresdata(addresid);
-    ListAddresdata.removeWhere((e) => e.addresId.toString() == addresid);
+    listaddresdata.removeWhere((e) => e.addresId.toString() == addresid);
     Get.snackbar(
       "تم",
       "تم ازاله العنوان بنجاح",

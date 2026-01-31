@@ -14,9 +14,9 @@ class Driverhome extends StatelessWidget {
     final height = size.height;
     final width = size.width;
 
-    Get.put(driverHomecontroller());
+    Get.put(DriverHomeController());
 
-    return GetBuilder<driverHomecontroller>(
+    return GetBuilder<DriverHomeController>(
       builder: (controller) => PopScope(
         canPop: false,
         onPopInvoked: (didPop) async {
@@ -34,7 +34,7 @@ class Driverhome extends StatelessWidget {
               actions: [
                 IconButton(
                   onPressed: () {
-                    controller.Logout();
+                    controller.logout();
                   },
                   icon: Icon(Icons.exit_to_app),
                 ),

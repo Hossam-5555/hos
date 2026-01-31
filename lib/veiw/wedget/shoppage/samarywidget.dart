@@ -19,13 +19,16 @@ class BuildOrderSummary extends StatelessWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.25),
+            color: Colors.grey.withAlpha(25),
             spreadRadius: 1,
             blurRadius: 8,
             offset: const Offset(0, -2),
           ),
         ],
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(width * 0.06),
+          topRight: Radius.circular(width * 0.06),
+        ),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

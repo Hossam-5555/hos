@@ -10,11 +10,11 @@ class Veryfisign extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(veryfisigncontroler());
+    Get.put(VeryfiSignControler());
     return Scaffold(
       appBar: AppBar(title: const Text('Veryficode')),
       body: SingleChildScrollView(
-        child: GetBuilder<veryfisigncontroler>(
+        child: GetBuilder<VeryfiSignControler>(
           builder: (controller) => Handlingdatrequest(
             statusrequest: controller.statusrequest,
             widget: Column(
@@ -45,7 +45,7 @@ class Veryfisign extends StatelessWidget {
                     showFieldAsBox: true,
                     onCodeChanged: (String code) {},
                     onSubmit: (String verificationCode) {
-                      controller.gotoSuccessignup(verificationCode);
+                      controller.gotosuccessignup(verificationCode);
                       // showDialog(
                       //   context: context,
                       //   builder: (context) {

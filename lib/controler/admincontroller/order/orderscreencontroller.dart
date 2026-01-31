@@ -50,7 +50,7 @@ class Orderscreencontroller extends GetxController {
   }
 
   List<List<dynamic>> orderscreen = [
-    ['pinding', Imageasset.Homesvg],
+    ['pinding', Imageasset.homesvg],
     ['accepted', Imageasset.offer],
 
   ];

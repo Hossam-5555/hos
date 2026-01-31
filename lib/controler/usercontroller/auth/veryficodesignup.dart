@@ -4,12 +4,12 @@ import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/data/datasource/userdata/auth/veryvicodesign.dart';
 
-class veryfisigncontroler extends GetxController {
+class VeryfiSignControler extends GetxController {
   String? email;
-  veryficodesignupdata veryficodesign = veryficodesignupdata(Get.find());
+  VeryfiCodeSignupData veryficodesign = VeryfiCodeSignupData(Get.find());
   Statusrequest statusrequest = Statusrequest.none;
 
-  gotoSuccessignup(String verifycode) async {
+  Future<void> gotosuccessignup(String verifycode) async {
     statusrequest = Statusrequest.loading;
     update();
     var response = await veryficodesign.postdata(email!, verifycode);
@@ -31,7 +31,7 @@ class veryfisigncontroler extends GetxController {
 
 
 
-  resendcode() {
+  void resendcode() {
     veryficodesign.resend(email!);
   }
 

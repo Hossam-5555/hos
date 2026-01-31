@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class Google_Face extends StatelessWidget {
-  Google_Face({super.key, required this.image});
+class GoogleFacetweter extends StatelessWidget {
+  GoogleFacetweter({super.key, required this.image});
   String image;
 
   @override
@@ -14,7 +14,7 @@ class Google_Face extends StatelessWidget {
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withAlpha(26), // 0.1 * 255 = 26
             blurRadius: 6,
             offset: Offset(0, 3),
           ),

@@ -1,4 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/route_manager.dart';
@@ -15,7 +16,7 @@ Future<void> requestpermition() async {
   );
 }
 
-appmassging() {
+void appmassging() {
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     FlutterRingtonePlayer().playNotification();
     Get.snackbar(message.notification!.title!, message.notification!.body!);
@@ -56,7 +57,9 @@ appmassging() {
     }
     
     if(permission==LocationPermission.whileInUse){
-      print("Hossam =LocationPermission.whileInUse==========");
+      if (kDebugMode) {
+        print("Hossam =LocationPermission.whileInUse==========");
+      }
     }
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.

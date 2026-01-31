@@ -30,7 +30,7 @@ class Buttom extends StatelessWidget {
                 242,
                 245,
                 242,
-              ).withOpacity(0.8),
+              ).withAlpha(204), // 0.8 * 255 = 204
               colorText: const Color.fromARGB(255, 0, 0, 0),
               duration: const Duration(seconds: 1),
             );

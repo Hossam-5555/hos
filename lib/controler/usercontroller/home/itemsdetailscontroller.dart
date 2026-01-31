@@ -14,7 +14,7 @@ class Itemdetailscontroller extends GetxController {
   //
   bool isadded = false;
   //
-  addtocart(String itemid, int count) async {
+  Future<void> addtocart(String itemid, int count) async {
     var statusrequest = Statusrequest.loading;
     update();
     var response = await cartdata.addcartdata(
@@ -48,7 +48,7 @@ class Itemdetailscontroller extends GetxController {
   // ui ============================
   int itemcount = 0;
 
-  add() {
+  void add() {
     itemcount++;
     update();
   }

@@ -24,7 +24,7 @@ class ItemsCardhome extends GetView<HomepageController> {
 
 class ItemList extends GetView<HomepageController> {
   final Itemsmodel items;
-  ItemList({super.key, required this.items});
+  const ItemList({super.key, required this.items});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class ItemList extends GetView<HomepageController> {
           boxShadow: [
             // ✅ تم إضافة ظل خفيف مثل الصورة
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withAlpha(25), // 0.1 * 255 = 25
               spreadRadius: 1,
               blurRadius: 10,
               offset: Offset(0, 4),

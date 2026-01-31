@@ -17,12 +17,12 @@ class Editcontroller extends GetxController {
   GlobalKey<FormState> editkey = GlobalKey<FormState>();
   File? file;
   categoriesmodel? catmodel;
-  chooseimage() async {
+  Future<void> chooseimage() async {
     file = await fileUploadGallery(isSvg: true);
     update();
   }
 
-  Edit() async {
+  Future<void> edit() async {
     if (!editkey.currentState!.validate()) return;
 
     statusrequest = Statusrequest.loading;

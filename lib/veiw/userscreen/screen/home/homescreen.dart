@@ -73,7 +73,7 @@ class Homescreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        controller.Appbartitle[controller.Currentpage][0],
+                        controller.appbartitle[controller.Currentpage][0],
                         style: TextStyle(
                           color: Appcolor.black,
                           fontSize: 22, // ← حجم أنسب لعنوان الصفحة

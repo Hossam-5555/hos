@@ -18,10 +18,10 @@ class SettingsController extends GetxController {
   }
 
   //logout تسجيل الخروج من البرنامج
-  logout() {
+  void logout() {
     String id = myservisec.sharedPreferences.getString("id")!;
     FirebaseMessaging.instance.subscribeToTopic("users");
-    FirebaseMessaging.instance.subscribeToTopic("users${id}");
+    FirebaseMessaging.instance.subscribeToTopic("users$id");
     myservisec.sharedPreferences.clear();
     Get.offAllNamed(Approute.login);
   }

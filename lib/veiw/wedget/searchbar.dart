@@ -29,7 +29,7 @@ class Searchbar extends StatelessWidget {
             onPressed: onPressedIcon,
           ),
           filled: true,
-          fillColor: Colors.white.withOpacity(0.1),
+          fillColor: Colors.white.withAlpha(25),
           contentPadding: const EdgeInsets.symmetric(
             vertical: 0,
             horizontal: 16,

@@ -13,7 +13,7 @@ class Resetpasscontroller extends GetxController {
   GlobalKey<FormState> formstate = GlobalKey();
   Statusrequest statusrequest = Statusrequest.none;
   ResetPassData resetPassData = ResetPassData(crud: Get.find());
-  gotosuccesreset() async {
+  Future<void> gotosuccesreset() async {
     if (password.text != repassword.text) {
       return Get.defaultDialog(
         title: "Warning",

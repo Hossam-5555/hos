@@ -65,7 +65,7 @@ ThemeData themeEnglish = ThemeData(
       // نص ثانوي
       fontSize: 14,
       fontFamily: 'RobotoMono',
-      color: Appcolor.grey.withOpacity(0.8),
+      color: Appcolor.grey.withAlpha(204),
       height: 1.4,
     ),
   ),
@@ -136,7 +136,7 @@ ThemeData themeArabic = ThemeData(
       // نص ثانوي
       fontSize: 14,
       fontFamily: 'cairo',
-      color: Appcolor.grey.withOpacity(0.8),
+      color: Appcolor.grey.withAlpha(204),
       height: 1.4,
     ),
   ),

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/gotoanypage.dart';
@@ -7,7 +8,7 @@ import 'package:hos/data/model/cartmodel.dart';
 import 'package:hos/data/model/ordersmodel.dart';
 import 'package:hos/veiw/adminscreen/Home/orders/trackingorder.dart';
 
-class adminOrderdetailescontroller extends GetxController {
+class AdminOrderDetailesController extends GetxController {
   OrderModel? order;
 
   Orderdata orderdata = Get.put(Orderdata(Get.find()));
@@ -42,7 +43,9 @@ class adminOrderdetailescontroller extends GetxController {
     if (args != null && args["order"] != null) {
       order = args["order"];
     } else {
-      print("⚠️ لم يتم استلام أي بيانات من الصفحة السابقة");
+      if (kDebugMode) {
+        print("⚠️ لم يتم استلام أي بيانات من الصفحة السابقة");
+      }
     }
 
     adminorder();

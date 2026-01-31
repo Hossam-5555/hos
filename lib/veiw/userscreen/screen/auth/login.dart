@@ -72,11 +72,11 @@ class Login extends StatelessWidget {
                         width: width * 0.9,
                         constraints: BoxConstraints(maxHeight: height * 0.65),
                         decoration: BoxDecoration(
-                          color: Appcolor.glass.withOpacity(0.2),
+                          color: Appcolor.glass.withAlpha(51), // 0.2 * 255 = 51
                           borderRadius: BorderRadius.circular(25),
                           border: Border.all(
                             color: const Color.fromARGB(240, 145, 222, 255)
-                                .withOpacity(0.3),
+                                .withAlpha(77), // 0.3 * 255 = 77
                           ),
                         ),
                         child: Form(
@@ -158,9 +158,9 @@ class Login extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,
                                       children: [
-                                        Google_Face(image: Imageasset.google),
-                                        Google_Face(image: Imageasset.face),
-                                        Google_Face(image: Imageasset.twetter),
+                                        GoogleFacetweter(image: Imageasset.google),
+                                        GoogleFacetweter(image: Imageasset.face),
+                                        GoogleFacetweter(image: Imageasset.twetter),
                                       ],
                                     ),
                                   ),

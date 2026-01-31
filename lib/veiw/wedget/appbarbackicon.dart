@@ -36,7 +36,7 @@ class Appbarbackicon extends StatelessWidget {
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.08),
+                  color: Colors.black.withAlpha(20), // 0.08 * 255 = 20
                   blurRadius: 10,
                   offset: const Offset(0, 2),
                 ),

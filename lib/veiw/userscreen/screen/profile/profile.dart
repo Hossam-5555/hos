@@ -10,7 +10,7 @@ import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
 
 // ignore: must_be_immutable
 class ProfilePage extends StatelessWidget {
-  ProfilePage({super.key});
+  const ProfilePage({super.key});
   @override
   Widget build(BuildContext context) {
     Get.put(Profilepagecontroller());
@@ -75,7 +75,7 @@ class ProfilePage extends StatelessWidget {
             gotoany.Gotoanypage(Myfavorite(), false, {});
           }),
           _buildOptionTile(Icons.location_on, "العناوين", () {
-            gotoany.Gotoanypage(viewmyaddres(), false, {});
+            gotoany.Gotoanypage(ViewMyAddres(), false, {});
           }),
 
           _buildOptionTile(Icons.credit_card, "طرق الدفع", () {}),

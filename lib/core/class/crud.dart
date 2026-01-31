@@ -31,14 +31,12 @@ class Crud {
 
   //to add file
   Future<Either<Statusrequest, Map>> addRequestWithImageOne(
-    url,
-    data,
+   String url,
+    Map data,
     File? image, [
     String? namerequest,
   ]) async {
-    if (namerequest == null) {
-      namerequest = "files";
-    }
+    namerequest ??= "files";
 
     var uri = Uri.parse(url);
     var request = http.MultipartRequest("POST", uri);
@@ -67,7 +65,6 @@ class Crud {
     // For get Response Body
     var response = await http.Response.fromStream(myrequest);
     if (response.statusCode == 200 || response.statusCode == 201) {
-      print(response.body);
       Map responsebody = jsonDecode(response.body);
       return Right(responsebody);
     } else {

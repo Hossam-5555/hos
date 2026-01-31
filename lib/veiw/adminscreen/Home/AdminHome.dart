@@ -81,7 +81,7 @@ class AdminHome extends StatelessWidget {
               icon: Icons.shopping_cart_outlined,
               title: " الطلبات",
               onTap: () {
-                gotoany.Gotoanypage(orderscreen(), false, {});
+                gotoany.Gotoanypage(OrderScreen(), false, {});
               },
             ),
           ],
@@ -111,7 +111,7 @@ class AdminHome extends StatelessWidget {
               borderRadius: BorderRadius.circular(18),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.15),
+                  color: Colors.grey.withAlpha(38),
                   spreadRadius: 2,
                   blurRadius: 8,
                   offset: const Offset(0, 3),
@@ -123,7 +123,7 @@ class AdminHome extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: width * 0.18, // نسبي للعرض
-                  backgroundColor: color.withOpacity(0.15),
+                  backgroundColor: color.withAlpha(38),
                   child: Icon(icon, color: color, size: width * 0.12),
                 ),
                 SizedBox(height: height * 0.08),

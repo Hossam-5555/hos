@@ -6,7 +6,7 @@ class Signupdata {
   Signupdata(this.crud);
 
   postdata(String username, String email, String password) async {
-    var response = await crud.postrequset(LinkApi.Signup, {
+    var response = await crud.postrequset(LinkApi.signup, {
       "username": username,
       "email": email,
       "password": password,

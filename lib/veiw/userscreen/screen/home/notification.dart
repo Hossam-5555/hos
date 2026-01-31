@@ -53,7 +53,7 @@ class NotificationPage extends StatelessWidget {
                 /// ✅ itemCount الصح
                 itemCount: controller.statusrequest == Statusrequest.loading
                     ? 8
-                    : controller.NotificationList.length,
+                    : controller.notificationlist.length,
 
                 itemBuilder: (context, index) {
                   /// ===== Skeleton فقط =====
@@ -64,7 +64,7 @@ class NotificationPage extends StatelessWidget {
                   }
 
                   /// ===== بيانات حقيقية =====
-                  final item = controller.NotificationList[index];
+                  final item = controller.notificationlist[index];
 
                   final id = item["notification_id"].toString();
                   final title = item['notification_title'] ?? '';
@@ -75,7 +75,7 @@ class NotificationPage extends StatelessWidget {
                     onTap: () => controller.onTap(id),
                     child: Card(
                       color: controller.isSelected(id)
-                          ? Colors.blue.withOpacity(0.15)
+                          ? Colors.blue.withAlpha(38) // 0.15 * 255 = 38
                           : Colors.white,
                       elevation: 3,
                       margin: EdgeInsets.symmetric(

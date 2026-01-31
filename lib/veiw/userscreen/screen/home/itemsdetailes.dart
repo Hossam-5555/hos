@@ -186,10 +186,10 @@ class Itemsdetailes extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 8),
+                          // ignore: avoid_unnecessary_containers
                           Container(
                             child: Column(
                               children: [
-                        
                                 Text(
                                   maxLines: 2,
                                   "هذا وصف تفصيلي للمنتج يوضح كل الخصائص والمميزات \n Good product ,perfect for daily use"
@@ -247,6 +247,7 @@ class Itemsdetailes extends StatelessWidget {
                           Positioned(
                             top: h * 0.2,
                             left: w * 0.010,
+                            // ignore: sized_box_for_whitespace
                             child: Container(
                               height: 200,
                               width: 200,
@@ -259,6 +260,7 @@ class Itemsdetailes extends StatelessWidget {
                           Positioned(
                             top: h * 0.2,
                             right: w * 0.010,
+                            // ignore: sized_box_for_whitespace
                             child: Container(
                               height: 200,
                               width: 200,

@@ -7,13 +7,15 @@ import 'package:hos/data/datasource/userdata/fav_data.dart';
 import 'package:hos/data/model/myfavorite.dart';
 
 class Myfavcontroler extends SearchMix {
+  @override
+  // ignore: overridden_fields
   late Statusrequest statusrequest;
   List<myfavoritemodel> data = [];
 
   addfavdata favdata = addfavdata(Get.find());
   Myservisec myservisec = Get.find();
 
-  getfav() async {
+  Future<void> getfav() async {
     data.clear();
     statusrequest = Statusrequest.loading;
 
@@ -35,7 +37,7 @@ class Myfavcontroler extends SearchMix {
   }
 
   //الحذف من صفحه المفضله
-  deletefromfavpage(String favoriteid) {
+  void deletefromfavpage(String favoriteid) {
     favdata.deletefromfavorite(favoriteid);
 
     data.removeWhere((e) => e.favId == favoriteid);

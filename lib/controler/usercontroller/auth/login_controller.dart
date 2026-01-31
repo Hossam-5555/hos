@@ -45,7 +45,7 @@ class LoginController extends GetxController {
     super.dispose();
   }
 
-  logindata Logindata = logindata(Get.find());
+  LoginData logindata = LoginData(Get.find());
   Statusrequest statusrequest = Statusrequest.none;
   Future<void> login() async {
     //لقد انشأت عمود في قواعد البيانات ب نوع المستخدم )(admin,user,driver)
@@ -62,7 +62,7 @@ class LoginController extends GetxController {
     if (loginkey.currentState!.validate()) {
       statusrequest = Statusrequest.loading;
       update();
-      var response = await Logindata.postdata(email.text, passward.text);
+      var response = await logindata.postdata(email.text, passward.text);
       statusrequest = handling(response);
       if (Statusrequest.success == statusrequest) {
         if (response['status'] == 'success') {
@@ -87,7 +87,7 @@ class LoginController extends GetxController {
 
             myservisec.sharedPreferences.setString("step", '2');
             FirebaseMessaging.instance.subscribeToTopic("users");
-            FirebaseMessaging.instance.subscribeToTopic("users${id}");
+            FirebaseMessaging.instance.subscribeToTopic("users$id");
 
             String userType = response["data"]["users_type"];
 

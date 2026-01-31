@@ -16,7 +16,6 @@ class SearchMix extends GetxController {
 
   Future<void> getsearhdata() async {
     if (search == null || search!.text.trim().isEmpty) {
-      print("حقل البحث فارغ، لم يتم تنفيذ البحث");
       return;
     }
 
@@ -25,7 +24,7 @@ class SearchMix extends GetxController {
     update();
 
     var response = await homedata.searchdata(search!.text);
-    print("Response==========================: $response");
+    // print("Response==========================: $response");
 
     statusrequest = handling(response);
 
@@ -62,7 +61,7 @@ class SearchMix extends GetxController {
 
   void onsearch() {
     if (search == null || search!.text.trim().isEmpty) {
-      print("تم الضغط على البحث بدون كتابة نص");
+      // print("تم الضغط على البحث بدون كتابة نص");
       return;
     }
 

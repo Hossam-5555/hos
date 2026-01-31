@@ -16,12 +16,12 @@ class Addcatcontroller extends GetxController {
   GlobalKey<FormState> validkey = GlobalKey<FormState>();
   File? file;
 
-  chooseimage() async {
+  Future<void> chooseimage() async {
     file = await fileUploadGallery(isSvg: true);
     update();
   }
 
-  addcategories() async {
+  Future<void> addcategories() async {
     if (validkey.currentState!.validate()) {
       if (file == null) {
         Get.snackbar("تنبيه", "من فضلك اختر صورة أولاً");

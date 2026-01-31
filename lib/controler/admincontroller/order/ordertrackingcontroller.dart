@@ -21,7 +21,7 @@ class Trackingorderadmin extends GetxController {
   CameraPosition? cameraPosition;
 
   List<Marker> marker = [];
-  Getcurrentlocation() async {
+  Future<void> getcurrentlocation() async {
     final LocationSettings locationSettings = LocationSettings(
       accuracy: LocationAccuracy.high,
       distanceFilter: 100,
@@ -59,6 +59,7 @@ class Trackingorderadmin extends GetxController {
           currentlong = position.longitude;
           /*هنا بنمسح المكان القديم ونحط المكان الجديد عن طريق id */
           marker.removeWhere(
+            // ignore: unrelated_type_equality_checks
             (element) => element.mapsId.value == MarkerId('current'),
           );
           //هذا الماركر من اجل المكان الحالي  للساءق
@@ -87,11 +88,11 @@ class Trackingorderadmin extends GetxController {
   //===================================================================================
   Set<Polyline> polylines = {};
 
-  inintpolyline() async {
+  Future<void> inintpolyline() async {
     destlat = double.parse(order.addresLat.toString());
     destlong = double.parse(order.addresLang.toString());
     Future.delayed(Duration(seconds: 1));
-    polylines = await Getpolyline(currentlat, currentlong, destlat, destlong);
+    polylines = await getpolyline(currentlat, currentlong, destlat, destlong);
     update();
   }
 

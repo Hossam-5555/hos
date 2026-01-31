@@ -26,7 +26,7 @@ class Checkbutton extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: const Color.fromARGB(255, 32, 6, 109).withOpacity(0.1),
+              color: const Color.fromARGB(255, 32, 6, 109).withAlpha(26), // 0.1 * 255 = 26
               offset: Offset(3, 3),
               blurRadius: 5,
             ),

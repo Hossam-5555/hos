@@ -13,28 +13,28 @@ class Checkoutcontroller extends GetxController {
 
   final List<List> paymentMethods = [
     ["Cash", Imageasset.cash],
-    ["Visa", Imageasset.Visa],
+    ["Visa", Imageasset.visa],
     ["Wallet", Imageasset.googlepay],
   ];
 
   //============================ المتغيرات
-  int? Paymenttype;
+  int? paymenttype;
   String? deleverytype;
-  int Addressid = 0;
+  int addressid = 0;
 
   //============================ الدوال الخاصة بالاختيار
-  void choospaymentmethod(val) {
-    Paymenttype = val;
+  void choospaymentmethod( int val) {
+    paymenttype = val;
     update();
   }
 
-  void choosedeleverytype(val) {
+  void choosedeleverytype(String val) {
     deleverytype = val;
     update();
   }
 
-  void chooseAddres(val) {
-    Addressid = val;
+  void chooseAddres( int val) {
+    addressid = val;
     update();
   }
 
@@ -44,7 +44,7 @@ class Checkoutcontroller extends GetxController {
   Myservisec myservisec = Get.find();
 
   Statusrequest? statusrequest;
-  List<Addresmodel> ListAddresdata = [];
+  List<Addresmodel> listaddresdata = [];
 
   //============================ جلب العناوين من السيرفر
   Future<void> getaddress() async {
@@ -62,8 +62,8 @@ class Checkoutcontroller extends GetxController {
         List data = response['data'];
 
         // تنظيف القائمة قبل الإضافة
-        ListAddresdata.clear();
-        ListAddresdata.addAll(data.map((e) => Addresmodel.fromJson(e)));
+        listaddresdata.clear();
+        listaddresdata.addAll(data.map((e) => Addresmodel.fromJson(e)));
       }
     } else {
       statusrequest = Statusrequest.failure;
@@ -73,18 +73,18 @@ class Checkoutcontroller extends GetxController {
   }
 
   //============================ تنفيذ عملية الطلب
-  checkoutoder() async {
-    if (Addressid == 0) {
+  Future<void> checkoutoder() async {
+    if (addressid == 0) {
       Get.snackbar("خطأ", "الرجاء إدخال العنوان");
       return;
     }
 
-    if (Paymenttype == null) {
+    if (paymenttype == null) {
       Get.snackbar("خطأ", "الرجاء اختيار وسيلة الدفع");
       return;
     }
 
-    if (ListAddresdata.isEmpty) {
+    if (listaddresdata.isEmpty) {
       Get.snackbar("  تنبيه", "الرجاء اضافه  عنوان ");
     }
     statusrequest = Statusrequest.loading;
@@ -92,13 +92,13 @@ class Checkoutcontroller extends GetxController {
 
     Map<String, dynamic> data = {
       "userid": myservisec.sharedPreferences.getString("id")!,
-      "addressid": Addressid.toString(),
+      "addressid": addressid.toString(),
       "orderstype": "0",
       "pricedelivery": "10",
       "ordersprice": totalprice.toString(),
       "couponid": couponeid.toString(),
       "couponediscount": couponediscount.toString(),
-      "paymentmethod": Paymenttype.toString(), // ← هنا برضه
+      "paymentmethod": paymenttype.toString(), // ← هنا برضه
     };
 
     var response = await checkoutdata.Checkout(data);

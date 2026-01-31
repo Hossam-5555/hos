@@ -47,7 +47,7 @@ class viewitem extends StatelessWidget {
             widget: ListView.separated(
               padding: const EdgeInsets.all(16),
               itemCount: controller.itemlist.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 12),
+              separatorBuilder: (_, _) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
                 final item = controller.itemlist[index];
                 final imageUrl =
@@ -88,7 +88,7 @@ class viewitem extends StatelessWidget {
                               width: 60,
                               height: 60,
                               fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) => Container(
+                              errorBuilder: (_, _, _) => Container(
                                 width: 60,
                                 height: 60,
                                 color: Colors.grey[200],
@@ -119,7 +119,7 @@ class viewitem extends StatelessWidget {
                             Icons.edit,
                             color: Colors.blueAccent,
                           ),
-                          onPressed: () => controller.GotoEditpage(item),
+                          onPressed: () => controller.gotoeditpage(item),
                           tooltip: "تعديل",
                         ),
                         IconButton(

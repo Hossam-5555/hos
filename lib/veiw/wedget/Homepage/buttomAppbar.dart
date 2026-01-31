@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -28,7 +27,7 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                 borderRadius: BorderRadius.circular(40),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.3),
+                    color: Colors.black.withAlpha(77), // 0.3 * 255 = 77
                     blurRadius: 4,
                     offset: const Offset(0, 1),
                   ),
@@ -57,7 +56,7 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                         ),
                         child: Center(
                           child: SvgPicture.asset(
-                            controller.Appbartitle[index][1],
+                            controller.appbartitle[index][1],
                             height: isSelected ? 28 : 23,
                             width: isSelected ? 28 : 23,
                           ),

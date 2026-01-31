@@ -4,14 +4,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/drivercontroller/homescreencontroller.dart';
 
-class Buttomappbardriver extends GetView<driverHomecontroller> {
+class Buttomappbardriver extends GetView<DriverHomeController> {
   const Buttomappbardriver({super.key});
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
-    return GetBuilder<driverHomecontroller>(
+    return GetBuilder<DriverHomeController>(
       builder: (controller) => AnimatedSlide(
         offset: controller.upordown ? Offset.zero : const Offset(0, 2),
         duration: const Duration(milliseconds: 200),
@@ -33,7 +33,7 @@ class Buttomappbardriver extends GetView<driverHomecontroller> {
                     borderRadius: BorderRadius.circular(40),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.15),
+                        color: Colors.black.withAlpha(38), // 0.15 * 255 = 38
                         blurRadius: 6,
                         offset: const Offset(0, 3),
                       ),

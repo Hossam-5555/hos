@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/order/orderscreencontroller.dart';
 import 'package:hos/veiw/wedget/Homepage/buttomappbarorderadmin.dart';
 
-class orderscreen extends StatelessWidget {
-  const orderscreen({super.key});
+class OrderScreen extends StatelessWidget {
+  const OrderScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

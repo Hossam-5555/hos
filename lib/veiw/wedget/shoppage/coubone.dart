@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 
 class Coubone extends GetView<CartController> {
-  Coubone({super.key});
+  const Coubone({super.key});
   @override
   Widget build(BuildContext context) {
     return Container(

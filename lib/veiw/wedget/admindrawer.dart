@@ -5,7 +5,7 @@ import 'package:hos/veiw/userscreen/screen/auth/login.dart';
 
 // ignore: must_be_immutable
 class AdminDrawer extends StatelessWidget {
-  AdminDrawer({super.key});
+  const AdminDrawer({super.key});
   @override
   Widget build(BuildContext context) {
     final gotoany = Get.put(Gotoanypagecalss());
@@ -84,7 +84,7 @@ class AdminDrawer extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),
-              tileColor: Colors.red.withOpacity(0.1),
+              tileColor: Colors.red.withAlpha(26), // 0.1 * 255 = 26
               leading: const Icon(Icons.logout, color: Colors.red),
               title: const Text(
                 "Logout",
@@ -115,7 +115,7 @@ class AdminDrawer extends StatelessWidget {
         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
       ),
       onTap: onTap,
-      hoverColor: Colors.blue.withOpacity(0.1),
+      hoverColor: Colors.blue.withAlpha(26), // 0.1 * 255 = 26
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     );
   }
