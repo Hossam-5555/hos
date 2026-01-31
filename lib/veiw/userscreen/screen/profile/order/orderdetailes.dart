@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/order/orderdetailescontroller.dart';
+import 'package:hos/veiw/userscreen/screen/profile/order/TraKingorder_userapp.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
 class Orderdetailes extends StatelessWidget {
@@ -20,6 +21,7 @@ class Orderdetailes extends StatelessWidget {
       body: GetBuilder<Orderdetailescontroller>(
         builder: (_) {
           final order = controller.order;
+
           if (order == null) {
             return const Center(
               child: Column(
@@ -35,14 +37,16 @@ class Orderdetailes extends StatelessWidget {
               ),
             );
           }
-
+          controller.Getcolorandstause(order.ordersStatus!);
+          final color = controller.statusColor;
+          final textstatus = controller.statusText;
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 1. قسم معلومات الطلب الأساسية (الحالة والتاريخ)
-                _buildStatusSection(order.ordersStatus!),
+                _buildStatusSection(order.ordersStatus!, color!, textstatus!),
 
                 const SizedBox(height: 15),
 
@@ -50,6 +54,9 @@ class Orderdetailes extends StatelessWidget {
                 _buildAddressCard(
                   address: order.addresName ?? "غير محدد",
                   status: order.ordersStatus!,
+                  addresscity: order.addresCity!,
+                  addressstreet: order.addresStreet!,
+                  order: order,
                   // يمكنك إضافة اسم العميل هنا إذا كان متوفراً في موديل الطلب العام
                   // customerName: order.userName,
                 ),
@@ -126,30 +133,12 @@ class Orderdetailes extends StatelessWidget {
   // --- Widgets مساعدة للتصميم ---
 
   // ودجت لعرض الحالة بشكل جميل
-  Widget _buildStatusSection(String status) {
+  Widget _buildStatusSection(
+    String status,
+    Color statusColor,
+    String statusText,
+  ) {
     // تحديد لون الحالة بناءً على النص
-    Color statusColor;
-    String statusText;
-
-    if (status == "0") {
-      statusColor = Colors.orange;
-      statusText = "قيد الانتظار";
-    } else if (status == "1") {
-      statusColor = Colors.blue;
-      statusText = "تم التأكيد";
-    } else if (status == "2") {
-      statusColor = Colors.green;
-      statusText = " يجهز";
-    } else if (status == "3") {
-      statusColor = Colors.green;
-      statusText = "في الطريق";
-    } else if (status == "4") {
-      statusColor = Colors.grey;
-      statusText = "مكتمل";
-    } else {
-      statusColor = Colors.grey;
-      statusText = "أرشيف";
-    }
 
     return Container(
       width: double.infinity,
@@ -177,7 +166,9 @@ class Orderdetailes extends StatelessWidget {
             decoration: BoxDecoration(
               color: statusColor.withAlpha(26), // 0.1 * 255 = 26
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: statusColor.withAlpha(128)), // 0.5 * 255 = 128
+              border: Border.all(
+                color: statusColor.withAlpha(128),
+              ), // 0.5 * 255 = 128
             ),
             child: Text(
               statusText,
@@ -190,7 +181,14 @@ class Orderdetailes extends StatelessWidget {
   }
 
   // ودجت لعنوان التوصيل
-  Widget _buildAddressCard({required String address, required String status}) {
+  Widget _buildAddressCard({
+    required String address,
+    required String addresscity,
+    required String addressstreet,
+
+    required String status,
+    required order,
+  }) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -230,7 +228,13 @@ class Orderdetailes extends StatelessWidget {
 
               status == '3'
                   ? ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(Trakinginuserapp(), arguments: {"order": order});
+
+                        print(
+                          "Tracking order...==============================",
+                        );
+                      },
                       icon: Icon(Icons.location_searching),
                       label: Text("Trake"),
                     )
@@ -239,9 +243,9 @@ class Orderdetailes extends StatelessWidget {
           ),
           const Divider(height: 25),
           Text(
-            address,
+            "$address-$addresscity-$addressstreet",
             style: TextStyle(
-              color: Colors.grey[700],
+              color: const Color.fromARGB(255, 13, 95, 2),
               height: 1.5,
               fontSize: 15,
             ),

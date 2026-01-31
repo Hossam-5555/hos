@@ -93,7 +93,9 @@ class Orders extends StatelessWidget {
                           ),
 
                           Text(
-                            Jiffy.parse(order.ordersDatetime.toString()).fromNow(),
+                            Jiffy.parse(
+                              order.ordersDatetime.toString(),
+                            ).fromNow(),
                             style: TextStyle(
                               color: Colors.green,
                               fontSize: w * 0.035,
@@ -139,12 +141,12 @@ class Orders extends StatelessWidget {
                                     ),
                                   )
                                 // زر التقييم
-                                : order.ordersStatus == "3" &&
+                                : order.ordersStatus == "4" &&
                                       order.rating == '0'
                                 ? TextButton(
                                     child: Text(
                                       "rating",
-                                      style: TextStyle(fontSize: w * 0.035),
+                                      style: TextStyle(fontSize: w * 0.030),
                                     ),
                                     onPressed: () {
                                       showDialog(
@@ -227,7 +229,9 @@ class Orders extends StatelessWidget {
                                   )
                                 // عرض التقييم
                                 : Text(
-                                    "${order.rating} ⭐",
+                                    order.ordersStatus == "4"
+                                        ? "${order.rating} ⭐"
+                                        : "",
                                     style: TextStyle(fontSize: w * 0.04),
                                   ),
                           ],
