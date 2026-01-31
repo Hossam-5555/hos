@@ -26,11 +26,7 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                 color: Colors.white.withAlpha(70),
                 borderRadius: BorderRadius.circular(40),
                 boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withAlpha(77), // 0.3 * 255 = 77
-                    blurRadius: 4,
-                    offset: const Offset(0, 1),
-                  ),
+               
                 ],
               ),
               child: Row(

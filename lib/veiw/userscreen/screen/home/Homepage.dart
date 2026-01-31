@@ -50,7 +50,7 @@ class HomePage extends StatelessWidget {
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Titles(title: "Categories"),
+                              Titles(title: "categories "),
                               SizedBox(height: height * 0.01),
 
                               /// 🔥 كاتيجوريز
@@ -99,14 +99,13 @@ class HomePage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                               OfferCard(
+                              OfferCard(
                                 title: 'خصم على الأجهزة',
                                 description:
                                     "خصم يصل إلى 50% على الهواتف واللابتوبات",
                                 discount: "50% OFF",
                                 onTap: () {},
                               ),
-
                             ],
                           )
                         : Searchpage(searchdata: controller.searchlist),
