@@ -99,7 +99,6 @@ class EditItem extends StatelessWidget {
 
                 Textfealdauth(
                   hint: "القسم",
-                  label: "ادخل اسم القسم",
                   suffixIcon: Icons.discount_outlined,
                   textEditingController: controller.itemcat,
                   valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
@@ -109,7 +108,6 @@ class EditItem extends StatelessWidget {
 
                 Textfealdauth(
                   hint: "اكتب اسم العنصر بالإنجليزية",
-                  label: "Category Name",
                   suffixIcon: Icons.category_outlined,
                   textEditingController: controller.name,
                   valid: (val) => val!.isEmpty ? "الاسم مطلوب" : null,
@@ -119,7 +117,6 @@ class EditItem extends StatelessWidget {
 
                 Textfealdauth(
                   hint: "اكتب اسم العنصر بالعربية",
-                  label: "الاسم بالعربية",
                   suffixIcon: Icons.language_outlined,
                   textEditingController: controller.namear,
                   valid: (val) => val!.isEmpty ? "الاسم بالعربية مطلوب" : null,
@@ -129,7 +126,6 @@ class EditItem extends StatelessWidget {
 
                 Textfealdauth(
                   hint: "Description",
-                  label: "Description English",
                   suffixIcon: Icons.description_outlined,
                   textEditingController: controller.description,
                   valid: (val) => val!.isEmpty ? "الوصف مطلوب" : null,
@@ -139,7 +135,6 @@ class EditItem extends StatelessWidget {
 
                 Textfealdauth(
                   hint: "الوصف",
-                  label: "الوصف بالعربية",
                   suffixIcon: Icons.language_outlined,
                   textEditingController: controller.descriptionar,
                   valid: (val) => val!.isEmpty ? "الوصف بالعربية مطلوب" : null,
@@ -148,8 +143,7 @@ class EditItem extends StatelessWidget {
                 _space(textFieldSpacing),
 
                 Textfealdauth(
-                  hint: "count",
-                  label: "Item count",
+                  hint: "count OF Item",
                   suffixIcon: Icons.format_list_numbered,
                   textEditingController: controller.count,
                   valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
@@ -158,8 +152,7 @@ class EditItem extends StatelessWidget {
                 _space(textFieldSpacing),
 
                 Textfealdauth(
-                  hint: "price",
-                  label: "Item price",
+                  hint: "Item price",
                   suffixIcon: Icons.attach_money_outlined,
                   textEditingController: controller.price,
                   valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
@@ -169,7 +162,6 @@ class EditItem extends StatelessWidget {
 
                 Textfealdauth(
                   hint: "Discount",
-                  label: "Discount",
                   suffixIcon: Icons.discount_outlined,
                   textEditingController: controller.descount,
                   valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,

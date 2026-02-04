@@ -88,7 +88,6 @@ class Editcat extends StatelessWidget {
                 // اسم القسم
                 Textfealdauth(
                   hint: "Category name",
-                  label: 'English Name',
                   suffixIcon: Icons.text_fields,
                   textEditingController: controller.name,
                   valid: (val) {
@@ -100,7 +99,6 @@ class Editcat extends StatelessWidget {
                 // الاسم بالعربية
                 Textfealdauth(
                   hint: "اسم القسم بالعربية",
-                  label: 'Arabic Name',
                   suffixIcon: Icons.language,
                   textEditingController: controller.namear,
                   valid: (val) {

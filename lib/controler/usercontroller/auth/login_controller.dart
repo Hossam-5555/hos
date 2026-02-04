@@ -17,8 +17,8 @@ class LoginController extends GetxController {
   void gotosignup() {
     Get.off(
       () => Signup(),
-      transition: Transition.rightToLeft,
-      duration: const Duration(milliseconds: 800),
+      transition: Transition.fade,
+      duration: const Duration(milliseconds: 400),
     );
   }
 

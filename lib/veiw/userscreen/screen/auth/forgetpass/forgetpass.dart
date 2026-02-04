@@ -39,7 +39,6 @@ class forgetpass extends StatelessWidget {
                           return validInput(val!, 10, 30, "email");
                         },
                         textEditingController: controller.email,
-                        label: 'Email',
                         suffixIcon: Icons.email_sharp,
                         hint: 'Enter your Email',
                       ),

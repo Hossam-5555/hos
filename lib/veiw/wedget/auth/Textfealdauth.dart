@@ -7,7 +7,6 @@ class Textfealdauth extends StatelessWidget {
     super.key,
     this.obscureText,
     this.onTapIcon,
-    required this.label,
     required this.suffixIcon,
     required this.hint,
     required this.textEditingController,
@@ -15,7 +14,7 @@ class Textfealdauth extends StatelessWidget {
   });
 
   TextEditingController textEditingController;
-  final String label, hint;
+  String hint;
   late IconData suffixIcon;
   String? Function(String?)? valid;
   void Function()? onTapIcon;
@@ -50,10 +49,8 @@ class Textfealdauth extends StatelessWidget {
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-            borderSide: BorderSide(
-              color: Appcolor.black.withAlpha(40),
-            ),
+            borderRadius: BorderRadius.circular(40),
+            borderSide: BorderSide(color: Appcolor.black.withAlpha(40)),
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
@@ -65,24 +62,16 @@ class Textfealdauth extends StatelessWidget {
             onTap: onTapIcon,
             child: Icon(
               suffixIcon,
-              size: width * 0.065,
-              color: const Color.fromARGB(255, 36, 172, 12),
+              size: width * 0.060,
+              color: const Color.fromARGB(255, 10, 10, 10),
             ),
           ),
-          label: Text(
-            label,
-            style: TextStyle(
-              color: const Color.fromARGB(255, 10, 9, 10),
-              fontSize: width * 0.04,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+
           hintText: hint,
           hintStyle: TextStyle(
             color: Colors.black.withAlpha(153), // 0.6 * 255 = 153
             fontSize: width * 0.04,
           ),
-          floatingLabelBehavior: FloatingLabelBehavior.always,
         ),
       ),
     );

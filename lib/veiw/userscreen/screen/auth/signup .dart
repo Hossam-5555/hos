@@ -33,20 +33,13 @@ class Signup extends StatelessWidget {
               alignment: Alignment.center,
               children: [
                 // 🔹 الخلفية
-                Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(Imageasset.see),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
 
                 // 🔹 الأنيميشن أعلى الشاشة
                 Positioned(
                   top: height * 0.05,
                   child: Animationlottie(
-                    animationPath: Imageasset.loginanimation, // أو اعمل signupanimation لو عندك
+                    animationPath: Imageasset
+                        .loginanimation, // أو اعمل signupanimation لو عندك
                   ),
                 ),
 
@@ -63,8 +56,12 @@ class Signup extends StatelessWidget {
                           color: Appcolor.glass.withAlpha(51), // 0.2 * 255 = 51
                           borderRadius: BorderRadius.circular(25),
                           border: Border.all(
-                            color: const Color.fromARGB(240, 145, 222, 255)
-                                .withAlpha(77), // 0.3 * 255 = 77
+                            color: const Color.fromARGB(
+                              240,
+                              145,
+                              222,
+                              255,
+                            ).withAlpha(77), // 0.3 * 255 = 77
                           ),
                         ),
                         child: Form(
@@ -83,8 +80,8 @@ class Signup extends StatelessWidget {
                                         validInput(val!, 6, 20, "username"),
                                     textEditingController:
                                         signUpcontroller.username,
-                                    label: 'username',
-                                    suffixIcon: Icons.person,
+                                    // label: 'username',
+                                    suffixIcon: Icons.person_outline,
                                     hint: "Enter Your username",
                                   ),
                                   SizedBox(height: height * 0.025),
@@ -93,8 +90,8 @@ class Signup extends StatelessWidget {
                                         validInput(val!, 10, 30, "email"),
                                     textEditingController:
                                         signUpcontroller.email,
-                                    label: 'email',
-                                    suffixIcon: Icons.email_sharp,
+                                    // label: 'email',
+                                    suffixIcon: Icons.email_outlined,
                                     hint: 'Enter your Email',
                                   ),
                                   SizedBox(height: height * 0.025),
@@ -103,8 +100,8 @@ class Signup extends StatelessWidget {
                                         validInput(val!, 5, 20, "password"),
                                     textEditingController:
                                         signUpcontroller.passward,
-                                    label: 'passward',
-                                    suffixIcon: Icons.password_sharp,
+                                    // label: 'passward',
+                                    suffixIcon: Icons.remove_red_eye_outlined,
                                     hint: "Enter Your Passward",
                                   ),
                                   SizedBox(height: height * 0.025),
@@ -114,7 +111,7 @@ class Signup extends StatelessWidget {
                                     },
                                     buttonName: 'Sign Up',
                                     width: width * 0.75,
-                                    buttonColor: Colors.deepPurple,
+                                    buttonColor: Colors.black,
                                   ),
                                   SizedBox(height: height * 0.02),
                                   InkWell(
@@ -124,19 +121,22 @@ class Signup extends StatelessWidget {
                                     child: Container(
                                       alignment: Alignment.center,
                                       margin: EdgeInsets.symmetric(
-                                          vertical: height * 0.015),
+                                        vertical: height * 0.015,
+                                      ),
                                       child: RichText(
                                         text: TextSpan(
                                           children: [
                                             TextSpan(
                                               text: "have An account ? ",
                                               style: TextStyle(
-                                                  color: Appcolor.black),
+                                                color: Appcolor.black,
+                                              ),
                                             ),
                                             TextSpan(
                                               text: 'Login',
                                               style: TextStyle(
-                                                  color: Appcolor.deepPurple),
+                                                color: Appcolor.primaryColor,
+                                              ),
                                             ),
                                           ],
                                         ),

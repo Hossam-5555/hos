@@ -195,7 +195,6 @@ class Orders extends StatelessWidget {
                                                   height: h * 0.12,
                                                   width: w * 0.6,
                                                   child: Textfealdauth(
-                                                    label: 'comment',
                                                     suffixIcon: Icons.comment,
                                                     hint: "comment",
                                                     textEditingController:

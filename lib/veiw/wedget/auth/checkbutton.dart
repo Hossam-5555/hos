@@ -19,7 +19,7 @@ class Checkbutton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: width,
-        padding: EdgeInsets.symmetric(vertical: 12), // مسافة داخل الزر
+        padding: EdgeInsets.symmetric(vertical: 14), // مسافة داخل الزر
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: buttonColor,

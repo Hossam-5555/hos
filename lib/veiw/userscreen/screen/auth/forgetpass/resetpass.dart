@@ -36,7 +36,6 @@ class Resetpass extends StatelessWidget {
                     valid: (val) {
                       return validInput(val!, 10, 30, "password");
                     },
-                    label: 'enter password',
                     hint: 'enter passWord',
                     textEditingController: controller.password,
                     suffixIcon: Icons.lock,
@@ -51,7 +50,6 @@ class Resetpass extends StatelessWidget {
                       return validInput(val!, 10, 30, "password");
                     },
                     suffixIcon: Icons.lock,
-                    label: 're enter password',
                     hint: ' re enter password',
                     textEditingController: controller.repassword,
                   ),

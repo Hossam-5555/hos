@@ -97,7 +97,6 @@ class Additem extends StatelessWidget {
                 // اسم العنصر بالإنجليزية
                 Textfealdauth(
                   hint: "اكتب اسم العنصر بالإنجليزية",
-                  label: "Category Name",
                   suffixIcon: Icons.category_outlined,
                   textEditingController: controller.name,
                   valid: (val) => val!.isEmpty ? "الاسم مطلوب" : null,
@@ -106,7 +105,6 @@ class Additem extends StatelessWidget {
                 // اسم العنصر بالعربية
                 Textfealdauth(
                   hint: "اكتب اسم العنصر بالعربية",
-                  label: "الاسم بالعربية",
                   suffixIcon: Icons.language_outlined,
                   textEditingController: controller.namear,
                   valid: (val) => val!.isEmpty ? "الاسم بالعربية مطلوب" : null,
@@ -115,7 +113,6 @@ class Additem extends StatelessWidget {
                 // Description English
                 Textfealdauth(
                   hint: "Description",
-                  label: "Description English",
                   suffixIcon: Icons.description_outlined,
                   textEditingController: controller.description,
                   valid: (val) => val!.isEmpty ? "الوصف مطلوب" : null,
@@ -124,7 +121,6 @@ class Additem extends StatelessWidget {
                 // Description Arabic
                 Textfealdauth(
                   hint: "الوصف",
-                  label: "الوصف بالعربية",
                   suffixIcon: Icons.language_outlined,
                   textEditingController: controller.descriptionar,
                   valid: (val) => val!.isEmpty ? "الوصف بالعربية مطلوب" : null,
@@ -133,7 +129,6 @@ class Additem extends StatelessWidget {
                 // Count
                 Textfealdauth(
                   hint: "count",
-                  label: "Item count",
                   suffixIcon: Icons.format_list_numbered,
                   textEditingController: controller.count,
                   valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
@@ -142,7 +137,6 @@ class Additem extends StatelessWidget {
                 // Price
                 Textfealdauth(
                   hint: "price",
-                  label: "Item price",
                   suffixIcon: Icons.attach_money_outlined,
                   textEditingController: controller.price,
                   valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
@@ -151,14 +145,12 @@ class Additem extends StatelessWidget {
                 // Discount
                 Textfealdauth(
                   hint: "Discount",
-                  label: "Discount",
                   suffixIcon: Icons.discount_outlined,
                   textEditingController: controller.descount,
                   valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
                 ),
                 Textfealdauth(
                   hint: "القسم",
-                  label: "ادخل اسم القسم",
                   suffixIcon: Icons.discount_outlined,
                   textEditingController: controller.itemcat,
                   valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,

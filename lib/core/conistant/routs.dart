@@ -16,14 +16,13 @@ import 'package:hos/veiw/userscreen/screen/auth/veryfisign.dart';
 import 'package:hos/veiw/userscreen/screen/home/homescreen.dart';
 import 'package:hos/veiw/userscreen/screen/home/itemsdetailes.dart';
 import 'package:hos/veiw/userscreen/screen/home/notification.dart';
-import 'package:hos/veiw/userscreen/screen/onboarding/language.dart';
 import 'package:hos/veiw/userscreen/screen/myfavorite.dart';
 import 'package:hos/veiw/userscreen/screen/onboarding/onBoarding.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/add.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/viewaddres.dart';
 
 List<GetPage<dynamic>>? routes = [
-  GetPage(name: '/', page: () => Language(), middlewares: [Midelware()]),
+  GetPage(name: '/', page: () => Onboarding(), middlewares: [Midelware()]),
 
   //Admin=================================================================
   GetPage(name: AdminApproate.adminHome, page: () => AdminHome()),
@@ -33,13 +32,12 @@ List<GetPage<dynamic>>? routes = [
 
   //=========================================================
   //onBording
-  GetPage(name: Approute.Onboarding, page: () => Onboarding()),
 
   //Homepage
   GetPage(name: Approute.Homescreen, page: () => Homescreen()),
   GetPage(name: Approute.Items, page: () => Items()),
   GetPage(name: Approute.Itemsdetailes, page: () => Itemsdetailes()),
-    GetPage(name: Approute.notificationPage, page: () => NotificationPage()),
+  GetPage(name: Approute.notificationPage, page: () => NotificationPage()),
 
   //cart
   GetPage(name: Approute.ShoppingCartPage, page: () => ShoppingCartPage()),
@@ -67,7 +65,7 @@ class Approute {
   static String Homescreen = "/Homescreen";
   static String Items = "/Items";
   static String Itemsdetailes = "/Itemsdetailes";
- static String notificationPage = "/notificationPage";
+  static String notificationPage = "/notificationPage";
 
   //cart
   static String ShoppingCartPage = "/ShoppingCartPage";

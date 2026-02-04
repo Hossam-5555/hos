@@ -92,7 +92,6 @@ class Addcategories extends StatelessWidget {
                 // اسم الفئة
                 Textfealdauth(
                   hint: "اكتب اسم الفئة بالإنجليزية",
-                  label: "Category Name",
                   suffixIcon: Icons.category_outlined,
                   textEditingController: controller.name,
                   valid: (val) {
@@ -106,7 +105,6 @@ class Addcategories extends StatelessWidget {
                 // اسم الفئة بالعربية
                 Textfealdauth(
                   hint: "اكتب اسم الفئة بالعربية",
-                  label: "الاسم بالعربية",
                   suffixIcon: Icons.language_outlined,
                   textEditingController: controller.namear,
                   valid: (val) {

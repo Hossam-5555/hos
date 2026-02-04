@@ -9,8 +9,8 @@ class Custumlang extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(height: 50,
+    width: 100,
       padding: EdgeInsets.all(0),
-      margin: EdgeInsetsDirectional.symmetric(horizontal: 100),
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),

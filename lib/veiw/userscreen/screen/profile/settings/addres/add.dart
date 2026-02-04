@@ -53,7 +53,6 @@ class AddNewAddres extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Textfealdauth(
-                      label: 'name',
                       obscureText: false,
                       suffixIcon: Icons.send,
                       hint: 'Enter  name of location',
@@ -63,7 +62,6 @@ class AddNewAddres extends StatelessWidget {
                       },
                     ),
                     Textfealdauth(
-                      label: 'city',
                       obscureText: false,
                       suffixIcon: Icons.location_city,
                       hint: 'Enter city name',
@@ -73,7 +71,6 @@ class AddNewAddres extends StatelessWidget {
                       },
                     ),
                     Textfealdauth(
-                      label: 'sreet',
                       obscureText: false,
                       suffixIcon: Icons.streetview,
                       hint: 'Enter street name',

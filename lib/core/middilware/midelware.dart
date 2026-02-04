@@ -18,8 +18,8 @@ class Midelware extends GetMiddleware {
 
     // ✅ أول مرة يفتح التطبيق — لسه محددش اللغة
     if (step == null) {
-      if (route != Approute.language) {
-        return RouteSettings(name: Approute.language);
+      if (route != Approute.Onboarding) {
+        return RouteSettings(name: Approute.Onboarding);
       }
       return null;
     }

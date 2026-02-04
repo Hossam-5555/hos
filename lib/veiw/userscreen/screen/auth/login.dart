@@ -44,16 +44,6 @@ class Login extends StatelessWidget {
             return Stack(
               alignment: Alignment.center,
               children: [
-                // الخلفية
-                Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(Imageasset.see),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-
                 // أنميشن العلوية
                 Positioned(
                   top: height * 0.05,
@@ -75,8 +65,12 @@ class Login extends StatelessWidget {
                           color: Appcolor.glass.withAlpha(51), // 0.2 * 255 = 51
                           borderRadius: BorderRadius.circular(25),
                           border: Border.all(
-                            color: const Color.fromARGB(240, 145, 222, 255)
-                                .withAlpha(77), // 0.3 * 255 = 77
+                            color: const Color.fromARGB(
+                              240,
+                              145,
+                              222,
+                              255,
+                            ).withAlpha(77), // 0.3 * 255 = 77
                           ),
                         ),
                         child: Form(
@@ -97,9 +91,8 @@ class Login extends StatelessWidget {
                                         validInput(val!, 9, 50, 'email'),
                                     textEditingController:
                                         loginController.email,
-                                    label: 'email',
-                                    suffixIcon: Icons.email_sharp,
-                                    hint: 'Enter your Email',
+                                    suffixIcon: Icons.email_outlined,
+                                    hint: 'Email Address',
                                   ),
                                   SizedBox(height: height * 0.025),
 
@@ -113,9 +106,8 @@ class Login extends StatelessWidget {
                                         validInput(val!, 5, 30, 'password'),
                                     textEditingController:
                                         loginController.passward,
-                                    label: 'password',
-                                    suffixIcon: Icons.password_sharp,
-                                    hint: "Enter Your Password",
+                                    suffixIcon: Icons.remove_red_eye_outlined,
+                                    hint: " Password",
                                   ),
 
                                   // 🔹 رسالة الخطأ (في حالة failure فقط)
@@ -146,7 +138,7 @@ class Login extends StatelessWidget {
                                     },
                                     buttonName: 'Login',
                                     width: width * 0.75,
-                                    buttonColor: Colors.deepPurple,
+                                    buttonColor: Colors.black,
                                   ),
 
                                   Container(
@@ -158,9 +150,9 @@ class Login extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,
                                       children: [
-                                        GoogleFacetweter(image: Imageasset.google),
-                                        GoogleFacetweter(image: Imageasset.face),
-                                        GoogleFacetweter(image: Imageasset.twetter),
+                                        GoogleFacetweter(
+                                          image: Imageasset.google,
+                                        ),
                                       ],
                                     ),
                                   ),
