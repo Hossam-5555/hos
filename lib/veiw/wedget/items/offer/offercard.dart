@@ -204,7 +204,7 @@ class ItemList extends GetView<Offercontroller> {
                         children: [
                           /// السعر (مميز بلون وحجم)
                           Text(
-                            "${items.itemspricediscount ?? "0"} ج.م",
+                            "${double.parse(items.itemspricediscount.toString()).toStringAsFixed(2)} ج.م",
                             style: const TextStyle(
                               // لون برتقالي/ذهبي لتمييز السعر
                               color: Color(0xFFFFC107),

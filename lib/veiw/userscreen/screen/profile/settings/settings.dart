@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/settingscontroller.dart';
+import 'package:hos/veiw/userscreen/screen/profile/settings/about_us_page.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
 class Settings extends StatelessWidget {
@@ -88,7 +89,13 @@ class Settings extends StatelessWidget {
                   icon: Icons.info_outline,
                   title: 'عن التطبيق',
                   subtitle: 'الإصدار 1.0.0',
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(
+                      EnglishAbout(),
+                      transition: Transition.fade,
+                      duration: Duration(milliseconds: 400),
+                    );
+                  },
                 ),
                 _buildSettingsTile(
                   icon: Icons.call_outlined,

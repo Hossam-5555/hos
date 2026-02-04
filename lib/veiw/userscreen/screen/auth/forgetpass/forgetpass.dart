@@ -7,8 +7,8 @@ import 'package:hos/core/functions/validinput.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
-class forgetpass extends StatelessWidget {
-  const forgetpass({super.key});
+class ForgetPass extends StatelessWidget {
+  const ForgetPass({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class forgetpass extends StatelessWidget {
                     },
                     buttonName: 'Check',
                     width: 300,
-                    buttonColor: Appcolor.deepPurple,
+                    buttonColor: Appcolor.black,
                   ),
                 ],
               ),

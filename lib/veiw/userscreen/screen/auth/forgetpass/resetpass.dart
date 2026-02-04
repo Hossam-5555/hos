@@ -64,7 +64,7 @@ class Resetpass extends StatelessWidget {
                     },
                     buttonName: 'resset',
                     width: 300,
-                    buttonColor: Colors.deepPurple,
+                    buttonColor: Colors.black,
                   ),
                 ),
               ],

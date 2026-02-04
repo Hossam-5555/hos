@@ -51,7 +51,7 @@ List<GetPage<dynamic>>? routes = [
   GetPage(name: Approute.signup, page: () => Signup()),
   GetPage(name: Approute.veryfisign, page: () => Veryfisign()),
   //Auth//fogetpass
-  GetPage(name: Approute.checkemailpage, page: () => forgetpass()),
+  GetPage(name: Approute.checkemailpage, page: () => ForgetPass()),
   GetPage(name: Approute.Veryficode, page: () => Veryficode()),
   GetPage(name: Approute.Resetpass, page: () => Resetpass()),
 
