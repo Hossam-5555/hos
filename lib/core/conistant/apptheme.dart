@@ -72,7 +72,6 @@ ThemeData themeEnglish = ThemeData(
 );
 
 // for Arabic
-
 ThemeData themeArabic = ThemeData(
   scaffoldBackgroundColor: Color.fromARGB(255, 236, 232, 229),
   // استخدام نظام ألوان متناسق
@@ -80,31 +79,26 @@ ThemeData themeArabic = ThemeData(
 
   appBarTheme: AppBarTheme(
     iconTheme: IconThemeData(color: Colors.black, size: 24), // ← الحجم القياسي
-    leadingWidth: 56, // ← العرض القياسي
+    leadingWidth: 70, // ← العرض القياسي
     actionsIconTheme: IconThemeData(
       color: Colors.black,
       size: 24,
     ), // ← الحجم القياسي
     titleTextStyle: TextStyle(
-      color: Appcolor.grey,
+      color: Appcolor.black,
       fontSize: 22, // ← حجم أنسب لعنوان الصفحة
       fontFamily: 'cairo', // ← استخدم اسم الخط هنا
       fontWeight: FontWeight.bold,
     ),
     elevation: 0.0,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        bottomLeft: Radius.circular(25),
-        bottomRight: Radius.circular(25),
-      ),
-    ),
+    // shape: const RoundedRectangleBorder(
+    //   borderRadius: BorderRadius.only(
+    //     bottomLeft: Radius.circular(25),
+    //     bottomRight: Radius.circular(25),
+    //   ),
+    // ),
     centerTitle: true,
-    backgroundColor: Color.fromARGB(
-      255,
-      236,
-      232,
-      229,
-    ), //  : Color.fromARGB(255,236, 232, 229),
+    backgroundColor: Color.fromARGB(255, 236, 232, 229),
   ),
 
   textTheme: TextTheme(
@@ -121,7 +115,8 @@ ThemeData themeArabic = ThemeData(
     ),
     headlineSmall: TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: 24,
+      fontSize: 20,
+      color: Colors.black,
       fontFamily: 'cairo',
     ),
     titleLarge: TextStyle(
@@ -146,3 +141,4 @@ ThemeData themeArabic = ThemeData(
     ),
   ),
 );
+
