@@ -50,7 +50,7 @@ class HomePage extends StatelessWidget {
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Titles(title: "categories "),
+                              Titles(title: "Categories "),
                               SizedBox(height: height * 0.01),
 
                               /// 🔥 كاتيجوريز
@@ -65,7 +65,8 @@ class HomePage extends StatelessWidget {
                                 description:
                                     "خصم يصل إلى 50% على الهواتف واللابتوبات",
                                 discount: "50% OFF",
-                                onTap: () {},
+                                onTap: () {
+                                },
                               ),
                               SizedBox(height: height * 0.010),
 
@@ -75,26 +76,28 @@ class HomePage extends StatelessWidget {
 
                               Row(
                                 children: [
-                                  Expanded(
+                                  Expanded(flex: 2,
                                     child: Titles(title: " New Collections"),
                                   ),
-                                  TextButton.icon(
-                                    iconAlignment: IconAlignment.start,
-                                    onPressed: () {},
-                                    icon: const Text(
-                                      " See All",
-                                      style: TextStyle(
-                                        color: Color.fromARGB(
-                                          255,
-                                          109,
-                                          109,
-                                          109,
+                                  Expanded(flex: 1,
+                                    child: TextButton.icon(
+                                      iconAlignment: IconAlignment.start,
+                                      onPressed: () {},
+                                      icon: const Text(
+                                        " See All",
+                                        style: TextStyle(
+                                          color: Color.fromARGB(
+                                            255,
+                                            109,
+                                            109,
+                                            109,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    label: const Icon(
-                                      Icons.arrow_forward,
-                                      color: Color.fromARGB(255, 0, 0, 0),
+                                      label: const Icon(
+                                        Icons.arrow_forward,
+                                        color: Color.fromARGB(255, 0, 0, 0),
+                                      ),
                                     ),
                                   ),
                                 ],

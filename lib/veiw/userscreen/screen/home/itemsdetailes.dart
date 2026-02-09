@@ -1,324 +1,200 @@
 import 'dart:math' as math;
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/itemsdetailscontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/linkApi.dart';
 import 'package:hos/veiw/wedget/animation.dart';
+import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/buttom.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/countofproduct.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/description.dart';
 
 class Itemsdetailes extends StatelessWidget {
-  final Itemdetailscontroller controller = Get.put(Itemdetailscontroller());
-
-  Itemsdetailes({super.key});
+  const Itemsdetailes({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final h = size.height;
-    final w = size.width;
-
-    return Scaffold(
-      body: GetBuilder<Itemdetailscontroller>(
-        builder: (_) {
+    // تم استخدام GetBuilder لضمان تحديث الصفحة عند تغيير الحالة
+    return GetBuilder<Itemdetailscontroller>(
+        init: Itemdetailscontroller(),
+        builder: (controller) {
           final item = controller.itemsmodel;
-          return SizedBox(
-            child: Stack(
-              fit: StackFit.expand,
-              alignment: Alignment.topCenter,
+          return Scaffold(
+            backgroundColor: const Color(0xFFE9E4DB), // لون الخلفية (البيج)
+            appBar: const PreferredSize(
+              preferredSize: Size.fromHeight(60),
+              child: Appbarbackicon(title: " Details", herotag: ""),
+            ),
+            body: Stack(
+              // الـ Stack هنا فقط لطبقة الاحتفال العائمة، التصميم بالداخل Column
               children: [
-                // ✅ الصورة (النصف العلوي)
-                Positioned(
-                  top: h * 0.10, // عشان تكون في منتصف الجزء العلوي
-                  left: 0,
-                  right: 0,
-                  child: SizedBox(
-                    height: h * 0.35, // ارتفاع متوسط يناسب النص العلوي
-                    width: w * 0.7,
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(
-                          255,
-                          233,
-                          228,
-                          219,
-                        ).withAlpha(50),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Hero(
-                        tag: '${item.itemsId}',
-                        child: Image.network(
-                          "${LinkApi.imageitems}/${item.itemsImage!}",
-                          height: h * 0.38, // ارتفاع متوسط يناسب النص العلوي
-                          width: w * 0.7,
-                          fit: BoxFit.contain,
+                Column(
+                  children: [
+                    // 1. الجزء العلوي (الصورة)
+                    SizedBox(
+                      height: Get.height * 0.38, // 38% من الشاشة للصورة
+                      width: double.infinity,
+                      child: Center(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white.withAlpha(50),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Hero(
+                            tag: '${item.itemsId}',
+                            child: Image.network(
+                              "${LinkApi.imageitems}/${item.itemsImage!}",
+                              height: Get.height * 0.35,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
 
-                // ✅ التفاصيل (النصف السفلي)
-                Positioned(
-                  top: h * 0.50,
-                  child: Container(
-                    height: h * 0.50,
-                    width: w,
-                    padding: EdgeInsets.symmetric(horizontal: w * 0.05),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(30),
-                      ),
-                    ),
-                    child: Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: h * 0.03),
-                          // ===== الاسم والسعر =====
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      item.itemsName ?? '',
-                                      style: TextStyle(
-                                        fontSize: w * 0.05,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      item.itemsDesc ?? '',
-                                      maxLines: 3,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(
-                                        context,
-                                      ).textTheme.bodyMedium,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Text(
-                                "${(double.parse(item.itemspricediscount.toString()).toStringAsFixed(2))}\$",
-                                style: TextStyle(
-                                  fontSize: w * 0.055,
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
+                    // 2. الجزء السفلي (التفاصيل)
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // الشعار العائم (Hot Product) باستخدام التحريك للأعلى
+                            Transform.translate(
+                              offset: const Offset(0, -25), // رفعه للأعلى ليتداخل مع الصورة
+                              child: _buildHotProductBadge(),
+                            ),
 
-                          SizedBox(height: h * 0.02),
-
-                          // ===== التقييم وعدد القطع =====
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: List.generate(
-                                  4,
-                                  (index) => Icon(
-                                    Icons.star_rounded,
-                                    color: Colors.amber,
-                                    size: w * 0.06,
-                                  ),
-                                ),
-                              ),
-                              Countofproduct(count: controller.itemcount),
-                            ],
-                          ),
-
-                          // ===== الوصف =====
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Description",
-                                style: Theme.of(
-                                  context,
-                                ).textTheme.headlineSmall,
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  showModalBottomSheet(
-                                    backgroundColor: Colors.grey[200],
-                                    context: context,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(20),
-                                      ),
-                                    ),
-                                    builder: (context) {
-                                      return Container(
-                                        padding: EdgeInsets.all(16),
-                                        height: h * 0.6,
-                                        child: SingleChildScrollView(
-                                          child: SmartDescriptionView(
-                                            rawText:
-                                                "هذا وصف تفصيلي للمنتج يوضح كل الخصائص والمميزات \n Good product ,perfect for daily use"
-                                                "مع شرح كامل يساعد المستخدم في معرفة التفاصيل قبل الشراء.",
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
-                                child: Text(
-                                  "See More",
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                    fontSize: w * 0.04,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          // ignore: avoid_unnecessary_containers
-                          Container(
-                            child: Column(
+                            // تفاصيل المنتج
+                            Text(
+                              item.itemsName ?? '',
+                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 5),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  maxLines: 2,
-                                  "هذا وصف تفصيلي للمنتج يوضح كل الخصائص والمميزات \n Good product ,perfect for daily use"
-                                  "مع شرح كامل يساعد المستخدم في معرفة التفاصيل قبل الشراء.",
-                                  style: TextStyle(
-                                    fontSize: w * 0.04,
-                                    height: 1.6,
+                                Expanded(
+                                  child: Text(
+                                    item.itemsDesc ?? '',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context).textTheme.bodyMedium,
                                   ),
+                                ),
+                                Text(
+                                  "${(double.parse(item.itemspricediscount.toString()).toStringAsFixed(2))}\$",
+                                  style: const TextStyle(fontSize: 22, color: Colors.green, fontWeight: FontWeight.w600),
                                 ),
                               ],
                             ),
-                          ),
-                          Spacer(),
-                          // ===== الزر =====
-                          Container(
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.only(bottom: h * 0.04),
-                            child: Buttom(),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                            const SizedBox(height: 15),
 
-                Positioned(
-                  top: h * 0.05,
-                  left: w * 0.05,
-                  child: Container(
-                    height: 60,
-                    width: 60,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 10,
-                          color: Colors.black.withAlpha(55),
-                          offset: Offset(0.5, 1),
-                        ),
-                      ],
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back),
-                      onPressed: () {
-                       Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                ),
-                //#####################################Animation##########################################
-                controller.isadded
-                    ? Stack(
-                        children: [
-                          Positioned(
-                            top: h * 0.2,
-                            left: w * 0.010,
-                            // ignore: sized_box_for_whitespace
-                            child: Container(
-                              height: 200,
-                              width: 200,
-
-                              child: Animationforstatus(
-                                animationPath: Imageasset.celebiration,
-                              ),
+                            // التقييم والعداد
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(children: List.generate(4, (index) => const Icon(Icons.star_rounded, color: Colors.amber, size: 24))),
+                                Countofproduct(count: controller.itemcount),
+                              ],
                             ),
-                          ),
-                          Positioned(
-                            top: h * 0.2,
-                            right: w * 0.010,
-                            // ignore: sized_box_for_whitespace
-                            child: Container(
-                              height: 200,
-                              width: 200,
+                            const SizedBox(height: 15),
 
-                              child: Animationforstatus(
-                                animationPath: Imageasset.celebiration,
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    : SizedBox.shrink(),
-
-                //#####################################Animation##########################################
-                Positioned(
-                  top: h * 0.476,
-                  left: w * 0.05,
-                  child: Transform.rotate(
-                    angle: -math.pi / 30.0,
-                    child: ClipRRect(
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                        child: Container(
-                          height: 50,
-                          width: 140,
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(
-                              255,
-                              89,
-                              89,
-                              89,
-                            ).withAlpha(50),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Icon(Icons.rocket_launch_sharp),
-                              Text(
-                                "Hot product",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontFamily: 'Italic',
+                            // الوصف وزر عرض المزيد
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Description", style: Theme.of(context).textTheme.headlineSmall),
+                                TextButton(
+                                  onPressed: () => _showDescriptionSheet(context),
+                                  child: const Text("See More", style: TextStyle(color: Colors.blue)),
                                 ),
-                              ),
-                            ],
-                          ),
+                              ],
+                            ),
+                            const Text(
+                              "هذا وصف تفصيلي للمنتج يوضح كل الخصائص والمميزات...\nGood product, perfect for daily use.",
+                              style: TextStyle(height: 1.6),
+                              maxLines: 2,
+                            ),
+                            
+                            const Spacer(),
+                            
+                            // الزر السفلي
+                            const Padding(
+                              padding: EdgeInsets.only(bottom: 20),
+                              child: Center(child: Buttom()),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
+
+                // 3. طبقة الاحتفال (تظهر فقط عند الإضافة)
+                if (controller.isadded)
+                  Positioned.fill(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 100),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Animationforstatus(animationPath: Imageasset.celebiration),
+                        ],
+                      ),
+                    ),
+                  )
               ],
             ),
           );
-        },
+        });
+  }
+
+  // ودجت الشعار العائم
+  Widget _buildHotProductBadge() {
+    return Transform.rotate(
+      angle: -math.pi / 30.0,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            color: const Color(0xFF595959).withAlpha(50),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.rocket_launch_sharp, size: 20),
+                SizedBox(width: 8),
+                Text("Hot product", style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic)),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // نافذة الوصف المنبثقة
+  void _showDescriptionSheet(BuildContext context) {
+    showModalBottomSheet(
+      backgroundColor: Colors.grey[200],
+      context: context,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (_) => Container(
+        padding: const EdgeInsets.all(16),
+        height: Get.height * 0.6,
+        child: SingleChildScrollView(
+          child: SmartDescriptionView(
+            rawText: "هذا وصف تفصيلي للمنتج يوضح كل الخصائص والمميزات \n Good product ,perfect for daily use مع شرح كامل...",
+          ),
+        ),
       ),
     );
   }

@@ -22,20 +22,14 @@ class Buttom extends StatelessWidget {
         ),
         onPressed: () {
           if (itemdetailscontroller.itemcount == 0) {
-            Get.snackbar(
-              "لا يوج عنصر",
-              "     ادخل الكميه لكي تستطيع الشراء",
-              backgroundColor: const Color.fromARGB(
-                255,
-                242,
-                245,
-                242,
-              ).withAlpha(204), // 0.8 * 255 = 204
-              colorText: const Color.fromARGB(255, 0, 0, 0),
-              duration: const Duration(seconds: 1),
+            Get.rawSnackbar(
+              message: "لا  يوجد عنصر في السلة",
+              isDismissible: true,
+              duration: Duration(seconds: 2),
+              overlayBlur: 0, // لا تضع غبش خلفها لكي لا تعطل المستخدم
             );
           } else {
-            itemdetailscontroller.isadded=true;
+            itemdetailscontroller.isadded = true;
             itemdetailscontroller.addtocart(
               itemdetailscontroller.itemsmodel.itemsId!.toString(),
               itemdetailscontroller.itemcount,

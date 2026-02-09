@@ -69,12 +69,10 @@ class CartController extends GetxController {
     if (Statusrequest.success == statusrequest) {
       if (response["status"] == "success") {
         Get.rawSnackbar(
-          duration: Duration(milliseconds: 800),
-          margin: EdgeInsets.all(16),
-          snackStyle: SnackStyle.FLOATING,
-          borderRadius: 16,
-          title: "إشعار",
-          messageText: const Text("تم إضافة المنتج للسلة ✅"),
+          message: "تم اضافه المنتج للسلة ✅",
+          isDismissible: true,
+          duration: Duration(seconds: 2),
+          overlayBlur: 0, // لا تضع غبش خلفها لكي لا تعطل المستخدم
         );
       } else {
         statusrequest = Statusrequest.failure;
@@ -92,14 +90,6 @@ class CartController extends GetxController {
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response["status"] == "success") {
-        Get.rawSnackbar(
-          duration: Duration(milliseconds: 800),
-
-          margin: EdgeInsets.all(12),
-          borderRadius: 16,
-          title: "إشعار",
-          messageText: const Text("تمت ازاله العنصر  ✅"),
-        );
       } else {
         statusrequest = Statusrequest.failure;
       }
@@ -171,15 +161,20 @@ class CartController extends GetxController {
   double couponediscount = 0;
   String? couponename;
   String? couponeID;
-  
+
   final gotoanypage = Get.put(Gotoanypagecalss());
 
   void gotochechout() {
-    gotoanypage.Gotoanypage(Checkout(), false, {
-      "totalprice": totalprice.toString(),
-      "couponeID": couponeID ?? "0",
-      "couponediscount": couponediscount.toString(),
-    });
+    Get.to(
+      () => Checkout(),
+      transition: Transition.fadeIn,
+      arguments: {
+        "totalprice": totalprice.toString(),
+        "couponeID": couponeID ?? "0",
+        "couponediscount": couponediscount.toString(),
+      },
+      duration: const Duration(milliseconds: 400),
+    );
   }
 
   Future<void> chechcoupone() async {

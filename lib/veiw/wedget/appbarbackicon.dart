@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class Appbarbackicon extends StatelessWidget implements PreferredSizeWidget {
   const Appbarbackicon({
@@ -52,7 +51,8 @@ class Appbarbackicon extends StatelessWidget implements PreferredSizeWidget {
                 child: IconButton(
                   onPressed: () {
                     // ✅ حماية: اقفل أي رسالة مفتوحة قبل ما ترجع
-                    Get.back();
+                    Navigator.of(context).pop();
+                    // ✅ رجوع للصفحة السابقة
                   },
                   icon: Icon(
                     selected == true ? Icons.close : Icons.arrow_back,

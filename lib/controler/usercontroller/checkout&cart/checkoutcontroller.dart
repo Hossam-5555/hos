@@ -10,7 +10,6 @@ import 'package:hos/data/datasource/userdata/checkoutdata.dart';
 import 'package:hos/data/model/Addresmodel.dart';
 
 class Checkoutcontroller extends GetxController {
-
   final List<List> paymentMethods = [
     ["Cash", Imageasset.cash],
     ["Visa", Imageasset.visa],
@@ -23,7 +22,7 @@ class Checkoutcontroller extends GetxController {
   int addressid = 0;
 
   //============================ الدوال الخاصة بالاختيار
-  void choospaymentmethod( int val) {
+  void choospaymentmethod(int val) {
     paymenttype = val;
     update();
   }
@@ -33,7 +32,7 @@ class Checkoutcontroller extends GetxController {
     update();
   }
 
-  void chooseAddres( int val) {
+  void chooseAddres(int val) {
     addressid = val;
     update();
   }
@@ -73,23 +72,29 @@ class Checkoutcontroller extends GetxController {
   }
 
   //============================ تنفيذ عملية الطلب
-  Future<void> checkoutoder() async {
+   Future<void> checkoutoder() async {
+    // تحقق من العنوان
     if (addressid == 0) {
       Get.snackbar("خطأ", "الرجاء إدخال العنوان");
       return;
     }
 
+    // تحقق من وسيلة الدفع
     if (paymenttype == null) {
       Get.snackbar("خطأ", "الرجاء اختيار وسيلة الدفع");
       return;
     }
 
+    // تحقق من وجود عنوان
     if (listaddresdata.isEmpty) {
       Get.snackbar("  تنبيه", "الرجاء اضافه  عنوان ");
     }
+
+    // وضع حالة التحميل
     statusrequest = Statusrequest.loading;
     update();
 
+    // تجهيز البيانات
     Map<String, dynamic> data = {
       "userid": myservisec.sharedPreferences.getString("id")!,
       "addressid": addressid.toString(),
@@ -98,37 +103,52 @@ class Checkoutcontroller extends GetxController {
       "ordersprice": totalprice.toString(),
       "couponid": couponeid.toString(),
       "couponediscount": couponediscount.toString(),
-      "paymentmethod": paymenttype.toString(), // ← هنا برضه
+      "paymentmethod": paymenttype.toString(),
     };
 
+    // تنفيذ الطلب
     var response = await checkoutdata.Checkout(data);
     statusrequest = handling(response);
+
     if (statusrequest == Statusrequest.success) {
       if (response['status'] == 'success') {
-        // ✅ نجاح العملية
-        Get.snackbar(
-          "تم الطلب بنجاح ✅",
-          "سيتم توصيل طلبك في أقرب وقت",
-          backgroundColor: const Color.fromARGB(
-            255,
-            242,
-            245,
-            242,
-          ).withAlpha(70),
-          colorText: const Color.fromARGB(255, 0, 0, 0),
-          duration: const Duration(seconds: 2),
+        // نجاح العملية
+        ScaffoldMessenger.of(Get.context!).showSnackBar(
+          SnackBar(
+            content: Text("تم الطلب بنجاح ✅\nسيتم توصيل طلبك في أقرب وقت"),
+            backgroundColor: const Color.fromARGB(255, 11, 204, 11).withAlpha(90),
+            duration: const Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+          ),
         );
 
+        // العودة للصفحة الرئيسية
         Get.offAllNamed(Approute.Homescreen);
       } else {
         statusrequest = Statusrequest.failure;
         update();
-        Get.snackbar("خطأ في البيانات", "الرجاء المحاولة مرة أخرى");
+
+        ScaffoldMessenger.of(Get.context!).showSnackBar(
+          SnackBar(
+            content: Text("خطأ في البيانات\nالرجاء المحاولة مرة أخرى"),
+            duration: const Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+            margin: const EdgeInsets.all(16),
+          ),
+        );
       }
     } else {
       statusrequest = Statusrequest.serverfailure;
       update();
-      Get.snackbar("خطأ", "حدث خطأ أثناء إرسال الطلب");
+
+      ScaffoldMessenger.of(Get.context!).showSnackBar(
+        SnackBar(
+          content: Text("حدث خطأ أثناء إرسال الطلب"),
+          duration: const Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.all(16),
+        ),
+      );
     }
   }
 

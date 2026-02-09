@@ -32,7 +32,7 @@ class ItemList extends GetView<HomepageController> {
     final width = size.width;
     final height = size.height;
 
-    return GestureDetector(
+    return InkWell(
       onTap: () => controller.gotoitemsdatails(items),
       // ❌ تم حذف ClipPath لاستخدام الزوايا الدائرية من BoxDecoration
       child: Container(
@@ -119,14 +119,20 @@ class ItemList extends GetView<HomepageController> {
                             color: Colors.black,
                           ),
                         ),
-                        Container(padding: EdgeInsets.all(8),
+                        Container(
+                          padding: EdgeInsets.all(8),
                           height: height * 0.05,
                           width: height * 0.05,
                           decoration: const BoxDecoration(
                             color: Colors.black,
                             shape: BoxShape.circle,
                           ),
-                          child: SvgPicture.asset(Imageasset.cart,height: 20,width: 20,color: Colors.white,)
+                          child: SvgPicture.asset(
+                            Imageasset.cart,
+                            height: 20,
+                            width: 20,
+                            color: Colors.white,
+                          ),
                         ),
                       ],
                     ),

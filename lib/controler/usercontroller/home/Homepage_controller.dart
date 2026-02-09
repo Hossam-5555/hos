@@ -56,8 +56,10 @@ class HomepageController extends SearchMix {
 
   @override
   void onClose() {
-    // تم التعديل هنا: استخدام ?.dispose() لتجنب Null check operator used on a null value
+    // التعديل: نقوم بحذف الكنترولر ثم جعله null فوراً
+    // هذا يضمن أن الواجهة (CurvedItemsView) ستدخل في شرط الحماية if (controller.pageController == null)
     pageController?.dispose();
+    pageController = null; 
     super.onClose();
   }
 

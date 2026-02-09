@@ -23,7 +23,7 @@ class Buttomappbar extends GetView<Homescreencontroller> {
             height: 75, // ← ارتفاع ثابت ومناسب
             child: Container(
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 236, 232, 229).withAlpha(180),
+                color: Color.fromARGB(255, 236, 232, 229).withAlpha(200),
                 borderRadius: BorderRadius.circular(40),
                 boxShadow: [
                   BoxShadow(
@@ -61,6 +61,7 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                             Text(
                               controller.appbartitle[index][0],
                               style: const TextStyle(
+                                fontFamily: "",
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black87,

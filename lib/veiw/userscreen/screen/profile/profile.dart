@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/profilepagecontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/class/gotoanypage.dart';
+import 'package:hos/veiw/userscreen/screen/home/notification.dart';
 import 'package:hos/veiw/userscreen/screen/myfavorite.dart';
 import 'package:hos/veiw/userscreen/screen/profile/order/orders.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/viewaddres.dart';
@@ -25,7 +26,6 @@ class ProfilePage extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(height: screenHeight * 0.05), // مسافة علوية نسبية
-
           // ================== قسم البروفايل العلوي ==================
           Container(
             height: screenHeight * 0.22, // الارتفاع 22% من الشاشة
@@ -39,7 +39,10 @@ class ProfilePage extends StatelessWidget {
                   height: screenHeight * 0.17,
                   width: screenWidth,
                   margin: EdgeInsets.only(top: screenHeight * 0.05),
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 15,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
@@ -53,7 +56,8 @@ class ProfilePage extends StatelessWidget {
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end, // محاذاة العناصر للأسفل
+                    crossAxisAlignment:
+                        CrossAxisAlignment.end, // محاذاة العناصر للأسفل
                     children: [
                       // بيانات المستخدم
                       Expanded(
@@ -61,7 +65,8 @@ class ProfilePage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: const [
-                             FittedBox( // لضمان عدم خروج النص عن المساحة
+                            FittedBox(
+                              // لضمان عدم خروج النص عن المساحة
                               child: Text(
                                 "Hossam Yasser",
                                 style: TextStyle(
@@ -71,24 +76,35 @@ class ProfilePage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                             SizedBox(height: 5),
-                             FittedBox(
+                            SizedBox(height: 5),
+                            FittedBox(
                               child: Text(
                                 "hossam@email.com",
-                                style: TextStyle(color: Colors.grey, fontSize: 13),
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 13,
+                                ),
                               ),
                             ),
-                             SizedBox(height: 10), // مسافة سفلية بسيطة
+                            SizedBox(height: 10), // مسافة سفلية بسيطة
                           ],
                         ),
                       ),
-                      
+
                       // زر التعديل
                       ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 5,
+                          ),
                           iconColor: const Color.fromARGB(255, 26, 21, 9),
-                          backgroundColor: const Color.fromARGB(255, 194, 180, 166),
+                          backgroundColor: const Color.fromARGB(
+                            255,
+                            194,
+                            180,
+                            166,
+                          ),
                         ),
                         label: const Text(
                           "Edit",
@@ -100,7 +116,7 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                
+
                 // الصورة الشخصية
                 Positioned(
                   right: 20, // تحديد مكان الصورة بدقة
@@ -137,7 +153,9 @@ class ProfilePage extends StatelessWidget {
                   }),
                 ),
                 Expanded(
-                  child: cardOrder(Icons.star_rate, "Review", () {}),
+                  child: cardOrder(Icons.notifications, "Messages", () {
+                    gotoany.Gotoanypage(NotificationPage(), false, {});
+                  }),
                 ),
               ],
             ),
@@ -169,11 +187,7 @@ class ProfilePage extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(14),
         boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 6,
-            offset: Offset(0, 3),
-          ),
+          BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 3)),
         ],
       ),
       child: ListTile(
@@ -201,7 +215,9 @@ class ProfilePage extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height: 100, // يمكن تثبيت الارتفاع هنا للشكل الجمالي
-        margin: const EdgeInsets.symmetric(horizontal: 6), // قللنا المسافات الجانبية
+        margin: const EdgeInsets.symmetric(
+          horizontal: 6,
+        ), // قللنا المسافات الجانبية
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),
@@ -222,7 +238,8 @@ class ProfilePage extends StatelessWidget {
               size: 28,
             ),
             const SizedBox(height: 5),
-            FittedBox( // لضمان ظهور النص بالكامل في الشاشات الصغيرة
+            FittedBox(
+              // لضمان ظهور النص بالكامل في الشاشات الصغيرة
               child: Text(
                 title,
                 style: const TextStyle(

@@ -21,12 +21,6 @@ class Homescreencontroller extends GetxController {
     Gotoanypagecalss().Gotoanypage(ShoppingCartPage(), false, {});
   }
 
-  final List<Widget> pages = [
-    HomePage(), // 🔹 صفحة الهوم
-    Offer(),
-    ShoppingCartPage(), // 🔹 shopping cart page
-    ProfilePage(),
-  ];
 
   var x = 20.0.obs;
   var y = 500.0.obs;
@@ -64,7 +58,13 @@ class Homescreencontroller extends GetxController {
   List<List<dynamic>> appbartitle = [
     ['Fashon', Imageasset.homesvg],
     ['Offer', Imageasset.offer],
-    ['Cart', Imageasset.cart],
     ['Profile', Imageasset.profile],
   ];
+    final List<Widget> pages = [
+    HomePage(), // 🔹 صفحة الهوم
+    Offer(),
+    ProfilePage(),
+  ];
+
+  
 }
