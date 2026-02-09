@@ -11,108 +11,140 @@ import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
 // ignore: must_be_immutable
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     Get.put(Profilepagecontroller());
     final gotoany = Get.put(Gotoanypagecalss());
+
+    // متغيرات لتسهيل التعامل مع الأبعاد
+    double screenHeight = Get.height;
+    double screenWidth = Get.width;
+
     return SingleChildScrollView(
       child: Column(
         children: [
-          const SizedBox(height: 40),
+          SizedBox(height: screenHeight * 0.05), // مسافة علوية نسبية
 
-          // صورة المستخدم + الاسم
+          // ================== قسم البروفايل العلوي ==================
           Container(
-            height: 160,
-            width: MediaQuery.of(context).size.width,
+            height: screenHeight * 0.22, // الارتفاع 22% من الشاشة
+            width: screenWidth,
             margin: const EdgeInsets.symmetric(horizontal: 20),
             child: Stack(
-              alignment: AlignmentGeometry.center,
+              alignment: AlignmentGeometry.bottomCenter,
               children: [
-                const SizedBox(width: 16),
+                // الكارت الأبيض الخلفي
                 Container(
-                  height: 120,
-                  width: MediaQuery.of(context).size.width,
-                  margin: EdgeInsets.only(top: 40),
-                  padding: const EdgeInsets.all(25),
+                  height: screenHeight * 0.17,
+                  width: screenWidth,
+                  margin: EdgeInsets.only(top: screenHeight * 0.05),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.black12,
                         blurRadius: 8,
-                        offset: const Offset(0, 3),
+                        offset: Offset(0, 3),
                       ),
                     ],
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end, // محاذاة العناصر للأسفل
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: const [
-                          Text(
-                            " Hossam Yasser",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                      // بيانات المستخدم
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: const [
+                             FittedBox( // لضمان عدم خروج النص عن المساحة
+                              child: Text(
+                                "Hossam Yasser",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18, // حجم خط متناسب
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 6),
-                          Text(
-                            "hossam@email.com",
-                            style: TextStyle(color: Colors.grey, fontSize: 14),
-                          ),
-                        ],
+                             SizedBox(height: 5),
+                             FittedBox(
+                              child: Text(
+                                "hossam@email.com",
+                                style: TextStyle(color: Colors.grey, fontSize: 13),
+                              ),
+                            ),
+                             SizedBox(height: 10), // مسافة سفلية بسيطة
+                          ],
+                        ),
                       ),
-
+                      
+                      // زر التعديل
                       ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                           iconColor: const Color.fromARGB(255, 26, 21, 9),
-                          backgroundColor: Color.fromARGB(255, 194, 180, 166),
+                          backgroundColor: const Color.fromARGB(255, 194, 180, 166),
                         ),
-                        label: Text(
-                          "Edit profile",
-                          style: TextStyle(color: Colors.black),
+                        label: const Text(
+                          "Edit",
+                          style: TextStyle(color: Colors.black, fontSize: 12),
                         ),
                         onPressed: () {},
-                        icon: Icon(Icons.add),
+                        icon: const Icon(Icons.edit, size: 16),
                       ),
                     ],
                   ),
                 ),
+                
+                // الصورة الشخصية
                 Positioned(
-                  right: 10,
+                  right: 20, // تحديد مكان الصورة بدقة
                   top: 0,
                   child: CircleAvatar(
-                    radius: 40,
-                    backgroundImage: AssetImage(Imageasset.twetter),
+                    radius: screenWidth * 0.11, // نصف القطر نسبة من عرض الشاشة
+                    backgroundColor: Colors.white, // إطار أبيض حول الصورة
+                    child: CircleAvatar(
+                      radius: screenWidth * 0.10,
+                      backgroundImage: AssetImage(Imageasset.twetter),
+                    ),
                   ),
                 ),
               ],
             ),
           ),
 
-          const SizedBox(height: 20),
-          SizedBox(
+          SizedBox(height: screenHeight * 0.03),
+
+          // ================== قسم الكروت (Orders, Wishlist) ==================
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 15),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                cardorder(Icons.card_giftcard, "Orders", () {
-                  gotoany.Gotoanypage(Orders(), false, {});
-                }),
-                cardorder(Icons.favorite, "Wishlist", () {
-                  gotoany.Gotoanypage(Myfavorite(), false, {});
-                }),
-                cardorder(Icons.star_rate, "review", () {}),
+                // استخدمنا Expanded ليأخذ كل كارت مساحة متساوية
+                Expanded(
+                  child: cardOrder(Icons.card_giftcard, "Orders", () {
+                    gotoany.Gotoanypage(Orders(), false, {});
+                  }),
+                ),
+                Expanded(
+                  child: cardOrder(Icons.favorite, "Wishlist", () {
+                    gotoany.Gotoanypage(Myfavorite(), false, {});
+                  }),
+                ),
+                Expanded(
+                  child: cardOrder(Icons.star_rate, "Review", () {}),
+                ),
               ],
             ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: screenHeight * 0.03),
 
-       
+          // ================== القائمة السفلية ==================
           _buildOptionTile(Icons.location_on, "العناوين", () {
             gotoany.Gotoanypage(ViewMyAddres(), false, {});
           }),
@@ -124,32 +156,35 @@ class ProfilePage extends StatelessWidget {
           }),
 
           const SizedBox(height: 50),
-
-          // زر تسجيل خروج
         ],
       ),
     );
   }
 
+  // ودجت العناصر السفلية
   Widget _buildOptionTile(IconData icon, String title, VoidCallback onTap) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(14),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.black12,
             blurRadius: 6,
-            offset: const Offset(0, 3),
+            offset: Offset(0, 3),
           ),
         ],
       ),
       child: ListTile(
-        leading: Container(padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(color: Color.fromARGB(255, 201, 181, 162).withAlpha(100),
-            shape: BoxShape.circle),
-          child: Icon(icon, color: Color.fromARGB(255, 114, 99, 84))),
+        leading: Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 201, 181, 162).withOpacity(0.4),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(icon, color: const Color.fromARGB(255, 114, 99, 84)),
+        ),
         title: Text(
           title,
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
@@ -160,22 +195,21 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget cardorder(IconData icon, String title, VoidCallback onTap) {
+  // ودجت الكروت العلوية
+  Widget cardOrder(IconData icon, String title, VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
       child: Container(
-        height: 120,
-        width: 120,
-        alignment: Alignment.center,
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        height: 100, // يمكن تثبيت الارتفاع هنا للشكل الجمالي
+        margin: const EdgeInsets.symmetric(horizontal: 6), // قللنا المسافات الجانبية
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: const [
             BoxShadow(
               color: Colors.black12,
-              blurRadius: 6,
-              offset: const Offset(0, 3),
+              blurRadius: 5,
+              offset: Offset(0, 2),
             ),
           ],
         ),
@@ -185,19 +219,23 @@ class ProfilePage extends StatelessWidget {
             Icon(
               icon,
               color: const Color.fromARGB(255, 201, 181, 162),
-              size: 30,
+              size: 28,
             ),
-            Text(
-              title,
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w700,
+            const SizedBox(height: 5),
+            FittedBox( // لضمان ظهور النص بالكامل في الشاشات الصغيرة
+              child: Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 13,
+                ),
               ),
             ),
-            Text(
+            const Text(
               "8",
               style: TextStyle(
-                fontSize: 15,
+                fontSize: 14,
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),

@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/core/class/handlingdataview.dart';
-import 'package:hos/veiw/wedget/shoppage/carditem.dart';
-import 'package:hos/veiw/wedget/shoppage/coubone.dart';
-import 'package:hos/veiw/wedget/shoppage/samarywidget.dart';
-
-import '../../../wedget/appbarbackicon.dart';
+import 'package:hos/veiw/wedget/shoppage/carditem.dart'; // تأكد من المسار
+import 'package:hos/veiw/wedget/shoppage/samarywidget.dart'; // تأكد من المسار
 
 class ShoppingCartPage extends StatelessWidget {
   const ShoppingCartPage({super.key});
@@ -15,49 +12,41 @@ class ShoppingCartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(CartController());
 
-    final size = MediaQuery.of(context).size;
-    final height = size.height;
-    final width = size.width;
+    // final size = MediaQuery.of(context).size;
+    // final double paddingHorizontal = size.width * 0.04;
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
-        child: Appbarbackicon(title: "Cart", herotag: "carttag"),
-      ),
       body: GetBuilder<CartController>(
         builder: (controller) {
           return Handlingdataview(
-            statusrequest:  controller.statusrequest,
-            widget: Column(
-              children: [
-                // 🔹 قائمة العناصر (تاخد كل المساحة المتاحة فوق)
-                Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(8.0),
-                    itemCount: controller.data.length,
-                    itemBuilder: (context, index) {
-                      final item = controller.data[index];
-                      return buildCartItemCard(
+            statusrequest: controller.statusrequest,
+            widget: CustomScrollView(
+              physics: const BouncingScrollPhysics(), // سكرول مرن
+              slivers: [
+                // 1️⃣ قائمة المنتجات (بديل ListView)
+                // إذا كانت القائمة فارغة، يمكن عرض رسالة، وإلا نعرض المنتجات
+
+                // 3️⃣ ملخص الطلب (SliverToBoxAdapter)
+                SliverToBoxAdapter(
+                  child: BuildOrderSummary(controller: controller),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final item = controller.data[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: buildCartItemCard(
                         context,
                         item,
                         controller,
                         index,
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  }, childCount: controller.data.length),
                 ),
 
-                // 🔹 الكوبون
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: width * 0.04,
-                    vertical: height * 0.015,
-                  ),
-                  child: Coubone(),
-                ),
-
-                // 🔹 ملخص الطلب (Responsive)
-                BuildOrderSummary(controller: controller),
+                // مسافة سفلية عشان العناصر ما تلزقش في الحافة
+                const SliverToBoxAdapter(child: SizedBox(height: 30)),
               ],
             ),
           );

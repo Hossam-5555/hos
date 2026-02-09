@@ -235,7 +235,7 @@ class Itemsdetailes extends StatelessWidget {
                     child: IconButton(
                       icon: Icon(Icons.arrow_back),
                       onPressed: () {
-                        Get.back();
+                       Navigator.pop(context);
                       },
                     ),
                   ),

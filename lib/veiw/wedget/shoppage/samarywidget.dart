@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
+import 'package:hos/veiw/wedget/shoppage/coubone.dart';
 
 class BuildOrderSummary extends StatelessWidget {
   final CartController controller;
@@ -13,7 +14,7 @@ class BuildOrderSummary extends StatelessWidget {
     final height = size.height;
 
     return Container(
-      height: height * 0.30,
+      height: height * 0.45,
       padding: EdgeInsets.all(width * 0.04),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -70,7 +71,13 @@ class BuildOrderSummary extends StatelessWidget {
             ],
           ),
           Divider(height: height * 0.03),
-
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: width * 0.04,
+              vertical: height * 0.015,
+            ),
+            child: Coubone(),
+          ),
           // المجموع الكلي
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -120,20 +127,19 @@ class BuildOrderSummary extends StatelessWidget {
           // زر إتمام الشراء
           Row(
             children: [
-              Container(
-                height: height * 0.07,
-                width: height * 0.07,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: const Color.fromARGB(255, 146, 146, 146).withAlpha(35),
-                ),
-                child: const Icon(
-                  Icons.shopify_outlined,
-                  color: Colors.black,
-                  size: 24,
-                ),
-              ),
-              SizedBox(width: width * 0.03),
+              // Container(
+              //   height: height * 0.07,
+              //   width: height * 0.07,
+              //   decoration: BoxDecoration(
+              //     shape: BoxShape.circle,
+              //     color: const Color.fromARGB(255, 146, 146, 146).withAlpha(35),
+              //   ),
+              //   child: const Icon(
+              //     Icons.shopify_outlined,
+              //     color: Colors.black,
+              //     size: 24,
+              //   ),
+              // ),
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {

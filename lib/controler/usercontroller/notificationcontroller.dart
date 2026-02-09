@@ -7,6 +7,10 @@ import 'package:hos/data/datasource/userdata/notificationdata.dart';
 class Notificationcontroller extends GetxController {
   Statusrequest statusrequest = Statusrequest.none;
 
+  String id = "1";
+  String title = "عنوان الإشعار";
+  String body = "محتوى الإشعار";
+
   Myservisec myservisec = Get.put(Myservisec());
   Notificationdata notificationdata = Get.put(Notificationdata(Get.find()));
 
@@ -76,7 +80,7 @@ class Notificationcontroller extends GetxController {
 
     selectedIds.clear();
     selectionMode = false;
-    if(notificationlist.isEmpty){
+    if (notificationlist.isEmpty) {
       statusrequest = Statusrequest.failure;
     }
     update();

@@ -24,7 +24,7 @@ class Homescreencontroller extends GetxController {
   final List<Widget> pages = [
     HomePage(), // 🔹 صفحة الهوم
     Offer(),
-    // NotificationPage(), // 🔹 صفحة المفضلة
+    ShoppingCartPage(), // 🔹 shopping cart page
     ProfilePage(),
   ];
 
@@ -62,8 +62,9 @@ class Homescreencontroller extends GetxController {
   }
 
   List<List<dynamic>> appbartitle = [
-    ['FASHION', Imageasset.homesvg],
+    ['Fashon', Imageasset.homesvg],
     ['Offer', Imageasset.offer],
+    ['Cart', Imageasset.cart],
     ['Profile', Imageasset.profile],
   ];
 }

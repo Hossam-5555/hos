@@ -17,102 +17,132 @@ class NotificationPage extends StatelessWidget {
     final double screenHeight = Get.height;
 
     return Scaffold(
-      /// ✅ APP BAR (مهم جدًا)
+      /// ✅ 1. AppBar متفاعل مع التحديد
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: GetBuilder<Notificationcontroller>(
           builder: (controller) {
-            return  Appbarbackicon(selected: controller.selectionMode,
-                    title: controller.selectionMode
-                        ? "${controller.selectedIds.length} محدد"
-                        : "Messages",
-                    herotag: "",
-                    iconButton: IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: controller.deleteSelected,
-                    ),
-                    onPressed:controller.closeselected ,
-                  );
+            return Appbarbackicon(
+              selected: controller.selectionMode,
+              title: controller.selectionMode
+                  ? "${controller.selectedIds.length} محدد"
+                  : "Messages",
+              herotag: "message",
+              iconButton: IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: controller.deleteSelected,
+              ),
+              onPressed: controller.closeselected,
+            );
           },
         ),
       ),
 
-      /// ✅ BODY
+      /// ✅ 2. الجسم (Body)
       body: GetBuilder<Notificationcontroller>(
         builder: (controller) {
+          bool isLoading = controller.statusrequest == Statusrequest.loading;
+
           return Handlingdataview(
             statusrequest: controller.statusrequest,
             widget: Skeletonizer(
-              enabled: controller.statusrequest == Statusrequest.loading,
+              enabled: isLoading,
               child: ListView.builder(
                 padding: EdgeInsets.symmetric(
                   horizontal: screenWidth * 0.04,
-                  vertical: screenHeight * 0.02,
+                  vertical: screenHeight * 0.01,
                 ),
-
-                /// ✅ itemCount الصح
-                itemCount: controller.statusrequest == Statusrequest.loading
-                    ? 8
-                    : controller.notificationlist.length,
-
+                // إذا تحميل نعرض 6 عناصر وهمية، وإلا نعرض طول القائمة الحقيقي
+                itemCount: isLoading ? 6 : controller.notificationlist.length,
                 itemBuilder: (context, index) {
-                  /// ===== Skeleton فقط =====
-                  if (controller.statusrequest == Statusrequest.loading) {
-                    return const Card(
-                      child: ListTile(title: Text("يتم تحميل البيانات "), subtitle: Text("انتظر قلايلا ")),
-                    );
+                  // -- متغيرات العرض --
+                  String title;
+                  String body;
+                  String id = "";
+
+                  if (isLoading) {
+                    // بيانات وهمية للـ Skeleton فقط
+                    title = "عنوان الإشعار التجريبي هنا";
+                    body =
+                        "هذا النص هو مجرد نص تجريبي ليظهر شكل التحميل بشكل جميل";
+                  } else {
+                    // البيانات الحقيقية
+                    final item = controller.notificationlist[index];
+                    id = item["notification_id"].toString();
+                    title = item['notification_title'] ?? 'بدون عنوان';
+                    body = item['notification_body'] ?? 'بدون محتوى';
                   }
 
-                  /// ===== بيانات حقيقية =====
-                  final item = controller.notificationlist[index];
-
-                  final id = item["notification_id"].toString();
-                  final title = item['notification_title'] ?? '';
-                  final body = item['notification_body'] ?? '';
-
                   return GestureDetector(
-                    onLongPress: () => controller.onLongPress(id),
-                    onTap: () => controller.onTap(id),
+                    // تعطيل الضغط أثناء التحميل
+                    onLongPress: isLoading
+                        ? null
+                        : () => controller.onLongPress(id),
+                    onTap: isLoading ? null : () => controller.onTap(id),
+
                     child: Card(
-                      color: controller.isSelected(id)
-                          ? Colors.blue.withAlpha(38) // 0.15 * 255 = 38
+                      // تغيير اللون عند التحديد
+                      color: (!isLoading && controller.isSelected(id))
+                          ? Colors.blue.withOpacity(0.1)
                           : Colors.white,
-                      elevation: 3,
+                      elevation: 2,
                       margin: EdgeInsets.symmetric(
-                        vertical: screenHeight * 0.01,
+                        vertical: screenHeight * 0.008,
                       ),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(15),
+                        side: (!isLoading && controller.isSelected(id))
+                            ? const BorderSide(color: Colors.blue, width: 1.5)
+                            : BorderSide.none,
                       ),
-                      child: ListTile(
-                        leading: const Icon(
-                          Icons.notifications,
-                          color: Colors.blue,
-                        ),
-                        title: Text(
-                          title,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: screenWidth * 0.045,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.blue.withOpacity(0.1),
+                            child: const Icon(
+                              Icons.notifications_active,
+                              color: Colors.blue,
+                            ),
                           ),
-                        ),
-                        subtitle: Text(
-                          body,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        trailing: controller.selectionMode
-                            ? Checkbox(
-                                value: controller.isSelected(id),
-                                onChanged: (_) => controller.onTap(id),
-                              )
-                            : Text(
-                                '',
-                                style: TextStyle(
-                                  fontSize: screenWidth * 0.03,
-                                  color: Colors.grey,
-                                ),
+                          title: Text(
+                            title,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: screenWidth * 0.04,
+                            ),
+                          ),
+                          subtitle: Padding(
+                            padding: const EdgeInsets.only(top: 5),
+                            child: Text(
+                              body,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 13,
                               ),
+                            ),
+                          ),
+                          trailing: isLoading
+                              ? null // إخفاء الـ checkbox أثناء التحميل
+                              : controller.selectionMode
+                              ? Checkbox(
+                                  activeColor: Colors.blue,
+                                  value: controller.isSelected(id),
+                                  onChanged: (val) => controller.onTap(id),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                )
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    // يمكن وضع الوقت هنا لاحقاً
+                                    // Text("2m", style: TextStyle(fontSize: 10, color: Colors.grey)),
+                                  ],
+                                ),
+                        ),
                       ),
                     ),
                   );

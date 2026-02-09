@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/conistant/imageasset.dart';
-import 'package:hos/veiw/userscreen/screen/cartandcheckout/cart.dart';
+import 'package:hos/veiw/userscreen/screen/home/notification.dart';
 
 class Homescrenaction extends StatelessWidget {
   const Homescrenaction({super.key});
@@ -13,7 +13,7 @@ class Homescrenaction extends StatelessWidget {
       // لإضافة مسافة قياسية من حافة الشاشة اليمنى
       padding: const EdgeInsets.only(right: 5.0),
       child: Hero(
-        tag: "carttag", // تأكد أن هذا الـ tag فريد
+        tag: "message", // تأكد أن هذا الـ tag فريد
         child: Stack(
           children: [
             Container(
@@ -33,10 +33,10 @@ class Homescrenaction extends StatelessWidget {
               ),
               child: MaterialButton(
                 shape: CircleBorder(),
-                child: SvgPicture.asset(Imageasset.cart, height: 25, width: 25),
+                child: SvgPicture.asset(Imageasset.notification, height: 25, width: 25),
                 onPressed: () {
                   Get.to(
-                    () => ShoppingCartPage(),
+                    () => NotificationPage(),
                     transition: Transition.fadeIn,
                     duration: Duration(milliseconds: 400),
                   );

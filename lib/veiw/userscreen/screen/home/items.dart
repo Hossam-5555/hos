@@ -24,7 +24,7 @@ class Items extends StatelessWidget {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(height * 0.07), // نسبي
-        child: Appbarbackicon(title: "Items", herotag: "carttag"),
+        child: Appbarbackicon(title: "Items", herotag: "Items"),
       ),
       body: SafeArea(
         child: Padding(
@@ -37,43 +37,41 @@ class Items extends StatelessWidget {
                   vertical: height * 0.01,
                   horizontal: width * 0.01,
                 ),
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
-                      width: width * 0.65,
-                      child: Searchbar(
-                        onPressedIcon: controller.onsearch,
-                        onChanged: controller.checksearch,
-                        title: "ابحث عن منتج...",
-                        mycontroller: controller.search!,
+                    Expanded(
+                      flex: 4,
+                      child: SizedBox(
+                        width: width * 0.65,
+                        child: Searchbar(
+                          onPressedIcon: controller.onsearch,
+                          onChanged: controller.checksearch,
+                          title: "ابحث عن منتج...",
+                          mycontroller: controller.search!,
+                        ),
                       ),
                     ),
-                    OutlinedButton.icon(
-                      onPressed: () {
+                    Expanded(
+                      flex: 1,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ButtonStyle(
+                          elevation: MaterialStateProperty.all<double>(1),
 
-
-                        
-                      },
-                      icon: Icon(Icons.filter_list),
-                      label: Text("Filter"),
-                      style: ButtonStyle(
-                        // ignore: deprecated_member_use
-                        foregroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromARGB(221, 14, 15, 14),
-                        ),
-                        // ignore: deprecated_member_use
-                        side: MaterialStateProperty.all<BorderSide>(
-                          BorderSide(
-                            color: const Color.fromARGB(255, 147, 161, 140),
-                          ),
-                        ),
-                        shape:
-                            // ignore: deprecated_member_use
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                          shape:
+                              // ignore: deprecated_member_use
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
                               ),
-                            ),
+                        ),
+
+                        child: Icon(
+                          Icons.filter_alt_rounded,
+                          color: const Color.fromARGB(221, 160, 66, 3).withAlpha(140),
+                        ),
                       ),
                     ),
                   ],

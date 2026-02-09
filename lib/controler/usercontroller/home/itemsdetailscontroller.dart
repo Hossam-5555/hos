@@ -25,6 +25,7 @@ class Itemdetailscontroller extends GetxController {
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response["status"] == "success") {
+         
         Get.snackbar(
           "إشعار",
           "تم إضافة المنتج للسلة ✅",

@@ -14,7 +14,9 @@ class Searchbar extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Card(shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(25),
+    ),
       elevation: 2.5,
       child: TextFormField(
         controller: mycontroller,

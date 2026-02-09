@@ -15,7 +15,7 @@ class Settings extends StatelessWidget {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
-        child: Appbarbackicon(herotag: '', title: ""),
+        child: Appbarbackicon(herotag: 'settings', title: "Settings"),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
