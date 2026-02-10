@@ -21,15 +21,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // LocalController controller = Get.put(LocalController());
+    LocalController controller = Get.put(LocalController());
     return GetMaterialApp(
-      home: TestView(),
-      // debugShowCheckedModeBanner: false,
-      // initialBinding: MyBinding(),
-      // locale: controller.language,
-      // getPages: routes,
-      // translations: Mytransilation(),
-      // theme: controller.apptheme,
+      // home: TestView(),
+      debugShowCheckedModeBanner: false,
+      initialBinding: MyBinding(),
+      locale: controller.language,
+      getPages: routes,
+      translations: Mytransilation(),
+      theme: controller.apptheme,
     );
   }
 }
@@ -40,7 +40,8 @@ class TestView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(mainAxisAlignment: MainAxisAlignment.center,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ElevatedButton(
             onPressed: () {

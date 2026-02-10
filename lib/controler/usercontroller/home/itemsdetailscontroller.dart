@@ -27,12 +27,11 @@ class Itemdetailscontroller extends GetxController {
       statusrequest = handling(response);
       if (Statusrequest.success == statusrequest) {
         if (response["status"] == "success") {
-          print("Hossam is the cest========================");
         Get.snackbar(
               "تم الاضافة",
               "تم اضافة المنتج الى السلة",
-              snackPosition: SnackPosition.BOTTOM,
-              backgroundColor: Colors.green,
+              snackPosition: SnackPosition.TOP,
+              backgroundColor: const Color.fromARGB(255, 209, 209, 203),
               colorText: Colors.white,
             );
           statusrequest = Statusrequest.failure;
