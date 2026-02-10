@@ -5,7 +5,10 @@ ThemeData themeEnglish = ThemeData(
   scaffoldBackgroundColor: Color.fromARGB(255, 236, 232, 229),
   // استخدام نظام ألوان متناسق
   colorScheme: ColorScheme.fromSeed(seedColor: Appcolor.primaryColor),
-
+  snackBarTheme: SnackBarThemeData(
+    backgroundColor: Appcolor.primaryColor,
+    contentTextStyle: TextStyle(color: Colors.white),
+  ),
   appBarTheme: AppBarTheme(
     iconTheme: IconThemeData(color: Colors.black, size: 24), // ← الحجم القياسي
     leadingWidth: 70, // ← العرض القياسي
@@ -141,4 +144,3 @@ ThemeData themeArabic = ThemeData(
     ),
   ),
 );
-

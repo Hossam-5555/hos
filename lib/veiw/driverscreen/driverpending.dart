@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/drivercontroller/drivercontroller.dart';
-import 'package:hos/core/class/gotoanypage.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/veiw/driverscreen/driver_orderdetails.dart';
@@ -35,10 +34,9 @@ class Driverpending extends StatelessWidget {
 
                 return InkWell(
                   onTap: () {
-                    Gotoanypagecalss().Gotoanypage(
+                    Get.to(
                       DriverOrderdetails(),
-                      false,
-                      {"order": order},
+                      arguments: {"order": order},
                     );
                   },
                   child: Container(

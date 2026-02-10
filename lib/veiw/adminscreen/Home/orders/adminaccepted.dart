@@ -21,14 +21,11 @@ class Adminaccepted extends StatelessWidget {
             separatorBuilder: (_, _) => const SizedBox(height: 10),
             itemBuilder: (context, index) {
               final order = controller.ordersaccepted[index];
-              final color = controller.getStatusColor(
-                order.ordersStatus.toString(),
-              );
+              final status = controller.statusText;
+
+              final color = controller.statusColor;
               final payment = controller.translatePayment(
                 order.ordersPaymentmethod.toString(),
-              );
-              final status = controller.translateStatus(
-                order.ordersStatus.toString(),
               );
 
               return InkWell(
@@ -62,7 +59,7 @@ class Adminaccepted extends StatelessWidget {
                       ),
                     ),
                     title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
@@ -77,7 +74,7 @@ class Adminaccepted extends StatelessWidget {
                           }: التاريخ ",
                           style: const TextStyle(
                             color: Color.fromARGB(255, 54, 203, 17),
-                            fontSize: 15,
+                            fontSize: 12,
                             fontWeight: FontWeight.w600,
                           ),
                         ),

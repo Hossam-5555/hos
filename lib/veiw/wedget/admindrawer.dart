@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/core/class/gotoanypage.dart';
+import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/veiw/userscreen/screen/auth/login.dart';
 
 // ignore: must_be_immutable
@@ -8,8 +8,7 @@ class AdminDrawer extends StatelessWidget {
   const AdminDrawer({super.key});
   @override
   Widget build(BuildContext context) {
-    final gotoany = Get.put(Gotoanypagecalss());
-
+    Myservisec myservisec = Get.find();
     return Drawer(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.horizontal(right: Radius.circular(20)),
@@ -94,7 +93,8 @@ class AdminDrawer extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                gotoany.Gotoanypage(Login(), true, {});
+                myservisec.sharedPreferences.clear();
+                Get.offAll(() => Login());
               },
             ),
           ),

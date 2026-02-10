@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
-import 'package:hos/core/class/gotoanypage.dart';
 import 'package:hos/core/class/searchclass.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
@@ -39,9 +38,8 @@ class HomepageController extends SearchMix {
     update();
   }
 
-  Gotoanypagecalss gotoanypagecalss = Get.put(Gotoanypagecalss());
   void gotoitems(List categories, int selecteditem, String catid) {
-    gotoanypagecalss.Gotoanypage(Items(), false, {
+    Get.to(() => Items(), arguments: {
       'categories': categories,
       'selecteditem': selecteditem,
       "catid": catid,

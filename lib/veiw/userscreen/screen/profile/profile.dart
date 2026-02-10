@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/profilepagecontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
-import 'package:hos/core/class/gotoanypage.dart';
 import 'package:hos/veiw/userscreen/screen/home/notification.dart';
 import 'package:hos/veiw/userscreen/screen/myfavorite.dart';
 import 'package:hos/veiw/userscreen/screen/profile/order/orders.dart';
@@ -16,7 +15,6 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(Profilepagecontroller());
-    final gotoany = Get.put(Gotoanypagecalss());
 
     // متغيرات لتسهيل التعامل مع الأبعاد
     double screenHeight = Get.height;
@@ -144,17 +142,29 @@ class ProfilePage extends StatelessWidget {
                 // استخدمنا Expanded ليأخذ كل كارت مساحة متساوية
                 Expanded(
                   child: cardOrder(Icons.card_giftcard, "Orders", () {
-                    gotoany.Gotoanypage(Orders(), false, {});
+                    Get.to(
+                      () => Orders(),
+                      duration: Duration(milliseconds: 400),
+                      transition: Transition.fadeIn,
+                    );
                   }),
                 ),
                 Expanded(
                   child: cardOrder(Icons.favorite, "Wishlist", () {
-                    gotoany.Gotoanypage(Myfavorite(), false, {});
+                    Get.to(
+                      () => Myfavorite(),
+                      duration: Duration(milliseconds: 400),
+                      transition: Transition.fadeIn,
+                    );
                   }),
                 ),
                 Expanded(
                   child: cardOrder(Icons.notifications, "Messages", () {
-                    gotoany.Gotoanypage(NotificationPage(), false, {});
+                    Get.to(
+                      () => NotificationPage(),
+                      duration: Duration(milliseconds: 400),
+                      transition: Transition.fadeIn,
+                    );
                   }),
                 ),
               ],
@@ -164,13 +174,21 @@ class ProfilePage extends StatelessWidget {
 
           // ================== القائمة السفلية ==================
           _buildOptionTile(Icons.location_on, "العناوين", () {
-            gotoany.Gotoanypage(ViewMyAddres(), false, {});
+            Get.to(
+              () => ViewMyAddres(),
+              duration: Duration(milliseconds: 400),
+              transition: Transition.fadeIn,
+            );
           }),
 
           _buildOptionTile(Icons.credit_card, "طرق الدفع", () {}),
 
           _buildOptionTile(Icons.settings_outlined, "Settings", () {
-            gotoany.Gotoanypage(Settings(), false, {});
+            Get.to(
+              () => Settings(),
+              duration: Duration(milliseconds: 400),
+              transition: Transition.fadeIn,
+            );
           }),
 
           const SizedBox(height: 50),

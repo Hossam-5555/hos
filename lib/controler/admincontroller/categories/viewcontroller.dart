@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
-import 'package:hos/core/class/gotoanypage.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/data/datasource/admindata/categoriesdata.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
@@ -46,9 +45,8 @@ class ViewCatController extends GetxController {
     update();
   }
 
-  final gotoanypage = Get.put(Gotoanypagecalss());
   void gotoeditpage(categoriesmodel catmodel) {
-    gotoanypage.Gotoanypage(const Editcat(), false, {"catmodel": catmodel});
+    Get.to(() => Editcat(), arguments: {"catmodel": catmodel});
   }
 
   void goToAddPage() async {

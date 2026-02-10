@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
-import 'package:hos/core/class/gotoanypage.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/data/datasource/userdata/orderdata.dart';
 import 'package:hos/data/model/cartmodel.dart';
@@ -31,9 +30,8 @@ class AdminOrderDetailesController extends GetxController {
     update();
   }
 
-  final gotoanypage = Get.put(Gotoanypagecalss());
   void gototrackingorder() {
-    gotoanypage.Gotoanypage(Trackinscreenadmin(), false, {"order": order});
+    Get.to(() => Trackinscreenadmin(), arguments: {"order": order});
   }
 
   @override

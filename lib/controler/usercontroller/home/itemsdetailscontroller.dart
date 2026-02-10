@@ -15,24 +15,32 @@ class Itemdetailscontroller extends GetxController {
   bool isadded = false;
   //
   Future<void> addtocart(String itemid, int count) async {
-    var statusrequest = Statusrequest.loading;
-    update();
-    var response = await cartdata.addcartdata(
-      myservisec.sharedPreferences.getString("id")!,
-      itemid,
-      count,
-    );
-    statusrequest = handling(response);
-    if (Statusrequest.success == statusrequest) {
-      if (response["status"] == "success") {
-        Get.rawSnackbar(
-        title: "تنبيه",
-        messageText: const Text("تمت الاضافة الى السلة بنجاح", style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.green,
+    try {
+      var statusrequest = Statusrequest.loading;
+      update();
+      var response = await cartdata.addcartdata(
+        myservisec.sharedPreferences.getString("id")!,
+        itemid,
+        count,
       );
-      } else {
-        statusrequest = Statusrequest.failure;
+      statusrequest = handling(response);
+      if (Statusrequest.success == statusrequest) {
+        if (response["status"] == "success") {
+          Future.delayed(Duration.zero, () {
+            Get.snackbar(
+              "تم الاضافة",
+              "تم اضافة المنتج الى السلة",
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: Colors.green,
+              colorText: Colors.white,
+            );
+          });
+          statusrequest = Statusrequest.failure;
+        }
       }
+      update();
+    } catch (e) {
+      print("error in add to cart $e");
     }
   }
 

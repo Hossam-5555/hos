@@ -65,8 +65,7 @@ class HomePage extends StatelessWidget {
                                 description:
                                     "خصم يصل إلى 50% على الهواتف واللابتوبات",
                                 discount: "50% OFF",
-                                onTap: () {
-                                },
+                                onTap: () {},
                               ),
                               SizedBox(height: height * 0.010),
 
@@ -76,10 +75,12 @@ class HomePage extends StatelessWidget {
 
                               Row(
                                 children: [
-                                  Expanded(flex: 2,
+                                  Expanded(
+                                    flex: 2,
                                     child: Titles(title: " New Collections"),
                                   ),
-                                  Expanded(flex: 1,
+                                  Expanded(
+                                    flex: 1,
                                     child: TextButton.icon(
                                       iconAlignment: IconAlignment.start,
                                       onPressed: () {},

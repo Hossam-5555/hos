@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
+import 'package:hos/core/serveces/binding.dart';
 import 'package:hos/data/datasource/userdata/homedata.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/veiw/userscreen/screen/home/itemsdetailes.dart';
@@ -73,6 +74,8 @@ class SearchMix extends GetxController {
   void gotoitemsdatails(Itemsmodel itemsmodel) {
     Get.to(
       () => Itemsdetailes(),
+      binding: ItemDetailsBinding(),
+
       transition: Transition.fadeIn,
       curve: Curves.fastOutSlowIn,
       duration: Duration(milliseconds: 400),
