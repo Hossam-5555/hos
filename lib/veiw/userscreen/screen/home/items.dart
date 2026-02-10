@@ -55,7 +55,9 @@ class Items extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.snackbar("title", "message");
+                        },
                         style: ButtonStyle(
                           elevation: MaterialStateProperty.all<double>(1),
 

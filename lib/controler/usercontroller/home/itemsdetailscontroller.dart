@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
@@ -14,7 +15,7 @@ class Itemdetailscontroller extends GetxController {
   //
   bool isadded = false;
   //
-  Future<void> addtocart(String itemid, int count) async {
+   Future<void> addtocart(String itemid, int count) async {
     try {
       var statusrequest = Statusrequest.loading;
       update();
@@ -26,21 +27,22 @@ class Itemdetailscontroller extends GetxController {
       statusrequest = handling(response);
       if (Statusrequest.success == statusrequest) {
         if (response["status"] == "success") {
-          Future.delayed(Duration.zero, () {
-            Get.snackbar(
+          print("Hossam is the cest========================");
+        Get.snackbar(
               "تم الاضافة",
               "تم اضافة المنتج الى السلة",
               snackPosition: SnackPosition.BOTTOM,
               backgroundColor: Colors.green,
               colorText: Colors.white,
             );
-          });
           statusrequest = Statusrequest.failure;
         }
       }
       update();
     } catch (e) {
-      print("error in add to cart $e");
+      if (kDebugMode) {
+        print("error in add to cart $e");
+      }
     }
   }
 

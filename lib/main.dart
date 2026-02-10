@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_instance/get_instance.dart';
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/localization/transilation.dart';
 import 'package:hos/core/serveces/binding.dart';
 
 import 'package:hos/core/serveces/myservisec.dart';
-// import 'package:hos/test.dart';
 
 import 'core/localization/changlocal.dart';
 
@@ -23,15 +21,35 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LocalController controller = Get.put(LocalController());
+    // LocalController controller = Get.put(LocalController());
     return GetMaterialApp(
-      // home: TestView(),
-      debugShowCheckedModeBanner: false,
-      initialBinding: MyBinding(),
-      locale: controller.language,
-      getPages: routes,
-      translations: Mytransilation(),
-      theme: controller.apptheme,
+      home: TestView(),
+      // debugShowCheckedModeBanner: false,
+      // initialBinding: MyBinding(),
+      // locale: controller.language,
+      // getPages: routes,
+      // translations: Mytransilation(),
+      // theme: controller.apptheme,
+    );
+  }
+}
+
+class TestView extends StatelessWidget {
+  const TestView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              Get.snackbar("title", 'message');
+            },
+            child: Center(child: Text("Hossam ")),
+          ),
+        ],
+      ),
     );
   }
 }
