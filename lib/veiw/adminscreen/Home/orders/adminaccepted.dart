@@ -21,8 +21,8 @@ class Adminaccepted extends StatelessWidget {
             separatorBuilder: (_, _) => const SizedBox(height: 10),
             itemBuilder: (context, index) {
               final order = controller.ordersaccepted[index];
+              controller.Getcolorandstause(order.ordersStatus!);
               final status = controller.statusText;
-
               final color = controller.statusColor;
               final payment = controller.translatePayment(
                 order.ordersPaymentmethod.toString(),

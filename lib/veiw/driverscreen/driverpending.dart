@@ -81,7 +81,7 @@ class Driverpending extends StatelessWidget {
                             }: التاريخ ",
                             style: const TextStyle(
                               color: Color.fromARGB(255, 54, 203, 17),
-                              fontSize: 15,
+                              fontSize: 12,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
