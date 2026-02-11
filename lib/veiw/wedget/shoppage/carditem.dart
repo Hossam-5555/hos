@@ -51,7 +51,7 @@ Widget buildCartItemCard(
                     style: TextStyle(
                       fontSize: 15,
                       color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
                 ],
@@ -78,7 +78,8 @@ Widget buildCartItemCard(
                 IconButton(
                   icon: Icon(
                     Icons.add_circle_outline,
-                    color: const Color.fromARGB(255, 134, 180, 81),
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.w800,
                   ),
                   onPressed: () {
                     controller.increment(cart.itemsId!.toString());

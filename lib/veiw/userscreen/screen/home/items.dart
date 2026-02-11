@@ -4,7 +4,8 @@ import 'package:hos/controler/usercontroller/home/favorite/fav_controller.dart';
 import 'package:hos/controler/usercontroller/home/items_controler.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/veiw/userscreen/screen/searchpage.dart';
-import 'package:hos/veiw/wedget/appbarbackicon.dart';
+import 'package:hos/veiw/wedget/Homepage/titles.dart';
+
 import 'package:hos/veiw/wedget/items/productcard.dart';
 import 'package:hos/veiw/wedget/items/itemslist.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';
@@ -22,64 +23,218 @@ class Items extends StatelessWidget {
     FavController favController = Get.put(FavController());
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(height * 0.07), // نسبي
-        child: Appbarbackicon(title: "Items", herotag: "Items"),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent, // اختياري لشكل أنظف
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 4,
+              child: SizedBox(
+                width: width * 0.65,
+                child: Searchbar(
+                  onPressedIcon: controller.onsearch,
+                  onChanged: controller.checksearch,
+                  title: " ابحث عن منتج...",
+                  mycontroller: controller.search!,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: ElevatedButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    backgroundColor: Colors.grey[200],
+                    context: context,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
+                    ),
+                    builder: (_) => Container(
+                      padding: const EdgeInsets.all(16),
+                      height: Get.height * 0.6,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(
+                                top: 5,
+                                left: 10,
+                                right: 5,
+                              ),
+                              alignment: Alignment.topRight,
+                              child: TextButton(
+                                onPressed: () {},
+                                child: Text(
+                                  "Apply",
+                                  style: TextStyle(
+                                    color: const Color.fromARGB(
+                                      221,
+                                      7,
+                                      140,
+                                      173,
+                                    ).withAlpha(140),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Titles(title: "Sort by"),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.minimize_outlined,
+                                      color: const Color.fromARGB(
+                                        221,
+                                        7,
+                                        140,
+                                        173,
+                                      ).withAlpha(140),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            GridView.builder(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: 3,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 10,
+                                  ),
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: controller.filterdata.length,
+                              itemBuilder: (_, index) {
+                                return filtercard(
+                                  "${controller.filterdata[index]}",
+                                );
+                              },
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Obx(
+                                     () {
+                                      return Titles(
+                                        title: "Price : ${controller.price.value}\$",
+                                      );
+                                    }
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.minimize_outlined,
+                                      color: const Color.fromARGB(
+                                        221,
+                                        7,
+                                        140,
+                                        173,
+                                      ).withAlpha(140),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            Obx(
+                              () => Slider(
+                                label: "price \$ ${controller.price.value}",
+                                divisions: 120,
+                                min: 0,
+                                max: 1000,
+                                value: controller.price.value.toDouble(),
+                                onChanged: (value) {
+                                  controller.price.value = value.toInt();
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                style: ButtonStyle(
+                  elevation: MaterialStateProperty.all<double>(1),
+
+                  shape:
+                      // ignore: deprecated_member_use
+                      MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                ),
+
+                child: Icon(
+                  size: 20,
+                  Icons.filter_alt_rounded,
+                  color: const Color.fromARGB(221, 7, 140, 173).withAlpha(140),
+                ),
+              ),
+            ),
+          ],
+        ),
+        centerTitle: true,
+        leadingWidth: 70, // زيادة العرض قليلاً عشان الدايرة متتحشرش
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: Center(
+            child: Hero(
+              // تأكد أن الـ tag فريد لكل صفحة
+              tag: "Items",
+              child: Container(
+                width: 45, // حجم متناسق أكتر مع الـ AppBar
+                height: 45,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Material(
+                  // ضروري جداً داخل Hero عشان الـ Splash يظهر صح
+                  color: Colors.transparent,
+                  child: IconButton(
+                    onPressed: () {
+                      // ✅ حماية: اقفل أي رسالة مفتوحة قبل ما ترجع
+                      Navigator.of(context).pop();
+                      // ✅ رجوع للصفحة السابقة
+                    },
+                    icon: Icon(Icons.arrow_back, color: Colors.black),
+                    iconSize: 20,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: width * 0.03),
           child: Column(
             children: [
-              /// 🔍 شريط البحث
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: height * 0.01,
-                  horizontal: width * 0.01,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      flex: 4,
-                      child: SizedBox(
-                        width: width * 0.65,
-                        child: Searchbar(
-                          onPressedIcon: controller.onsearch,
-                          onChanged: controller.checksearch,
-                          title: "ابحث عن منتج...",
-                          mycontroller: controller.search!,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Get.snackbar("title", "message");
-                        },
-                        style: ButtonStyle(
-                          elevation: MaterialStateProperty.all<double>(1),
-
-                          shape:
-                              // ignore: deprecated_member_use
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                              ),
-                        ),
-
-                        child: Icon(
-                          Icons.filter_alt_rounded,
-                          color: const Color.fromARGB(221, 160, 66, 3).withAlpha(140),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
               /// 📂 القائمة الأفقية للأقسام
               Container(
                 margin: EdgeInsets.only(
@@ -155,4 +310,26 @@ class Items extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget filtercard(String title) {
+  return InkWell(
+    onTap: () {},
+    child: Container(
+      alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.grey.withAlpha(60),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        title,
+        style: TextStyle(
+          color: const Color.fromARGB(179, 148, 146, 146),
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    ),
+  );
 }

@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
 import 'package:hos/core/functions/appexitalert.dart';
+import 'package:hos/veiw/userscreen/screen/searchpage.dart';
 import 'package:hos/veiw/wedget/Homepage/buttomAppbar.dart';
 import 'package:hos/veiw/wedget/Homepage/homescrenAction.dart';
+import 'package:hos/veiw/wedget/searchbar.dart';
 
 class Homescreen extends StatelessWidget {
   const Homescreen({super.key});
@@ -30,37 +32,26 @@ class Homescreen extends StatelessWidget {
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(60),
             child: AppBar(
-              actions: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 5),
-                  height: 60,
-                  width: w,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(textAlign:TextAlign.right ,
-                        "",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Homescrenaction(),
-                    ],
-                  ),
-                ),
-              ],
+              title: Searchbar(
+                onPressedIcon: controller.onsearch,
+                onChanged: controller.checksearch,
+                title: "ابحث عن منتج...",
+                mycontroller: controller.search!,
+              ),
+              actions: [Homescrenaction()],
             ),
           ),
 
           // ============= تعديل مكان الـ BottomAppbar =================
           bottomNavigationBar: Container(
-            margin: EdgeInsets.only(left: 12, right: 12, bottom: 12),
+            margin: EdgeInsets.only(left: 15, right: 15, bottom: 12),
             child: Buttomappbar(),
           ),
 
           // =================================================================
-          body: controller.pages.elementAt(controller.Currentpage),
+          body: !controller.issearch
+              ? controller.pages.elementAt(controller.Currentpage)
+              : Searchpage(searchdata: controller.searchlist),
         ),
       ),
     );

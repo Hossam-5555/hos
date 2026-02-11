@@ -8,7 +8,6 @@ import 'package:hos/veiw/wedget/Homepage/CurvedItemsView.dart';
 import 'package:hos/veiw/wedget/Homepage/categorieswidget.dart';
 import 'package:hos/veiw/wedget/Homepage/dicountcard.dart';
 import 'package:hos/veiw/wedget/Homepage/titles.dart';
-import 'package:hos/veiw/wedget/searchbar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -32,17 +31,6 @@ class HomePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  /// 🔍 شريط البحث
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: Searchbar(
-                      onPressedIcon: controller.onsearch,
-                      onChanged: controller.checksearch,
-                      title: "ابحث عن منتج...",
-                      mycontroller: controller.search!,
-                    ),
-                  ),
-
                   /// ✅ عرض البيانات أو نتيجة البحث
                   Handlingdataview(
                     statusrequest: controller.statusrequest,

@@ -72,7 +72,7 @@ class Checkoutcontroller extends GetxController {
   }
 
   //============================ تنفيذ عملية الطلب
-   Future<void> checkoutoder() async {
+  Future<void> checkoutoder(double margen) async {
     // تحقق من العنوان
     if (addressid == 0) {
       Get.snackbar("خطأ", "الرجاء إدخال العنوان");
@@ -113,14 +113,7 @@ class Checkoutcontroller extends GetxController {
     if (statusrequest == Statusrequest.success) {
       if (response['status'] == 'success') {
         // نجاح العملية
-        ScaffoldMessenger.of(Get.context!).showSnackBar(
-          SnackBar(
-            content: Text("تم الطلب بنجاح ✅\nسيتم توصيل طلبك في أقرب وقت"),
-            backgroundColor: const Color.fromARGB(255, 11, 204, 11).withAlpha(90),
-            duration: const Duration(seconds: 2),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+        Get.snackbar("نجاح", "تم تنفيذ الطلب بنجاح");
 
         // العودة للصفحة الرئيسية
         Get.offAllNamed(Approute.Homescreen);

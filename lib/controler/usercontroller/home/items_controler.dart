@@ -53,6 +53,17 @@ class ItemsControler extends SearchMix {
     update();
   }
 
+  List<String> filterdata = [
+    "On Sale",
+    "Featured",
+    "Date: Latest",
+    "Date: oldest",
+    "Price: Low to High",
+    "Price: High to Low",
+  ];
+
+  RxInt price = 50.obs;
+
   @override
   void onInit() {
     search = TextEditingController();

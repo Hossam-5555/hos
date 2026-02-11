@@ -19,7 +19,7 @@ class Searchpage extends GetView<HomepageController> {
         onTap: () {
           controller.gotoitemsdatails(searchdata[i]);
         },
-        child: Card(
+        child: Card(margin: EdgeInsets.symmetric(horizontal: 15,vertical: 8),
           child: Row(
             children: [
               ClipRRect(

@@ -18,7 +18,7 @@ class Itemsdetailes extends StatelessWidget {
     // تم استخدام GetBuilder لضمان تحديث الصفحة عند تغيير الحالة
     return Scaffold(
       backgroundColor: const Color(0xFFE9E4DB), // لون الخلفية (البيج)
-      appBar: const PreferredSize(
+      appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
         child: Appbarbackicon(title: " Details", herotag: ""),
       ),
@@ -165,9 +165,11 @@ class Itemsdetailes extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(40),
                                   ),
                                   onPressed: () {
-                           
                                     if (controller.itemcount == 0) {
-                                      Get.snackbar("تنبيه", "لا يوجد عنصر في السله");
+                                      Get.snackbar(
+                                        "تنبيه",
+                                        "لا يوجد عنصر في السله",
+                                      );
                                     } else {
                                       controller.isadded = true;
                                       controller.addtocart(

@@ -13,7 +13,7 @@ class Checkout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(Checkoutcontroller());
-
+    double hight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(65),
@@ -48,7 +48,7 @@ class Checkout extends StatelessWidget {
                     ),
                   ),
                   const Divider(height: 40, thickness: 1),
-                  
+
                   // 🏠 Address Section
                   const Text(
                     "Select Address",
@@ -97,7 +97,8 @@ class Checkout extends StatelessWidget {
                         itemBuilder: (context, index) => Listaddrescard(
                           onTap: () {
                             controller.chooseAddres(
-                              controller.listaddresdata[index].addresId!.toInt(),
+                              controller.listaddresdata[index].addresId!
+                                  .toInt(),
                             );
                           },
                           isActive:
@@ -135,7 +136,7 @@ class Checkout extends StatelessWidget {
                           elevation: 4,
                         ),
                         onPressed: () {
-                          controller.checkoutoder();
+                          controller.checkoutoder(hight - 100);
                         },
                         child: const Text(
                           "Confirm Order",

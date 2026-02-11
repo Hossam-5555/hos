@@ -39,11 +39,16 @@ class HomepageController extends SearchMix {
   }
 
   void gotoitems(List categories, int selecteditem, String catid) {
-    Get.to(() => Items(), arguments: {
-      'categories': categories,
-      'selecteditem': selecteditem,
-      "catid": catid,
-    });
+    Get.to(
+      () => Items(),
+      transition: Transition.fadeIn,
+      duration: Duration(milliseconds: 400),
+      arguments: {
+        'categories': categories,
+        'selecteditem': selecteditem,
+        "catid": catid,
+      },
+    );
 
     update();
   }
@@ -57,7 +62,7 @@ class HomepageController extends SearchMix {
     // التعديل: نقوم بحذف الكنترولر ثم جعله null فوراً
     // هذا يضمن أن الواجهة (CurvedItemsView) ستدخل في شرط الحماية if (controller.pageController == null)
     pageController?.dispose();
-    pageController = null; 
+    pageController = null;
     super.onClose();
   }
 
