@@ -15,6 +15,9 @@ class SearchMix extends GetxController {
 
   bool issearch = false;
 
+
+FocusNode focusNode = FocusNode();
+
   Future<void> getsearhdata() async {
     if (search == null || search!.text.trim().isEmpty) {
       return;
@@ -33,6 +36,8 @@ class SearchMix extends GetxController {
       if (response["status"] == "success") {
         List responsebody = response['data'];
         searchlist.addAll(responsebody.map((e) => Itemsmodel.fromJson(e)));
+        
+        focusNode.unfocus();
       } else {
         statusrequest = Statusrequest.failure;
       }
@@ -43,6 +48,7 @@ class SearchMix extends GetxController {
   void checksearch(String val) {
     if (val.isEmpty) {
       issearch = false;
+      focusNode.unfocus();
       statusrequest = Statusrequest.none;
     }
     update();

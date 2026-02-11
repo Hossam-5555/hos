@@ -13,8 +13,8 @@ class Buttomappbar extends GetView<Homescreencontroller> {
     return GetBuilder<Homescreencontroller>(
       builder: (controller) => AnimatedSlide(
         offset: controller.upordown ? Offset.zero : const Offset(0, 2),
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeInOut,
+        duration: const Duration(milliseconds: 100),
+        curve: Curves.easeInQuad,
         child: IgnorePointer(
           ignoring: !controller.upordown,
           child: Container(

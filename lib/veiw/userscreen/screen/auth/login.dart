@@ -53,113 +53,115 @@ class Login extends StatelessWidget {
                 ),
 
                 // نموذج تسجيل الدخول الزجاجي
-                Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(25),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                      child: Container(
-                        width: width * 0.9,
-                        constraints: BoxConstraints(maxHeight: height * 0.65),
-                        decoration: BoxDecoration(
-                          color: Appcolor.glass.withAlpha(51), // 0.2 * 255 = 51
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(
-                            color: const Color.fromARGB(
-                              240,
-                              145,
-                              222,
-                              255,
-                            ).withAlpha(77), // 0.3 * 255 = 77
-                          ),
-                        ),
-                        child: Form(
-                          key: loginController.loginkey,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: width * 0.05,
+                Positioned(top: height * 0.27,
+                  child: Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(25),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                        child: Container(
+                          width: width * 0.9,
+                          constraints: BoxConstraints(maxHeight: height * 0.65),
+                          decoration: BoxDecoration(
+                            color: Appcolor.glass.withAlpha(51), // 0.2 * 255 = 51
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(
+                              color: const Color.fromARGB(
+                                240,
+                                145,
+                                222,
+                                255,
+                              ).withAlpha(77), // 0.3 * 255 = 77
                             ),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(height: height * 0.03),
-
-                                  // 📩 البريد الإلكتروني
-                                  Textfealdauth(
-                                    valid: (val) =>
-                                        validInput(val!, 9, 50, 'email'),
-                                    textEditingController:
-                                        loginController.email,
-                                    suffixIcon: Icons.email_outlined,
-                                    hint: 'Email Address',
-                                  ),
-                                  SizedBox(height: height * 0.025),
-
-                                  // 🔐 كلمة المرور
-                                  Textfealdauth(
-                                    obscureText: controller.showpass,
-                                    onTapIcon: () {
-                                      controller.isshowpass();
-                                    },
-                                    valid: (val) =>
-                                        validInput(val!, 5, 30, 'password'),
-                                    textEditingController:
-                                        loginController.passward,
-                                    suffixIcon: Icons.remove_red_eye_outlined,
-                                    hint: " Password",
-                                  ),
-
-                                  // 🔹 رسالة الخطأ (في حالة failure فقط)
-                                  if (controller.statusrequest ==
-                                      Statusrequest.failure)
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Text(
-                                        " البريد الإلكتروني أو كلمة المرور غير صحيحة",
-                                        style: TextStyle(
-                                          color: Colors.red.shade400,
-                                          fontWeight: FontWeight.bold,
+                          ),
+                          child: Form(
+                            key: loginController.loginkey,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.05,
+                              ),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: height * 0.03),
+                  
+                                    // 📩 البريد الإلكتروني
+                                    Textfealdauth(
+                                      valid: (val) =>
+                                          validInput(val!, 9, 50, 'email'),
+                                      textEditingController:
+                                          loginController.email,
+                                      suffixIcon: Icons.email_outlined,
+                                      hint: 'Email Address',
+                                    ),
+                                    SizedBox(height: height * 0.025),
+                  
+                                    // 🔐 كلمة المرور
+                                    Textfealdauth(
+                                      obscureText: controller.showpass,
+                                      onTapIcon: () {
+                                        controller.isshowpass();
+                                      },
+                                      valid: (val) =>
+                                          validInput(val!, 5, 30, 'password'),
+                                      textEditingController:
+                                          loginController.passward,
+                                      suffixIcon: Icons.remove_red_eye_outlined,
+                                      hint: " Password",
+                                    ),
+                  
+                                    // 🔹 رسالة الخطأ (في حالة failure فقط)
+                                    if (controller.statusrequest ==
+                                        Statusrequest.failure)
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 8.0),
+                                        child: Text(
+                                          " البريد الإلكتروني أو كلمة المرور غير صحيحة",
+                                          style: TextStyle(
+                                            color: Colors.red.shade400,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                       ),
+                  
+                                    Forgetpassbutton(
+                                      onPressed: () {
+                                        loginController.checkemailpage();
+                                      },
                                     ),
-
-                                  Forgetpassbutton(
-                                    onPressed: () {
-                                      loginController.checkemailpage();
-                                    },
-                                  ),
-
-                                  SizedBox(height: height * 0.01),
-
-                                  Checkbutton(
-                                    onTap: () {
-                                      loginController.login();
-                                    },
-                                    buttonName: 'Login',
-                                    width: width * 0.75,
-                                    buttonColor: Colors.black,
-                                  ),
-
-                                  Container(
-                                    alignment: Alignment.center,
-                                    margin: EdgeInsets.symmetric(
-                                      vertical: height * 0.02,
+                  
+                                    SizedBox(height: height * 0.01),
+                  
+                                    Checkbutton(
+                                      onTap: () {
+                                        loginController.login();
+                                      },
+                                      buttonName: 'Login',
+                                      width: width * 0.75,
+                                      buttonColor: Colors.black,
                                     ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        GoogleFacetweter(
-                                          image: Imageasset.google,
-                                        ),
-                                      ],
+                  
+                                    Container(
+                                      alignment: Alignment.center,
+                                      margin: EdgeInsets.symmetric(
+                                        vertical: height * 0.02,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          GoogleFacetweter(
+                                            image: Imageasset.google,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-
-                                  Haveaccount(),
-                                  SizedBox(height: height * 0.03),
-                                ],
+                  
+                                    Haveaccount(),
+                                    SizedBox(height: height * 0.03),
+                                  ],
+                                ),
                               ),
                             ),
                           ),

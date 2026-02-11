@@ -128,13 +128,12 @@ class Items extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Obx(
-                                     () {
-                                      return Titles(
-                                        title: "Price : ${controller.price.value}\$",
-                                      );
-                                    }
-                                  ),
+                                  Obx(() {
+                                    return Titles(
+                                      title:
+                                          "Price : ${controller.price.value}\$",
+                                    );
+                                  }),
                                   IconButton(
                                     onPressed: () {},
                                     icon: Icon(
@@ -170,15 +169,34 @@ class Items extends StatelessWidget {
                   );
                 },
                 style: ButtonStyle(
-                  elevation: MaterialStateProperty.all<double>(1),
-
-                  shape:
-                      // ignore: deprecated_member_use
-                      MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
+                  elevation: MaterialStateProperty.all(1), // الظل
+                 // لون الزر
+                  foregroundColor: MaterialStateProperty.all(
+                    Colors.white,
+                  ), // لون النص
+                  overlayColor: MaterialStateProperty.resolveWith<Color?>((
+                    Set<MaterialState> states,
+                  ) {
+                    if (states.contains(MaterialState.pressed)) {
+                      return Colors.blueAccent.withOpacity(
+                        0.3,
+                      ); // لون عند الضغط
+                    }
+                    return null; // باقي الحالات تستخدم اللون الافتراضي
+                  }),
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        30,
+                      ), // الزوايا الدائرية
+                    ),
+                  ),
+                  padding: MaterialStateProperty.all(
+                    EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ), // المساحة الداخلية
+                  ),
                 ),
 
                 child: Icon(

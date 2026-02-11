@@ -104,8 +104,8 @@ class ItemList extends GetView<Offercontroller> {
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
                       colors: [
-                        Colors.black.withOpacity(0.9), // أسود داكن في الأسفل
-                        Colors.black.withOpacity(0.5),
+                        Colors.black.withAlpha(150), // أسود داكن في الأسفل
+                        Colors.black.withAlpha(50), // أسود أخف في المنتصف
                         Colors.transparent, // شفاف في الأعلى
                       ],
                       stops: const [0.0, 0.6, 1.0],
@@ -127,11 +127,12 @@ class ItemList extends GetView<Offercontroller> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         // خلفية بيضاء شبه شفافة (Glass effect)
-                        color: Colors.white.withOpacity(0.85),
+                        color: Colors.white.withAlpha(200),
                         boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 4,
+                          BoxShadow(offset: const Offset(0, 0.3),
+                            color: Colors.black.withAlpha(25), // 10% transparency
+                            blurRadius: 8,
+                            blurStyle: BlurStyle.outer, // ظل خارجي خفيف
                           ),
                         ],
                       ),

@@ -14,9 +14,9 @@ class Homescreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(Homescreencontroller());
-    final size = MediaQuery.of(context).size;
+    // final size = MediaQuery.of(context).size;
     // final h = size.height;
-    final w = size.width;
+    // final w = size.width;
     return GetBuilder<Homescreencontroller>(
       builder: (controller) => PopScope(
         canPop: false,
@@ -33,6 +33,8 @@ class Homescreen extends StatelessWidget {
             preferredSize: const Size.fromHeight(60),
             child: AppBar(
               title: Searchbar(
+                focusNode: controller.focusNode,
+                textInputAction: controller.textInputAction,
                 onPressedIcon: controller.onsearch,
                 onChanged: controller.checksearch,
                 title: "ابحث عن منتج...",
