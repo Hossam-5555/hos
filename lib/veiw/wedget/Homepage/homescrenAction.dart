@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/cart.dart';
 
+// ignore: must_be_immutable
 class Homescrenaction extends StatelessWidget {
   const Homescrenaction({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      // لإضافة مسافة قياسية من حافة الشاشة اليمنى
-      padding: const EdgeInsets.only(right: 5.0),
+    var cardcontroller = Get.find<CartController>();
+    // var count = cardcontroller.data.length.obs;
+
+    return Badge(
+      label: Obx(
+        ()=> Text(
+          "${cardcontroller.countitem.value}", // استبدل هذا بعدد العناصر في السلة
+          style: TextStyle(color: Colors.white, fontSize: 12),
+        ),
+      ),
+      offset: Offset(-4, 0),
       child: Hero(
         tag: "cart", // تأكد أن هذا الـ tag فريد
         child: Stack(
@@ -19,12 +28,13 @@ class Homescrenaction extends StatelessWidget {
             Container(
               height: 52,
               width: 52,
-              margin: EdgeInsets.only(right: 12),
+              margin: EdgeInsets.only(right: 10),
               decoration: BoxDecoration(
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
-                    blurStyle: BlurStyle.normal,blurRadius: 5,
+                    blurStyle: BlurStyle.normal,
+                    blurRadius: 5,
                     color: Colors.black.withAlpha(60),
                     offset: Offset(0, 0.2),
                   ),
@@ -40,22 +50,9 @@ class Homescrenaction extends StatelessWidget {
                     transition: Transition.fadeIn,
                     duration: Duration(milliseconds: 400),
                   );
-                  
                 },
               ),
             ),
-            // Positioned(
-            //   top: 1,
-            //   right: 4,
-            //   child: const Text(
-            //     '5',
-            //     style: TextStyle(
-            //       color: Color.fromARGB(255, 157, 16, 16),
-            //       fontSize: 15,
-            //       fontWeight: FontWeight.bold,
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),

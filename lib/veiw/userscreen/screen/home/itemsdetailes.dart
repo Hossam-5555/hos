@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/controler/usercontroller/home/itemsdetailscontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/linkApi.dart';
@@ -172,7 +173,9 @@ class Itemsdetailes extends StatelessWidget {
                                       );
                                     } else {
                                       controller.isadded = true;
-                                      controller.addtocart(
+                                      final cartController =
+                                          Get.find<CartController>();
+                                      cartController.addtocart(
                                         controller.itemsmodel.itemsId!
                                             .toString(),
                                         controller.itemcount,

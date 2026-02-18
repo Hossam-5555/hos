@@ -26,6 +26,7 @@ class CartController extends GetxController {
 
   ///////////////////ملكش دعوه بدول  //view data
   List<cartmodel> data = [];
+  RxInt get countitem => data.length.obs;
   int totalcount = 0;
   double totalprice = 0.0;
   ///////////////////////
@@ -67,12 +68,7 @@ class CartController extends GetxController {
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response["status"] == "success") {
-        Get.rawSnackbar(
-          message: "تم اضافه المنتج للسلة ✅",
-          isDismissible: true,
-          duration: Duration(seconds: 2),
-          overlayBlur: 0, // لا تضع غبش خلفها لكي لا تعطل المستخدم
-        );
+        Get.snackbar("Success", "تم اضافه المنتج للسلة ✅");
       } else {
         statusrequest = Statusrequest.failure;
       }
@@ -160,7 +156,6 @@ class CartController extends GetxController {
   double couponediscount = 0;
   String? couponename;
   String? couponeID;
-
 
   void gotochechout() {
     Get.to(

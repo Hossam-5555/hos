@@ -11,7 +11,7 @@ class ShoppingCartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(CartController());
+    // Get.find(CartController());
 
     // final size = MediaQuery.of(context).size;
     // final double paddingHorizontal = size.width * 0.04;

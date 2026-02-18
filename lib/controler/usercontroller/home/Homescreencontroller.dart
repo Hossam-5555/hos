@@ -21,6 +21,10 @@ class Homescreencontroller extends SearchMix {
     Get.to(() => ShoppingCartPage());
   }
 
+  
+  // var count=0.obs;
+
+
 
   var x = 20.0.obs;
   var y = 500.0.obs;
