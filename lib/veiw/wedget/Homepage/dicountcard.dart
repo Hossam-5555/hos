@@ -21,7 +21,7 @@ class OfferCard extends GetView<HomepageController> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width,
+      // width: MediaQuery.of(context).size.width,
       height: 150,
       child: PageView.builder(
         controller: controller.pageControllerofer,
@@ -81,7 +81,7 @@ class OfferCard extends GetView<HomepageController> {
                         title,
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 14,
+                          fontSize: 20,
                           fontWeight: FontWeight.w600,
                         ),
                       ),

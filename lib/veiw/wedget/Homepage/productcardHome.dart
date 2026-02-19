@@ -46,7 +46,7 @@ class ItemList extends GetView<HomepageController> {
               color: Colors.black.withAlpha(25), // 0.1 * 255 = 25
               // spreadRadius: 1,
               blurRadius: 10,
-              offset: Offset(0, -10),
+              offset: Offset(0, -5),
             ),
           ],
         ),
@@ -55,7 +55,7 @@ class ItemList extends GetView<HomepageController> {
           children: [
             // 🖼 الصورة
             Container(
-              height: height * 0.20,
+              height: height * 0.19,
               // المارجن الخاص بك جيد لعمل الهامش الداخلي
               margin: EdgeInsets.only(left: 17, right: 17, top: 17),
               decoration: BoxDecoration(

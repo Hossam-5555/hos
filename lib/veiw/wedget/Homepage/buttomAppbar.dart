@@ -55,7 +55,6 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                             Text(
                               controller.appbartitle[index][0],
                               style: const TextStyle(
-                                fontFamily: "",
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black87,

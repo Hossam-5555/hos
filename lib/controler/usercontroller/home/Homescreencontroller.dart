@@ -61,11 +61,13 @@ class Homescreencontroller extends SearchMix {
 
   List<List<dynamic>> appbartitle = [
     ['Fashon', Imageasset.homesvg],
+    ['Cart', Imageasset.cart],
     ['Offer', Imageasset.offer],
     ['Profile', Imageasset.profile],
   ];
     final List<Widget> pages = [
-    HomePage(), // 🔹 صفحة الهوم
+    HomePage(), 
+    ShoppingCartPage(),
     Offer(),
     ProfilePage(),
   ];

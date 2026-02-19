@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/add.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/shoppage/checkout.dart';
@@ -14,7 +15,7 @@ class Checkout extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(Checkoutcontroller());
     double hight = MediaQuery.of(context).size.height;
-    
+
     return Scaffold(
       backgroundColor: Colors.grey[50], // لون خلفية هادئ يبرز البطاقات
       appBar: PreferredSize(
@@ -31,29 +32,40 @@ class Checkout extends StatelessWidget {
                 Expanded(
                   child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 20,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // 💳 Payment Section
                         Row(
                           children: [
-                            Icon(Icons.payment_rounded, color: Appcolor.primaryColor, size: 24),
+                            Icon(
+                              Icons.payment_rounded,
+                              color: Appcolor.primaryColor,
+                              size: 24,
+                            ),
                             const SizedBox(width: 8),
                             const Text(
                               "Payment Method",
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 10),
                         SizedBox(
                           height: 90,
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
                             physics: const BouncingScrollPhysics(),
                             itemCount: controller.paymentMethods.length,
-                            separatorBuilder: (_, _) => const SizedBox(width: 12),
+                            separatorBuilder: (_, _) =>
+                                const SizedBox(width: 12),
                             itemBuilder: (context, index) => Listpaymentcard(
                               image: controller.paymentMethods[index][1],
                               onTap: () => controller.choospaymentmethod(index),
@@ -61,19 +73,40 @@ class Checkout extends StatelessWidget {
                             ),
                           ),
                         ),
-                        
-                        const SizedBox(height: 30),
+                        controller.paymenttype != null
+                            ? Padding(
+                                padding: const EdgeInsets.only(top: 12),
+                                child: Text(
+                                  "Selected: ${controller.paymentMethods[controller.paymenttype!][0]}",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey[700],
+                                  ),
+                                ),
+                              )
+                            : const SizedBox.shrink(),
+
+                            
+
+                        const SizedBox(height: 20),
                         const Divider(thickness: 1, color: Colors.black12),
                         const SizedBox(height: 20),
 
                         // 🏠 Address Section
                         Row(
                           children: [
-                            Icon(Icons.location_on_rounded, color: Appcolor.primaryColor, size: 24),
+                            Icon(
+                              Icons.location_on_rounded,
+                              color: Appcolor.primaryColor,
+                              size: 24,
+                            ),
                             const SizedBox(width: 8),
                             const Text(
                               "Delivery Address",
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ],
                         ),
@@ -83,35 +116,46 @@ class Checkout extends StatelessWidget {
                           _buildEmptyAddressCard()
                         else
                           SizedBox(
-                            height: 130,
+                            height: 100,
                             child: ListView.separated(
                               scrollDirection: Axis.horizontal,
                               physics: const BouncingScrollPhysics(),
                               clipBehavior: Clip.none, // لمنع قطع الظلال
-                              separatorBuilder: (_, __) => const SizedBox(width: 16),
+                              separatorBuilder: (_, __) =>
+                                  const SizedBox(width: 10),
                               itemCount: controller.listaddresdata.length,
                               itemBuilder: (context, index) {
-                                final address = controller.listaddresdata[index];
-                                final isActive = controller.addressid == address.addresId;
+                                final address =
+                                    controller.listaddresdata[index];
+                                final isActive =
+                                    controller.addressid == address.addresId;
 
                                 return GestureDetector(
-                                  onTap: () => controller.chooseAddres(address.addresId!.toInt()),
+                                  onTap: () => controller.chooseAddres(
+                                    address.addresId!.toInt(),
+                                  ),
                                   child: AnimatedContainer(
+                                    alignment: Alignment.center,
                                     duration: const Duration(milliseconds: 300),
                                     curve: Curves.easeInOut,
-                                    width: 240,
-                                    padding: const EdgeInsets.all(16),
+                                    width: 300,
+                                    padding: const EdgeInsets.all(5),
                                     decoration: BoxDecoration(
-                                      color: isActive ? Appcolor.primaryColor : Colors.white,
+                                      color: isActive
+                                          ? Appcolor.primaryColor
+                                          : Colors.white,
                                       borderRadius: BorderRadius.circular(16),
                                       border: Border.all(
-                                        color: isActive ? Appcolor.primaryColor : Colors.grey.shade300,
+                                        color: isActive
+                                            ? Appcolor.primaryColor
+                                            : Colors.grey.shade300,
                                         width: 1.5,
                                       ),
                                       boxShadow: [
                                         if (isActive)
                                           BoxShadow(
-                                            color: Appcolor.primaryColor.withOpacity(0.3),
+                                            color: Appcolor.primaryColor
+                                                .withOpacity(0.3),
                                             blurRadius: 10,
                                             offset: const Offset(0, 4),
                                           )
@@ -123,42 +167,53 @@ class Checkout extends StatelessWidget {
                                           ),
                                       ],
                                     ),
-                                    child: Stack(
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              address.addresName ?? "No Name",
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: isActive ? Colors.white : Colors.black87,
-                                              ),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            const SizedBox(height: 8),
-                                            Text(
-                                              "${address.addresStreet} - ${address.addresCity}",
-                                              style: TextStyle(
-                                                fontSize: 13,
-                                                height: 1.4,
-                                                color: isActive ? Colors.white70 : Colors.grey[600],
-                                              ),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ],
-                                        ),
-                                        if (isActive)
-                                          const Positioned(
-                                            top: 0,
-                                            right: 0,
-                                            child: Icon(Icons.check_circle, color: Colors.white, size: 20),
+                                    child: ListTile(
+                                      leading: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            12,
                                           ),
-                                      ],
+                                        ),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              20,
+                                            ),
+                                          ),
+                                          child: Image.asset(
+                                            Imageasset.location,
+                                            width: 70,
+                                            height: 70,
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                      ),
+                                      contentPadding: EdgeInsets.zero,
+                                      title: Text(
+                                        address.addresName ?? "Unknown Street",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: isActive
+                                              ? Colors.white
+                                              : Colors.black87,
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        "${address.addresCity ?? "Unknown City"}, ${address.addresStreet ?? "Unknown State"}",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: isActive
+                                              ? Colors.white70
+                                              : Colors.grey[600],
+                                        ),
+                                      ),
+                                      trailing: Icon(
+                                        Icons.check_circle_rounded,
+                                        color: isActive
+                                            ? Colors.white
+                                            : Colors.transparent,
+                                      ),
                                     ),
                                   ),
                                 );
@@ -172,10 +227,17 @@ class Checkout extends StatelessWidget {
 
                 // 💰 القسم السفلي الثابت (ملخص السعر وزر التأكيد)
                 Container(
-                  padding: const EdgeInsets.only(top: 20, left: 24, right: 24, bottom: 30),
+                  padding: const EdgeInsets.only(
+                    top: 20,
+                    left: 24,
+                    right: 24,
+                    bottom: 30,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(30),
+                    ),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.05),
@@ -194,9 +256,13 @@ class Checkout extends StatelessWidget {
                         padding: EdgeInsets.symmetric(vertical: 12),
                         child: Divider(thickness: 1, color: Colors.black12),
                       ),
-                      _buildPriceRow("Total", controller.totalprice, isTotal: true),
+                      _buildPriceRow(
+                        "Total",
+                        controller.totalprice,
+                        isTotal: true,
+                      ),
                       const SizedBox(height: 24),
-                      
+
                       // ✅ Confirm Button
                       SizedBox(
                         width: double.infinity,
@@ -248,7 +314,10 @@ class Checkout extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: Appcolor.primaryColor.withOpacity(0.05),
-          border: Border.all(color: Appcolor.primaryColor.withOpacity(0.3), width: 1.5),
+          border: Border.all(
+            color: Appcolor.primaryColor.withOpacity(0.3),
+            width: 1.5,
+          ),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
@@ -259,7 +328,10 @@ class Checkout extends StatelessWidget {
                 color: Appcolor.primaryColor.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.add_location_alt_rounded, color: Appcolor.primaryColor),
+              child: Icon(
+                Icons.add_location_alt_rounded,
+                color: Appcolor.primaryColor,
+              ),
             ),
             const SizedBox(width: 16),
             const Expanded(
@@ -278,7 +350,11 @@ class Checkout extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(Icons.arrow_forward_ios_rounded, size: 16, color: Colors.grey),
+            const Icon(
+              Icons.arrow_forward_ios_rounded,
+              size: 16,
+              color: Colors.grey,
+            ),
           ],
         ),
       ),

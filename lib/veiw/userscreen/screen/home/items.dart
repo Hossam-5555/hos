@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/favorite/fav_controller.dart';
 import 'package:hos/controler/usercontroller/home/items_controler.dart';
 import 'package:hos/core/class/handlingdataview.dart';
+import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/veiw/userscreen/screen/searchpage.dart';
 import 'package:hos/veiw/wedget/Homepage/titles.dart';
 
@@ -74,7 +75,7 @@ class Items extends StatelessWidget {
                                 onPressed: () {},
                                 child: Text(
                                   "Apply",
-                                  style: TextStyle(color: Colors.orange),
+                                  style: TextStyle(color: Appcolor.primaryColor.withAlpha(140)),
                                 ),
                               ),
                             ),
@@ -89,7 +90,7 @@ class Items extends StatelessWidget {
                                     onPressed: () {},
                                     icon: Icon(
                                       Icons.minimize_outlined,
-                                      color: Colors.orange.withAlpha(140),
+                                      color: Appcolor.primaryColor.withAlpha(140),
                                     ),
                                   ),
                                 ],
@@ -133,7 +134,7 @@ class Items extends StatelessWidget {
                                     onPressed: () {},
                                     icon: Icon(
                                       Icons.minimize_outlined,
-                                      color: Colors.orange.withAlpha(140),
+                                      color: Appcolor.primaryColor.withAlpha(140),
                                     ),
                                   ),
                                 ],
@@ -331,7 +332,7 @@ Widget filtercard(String title, int isSelected) {
       decoration: BoxDecoration(
         border: Border.all(
           color: Get.find<ItemsControler>().selectedfilter == isSelected
-              ? Colors.orange
+              ? Appcolor.primaryColor.withAlpha(140)
               : Colors.grey.withAlpha(60),
           width: 1,
         ),

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/usercontroller/home/favorite/myfavcontroler.dart';
-import 'package:hos/controler/usercontroller/notificationcontroller.dart';
-import 'package:hos/controler/usercontroller/profile/order/ordercontroller.dart';
+
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/serveces/myservisec.dart';
-import 'package:hos/veiw/userscreen/screen/home/notification.dart';
 import 'package:hos/veiw/userscreen/screen/myfavorite.dart';
 import 'package:hos/veiw/userscreen/screen/profile/order/orders.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/viewaddres.dart';
@@ -14,17 +11,17 @@ import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
 // ignore: must_be_immutable
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key}) {
-    initProfileControllers(); // 🔥 مهم جدًا
+    // initProfileControllers(); // 🔥 مهم جدًا
   }
   Myservisec myservisec = Get.find();
 
-  void initProfileControllers() {
-    if (!Get.isRegistered<Myfavcontroler>()) {
-      Get.lazyPut(() => Myfavcontroler());
-      Get.lazyPut(() => Ordercontroller());
-      Get.lazyPut(() => Notificationcontroller());
-    }
-  }
+  // void initProfileControllers() {
+  //   if (!Get.isRegistered<Myfavcontroler>()) {
+  //     Get.lazyPut(() => Myfavcontroler());
+  //     Get.lazyPut(() => Ordercontroller());
+  //     Get.lazyPut(() => Notificationcontroller());
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +37,7 @@ class ProfilePage extends StatelessWidget {
           SizedBox(height: screenHeight * 0.05), // مسافة علوية نسبية
           // ================== قسم البروفايل العلوي ==================
           Container(
-            height: screenHeight * 0.22, // الارتفاع 22% من الشاشة
+            height: screenHeight * 0.20, // الارتفاع 22% من الشاشة
             width: screenWidth,
             margin: const EdgeInsets.symmetric(horizontal: 20),
             child: Stack(
@@ -137,8 +134,10 @@ class ProfilePage extends StatelessWidget {
                     radius: screenWidth * 0.11, // نصف القطر نسبة من عرض الشاشة
                     backgroundColor: Colors.white, // إطار أبيض حول الصورة
                     child: CircleAvatar(
-                      onBackgroundImageError: (exception, stackTrace) =>
-                          Icon(Icons.person_pin, color: const Color.fromARGB(255, 163, 157, 157)),
+                      onBackgroundImageError: (exception, stackTrace) => Icon(
+                        Icons.person_pin,
+                        color: const Color.fromARGB(255, 163, 157, 157),
+                      ),
                       radius: screenWidth * 0.10,
                       backgroundImage: AssetImage(Imageasset.twetter),
                     ),
@@ -157,19 +156,17 @@ class ProfilePage extends StatelessWidget {
               children: [
                 // استخدمنا Expanded ليأخذ كل كارت مساحة متساوية
                 Expanded(
-                  child: Obx(
-                    () => cardOrder(
-                      Icons.card_giftcard,
-                      "Orders",
-                      () {
-                        Get.to(
-                          () => Orders(),
-                          duration: Duration(milliseconds: 400),
-                          transition: Transition.fadeIn,
-                        );
-                      },
-                      Get.find<Ordercontroller>().orderscount.value,
-                    ),
+                  child: cardOrder(
+                    Icons.card_giftcard,
+                    "Orders",
+                    () {
+                      Get.to(
+                        () => Orders(),
+                        duration: Duration(milliseconds: 400),
+                        transition: Transition.fadeIn,
+                      );
+                    },
+                    // Get.find<Ordercontroller>().orderscount.value,
                   ),
                 ),
                 Expanded(
@@ -183,21 +180,7 @@ class ProfilePage extends StatelessWidget {
                         transition: Transition.fadeIn,
                       );
                     },
-                    Get.find<Myfavcontroler>().datacount.value,
-                  ),
-                ),
-                Expanded(
-                  child: cardOrder(
-                    Icons.notifications,
-                    "Messages",
-                    () {
-                      Get.to(
-                        () => NotificationPage(),
-                        duration: Duration(milliseconds: 400),
-                        transition: Transition.fadeIn,
-                      );
-                    },
-                    Get.find<Notificationcontroller>().notificationcount.value,
+                    // Get.find<Myfavcontroler>().datacount.value,
                   ),
                 ),
               ],
@@ -261,12 +244,7 @@ class ProfilePage extends StatelessWidget {
   }
 
   // ودجت الكروت العلوية
-  Widget cardOrder(
-    IconData icon,
-    String title,
-    VoidCallback onTap,
-    countofitem,
-  ) {
+  Widget cardOrder(IconData icon, String title, VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -303,14 +281,6 @@ class ProfilePage extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   fontSize: 13,
                 ),
-              ),
-            ),
-            Text(
-              "${countofitem}",
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
               ),
             ),
           ],

@@ -14,7 +14,7 @@ class Imageasset {
   static String mail = "$routeImage/mail.json";
   static String celebiration = "$routeImage/Confetti.json";
 
-  //cc
+  //Animation
   static String see = "$routeImage/f22d.jpg";
   static String visa = "$routeImage/visa.png";
   static String cash = "$routeImage/cash.jpg";
@@ -26,4 +26,5 @@ class Imageasset {
   static String profile =
       "$routeImage/user-profile-account-person-svgrepo-com.svg";
   static String cart = "$routeImage/cart-5-svgrepo-com.svg";
+  static String location = "$routeImage/unnamed.jpg";
 }

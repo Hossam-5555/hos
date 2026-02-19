@@ -13,7 +13,7 @@ class CurvedItemsView extends StatelessWidget {
         // 1. فحص أمان: إذا لم يتم تهيئة الكنترولر أو القائمة فارغة، لا نرسم الـ PageView
         if (controller.pageController == null || controller.items.isEmpty) {
           return const SizedBox(
-            height: 310,
+            height: 300,
             child: Center(child: CircularProgressIndicator()),
           );
         }
@@ -22,7 +22,7 @@ class CurvedItemsView extends StatelessWidget {
         final PageController pageController = controller.pageController!;
 
         return SizedBox(
-          height: 300,
+          height: 295,
           child: PageView.builder(
             controller: pageController,
             itemCount: controller.items.length,

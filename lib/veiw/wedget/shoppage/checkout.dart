@@ -81,12 +81,11 @@ class Listpaymentcard extends GetView<Checkoutcontroller> {
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withAlpha(60),
-                  offset: const Offset(1, 1),
                 ),
               ],
               borderRadius: BorderRadius.circular(20),
             ),
-            margin: const EdgeInsets.all(15),
+            margin: const EdgeInsets.all(10),
             height: 70,
             width: 100,
             child: Image.asset(

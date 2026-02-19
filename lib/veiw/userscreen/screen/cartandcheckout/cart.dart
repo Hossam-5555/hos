@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/core/class/handlingdataview.dart';
-import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/shoppage/carditem.dart'; // تأكد من المسار
 import 'package:hos/veiw/wedget/shoppage/samarywidget.dart'; // تأكد من المسار
 
@@ -17,10 +16,7 @@ class ShoppingCartPage extends StatelessWidget {
     // final double paddingHorizontal = size.width * 0.04;
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
-        child: Appbarbackicon(herotag: "cart", title: "سلة التسوق"),
-      ),
+     
       body: GetBuilder<CartController>(
         builder: (controller) {
           return Handlingdataview(
