@@ -36,7 +36,8 @@ class HomePage extends StatelessWidget {
                   Handlingdataview(
                     statusrequest: controller.statusrequest,
                     widget: !controller.issearch
-                        ? Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Titles(title: "Categories "),
@@ -66,7 +67,9 @@ class HomePage extends StatelessWidget {
                                       ...List.generate(
                                         2,
                                         (index) => AnimatedContainer(
-                                          margin: EdgeInsets.symmetric(horizontal: 5),
+                                          margin: EdgeInsets.symmetric(
+                                            horizontal: 5,
+                                          ),
                                           width: controller.currntofer == index
                                               ? 20
                                               : 6,
@@ -88,32 +91,27 @@ class HomePage extends StatelessWidget {
                               /// 🔥 الكيرفيد ايتيمز
                               CurvedItemsView(),
 
-                              Container(margin: EdgeInsets.only(top: 5),
-                                // height: height * 0.025,
+                              Container(
+                                margin: EdgeInsets.only(top: 5),
+                                width: double.infinity,
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Expanded(
-                                      flex: 2,
-                                      child: Titles(title: " New Offers"),
-                                    ),
+                                    Titles(title: " New Offers"),
                                     SizedBox(width: width * 0.06),
-                                    Expanded(
-                                      flex: 1,
-                                      child: TextButton.icon(
-                                        iconAlignment: IconAlignment.start,
-                                        onPressed: () {},
-                                        icon: Text(
-                                          " See All",
-                                          style: TextStyle(
-                                            color: Appcolor.primaryColor,
-                                          ),
-                                        ),
-                                        label: Icon(
-                                          Icons.arrow_forward,
+                                    TextButton.icon(
+                                      iconAlignment: IconAlignment.start,
+                                      onPressed: () {},
+                                      icon: Text(
+                                        " See All",
+                                        style: TextStyle(
                                           color: Appcolor.primaryColor,
                                         ),
+                                      ),
+                                      label: Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: Appcolor.primaryColor,
                                       ),
                                     ),
                                   ],

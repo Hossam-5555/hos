@@ -101,26 +101,28 @@ class ProfilePage extends StatelessWidget {
                       ),
 
                       // زر التعديل
-                      ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 5,
+                      SizedBox(width: screenWidth*0.24,
+                        child: ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
+                            iconColor: const Color.fromARGB(255, 26, 21, 9),
+                            backgroundColor: const Color.fromARGB(
+                              255,
+                              194,
+                              180,
+                              166,
+                            ),
                           ),
-                          iconColor: const Color.fromARGB(255, 26, 21, 9),
-                          backgroundColor: const Color.fromARGB(
-                            255,
-                            194,
-                            180,
-                            166,
+                          label: const Text(
+                            "Edit",
+                            style: TextStyle(color: Colors.black, fontSize: 14),
                           ),
+                          onPressed: () {},
+                          icon: const Icon(Icons.edit, size: 16),
                         ),
-                        label: const Text(
-                          "Edit",
-                          style: TextStyle(color: Colors.black, fontSize: 12),
-                        ),
-                        onPressed: () {},
-                        icon: const Icon(Icons.edit, size: 16),
                       ),
                     ],
                   ),

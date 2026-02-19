@@ -55,7 +55,7 @@ class ItemList extends GetView<HomepageController> {
           children: [
             // 🖼 الصورة
             Container(
-              height: height * 0.19,
+              height: height * 0.17,
               // المارجن الخاص بك جيد لعمل الهامش الداخلي
               margin: EdgeInsets.only(left: 17, right: 17, top: 17),
               decoration: BoxDecoration(
@@ -97,7 +97,7 @@ class ItemList extends GetView<HomepageController> {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: width * 0.045, // تعديل بسيط للهوامش
+                  horizontal: width * 0.040, // تعديل بسيط للهوامش
                   vertical: height * 0.012,
                 ),
                 child: Column(
