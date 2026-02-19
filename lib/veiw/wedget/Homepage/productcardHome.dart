@@ -41,11 +41,12 @@ class ItemList extends GetView<HomepageController> {
           color: Colors.white, // ✅ تم التغيير إلى الأبيض
           boxShadow: [
             // ✅ تم إضافة ظل خفيف مثل الصورة
+            
             BoxShadow(
               color: Colors.black.withAlpha(25), // 0.1 * 255 = 25
-              spreadRadius: 1,
+              // spreadRadius: 1,
               blurRadius: 10,
-              offset: Offset(0, 4),
+              offset: Offset(0, -10),
             ),
           ],
         ),
@@ -58,7 +59,12 @@ class ItemList extends GetView<HomepageController> {
               // المارجن الخاص بك جيد لعمل الهامش الداخلي
               margin: EdgeInsets.only(left: 17, right: 17, top: 17),
               decoration: BoxDecoration(
-                color: Color(0xFFF5F5F5), // ✅ لون رمادي فاتح لخلفية الصورة
+                color:  Color.fromARGB(
+                      255,
+                      146,
+                      146,
+                      146,
+                    ).withAlpha(35), // ✅ لون رمادي فاتح لخلفية الصورة
                 borderRadius: BorderRadius.all(
                   Radius.circular(15),
                 ), // ✅ زوايا دائرية لحامل الصورة

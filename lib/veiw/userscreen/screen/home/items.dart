@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/favorite/fav_controller.dart';
@@ -72,14 +74,7 @@ class Items extends StatelessWidget {
                                 onPressed: () {},
                                 child: Text(
                                   "Apply",
-                                  style: TextStyle(
-                                    color: const Color.fromARGB(
-                                      221,
-                                      7,
-                                      140,
-                                      173,
-                                    ).withAlpha(140),
-                                  ),
+                                  style: TextStyle(color: Colors.orange),
                                 ),
                               ),
                             ),
@@ -94,33 +89,33 @@ class Items extends StatelessWidget {
                                     onPressed: () {},
                                     icon: Icon(
                                       Icons.minimize_outlined,
-                                      color: const Color.fromARGB(
-                                        221,
-                                        7,
-                                        140,
-                                        173,
-                                      ).withAlpha(140),
+                                      color: Colors.orange.withAlpha(140),
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            GridView.builder(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 3,
-                                    crossAxisSpacing: 10,
-                                    mainAxisSpacing: 10,
-                                  ),
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: controller.filterdata.length,
-                              itemBuilder: (_, index) {
-                                return filtercard(
-                                  "${controller.filterdata[index]}",
+                           GetBuilder<ItemsControler>(
+                              builder: (controller) {
+                                return GridView.builder(
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        childAspectRatio: 3,
+                                        crossAxisSpacing: 10,
+                                        mainAxisSpacing: 10,
+                                      ),
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: controller.filterdata.length,
+                                  itemBuilder: (_, index) {
+                                    return filtercard(
+                                      "${controller.filterdata[index]}",
+                                      index,
+                                    );
+                                  },
                                 );
-                              },
+                              }
                             ),
                             Container(
                               margin: EdgeInsets.only(bottom: 10),
@@ -138,12 +133,7 @@ class Items extends StatelessWidget {
                                     onPressed: () {},
                                     icon: Icon(
                                       Icons.minimize_outlined,
-                                      color: const Color.fromARGB(
-                                        221,
-                                        7,
-                                        140,
-                                        173,
-                                      ).withAlpha(140),
+                                      color: Colors.orange.withAlpha(140),
                                     ),
                                   ),
                                 ],
@@ -170,7 +160,7 @@ class Items extends StatelessWidget {
                 },
                 style: ButtonStyle(
                   elevation: MaterialStateProperty.all(1), // الظل
-                 // لون الزر
+                  // لون الزر
                   foregroundColor: MaterialStateProperty.all(
                     Colors.white,
                   ), // لون النص
@@ -202,7 +192,7 @@ class Items extends StatelessWidget {
                 child: Icon(
                   size: 20,
                   Icons.filter_alt_rounded,
-                  color: const Color.fromARGB(221, 7, 140, 173).withAlpha(140),
+                  color: const Color.fromARGB(221, 47, 52, 53).withAlpha(140),
                 ),
               ),
             ),
@@ -330,13 +320,21 @@ class Items extends StatelessWidget {
   }
 }
 
-Widget filtercard(String title) {
+Widget filtercard(String title, int isSelected) {
   return InkWell(
-    onTap: () {},
+    onTap: () {
+      Get.find<ItemsControler>().filtesortedby(isSelected);
+    },
     child: Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
+        border: Border.all(
+          color: Get.find<ItemsControler>().selectedfilter == isSelected
+              ? Colors.orange
+              : Colors.grey.withAlpha(60),
+          width: 1,
+        ),
         color: Colors.grey.withAlpha(60),
         borderRadius: BorderRadius.circular(20),
       ),

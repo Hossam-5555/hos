@@ -11,6 +11,7 @@ import 'package:hos/data/model/itemsmodel.dart';
 class ItemsControler extends SearchMix {
   List<categoriesmodel> categories = [];
   int? selecteditem;
+  int? selectedfilter;
   late String catid;
   List<Itemsmodel> data = [];
   @override
@@ -24,6 +25,11 @@ class ItemsControler extends SearchMix {
     catid = catigid;
     update(); // يحدث الواجهة مباشرة
     getitems(catid); // بعدين يجيب البيانات
+  }
+
+  void filtesortedby(int val) {
+    selectedfilter = val;
+    update(); // يحدث الواجهة مباشرة
   }
 
   void initdata() {

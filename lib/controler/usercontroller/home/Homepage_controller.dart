@@ -53,6 +53,14 @@ class HomepageController extends SearchMix {
     update();
   }
 
+  PageController? pageControllerofer;
+
+
+  int currntofer=0;
+  void onpagechanged(int index){
+    currntofer=index;
+    update();
+  }
   //==================================================cart
   // داخل HomepageController
   PageController? pageController;
@@ -69,6 +77,11 @@ class HomepageController extends SearchMix {
   //=======================================================cart
   @override
   void onInit() {
+    pageControllerofer = PageController(
+      initialPage: 0,
+      viewportFraction:
+          0.8, // مهم جداً: هذا الرقم هو ما يظهر جزءاً من الكروت الجانبية
+    );
     pageController = PageController(
       initialPage: 0,
       viewportFraction:

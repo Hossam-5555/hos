@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
 import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
+import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/veiw/userscreen/screen/searchpage.dart';
 import 'package:hos/veiw/wedget/Homepage/CurvedItemsView.dart';
 import 'package:hos/veiw/wedget/Homepage/categorieswidget.dart';
@@ -55,37 +56,60 @@ class HomePage extends StatelessWidget {
                                 discount: "50% OFF",
                                 onTap: () {},
                               ),
-                              SizedBox(height: height * 0.010),
+
+                              SizedBox(
+                                height: height * 0.030,
+                                child: GetBuilder<HomepageController>(
+                                  builder: (controller) => Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ...List.generate(
+                                        2,
+                                        (index) => AnimatedContainer(
+                                          margin: EdgeInsets.all(10),
+                                          width: controller.currntofer == index ? 20 : 5,
+                                          height: 6,
+                                          decoration: BoxDecoration(
+                                            color: Appcolor.primaryColor,
+                                            borderRadius: BorderRadius.circular(
+                                              20,
+                                            ),
+                                          ),
+                                          duration: Duration(milliseconds: 500),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
 
                               /// 🔥 الكيرفيد ايتيمز
                               CurvedItemsView(),
                               SizedBox(height: height * 0.015),
 
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     flex: 2,
                                     child: Titles(title: " New Collections"),
                                   ),
+                                  SizedBox(width: width * 0.06),
                                   Expanded(
                                     flex: 1,
                                     child: TextButton.icon(
                                       iconAlignment: IconAlignment.start,
                                       onPressed: () {},
-                                      icon: const Text(
+                                      icon: Text(
                                         " See All",
                                         style: TextStyle(
-                                          color: Color.fromARGB(
-                                            255,
-                                            109,
-                                            109,
-                                            109,
-                                          ),
+                                          color: Appcolor.primaryColor,
                                         ),
                                       ),
-                                      label: const Icon(
+                                      label: Icon(
                                         Icons.arrow_forward,
-                                        color: Color.fromARGB(255, 0, 0, 0),
+                                        color: Appcolor.primaryColor,
                                       ),
                                     ),
                                   ),

@@ -85,6 +85,7 @@ class LoginController extends GetxController {
               response["data"]["users_type"],
             );
 
+            print(response);
             myservisec.sharedPreferences.setString("step", '2');
             FirebaseMessaging.instance.subscribeToTopic("users");
             FirebaseMessaging.instance.subscribeToTopic("users$id");
@@ -105,7 +106,6 @@ class LoginController extends GetxController {
           if (kDebugMode) {
             print(response["data"]);
           }
-
         } else {
           statusrequest = Statusrequest.failure;
         }

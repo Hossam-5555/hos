@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
@@ -114,7 +115,7 @@ class Checkoutcontroller extends GetxController {
       if (response['status'] == 'success') {
         // نجاح العملية
         Get.snackbar("نجاح", "تم تنفيذ الطلب بنجاح");
-
+        Get.find<CartController>().view(); // مسح السلة بعد الطلب
         // العودة للصفحة الرئيسية
         Get.offAllNamed(Approute.Homescreen);
       } else {

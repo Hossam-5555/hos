@@ -55,7 +55,7 @@ class BuildCategoryItems extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
               color:  Colors.grey.withAlpha(60),border: Border.all(
-                color: selected ? Colors.black : Colors.transparent,
+                color: selected ? const Color.fromARGB(255, 15, 23, 29) : Colors.transparent,
                 width: 2,
               ),
               borderRadius: BorderRadius.circular(20),

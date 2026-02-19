@@ -69,6 +69,8 @@ class CartController extends GetxController {
     if (Statusrequest.success == statusrequest) {
       if (response["status"] == "success") {
         Get.snackbar("Success", "تم اضافه المنتج للسلة ✅");
+        CartController cartController = Get.find();
+        await cartController.view(); // ✅ يحدث الداتا من السيرفر بعد الزيادة
       } else {
         statusrequest = Statusrequest.failure;
       }

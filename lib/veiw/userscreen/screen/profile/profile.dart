@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/usercontroller/profile/profilepagecontroller.dart';
+import 'package:hos/controler/usercontroller/home/favorite/myfavcontroler.dart';
+import 'package:hos/controler/usercontroller/notificationcontroller.dart';
+import 'package:hos/controler/usercontroller/profile/order/ordercontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/veiw/userscreen/screen/home/notification.dart';
 import 'package:hos/veiw/userscreen/screen/myfavorite.dart';
 import 'package:hos/veiw/userscreen/screen/profile/order/orders.dart';
@@ -10,11 +13,22 @@ import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
 
 // ignore: must_be_immutable
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  ProfilePage({super.key}) {
+    initProfileControllers(); // 🔥 مهم جدًا
+  }
+  Myservisec myservisec = Get.find();
+
+  void initProfileControllers() {
+    if (!Get.isRegistered<Myfavcontroler>()) {
+      Get.lazyPut(() => Myfavcontroler());
+      Get.lazyPut(() => Ordercontroller());
+      Get.lazyPut(() => Notificationcontroller());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    Get.put(Profilepagecontroller());
+    // Get.put(Profilepagecontroller());
 
     // متغيرات لتسهيل التعامل مع الأبعاد
     double screenHeight = Get.height;
@@ -62,29 +76,29 @@ class ProfilePage extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [
+                          children: [
                             FittedBox(
                               // لضمان عدم خروج النص عن المساحة
                               child: Text(
-                                "Hossam Yasser",
-                                style: TextStyle(
+                                "${myservisec.sharedPreferences.getString("usersname")}",
+                                style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 18, // حجم خط متناسب
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                            SizedBox(height: 5),
+                            const SizedBox(height: 5),
                             FittedBox(
                               child: Text(
-                                "hossam@email.com",
+                                "${myservisec.sharedPreferences.getString("email")}",
                                 style: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 13,
                                 ),
                               ),
                             ),
-                            SizedBox(height: 10), // مسافة سفلية بسيطة
+                            const SizedBox(height: 10), // مسافة سفلية بسيطة
                           ],
                         ),
                       ),
@@ -123,6 +137,8 @@ class ProfilePage extends StatelessWidget {
                     radius: screenWidth * 0.11, // نصف القطر نسبة من عرض الشاشة
                     backgroundColor: Colors.white, // إطار أبيض حول الصورة
                     child: CircleAvatar(
+                      onBackgroundImageError: (exception, stackTrace) =>
+                          Icon(Icons.person_pin, color: const Color.fromARGB(255, 163, 157, 157)),
                       radius: screenWidth * 0.10,
                       backgroundImage: AssetImage(Imageasset.twetter),
                     ),
@@ -141,31 +157,48 @@ class ProfilePage extends StatelessWidget {
               children: [
                 // استخدمنا Expanded ليأخذ كل كارت مساحة متساوية
                 Expanded(
-                  child: cardOrder(Icons.card_giftcard, "Orders", () {
-                    Get.to(
-                      () => Orders(),
-                      duration: Duration(milliseconds: 400),
-                      transition: Transition.fadeIn,
-                    );
-                  }),
+                  child: Obx(
+                    () => cardOrder(
+                      Icons.card_giftcard,
+                      "Orders",
+                      () {
+                        Get.to(
+                          () => Orders(),
+                          duration: Duration(milliseconds: 400),
+                          transition: Transition.fadeIn,
+                        );
+                      },
+                      Get.find<Ordercontroller>().orderscount.value,
+                    ),
+                  ),
                 ),
                 Expanded(
-                  child: cardOrder(Icons.favorite, "Wishlist", () {
-                    Get.to(
-                      () => Myfavorite(),
-                      duration: Duration(milliseconds: 400),
-                      transition: Transition.fadeIn,
-                    );
-                  }),
+                  child: cardOrder(
+                    Icons.favorite,
+                    "Wishlist",
+                    () {
+                      Get.to(
+                        () => Myfavorite(),
+                        duration: Duration(milliseconds: 400),
+                        transition: Transition.fadeIn,
+                      );
+                    },
+                    Get.find<Myfavcontroler>().datacount.value,
+                  ),
                 ),
                 Expanded(
-                  child: cardOrder(Icons.notifications, "Messages", () {
-                    Get.to(
-                      () => NotificationPage(),
-                      duration: Duration(milliseconds: 400),
-                      transition: Transition.fadeIn,
-                    );
-                  }),
+                  child: cardOrder(
+                    Icons.notifications,
+                    "Messages",
+                    () {
+                      Get.to(
+                        () => NotificationPage(),
+                        duration: Duration(milliseconds: 400),
+                        transition: Transition.fadeIn,
+                      );
+                    },
+                    Get.find<Notificationcontroller>().notificationcount.value,
+                  ),
                 ),
               ],
             ),
@@ -228,7 +261,12 @@ class ProfilePage extends StatelessWidget {
   }
 
   // ودجت الكروت العلوية
-  Widget cardOrder(IconData icon, String title, VoidCallback onTap) {
+  Widget cardOrder(
+    IconData icon,
+    String title,
+    VoidCallback onTap,
+    countofitem,
+  ) {
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -267,8 +305,8 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
             ),
-            const Text(
-              "8",
+            Text(
+              "${countofitem}",
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.black,

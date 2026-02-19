@@ -13,7 +13,7 @@ class Homescrenaction extends StatelessWidget {
     var cardcontroller = Get.find<CartController>();
     // var count = cardcontroller.data.length.obs;
 
-    return Badge(
+    return Badge(backgroundColor: const Color.fromARGB(255, 155, 16, 23),
       label: Obx(
         ()=> Text(
           "${cardcontroller.countitem.value}", // استبدل هذا بعدد العناصر في السلة

@@ -8,6 +8,7 @@ import 'package:hos/data/model/ordersmodel.dart';
 
 class Ordercontroller extends GetxController {
   List<OrderModel> orders = [];
+   RxInt get orderscount => orders.length.obs;
   Statusrequest statusrequest = Statusrequest.none;
   Myservisec myservisec = Get.find();
   Orderdata orderdata = Orderdata(Get.find());
@@ -51,8 +52,10 @@ class Ordercontroller extends GetxController {
         return "الدفع عند الاستلام";
       case "1":
         return "بطاقة بنكية";
-      default:
+      case "2":
         return "دفع Google";
+      default:
+        return "غير معروف";
     }
   }
 

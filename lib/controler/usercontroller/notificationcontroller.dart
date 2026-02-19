@@ -15,6 +15,7 @@ class Notificationcontroller extends GetxController {
   Notificationdata notificationdata = Get.put(Notificationdata(Get.find()));
 
   List notificationlist = [];
+    RxInt get notificationcount => notificationlist.length.obs;
 
   /// ====== MULTI SELECT ======
   bool selectionMode = false;

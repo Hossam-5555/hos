@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
 
+class Profilepagecontroller extends GetxController {
 
-class Profilepagecontroller extends GetxController {}
+}

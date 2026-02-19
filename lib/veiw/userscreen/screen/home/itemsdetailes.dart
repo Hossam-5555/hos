@@ -18,7 +18,6 @@ class Itemsdetailes extends StatelessWidget {
   Widget build(BuildContext context) {
     // تم استخدام GetBuilder لضمان تحديث الصفحة عند تغيير الحالة
     return Scaffold(
-      backgroundColor: const Color(0xFFE9E4DB), // لون الخلفية (البيج)
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
         child: Appbarbackicon(title: " Details", herotag: ""),

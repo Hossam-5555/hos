@@ -11,6 +11,7 @@ class Myfavcontroler extends SearchMix {
   // ignore: overridden_fields
   late Statusrequest statusrequest;
   List<myfavoritemodel> data = [];
+   RxInt get datacount => data.length.obs;
 
   addfavdata favdata = addfavdata(Get.find());
   Myservisec myservisec = Get.find();

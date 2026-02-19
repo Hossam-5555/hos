@@ -23,14 +23,8 @@ class Buttomappbar extends GetView<Homescreencontroller> {
             height: 75, // ← ارتفاع ثابت ومناسب
             child: Container(
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 236, 232, 229).withAlpha(200),
+                color: Color.fromARGB(255, 146, 146, 146).withAlpha(35),
                 borderRadius: BorderRadius.circular(40),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withAlpha(60),
-                    offset: const Offset(0, 0.1),
-                  ),
-                ],
               ),
               child: Row(
                 children: List.generate(controller.pages.length, (index) {

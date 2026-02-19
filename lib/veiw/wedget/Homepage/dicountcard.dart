@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
+import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 
-class OfferCard extends StatelessWidget {
+class OfferCard extends GetView<HomepageController> {
   final String title;
   final String description;
   final String discount;
@@ -18,19 +21,23 @@ class OfferCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 140,
+      width: MediaQuery.of(context).size.width,
+      height: 150,
       child: PageView.builder(
-        itemCount: 4,
+        controller: controller.pageControllerofer,
+        onPageChanged: controller.onpagechanged,
+        itemCount: 2,
         itemBuilder: (context, i) => GestureDetector(
           onTap: onTap,
           child: Card(
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
-            elevation: 6,
+            elevation: 3,
             clipBehavior: Clip.antiAlias,
             child: Stack(
+              alignment: Alignment.center,
               children: [
                 Container(
                   width: double.infinity,
@@ -57,7 +64,7 @@ class OfferCard extends StatelessWidget {
                 // النصوص
                 Positioned(
                   left: 16,
-                  bottom: 16,
+                  top: 16,
                   right: 16,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,8 +72,8 @@ class OfferCard extends StatelessWidget {
                       Text(
                         discount,
                         style: TextStyle(
-                          color: Colors.orange,
-                          fontSize: 24,
+                          color: Appcolor.primaryColor,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -74,7 +81,7 @@ class OfferCard extends StatelessWidget {
                         title,
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 18,
+                          fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -84,6 +91,17 @@ class OfferCard extends StatelessWidget {
                         style: TextStyle(color: Colors.white70, fontSize: 14),
                       ),
                     ],
+                  ),
+                ),
+                Positioned(
+                  top: 16,
+                  right: 16,
+                  child: ElevatedButton(
+                    onPressed: onTap,
+                    child: Text(
+                      "Shop Now",
+                      style: TextStyle(color: Appcolor.primaryColor),
+                    ),
                   ),
                 ),
               ],
