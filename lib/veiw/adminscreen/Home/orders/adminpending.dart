@@ -20,15 +20,12 @@ class Adminpending extends StatelessWidget {
             itemCount: controller.orderspending.length,
             separatorBuilder: (_, _) => const SizedBox(height: 10),
             itemBuilder: (context, index) {
-              final order = controller.orderspending[index];
-              final color = controller.getStatusColor(
-                order.ordersStatus.toString(),
-              );
+                final order = controller.orderspending[index];
+              controller.Getcolorandstause(order.ordersStatus!);
+              final status = controller.statusText;
+              final color = controller.statusColor;
               final payment = controller.translatePayment(
                 order.ordersPaymentmethod.toString(),
-              );
-              final status = controller.translateStatus(
-                order.ordersStatus.toString(),
               );
 
               return InkWell(
@@ -77,7 +74,7 @@ class Adminpending extends StatelessWidget {
                           }: التاريخ ",
                           style: const TextStyle(
                             color: Color.fromARGB(255, 54, 203, 17),
-                            fontSize: 15,
+                            fontSize: 12,
                             fontWeight: FontWeight.w600,
                           ),
                         ),

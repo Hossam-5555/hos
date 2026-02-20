@@ -15,41 +15,43 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final height = size.height;
-    final width = size.width;
-
     Get.put(HomepageController());
     final homescreencontroller = Get.put(Homescreencontroller());
 
     return GetBuilder<HomepageController>(
       builder: (controller) => Scaffold(
         body: SafeArea(
-          child: SingleChildScrollView(
-            controller: homescreencontroller.scrollController,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.02),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /// ✅ عرض البيانات أو نتيجة البحث
-                  Handlingdataview(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final width = constraints.maxWidth;
+              final height = constraints.maxHeight;
+
+              return SingleChildScrollView(
+                controller: homescreencontroller.scrollController,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: width * 0.04,
+                    vertical: height * 0.015,
+                  ),
+                  child: Handlingdataview(
                     statusrequest: controller.statusrequest,
                     widget: !controller.issearch
                         ? Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Titles(title: "Categories "),
-                              SizedBox(height: height * 0.01),
+                              /// 🔥 Categories Title
+                              const Titles(title: "Categories"),
+                              SizedBox(height: height * 0.015),
 
-                              /// 🔥 كاتيجوريز
+                              /// 🔥 Categories List
                               SizedBox(
-                                height: height * 0.10, // تعديل نسبي
-                                child: listcatigories(),
+                                height: height * 0.12,
+                                child: const listcatigories(),
                               ),
 
-                              /// 🔥 كارت الخصم
+                              SizedBox(height: height * 0.02),
+
+                              /// 🔥 Main Offer
                               OfferCard(
                                 title: 'خصم على الأجهزة',
                                 description:
@@ -58,65 +60,64 @@ class HomePage extends StatelessWidget {
                                 onTap: () {},
                               ),
 
-                              SizedBox(
-                                height: height * 0.025,
-                                child: GetBuilder<HomepageController>(
-                                  builder: (controller) => Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      ...List.generate(
-                                        2,
-                                        (index) => AnimatedContainer(
-                                          margin: EdgeInsets.symmetric(
-                                            horizontal: 5,
-                                          ),
-                                          width: controller.currntofer == index
-                                              ? 20
-                                              : 6,
-                                          height: 6,
-                                          decoration: BoxDecoration(
-                                            color: Appcolor.primaryColor,
-                                            borderRadius: BorderRadius.circular(
-                                              20,
-                                            ),
-                                          ),
-                                          duration: Duration(milliseconds: 500),
-                                        ),
+                              SizedBox(height: height * 0.02),
+
+                              /// 🔥 Indicator
+                              GetBuilder<HomepageController>(
+                                builder: (controller) => Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: List.generate(
+                                    2,
+                                    (index) => AnimatedContainer(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 4),
+                                      width: controller.currntofer == index
+                                          ? 18
+                                          : 6,
+                                      height: 6,
+                                      decoration: BoxDecoration(
+                                        color: Appcolor.primaryColor,
+                                        borderRadius:
+                                            BorderRadius.circular(20),
                                       ),
-                                    ],
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                    ),
                                   ),
                                 ),
                               ),
 
-                              /// 🔥 الكيرفيد ايتيمز
-                              CurvedItemsView(),
+                              SizedBox(height: height * 0.02),
 
-                              Container(
-                                margin: EdgeInsets.only(top: 5),
-                                width: double.infinity,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Titles(title: " New Offers"),
-                                    SizedBox(width: width * 0.06),
-                                    TextButton.icon(
-                                      iconAlignment: IconAlignment.start,
-                                      onPressed: () {},
-                                      icon: Text(
-                                        " See All",
-                                        style: TextStyle(
-                                          color: Appcolor.primaryColor,
-                                        ),
-                                      ),
-                                      label: Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Appcolor.primaryColor,
-                                      ),
+                              /// 🔥 Curved Items
+                              const CurvedItemsView(),
+
+                              SizedBox(height: height * 0.025),
+
+                              /// 🔥 New Offers Header
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Titles(title: "New Offers"),
+                                  TextButton.icon(
+                                    onPressed: () {},
+                                    icon: const Text("See All"),
+                                    label: const Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 16,
                                     ),
-                                  ],
-                                ),
+                                    style: TextButton.styleFrom(
+                                      foregroundColor:
+                                          Appcolor.primaryColor,
+                                    ),
+                                  ),
+                                ],
                               ),
+
+                              SizedBox(height: height * 0.015),
+
+                              /// 🔥 Second Offer
                               OfferCard(
                                 title: 'خصم على الأجهزة',
                                 description:
@@ -128,9 +129,9 @@ class HomePage extends StatelessWidget {
                           )
                         : Searchpage(searchdata: controller.searchlist),
                   ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           ),
         ),
       ),

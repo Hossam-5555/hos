@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
+import 'package:hos/controler/usercontroller/profile/paymentcontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
@@ -11,22 +12,24 @@ import 'package:hos/data/datasource/userdata/checkoutdata.dart';
 import 'package:hos/data/model/Addresmodel.dart';
 
 class Checkoutcontroller extends GetxController {
-  final List<List> paymentMethods = [
-    ["Cash", Imageasset.cash],
-    ["Visa", Imageasset.visa],
-    ["Wallet", Imageasset.googlepay],
+
+
+  List<List> paymentMethodEnum = [
+    [PaymentMethod.cod,Imageasset.cash],//0
+    [PaymentMethod.creditCard,Imageasset.visa],//1
+    [PaymentMethod.mobileWallet,Imageasset.googlepay],//2
   ];
+  var selectedMethod = PaymentMethod.creditCard.obs;
+  void changePaymentMethod(PaymentMethod method) {
+    selectedMethod.value = method;
+    print("====================$selectedMethod");
+  }
 
   //============================ المتغيرات
-  int? paymenttype;
   String? deleverytype;
   int addressid = 0;
 
   //============================ الدوال الخاصة بالاختيار
-  void choospaymentmethod(int val) {
-    paymenttype = val;
-    update();
-  }
 
   void choosedeleverytype(String val) {
     deleverytype = val;
@@ -81,7 +84,7 @@ class Checkoutcontroller extends GetxController {
     }
 
     // تحقق من وسيلة الدفع
-    if (paymenttype == null) {
+    if (selectedMethod.value == PaymentMethod.none) {
       Get.snackbar("خطأ", "الرجاء اختيار وسيلة الدفع");
       return;
     }
@@ -104,7 +107,7 @@ class Checkoutcontroller extends GetxController {
       "ordersprice": totalprice.toString(),
       "couponid": couponeid.toString(),
       "couponediscount": couponediscount.toString(),
-      "paymentmethod": paymenttype.toString(),
+      "paymentmethod": selectedMethod.value.toString(),
     };
 
     // تنفيذ الطلب

@@ -49,12 +49,14 @@ class Acceptedordercontroller extends GetxController {
 
   String translatePayment(String val) {
     switch (val) {
-      case "0":
-        return "الدفع عند الاستلام";
-      case "1":
-        return "بطاقة بنكية";
+      case "PaymentMethod.credit":
+        return " credit ";
+      case "PaymentMethod.cod":
+        return "Cash ";
+      case "PaymentMethod.mobileWallet":
+        return " mobileWallet";
       default:
-        return "دفع Google";
+        return "غير معروف";
     }
   }
 

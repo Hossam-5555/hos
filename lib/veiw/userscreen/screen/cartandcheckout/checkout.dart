@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
+import 'package:hos/controler/usercontroller/profile/paymentcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/veiw/userscreen/screen/profile/order/paymentmethods.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/add.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/shoppage/checkout.dart';
@@ -63,31 +65,30 @@ class Checkout extends StatelessWidget {
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
                             physics: const BouncingScrollPhysics(),
-                            itemCount: controller.paymentMethods.length,
+                            itemCount: controller.paymentMethodEnum.length,
                             separatorBuilder: (_, _) =>
                                 const SizedBox(width: 12),
-                            itemBuilder: (context, index) => Listpaymentcard(
-                              image: controller.paymentMethods[index][1],
-                              onTap: () => controller.choospaymentmethod(index),
-                              isActive: controller.paymenttype == index,
-                            ),
+                            itemBuilder: (context, index) => Obx(() {
+                              return Listpaymentcard(
+                                image: controller.paymentMethodEnum[index][1],
+                                onTap: () => controller.changePaymentMethod(
+                                  controller.paymentMethodEnum[index][0],
+                                ),
+                                isActive:
+                                    controller.selectedMethod.value ==
+                                    controller.paymentMethodEnum[index],
+                              );
+                            }),
                           ),
                         ),
-                        controller.paymenttype != null
-                            ? Padding(
-                                padding: const EdgeInsets.only(top: 12),
-                                child: Text(
-                                  "Selected: ${controller.paymentMethods[controller.paymenttype!][0]}",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey[700],
-                                  ),
-                                ),
-                              )
-                            : const SizedBox.shrink(),
 
-                            
-
+                        Obx(
+                          () => AnimatedSwitcher(
+                            switchInCurve: Curves.easeIn,
+                            duration: const Duration(milliseconds: 300),
+                            child: buildPaymentForm(controller),
+                          ),
+                        ),
                         const SizedBox(height: 20),
                         const Divider(thickness: 1, color: Colors.black12),
                         const SizedBox(height: 20),
@@ -387,5 +388,48 @@ class Checkout extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+buildPaymentForm(Checkoutcontroller controller) {
+  switch (controller.selectedMethod.value) {
+    case PaymentMethod.creditCard:
+      return Column(
+        children: [
+          SavedCardItem(
+            lastFourDigits: '1234',
+            expiryDate: '12/24',
+            isSelected:
+                controller.selectedMethod.value == PaymentMethod.creditCard,
+            onTap: () =>
+                controller.changePaymentMethod(PaymentMethod.creditCard),
+          ),
+        ],
+      );
+    case PaymentMethod.mobileWallet:
+      return Column(
+        children: [
+          SavedCardItem(
+            lastFourDigits: '5847',
+            expiryDate: '14/27',
+            isSelected:
+                controller.selectedMethod.value == PaymentMethod.mobileWallet,
+            onTap: () =>
+                controller.changePaymentMethod(PaymentMethod.mobileWallet),
+          ),
+        ],
+      );
+    case PaymentMethod.cod:
+      return Column(
+        children: [
+          Text(
+            "You have selected Cash on Delivery. Please prepare the exact amount upon delivery.",
+            style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+          ),
+        ],
+      );
+    case PaymentMethod.none:
+      // TODO: Handle this case.
+      throw UnimplementedError();
   }
 }

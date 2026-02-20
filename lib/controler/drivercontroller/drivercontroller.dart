@@ -12,7 +12,7 @@ class DriverViewOrderController extends GetxController {
   Statusrequest statusrequest = Statusrequest.none;
 
   Myservisec myservisec = Get.find();
-  Driverorderdata orderdata = Driverorderdata(Get.find());
+  Driverorderdata driverorderdata = Driverorderdata(Get.find());
 
   int selectedRating = 0;
 
@@ -46,14 +46,16 @@ class DriverViewOrderController extends GetxController {
     }
   }
 
-  String translatePayment(String val) {
+   String translatePayment(String val) {
     switch (val) {
-      case "0":
-        return "الدفع عند الاستلام";
-      case "1":
-        return "بطاقة بنكية";
+      case "PaymentMethod.credit":
+        return " credit ";
+      case "PaymentMethod.cod":
+        return "Cash ";
+      case "PaymentMethod.mobileWallet":
+        return " mobileWallet";
       default:
-        return "دفع Google";
+        return "غير معروف";
     }
   }
 
@@ -61,7 +63,7 @@ class DriverViewOrderController extends GetxController {
     orderspending.clear();
     statusrequest = Statusrequest.loading;
     update();
-    var response = await orderdata.pendingdata(
+    var response = await driverorderdata.pendingdata(
       myservisec.sharedPreferences.getString("id")!,
     );
     statusrequest = handling(response);
@@ -79,7 +81,7 @@ class DriverViewOrderController extends GetxController {
   Future<void> approvependingorder(String userid, String orderid) async {
     statusrequest = Statusrequest.loading;
     update();
-    var response = await orderdata.approveorder(
+    var response = await driverorderdata.approveorder(
       orderid,
       userid,
       myservisec.sharedPreferences.getString("id")!,

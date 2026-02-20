@@ -5,6 +5,7 @@ import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/veiw/userscreen/screen/myfavorite.dart';
 import 'package:hos/veiw/userscreen/screen/profile/order/orders.dart';
+import 'package:hos/veiw/userscreen/screen/profile/order/paymentmethods.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/viewaddres.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
 
@@ -109,12 +110,7 @@ class ProfilePage extends StatelessWidget {
                               vertical: 5,
                             ),
                             iconColor: const Color.fromARGB(255, 26, 21, 9),
-                            backgroundColor: const Color.fromARGB(
-                              255,
-                              194,
-                              180,
-                              166,
-                            ),
+                            backgroundColor: Colors.blueAccent.withOpacity(0.2),
                           ),
                           label: const Text(
                             "Edit",
@@ -199,7 +195,13 @@ class ProfilePage extends StatelessWidget {
             );
           }),
 
-          _buildOptionTile(Icons.credit_card, "طرق الدفع", () {}),
+          _buildOptionTile(Icons.credit_card, "طرق الدفع", () {
+            Get.to(
+              () => PaymentScreen(),
+              duration: Duration(milliseconds: 400),
+              transition: Transition.fadeIn,
+            );
+          }),
 
           _buildOptionTile(Icons.settings_outlined, "Settings", () {
             Get.to(
@@ -230,10 +232,10 @@ class ProfilePage extends StatelessWidget {
         leading: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 201, 181, 162).withOpacity(0.4),
+            color:  Colors.blueAccent.withOpacity(0.4),
             shape: BoxShape.circle,
           ),
-          child: Icon(icon, color: const Color.fromARGB(255, 114, 99, 84)),
+          child: Icon(icon, color:  Colors.blueAccent),
         ),
         title: Text(
           title,
@@ -270,7 +272,7 @@ class ProfilePage extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: const Color.fromARGB(255, 201, 181, 162),
+              color:   Colors.blueAccent,
               size: 28,
             ),
             const SizedBox(height: 5),
