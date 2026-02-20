@@ -2,7 +2,6 @@ class Imageasset {
   static String routeImage = 'assets/img';
   static String onbordingImageone = "$routeImage/onboardingone.png";
   static String onbordingImagetwo = "$routeImage/onboardingtwo.png";
-  static String onbordingImagethree = "$routeImage/onboardingthree.png";
   static String face = "$routeImage/face.png";
   static String twetter = "$routeImage/x.png";
   static String google = "$routeImage/google.png";
@@ -15,7 +14,6 @@ class Imageasset {
   static String celebiration = "$routeImage/Confetti.json";
 
   //Animation
-  static String see = "$routeImage/f22d.jpg";
   static String visa = "$routeImage/visa.png";
   static String cash = "$routeImage/cash.jpg";
   static String googlepay = "$routeImage/googlepayjpg.jpg";

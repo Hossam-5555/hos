@@ -68,9 +68,9 @@ class NotificationPage extends StatelessWidget {
                   } else {
                     // البيانات الحقيقية
                     final item = controller.notificationlist[index];
-                    id = item["notification_id"].toString();
-                    title = item['notification_title'] ?? 'بدون عنوان';
-                    body = item['notification_body'] ?? 'بدون محتوى';
+                    id = item.notificationId.toString();
+                    title = item.notificationTitle ?? 'بدون عنوان';
+                    body = item.notificationBody?? 'بدون محتوى';
                   }
 
                   return GestureDetector(

@@ -3,6 +3,7 @@ import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/notificationdata.dart';
+import 'package:hos/data/model/notificationmodel.dart';
 
 class Notificationcontroller extends GetxController {
   Statusrequest statusrequest = Statusrequest.none;
@@ -14,8 +15,8 @@ class Notificationcontroller extends GetxController {
   Myservisec myservisec = Get.put(Myservisec());
   Notificationdata notificationdata = Get.put(Notificationdata(Get.find()));
 
-  List notificationlist = [];
-    RxInt get notificationcount => notificationlist.length.obs;
+  List<NotificationModel> notificationlist = [];
+  RxInt get notificationcount => notificationlist.length.obs;
 
   /// ====== MULTI SELECT ======
   bool selectionMode = false;
@@ -36,6 +37,7 @@ class Notificationcontroller extends GetxController {
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'success') {
         notificationlist = response["data"];
+        notificationlist.map((e)=>NotificationModel.fromJson(e as Map<String, dynamic>));
       } else {
         statusrequest = Statusrequest.failure;
       }
@@ -76,7 +78,7 @@ class Notificationcontroller extends GetxController {
     await notificationdata.removeNotification(selectedIds);
 
     notificationlist.removeWhere(
-      (item) => selectedIds.contains(item["notification_id"].toString()),
+      (item) => selectedIds.contains(item.notificationId.toString()),
     );
 
     selectedIds.clear();

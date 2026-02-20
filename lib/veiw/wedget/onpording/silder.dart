@@ -16,11 +16,7 @@ List<Onbordingmodel> onBoarding = [
     Imageasset.onbordingImagetwo,
     "We Have 100k+ product \n Choose Your product from our \n E-commerce Shop.",
   ),
-  Onbordingmodel(
-    "Track Your Order",
-    Imageasset.onbordingImagethree,
-    "We Have 100k+ product \n Choose Your product from our \n E-commerce Shop.",
-  ),
+  
  
 ];
 

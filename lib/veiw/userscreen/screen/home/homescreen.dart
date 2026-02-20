@@ -40,7 +40,10 @@ class Homescreen extends StatelessWidget {
                 title: "ابحث عن منتج...",
                 mycontroller: controller.search!,
               ),
-              actions: [Homescrenaction()],
+              actions: [Padding(
+                padding: const EdgeInsets.all(5),
+                child: Homescrenaction(),
+              )],
             ),
           ),
 
