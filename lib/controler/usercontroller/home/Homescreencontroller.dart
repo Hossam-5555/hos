@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
 import 'package:hos/core/class/searchclass.dart';
 import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/cart.dart';
 import 'package:hos/veiw/userscreen/screen/home/Homepage.dart';
 import 'package:hos/veiw/userscreen/screen/offer.dart';
@@ -11,20 +13,19 @@ import 'package:hos/veiw/userscreen/screen/profile/profile.dart';
 class Homescreencontroller extends SearchMix {
   // ignore: non_constant_identifier_names
   int Currentpage = 0;
- TextInputAction textInputAction = TextInputAction.search;
+  TextInputAction textInputAction = TextInputAction.search;
   void changpage(int i) {
     Currentpage = i;
+
+    // 👇 تحكم في تايمر الهوم
+    if (i == 0&& Get.currentRoute!=Approute.Homepage) {
+      Get.find<HomepageController>().startTimer();
+    } else {
+      Get.find<HomepageController>().stopTimer();
+    }
+
     update();
   }
-
-  void gotoshoppage() {
-    Get.to(() => ShoppingCartPage());
-  }
-
-  
-  // var count=0.obs;
-
-
 
   var x = 20.0.obs;
   var y = 500.0.obs;
@@ -65,12 +66,10 @@ class Homescreencontroller extends SearchMix {
     ['Offer', Imageasset.offer],
     ['Profile', Imageasset.profile],
   ];
-    final List<Widget> pages = [
-    HomePage(), 
+  final List<Widget> pages = [
+    HomePage(),
     ShoppingCartPage(),
     Offer(),
     ProfilePage(),
   ];
-
-  
 }

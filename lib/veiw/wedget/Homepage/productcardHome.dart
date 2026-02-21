@@ -16,7 +16,7 @@ class ItemsCardhome extends GetView<HomepageController> {
     if (controller.items.isEmpty || controller.items[index] == null) {
       return const SizedBox();
     }
-    return ItemList(items: Itemsmodel.fromJson(controller.items[index]));
+    return ItemList(items: controller.items[index]);
   }
 }
 
@@ -41,7 +41,6 @@ class ItemList extends GetView<HomepageController> {
           color: Colors.white, // ✅ تم التغيير إلى الأبيض
           boxShadow: [
             // ✅ تم إضافة ظل خفيف مثل الصورة
-            
             BoxShadow(
               color: Colors.black.withAlpha(25), // 0.1 * 255 = 25
               // spreadRadius: 1,
@@ -59,12 +58,12 @@ class ItemList extends GetView<HomepageController> {
               // المارجن الخاص بك جيد لعمل الهامش الداخلي
               margin: EdgeInsets.only(left: 17, right: 17, top: 17),
               decoration: BoxDecoration(
-                color:  Color.fromARGB(
-                      255,
-                      146,
-                      146,
-                      146,
-                    ).withAlpha(35), // ✅ لون رمادي فاتح لخلفية الصورة
+                color: Color.fromARGB(
+                  255,
+                  146,
+                  146,
+                  146,
+                ).withAlpha(35), // ✅ لون رمادي فاتح لخلفية الصورة
                 borderRadius: BorderRadius.all(
                   Radius.circular(15),
                 ), // ✅ زوايا دائرية لحامل الصورة
@@ -112,6 +111,34 @@ class ItemList extends GetView<HomepageController> {
                         fontSize: width * 0.038,
                         fontWeight: FontWeight.w600,
                         color: Colors.black87,
+                      ),
+                    ),
+                    Container(alignment: Alignment.centerRight,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        children: [
+                           Row(
+                                children: List.generate(
+                                  4,
+                                  (index) => const Icon(
+                                    Icons.star_rounded,
+                                    color: Colors.amber,
+                                    size: 15,
+                                  ),
+                                ),
+                              ),
+                          Text(
+                            "(Rating)",
+                            style: const TextStyle(
+                              color: Color.fromARGB(255, 0, 0, 0),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     Row(

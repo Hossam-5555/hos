@@ -1,5 +1,7 @@
 // ignore_for_file: overridden_fields
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
@@ -8,13 +10,15 @@ import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/homedata.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
+import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/veiw/userscreen/screen/home/items.dart';
+import 'package:hos/veiw/wedget/Homepage/dicountcard.dart';
 
 class HomepageController extends SearchMix {
   Myservisec myservisec = Get.put(Myservisec());
 
   String? username;
-  List items = [];
+  List<Itemsmodel> items = [];
   List<categoriesmodel> categories = [];
 
   @override
@@ -30,7 +34,8 @@ class HomepageController extends SearchMix {
       if (response["status"] == "success") {
         List categorylist = response["categories"];
         categories.addAll(categorylist.map((e) => categoriesmodel.fromJson(e)));
-        items.addAll(response["items"]);
+        List itmeslist = response["items"];
+        items.addAll(itmeslist.map((e) => Itemsmodel.fromJson(e)));
       } else {
         statusrequest = Statusrequest.failure;
       }
@@ -53,35 +58,52 @@ class HomepageController extends SearchMix {
     update();
   }
 
-  PageController? pageControllerofer;
-
-
-  int currntofer=0;
-  void onpagechanged(int index){
-    currntofer=index;
-    update();
-  }
   //==================================================cart
+
+  final List<OfferModel> offers = [
+    OfferModel(
+      title: 'عرض الصيف',
+      description: 'اشتري قطعة واحصل على الثانية بنصف الثمن.',
+      discount: 'خصم 50%',
+      colors: const [Color(0xffFF512F), Color(0xffDD2476)], // برتقالي وزهري
+    ),
+    OfferModel(
+      title: 'عروض التقنية',
+      description: 'أفضل الخصومات على الهواتف والسماعات الذكية.',
+      discount: 'خصم 30%',
+      colors: const [Color(0xff11998e), Color(0xff38ef7d)], // أخضر متدرج
+    ),
+    OfferModel(
+      title: 'تصفية نهاية العام',
+      description: 'لا تفوت الفرصة! الكمية محدودة جداً.',
+      discount: 'خصم يصل لـ 70%',
+      colors: const [Color(0xff4776E6), Color(0xff8E54E9)], // أزرق وبنفسجي
+    ),
+  ];
+
+  int currentIndex = 0;
+  Timer? timer;
+
+  void startTimer() {
+    timer?.cancel();
+    timer = Timer.periodic(const Duration(seconds: 20), (timer) {
+      currentIndex = (currentIndex + 1) % offers.length;
+      print("Hossam");
+      update();
+    });
+  }
+
+  void stopTimer() {
+    timer?.cancel();
+  }
+
   // داخل HomepageController
   PageController? pageController;
-
-  @override
-  void onClose() {
-    // التعديل: نقوم بحذف الكنترولر ثم جعله null فوراً
-    // هذا يضمن أن الواجهة (CurvedItemsView) ستدخل في شرط الحماية if (controller.pageController == null)
-    pageController?.dispose();
-    pageController = null;
-    super.onClose();
-  }
 
   //=======================================================cart
   @override
   void onInit() {
-    pageControllerofer = PageController(
-      initialPage: 0,
-      viewportFraction:
-          0.8, // مهم جداً: هذا الرقم هو ما يظهر جزءاً من الكروت الجانبية
-    );
+    startTimer();
     pageController = PageController(
       initialPage: 0,
       viewportFraction:
@@ -90,5 +112,16 @@ class HomepageController extends SearchMix {
     getdata();
     username = myservisec.sharedPreferences.getString("username");
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    // التعديل: نقوم بحذف الكنترولر ثم جعله null فوراً
+    // هذا يضمن أن الواجهة (CurvedItemsView) ستدخل في شرط الحماية if (controller.pageController == null)
+    pageController?.dispose();
+    pageController = null;
+    timer?.cancel();
+
+    super.onClose();
   }
 }

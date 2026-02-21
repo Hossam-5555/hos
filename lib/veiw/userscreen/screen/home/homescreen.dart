@@ -9,11 +9,11 @@ import 'package:hos/veiw/wedget/Homepage/homescrenAction.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';
 
 class Homescreen extends StatelessWidget {
-  const Homescreen({super.key});
-
+   Homescreen({super.key});
+final controller = Get.put(Homescreencontroller());
   @override
   Widget build(BuildContext context) {
-    Get.put(Homescreencontroller());
+    
     // final size = MediaQuery.of(context).size;
     // final h = size.height;
     // final w = size.width;
@@ -40,10 +40,12 @@ class Homescreen extends StatelessWidget {
                 title: "ابحث عن منتج...",
                 mycontroller: controller.search!,
               ),
-              actions: [Padding(
-                padding: const EdgeInsets.all(5),
-                child: Homescrenaction(),
-              )],
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Homescrenaction(),
+                ),
+              ],
             ),
           ),
 
@@ -52,11 +54,16 @@ class Homescreen extends StatelessWidget {
             margin: EdgeInsets.only(left: 15, right: 15, bottom: 12),
             child: Buttomappbar(),
           ),
-
-          // =================================================================
           body: !controller.issearch
-              ? controller.pages.elementAt(controller.Currentpage)
+              ? IndexedStack(
+                  index: controller.Currentpage,
+                  children: controller.pages,
+                )
               : Searchpage(searchdata: controller.searchlist),
+          // =================================================================
+          // body: !controller.issearch
+          //     ? controller.pages.elementAt(controller.Currentpage)
+          //     : Searchpage(searchdata: controller.searchlist),
         ),
       ),
     );

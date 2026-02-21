@@ -1,0 +1,128 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'package:hos/veiw/wedget/items/filteritems.dart';
+import 'package:hos/veiw/wedget/searchbar.dart';
+
+class CustomItemsAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
+  final dynamic controller;
+  final double width;
+
+  const CustomItemsAppBar({
+    super.key,
+    required this.controller,
+    required this.width,
+  });
+
+  @override
+  Size get preferredSize => const Size.fromHeight(60);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      centerTitle: true,
+      leadingWidth: 70,
+      leading: const _BackButtonCircle(),
+      title: Row(
+        children: [
+          Expanded(
+            flex: 4,
+            child: SizedBox(
+              width: width * 0.65,
+              child: Searchbar(
+                onPressedIcon: controller.onsearch,
+                onChanged: controller.checksearch,
+                title: " ابحث عن منتج...",
+                mycontroller: controller.search!,
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            flex: 1,
+            child: _FilterButton(controller: controller),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+
+class _FilterButton extends StatelessWidget {
+  final dynamic controller;
+
+  const _FilterButton({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () => openAdvancedFilter(context),
+      style: ElevatedButton.styleFrom(
+        elevation: 1,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        backgroundColor: Colors.white,
+      ),
+      child: Icon(
+        Icons.filter_alt_rounded,
+        size: 20,
+        color: Colors.black.withAlpha(160),
+      ),
+    );
+  }
+}
+
+class _BackButtonCircle extends StatelessWidget {
+  const _BackButtonCircle();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10),
+      child: Center(
+        child: Container(
+          width: 45,
+          height: 45,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: const Icon(Icons.arrow_back, size: 20),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+void openAdvancedFilter(BuildContext context) {
+  Get.put(FilterController());
+
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.white,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+    ),
+    builder: (_) => const AdvancedFilterSheet(),
+  );
+}

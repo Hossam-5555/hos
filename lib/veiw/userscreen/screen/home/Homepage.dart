@@ -4,10 +4,12 @@ import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
 import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
+import 'package:hos/core/conistant/linkApi.dart';
 import 'package:hos/veiw/userscreen/screen/searchpage.dart';
 import 'package:hos/veiw/wedget/Homepage/CurvedItemsView.dart';
 import 'package:hos/veiw/wedget/Homepage/categorieswidget.dart';
 import 'package:hos/veiw/wedget/Homepage/dicountcard.dart';
+import 'package:hos/veiw/wedget/Homepage/productListcard.dart';
 import 'package:hos/veiw/wedget/Homepage/titles.dart';
 
 class HomePage extends StatelessWidget {
@@ -39,11 +41,11 @@ class HomePage extends StatelessWidget {
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              /// 🔥 Categories Title
+                              ///  Categories Title
                               const Titles(title: "Categories"),
                               SizedBox(height: height * 0.015),
 
-                              /// 🔥 Categories List
+                              ///  Categories List
                               SizedBox(
                                 height: height * 0.12,
                                 child: const listcatigories(),
@@ -51,50 +53,20 @@ class HomePage extends StatelessWidget {
 
                               SizedBox(height: height * 0.02),
 
-                              /// 🔥 Main Offer
-                              OfferCard(
-                                title: 'خصم على الأجهزة',
-                                description:
-                                    "خصم يصل إلى 50% على الهواتف واللابتوبات",
-                                discount: "50% OFF",
-                                onTap: () {},
-                              ),
+                              ///  Main Offer
+                              AutoRotatingOffers(),
 
                               SizedBox(height: height * 0.02),
 
-                              /// 🔥 Indicator
-                              GetBuilder<HomepageController>(
-                                builder: (controller) => Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: List.generate(
-                                    2,
-                                    (index) => AnimatedContainer(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 4),
-                                      width: controller.currntofer == index
-                                          ? 18
-                                          : 6,
-                                      height: 6,
-                                      decoration: BoxDecoration(
-                                        color: Appcolor.primaryColor,
-                                        borderRadius:
-                                            BorderRadius.circular(20),
-                                      ),
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                    ),
-                                  ),
-                                ),
-                              ),
-
+                              ///  Indicator
                               SizedBox(height: height * 0.02),
 
-                              /// 🔥 Curved Items
+                              ///  Curved Items
                               const CurvedItemsView(),
 
                               SizedBox(height: height * 0.025),
 
-                              /// 🔥 New Offers Header
+                              ///  New Offers Header
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -108,23 +80,33 @@ class HomePage extends StatelessWidget {
                                       size: 16,
                                     ),
                                     style: TextButton.styleFrom(
-                                      foregroundColor:
-                                          Appcolor.primaryColor,
+                                      foregroundColor: Appcolor.primaryColor,
                                     ),
                                   ),
                                 ],
                               ),
+                              Container(
+                                height: 700,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: controller.items.length,
+                                  itemBuilder: (context, index) {
+                                    final p = controller.items[index];
+
+                                    return ProductListCard(
+                                      image: "${LinkApi.imageitems}/${p.itemsImage}",
+                                      title: p.itemsName.toString(),
+                                      price: p.itemsPrice.toString(),
+                                      // oldPrice: p.Itmeol.toString(),
+                                      rating: 3,
+                                      onTap: () {},
+                                    );
+                                  },
+                                ),
+                              ),
 
                               SizedBox(height: height * 0.015),
-
-                              /// 🔥 Second Offer
-                              OfferCard(
-                                title: 'خصم على الأجهزة',
-                                description:
-                                    "خصم يصل إلى 50% على الهواتف واللابتوبات",
-                                discount: "50% OFF",
-                                onTap: () {},
-                              ),
                             ],
                           )
                         : Searchpage(searchdata: controller.searchlist),

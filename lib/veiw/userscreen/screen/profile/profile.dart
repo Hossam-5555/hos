@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/serveces/myservisec.dart';
-import 'package:hos/veiw/userscreen/screen/myfavorite.dart';
-import 'package:hos/veiw/userscreen/screen/profile/order/orders.dart';
+
 import 'package:hos/veiw/userscreen/screen/profile/order/paymentmethods.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/viewaddres.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
@@ -16,13 +16,7 @@ class ProfilePage extends StatelessWidget {
   }
   Myservisec myservisec = Get.find();
 
-  // void initProfileControllers() {
-  //   if (!Get.isRegistered<Myfavcontroler>()) {
-  //     Get.lazyPut(() => Myfavcontroler());
-  //     Get.lazyPut(() => Ordercontroller());
-  //     Get.lazyPut(() => Notificationcontroller());
-  //   }
-  // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +96,8 @@ class ProfilePage extends StatelessWidget {
                       ),
 
                       // زر التعديل
-                      SizedBox(width: screenWidth*0.24,
+                      SizedBox(
+                        width: screenWidth * 0.24,
                         child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.symmetric(
@@ -158,11 +153,7 @@ class ProfilePage extends StatelessWidget {
                     Icons.card_giftcard,
                     "Orders",
                     () {
-                      Get.to(
-                        () => Orders(),
-                        duration: Duration(milliseconds: 400),
-                        transition: Transition.fadeIn,
-                      );
+                      Get.toNamed(Approute.Orders);
                     },
                     // Get.find<Ordercontroller>().orderscount.value,
                   ),
@@ -172,11 +163,7 @@ class ProfilePage extends StatelessWidget {
                     Icons.favorite,
                     "Wishlist",
                     () {
-                      Get.to(
-                        () => Myfavorite(),
-                        duration: Duration(milliseconds: 400),
-                        transition: Transition.fadeIn,
-                      );
+                      Get.toNamed(Approute.myfavorite);
                     },
                     // Get.find<Myfavcontroler>().datacount.value,
                   ),
@@ -232,10 +219,10 @@ class ProfilePage extends StatelessWidget {
         leading: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color:  Colors.blueAccent.withOpacity(0.4),
+            color: Colors.blueAccent.withOpacity(0.4),
             shape: BoxShape.circle,
           ),
-          child: Icon(icon, color:  Colors.blueAccent),
+          child: Icon(icon, color: Colors.blueAccent),
         ),
         title: Text(
           title,
@@ -270,11 +257,7 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              color:   Colors.blueAccent,
-              size: 28,
-            ),
+            Icon(icon, color: Colors.blueAccent, size: 28),
             const SizedBox(height: 5),
             FittedBox(
               // لضمان ظهور النص بالكامل في الشاشات الصغيرة

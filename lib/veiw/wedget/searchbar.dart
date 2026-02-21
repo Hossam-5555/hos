@@ -22,7 +22,7 @@ class Searchbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-      elevation: 2.5,
+      elevation: 1,
       child: TextFormField(focusNode: focusNode,
         textInputAction: textInputAction,
         controller: mycontroller,
