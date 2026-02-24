@@ -15,8 +15,8 @@ class Notificationcontroller extends GetxController {
   Myservisec myservisec = Get.put(Myservisec());
   Notificationdata notificationdata = Get.put(Notificationdata(Get.find()));
 
-  List<NotificationModel> notificationlist = [];
-  RxInt get notificationcount => notificationlist.length.obs;
+  RxList<NotificationModel> notificationlist = <NotificationModel>[].obs;
+  int get notificationcount => notificationlist.length;
 
   /// ====== MULTI SELECT ======
   bool selectionMode = false;
@@ -24,7 +24,6 @@ class Notificationcontroller extends GetxController {
 
   /// جلب الإشعارات
   Future<void> getnotifier() async {
-    notificationlist.clear();
     statusrequest = Statusrequest.loading;
     update();
 
@@ -34,14 +33,16 @@ class Notificationcontroller extends GetxController {
 
     statusrequest = handling(response);
 
-    if (Statusrequest.success == statusrequest) {
-      if (response['status'] == 'success') {
-        notificationlist = response["data"];
-        notificationlist.map((e)=>NotificationModel.fromJson(e as Map<String, dynamic>));
-      } else {
-        statusrequest = Statusrequest.failure;
-      }
+    if (Statusrequest.success == statusrequest &&
+        response['status'] == 'success') {
+      notificationlist.clear();
+      notificationlist.addAll(
+        (response["data"] as List).map((e) => NotificationModel.fromJson(e)),
+      );
+    } else {
+      statusrequest = Statusrequest.failure;
     }
+
     update();
   }
 

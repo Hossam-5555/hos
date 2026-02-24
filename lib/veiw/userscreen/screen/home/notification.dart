@@ -82,9 +82,7 @@ class NotificationPage extends StatelessWidget {
 
                     child: Card(
                       // تغيير اللون عند التحديد
-                      color: (!isLoading && controller.isSelected(id))
-                          ? Colors.blue.withOpacity(0.1)
-                          : Colors.white,
+                      color: Colors.white,
                       elevation: 2,
                       margin: EdgeInsets.symmetric(
                         vertical: screenHeight * 0.008,
@@ -99,7 +97,7 @@ class NotificationPage extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: ListTile(
                           leading: CircleAvatar(
-                            backgroundColor: Colors.blue.withOpacity(0.1),
+                            backgroundColor: Colors.blue.withAlpha(25),
                             child: const Icon(
                               Icons.notifications_active,
                               color: Colors.blue,

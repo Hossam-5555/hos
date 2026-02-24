@@ -22,13 +22,11 @@ class Checkoutcontroller extends GetxController {
   var selectedMethod = PaymentMethod.creditCard.obs;
   void changePaymentMethod(PaymentMethod method) {
     selectedMethod.value = method;
-    print("====================$selectedMethod");
   }
 
   //============================ المتغيرات
   String? deleverytype;
-  int addressid = 0;
-
+RxInt addressid = 0.obs;
   //============================ الدوال الخاصة بالاختيار
 
   void choosedeleverytype(String val) {
@@ -36,10 +34,9 @@ class Checkoutcontroller extends GetxController {
     update();
   }
 
-  void chooseAddres(int val) {
-    addressid = val;
-    update();
-  }
+void chooseAddres(int val) {
+  addressid.value = val;
+}
 
   //============================ البيانات من السيرفر
   Addresdata addresdata = Addresdata(Get.find());

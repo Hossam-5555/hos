@@ -4,81 +4,87 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
 import 'package:hos/core/conistant/linkApi.dart';
 
-// ignore: must_be_immutable, camel_case_types
-class listcatigories extends GetView<HomepageController> {
-  const listcatigories({super.key});
+/// ================= Categories List =================
+class ListCategories extends GetView<HomepageController> {
+  const ListCategories({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       itemCount: controller.categories.length,
-      itemBuilder: (context, index) => buildCategory(
-        catname: controller.categories[index].categoriesName,
-        urlimge:
-            "${LinkApi.imagecategories}/${controller.categories[index].categoriesImage}",
-        // selected: index == 0 ? true : false,
-        i: index,
-      ),
+      itemBuilder: (context, index) {
+        final cat = controller.categories[index];
+        return CategoryItem(
+          index: index,
+          name: cat.categoriesName ?? "",
+          imageUrl:
+              "${LinkApi.imagecategories}/${cat.categoriesImage}",
+        );
+      },
     );
   }
 }
 
-// ignore: must_be_immutable, camel_case_types
-class buildCategory extends StatelessWidget {
-  buildCategory({
+/// ================= Category Item =================
+class CategoryItem extends StatelessWidget {
+  const CategoryItem({
     super.key,
-    required this.i,
-    required this.catname,
-    this.urlimge,
+    required this.index,
+    required this.name,
+    required this.imageUrl,
   });
-  // final bool selected;
-  String? urlimge;
-  String? catname;
-  final int i;
+
+  final int index;
+  final String name;
+  final String imageUrl;
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomepageController>(
-      builder: (contriller) {
+      builder: (controller) {
         return InkWell(
           onTap: () {
-            contriller.gotoitems(
-              contriller.categories,
-              i,
-              contriller.categories[i].categoriesId!,
+            controller.gotoitems(
+              controller.categories,
+              index,
+              controller.categories[index].categoriesId!,
             );
           },
-          child: SizedBox(
-            height: 60,
+          child: Container(
+            width: 80,
+            margin: const EdgeInsets.only(right: 8),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                /// 🔥 Circle Image
                 Container(
                   height: 60,
-                  width: 70,
-                  margin: const EdgeInsets.only(right: 5),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 10,
-                  ),
+                  width: 60,
+                  padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: const Color.fromARGB(
-                      255,
-                      146,
-                      146,
-                      146,
-                    ).withAlpha(35),
+                    color:
+                        const Color.fromARGB(255, 146, 146, 146)
+                            .withAlpha(35),
                   ),
                   child: SvgPicture.network(
-                    urlimge!,
-                    errorBuilder: (context, error, stackTrace) =>
-                        const Icon(Icons.error),
+                    imageUrl,
+                    fit: BoxFit.contain,
+                    placeholderBuilder: (_) =>
+                        const CircularProgressIndicator(strokeWidth: 2),
                   ),
                 ),
+
+                const SizedBox(height: 4),
+
+                /// 🔥 Category Name
                 Text(
-                  catname!,
-                  style: TextStyle(
+                  name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 10,
                     fontWeight: FontWeight.w600,

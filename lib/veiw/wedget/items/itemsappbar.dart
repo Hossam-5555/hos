@@ -60,20 +60,31 @@ class _FilterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () => openAdvancedFilter(context),
-      style: ElevatedButton.styleFrom(
-        elevation: 1,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
+    return  Padding(
+      padding: const EdgeInsets.only(left: 10),
+      child: Center(
+        child: Container(
+          width: 45,
+          height: 45,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(25),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: IconButton(
+              onPressed: () => openAdvancedFilter(context),
+              icon: const Icon(Icons.filter_alt_sharp, size: 20),
+            ),
+          ),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-        backgroundColor: Colors.white,
-      ),
-      child: Icon(
-        Icons.filter_alt_rounded,
-        size: 20,
-        color: Colors.black.withAlpha(160),
       ),
     );
   }
@@ -95,7 +106,7 @@ class _BackButtonCircle extends StatelessWidget {
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withAlpha(25),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),

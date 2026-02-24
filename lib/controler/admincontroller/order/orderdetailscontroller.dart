@@ -12,6 +12,7 @@ class AdminOrderDetailesController extends Acceptedordercontroller {
   OrderModel? order;
 
   Orderdata orderdatadetails = Get.put(Orderdata(Get.find()));
+  @override
   Statusrequest statusrequest = Statusrequest.none;
   List<cartmodel> data = [];
 

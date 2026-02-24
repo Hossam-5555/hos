@@ -13,7 +13,7 @@ class ItemsCardhome extends GetView<HomepageController> {
 
   @override
   Widget build(BuildContext context) {
-    if (controller.items.isEmpty || controller.items[index] == null) {
+    if (controller.items.isEmpty ) {
       return const SizedBox();
     }
     return ItemList(items: controller.items[index]);
@@ -115,7 +115,7 @@ class ItemList extends GetView<HomepageController> {
                     ),
                     Container(alignment: Alignment.centerRight,
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withAlpha(51),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(

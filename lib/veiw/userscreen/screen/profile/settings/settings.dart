@@ -22,22 +22,7 @@ class Settings extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSettingsGroup(
-              context,
-              title: 'الحساب',
-              children: [
-                _buildSettingsTile(
-                  icon: Icons.person_outline,
-                  title: 'تعديل الملف الشخصي',
-                  onTap: () {},
-                ),
-                _buildSettingsTile(
-                  icon: Icons.lock_outline,
-                  title: 'تغيير كلمة المرور',
-                  onTap: () {},
-                ),
-              ],
-            ),
+       
             const SizedBox(height: 20),
             _buildSettingsGroup(
               context,
@@ -113,11 +98,7 @@ class Settings extends StatelessWidget {
                           ),
                   ),
                 ),
-                _buildSettingsTile(
-                  icon: Icons.description_outlined,
-                  title: 'الشروط والأحكام',
-                  onTap: () {},
-                ),
+          
                 ListTile(
                   leading: const Icon(Icons.logout, color: Colors.red),
                   title: const Text(

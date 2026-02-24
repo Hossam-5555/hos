@@ -17,11 +17,13 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(HomepageController());
-    final homescreencontroller = Get.put(Homescreencontroller());
+    final HomepageController controller = Get.put(HomepageController());
+    final Homescreencontroller homescreencontroller =
+        Get.put(Homescreencontroller());
 
     return GetBuilder<HomepageController>(
-      builder: (controller) => Scaffold(
+      builder: (_) => Scaffold(
+        resizeToAvoidBottomInset: true, // مهم مع الكيبورد
         body: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) {
@@ -30,6 +32,8 @@ class HomePage extends StatelessWidget {
 
               return SingleChildScrollView(
                 controller: homescreencontroller.scrollController,
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                 child: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: width * 0.04,
@@ -41,32 +45,28 @@ class HomePage extends StatelessWidget {
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              ///  Categories Title
+                              /// Categories Title
                               const Titles(title: "Categories"),
-                              SizedBox(height: height * 0.015),
+                              // SizedBox(height: height * 0.012),
 
-                              ///  Categories List
+                              /// Categories List
                               SizedBox(
-                                height: height * 0.12,
-                                child: const listcatigories(),
+                                height: height * 0.16,
+                                child: const ListCategories(),
                               ),
 
-                              SizedBox(height: height * 0.02),
 
-                              ///  Main Offer
+                              /// Main Offer
                               AutoRotatingOffers(),
 
                               SizedBox(height: height * 0.02),
 
-                              ///  Indicator
-                              SizedBox(height: height * 0.02),
-
-                              ///  Curved Items
+                              /// Curved Items
                               const CurvedItemsView(),
 
                               SizedBox(height: height * 0.025),
 
-                              ///  New Offers Header
+                              /// New Offers Header
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -80,36 +80,39 @@ class HomePage extends StatelessWidget {
                                       size: 16,
                                     ),
                                     style: TextButton.styleFrom(
-                                      foregroundColor: Appcolor.primaryColor,
+                                      foregroundColor:
+                                          Appcolor.primaryColor,
                                     ),
                                   ),
                                 ],
                               ),
-                              Container(
-                                height: 700,
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: controller.items.length,
-                                  itemBuilder: (context, index) {
-                                    final p = controller.items[index];
 
-                                    return ProductListCard(
-                                      image: "${LinkApi.imageitems}/${p.itemsImage}",
-                                      title: p.itemsName.toString(),
-                                      price: p.itemsPrice.toString(),
-                                      // oldPrice: p.Itmeol.toString(),
-                                      rating: 3,
-                                      onTap: () {},
-                                    );
-                                  },
-                                ),
+                              /// 🔥 Products List (FIXED)
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics:
+                                    const NeverScrollableScrollPhysics(),
+                                itemCount: controller.items.length,
+                                itemBuilder: (context, index) {
+                                  final p = controller.items[index];
+
+                                  return ProductListCard(
+                                    image:
+                                        "${LinkApi.imageitems}/${p.itemsImage}",
+                                    title: p.itemsName.toString(),
+                                    price: p.itemsPrice.toString(),
+                                    rating: 3,
+                                    onTap: () {},
+                                  );
+                                },
                               ),
 
                               SizedBox(height: height * 0.015),
                             ],
                           )
-                        : Searchpage(searchdata: controller.searchlist),
+                        : Searchpage(
+                            searchdata: controller.searchlist,
+                          ),
                   ),
                 ),
               );
