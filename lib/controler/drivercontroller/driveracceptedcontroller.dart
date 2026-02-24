@@ -7,36 +7,38 @@ import 'package:hos/data/model/ordersmodel.dart';
 class Driveracceptedcontroller extends DriverViewOrderController {
   List<OrderModel> ordersaccepted = [];
 
+  Statusrequest statusrequestaccepted = Statusrequest.none;
+
   Future<void> viewordersaccepted() async {
     ordersaccepted.clear();
-    statusrequest = Statusrequest.loading;
+    statusrequestaccepted = Statusrequest.loading;
     update();
     var response = await driverorderdata.acceptedorderdata(
       myservisec.sharedPreferences.getString("id")!,
     );
-    statusrequest = handling(response);
-    if (Statusrequest.success == statusrequest) {
+    statusrequestaccepted = handling(response);
+    if (Statusrequest.success == statusrequestaccepted) {
       if (response['status'] == 'success') {
         List data = response["data"];
         ordersaccepted.addAll(data.map((e) => OrderModel.fromJson(e)));
       } else {
-        statusrequest = Statusrequest.failure;
+        statusrequestaccepted = Statusrequest.failure;
       }
     }
     update();
   }
 
   Future<void> orderdone(String orderid, String userid) async {
-    statusrequest = Statusrequest.loading;
+    statusrequestaccepted = Statusrequest.loading;
     update();
     var response = await driverorderdata.orderhasdone(orderid, userid);
-    statusrequest = handling(response);
-    if (Statusrequest.success == statusrequest) {
+    statusrequestaccepted = handling(response);
+    if (Statusrequest.success == statusrequestaccepted) {
       if (response['status'] == 'success') {
         viewordersaccepted();
         Get.snackbar("نجاح ", "تم تسليم الطلب بنجاح ");
       } else {
-        statusrequest = Statusrequest.failure;
+        statusrequestaccepted = Statusrequest.failure;
       }
     }
     update();

@@ -5,7 +5,9 @@ class Mytransilation extends Translations {
   Map<String, Map<String, String>> get keys => {
     "ar": {
       "1": "اختر اللغه",
-      '2':'متابعه'
+      '2':'متابعه',
+      "3":"الفئات",
+      "4":"عناصر جدد"
 
 
     },
@@ -15,7 +17,9 @@ class Mytransilation extends Translations {
 
     "en": {
       "1": " Choose language",
-      '2':'continue'
+      '2':'continue',
+      '3':"Categories",
+      "4":"New Items"
 
       },
   };

@@ -16,7 +16,7 @@ class Driveraccepted extends StatelessWidget {
     return Scaffold(
       body: GetBuilder<Driveracceptedcontroller>(
         builder: (controller) => Handlingdataview(
-          statusrequest: controller.statusrequest,
+          statusrequest: controller.statusrequestaccepted,
           widget: RefreshIndicator(
             onRefresh: () async => await controller.viewordersaccepted(),
             child: ListView.separated(

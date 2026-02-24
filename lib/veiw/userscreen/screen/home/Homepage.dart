@@ -18,8 +18,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomepageController controller = Get.put(HomepageController());
-    final Homescreencontroller homescreencontroller =
-        Get.put(Homescreencontroller());
+    final Homescreencontroller homescreencontroller = Get.put(
+      Homescreencontroller(),
+    );
 
     return GetBuilder<HomepageController>(
       builder: (_) => Scaffold(
@@ -46,15 +47,26 @@ class HomePage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               /// Categories Title
-                              const Titles(title: "Categories"),
+                              Titles(title: "3".tr),
                               // SizedBox(height: height * 0.012),
 
                               /// Categories List
                               SizedBox(
                                 height: height * 0.16,
-                                child: const ListCategories(),
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: controller.categories.length,
+                                  itemBuilder: (context, index) {
+                                    final cat = controller.categories[index];
+                                    return CategoryItem(
+                                      index: index,
+                                      name: cat.categoriesName ?? "",
+                                      imageUrl:
+                                          "${LinkApi.imagecategories}/${cat.categoriesImage}",
+                                    );
+                                  },
+                                ),
                               ),
-
 
                               /// Main Offer
                               AutoRotatingOffers(),
@@ -71,7 +83,7 @@ class HomePage extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Titles(title: "New Offers"),
+                                  Titles(title: "4".tr),
                                   TextButton.icon(
                                     onPressed: () {},
                                     icon: const Text("See All"),
@@ -80,8 +92,7 @@ class HomePage extends StatelessWidget {
                                       size: 16,
                                     ),
                                     style: TextButton.styleFrom(
-                                      foregroundColor:
-                                          Appcolor.primaryColor,
+                                      foregroundColor: Appcolor.primaryColor,
                                     ),
                                   ),
                                 ],
@@ -90,8 +101,7 @@ class HomePage extends StatelessWidget {
                               /// 🔥 Products List (FIXED)
                               ListView.builder(
                                 shrinkWrap: true,
-                                physics:
-                                    const NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 itemCount: controller.items.length,
                                 itemBuilder: (context, index) {
                                   final p = controller.items[index];
@@ -110,9 +120,7 @@ class HomePage extends StatelessWidget {
                               SizedBox(height: height * 0.015),
                             ],
                           )
-                        : Searchpage(
-                            searchdata: controller.searchlist,
-                          ),
+                        : Searchpage(searchdata: controller.searchlist),
                   ),
                 ),
               );

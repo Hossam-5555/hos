@@ -12,22 +12,22 @@ class DriverOrderDetailesController extends DriverViewOrderController {
   OrderModel? order;
 
   Orderdata orderdata = Get.put(Orderdata(Get.find()));
-  Statusrequest statusrequest = Statusrequest.none;
+  Statusrequest statusrequestorderdetails = Statusrequest.none;
   List<cartmodel> data = [];
 
 
 
   Future<void> driverorderdetails() async {
-    statusrequest = Statusrequest.loading;
+    statusrequestorderdetails = Statusrequest.loading;
     update();
     var response = await orderdata.orderdetailsdata(order!.ordersId!);
-    statusrequest = handling(response);
-    if (Statusrequest.success == statusrequest) {
+    statusrequestorderdetails = handling(response);
+    if (Statusrequest.success == statusrequestorderdetails) {
       if (response['status'] == 'success') {
         List orderdata = response["data"];
         data.addAll(orderdata.map((e) => cartmodel.fromJson(e)));
       } else {
-        statusrequest = Statusrequest.failure;
+        statusrequestorderdetails = Statusrequest.failure;
       }
     }
     update();

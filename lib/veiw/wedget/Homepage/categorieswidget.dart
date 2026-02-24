@@ -2,29 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
-import 'package:hos/core/conistant/linkApi.dart';
-
-/// ================= Categories List =================
-class ListCategories extends GetView<HomepageController> {
-  const ListCategories({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: controller.categories.length,
-      itemBuilder: (context, index) {
-        final cat = controller.categories[index];
-        return CategoryItem(
-          index: index,
-          name: cat.categoriesName ?? "",
-          imageUrl:
-              "${LinkApi.imagecategories}/${cat.categoriesImage}",
-        );
-      },
-    );
-  }
-}
 
 /// ================= Category Item =================
 class CategoryItem extends StatelessWidget {
@@ -64,9 +41,12 @@ class CategoryItem extends StatelessWidget {
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color:
-                        const Color.fromARGB(255, 146, 146, 146)
-                            .withAlpha(35),
+                    color: const Color.fromARGB(
+                      255,
+                      146,
+                      146,
+                      146,
+                    ).withAlpha(35),
                   ),
                   child: SvgPicture.network(
                     imageUrl,

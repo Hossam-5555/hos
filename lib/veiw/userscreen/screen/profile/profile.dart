@@ -111,15 +111,7 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                   _buildDivider(),
-                  _buildListTile(
-                    icon: Icons.settings_outlined,
-                    title: "الإعدادات",
-                    isLast: true, // لإزالة الفاصل في العنصر الأخير
-                    onTap: () => Get.to(
-                      () => Settings(),
-                      transition: Transition.cupertino,
-                    ),
-                  ),
+               
                   _buildListTile(
                     title: "Language",
                     isLast: false,
@@ -176,6 +168,15 @@ class ProfilePage extends StatelessWidget {
 
                       //
                     },
+                  ),
+                     _buildListTile(
+                    icon: Icons.settings_outlined,
+                    title: "الإعدادات",
+                    isLast: true, // لإزالة الفاصل في العنصر الأخير
+                    onTap: () => Get.to(
+                      () => Settings(),
+                      transition: Transition.cupertino,
+                    ),
                   ),
                 ],
               ),
