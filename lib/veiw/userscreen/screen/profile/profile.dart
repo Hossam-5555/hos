@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
+import 'package:hos/core/localization/changlocal.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/veiw/userscreen/screen/profile/order/paymentmethods.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/viewaddres.dart';
@@ -14,21 +15,29 @@ class ProfilePage extends StatelessWidget {
 
   // لون أساسي مريح للتطبيق يمكن تغييره حسب الهوية البصرية لمشروعك
   final Color primaryColor = const Color(0xFF4F46E5); // لون نيلي عصري
+  final controller = Get.put(LocalController());
 
   @override
   Widget build(BuildContext context) {
     final h = Get.height;
-    
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA), // خلفية رمادية فاتحة جداً لتوضيح البطاقات
+      backgroundColor: const Color(
+        0xFFF8F9FA,
+      ), // خلفية رمادية فاتحة جداً لتوضيح البطاقات
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        padding: EdgeInsets.only(top: h * 0.08, bottom: 40, left: 20, right: 20),
+        padding: EdgeInsets.only(
+          top: h * 0.08,
+          bottom: 40,
+          left: 20,
+          right: 20,
+        ),
         child: Column(
           children: [
             _buildProfileHeader(),
             SizedBox(height: h * 0.04),
-            
+
             /// ===== Quick Actions (Orders & Wishlist) =====
             Row(
               children: [
@@ -51,9 +60,9 @@ class ProfilePage extends StatelessWidget {
                 ),
               ],
             ),
-            
+
             SizedBox(height: h * 0.04),
-            
+
             /// ===== Settings Group =====
             Align(
               alignment: Alignment.centerRight,
@@ -69,7 +78,7 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -87,20 +96,86 @@ class ProfilePage extends StatelessWidget {
                   _buildListTile(
                     icon: Icons.location_on_outlined,
                     title: "العناوين",
-                    onTap: () => Get.to(() => ViewMyAddres(), transition: Transition.cupertino),
+                    onTap: () => Get.to(
+                      () => ViewMyAddres(),
+                      transition: Transition.cupertino,
+                    ),
                   ),
                   _buildDivider(),
                   _buildListTile(
                     icon: Icons.credit_card_outlined,
                     title: "طرق الدفع",
-                    onTap: () => Get.to(() => PaymentScreen(), transition: Transition.cupertino),
+                    onTap: () => Get.to(
+                      () => PaymentScreen(),
+                      transition: Transition.cupertino,
+                    ),
                   ),
                   _buildDivider(),
                   _buildListTile(
                     icon: Icons.settings_outlined,
                     title: "الإعدادات",
                     isLast: true, // لإزالة الفاصل في العنصر الأخير
-                    onTap: () => Get.to(() => Settings(), transition: Transition.cupertino),
+                    onTap: () => Get.to(
+                      () => Settings(),
+                      transition: Transition.cupertino,
+                    ),
+                  ),
+                  _buildListTile(
+                    title: "Language",
+                    isLast: false,
+                    icon: Icons.language_sharp,
+                    onTap: () {
+                      //
+
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            title: const Text(
+                              "Choose Language",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            content: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    controller.Changelang('ar');
+                                    Navigator.pop(context);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                  ),
+                                  child: const Text("العربية"),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    controller.Changelang('en');
+                                    Navigator.pop(context);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.orange,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                  ),
+                                  child: const Text("English"),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+
+                      //
+                    },
                   ),
                 ],
               ),
@@ -113,8 +188,10 @@ class ProfilePage extends StatelessWidget {
 
   // ================= Header =================
   Widget _buildProfileHeader() {
-    String userName = myservisec.sharedPreferences.getString("usersname") ?? "User Name";
-    String email = myservisec.sharedPreferences.getString("email") ?? "user@email.com";
+    String userName =
+        myservisec.sharedPreferences.getString("usersname") ?? "User Name";
+    String email =
+        myservisec.sharedPreferences.getString("email") ?? "user@email.com";
 
     return Column(
       children: [
@@ -124,7 +201,10 @@ class ProfilePage extends StatelessWidget {
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: primaryColor.withOpacity(0.3), width: 2),
+                border: Border.all(
+                  color: primaryColor.withOpacity(0.3),
+                  width: 2,
+                ),
               ),
               child: CircleAvatar(
                 radius: 55,
@@ -151,19 +231,20 @@ class ProfilePage extends StatelessWidget {
                   child: const Icon(Icons.edit, color: Colors.white, size: 16),
                 ),
               ),
-            )
+            ),
           ],
         ),
         const SizedBox(height: 16),
         Text(
           userName,
-          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, letterSpacing: 0.5),
+          style: const TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.5,
+          ),
         ),
         const SizedBox(height: 4),
-        Text(
-          email,
-          style: TextStyle(color: Colors.grey[600], fontSize: 14),
-        ),
+        Text(email, style: TextStyle(color: Colors.grey[600], fontSize: 14)),
         const SizedBox(height: 16),
         InkWell(
           onTap: () {
@@ -178,7 +259,10 @@ class ProfilePage extends StatelessWidget {
             ),
             child: Text(
               "تعديل الحساب",
-              style: TextStyle(color: primaryColor, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                color: primaryColor,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ),
@@ -225,7 +309,10 @@ class ProfilePage extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 title,
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -245,9 +332,9 @@ class ProfilePage extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: isLast 
-          ? const BorderRadius.vertical(bottom: Radius.circular(20)) 
-          : BorderRadius.zero,
+        borderRadius: isLast
+            ? const BorderRadius.vertical(bottom: Radius.circular(20))
+            : BorderRadius.zero,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: Row(
@@ -264,10 +351,17 @@ class ProfilePage extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
-              Icon(Icons.arrow_forward_ios_rounded, color: Colors.grey[400], size: 16),
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                color: Colors.grey[400],
+                size: 16,
+              ),
             ],
           ),
         ),
@@ -278,7 +372,10 @@ class ProfilePage extends StatelessWidget {
   // ================= Custom Divider =================
   Widget _buildDivider() {
     return Padding(
-      padding: const EdgeInsets.only(left: 60, right: 20), // لترك مساحة للأيقونة
+      padding: const EdgeInsets.only(
+        left: 60,
+        right: 20,
+      ), // لترك مساحة للأيقونة
       child: Divider(height: 1, color: Colors.grey[200]),
     );
   }

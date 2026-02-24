@@ -5,7 +5,7 @@ import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/veiw/wedget/onpording/silder.dart';
 
 class Dotcontroller extends StatelessWidget {
-  const Dotcontroller({super.key});
+  const Dotcontroller({super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +17,10 @@ class Dotcontroller extends StatelessWidget {
             onBoarding.length,
             (index) => AnimatedContainer(
               margin: EdgeInsets.all(10),
-              width: controller.curentpage == index ? 20 : 5,
+              width: controller.curentpage == index ? 40 : 10,
               height: 6,
               decoration: BoxDecoration(
-                color: Appcolor.deepPurple,
+                color: Appcolor.primaryColor,
                 borderRadius: BorderRadius.circular(20),
               ),
               duration: Duration(milliseconds: 500),

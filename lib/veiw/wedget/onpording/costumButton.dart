@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/onpoarding/onboarding_controler.dart';
@@ -17,33 +16,23 @@ class CustomButton extends GetView<OnboardingControler> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        controller.next(); // يستخدم الدالة من OnboardingController
-      },
-      child: Container(
+    return GestureDetector(
+      onTap: controller.next,
+      child: Container(height: 70,
         width: width,
-        padding: EdgeInsets.symmetric(vertical: 12), // مسافة داخل الزر
+        padding: const EdgeInsets.symmetric(vertical: 5),
         alignment: Alignment.center,
-        decoration: BoxDecoration(
+        decoration: BoxDecoration(shape: BoxShape.circle,
           color: buttonColor,
-          borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withAlpha(25),
-              offset: Offset(3, 3),
+              color: Colors.black.withOpacity(0.1),
+              offset: const Offset(3, 3),
               blurRadius: 5,
             ),
           ],
         ),
-        child: Text(
-          buttonName,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        child: Icon(Icons.arrow_forward_ios_sharp,color: Colors.white,)
       ),
     );
   }

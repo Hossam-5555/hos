@@ -1,7 +1,7 @@
 class Imageasset {
   static String routeImage = 'assets/img';
-  static String onbordingImageone = "$routeImage/onboardingone.png";
-  static String onbordingImagetwo = "$routeImage/onboardingtwo.png";
+  static String onbordingImageone = "$routeImage/Delivery guy.json";
+  static String onbordingImagetwo = "$routeImage/Delivery guy.json";
   static String face = "$routeImage/face.png";
   static String twetter = "$routeImage/x.png";
   static String google = "$routeImage/google.png";

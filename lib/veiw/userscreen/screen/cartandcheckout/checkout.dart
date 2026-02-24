@@ -389,7 +389,6 @@ Widget _getPaymentFormWidget(Checkoutcontroller controller) {
         ),
       );
     case PaymentMethod.none:
-    default:
-      return const SizedBox(key: ValueKey('empty'), height: 50); 
+    return const SizedBox(key: ValueKey('empty'), height: 50); 
   }
 }
