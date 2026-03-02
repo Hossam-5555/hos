@@ -33,12 +33,16 @@ class Searchbar extends StatelessWidget {
         style: const TextStyle(color: Colors.black),
         decoration: InputDecoration(
           hintText: title,
-          hintStyle: const TextStyle(color: Colors.black),
-          prefixIcon: IconButton(
-            icon: Icon(Icons.search),
-            color: Colors.grey,
-            onPressed: onPressedIcon,
+          prefix: GestureDetector(
+            onTap:onPressedIcon ,
+            child: Container(decoration: BoxDecoration(
+              color: Colors.black,
+              shape: BoxShape.circle
+            ),
+              child: Icon(Icons.search,color: Colors.white,)),
           ),
+          hintStyle: const TextStyle(color: Colors.black),
+          suffixIcon:Icon(Icons.search),
           filled: true,
           fillColor: Colors.white.withAlpha(25),
           contentPadding: const EdgeInsets.symmetric(

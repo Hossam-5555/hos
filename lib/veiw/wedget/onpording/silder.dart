@@ -47,14 +47,17 @@ class Slideronboarding extends GetView<OnboardingControler> {
                 style: textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
+                  fontSize: 30
                 ),
               ),
+              SizedBox(height: 20,),
               Text(
                 item.body!,
                 textAlign: TextAlign.center,
                 style: textTheme.bodyMedium?.copyWith(
                   color: Colors.black54,
                   height: 1.5,
+                  fontWeight: FontWeight.w800
                 ),
               ),
             ],

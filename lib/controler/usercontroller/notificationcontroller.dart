@@ -28,7 +28,7 @@ class Notificationcontroller extends GetxController {
     update();
 
     var response = await notificationdata.GetNotification(
-      myservisec.sharedPreferences.getString("id")!,
+      myservisec.sharedPreferences.getString("id").toString(),
     );
 
     statusrequest = handling(response);

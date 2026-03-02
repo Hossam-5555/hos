@@ -118,7 +118,7 @@ class CartController extends GetxController {
 
     update(); // ✅ لازم تتفعل هنا علشان Handlingdataview تعرض الـ loading
     var response = await cartdata.viewcart(
-      myservisec.sharedPreferences.getString("id")!,
+      myservisec.sharedPreferences.getString("id").toString(),
     );
 
     statusrequest = handling(response);

@@ -7,11 +7,10 @@ import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class NotificationPage extends StatelessWidget {
-  const NotificationPage({super.key});
+   NotificationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.put(Notificationcontroller());
 
     final double screenWidth = Get.width;
     final double screenHeight = Get.height;
