@@ -8,22 +8,23 @@ class Searchbar extends StatelessWidget {
   String title;
   final TextInputAction? textInputAction;
 
-  FocusNode? focusNode ;
+  FocusNode? focusNode;
   Searchbar({
     super.key,
     this.onPressedIcon,
     required this.title,
     this.onChanged,
     required this.mycontroller,
-    this.textInputAction ,
-     this.focusNode
+    this.textInputAction,
+    this.focusNode,
   });
   @override
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
       elevation: 1,
-      child: TextFormField(focusNode: focusNode,
+      child: TextFormField(
+        focusNode: focusNode,
         textInputAction: textInputAction,
         controller: mycontroller,
         onChanged: onChanged,
@@ -33,16 +34,12 @@ class Searchbar extends StatelessWidget {
         style: const TextStyle(color: Colors.black),
         decoration: InputDecoration(
           hintText: title,
-          prefix: GestureDetector(
-            onTap:onPressedIcon ,
-            child: Container(decoration: BoxDecoration(
-              color: Colors.black,
-              shape: BoxShape.circle
-            ),
-              child: Icon(Icons.search,color: Colors.white,)),
+          suffixIcon: IconButton(
+            style: IconButton.styleFrom(backgroundColor: Colors.black),
+            onPressed: onPressedIcon,
+            icon: Icon(Icons.search, color: Colors.white),
           ),
           hintStyle: const TextStyle(color: Colors.black),
-          suffixIcon:Icon(Icons.search),
           filled: true,
           fillColor: Colors.white.withAlpha(25),
           contentPadding: const EdgeInsets.symmetric(

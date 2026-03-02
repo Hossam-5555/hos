@@ -80,6 +80,7 @@ class Itemsdetailes extends StatelessWidget {
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
+                              color: Colors.black
                             ),
                           ),
                           const SizedBox(height: 5),
@@ -91,17 +92,20 @@ class Itemsdetailes extends StatelessWidget {
                                   item.itemsDesc ?? '',
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ),
-                              Text(
-                                "${(double.parse(item.itemspricediscount.toString()).toStringAsFixed(2))}\$",
-                                style: const TextStyle(
-                                  fontSize: 22,
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.w600,
+                                 Row(
+                                children: List.generate(
+                                  4,
+                                  (index) => const Icon(
+                                    Icons.star_rounded,
+                                    color: Colors.amber,
+                                    size: 20,
+                                  ),
                                 ),
                               ),
+                             
                             ],
                           ),
                           const SizedBox(height: 15),
@@ -110,14 +114,13 @@ class Itemsdetailes extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                children: List.generate(
-                                  4,
-                                  (index) => const Icon(
-                                    Icons.star_rounded,
-                                    color: Colors.amber,
-                                    size: 24,
-                                  ),
+                           
+                               Text(
+                                "${(double.parse(item.itemspricediscount.toString()).toStringAsFixed(2))}\$",
+                                style: const TextStyle(
+                                  fontSize: 22,
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                               Countofproduct(count: controller.itemcount),
