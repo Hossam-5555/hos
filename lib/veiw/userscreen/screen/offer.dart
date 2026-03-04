@@ -10,78 +10,173 @@ class Offer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ✅ الأفضل خارج الـ build لكن ماشي مؤقتاً
     Get.put(Offercontroller());
     Get.put(FavController());
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: const Color(0xFFF6F7FB),
 
-   
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        title: const Text(
+          "🔥 العروض",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
 
       body: GetBuilder<Offercontroller>(
         builder: (controller) {
           return Handlingdataview(
             statusrequest: controller.statusrequest,
-            widget: Column(
-              children: [
-                // 🔥 بانر أعلى الصفحة
-                Container(
-                  margin: const EdgeInsets.all(12),
-                  padding: const EdgeInsets.all(16),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Colors.red, Colors.orange],
-                    ),
-                    borderRadius: BorderRadius.circular(16),
+
+            widget: RefreshIndicator(
+              color: const Color(0xFFFF512F),
+              onRefresh: () async {
+                // controller.getOffers();
+              },
+
+              child: CustomScrollView(
+                physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics(),
+                ),
+                slivers: [
+                  /// 🔥 Banner
+                  SliverToBoxAdapter(
+                    child: _buildPromoBanner(),
                   ),
-                  child: const Row(
-                    children: [
-                      Icon(Icons.local_offer,
-                          color: Colors.white, size: 32),
-                      SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          "عروض خاصة لفترة محدودة ⏳",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+
+                  /// ❌ Empty state
+                  if (controller.offerList.isEmpty)
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: _buildEmptyState(),
+                    )
+                  else
+                    /// 🧱 Grid Offers
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 10),
+                      sliver: SliverGrid(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) =>
+                              Offercard(index: index),
+                          childCount: controller.offerList.length,
+                        ),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2, // ⭐ مهم
+                          mainAxisSpacing: 16,
+                          crossAxisSpacing: 12,
+                          childAspectRatio: 0.68, // ⭐ متظبط مع الكارد
                         ),
                       ),
-                    ],
-                  ),
-                ),
-
-                // 🧠 الحالة الفاضية
-                if (controller.offerList.isEmpty)
-                  const Expanded(
-                    child: Center(
-                      child: Text(
-                        "لا توجد عروض حالياً",
-                        style: TextStyle(fontSize: 16),
-                      ),
                     ),
-                  )
-                else
-                  // 📦 قائمة العروض
-                  Expanded(
-                    child: ListView.separated(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 12),
-                      itemCount: controller.offerList.length,
-                      separatorBuilder: (_, __) =>
-                          const SizedBox(height: 12),
-                      itemBuilder: (context, index) {
-                        return Offercard(index: index);
-                      },
-                    ),
-                  ),
-              ],
+                ],
+              ),
             ),
           );
         },
+      ),
+    );
+  }
+
+  // ================= Banner =================
+
+  Widget _buildPromoBanner() {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(16, 8, 16, 6),
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFFFF512F), Color(0xFFDD2476)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFFDD2476).withOpacity(.25),
+            blurRadius: 14,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(.2),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.local_fire_department_rounded,
+              color: Colors.white,
+              size: 26,
+            ),
+          ),
+          const SizedBox(width: 14),
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "عروض قوية لفترة محدودة",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  "سارع قبل نفاد الكمية",
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 13,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ================= Empty =================
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.local_offer_outlined,
+              size: 80, color: Colors.grey[400]),
+          const SizedBox(height: 16),
+          Text(
+            "لا توجد عروض حالياً",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[800],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            "تحقق مرة أخرى قريباً",
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[500],
+            ),
+          ),
+        ],
       ),
     );
   }

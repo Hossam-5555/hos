@@ -30,7 +30,7 @@ class FavCard extends GetView<Myfavcontroler> {
             BoxShadow(
               color: Colors.black.withAlpha(38), // 15% transparency
               blurRadius: 6,
-              offset: const Offset(0, 3),
+              offset: const Offset(0, 2),
             ),
           ],
         ),
@@ -60,7 +60,7 @@ class FavCard extends GetView<Myfavcontroler> {
                 left: 0,
                 right: 0,
                 child: Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                     color: Colors.black.withAlpha(128), // 50% transparency
                     borderRadius: const BorderRadius.vertical(
@@ -78,7 +78,7 @@ class FavCard extends GetView<Myfavcontroler> {
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 14,
+                          fontSize: 12,
                         ),
                       ),
                       SizedBox(
@@ -101,7 +101,7 @@ class FavCard extends GetView<Myfavcontroler> {
                                         ? Icons.star
                                         : Icons.star_border_outlined,
                                     color: Colors.amber,
-                                    size: 16,
+                                    size: 15,
                                   ),
                                 ),
                               ),

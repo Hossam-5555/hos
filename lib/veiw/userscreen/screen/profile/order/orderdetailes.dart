@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/order/orderdetailescontroller.dart';
+import 'package:hos/core/conistant/linkApi.dart';
 import 'package:hos/veiw/userscreen/screen/profile/order/TraKingorder_userapp.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
@@ -87,16 +88,13 @@ class Orderdetailes extends StatelessWidget {
                       color: Colors.white,
                       child: ListTile(
                         leading: Container(
-                          width: 50,
-                          height: 50,
+                          width: 80,
+                          height: 80,
                           decoration: BoxDecoration(
                             color: Colors.blue[50],
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: const Icon(
-                            Icons.shopping_bag_outlined,
-                            color: Colors.blue,
-                          ),
+                          child: Image.network( "${LinkApi.imageitems}/${item.itemsImage}"),
                         ),
                         title: Text(
                           "${item.itemsName}",

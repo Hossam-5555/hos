@@ -191,7 +191,7 @@ class ItemList extends GetView<Offercontroller> {
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700, // خط أعرض قليلاً
-                          fontSize: 15,
+                          fontSize: 10,
                           shadows: [
                             Shadow(color: Colors.black45, blurRadius: 2),
                           ],
@@ -201,7 +201,7 @@ class ItemList extends GetView<Offercontroller> {
 
                       /// السعر والتقييم في نفس السطر
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           /// السعر (مميز بلون وحجم)
                           Text(
@@ -209,8 +209,8 @@ class ItemList extends GetView<Offercontroller> {
                             style: const TextStyle(
                               // لون برتقالي/ذهبي لتمييز السعر
                               color: Color(0xFFFFC107),
-                              fontWeight: FontWeight.w900,
-                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10,
                             ),
                           ),
 

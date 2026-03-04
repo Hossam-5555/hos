@@ -87,7 +87,7 @@ class Myfavorite extends StatelessWidget {
                               SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 childAspectRatio:
-                                    width / (height * 0.60), // نسبي
+                                    width / (height * 0.70), // نسبي
                                 crossAxisSpacing: width * 0.03,
                                 mainAxisSpacing: height * 0.015,
                               ),
