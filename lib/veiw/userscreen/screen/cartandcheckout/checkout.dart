@@ -19,7 +19,7 @@ class Checkout extends StatelessWidget {
       backgroundColor: const Color(0xFFF4F6F8), // لون خلفية أحدث وأكثر نعومة
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(65),
-        child: Appbarbackicon(herotag: '', title: "إتمام الطلب"),
+        child: Appbarbackicon(herotag: '', title: " check out"),
       ),
       // شريط الفاتورة الثابت بالأسفل
       bottomNavigationBar: GetBuilder<Checkoutcontroller>(
@@ -305,6 +305,8 @@ class Checkout extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               _priceRow("المجموع الفرعي", controller.totalprice),
+                            const SizedBox(height: 5),
+
               _priceRow("رسوم التوصيل", "10.0"), // قم بتغييرها لمتغير إن وجد
               const SizedBox(height: 8),
               const Divider(color: Colors.black12),
@@ -316,12 +318,12 @@ class Checkout extends StatelessWidget {
                 height: 55,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Appcolor.primaryColor,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    backgroundColor: Appcolor.black,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
                     elevation: 0,
                   ),
                   onPressed: () => controller.checkoutoder(h - 100),
-                  child: const Text("تأكيد الطلب", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                  child: const Text("Check out ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
                 ),
               ),
             ],
