@@ -2,30 +2,22 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class GoogleFacetweter extends StatelessWidget {
-  GoogleFacetweter({super.key, required this.image});
+  GoogleFacetweter({super.key, required this.image, required this.w});
   String image;
-
+double w;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      width: 40,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(26), // 0.1 * 255 = 26
-            blurRadius: 6,
-            offset: Offset(0, 3),
-          ),
-        ],
+    return ElevatedButton.icon(
+      
+      style: ElevatedButton.styleFrom(
+         backgroundColor: Colors.white
+      )
+      ,
+      label: Container(width: w,
+        child: Image.asset(height: 50,width: 50,
+          image, fit: BoxFit.contain),
       ),
-      child: ClipOval(
-        child: Image.asset(
-          image,
-          fit: BoxFit.cover,
-        ),
-      ),
+      onPressed: () {},
     );
   }
 }

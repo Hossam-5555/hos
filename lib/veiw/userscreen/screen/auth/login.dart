@@ -48,12 +48,15 @@ class Login extends StatelessWidget {
                 Positioned(
                   top: height * 0.05,
                   child: Animationlottie(
+                    h: 200,
+                    w: 200,
                     animationPath: Imageasset.loginanimation,
                   ),
                 ),
 
                 // نموذج تسجيل الدخول الزجاجي
-                Positioned(top: height * 0.27,
+                Positioned(
+                  top: height * 0.27,
                   child: Center(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(25),
@@ -63,7 +66,9 @@ class Login extends StatelessWidget {
                           width: width * 0.9,
                           constraints: BoxConstraints(maxHeight: height * 0.65),
                           decoration: BoxDecoration(
-                            color: Appcolor.glass.withAlpha(51), // 0.2 * 255 = 51
+                            color: Appcolor.glass.withAlpha(
+                              51,
+                            ), // 0.2 * 255 = 51
                             borderRadius: BorderRadius.circular(25),
                             border: Border.all(
                               color: const Color.fromARGB(
@@ -85,7 +90,7 @@ class Login extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     SizedBox(height: height * 0.03),
-                  
+
                                     // 📩 البريد الإلكتروني
                                     Textfealdauth(
                                       valid: (val) =>
@@ -96,7 +101,7 @@ class Login extends StatelessWidget {
                                       hint: 'Email Address',
                                     ),
                                     SizedBox(height: height * 0.025),
-                  
+
                                     // 🔐 كلمة المرور
                                     Textfealdauth(
                                       obscureText: controller.showpass,
@@ -110,12 +115,14 @@ class Login extends StatelessWidget {
                                       suffixIcon: Icons.remove_red_eye_outlined,
                                       hint: " Password",
                                     ),
-                  
+
                                     // 🔹 رسالة الخطأ (في حالة failure فقط)
                                     if (controller.statusrequest ==
                                         Statusrequest.failure)
                                       Padding(
-                                        padding: const EdgeInsets.only(top: 8.0),
+                                        padding: const EdgeInsets.only(
+                                          top: 8.0,
+                                        ),
                                         child: Text(
                                           " البريد الإلكتروني أو كلمة المرور غير صحيحة",
                                           style: TextStyle(
@@ -124,15 +131,15 @@ class Login extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                  
+
                                     Forgetpassbutton(
                                       onPressed: () {
                                         loginController.checkemailpage();
                                       },
                                     ),
-                  
+
                                     SizedBox(height: height * 0.01),
-                  
+
                                     Checkbutton(
                                       onTap: () {
                                         loginController.login();
@@ -141,23 +148,17 @@ class Login extends StatelessWidget {
                                       width: width * 0.75,
                                       buttonColor: Colors.black,
                                     ),
-                  
+
                                     Container(
                                       alignment: Alignment.center,
                                       margin: EdgeInsets.symmetric(
                                         vertical: height * 0.02,
                                       ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          GoogleFacetweter(
-                                            image: Imageasset.google,
-                                          ),
-                                        ],
+                                      child: GoogleFacetweter(w: width * 0.75,
+                                        image: Imageasset.google,
                                       ),
                                     ),
-                  
+
                                     Haveaccount(),
                                     SizedBox(height: height * 0.03),
                                   ],

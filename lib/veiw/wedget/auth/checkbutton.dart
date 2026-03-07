@@ -6,7 +6,7 @@ class Checkbutton extends StatelessWidget {
     super.key,
     required this.onTap,
     required this.buttonName,
-     this.width,
+    this.width,
     this.buttonColor,
   });
   void Function() onTap;
@@ -15,23 +15,14 @@ class Checkbutton extends StatelessWidget {
   String buttonName;
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
+      onPressed: onTap,
       child: Container(
-        width: width,
-        padding: EdgeInsets.symmetric(vertical: 14), // مسافة داخل الزر
         alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: buttonColor,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: const Color.fromARGB(255, 32, 6, 109).withAlpha(26), // 0.1 * 255 = 26
-              offset: Offset(3, 3),
-              blurRadius: 5,
-            ),
-          ],
-        ),
+        width: width,
+        padding: EdgeInsets.symmetric(vertical: 15), // مسافة داخل الزر
+
         child: Text(
           buttonName,
           style: TextStyle(
@@ -42,5 +33,19 @@ class Checkbutton extends StatelessWidget {
         ),
       ),
     );
+    // return InkWell(
+    //   onTap: onTap,
+    //   child: Container(
+    //     width: width,
+    //     padding: EdgeInsets.symmetric(vertical: 15), // مسافة داخل الزر
+    //     alignment: Alignment.center,
+    //     decoration: BoxDecoration(
+    //       color: buttonColor,
+    //       borderRadius: BorderRadius.circular(40),
+
+    //     ),
+    //     child:
+    //   ),
+    // );
   }
 }

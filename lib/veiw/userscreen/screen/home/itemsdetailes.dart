@@ -80,12 +80,13 @@ class Itemsdetailes extends StatelessWidget {
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black
+                              color: Colors.black,
                             ),
                           ),
                           const SizedBox(height: 5),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
                                 child: Text(
@@ -95,17 +96,6 @@ class Itemsdetailes extends StatelessWidget {
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ),
-                                 Row(
-                                children: List.generate(
-                                  4,
-                                  (index) => const Icon(
-                                    Icons.star_rounded,
-                                    color: Colors.amber,
-                                    size: 20,
-                                  ),
-                                ),
-                              ),
-                             
                             ],
                           ),
                           const SizedBox(height: 15),
@@ -114,8 +104,7 @@ class Itemsdetailes extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                           
-                               Text(
+                              Text(
                                 "${(double.parse(item.itemspricediscount.toString()).toStringAsFixed(2))}\$",
                                 style: const TextStyle(
                                   fontSize: 22,
@@ -126,7 +115,19 @@ class Itemsdetailes extends StatelessWidget {
                               Countofproduct(count: controller.itemcount),
                             ],
                           ),
-                          const SizedBox(height: 15),
+                          SizedBox(
+                            height: 20,
+                            child: Row(
+                              children: List.generate(
+                                4,
+                                (index) => const Icon(
+                                  Icons.star_rounded,
+                                  color: Colors.amber,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                          ),
 
                           // الوصف وزر عرض المزيد
                           Row(

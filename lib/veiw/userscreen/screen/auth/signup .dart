@@ -38,6 +38,7 @@ class Signup extends StatelessWidget {
                 Positioned(
                   top: height * 0.05,
                   child: Animationlottie(
+                    h: 200,w: 200,
                     animationPath: Imageasset
                         .loginanimation, // أو اعمل signupanimation لو عندك
                   ),

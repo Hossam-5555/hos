@@ -3,8 +3,15 @@ import 'package:lottie/lottie.dart';
 
 class Animationlottie extends StatefulWidget {
   final String animationPath;
+  final double h;
+  final double w;
 
-  const Animationlottie({super.key, required this.animationPath});
+  const Animationlottie({
+    super.key,
+    required this.animationPath,
+    required this.h,
+    required this.w,
+  });
 
   @override
   State<Animationlottie> createState() => AnimationlottieState();
@@ -17,8 +24,11 @@ class AnimationlottieState extends State<Animationlottie>
   @override
   void initState() {
     super.initState();
-    // لا تقم بتعيين المدة هنا
-    animationController = AnimationController(vsync: this);
+
+    animationController = AnimationController(
+      duration: const Duration(milliseconds: 1000),
+      vsync: this,
+    );
   }
 
   @override
@@ -29,26 +39,25 @@ class AnimationlottieState extends State<Animationlottie>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        // عند الضغط، أعد التشغيل
-        animationController.reset();
-        animationController.forward();
-      },
-      child: SizedBox(
-        height: 200,
-        width: 200,
-        child: Lottie.asset(
-          widget.animationPath,
-          controller: animationController,
-          // onLoaded هو مفتاح الحل
-          onLoaded: (composition) {
-            // هنا يتم تعيين مدة الأنيميشن الأصلية وبدء التشغيل
-            animationController
-              ..duration = composition.duration
-              ..forward(); // شغل الأنيميشن مرة واحدة
-          },
-        ),
+    return SizedBox(
+      height: widget.h,
+      width: widget.w,
+      child: Lottie.asset(
+        widget.animationPath,
+        controller: animationController,
+        onLoaded: (composition) {
+          animationController
+            ..duration = composition.duration
+            ..forward();
+
+          // تشغيل لمدة معينة ثم الإيقاف
+          Future.delayed(const Duration(seconds: 8), () {
+            if (mounted) {
+              animationController.reset();
+              animationController.stop();
+            }
+          });
+        },
       ),
     );
   }
@@ -67,12 +76,10 @@ class _Animationforstatus extends State<Animationforstatus>
     with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: SizedBox(
-        height: 200,
-        width: 200,
-        child: Lottie.asset(widget.animationPath),
-      ),
+    return SizedBox(
+      height: 200,
+      width: 200,
+      child: Lottie.asset(widget.animationPath),
     );
   }
 }

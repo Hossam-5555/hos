@@ -99,20 +99,29 @@ class HomePage extends StatelessWidget {
                               ),
 
                               /// 🔥 Products List (FIXED)
-                              ListView.builder(
+                              GridView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: height * 0.01,
+                                ),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 12,
+                                      mainAxisSpacing: 12,
+                                      childAspectRatio: 0.80,
+                                    ),
                                 itemCount: controller.items.length,
                                 itemBuilder: (context, index) {
-                                  final p = controller.items[index];
+                                  final item = controller.items[index];
 
                                   return ProductListCard(
                                     image:
-                                        "${LinkApi.imageitems}/${p.itemsImage}",
-                                    title: p.itemsName.toString(),
-                                    price: p.itemsPrice.toString(),
-                                    rating: 3,
-                                    onTap: () {},
+                                        "${LinkApi.imageitems}/${item.itemsImage}",
+                                    title: item.itemsName ?? "",
+                                    price: item.itemsPrice.toString(),
+                                    rating: 4,
                                   );
                                 },
                               ),

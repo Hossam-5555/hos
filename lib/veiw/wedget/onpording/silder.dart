@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/onpoarding/onboarding_controler.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/data/model/onBordingmodel.dart';
-import 'package:lottie/lottie.dart';
+import 'package:hos/veiw/wedget/animation.dart';
 
 List<Onbordingmodel> onBoarding = [
   Onbordingmodel(
@@ -37,9 +37,12 @@ class Slideronboarding extends GetView<OnboardingControler> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 400,width: 400,
-                child: Lottie.asset(fit: BoxFit.contain,
-                  onBoarding[i].img!),
+              SizedBox(
+                child: Animationlottie(
+                  animationPath: onBoarding[i].img.toString(),
+                  h: 400,
+                  w: 400,
+                ),
               ),
               Text(
                 item.title!,
@@ -47,17 +50,17 @@ class Slideronboarding extends GetView<OnboardingControler> {
                 style: textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
-                  fontSize: 30
+                  fontSize: 30,
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 20),
               Text(
                 item.body!,
                 textAlign: TextAlign.center,
                 style: textTheme.bodyMedium?.copyWith(
                   color: Colors.black54,
                   height: 1.5,
-                  fontWeight: FontWeight.w800
+                  fontWeight: FontWeight.w800,
                 ),
               ),
             ],

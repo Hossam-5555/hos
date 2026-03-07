@@ -66,7 +66,7 @@ class ItemList extends GetView<Offercontroller> {
                   tag: '${items.itemsId}',
                   child: Image.network(
                     "${LinkApi.imageitems}/${items.itemsImage}",
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                     errorBuilder: (context, error, stackTrace) => Container(
                       color: Colors.grey[200],
                       child: const Icon(

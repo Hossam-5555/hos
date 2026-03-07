@@ -28,7 +28,7 @@ class OnboardingControler extends GetxController {
     } else {
       pageController.animateToPage(
         curentpage,
-        duration: Duration(milliseconds: 900),
+        duration: Duration(milliseconds: 400),
         curve: Curves.easeInOut,
       );
     }

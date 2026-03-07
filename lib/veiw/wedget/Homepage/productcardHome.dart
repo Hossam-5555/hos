@@ -149,7 +149,7 @@ class ItemList extends GetView<HomepageController> {
                           style: TextStyle(
                             fontSize: width * 0.042,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            color: Colors.green,
                           ),
                         ),
                         Container(

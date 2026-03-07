@@ -40,16 +40,13 @@ class FavCard extends GetView<Myfavcontroler> {
             children: [
               /// صورة المنتج
               Positioned.fill(
-                child: Hero(
-                  tag: items.itemsId.toString(),
-                  child: Image.network(
-                    "${LinkApi.imageitems}/${items.itemsImage}",
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) => const Icon(
-                      Icons.broken_image,
-                      size: 50,
-                      color: Colors.white,
-                    ),
+                child: Image.network(
+                  "${LinkApi.imageitems}/${items.itemsImage}",
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) => const Icon(
+                    Icons.broken_image,
+                    size: 50,
+                    color: Colors.white,
                   ),
                 ),
               ),
