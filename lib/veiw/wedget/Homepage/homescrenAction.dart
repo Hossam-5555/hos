@@ -21,24 +21,33 @@ class Homescrenaction extends StatelessWidget {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              blurRadius: 5,
-              color: Colors.black.withAlpha(60),
-              offset: const Offset(0, 0.2),
+              blurRadius: 4,
+              color: const Color.fromARGB(255, 92, 92, 92).withAlpha(60),
+              offset: const Offset(0, 2),
             ),
           ],
           shape: BoxShape.circle,
         ),
         child: MaterialButton(
           shape: const CircleBorder(),
-          child: Badge(textColor: Colors.white,
-            label: notifiacation.notificationlist.isEmpty
-                ? Text("3")
-                : SizedBox.shrink(),
-            child: SvgPicture.asset(
-              Imageasset.notification,
-              height: 25,
-              width: 25,
-            ),
+          child: GetBuilder<Notificationcontroller>(
+            builder: (controller) {
+              return Badge(
+                alignment: Alignment.center,
+                // offset: const Offset(0,-5),
+                smallSize: 5,
+                largeSize: 5, // حجم النقطة مثل انستجرام
+                backgroundColor: Colors.red,
+                label: controller.notificationlist.isNotEmpty
+                    ? const SizedBox()
+                    : null,
+                child: SvgPicture.asset(
+                  Imageasset.notification,
+                  height: 25,
+                  width: 25,
+                ),
+              );
+            },
           ),
           onPressed: () {
             Get.to(

@@ -99,7 +99,19 @@ class Itemsdetailes extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 15),
-
+                          SizedBox(
+                            height: 20,
+                            child: Row(
+                              children: List.generate(
+                                4,
+                                (index) => const Icon(
+                                  Icons.star_rounded,
+                                  color: Colors.amber,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                          ),
                           // التقييم والعداد
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -114,19 +126,6 @@ class Itemsdetailes extends StatelessWidget {
                               ),
                               Countofproduct(count: controller.itemcount),
                             ],
-                          ),
-                          SizedBox(
-                            height: 20,
-                            child: Row(
-                              children: List.generate(
-                                4,
-                                (index) => const Icon(
-                                  Icons.star_rounded,
-                                  color: Colors.amber,
-                                  size: 20,
-                                ),
-                              ),
-                            ),
                           ),
 
                           // الوصف وزر عرض المزيد

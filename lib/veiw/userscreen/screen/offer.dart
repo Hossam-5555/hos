@@ -17,18 +17,7 @@ class Offer extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF6F7FB),
 
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-        title: const Text(
-          "🔥 العروض",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+
 
       body: GetBuilder<Offercontroller>(
         builder: (controller) {

@@ -242,7 +242,7 @@ class Checkout extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           physics: const BouncingScrollPhysics(),
           itemCount: controller.paymentMethodEnum.length,
-          separatorBuilder: (_, __) => const SizedBox(width: 12),
+          separatorBuilder: (_, _) => const SizedBox.shrink(),
           itemBuilder: (context, i) {
             // ✅ تم إصلاح الفهرس لتجنب RangeError
             final methodList = controller.paymentMethodEnum[i]; 
@@ -254,6 +254,7 @@ class Checkout extends StatelessWidget {
               return GestureDetector(
                 onTap: () => controller.changePaymentMethod(methodEnum),
                 child: AnimatedContainer(
+                  margin: EdgeInsets.symmetric(horizontal: 10),
                   duration: const Duration(milliseconds: 250),
                   width: 90,
                   padding: const EdgeInsets.all(8),

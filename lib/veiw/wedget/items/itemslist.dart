@@ -40,7 +40,7 @@ class BuildCategoryItems extends StatelessWidget {
                       )
                     : null,
                 color: selected ? null : Colors.grey.withAlpha(40),
-                borderRadius: BorderRadius.circular(25),
+                borderRadius: BorderRadius.circular(40),
                 boxShadow: selected
                     ? [
                         BoxShadow(

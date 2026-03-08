@@ -21,7 +21,9 @@ class Searchbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Color.fromARGB(255, 219, 219, 219),
+      //
+      //
+      color: Color.fromARGB(255, 146, 146, 146).withAlpha(2),
 
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
       child: TextFormField(

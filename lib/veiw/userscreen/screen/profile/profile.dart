@@ -5,7 +5,6 @@ import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/localization/changlocal.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/veiw/userscreen/screen/profile/order/paymentmethods.dart';
-import 'package:hos/veiw/userscreen/screen/profile/settings/addres/viewaddres.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -96,10 +95,7 @@ class ProfilePage extends StatelessWidget {
                   _buildListTile(
                     icon: Icons.location_on_outlined,
                     title: "العناوين",
-                    onTap: () => Get.to(
-                      () => ViewMyAddres(),
-                      transition: Transition.cupertino,
-                    ),
+                    onTap: () => Get.toNamed(Approute.viewmyaddres),
                   ),
                   _buildDivider(),
                   _buildListTile(
@@ -111,7 +107,7 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                   _buildDivider(),
-               
+
                   _buildListTile(
                     title: "Language",
                     isLast: false,
@@ -169,7 +165,7 @@ class ProfilePage extends StatelessWidget {
                       //
                     },
                   ),
-                     _buildListTile(
+                  _buildListTile(
                     icon: Icons.settings_outlined,
                     title: "الإعدادات",
                     isLast: true, // لإزالة الفاصل في العنصر الأخير

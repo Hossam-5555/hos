@@ -25,6 +25,7 @@ class Handlingdataview extends StatelessWidget {
         Approute.notificationPage: "لا توجد إشعارات",
         Approute.ShoppingCartPage: "السلة فارغة",
         Approute.myfavorite: "المفضلة فارغة",
+        Approute.viewmyaddres:"لا يوجد عناوين"
       };
       print(routeMessages[Get.currentRoute]);
       // بيحاول يجيب الرسالة بناءً على الـ route، ولو مش موجودة بيرجع الرسالة الافتراضية

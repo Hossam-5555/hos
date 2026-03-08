@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 import 'package:hos/core/class/crud.dart';
-import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/addresdata.dart';
@@ -71,8 +71,9 @@ class AddressController extends GetxController {
       if (response['status'] == 'success') {
         // تحديث القائمة بعد الإضافة
         await viewaddres();
-        Get.offNamed(Approute.Homescreen);
-        Get.snackbar("تم", "تم حفظ العنوان بنجاح");
+        Checkoutcontroller controller = Get.find();
+        await controller.getaddress();
+        Get.back();
       } else {
         statusrequest = Statusrequest.failure;
       }
@@ -112,12 +113,9 @@ class AddressController extends GetxController {
   void deleteAddres(String addresid) {
     addresdata.deleteAddresdata(addresid);
     listaddresdata.removeWhere((e) => e.addresId.toString() == addresid);
-    Get.snackbar(
-      "تم",
-      "تم ازاله العنوان بنجاح",
-      duration: Duration(milliseconds: 700),
-    );
-
+    if (listaddresdata.isEmpty) {
+      statusrequest = Statusrequest.failure;
+    }
     update();
   }
 

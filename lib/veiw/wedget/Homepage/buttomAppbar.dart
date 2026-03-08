@@ -36,11 +36,11 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                       child: AnimatedContainer(
                         margin: EdgeInsets.symmetric(horizontal: 5),
                         duration: const Duration(milliseconds: 250),
-                        curve: Curves.easeInOut,
+                        // curve: Curves.fastOutSlowIn,
                         width: isSelected ? 65 : 48,
                         height: isSelected ? 65 : 48,
                         decoration: BoxDecoration(
-                          color: isSelected ? Colors.white : Colors.transparent,
+                          color: isSelected ? Colors.white : null,
                           borderRadius: BorderRadius.circular(40),
                         ),
                         child: Column(
@@ -48,8 +48,8 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                           children: [
                             SvgPicture.asset(
                               controller.appbartitle[index][1],
-                              height: 24,
-                              width: 24,
+                              height:isSelected?25: 22,
+                              width: isSelected?25: 22,
                             ),
                             // if (isSelected)
                             Text(
