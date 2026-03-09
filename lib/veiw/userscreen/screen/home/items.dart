@@ -7,9 +7,7 @@ import 'package:hos/controler/usercontroller/home/items_controler.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/linkApi.dart';
-import 'package:hos/veiw/userscreen/screen/searchpage.dart';
 import 'package:hos/veiw/wedget/items/itemsappbar.dart';
-
 import 'package:hos/veiw/wedget/items/productcard.dart';
 import 'package:hos/veiw/wedget/items/itemslist.dart';
 
@@ -62,26 +60,21 @@ class Items extends StatelessWidget {
                 child: GetBuilder<ItemsControler>(
                   builder: (controller) => Handlingdataview(
                     statusrequest: controller.statusrequest,
-                    widget: !controller.issearch
-                        ? GridView.builder(
-                            padding: EdgeInsets.all(width * 0.03),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: width / (height * 0.60),
-                                  crossAxisSpacing: width * 0.03,
-                                  mainAxisSpacing: height * 0.02,
-                                ),
-                            itemCount: controller.data.length,
-                            itemBuilder: (context, i) {
-                              favController.isfavorite[controller
-                                      .data[i]
-                                      .itemsId] =
-                                  controller.data[i].favorite;
-                              return _buildItemCard(context, i, width, height);
-                            },
-                          )
-                        : Searchpage(searchdata: controller.searchlist),
+                    widget: GridView.builder(
+                      padding: EdgeInsets.all(width * 0.03),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: width / (height * 0.60),
+                        crossAxisSpacing: width * 0.03,
+                        mainAxisSpacing: height * 0.02,
+                      ),
+                      itemCount: controller.data.length,
+                      itemBuilder: (context, i) {
+                        favController.isfavorite[controller.data[i].itemsId] =
+                            controller.data[i].favorite;
+                        return _buildItemCard(context, i, width, height);
+                      },
+                    ),
                   ),
                 ),
               ),

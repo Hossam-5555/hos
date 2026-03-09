@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/veiw/userscreen/screen/searchpage.dart';
+import 'package:hos/veiw/wedget/Homepage/homescrenAction.dart';
 
 import 'package:hos/veiw/wedget/items/filteritems.dart';
-import 'package:hos/veiw/wedget/searchbar.dart';
 
 class CustomItemsAppBar extends StatelessWidget implements PreferredSizeWidget {
   final dynamic controller;
@@ -27,24 +28,26 @@ class CustomItemsAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       leadingWidth: 70,
       leading: const BackButtonCircle(),
-      title: Row(
-        children: [
-          Expanded(
-            flex: 4,
-            child: SizedBox(
-              width: width * 0.65,
-              child: Searchbar(
-                onPressedIcon: controller.onsearch,
-                onChanged: controller.checksearch,
-                title: " ابحث عن منتج...",
-                mycontroller: controller.search!,
-              ),
-            ),
+      actions: [
+        Padding(
+          padding: EdgeInsets.all(2),
+          child: Homescrenaction(
+            onPressed: () {
+              Get.to(
+                () => Searchpage(),
+                transition: Transition.fadeIn,
+                duration: const Duration(milliseconds: 400),
+              );
+            },
+            herotag: "Search",
+            child: SvgPicture.asset(Imageasset.search),
           ),
-          const SizedBox(width: 8),
-          Expanded(flex: 1, child: _FilterButton(controller: controller)),
-        ],
-      ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(2),
+          child: _FilterButton(controller: controller),
+        ),
+      ],
     );
   }
 }
@@ -60,17 +63,17 @@ class _FilterButton extends StatelessWidget {
       padding: const EdgeInsets.only(left: 10),
       child: Center(
         child: Container(
-           height: 52,
-        width: 52,
+          height: 52,
+          width: 52,
           decoration: BoxDecoration(
             color: Colors.white,
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-              blurRadius: 1,
-              color: const Color.fromARGB(255, 196, 196, 196).withAlpha(60),
-              offset: const Offset(1, 2),
-            ),
+                blurRadius: 1,
+                color: const Color.fromARGB(255, 196, 196, 196).withAlpha(60),
+                offset: const Offset(1, 2),
+              ),
             ],
           ),
           child: MaterialButton(

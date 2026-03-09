@@ -4,7 +4,6 @@ import 'package:hos/controler/usercontroller/home/favorite/myfavcontroler.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/veiw/userscreen/screen/searchpage.dart';
 import 'package:hos/veiw/wedget/myfavcard.dart';
-import 'package:hos/veiw/wedget/searchbar.dart';
 
 class Myfavorite extends StatelessWidget {
   const Myfavorite({super.key});
@@ -15,7 +14,7 @@ class Myfavorite extends StatelessWidget {
     final height = size.height;
     final width = size.width;
 
-    Myfavcontroler controller = Get.put(Myfavcontroler());
+    Get.put(Myfavcontroler());
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
@@ -29,7 +28,7 @@ class Myfavorite extends StatelessWidget {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withAlpha(25),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -50,16 +49,6 @@ class Myfavorite extends StatelessWidget {
               ),
             ),
           ),
-        ),
-        title: Searchbar(
-          onPressedIcon: () {
-            controller.onsearch();
-          },
-          onChanged: (val) {
-            controller.checksearch(val);
-          },
-          title: "ابحث عن منتج...",
-          mycontroller: controller.search!,
         ),
       ),
       body: SafeArea(
@@ -94,7 +83,7 @@ class Myfavorite extends StatelessWidget {
                           itemBuilder: (context, i) =>
                               FavCard(items: controller.data[i]),
                         )
-                      : Searchpage(searchdata: controller.searchlist),
+                      : Searchpage(),
                 ),
               ),
             ),

@@ -32,7 +32,7 @@ class Itemsdetailes extends StatelessWidget {
                 children: [
                   // 1. الجزء العلوي (الصورة)
                   SizedBox(
-                    height: Get.height * 0.38, // 38% من الشاشة للصورة
+                    height: Get.height * 0.39, // 38% من الشاشة للصورة
                     width: double.infinity,
                     child: Center(
                       child: Container(

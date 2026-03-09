@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
+import 'package:hos/core/class/searchclass.dart';
 import 'package:hos/core/conistant/linkApi.dart';
-import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/veiw/wedget/items/itemsappbar.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';
 
 // ignore: must_be_immutable
 class Searchpage extends StatelessWidget {
-  Searchpage({super.key, required this.searchdata});
-  final controller = Get.find<Homescreencontroller>();
-  List<Itemsmodel> searchdata;
+  Searchpage({super.key,});
+  final controller = Get.put(SearchMix());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +24,7 @@ class Searchpage extends StatelessWidget {
         leading: Hero(tag: "Search",
           child: BackButtonCircle()),
       ),
-      body: GetBuilder<Homescreencontroller>(
+      body: GetBuilder<SearchMix>(
         builder: (controller) {
           return ListView.builder(
             shrinkWrap: true,

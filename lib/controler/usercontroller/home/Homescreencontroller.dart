@@ -13,7 +13,6 @@ import 'package:hos/veiw/userscreen/screen/profile/profile.dart';
 class Homescreencontroller extends SearchMix {
   // ignore: non_constant_identifier_names
   int Currentpage = 0;
-  TextInputAction textInputAction = TextInputAction.search;
   void changpage(int i) {
     Currentpage = i;
 

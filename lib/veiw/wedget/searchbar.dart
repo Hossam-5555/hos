@@ -23,9 +23,9 @@ class Searchbar extends StatelessWidget {
     return Card(
       //
       //
-      color: Color.fromARGB(255, 146, 146, 146).withAlpha(2),
+      color: Color.fromARGB(255, 245, 246, 248),
 
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       child: TextFormField(
         focusNode: focusNode,
         textInputAction: textInputAction,
@@ -34,13 +34,16 @@ class Searchbar extends StatelessWidget {
         onFieldSubmitted: (value) {
           onPressedIcon!();
         },
+        
         style: const TextStyle(color: Colors.black),
         decoration: InputDecoration(
           hintText: title,
+          
           suffixIcon: IconButton(
             onPressed: onPressedIcon,
-            icon: Icon(Icons.search, color: Colors.white),
+            icon: Icon(Icons.search, color: Colors.grey),
           ),
+          prefixIcon: Icon(Icons.search,color: Colors.grey,),
           hintStyle: const TextStyle(color: Colors.black),
           filled: true,
           fillColor: Colors.white.withAlpha(25),
@@ -49,7 +52,7 @@ class Searchbar extends StatelessWidget {
             horizontal: 16,
           ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(40),
             borderSide: BorderSide.none,
           ),
         ),

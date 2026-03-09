@@ -5,7 +5,6 @@ import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/linkApi.dart';
-import 'package:hos/veiw/userscreen/screen/searchpage.dart';
 import 'package:hos/veiw/wedget/Homepage/CurvedItemsView.dart';
 import 'package:hos/veiw/wedget/Homepage/categorieswidget.dart';
 import 'package:hos/veiw/wedget/Homepage/dicountcard.dart';
@@ -42,8 +41,9 @@ class HomePage extends StatelessWidget {
                   ),
                   child: Handlingdataview(
                     statusrequest: controller.statusrequest,
-                    widget: !controller.issearch
-                        ? Column(
+                    widget:
+                    
+                        Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               /// Categories Title
@@ -129,7 +129,6 @@ class HomePage extends StatelessWidget {
                               SizedBox(height: height * 0.015),
                             ],
                           )
-                        : Searchpage(searchdata: controller.searchlist),
                   ),
                 ),
               );

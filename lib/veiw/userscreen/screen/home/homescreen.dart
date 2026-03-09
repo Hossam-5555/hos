@@ -71,7 +71,7 @@ class Homescreen extends StatelessWidget {
                     herotag: "Search",
                     onPressed: () {
                       Get.to(
-                        () => Searchpage(searchdata: controller.searchlist),
+                        () => Searchpage(),
                         transition: Transition.fadeIn,
                         duration: const Duration(milliseconds: 400),
                       );

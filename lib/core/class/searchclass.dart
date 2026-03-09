@@ -14,9 +14,9 @@ class SearchMix extends GetxController {
   Homedata homedata = Homedata(Get.find());
 
   bool issearch = false;
+  TextInputAction textInputAction = TextInputAction.search;
 
-
-FocusNode focusNode = FocusNode();
+  FocusNode focusNode = FocusNode();
 
   Future<void> getsearhdata() async {
     if (search == null || search!.text.trim().isEmpty) {
@@ -36,7 +36,7 @@ FocusNode focusNode = FocusNode();
       if (response["status"] == "success") {
         List responsebody = response['data'];
         searchlist.addAll(responsebody.map((e) => Itemsmodel.fromJson(e)));
-        
+
         focusNode.unfocus();
       } else {
         statusrequest = Statusrequest.failure;
