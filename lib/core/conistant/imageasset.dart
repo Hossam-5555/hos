@@ -25,4 +25,6 @@ class Imageasset {
       "$routeImage/user-profile-account-person-svgrepo-com.svg";
   static String cart = "$routeImage/cart-5-svgrepo-com.svg";
   static String location = "$routeImage/unnamed.jpg";
+  static String filter = "$routeImage/filter-svgrepo-com.svg";
+  static String search = "$routeImage/search-alt-2-svgrepo-com.svg";
 }

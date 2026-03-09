@@ -25,7 +25,7 @@ class Searchbar extends StatelessWidget {
       //
       color: Color.fromARGB(255, 146, 146, 146).withAlpha(2),
 
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: TextFormField(
         focusNode: focusNode,
         textInputAction: textInputAction,
@@ -38,7 +38,6 @@ class Searchbar extends StatelessWidget {
         decoration: InputDecoration(
           hintText: title,
           suffixIcon: IconButton(
-            style: IconButton.styleFrom(backgroundColor: Colors.black),
             onPressed: onPressedIcon,
             icon: Icon(Icons.search, color: Colors.white),
           ),
@@ -50,7 +49,7 @@ class Searchbar extends StatelessWidget {
             horizontal: 16,
           ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(15),
             borderSide: BorderSide.none,
           ),
         ),

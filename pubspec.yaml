@@ -109,7 +109,7 @@ flutter:
   fonts:
     - family: RobotoMono
       fonts:
-        - asset: assets/fonts/RobotoMono/RobotoMono-Regular.ttf
+        - asset: assets/fonts/RobotoMono/SFPRODISPLAYBOLD.OTF
         # - asset: assets/fonts/Italic/PlayfairDisplay-SemiBold.ttf
   #         style: italic
   #   - family: Trajan Pro

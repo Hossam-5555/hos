@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 
 import 'package:hos/veiw/wedget/items/filteritems.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';
 
-class CustomItemsAppBar extends StatelessWidget
-    implements PreferredSizeWidget {
+class CustomItemsAppBar extends StatelessWidget implements PreferredSizeWidget {
   final dynamic controller;
   final double width;
 
@@ -25,7 +26,7 @@ class CustomItemsAppBar extends StatelessWidget
       backgroundColor: Colors.transparent,
       centerTitle: true,
       leadingWidth: 70,
-      leading: const _BackButtonCircle(),
+      leading: const BackButtonCircle(),
       title: Row(
         children: [
           Expanded(
@@ -41,17 +42,12 @@ class CustomItemsAppBar extends StatelessWidget
             ),
           ),
           const SizedBox(width: 8),
-          Expanded(
-            flex: 1,
-            child: _FilterButton(controller: controller),
-          ),
+          Expanded(flex: 1, child: _FilterButton(controller: controller)),
         ],
       ),
     );
   }
 }
-
-
 
 class _FilterButton extends StatelessWidget {
   final dynamic controller;
@@ -60,29 +56,26 @@ class _FilterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Padding(
+    return Padding(
       padding: const EdgeInsets.only(left: 10),
       child: Center(
         child: Container(
-          width: 45,
-          height: 45,
+           height: 52,
+        width: 52,
           decoration: BoxDecoration(
             color: Colors.white,
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withAlpha(25),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
+              blurRadius: 1,
+              color: const Color.fromARGB(255, 196, 196, 196).withAlpha(60),
+              offset: const Offset(1, 2),
+            ),
             ],
           ),
-          child: Material(
-            color: Colors.transparent,
-            child: IconButton(
-              onPressed: () => openAdvancedFilter(context),
-              icon: const Icon(Icons.filter_alt_sharp, size: 20),
-            ),
+          child: MaterialButton(
+            onPressed: () => openAdvancedFilter(context),
+            child: SvgPicture.asset(Imageasset.filter, height: 25, width: 25),
           ),
         ),
       ),
@@ -90,8 +83,8 @@ class _FilterButton extends StatelessWidget {
   }
 }
 
-class _BackButtonCircle extends StatelessWidget {
-  const _BackButtonCircle();
+class BackButtonCircle extends StatelessWidget {
+  const BackButtonCircle();
 
   @override
   Widget build(BuildContext context) {
@@ -124,6 +117,7 @@ class _BackButtonCircle extends StatelessWidget {
     );
   }
 }
+
 void openAdvancedFilter(BuildContext context) {
   Get.put(FilterController());
 
