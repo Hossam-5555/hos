@@ -54,10 +54,10 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                             // if (isSelected)
                             Text(
                               controller.appbartitle[index][0],
-                              style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87,
+                              style:  TextStyle(
+                                fontSize:isSelected? 12:10,
+                                fontWeight:isSelected? FontWeight.bold:FontWeight.w200,
+                                color:isSelected? Colors.black:Colors.blueGrey,
                               ),
                             ),
                           ],

@@ -26,7 +26,6 @@ class CustomItemsAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       backgroundColor: Colors.transparent,
       centerTitle: true,
-      leadingWidth: 70,
       leading: const BackButtonCircle(),
       actions: [
         Padding(
@@ -59,27 +58,24 @@ class _FilterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 10),
-      child: Center(
-        child: Container(
-          height: 52,
-          width: 52,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 1,
-                color: const Color.fromARGB(255, 196, 196, 196).withAlpha(60),
-                offset: const Offset(1, 2),
-              ),
-            ],
-          ),
-          child: MaterialButton(
-            onPressed: () => openAdvancedFilter(context),
-            child: SvgPicture.asset(Imageasset.filter, height: 25, width: 25),
-          ),
+    return Center(
+      child: Container(
+        height: 52,
+        width: 52,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 1,
+              color: const Color.fromARGB(255, 196, 196, 196).withAlpha(60),
+              offset: const Offset(1, 2),
+            ),
+          ],
+        ),
+        child: MaterialButton(
+          onPressed: () => openAdvancedFilter(context),
+          child: SvgPicture.asset(Imageasset.filter, height: 25, width: 25),
         ),
       ),
     );
@@ -112,7 +108,7 @@ class BackButtonCircle extends StatelessWidget {
             color: Colors.transparent,
             child: IconButton(
               onPressed: () => Navigator.of(context).pop(),
-              icon: const Icon(Icons.arrow_back, size: 20),
+              icon: const Icon(Icons.arrow_back_ios_sharp, size: 20),
             ),
           ),
         ),

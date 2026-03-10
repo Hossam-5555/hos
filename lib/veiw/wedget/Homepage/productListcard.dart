@@ -51,7 +51,7 @@ class ProductListCard extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 6),
+            const SizedBox(height: 8),
 
             /// title
             Text(
@@ -64,7 +64,7 @@ class ProductListCard extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 4),
+            const SizedBox(height: 8),
 
             /// rating
             Row(

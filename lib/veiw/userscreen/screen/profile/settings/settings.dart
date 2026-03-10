@@ -22,7 +22,12 @@ class Settings extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-       
+            _buildSettingsTile(
+              icon: Icons.person,
+              title: "user",
+              subtitle: '23'.tr,
+              onTap: () {},
+            ),
             const SizedBox(height: 20),
             _buildSettingsGroup(
               context,
@@ -98,7 +103,7 @@ class Settings extends StatelessWidget {
                           ),
                   ),
                 ),
-          
+
                 ListTile(
                   leading: const Icon(Icons.logout, color: Colors.red),
                   title: const Text(

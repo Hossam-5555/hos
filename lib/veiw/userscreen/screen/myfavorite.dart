@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/favorite/myfavcontroler.dart';
 import 'package:hos/core/class/handlingdataview.dart';
-import 'package:hos/veiw/userscreen/screen/searchpage.dart';
+import 'package:hos/veiw/wedget/items/itemsappbar.dart';
 import 'package:hos/veiw/wedget/myfavcard.dart';
 
 class Myfavorite extends StatelessWidget {
@@ -16,41 +16,7 @@ class Myfavorite extends StatelessWidget {
 
     Get.put(Myfavcontroler());
     return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 10.0),
-          child: Center(
-            child: Container(
-              width: 45, // حجم متناسق أكتر مع الـ AppBar
-              height: 45,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withAlpha(25),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Material(
-                // ضروري جداً داخل Hero عشان الـ Splash يظهر صح
-                color: Colors.transparent,
-                child: IconButton(
-                  onPressed: () {
-                    // ✅ حماية: اقفل أي رسالة مفتوحة قبل ما ترجع
-                    Navigator.of(context).pop();
-                    // ✅ رجوع للصفحة السابقة
-                  },
-                  icon: Icon(Icons.arrow_back, color: Colors.black),
-                  iconSize: 20,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+      appBar: AppBar(leading: BackButtonCircle()),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -63,27 +29,23 @@ class Myfavorite extends StatelessWidget {
               child: GetBuilder<Myfavcontroler>(
                 builder: (controller) => Handlingdataview(
                   statusrequest: controller.statusrequest,
-                  widget: !controller.issearch
-                      ? GridView.builder(
-                          shrinkWrap: true,
-                          physics: const BouncingScrollPhysics(),
-                          itemCount: controller.data.length,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: width * 0.03,
-                            vertical: height * 0.015,
-                          ),
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                childAspectRatio:
-                                    width / (height * 0.70), // نسبي
-                                crossAxisSpacing: width * 0.03,
-                                mainAxisSpacing: height * 0.015,
-                              ),
-                          itemBuilder: (context, i) =>
-                              FavCard(items: controller.data[i]),
-                        )
-                      : Searchpage(),
+                  widget: GridView.builder(
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: controller.data.length,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: width * 0.03,
+                      vertical: height * 0.015,
+                    ),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: width / (height * 0.70), // نسبي
+                      crossAxisSpacing: width * 0.03,
+                      mainAxisSpacing: height * 0.015,
+                    ),
+                    itemBuilder: (context, i) =>
+                        FavCard(items: controller.data[i]),
+                  ),
                 ),
               ),
             ),

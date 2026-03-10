@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 
 // ignore: must_be_immutable
@@ -43,7 +44,7 @@ class Searchbar extends StatelessWidget {
 
           prefixIcon: Padding(
             padding: const EdgeInsets.all(12),
-            child: SvgPicture.asset(
+            child: SvgPicture.asset(color: Colors.blueGrey,
               Imageasset.search,
               height: 20,
               width: 20,
@@ -57,15 +58,12 @@ class Searchbar extends StatelessWidget {
               children: [
                 const SizedBox(
                   height: 24,
-                  child: VerticalDivider(
-                    color: Colors.grey,
-                    thickness: 1,
-                  ),
+                  child: VerticalDivider(color: Colors.grey, thickness: 1),
                 ),
                 TextButton(
                   onPressed: onPressedIcon,
-                  child: const Text(
-                    "Search",
+                  child: Text(
+                    "16".tr,
                     style: TextStyle(
                       color: Color(0xff9B2501),
                       fontWeight: FontWeight.w600,
@@ -79,8 +77,10 @@ class Searchbar extends StatelessWidget {
           filled: true,
           fillColor: Colors.transparent,
 
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 14,
+            horizontal: 16,
+          ),
 
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(40),

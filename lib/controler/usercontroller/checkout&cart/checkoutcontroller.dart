@@ -12,12 +12,10 @@ import 'package:hos/data/datasource/userdata/checkoutdata.dart';
 import 'package:hos/data/model/Addresmodel.dart';
 
 class Checkoutcontroller extends GetxController {
-
-
   List<List> paymentMethodEnum = [
-    [PaymentMethod.cod,Imageasset.cash],//0
-    [PaymentMethod.creditCard,Imageasset.visa],//1
-    [PaymentMethod.mobileWallet,Imageasset.googlepay],//2
+    [PaymentMethod.cod, Imageasset.cash], //0
+    [PaymentMethod.creditCard, Imageasset.visa], //1
+    [PaymentMethod.mobileWallet, Imageasset.googlepay], //2
   ];
   var selectedMethod = PaymentMethod.creditCard.obs;
   void changePaymentMethod(PaymentMethod method) {
@@ -26,7 +24,7 @@ class Checkoutcontroller extends GetxController {
 
   //============================ المتغيرات
   String? deleverytype;
-RxInt addressid = 0.obs;
+  RxInt addressid = 0.obs;
   //============================ الدوال الخاصة بالاختيار
 
   void choosedeleverytype(String val) {
@@ -34,9 +32,9 @@ RxInt addressid = 0.obs;
     update();
   }
 
-void chooseAddres(int val) {
-  addressid.value = val;
-}
+  void chooseAddres(int val) {
+    addressid.value = val;
+  }
 
   //============================ البيانات من السيرفر
   Addresdata addresdata = Addresdata(Get.find());

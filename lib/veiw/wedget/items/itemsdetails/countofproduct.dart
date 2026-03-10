@@ -7,7 +7,7 @@ class Countofproduct extends GetView<Itemdetailscontroller> {
   final count;
   @override
   Widget build(BuildContext context) {
-    return Material(
+    return Material(elevation: 1,
       shape: RoundedRectangleBorder(side: BorderSide(color: Colors.black.withAlpha(70)),
         borderRadius: BorderRadius.circular(40)),
       child: SizedBox(

@@ -97,8 +97,7 @@ class Homescreen extends StatelessWidget {
                     child: GetBuilder<Notificationcontroller>(
                       builder: (controller) {
                         return Badge(
-                          alignment: Alignment.center,
-                          // offset: const Offset(0,-5),
+                          alignment: Alignment.topRight,
                           smallSize: 5,
                           largeSize: 5, // حجم النقطة مثل انستجرام
                           backgroundColor: Colors.red,

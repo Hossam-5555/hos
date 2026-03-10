@@ -22,10 +22,11 @@ class Handlingdataview extends StatelessWidget {
     // هذا يمنع الـ Crash الناتج عن محاولة قراءة بيانات فارغة
     String getEmptyMessage() {
       final Map<String, String> routeMessages = {
-        Approute.notificationPage: "لا توجد إشعارات",
-        Approute.ShoppingCartPage: "السلة فارغة",
-        Approute.myfavorite: "المفضلة فارغة",
-        Approute.viewmyaddres:"لا يوجد عناوين"
+        Approute.notificationPage: "21".tr,
+        Approute.ShoppingCartPage: "19".tr,
+        Approute.myfavorite: "20".tr,
+        Approute.viewmyaddres: "لا يوجد عناوين",
+        Approute.Orders: "22".tr,
       };
       print(routeMessages[Get.currentRoute]);
       // بيحاول يجيب الرسالة بناءً على الـ route، ولو مش موجودة بيرجع الرسالة الافتراضية
@@ -42,10 +43,10 @@ class Handlingdataview extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Animationforstatus(animationPath: Imageasset.nodata),
-            const SizedBox(height: 20),
+            const SizedBox(height: 50),
             Text(
               getEmptyMessage(),
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
           ],

@@ -107,7 +107,7 @@ class HomepageController extends SearchMix {
     pageController = PageController(
       initialPage: 0,
       viewportFraction:
-          0.8, // مهم جداً: هذا الرقم هو ما يظهر جزءاً من الكروت الجانبية
+          0.7, // مهم جداً: هذا الرقم هو ما يظهر جزءاً من الكروت الجانبية
     );
     getdata();
     username = myservisec.sharedPreferences.getString("username");

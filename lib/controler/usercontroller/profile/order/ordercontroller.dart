@@ -23,23 +23,25 @@ class Ordercontroller extends GetxController {
 
   Color? statusColor;
   String? statusText;
+  String? get langage => myservisec.sharedPreferences.getString("lang");
+  bool get lang => langage == "ar" ? true : false;
   // ignore: non_constant_identifier_names
   void Getcolorandstause(String status) {
     if (status == "0") {
       statusColor = Colors.orange;
-      statusText = "قيد الانتظار";
+      statusText = lang == true ? "قيد الانتظار" : 'Binding';
     } else if (status == "1") {
       statusColor = Colors.blue;
-      statusText = "تم التأكيد";
+      statusText = lang == true ? "تم التأكيد" : "Accepted";
     } else if (status == "2") {
       statusColor = const Color.fromARGB(255, 180, 65, 30);
-      statusText = " يجهز";
+      statusText = lang == true ? " يجهز" : "prepare";
     } else if (status == "3") {
       statusColor = const Color.fromARGB(255, 179, 123, 39);
-      statusText = "في الطريق";
+      statusText = lang == true ? "في الطريق" : "in the way";
     } else if (status == "4") {
       statusColor = const Color.fromARGB(255, 33, 201, 10);
-      statusText = "مكتمل";
+      statusText = lang == true ? "مكتمل" : "done";
     } else {
       statusColor = const Color.fromARGB(200, 226, 226, 226);
       statusText = "أرشيف";

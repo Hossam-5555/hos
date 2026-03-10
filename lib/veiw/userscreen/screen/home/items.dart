@@ -24,7 +24,8 @@ class Items extends StatelessWidget {
     FavController favController = Get.put(FavController());
 
     return Scaffold(
-      appBar: CustomItemsAppBar(controller: controller, width: width),
+      appBar: PreferredSize(preferredSize: Size.fromHeight(60),
+        child: CustomItemsAppBar(controller: controller, width: width)),
 
       body: SafeArea(
         child: Padding(

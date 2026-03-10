@@ -25,7 +25,7 @@ class NotificationPage extends StatelessWidget {
               selected: controller.selectionMode,
               title: controller.selectionMode
                   ? "${controller.selectedIds.length} محدد"
-                  : "Messages",
+                  : "15".tr,
               herotag: "notification",
               iconButton: IconButton(
                 icon: const Icon(Icons.delete),

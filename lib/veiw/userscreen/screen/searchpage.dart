@@ -7,7 +7,7 @@ import 'package:hos/veiw/wedget/searchbar.dart';
 
 // ignore: must_be_immutable
 class Searchpage extends StatelessWidget {
-  Searchpage({super.key,});
+  Searchpage({super.key});
   final controller = Get.put(SearchMix());
   @override
   Widget build(BuildContext context) {
@@ -18,11 +18,10 @@ class Searchpage extends StatelessWidget {
           textInputAction: controller.textInputAction,
           onPressedIcon: controller.onsearch,
           onChanged: controller.checksearch,
-          title: "ابحث عن منتج...",
+          title: "17".tr,
           mycontroller: controller.search!,
         ),
-        leading: Hero(tag: "Search",
-          child: BackButtonCircle()),
+        leading: Hero(tag: "Search", child: BackButtonCircle()),
       ),
       body: GetBuilder<SearchMix>(
         builder: (controller) {
@@ -64,7 +63,7 @@ class Searchpage extends StatelessWidget {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            '${controller.searchlist[i].itemsPrice} جنيه',
+                            '${controller.searchlist[i].itemsPrice} ${"18".tr}',
                             style: TextStyle(
                               fontSize: 15,
                               color: Theme.of(context).primaryColor,

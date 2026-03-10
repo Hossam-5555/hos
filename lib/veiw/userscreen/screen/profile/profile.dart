@@ -13,7 +13,12 @@ class ProfilePage extends StatelessWidget {
   final Myservisec myservisec = Get.find();
 
   // لون أساسي مريح للتطبيق يمكن تغييره حسب الهوية البصرية لمشروعك
-  final Color primaryColor = const Color.fromARGB(255, 190, 188, 223); // لون نيلي عصري
+  final Color primaryColor = const Color.fromARGB(
+    255,
+    190,
+    188,
+    223,
+  ); // لون نيلي عصري
   final controller = Get.put(LocalController());
 
   @override
@@ -21,13 +26,10 @@ class ProfilePage extends StatelessWidget {
     final h = Get.height;
 
     return Scaffold(
-      backgroundColor: const Color(
-        0xFFF8F9FA,
-      ), // خلفية رمادية فاتحة جداً لتوضيح البطاقات
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         padding: EdgeInsets.only(
-          top: h * 0.08,
+          top: h * 0.03,
           bottom: 40,
           left: 20,
           right: 20,
@@ -43,7 +45,7 @@ class ProfilePage extends StatelessWidget {
                 Expanded(
                   child: _buildQuickActionCard(
                     icon: Icons.local_mall_outlined,
-                    title: "طلباتي",
+                    title: "9".tr,
                     color: const Color(0xFF10B981), // أخضر عصري
                     onTap: () => Get.toNamed(Approute.Orders),
                   ),
@@ -52,7 +54,7 @@ class ProfilePage extends StatelessWidget {
                 Expanded(
                   child: _buildQuickActionCard(
                     icon: Icons.favorite_border_rounded,
-                    title: "المفضلة",
+                    title: "10".tr,
                     color: const Color(0xFFF43F5E), // أحمر وردي
                     onTap: () => Get.toNamed(Approute.myfavorite),
                   ),
@@ -68,7 +70,7 @@ class ProfilePage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 10, right: 5),
                 child: Text(
-                  "الإعدادات العامة",
+                  "24".tr,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -94,13 +96,13 @@ class ProfilePage extends StatelessWidget {
                 children: [
                   _buildListTile(
                     icon: Icons.location_on_outlined,
-                    title: "العناوين",
+                    title: "11".tr,
                     onTap: () => Get.toNamed(Approute.viewmyaddres),
                   ),
                   _buildDivider(),
                   _buildListTile(
                     icon: Icons.credit_card_outlined,
-                    title: "طرق الدفع",
+                    title: "12".tr,
                     onTap: () => Get.to(
                       () => PaymentScreen(),
                       transition: Transition.cupertino,
@@ -109,7 +111,7 @@ class ProfilePage extends StatelessWidget {
                   _buildDivider(),
 
                   _buildListTile(
-                    title: "Language",
+                    title: "13".tr,
                     isLast: false,
                     icon: Icons.language_sharp,
                     onTap: () {
@@ -122,8 +124,8 @@ class ProfilePage extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            title: const Text(
-                              "Choose Language",
+                            title: Text(
+                              "13".tr,
                               textAlign: TextAlign.center,
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
@@ -149,7 +151,12 @@ class ProfilePage extends StatelessWidget {
                                     Navigator.pop(context);
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.orange,
+                                    backgroundColor: const Color.fromARGB(
+                                      255,
+                                      9,
+                                      181,
+                                      194,
+                                    ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
                                     ),
@@ -167,7 +174,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                   _buildListTile(
                     icon: Icons.settings_outlined,
-                    title: "الإعدادات",
+                    title: "14".tr,
                     isLast: true, // لإزالة الفاصل في العنصر الأخير
                     onTap: () => Get.to(
                       () => Settings(),
@@ -243,26 +250,6 @@ class ProfilePage extends StatelessWidget {
         const SizedBox(height: 4),
         Text(email, style: TextStyle(color: Colors.grey[600], fontSize: 14)),
         const SizedBox(height: 16),
-        InkWell(
-          onTap: () {
-            // إضافة أكشن التعديل هنا
-          },
-          borderRadius: BorderRadius.circular(20),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-            decoration: BoxDecoration(
-              color: primaryColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              "تعديل الحساب",
-              style: TextStyle(
-                color: primaryColor,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ),
       ],
     );
   }

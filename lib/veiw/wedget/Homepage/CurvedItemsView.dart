@@ -10,16 +10,18 @@ class CurvedItemsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<HomepageController>(
       builder: (controller) {
-        // 1. فحص أمان: إذا لم يتم تهيئة الكنترولر أو القائمة فارغة، لا نرسم الـ PageView
-        if (controller.pageController == null || controller.items.isEmpty) {
+        // 1. فحص أمان للقائمة فقط: إذا كانت القائمة فارغة، نعرض مؤشر تحميل
+        if (controller.items.isEmpty) {
           return const SizedBox(
             height: 290,
             child: Center(child: CircularProgressIndicator()),
           );
         }
 
-        // تخزين الكنترولر في متغير ثابت لسهولة الاستخدام
-        final PageController pageController = controller.pageController!;
+        // 2. تعيين قيمة افتراضية للـ PageController إذا لم يتم تهيئته في الكنترولر بعد
+        // استخدمنا (??) بحيث إذا كان null يأخذ النسخة الافتراضية
+        final PageController pageController = controller.pageController ?? 
+            PageController(initialPage: 0, viewportFraction: 0.7);
 
         return SizedBox(
           height: 290,
@@ -36,7 +38,7 @@ class CurvedItemsView extends StatelessWidget {
                   double rotation = 0.0;
                   double translateY = 0.0;
 
-                  // 2. التأكد من أن الكنترولر مرتبط بالواجهة قبل طلب القيم
+                  // 3. التأكد من أن الكنترولر مرتبط بالواجهة قبل طلب القيم
                   if (pageController.hasClients &&
                       pageController.position.haveDimensions) {
                     
@@ -46,15 +48,13 @@ class CurvedItemsView extends StatelessWidget {
                     // حساب الفرق بين مكان العنصر والصفحة الحالية
                     double diff = (index - currentPage); 
                     
-                    // حساب التحجيم (Scale): كلما بعد العنصر عن المركز، صغر حجمه
-                    // الرقم 0.2 يتحكم في سرعة التصغير
+                    // حساب التحجيم (Scale)
                     value = (1 - (diff.abs() * 0.25)).clamp(0.75, 1.0);
                     
                     // حساب الدوران (Rotation)
                     rotation = diff * 0.1;
 
-                    // حساب الإزاحة العمودية (لعمل شكل الكيرف)
-                    // كلما صغر العنصر، نزل للأسفل أكثر
+                    // حساب الإزاحة العمودية
                     translateY = 60 * (1 - value); 
 
                   } else {
@@ -68,7 +68,7 @@ class CurvedItemsView extends StatelessWidget {
                     }
                   }
 
-                  // 3. تطبيق التحويلات
+                  // 4. تطبيق التحويلات
                   return Transform.translate(
                     offset: Offset(0, translateY), // النزول للأسفل
                     child: Transform.scale(
@@ -76,7 +76,6 @@ class CurvedItemsView extends StatelessWidget {
                       child: Transform.rotate(
                         angle: rotation, // الدوران الخفيف
                         child: Opacity(
-                          // تغيير الشفافية للعناصر البعيدة لتركيز النظر على المنتصف
                           opacity: value.clamp(0.5, 1.0), 
                           child: ItemsCardhome(index: index),
                         ),

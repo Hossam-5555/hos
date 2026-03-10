@@ -124,16 +124,43 @@ class Orders extends StatelessWidget {
                                     fontSize: w * 0.04,
                                   ),
                                 ),
-                                Text("${'8'.tr}: ${order.ordersPrice}\$"),
-                                Text("${'6'.tr} :$payment"),
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(text: '8'.tr),
+                                      TextSpan(
+                                        text: ":${order.ordersPrice}\$",
+                                        style: TextStyle(color: Colors.green),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(text: '6'.tr),
+                                      TextSpan(
+                                        text: ":${payment}\$",
+                                        style: TextStyle(
+                                          color: const Color.fromARGB(
+                                            255,
+                                            74,
+                                            158,
+                                            25,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
                                 Text(
-                                  "${'7'.tr} $status",
+                                  "${'7'.tr}: $status",
                                   style: TextStyle(
                                     color: color,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                SizedBox(height: h * 0.006),
                               ],
                             ),
 

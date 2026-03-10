@@ -116,7 +116,7 @@ class Itemsdetailes extends StatelessWidget {
                                               Text(
                                                 "${(double.parse(item.itemsPrice.toString()).toStringAsFixed(2))}\$",
                                                 style: const TextStyle(
-                                                  fontSize: 22,
+                                                  fontSize: 18,
                                                   color: Color.fromARGB(
                                                     255,
                                                     72,
@@ -127,7 +127,7 @@ class Itemsdetailes extends StatelessWidget {
                                                 ),
                                               ),
                                               Transform.rotate(
-                                                angle: math.pi / 4.0,
+                                                angle: math.pi / 3.0,
                                                 child: VerticalDivider(
                                                   radius: BorderRadius.circular(
                                                     20,
