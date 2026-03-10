@@ -13,7 +13,7 @@ class ProfilePage extends StatelessWidget {
   final Myservisec myservisec = Get.find();
 
   // لون أساسي مريح للتطبيق يمكن تغييره حسب الهوية البصرية لمشروعك
-  final Color primaryColor = const Color(0xFF4F46E5); // لون نيلي عصري
+  final Color primaryColor = const Color.fromARGB(255, 190, 188, 223); // لون نيلي عصري
   final controller = Get.put(LocalController());
 
   @override

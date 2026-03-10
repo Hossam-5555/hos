@@ -69,39 +69,41 @@ class Orders extends StatelessWidget {
                         horizontal: w * 0.04,
                       ),
 
-                      leading: CircleAvatar(
-                        radius: w * 0.09,
-                        backgroundColor: Appcolor.primaryColor.withAlpha(35),
-                        child: Icon(
-                          Icons.shopping_bag,
-                          size: w * 0.08,
-                          color: Appcolor.primaryColor,
-                        ),
-                      ),
-
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      title: Column(
                         children: [
-                          Flexible(
-                            child: Text(
-                              "طلب رقم #${order.ordersId}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: w * 0.04,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CircleAvatar(
+                                radius: w * 0.05,
+                                backgroundColor: Appcolor.primaryColor
+                                    .withAlpha(35),
+                                child: Icon(
+                                  Icons.shopping_bag,
+                                  size: w * 0.05,
+                                  color: Appcolor.primaryColor,
+                                ),
                               ),
-                            ),
+                              Text(
+                                Jiffy.parse(
+                                  order.ordersDatetime.toString(),
+                                ).fromNow(),
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: w * 0.035,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
                           ),
-
-                          Text(
-                            Jiffy.parse(
-                              order.ordersDatetime.toString(),
-                            ).fromNow(),
-                            style: TextStyle(
-                              color: Colors.green,
-                              fontSize: w * 0.035,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //     Flexible(
+                          //       child:
+                          //     ),
+                          //   ],
+                          // ),
                         ],
                       ),
 
@@ -115,10 +117,17 @@ class Orders extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("المجموع: ${order.ordersPrice} ج.م"),
-                                Text("طريقة الدفع: $payment"),
                                 Text(
-                                  "الحالة: $status",
+                                  "${'5'.tr}#${order.ordersId}",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: w * 0.04,
+                                  ),
+                                ),
+                                Text("${'8'.tr}: ${order.ordersPrice}\$"),
+                                Text("${'6'.tr} :$payment"),
+                                Text(
+                                  "${'7'.tr} $status",
                                   style: TextStyle(
                                     color: color,
                                     fontWeight: FontWeight.w600,

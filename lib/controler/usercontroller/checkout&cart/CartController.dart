@@ -20,6 +20,7 @@ class CartController extends GetxController {
   double gettotalprice() {
     return (totalprice - totalprice * couponediscount / 100);
   }
+  double get totalpriceafterdiscount=>gettotalprice();
 
   late AnimationController controllerAnimation;
   late Animation<double> priceAnimation;
@@ -164,7 +165,7 @@ class CartController extends GetxController {
       () => Checkout(),
       transition: Transition.fadeIn,
       arguments: {
-        "totalprice": totalprice.toString(),
+        "totalprice": totalpriceafterdiscount.toString(),
         "couponeID": couponeID ?? "0",
         "couponediscount": couponediscount.toString(),
       },

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 
 class ProductListCard extends StatelessWidget {
   final String image;
@@ -20,17 +22,17 @@ class ProductListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(18),
+      borderRadius: BorderRadius.circular(16),
       child: Container(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withAlpha(25),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+              color: Colors.black.withAlpha(20),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
             ),
           ],
         ),
@@ -38,42 +40,45 @@ class ProductListCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            /// ===== Image =====
+            /// image
             ClipRRect(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(12),
               child: Image.network(
                 image,
-                height: 120,
+                height: 110,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
             ),
 
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
 
-            /// ===== title =====
+            /// title
             Text(
               title,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-                color: Colors.black
+                fontWeight: FontWeight.w600,
+                fontSize: 13,
               ),
             ),
 
-            const SizedBox(height: 6),
+            const SizedBox(height: 4),
 
             /// rating
             Row(
               children: [
-                const Icon(Icons.star, size: 15, color: Colors.amber),
-                const SizedBox(width: 4),
-                Text(rating.toString()),
+                const Icon(Icons.star, size: 14, color: Colors.amber),
+                const SizedBox(width: 3),
+                Text(
+                  rating.toString(),
+                  style: const TextStyle(fontSize: 12),
+                ),
               ],
             ),
 
+            const Spacer(),
 
             /// price + cart
             Row(
@@ -81,23 +86,24 @@ class ProductListCard extends StatelessWidget {
               children: [
                 Text(
                   "\$$price",
-                  style: const TextStyle(color: Colors.green,
+                  style: const TextStyle(
+                    color: Colors.green,
                     fontWeight: FontWeight.bold,
-                    fontSize: 15,
+                    fontSize: 13,
                   ),
                 ),
 
                 Container(
                   height: 32,
                   width: 32,
-                  decoration: BoxDecoration(
+                  padding: const EdgeInsets.all(6),
+                  decoration: const BoxDecoration(
                     color: Colors.black,
-                    borderRadius: BorderRadius.circular(10),
+                    shape: BoxShape.circle,
                   ),
-                  child: const Icon(
-                    Icons.add_shopping_cart,
+                  child: SvgPicture.asset(
+                    Imageasset.cart,
                     color: Colors.white,
-                    size: 18,
                   ),
                 ),
               ],

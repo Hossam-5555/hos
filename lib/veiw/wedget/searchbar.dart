@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 
 // ignore: must_be_immutable
 class Searchbar extends StatelessWidget {
-  void Function()? onPressedIcon;
+  final void Function()? onPressedIcon;
   final Function(String)? onChanged;
   final TextEditingController mycontroller;
-  String title;
+  final String title;
   final TextInputAction? textInputAction;
+  final FocusNode? focusNode;
 
-  FocusNode? focusNode;
-  Searchbar({
+  const Searchbar({
     super.key,
     this.onPressedIcon,
     required this.title,
@@ -18,13 +20,11 @@ class Searchbar extends StatelessWidget {
     this.textInputAction,
     this.focusNode,
   });
+
   @override
   Widget build(BuildContext context) {
     return Card(
-      //
-      //
-      color: Color.fromARGB(255, 245, 246, 248),
-
+      color: const Color(0xffF5F6F8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       child: TextFormField(
         focusNode: focusNode,
@@ -32,25 +32,56 @@ class Searchbar extends StatelessWidget {
         controller: mycontroller,
         onChanged: onChanged,
         onFieldSubmitted: (value) {
-          onPressedIcon!();
+          if (onPressedIcon != null) {
+            onPressedIcon!();
+          }
         },
-        
         style: const TextStyle(color: Colors.black),
         decoration: InputDecoration(
           hintText: title,
-          
-          suffixIcon: IconButton(
-            onPressed: onPressedIcon,
-            icon: Icon(Icons.search, color: Colors.grey),
+          hintStyle: const TextStyle(color: Colors.grey),
+
+          prefixIcon: Padding(
+            padding: const EdgeInsets.all(12),
+            child: SvgPicture.asset(
+              Imageasset.search,
+              height: 20,
+              width: 20,
+            ),
           ),
-          prefixIcon: Icon(Icons.search,color: Colors.grey,),
-          hintStyle: const TextStyle(color: Colors.black),
+
+          suffixIcon: SizedBox(
+            width: 110,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                const SizedBox(
+                  height: 24,
+                  child: VerticalDivider(
+                    color: Colors.grey,
+                    thickness: 1,
+                  ),
+                ),
+                TextButton(
+                  onPressed: onPressedIcon,
+                  child: const Text(
+                    "Search",
+                    style: TextStyle(
+                      color: Color(0xff9B2501),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
           filled: true,
-          fillColor: Colors.white.withAlpha(25),
-          contentPadding: const EdgeInsets.symmetric(
-            vertical: 0,
-            horizontal: 16,
-          ),
+          fillColor: Colors.transparent,
+
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(40),
             borderSide: BorderSide.none,

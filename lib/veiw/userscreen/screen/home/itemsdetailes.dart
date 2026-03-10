@@ -25,6 +25,7 @@ class Itemsdetailes extends StatelessWidget {
       body: GetBuilder<Itemdetailscontroller>(
         builder: (controller) {
           final item = controller.itemsmodel;
+          double discount = double.parse(item.itemsDiscount!);
           return Stack(
             // الـ Stack هنا فقط لطبقة الاحتفال العائمة، التصميم بالداخل Column
             children: [
@@ -98,33 +99,71 @@ class Itemsdetailes extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 15),
-                          SizedBox(
-                            height: 20,
-                            child: Row(
-                              children: List.generate(
-                                4,
-                                (index) => const Icon(
-                                  Icons.star_rounded,
-                                  color: Colors.amber,
-                                  size: 20,
-                                ),
-                              ),
-                            ),
-                          ),
+                          const SizedBox(height: 20),
+
                           // التقييم والعداد
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                "${(double.parse(item.itemspricediscount.toString()).toStringAsFixed(2))}\$",
-                                style: const TextStyle(
-                                  fontSize: 22,
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.w600,
+                              Column(
+                                children: [
+                                  discount != 0
+                                      ? SizedBox(
+                                          height: 50,
+                                          child: Stack(
+                                            alignment: AlignmentGeometry.center,
+                                            children: [
+                                              Text(
+                                                "${(double.parse(item.itemsPrice.toString()).toStringAsFixed(2))}\$",
+                                                style: const TextStyle(
+                                                  fontSize: 22,
+                                                  color: Color.fromARGB(
+                                                    255,
+                                                    72,
+                                                    77,
+                                                    72,
+                                                  ),
+                                                  fontWeight: FontWeight.w300,
+                                                ),
+                                              ),
+                                              Transform.rotate(
+                                                angle: math.pi / 4.0,
+                                                child: VerticalDivider(
+                                                  radius: BorderRadius.circular(
+                                                    20,
+                                                  ),
+                                                  width: 2,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : SizedBox.shrink(),
+                                  Text(
+                                    "${(double.parse(item.itemspricediscount.toString()).toStringAsFixed(2))}\$",
+                                    style: const TextStyle(
+                                      fontSize: 22,
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              SizedBox(
+                                height: 20,
+                                child: Row(
+                                  children: List.generate(
+                                    4,
+                                    (index) => const Icon(
+                                      Icons.star_rounded,
+                                      color: Colors.amber,
+                                      size: 20,
+                                    ),
+                                  ),
                                 ),
                               ),
-                              Countofproduct(count: controller.itemcount),
                             ],
                           ),
 
@@ -148,52 +187,75 @@ class Itemsdetailes extends StatelessWidget {
                             ],
                           ),
                           const Text(
-                            "هذا وصف تفصيلي للمنتج يوضح كل الخصائص والمميزات...\nGood product, perfect for daily use.",
+                            "هذا وصف تفصيلي للمنتج يوضح كل الخصائص والمميزات...\nGood product, perfect for daily useGood product, perfect for daily useGood product, perfect for daily useGood product, perfect for daily use.",
                             style: TextStyle(height: 1.6),
-                            maxLines: 2,
+                            maxLines: 3,
                           ),
 
                           const Spacer(),
 
                           // الزر السفلي
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 20),
-                            child: Center(
-                              child: SizedBox(
-                                width: 300,
-                                height: 50,
-                                child: MaterialButton(
-                                  color: Colors.black,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(40),
-                                  ),
-                                  onPressed: () {
-                                    if (controller.itemcount == 0) {
-                                      Get.snackbar(
-                                        "تنبيه",
-                                        "لا يوجد عنصر في السله",
-                                      );
-                                    } else {
-                                      controller.isadded = true;
-                                      final cartController =
-                                          Get.find<CartController>();
-                                      cartController.addtocart(
-                                        controller.itemsmodel.itemsId!
-                                            .toString(),
-                                        controller.itemcount,
-                                      );
-                                    }
-                                  },
-                                  child: const Text(
-                                    " Buy Now",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
+                            padding: const EdgeInsets.only(bottom: 25),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 20),
+                                    child: Countofproduct(
+                                      count: controller.itemcount,
                                     ),
                                   ),
                                 ),
-                              ),
+                                SizedBox(width: 3),
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 20),
+                                    child: Center(
+                                      child: SizedBox(
+                                        width: 250,
+                                        height: 50,
+                                        child: MaterialButton(
+                                          color: Colors.black,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              40,
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            if (controller.itemcount == 0) {
+                                              Get.snackbar(
+                                                "تنبيه",
+                                                "لا يوجد عنصر في السله",
+                                              );
+                                            } else {
+                                              controller.isadded = true;
+                                              final cartController =
+                                                  Get.find<CartController>();
+                                              cartController.addtocart(
+                                                controller.itemsmodel.itemsId!
+                                                    .toString(),
+                                                controller.itemcount,
+                                              );
+                                            }
+                                          },
+                                          child: const Text(
+                                            " Buy Now",
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
