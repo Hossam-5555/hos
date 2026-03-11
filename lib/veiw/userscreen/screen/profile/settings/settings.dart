@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/settingscontroller.dart';
+import 'package:hos/core/localization/changlocal.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/about_us_page.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
 class Settings extends StatelessWidget {
-  const Settings({super.key});
+  Settings({super.key});
+  final controllerlang = Get.put(LocalController());
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +24,76 @@ class Settings extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSettingsTile(
-              icon: Icons.person,
-              title: "user",
-              subtitle: '23'.tr,
-              onTap: () {},
+            _buildSettingsGroup(
+              context,
+              title: "Acount",
+              children: [
+                _buildSettingsTile(
+                  icon: Icons.person,
+                  title: "user",
+                  subtitle: 'Edit Account'.tr,
+                  onTap: () {},
+                ),
+
+                _buildSettingsTile(
+                  icon: Icons.language_sharp,
+                  title: "Languages".tr,
+                  subtitle: 'Choose language'.tr,
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          title: Text(
+                            "Choose language".tr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          content: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  controllerlang.Changelang('ar');
+                                  Navigator.pop(context);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                ),
+                                child: const Text("العربية"),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  controllerlang.Changelang('en');
+                                  Navigator.pop(context);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color.fromARGB(
+                                    255,
+                                    9,
+                                    181,
+                                    194,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                ),
+                                child: const Text("English"),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ],
             ),
             const SizedBox(height: 20),
             _buildSettingsGroup(

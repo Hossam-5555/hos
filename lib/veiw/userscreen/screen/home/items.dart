@@ -21,11 +21,13 @@ class Items extends StatelessWidget {
     final width = size.width;
 
     ItemsControler controller = Get.put(ItemsControler());
-    FavController favController = Get.put(FavController());
+    Get.put(FavController());
 
     return Scaffold(
-      appBar: PreferredSize(preferredSize: Size.fromHeight(60),
-        child: CustomItemsAppBar(controller: controller, width: width)),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60),
+        child: CustomItemsAppBar(controller: controller, width: width),
+      ),
 
       body: SafeArea(
         child: Padding(
@@ -62,18 +64,22 @@ class Items extends StatelessWidget {
                   builder: (controller) => Handlingdataview(
                     statusrequest: controller.statusrequest,
                     widget: GridView.builder(
-                      padding: EdgeInsets.all(width * 0.03),
+                      // padding ممتاز
+                      padding: EdgeInsets.symmetric(
+                        horizontal: width * 0.04,
+                        vertical: 10,
+                      ),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        childAspectRatio: width / (height * 0.60),
+                        // رقم ثابت يضمن إن الكارت مستطيل مناسب لشكل الـ E-commerce
+                        childAspectRatio: 0.65,
                         crossAxisSpacing: width * 0.03,
-                        mainAxisSpacing: height * 0.02,
+                        mainAxisSpacing: 15,
                       ),
                       itemCount: controller.data.length,
                       itemBuilder: (context, i) {
-                        favController.isfavorite[controller.data[i].itemsId] =
-                            controller.data[i].favorite;
-                        return _buildItemCard(context, i, width, height);
+                        // تم إزالة سطر الـ favController من هنا للحفاظ على سلاسة السكرول
+                        return ItemsCard(i: i);
                       },
                     ),
                   ),
@@ -81,36 +87,6 @@ class Items extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  /// 🖼️ كارت بعرض ثلاثي الأبعاد
-  Widget _buildItemCard(
-    BuildContext context,
-    int index,
-    double width,
-    double height,
-  ) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16), // حواف ناعمة
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(51), // 0.2 * 255 = 51
-            blurRadius: 8,
-            offset: Offset(2, 4),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: SizedBox(
-          width: width * 0.45, // عرض نسبي لكل كارت
-          height: height * 0.28, // ارتفاع نسبي لكل كارت
-          child: ItemsCard(i: index),
         ),
       ),
     );

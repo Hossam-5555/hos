@@ -65,19 +65,19 @@ class HomepageController extends SearchMix {
       title: 'عرض الصيف',
       description: 'اشتري قطعة واحصل على الثانية بنصف الثمن.',
       discount: 'خصم 50%',
-      colors: const [Color(0xffFF512F), Color(0xffDD2476)], // برتقالي وزهري
+      colors: const [Color.fromARGB(255, 19, 3, 0), Color(0xffDD2476)], // برتقالي وزهري
     ),
     OfferModel(
       title: 'عروض التقنية',
       description: 'أفضل الخصومات على الهواتف والسماعات الذكية.',
       discount: 'خصم 30%',
-      colors: const [Color(0xff11998e), Color(0xff38ef7d)], // أخضر متدرج
+      colors: const [Color.fromARGB(255, 19, 0, 4), Color.fromARGB(255, 77, 65, 0)], // أخضر متدرج
     ),
     OfferModel(
       title: 'تصفية نهاية العام',
       description: 'لا تفوت الفرصة! الكمية محدودة جداً.',
       discount: 'خصم يصل لـ 70%',
-      colors: const [Color(0xff4776E6), Color(0xff8E54E9)], // أزرق وبنفسجي
+      colors: const [Color.fromARGB(255, 66, 2, 2), Color.fromARGB(255, 170, 57, 4)], // أزرق وبنفسجي
     ),
   ];
 

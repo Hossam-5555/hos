@@ -15,9 +15,6 @@ class Offer extends StatelessWidget {
     Get.put(FavController());
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F7FB),
-
-
 
       body: GetBuilder<Offercontroller>(
         builder: (controller) {

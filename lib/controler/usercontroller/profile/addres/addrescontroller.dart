@@ -71,8 +71,10 @@ class AddressController extends GetxController {
       if (response['status'] == 'success') {
         // تحديث القائمة بعد الإضافة
         await viewaddres();
-        Checkoutcontroller controller = Get.find();
-        await controller.getaddress();
+       if (Get.isRegistered<Checkoutcontroller>()) {
+          Checkoutcontroller controller = Get.find<Checkoutcontroller>();
+          await controller.getaddress();
+        }
         Get.back();
       } else {
         statusrequest = Statusrequest.failure;

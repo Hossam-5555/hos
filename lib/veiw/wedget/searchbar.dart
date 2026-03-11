@@ -63,7 +63,7 @@ class Searchbar extends StatelessWidget {
                 TextButton(
                   onPressed: onPressedIcon,
                   child: Text(
-                    "16".tr,
+                    "search".tr,
                     style: TextStyle(
                       color: Color(0xff9B2501),
                       fontWeight: FontWeight.w600,

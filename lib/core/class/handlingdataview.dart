@@ -22,11 +22,11 @@ class Handlingdataview extends StatelessWidget {
     // هذا يمنع الـ Crash الناتج عن محاولة قراءة بيانات فارغة
     String getEmptyMessage() {
       final Map<String, String> routeMessages = {
-        Approute.notificationPage: "21".tr,
-        Approute.ShoppingCartPage: "19".tr,
-        Approute.myfavorite: "20".tr,
+        Approute.notificationPage: "No notifications yet".tr,
+        Approute.ShoppingCartPage: "Start shopping now".tr,
+        Approute.myfavorite: "No items in your favorites".tr,
         Approute.viewmyaddres: "لا يوجد عناوين",
-        Approute.Orders: "22".tr,
+        Approute.Orders: "You have no orders yet".tr,
       };
       print(routeMessages[Get.currentRoute]);
       // بيحاول يجيب الرسالة بناءً على الـ route، ولو مش موجودة بيرجع الرسالة الافتراضية

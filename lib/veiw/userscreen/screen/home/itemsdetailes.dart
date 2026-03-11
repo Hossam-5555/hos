@@ -6,6 +6,7 @@ import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/controler/usercontroller/home/itemsdetailscontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/linkApi.dart';
+import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/countofproduct.dart';
@@ -85,20 +86,20 @@ class Itemsdetailes extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 5),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  item.itemsDesc ?? '',
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   crossAxisAlignment: CrossAxisAlignment.start,
+                          //   children: [
+                          //     Expanded(
+                          //       child: Text(
+                          //         item.itemsDesc ?? '',
+                          //         maxLines: 2,
+                          //         overflow: TextOverflow.ellipsis,
+                          //         style: Theme.of(context).textTheme.bodySmall,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                           const SizedBox(height: 20),
 
                           // التقييم والعداد
@@ -178,7 +179,8 @@ class Itemsdetailes extends StatelessWidget {
                                 ).textTheme.headlineSmall,
                               ),
                               TextButton(
-                                onPressed: () => _showDescriptionSheet(context),
+                                onPressed: () =>
+                                    _showDescriptionSheet(context, item),
                                 child: const Text(
                                   "See More",
                                   style: TextStyle(color: Colors.blue),
@@ -186,9 +188,9 @@ class Itemsdetailes extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const Text(
-                            "هذا وصف تفصيلي للمنتج يوضح كل الخصائص والمميزات...\nGood product, perfect for daily useGood product, perfect for daily useGood product, perfect for daily useGood product, perfect for daily use.",
-                            style: TextStyle(height: 1.6),
+                          Text(
+                            "${item.itemsDesc}",
+                            style: const TextStyle(height: 1.6),
                             maxLines: 3,
                           ),
 
@@ -324,7 +326,7 @@ class Itemsdetailes extends StatelessWidget {
   }
 
   // نافذة الوصف المنبثقة
-  void _showDescriptionSheet(BuildContext context) {
+  void _showDescriptionSheet(BuildContext context, Itemsmodel item) {
     showModalBottomSheet(
       backgroundColor: Colors.grey[200],
       context: context,
@@ -335,10 +337,7 @@ class Itemsdetailes extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         height: Get.height * 0.6,
         child: SingleChildScrollView(
-          child: SmartDescriptionView(
-            rawText:
-                "هذا وصف تفصيلي للمنتج يوضح كل الخصائص والمميزات \n Good product ,perfect for daily use مع شرح كامل...",
-          ),
+          child: SmartDescriptionView(rawText: "${item.itemsDesc}"),
         ),
       ),
     );

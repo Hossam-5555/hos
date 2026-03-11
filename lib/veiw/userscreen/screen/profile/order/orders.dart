@@ -118,7 +118,7 @@ class Orders extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "${'5'.tr}#${order.ordersId}",
+                                  "${'Order numper'.tr}#${order.ordersId}",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: w * 0.04,
@@ -127,7 +127,7 @@ class Orders extends StatelessWidget {
                                 Text.rich(
                                   TextSpan(
                                     children: [
-                                      TextSpan(text: '8'.tr),
+                                      TextSpan(text: 'Total price'.tr),
                                       TextSpan(
                                         text: ":${order.ordersPrice}\$",
                                         style: TextStyle(color: Colors.green),
@@ -138,7 +138,7 @@ class Orders extends StatelessWidget {
                                 Text.rich(
                                   TextSpan(
                                     children: [
-                                      TextSpan(text: '6'.tr),
+                                      TextSpan(text: 'Payment buy'.tr),
                                       TextSpan(
                                         text: ":${payment}\$",
                                         style: TextStyle(
@@ -155,7 +155,7 @@ class Orders extends StatelessWidget {
                                 ),
 
                                 Text(
-                                  "${'7'.tr}: $status",
+                                  "${'Status'.tr}: $status",
                                   style: TextStyle(
                                     color: color,
                                     fontWeight: FontWeight.w600,

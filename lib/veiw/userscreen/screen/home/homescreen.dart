@@ -84,7 +84,7 @@ class Homescreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(2),
+                  padding: const EdgeInsets.symmetric(vertical: 2,horizontal: 5),
                   child: Homescrenaction(
                     herotag: "notification",
                     onPressed: () {

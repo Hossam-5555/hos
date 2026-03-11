@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
-import 'package:hos/core/localization/changlocal.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/veiw/userscreen/screen/profile/order/paymentmethods.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
@@ -19,7 +18,6 @@ class ProfilePage extends StatelessWidget {
     188,
     223,
   ); // لون نيلي عصري
-  final controller = Get.put(LocalController());
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +43,7 @@ class ProfilePage extends StatelessWidget {
                 Expanded(
                   child: _buildQuickActionCard(
                     icon: Icons.local_mall_outlined,
-                    title: "9".tr,
+                    title: "Orders".tr,
                     color: const Color(0xFF10B981), // أخضر عصري
                     onTap: () => Get.toNamed(Approute.Orders),
                   ),
@@ -54,7 +52,7 @@ class ProfilePage extends StatelessWidget {
                 Expanded(
                   child: _buildQuickActionCard(
                     icon: Icons.favorite_border_rounded,
-                    title: "10".tr,
+                    title: "Favorite".tr,
                     color: const Color(0xFFF43F5E), // أحمر وردي
                     onTap: () => Get.toNamed(Approute.myfavorite),
                   ),
@@ -70,7 +68,7 @@ class ProfilePage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 10, right: 5),
                 child: Text(
-                  "24".tr,
+                  "public Setting".tr,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -96,13 +94,13 @@ class ProfilePage extends StatelessWidget {
                 children: [
                   _buildListTile(
                     icon: Icons.location_on_outlined,
-                    title: "11".tr,
+                    title: "Saved Addresses".tr,
                     onTap: () => Get.toNamed(Approute.viewmyaddres),
                   ),
                   _buildDivider(),
                   _buildListTile(
                     icon: Icons.credit_card_outlined,
-                    title: "12".tr,
+                    title: "Payment Methods".tr,
                     onTap: () => Get.to(
                       () => PaymentScreen(),
                       transition: Transition.cupertino,
@@ -111,70 +109,8 @@ class ProfilePage extends StatelessWidget {
                   _buildDivider(),
 
                   _buildListTile(
-                    title: "13".tr,
-                    isLast: false,
-                    icon: Icons.language_sharp,
-                    onTap: () {
-                      //
-
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            title: Text(
-                              "13".tr,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            content: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    controller.Changelang('ar');
-                                    Navigator.pop(context);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.green,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                  ),
-                                  child: const Text("العربية"),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    controller.Changelang('en');
-                                    Navigator.pop(context);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color.fromARGB(
-                                      255,
-                                      9,
-                                      181,
-                                      194,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                  ),
-                                  child: const Text("English"),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      );
-
-                      //
-                    },
-                  ),
-                  _buildListTile(
                     icon: Icons.settings_outlined,
-                    title: "14".tr,
+                    title: "App Settings".tr,
                     isLast: true, // لإزالة الفاصل في العنصر الأخير
                     onTap: () => Get.to(
                       () => Settings(),
@@ -215,25 +151,6 @@ class ProfilePage extends StatelessWidget {
                 backgroundColor: Colors.white,
                 backgroundImage: AssetImage(Imageasset.twetter),
                 onBackgroundImageError: (_, __) {},
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.all(6),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                ),
-                child: Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: primaryColor,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.edit, color: Colors.white, size: 16),
-                ),
               ),
             ),
           ],

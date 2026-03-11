@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/addres/addrescontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
-import 'package:hos/core/conistant/appcolor.dart'; // تأكد من استدعاء ملف الألوان
+import 'package:hos/core/conistant/appcolor.dart'; 
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
@@ -15,26 +15,22 @@ class ViewMyAddres extends StatelessWidget {
     AddressController addressController = Get.put(AddressController());
     
     return Scaffold(
-      backgroundColor: Colors.grey[50], // خلفية هادئة تبرز البطاقات
+      backgroundColor: Colors.white, 
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: Appbarbackicon(herotag: '', title: "My Addresses"),
       ),
       
-      // ✨ زر الإضافة العائم بتصميم محسّن
+      // ✨ زر الإضافة العائم
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Appcolor.primaryColor,
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16), // حواف دائرية حديثة
-        ),
-        onPressed: () {
-          Get.toNamed(Approute.addnewaddres);
-        },
-        icon: const Icon(Icons.add_location_alt_rounded, color: Colors.white),
+        backgroundColor: Colors.black, 
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        onPressed: () => Get.toNamed(Approute.addnewaddres),
+        icon: const Icon(Icons.add_location_alt_outlined, color: Colors.white, size: 20),
         label: const Text(
           "Add Address",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white),
         ),
       ),
       
@@ -44,105 +40,109 @@ class ViewMyAddres extends StatelessWidget {
             statusrequest: controller.statusrequest!,
             widget: ListView.separated(
               physics: const BouncingScrollPhysics(),
-              // مسافة سفلية 80 لكي لا يغطي زر الإضافة على آخر عنصر
-              padding: const EdgeInsets.only(top: 20, left: 16, right: 16, bottom: 80), 
+              padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 80), 
               itemCount: controller.listaddresdata.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 16),
+              separatorBuilder: (context, index) => const SizedBox(height: 12), 
               itemBuilder: (context, index) {
                 final address = controller.listaddresdata[index];
                 
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
+                // 👈 هنا السحر: غلفنا الكارت بـ Dismissible
+                return Dismissible(
+                  key: Key(address.addresId.toString()), // لازم Key فريد لكل عنصر
+                  direction: DismissDirection.endToStart, // السحب من اليمين للشمال
+                  
+                  // 🗑️ الخلفية الحمراء اللي بتظهر تحت الكارت وقت السحب
+                  background: Container(
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.only(right: 20),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 146, 3, 3),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: const Icon(
+                      Icons.delete_sweep_rounded, // أيقونة شيك للحذف
+                      color: Colors.white,
+                      size: 28,
+                    ),
                   ),
-                  child: Material(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(16),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(16),
-                      onTap: () {
-                        // مكان جاهز مستقبلاً لو أردت إضافة وظيفة عند الضغط على العنوان
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // 📍 أيقونة العنوان
-                            Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: Appcolor.primaryColor.withOpacity(0.1),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.location_on_rounded,
-                                color: Appcolor.primaryColor,
-                                size: 26,
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            
-                            // 📝 تفاصيل العنوان
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    address.addresName ?? "No Name",
-                                    style: const TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87,
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  const SizedBox(height: 6),
-                                  // قمت بإضافة تفاصيل الشارع والمدينة بناءً على الكود السابق (يمكنك مسحها إذا لم تكن موجودة في الموديل هنا)
-                                  Text(
-                                    "${address.addresStreet ?? 'Tap to edit'} ${address.addresCity != null ? '- ${address.addresCity}' : ''}",
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color: Colors.grey[600],
-                                      height: 1.4,
-                                    ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            
-                            const SizedBox(width: 8),
-                            
-                            // 🗑️ زر الحذف
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.red.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: IconButton(
-                                onPressed: () {
-                                  controller.deleteAddres(address.addresId.toString());
-                                },
-                                icon: const Icon(
-                                  Icons.delete_outline_rounded,
-                                  color: Colors.red,
-                                  size: 24,
+                  
+                  // ⚡ الأكشن اللي هيحصل لما السحب يكتمل
+                  onDismissed: (direction) {
+                    controller.deleteAddres(address.addresId.toString());
+                    
+                    // اختياري: إظهار رسالة للمستخدم إن العنوان اتمسح
+                    Get.snackbar(
+                      "Deleted",
+                      "Address has been removed successfully",
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.black87,
+                      colorText: Colors.white,
+                      margin: const EdgeInsets.all(12),
+                      duration: const Duration(seconds: 2),
+                    );
+                  },
+                  
+                  // 📦 الكارت نفسه (بقى أنظف بكتير بعد ما شيلنا زرار المسح)
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(color: const Color.fromARGB(255, 119, 119, 119)),
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(15),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(15),
+                        onTap: () {
+                          // أكشن عند الضغط
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Row(
+                            children: [
+                              // 📍 أيقونة العنوان
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: Appcolor.primaryColor.withOpacity(0.08),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                                tooltip: "Delete Address",
+                                child: Icon(Icons.location_on_rounded, color: Appcolor.primaryColor, size: 24),
                               ),
-                            ),
-                          ],
+                              const SizedBox(width: 14),
+                              
+                              // 📝 تفاصيل العنوان بتاخد باقي المساحة
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      address.addresName ?? "No Name",
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.black87,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      "${address.addresStreet ?? 'Tap to edit'}${address.addresCity != null ? ' - ${address.addresCity}' : ''}",
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        color: Colors.grey.shade600,
+                                        height: 1.3,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

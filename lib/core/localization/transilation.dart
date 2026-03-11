@@ -5,77 +5,77 @@ class Mytransilation extends Translations {
   Map<String, Map<String, String>> get keys => {
     "ar": {
       //Homepage
-      "1": "اختر اللغه",
-      '2': 'متابعه',
-      "3": "الفئات",
-      "4": "عناصر جدد",
+      "Choose language": "اختر اللغه",
+      'continue': 'متابعه',
+      "Categories": "الفئات",
+      "New Items": "عناصر جدد",
 
       //Homepage
       //orderpage
-      "5": "طلب رقم ",
-      "6": " الدفع",
-      "7": "الحاله",
-      "8": "الاجمالي  ",
+      "Order numper": "طلب رقم ",
+      "Payment buy": " الدفع",
+      "Status": "الحاله",
+      "Total price": "الاجمالي  ",
       //orderpage
       //profile
-      "9": "طلباتي",
-      "10": "المفضلة",
-      "11": "العناوين",
-      "12": "طرق الدفع",
-      "13": "اللغات",
-      "14": "الاعدادات",
-      "23":"تعديل الحساب",
-      "24":"الاعدادات العامه",
+      "Orders": "طلباتي",
+      "Favorite": "المفضلة",
+      "Saved Addresses": "العناوين",
+      "Payment Methods": "طرق الدفع",
+      "Languages": "اللغات",
+      "App Settings": "الاعدادات",
+      "Edit Account":"تعديل الحساب",
+      "public Setting":"الاعدادات العامه",
       //profile
-      "15": "الاشعارات",
+      "Notifications": "الاشعارات",
       //search
-      "16": "البحث",
-      "17": "ابحث عن منتج...",
-      "18": "جنيه",
+      "search": "البحث",
+      "Search products...": "ابحث عن منتج...",
+      "EGP": "جنيه",
       //رسائل حاله الصفح الفارغه
-      "19": "ابد التسوق الان",
-      "20": "لا توجد منتجات في المفضلة",
-      "21": "لا يوجد اشعارات",
-      "22":"لم تقم بأي طلبات بعد"
+      "Start shopping now": "ابد التسوق الان",
+      "No items in your favorites": "لا توجد منتجات في المفضلة",
+      "No notifications yet": "لا يوجد اشعارات",
+      "You have no orders yet":"لم تقم بأي طلبات بعد"
       //
       
     },
 
     "en": {
       //Homepage
-      "1": " Choose language",
-      '2': 'continue',
-      '3': "Categories",
-      "4": "New Items",
+      "Choose language": "Choose language",
+      'continue': 'continue',
+      'Categories': "Categories",
+      "New Items": "New Items",
       //Homepage
 
       //orderpage
-      "5": " Order numper: ",
-      "6": " Payment buy",
-      "7": "Status",
-      "8": "Total price",
+      "Order numper": "Order numper: ",
+      "Payment buy": "Payment buy",
+      "Status": "Status",
+      "Total price": "Total price",
       //orderpage
       //profie
-      "9": "Orders",
-      "10": "Favorite",
-      "11": "Saved Addresses",
-      "12": "Payment Methods ",
-      "13": "Languages",
-      "14": "App Settings",
-      "23":"Edit Account",
-      "24":"public Setting",
+      "Orders": "Orders",
+      "Favorite": "Favorite",
+      "Saved Addresses": "Saved Addresses",
+      "Payment Methods": "Payment Methods",
+      "Languages": "Languages",
+      "App Settings": "App Settings",
+      "Edit Account":"Edit Account",
+      "public Setting":"public Setting",
       //profile
       //massage
-      "15": "Notifications",
+      "Notifications": "Notifications",
       //search
-      "16": "search",
-      "17": "Search products...",
-      "18": "EGP",
+      "search": "search",
+      "Search products...": "Search products...",
+      "EGP": "EGP",
       //رسائل حاله الصفحه فارغه '
-      "19": "Start shopping now",
-      "20": "No items in your favorites",
-      "21": "No notifications yet",
-      "22":"You have no orders yet"
+      "Start shopping now": "Start shopping now",
+      "No items in your favorites": "No items in your favorites",
+      "No notifications yet": "No notifications yet",
+      "You have no orders yet":"You have no orders yet"
     },
   };
 }

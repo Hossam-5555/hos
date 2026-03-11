@@ -39,7 +39,7 @@ class Onboarding extends StatelessWidget {
                   Dotcontroller(),
 
                   CustomButton(
-                    buttonName: '2'.tr,
+                    buttonName: 'continue'.tr,
                     width: screenWidth * 0.15, // 60% من عرض الشاشة
                     buttonColor: Appcolor.black,
                   ),

@@ -18,7 +18,7 @@ class Searchpage extends StatelessWidget {
           textInputAction: controller.textInputAction,
           onPressedIcon: controller.onsearch,
           onChanged: controller.checksearch,
-          title: "17".tr,
+          title: "Search products...".tr,
           mycontroller: controller.search!,
         ),
         leading: Hero(tag: "Search", child: BackButtonCircle()),
@@ -63,7 +63,7 @@ class Searchpage extends StatelessWidget {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            '${controller.searchlist[i].itemsPrice} ${"18".tr}',
+                            '${controller.searchlist[i].itemsPrice} ${"EGP".tr}',
                             style: TextStyle(
                               fontSize: 15,
                               color: Theme.of(context).primaryColor,

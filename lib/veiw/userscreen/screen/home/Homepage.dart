@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
 import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/linkApi.dart';
 import 'package:hos/veiw/wedget/Homepage/CurvedItemsView.dart';
 import 'package:hos/veiw/wedget/Homepage/categorieswidget.dart';
 import 'package:hos/veiw/wedget/Homepage/dicountcard.dart';
-import 'package:hos/veiw/wedget/Homepage/productListcard.dart';
 import 'package:hos/veiw/wedget/Homepage/titles.dart';
+import 'package:hos/veiw/wedget/SharedProductCard.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -45,7 +47,7 @@ class HomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         /// Categories Title
-                        Titles(title: "3".tr),
+                        Titles(title: "Categories".tr),
                         // SizedBox(height: height * 0.012),
 
                         /// Categories List
@@ -80,7 +82,7 @@ class HomePage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Titles(title: "4".tr),
+                            Titles(title: "New Items".tr),
                             TextButton.icon(
                               onPressed: () {},
                               icon: const Text("See All"),
@@ -101,26 +103,58 @@ class HomePage extends StatelessWidget {
                           physics: const NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.symmetric(
                             vertical: height * 0.01,
+                            // يفضل تحط padding أفقي بسيط هنا لو مش حاطه في الـ parent
+                            // horizontal: 16,
                           ),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 12,
-                                mainAxisSpacing: 12,
-                                childAspectRatio: 0.85,
-                              ),
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing:
+                                16, // زودنا دي شوية عشان الكروت متلزقش في بعض من فوق وتحت
+                            childAspectRatio:
+                                0.68, // 👈 التعديل الأهم عشان الكارت ياخد طول مناسب والتفاصيل تظهر براحتها
+                          ),
                           itemCount: controller.items.length,
                           itemBuilder: (context, index) {
                             final item = controller.items[index];
 
-                            return ProductListCard(
+                            return SharedProductCard(
+                              // أو ProductListCard لو حبيت تحتفظ بنفس الاسم
+                              image: "${LinkApi.imageitems}/${item.itemsImage}",
+                              title: item.itemsName ?? "بدون اسم",
+                              price:
+                                  "${item.itemsPrice} \$", // ضفنا علامة العملة
+                              rating:
+                                  4.5, // مؤقتاً لحد ما تجيب التقييم من الـ API
                               onTap: () {
                                 controller.gotoitemsdatails(item);
                               },
-                              image: "${LinkApi.imageitems}/${item.itemsImage}",
-                              title: item.itemsName ?? "",
-                              price: item.itemsPrice.toString(),
-                              rating: 4,
+
+                              // 👈 زرار الأكشن المخصص لصفحة الـ Home (زرار إضافة للسلة)
+                              actionButton: InkWell(
+                                onTap: () {
+                                  // هنا هتحط الفانكشن بتاعة إضافة المنتج للسلة
+                                  // controller.addToCart(item.itemsId.toString());
+                                },
+                                borderRadius: BorderRadius.circular(50),
+                                child: Container(
+                                  height: 32,
+                                  width: 32,
+                                  padding: const EdgeInsets.all(6),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.black, // الستايل الفخم
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: SvgPicture.asset(
+                                    Imageasset
+                                        .cart, // اتأكد إن مسار الأيقونة صح
+                                    colorFilter: const ColorFilter.mode(
+                                      Colors.white,
+                                      BlendMode.srcIn,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             );
                           },
                         ),
