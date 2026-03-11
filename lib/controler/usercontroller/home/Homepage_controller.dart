@@ -5,23 +5,24 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
-import 'package:hos/core/class/searchclass.dart';
 import 'package:hos/core/functions/handlingdata.dart';
+import 'package:hos/core/serveces/binding.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/homedata.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/veiw/userscreen/screen/home/items.dart';
+import 'package:hos/veiw/userscreen/screen/home/itemsdetailes.dart';
 import 'package:hos/veiw/wedget/Homepage/dicountcard.dart';
 
-class HomepageController extends SearchMix {
+class HomepageController extends GetxController {
   Myservisec myservisec = Get.put(Myservisec());
 
   String? username;
   List<Itemsmodel> items = [];
   List<categoriesmodel> categories = [];
+  Statusrequest statusrequest = Statusrequest.none;
 
-  @override
   Homedata homedata = Homedata(Get.find());
 
   Future<void> getdata() async {
@@ -58,6 +59,17 @@ class HomepageController extends SearchMix {
     update();
   }
 
+  void gotoitemsdatails(Itemsmodel itemsmodel) {
+    Get.to(
+      () => Itemsdetailes(),
+      binding: ItemDetailsBinding(),
+
+      transition: Transition.fadeIn,
+      curve: Curves.fastOutSlowIn,
+      duration: Duration(milliseconds: 400),
+      arguments: {"itemsmodel": itemsmodel},
+    );
+  }
   //==================================================cart
 
   final List<OfferModel> offers = [
@@ -65,19 +77,28 @@ class HomepageController extends SearchMix {
       title: 'عرض الصيف',
       description: 'اشتري قطعة واحصل على الثانية بنصف الثمن.',
       discount: 'خصم 50%',
-      colors: const [Color.fromARGB(255, 19, 3, 0), Color(0xffDD2476)], // برتقالي وزهري
+      colors: const [
+        Color.fromARGB(255, 19, 3, 0),
+        Color(0xffDD2476),
+      ], // برتقالي وزهري
     ),
     OfferModel(
       title: 'عروض التقنية',
       description: 'أفضل الخصومات على الهواتف والسماعات الذكية.',
       discount: 'خصم 30%',
-      colors: const [Color.fromARGB(255, 19, 0, 4), Color.fromARGB(255, 77, 65, 0)], // أخضر متدرج
+      colors: const [
+        Color.fromARGB(255, 19, 0, 4),
+        Color.fromARGB(255, 77, 65, 0),
+      ], // أخضر متدرج
     ),
     OfferModel(
       title: 'تصفية نهاية العام',
       description: 'لا تفوت الفرصة! الكمية محدودة جداً.',
       discount: 'خصم يصل لـ 70%',
-      colors: const [Color.fromARGB(255, 66, 2, 2), Color.fromARGB(255, 170, 57, 4)], // أزرق وبنفسجي
+      colors: const [
+        Color.fromARGB(255, 66, 2, 2),
+        Color.fromARGB(255, 170, 57, 4),
+      ], // أزرق وبنفسجي
     ),
   ];
 
@@ -88,7 +109,7 @@ class HomepageController extends SearchMix {
     timer?.cancel();
     timer = Timer.periodic(const Duration(seconds: 20), (timer) {
       currentIndex = (currentIndex + 1) % offers.length;
-      print("Hossam");
+      // print("Hossam");
       update();
     });
   }
