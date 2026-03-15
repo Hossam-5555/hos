@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -156,7 +157,7 @@ class Itemsdetailes extends StatelessWidget {
                           "${item.itemsDesc}",
                           style: TextStyle(
                             height: 1.6,
-                            color: Colors.grey.shade700,
+                            color: Colors.black,
                             fontSize: 14,
                           ),
                           maxLines: 3,
@@ -193,17 +194,7 @@ class Itemsdetailes extends StatelessWidget {
   Widget _buildBottomBar(Itemdetailscontroller controller) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: Colors.grey.shade200)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, -5),
-          ),
-        ],
-      ),
+
       child: SafeArea(
         child: Row(
           children: [
@@ -285,7 +276,7 @@ class Itemsdetailes extends StatelessWidget {
             style: const TextStyle(
               fontSize: 16,
               color: Colors.grey,
-              decoration: 
+              decoration:
                   TextDecoration.lineThrough, // الطريقة الاحترافية لشطب السعر
               decorationThickness: 1,
             ),
@@ -295,37 +286,42 @@ class Itemsdetailes extends StatelessWidget {
   }
 
   Widget _buildHotProductBadge() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: const Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.local_fire_department_rounded,
-            size: 18,
-            color: Colors.orangeAccent,
-          ),
-          SizedBox(width: 6),
-          Text(
-            "Hot Product",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
+    return Transform.rotate(
+      angle: pi / -15,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
             ),
-          ),
-        ],
+          ],
+        ),
+        child: const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.local_fire_department_rounded,
+              size: 18,
+              color: Color.fromARGB(255, 199, 67, 5),
+            ),
+            SizedBox(width: 6),
+            Center(
+              child: Text(
+                "Hot Product",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
