@@ -42,7 +42,7 @@ class CustomItemsAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(2),
+          padding: const EdgeInsets.only(right: 16, left: 4),
           child: _FilterButton(controller: controller),
         ),
       ],

@@ -34,8 +34,6 @@ class Homescreen extends StatelessWidget {
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(60),
             child: AppBar(
-              backgroundColor: Colors.white.withAlpha(200), // لون خلفية نظيف
-              elevation: 0, // إزالة الظل القديم
               scrolledUnderElevation:
                   0, // منع تغير اللون عند السكرول في Material 3
               title: const Text.rich(
@@ -58,18 +56,6 @@ class Homescreen extends StatelessWidget {
                     TextSpan(
                       text: "a",
                       style: TextStyle(color: Colors.green),
-                    ),
-                    TextSpan(
-                      text: "c",
-                      style: TextStyle(color: Colors.orange),
-                    ),
-                    TextSpan(
-                      text: "o",
-                      style: TextStyle(color: Colors.purple),
-                    ),
-                    TextSpan(
-                      text: "n",
-                      style: TextStyle(color: Colors.teal),
                     ),
                   ],
                 ),

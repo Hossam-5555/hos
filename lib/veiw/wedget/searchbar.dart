@@ -44,7 +44,7 @@ class Searchbar extends StatelessWidget {
 
           prefixIcon: Padding(
             padding: const EdgeInsets.all(12),
-            child: SvgPicture.asset(color: Colors.blueGrey,
+            child: SvgPicture.asset(color: const Color.fromARGB(255, 14, 16, 17),
               Imageasset.search,
               height: 20,
               width: 20,
@@ -52,12 +52,12 @@ class Searchbar extends StatelessWidget {
           ),
 
           suffixIcon: SizedBox(
-            width: 110,
+            width: 100,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 const SizedBox(
-                  height: 24,
+                  height: 20,
                   child: VerticalDivider(color: Colors.grey, thickness: 1),
                 ),
                 TextButton(

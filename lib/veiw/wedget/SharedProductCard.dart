@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 class SharedProductCard extends StatelessWidget {
   final String image;
@@ -30,12 +31,7 @@ class SharedProductCard extends StatelessWidget {
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: const Color.fromARGB(
-                      255,
-                      146,
-                      146,
-                      146,
-                    ).withAlpha(35),
+                color: const Color.fromARGB(255, 146, 146, 146).withAlpha(35),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Padding(
@@ -88,9 +84,9 @@ class SharedProductCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                price,
+                "${price}${"EGP".tr}",
                 style: const TextStyle(
-                  color: Colors.black,
+                  color: Colors.green,
                   fontWeight: FontWeight.w800,
                   fontSize: 14,
                 ),

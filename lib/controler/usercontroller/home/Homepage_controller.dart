@@ -74,6 +74,7 @@ class HomepageController extends GetxController {
 
   final List<OfferModel> offers = [
     OfferModel(
+      icon: Icons.ac_unit_outlined,
       title: 'عرض الصيف',
       description: 'اشتري قطعة واحصل على الثانية بنصف الثمن.',
       discount: 'خصم 50%',
@@ -83,6 +84,7 @@ class HomepageController extends GetxController {
       ], // برتقالي وزهري
     ),
     OfferModel(
+      icon: Icons.snapchat,
       title: 'عروض التقنية',
       description: 'أفضل الخصومات على الهواتف والسماعات الذكية.',
       discount: 'خصم 30%',
@@ -92,6 +94,7 @@ class HomepageController extends GetxController {
       ], // أخضر متدرج
     ),
     OfferModel(
+      icon: Icons.sports_baseball_outlined,
       title: 'تصفية نهاية العام',
       description: 'لا تفوت الفرصة! الكمية محدودة جداً.',
       discount: 'خصم يصل لـ 70%',
@@ -128,7 +131,7 @@ class HomepageController extends GetxController {
     pageController = PageController(
       initialPage: 0,
       viewportFraction:
-          0.7, // مهم جداً: هذا الرقم هو ما يظهر جزءاً من الكروت الجانبية
+          0.8, // مهم جداً: هذا الرقم هو ما يظهر جزءاً من الكروت الجانبية
     );
     getdata();
     username = myservisec.sharedPreferences.getString("username");

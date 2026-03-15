@@ -156,7 +156,7 @@ class ItemList extends GetView<ItemsControler> {
           Text(
             "${double.parse(items.itemspricediscount.toString()).toStringAsFixed(0)} EGP", // شلت الكسور عشان يبقى زي الصورة $39
             style: const TextStyle(
-              color: Colors.black,
+              color: Colors.green,
               fontWeight: FontWeight.w800,
               fontSize: 14,
             ),

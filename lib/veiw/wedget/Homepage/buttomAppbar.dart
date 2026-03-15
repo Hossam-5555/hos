@@ -57,7 +57,7 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                               style:  TextStyle(
                                 fontSize:isSelected? 12:10,
                                 fontWeight:isSelected? FontWeight.bold:FontWeight.w200,
-                                color:isSelected? Colors.black:Colors.blueGrey,
+                                color:isSelected? Colors.black:Colors.grey,
                               ),
                             ),
                           ],

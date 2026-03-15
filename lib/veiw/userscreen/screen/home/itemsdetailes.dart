@@ -5,10 +5,8 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/controler/usercontroller/home/itemsdetailscontroller.dart';
 import 'package:hos/core/conistant/appcolor.dart';
-import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/linkApi.dart';
 import 'package:hos/data/model/itemsmodel.dart';
-import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/countofproduct.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/description.dart';
@@ -22,6 +20,7 @@ class Itemsdetailes extends StatelessWidget {
     return GetBuilder<Itemdetailscontroller>(
       builder: (controller) {
         final item = controller.itemsmodel;
+        double dis = double.parse(item.itemsDiscount.toString());
 
         return Scaffold(
           backgroundColor: Colors.white,
@@ -68,11 +67,13 @@ class Itemsdetailes extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Positioned(
-                        bottom: 0,
-                        left: 20,
-                        child: _buildHotProductBadge(),
-                      ),
+                      dis != 0
+                          ? Positioned(
+                              bottom: 0,
+                              left: 20,
+                              child: _buildHotProductBadge(),
+                            )
+                          : SizedBox.shrink(),
                     ],
                   ),
 
@@ -95,6 +96,7 @@ class Itemsdetailes extends StatelessWidget {
                                 item.itemsName ?? '',
                                 style: const TextStyle(
                                   fontSize: 22,
+                                  color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   height: 1.3,
                                 ),
@@ -168,18 +170,6 @@ class Itemsdetailes extends StatelessWidget {
                   ),
                 ],
               ),
-
-              // 3. طبقة الاحتفال (تظهر فقط عند الإضافة)
-              if (controller.isadded)
-                Positioned.fill(
-                  child: IgnorePointer(
-                    child: Center(
-                      child: Animationforstatus(
-                        animationPath: Imageasset.celebiration,
-                      ),
-                    ),
-                  ),
-                ),
             ],
           ),
         );
@@ -235,7 +225,7 @@ class Itemsdetailes extends StatelessWidget {
                       Icon(Icons.shopping_bag_outlined, color: Colors.white),
                       SizedBox(width: 8),
                       Text(
-                        "إضافة للسلة",
+                        "Add to Card",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -266,7 +256,7 @@ class Itemsdetailes extends StatelessWidget {
           style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Colors.green,
           ),
         ),
         const SizedBox(width: 12),
@@ -287,11 +277,11 @@ class Itemsdetailes extends StatelessWidget {
 
   Widget _buildHotProductBadge() {
     return Transform.rotate(
-      angle: pi / -15,
+      angle: pi / -20,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.black,
+          color: Colors.grey.shade100,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
@@ -314,7 +304,7 @@ class Itemsdetailes extends StatelessWidget {
               child: Text(
                 "Hot Product",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 12,
                 ),

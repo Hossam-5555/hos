@@ -159,9 +159,9 @@ class ItemList extends GetView<Offercontroller> {
 
           // السعر
           Text(
-            "${double.parse(items.itemspricediscount.toString()).toStringAsFixed(0)} EGP",
+            "${double.parse(items.itemspricediscount.toString()).toStringAsFixed(0)} ${"EGP".tr}",
             style: const TextStyle(
-              color: Colors.black,
+              color: Colors.green,
               fontWeight: FontWeight.w800,
               fontSize: 14,
             ),

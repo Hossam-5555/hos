@@ -123,7 +123,7 @@ class HomePage extends StatelessWidget {
                               image: "${LinkApi.imageitems}/${item.itemsImage}",
                               title: item.itemsName ?? "بدون اسم",
                               price:
-                                  "${item.itemsPrice} \$", // ضفنا علامة العملة
+                                  "${item.itemsPrice} ", // ضفنا علامة العملة
                               rating:
                                   4.5, // مؤقتاً لحد ما تجيب التقييم من الـ API
                               onTap: () {

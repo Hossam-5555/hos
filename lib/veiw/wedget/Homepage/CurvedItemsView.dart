@@ -21,7 +21,7 @@ class CurvedItemsView extends StatelessWidget {
         // 2. تعيين قيمة افتراضية للـ PageController إذا لم يتم تهيئته في الكنترولر بعد
         // استخدمنا (??) بحيث إذا كان null يأخذ النسخة الافتراضية
         final PageController pageController = controller.pageController ?? 
-            PageController(initialPage: 0, viewportFraction: 0.7);
+            PageController(initialPage: 0, viewportFraction: 0.8);
 
         return SizedBox(
           height: 290,
