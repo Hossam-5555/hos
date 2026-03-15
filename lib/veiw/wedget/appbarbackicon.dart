@@ -20,7 +20,6 @@ class Appbarbackicon extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0,
-      backgroundColor: Colors.transparent, // اختياري لشكل أنظف
       actions: [if (selected == true && iconButton != null) iconButton!],
       title: Text(title, style: const TextStyle(color: Colors.black)),
       centerTitle: true,

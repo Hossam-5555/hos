@@ -24,7 +24,6 @@ class CustomItemsAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0,
-      backgroundColor: Colors.transparent,
       centerTitle: true,
       leading: const BackButtonCircle(),
       actions: [

@@ -7,7 +7,7 @@ import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class NotificationPage extends StatelessWidget {
-   NotificationPage({super.key});
+   const NotificationPage({super.key});
 
   @override
   Widget build(BuildContext context) {

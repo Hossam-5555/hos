@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 
 ThemeData themeEnglish = ThemeData(
-  scaffoldBackgroundColor:        Color(0xFFF5F6FA),
+  scaffoldBackgroundColor: Color(0xFFF5F6FA),
 
   // استخدام نظام ألوان متناسق
   colorScheme: ColorScheme.fromSeed(seedColor: Appcolor.primaryColor),
@@ -31,7 +31,7 @@ ThemeData themeEnglish = ThemeData(
     //   ),
     // ),
     centerTitle: true,
-    backgroundColor:  Color(0xFFF5F6FA),
+    backgroundColor: Colors.white,
   ),
 
   textTheme: TextTheme(
@@ -77,7 +77,7 @@ ThemeData themeEnglish = ThemeData(
 
 // for Arabic
 ThemeData themeArabic = ThemeData(
-  scaffoldBackgroundColor:  Color(0xFFF5F6FA),
+  scaffoldBackgroundColor: Color(0xFFF5F6FA),
   // استخدام نظام ألوان متناسق
   colorScheme: ColorScheme.fromSeed(seedColor: Appcolor.primaryColor),
 

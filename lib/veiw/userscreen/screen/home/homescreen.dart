@@ -34,8 +34,18 @@ class Homescreen extends StatelessWidget {
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(60),
             child: AppBar(
-              title: Text.rich(
+              backgroundColor: Colors.white.withAlpha(200), // لون خلفية نظيف
+              elevation: 0, // إزالة الظل القديم
+              scrolledUnderElevation:
+                  0, // منع تغير اللون عند السكرول في Material 3
+              title: const Text.rich(
                 TextSpan(
+                  // ستايل أساسي للكلمة كلها عشان تبان كأنها لوجو
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 1.2,
+                  ),
                   children: [
                     TextSpan(
                       text: "A",
@@ -65,8 +75,9 @@ class Homescreen extends StatelessWidget {
                 ),
               ),
               actions: [
+                // زر البحث
                 Padding(
-                  padding: const EdgeInsets.all(2),
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
                   child: Homescrenaction(
                     herotag: "Search",
                     onPressed: () {
@@ -78,13 +89,18 @@ class Homescreen extends StatelessWidget {
                     },
                     child: SvgPicture.asset(
                       Imageasset.search,
-                      height: 25,
-                      width: 25,
+                      height: 24, // توحيد الحجم
+                      width: 24,
                     ),
                   ),
                 ),
+
+                // زر الإشعارات
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 2,horizontal: 5),
+                  padding: const EdgeInsets.only(
+                    right: 16,
+                    left: 4,
+                  ), // مسافة ممتازة من الحافة
                   child: Homescrenaction(
                     herotag: "notification",
                     onPressed: () {
@@ -96,18 +112,22 @@ class Homescreen extends StatelessWidget {
                     },
                     child: GetBuilder<Notificationcontroller>(
                       builder: (controller) {
+                        // نتحقق إذا كان فيه إشعارات ولا لأ
+                        bool hasUnread = controller.notificationlist.isNotEmpty;
+
                         return Badge(
-                          alignment: Alignment.topRight,
-                          smallSize: 5,
-                          largeSize: 5, // حجم النقطة مثل انستجرام
-                          backgroundColor: Colors.red,
-                          label: controller.notificationlist.isNotEmpty
-                              ? const SizedBox()
-                              : null,
+                          isLabelVisible:
+                              hasUnread, // دي الطريقة الصح لإخفاء البادج
+                          alignment: const Alignment(
+                            0.6,
+                            -0.6,
+                          ), // تظبيط مكان النقطة على الأيقونة
+                          smallSize: 9, // حجم النقطة مناسب للعين
+                          backgroundColor: Colors.redAccent,
                           child: SvgPicture.asset(
                             Imageasset.notification,
-                            height: 25,
-                            width: 25,
+                            height: 24, // توحيد الحجم
+                            width: 24,
                           ),
                         );
                       },

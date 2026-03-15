@@ -14,9 +14,7 @@ class Searchpage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // خلفية بيضاء لستايل نظيف
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 0,
         title: Searchbar(
           focusNode: controller.focusNode,
