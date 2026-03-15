@@ -44,7 +44,12 @@ class ItemList extends GetView<ItemsControler> {
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 182, 182, 182), // لون رمادي فاتح مطابق للصورة
+                color: const Color.fromARGB(
+                      255,
+                      146,
+                      146,
+                      146,
+                    ).withAlpha(35), // لون رمادي فاتح مطابق للصورة
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Stack(
