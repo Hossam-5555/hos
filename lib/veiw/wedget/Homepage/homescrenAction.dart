@@ -21,12 +21,12 @@ class Homescrenaction extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
-            BoxShadow(
-              blurRadius: 1,
-              color: const Color.fromARGB(255, 196, 196, 196).withAlpha(60),
-              offset: const Offset(1, 2),
-            ),
-          ],
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 5,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
           shape: BoxShape.circle,
         ),
         child: MaterialButton(
