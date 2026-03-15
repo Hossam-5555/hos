@@ -31,7 +31,7 @@ ThemeData themeEnglish = ThemeData(
     //   ),
     // ),
     centerTitle: true,
-    backgroundColor: Colors.white,
+    backgroundColor: Color(0xFFF5F6FA),
   ),
 
   textTheme: TextTheme(
