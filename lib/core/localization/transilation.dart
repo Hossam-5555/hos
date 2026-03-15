@@ -9,6 +9,8 @@ class Mytransilation extends Translations {
       'continue': 'متابعه',
       "Categories": "الفئات",
       "New Items": "عناصر جدد",
+      "product": "المنتجات",
+      "Description":"الوصف",
 
       //Homepage
       //orderpage
@@ -24,8 +26,9 @@ class Mytransilation extends Translations {
       "Payment Methods": "طرق الدفع",
       "Languages": "اللغات",
       "App Settings": "الاعدادات",
-      "Edit Account":"تعديل الحساب",
-      "public Setting":"الاعدادات العامه",
+      "Edit Account": "تعديل الحساب",
+      "public Setting": "الاعدادات العامه",
+      "Logout": "تسجيل الخروج",
       //profile
       "Notifications": "الاشعارات",
       //search
@@ -36,9 +39,9 @@ class Mytransilation extends Translations {
       "Start shopping now": "ابد التسوق الان",
       "No items in your favorites": "لا توجد منتجات في المفضلة",
       "No notifications yet": "لا يوجد اشعارات",
-      "You have no orders yet":"لم تقم بأي طلبات بعد"
+      "You have no orders yet": "لم تقم بأي طلبات بعد",
+
       //
-      
     },
 
     "en": {
@@ -47,6 +50,8 @@ class Mytransilation extends Translations {
       'continue': 'continue',
       'Categories': "Categories",
       "New Items": "New Items",
+      "product": "product",
+      "Description":"Description",
       //Homepage
 
       //orderpage
@@ -62,8 +67,9 @@ class Mytransilation extends Translations {
       "Payment Methods": "Payment Methods",
       "Languages": "Languages",
       "App Settings": "App Settings",
-      "Edit Account":"Edit Account",
-      "public Setting":"public Setting",
+      "Edit Account": "Edit Account",
+      "public Setting": "public Setting",
+      "Logout": "Logout",
       //profile
       //massage
       "Notifications": "Notifications",
@@ -75,7 +81,7 @@ class Mytransilation extends Translations {
       "Start shopping now": "Start shopping now",
       "No items in your favorites": "No items in your favorites",
       "No notifications yet": "No notifications yet",
-      "You have no orders yet":"You have no orders yet"
+      "You have no orders yet": "You have no orders yet",
     },
   };
 }

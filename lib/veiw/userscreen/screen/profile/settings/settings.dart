@@ -173,10 +173,7 @@ class Settings extends StatelessWidget {
 
                 ListTile(
                   leading: const Icon(Icons.logout, color: Colors.red),
-                  title: const Text(
-                    'تسجيل الخروج',
-                    style: TextStyle(color: Colors.red),
-                  ),
+                  title: Text('Logout'.tr, style: TextStyle(color: Colors.red)),
                   onTap: () {
                     controller.logout();
                   },
@@ -197,6 +194,7 @@ class Settings extends StatelessWidget {
     required List<Widget> children,
   }) {
     return Card(
+      color: Colors.white,
       elevation: 20,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       child: Column(

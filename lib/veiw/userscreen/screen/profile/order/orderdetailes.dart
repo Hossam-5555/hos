@@ -63,13 +63,9 @@ class Orderdetailes extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 20),
-                const Text(
-                  "المنتجات",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
+                Text(
+                  "product".tr,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10),
 
@@ -94,7 +90,9 @@ class Orderdetailes extends StatelessWidget {
                             color: Colors.blue[50],
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Image.network( "${LinkApi.imageitems}/${item.itemsImage}"),
+                          child: Image.network(
+                            "${LinkApi.imageitems}/${item.itemsImage}",
+                          ),
                         ),
                         title: Text(
                           "${item.itemsName}",
@@ -131,50 +129,144 @@ class Orderdetailes extends StatelessWidget {
   // --- Widgets مساعدة للتصميم ---
 
   // ودجت لعرض الحالة بشكل جميل
+  // 1. ودجت عرض الحالة وشريط التقدم
   Widget _buildStatusSection(
     String status,
     Color statusColor,
     String statusText,
   ) {
-    // تحديد لون الحالة بناءً على النص
+    // تحويل رقم الحالة إلى integer
+    // لو فشل التحويل أو كانت الحالة (أرشيف)، هنعتبرها خارج نطاق التتبع العادي
+    int currentStep = int.tryParse(status) ?? -1;
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withAlpha(26), // 0.1 * 255 = 26
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.shade200),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "حالة الطلب",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          // --- الجزء العلوي: العنوان وبادج الحالة الحالية ---
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Status".tr,
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: statusColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: statusColor.withOpacity(0.3)),
+                ),
+                child: Text(
+                  statusText.tr,
+                  style: TextStyle(color: statusColor, fontWeight: FontWeight.bold, fontSize: 13),
+                ),
+              ),
+            ],
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: statusColor.withAlpha(26), // 0.1 * 255 = 26
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: statusColor.withAlpha(128),
-              ), // 0.5 * 255 = 128
+          
+          // --- الجزء السفلي: شريط التقدم (يظهر فقط للحالات من 0 إلى 4) ---
+          if (currentStep >= 0 && currentStep <= 4) ...[
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Divider(height: 1, thickness: 0.5),
             ),
-            child: Text(
-              statusText,
-              style: TextStyle(color: statusColor, fontWeight: FontWeight.bold),
-            ),
-          ),
+            _buildTimeline(currentStep),
+          ]
         ],
       ),
+    );
+  }
+
+  // 2. دالة بناء شريط التقدم بناءً على الـ 5 حالات
+  Widget _buildTimeline(int currentStep) {
+    // ربطنا كل رقم حالة بالأيقونة والاسم بتاعها من الكود بتاعك
+    final List<Map<String, dynamic>> steps = [
+      {"icon": Icons.receipt_long_rounded, "label": "قيد الانتظار"}, // 0
+      {"icon": Icons.thumb_up_alt_rounded, "label": "تم التأكيد"},   // 1
+      {"icon": Icons.inventory_2_rounded, "label": "يجهز"},         // 2
+      {"icon": Icons.local_shipping_rounded, "label": "في الطريق"}, // 3
+      {"icon": Icons.check_circle_rounded, "label": "مكتمل"},       // 4
+    ];
+
+    // نستخدم لون موحد (مثل الأخضر أو الأزرق) لتمثيل "الخطوات المكتملة" في الشريط
+    const Color activeColor = Colors.green; 
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: List.generate(steps.length, (index) {
+        bool isCompleted = index <= currentStep; // هل الخطوة دي خلصت أو إحنا فيها؟
+        bool isLast = index == steps.length - 1; // هل دي آخر خطوة؟
+        bool isFirst = index == 0; // هل دي أول خطوة؟
+
+        return Expanded(
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  // الخط الأيسر (مخفي لأول خطوة عشان مفيش حاجة قبلها)
+                  Expanded(
+                    child: Container(
+                      height: 3,
+                      color: isFirst
+                          ? Colors.transparent
+                          : (isCompleted ? activeColor : Colors.grey.shade200),
+                    ),
+                  ),
+                  
+                  // الدائرة والأيقونة
+                  Container(
+                    padding: const EdgeInsets.all(6), // صغرنا البادينج عشان الـ 5 خطوات يكفوا
+                    decoration: BoxDecoration(
+                      color: isCompleted ? activeColor : Colors.grey.shade100,
+                      shape: BoxShape.circle,
+                      border: isCompleted
+                          ? Border.all(color: activeColor.withOpacity(0.3), width: 3)
+                          : null,
+                    ),
+                    child: Icon(
+                      steps[index]["icon"],
+                      size: 16, // صغرنا الأيقونة شوية
+                      color: isCompleted ? Colors.white : Colors.grey.shade400,
+                    ),
+                  ),
+                  
+                  // الخط الأيمن (مخفي لآخر خطوة عشان مفيش حاجة بعدها)
+                  Expanded(
+                    child: Container(
+                      height: 3,
+                      color: isLast
+                          ? Colors.transparent
+                          : (index < currentStep ? activeColor : Colors.grey.shade200),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              
+              // نص الخطوة
+              Text(
+                (steps[index]["label"] as String).tr, // لدعم الترجمة لو ضفتهم في ملفات اللغة
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 10, // خط صغير مناسب لـ 5 عناصر جنب بعض
+                  fontWeight: isCompleted ? FontWeight.bold : FontWeight.w500,
+                  color: isCompleted ? Colors.black87 : Colors.grey.shade400,
+                  height: 1.2,
+                ),
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 
@@ -211,10 +303,13 @@ class Orderdetailes extends StatelessWidget {
               Container(
                 child: Row(
                   children: [
-                    Icon(Icons.location_on_outlined, color: Colors.redAccent),
+                    Icon(
+                      Icons.location_on_outlined,
+                      color: const Color.fromARGB(255, 11, 151, 231),
+                    ),
                     SizedBox(width: 8),
                     Text(
-                      "عنوان التوصيل",
+                      "Address",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -273,8 +368,8 @@ class Orderdetailes extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                "الإجمالي الكلي",
+              Text(
+                "Total price".tr,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Text(
