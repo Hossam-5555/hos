@@ -60,6 +60,11 @@ class Orders extends StatelessWidget {
                           blurRadius: 6,
                           offset: Offset(0, 3),
                         ),
+                           BoxShadow(
+                          color: Colors.black.withAlpha(13), // 0.05 * 255 = 13
+                          blurRadius: 6,
+                          offset: Offset(0, 3),
+                        ),
                       ],
                     ),
 

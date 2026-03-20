@@ -17,8 +17,11 @@ Widget buildCartItemCard(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(color: const Color.fromARGB(255, 46, 45, 45).withAlpha(140), offset: Offset(0, 00.4)),
+        ],
         // استخدام حد خفيف جداً بدل الظل (Shadow) لشكل أنظف
-        border: Border.all(color: Colors.grey.shade200), 
+        border: Border.all(color: Colors.grey.shade500.withAlpha(70)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -31,19 +34,18 @@ Widget buildCartItemCard(
               color: const Color(0xFFF4F5F7), // الرمادي الفاتح
               borderRadius: BorderRadius.circular(12),
             ),
-            padding: const EdgeInsets.all(8), // مسافة داخلية عشان الصورة متلمسش الحواف
+            padding: const EdgeInsets.all(
+              8,
+            ), // مسافة داخلية عشان الصورة متلمسش الحواف
             child: Image.network(
               "${LinkApi.imageitems}/${cart.itemsImage}",
               fit: BoxFit.contain, // يضمن إن الصورة تظهر كاملة بدون قص
-              errorBuilder: (context, error, stackTrace) => const Icon(
-                Icons.broken_image_rounded,
-                color: Colors.grey,
-              ),
+              errorBuilder: (context, error, stackTrace) =>
+                  const Icon(Icons.broken_image_rounded, color: Colors.grey),
             ),
           ),
-          
+
           const SizedBox(width: 16), // مسافة بين الصورة والتفاصيل
-          
           /// 2. تفاصيل المنتج (الاسم، السعر، التحكم في الكمية)
           Expanded(
             child: Column(
@@ -61,9 +63,9 @@ Widget buildCartItemCard(
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                
+
                 const SizedBox(height: 12),
-                
+
                 // صف يجمع بين السعر والكمية
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -73,18 +75,21 @@ Widget buildCartItemCard(
                       '${double.parse(controller.data[i].totalprice.toString()).toStringAsFixed(2)} \$',
                       style: const TextStyle(
                         fontSize: 16,
-                        color: Colors.black, // الأسود بيدي فخامة أكتر من اللون الأساسي هنا
+                        color: Colors
+                            .black, // الأسود بيدي فخامة أكتر من اللون الأساسي هنا
                         fontWeight: FontWeight.w800,
                       ),
                     ),
-                    
+
                     // أزرار التحكم في الكمية (شكل كبسولة)
                     Container(
                       height: 36,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: Colors.grey.shade300),
-                        borderRadius: BorderRadius.circular(20), // شكل بيضاوي أنيق
+                        borderRadius: BorderRadius.circular(
+                          20,
+                        ), // شكل بيضاوي أنيق
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -92,13 +97,20 @@ Widget buildCartItemCard(
                           // زرار الناقص (-)
                           IconButton(
                             padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-                            icon: const Icon(Icons.remove_rounded, size: 18, color: Colors.black),
+                            constraints: const BoxConstraints(
+                              minWidth: 36,
+                              minHeight: 36,
+                            ),
+                            icon: const Icon(
+                              Icons.remove_rounded,
+                              size: 18,
+                              color: Colors.black,
+                            ),
                             onPressed: () {
                               controller.decrement(cart.itemsId!);
                             },
                           ),
-                          
+
                           // الكمية
                           Text(
                             '${controller.data[i].cartCount}',
@@ -108,12 +120,19 @@ Widget buildCartItemCard(
                               color: Colors.black,
                             ),
                           ),
-                          
+
                           // زرار الزائد (+)
                           IconButton(
                             padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-                            icon: const Icon(Icons.add_rounded, size: 18, color: Colors.black),
+                            constraints: const BoxConstraints(
+                              minWidth: 36,
+                              minHeight: 36,
+                            ),
+                            icon: const Icon(
+                              Icons.add_rounded,
+                              size: 18,
+                              color: Colors.black,
+                            ),
                             onPressed: () {
                               controller.increment(cart.itemsId!.toString());
                             },

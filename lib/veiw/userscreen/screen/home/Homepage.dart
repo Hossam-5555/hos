@@ -74,8 +74,7 @@ class HomePage extends StatelessWidget {
                         SizedBox(height: height * 0.02),
 
                         /// Curved Items
-                        const CurvedItemsView(),
-
+                        // const CurvedItemsView(),
                         SizedBox(height: height * 0.025),
 
                         /// New Offers Header
@@ -122,8 +121,7 @@ class HomePage extends StatelessWidget {
                               // أو ProductListCard لو حبيت تحتفظ بنفس الاسم
                               image: "${LinkApi.imageitems}/${item.itemsImage}",
                               title: item.itemsName ?? "بدون اسم",
-                              price:
-                                  "${item.itemsPrice} ", // ضفنا علامة العملة
+                              price: "${item.itemsPrice} ", // ضفنا علامة العملة
                               rating:
                                   4.5, // مؤقتاً لحد ما تجيب التقييم من الـ API
                               onTap: () {
@@ -158,8 +156,88 @@ class HomePage extends StatelessWidget {
                             );
                           },
                         ),
+                        SizedBox(height: height * 0.02),
 
-                        SizedBox(height: height * 0.015),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Titles(title: "Most Sale".tr),
+                            TextButton.icon(
+                              onPressed: () {},
+                              icon: const Text("See All"),
+                              label: const Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                              ),
+                              style: TextButton.styleFrom(
+                                foregroundColor: Appcolor.primaryColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: height * 0.02),
+
+                        const CurvedItemsView(),
+
+                        SizedBox(height: height * 0.015),  GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.symmetric(
+                            vertical: height * 0.01,
+                            // يفضل تحط padding أفقي بسيط هنا لو مش حاطه في الـ parent
+                            // horizontal: 16,
+                          ),
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing:
+                                16, // زودنا دي شوية عشان الكروت متلزقش في بعض من فوق وتحت
+                            childAspectRatio:
+                                0.68, // 👈 التعديل الأهم عشان الكارت ياخد طول مناسب والتفاصيل تظهر براحتها
+                          ),
+                          itemCount: controller.items.length,
+                          itemBuilder: (context, index) {
+                            final item = controller.items[index];
+
+                            return SharedProductCard(
+                              // أو ProductListCard لو حبيت تحتفظ بنفس الاسم
+                              image: "${LinkApi.imageitems}/${item.itemsImage}",
+                              title: item.itemsName ?? "بدون اسم",
+                              price: "${item.itemsPrice} ", // ضفنا علامة العملة
+                              rating:
+                                  4.5, // مؤقتاً لحد ما تجيب التقييم من الـ API
+                              onTap: () {
+                                controller.gotoitemsdatails(item);
+                              },
+
+                              // 👈 زرار الأكشن المخصص لصفحة الـ Home (زرار إضافة للسلة)
+                              actionButton: InkWell(
+                                onTap: () {
+                                  // هنا هتحط الفانكشن بتاعة إضافة المنتج للسلة
+                                  // controller.addToCart(item.itemsId.toString());
+                                },
+                                borderRadius: BorderRadius.circular(50),
+                                child: Container(
+                                  height: 32,
+                                  width: 32,
+                                  padding: const EdgeInsets.all(6),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.black, // الستايل الفخم
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: SvgPicture.asset(
+                                    Imageasset
+                                        .cart, // اتأكد إن مسار الأيقونة صح
+                                    colorFilter: const ColorFilter.mode(
+                                      Colors.white,
+                                      BlendMode.srcIn,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ),

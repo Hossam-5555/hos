@@ -195,7 +195,7 @@ class Settings extends StatelessWidget {
   }) {
     return Card(
       color: Colors.white,
-      elevation: 20,
+      elevation: 5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

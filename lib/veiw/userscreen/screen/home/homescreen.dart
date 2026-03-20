@@ -34,6 +34,7 @@ class Homescreen extends StatelessWidget {
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(60),
             child: AppBar(
+              centerTitle: false,
               scrolledUnderElevation:
                   0, // منع تغير اللون عند السكرول في Material 3
               title: const Text.rich(
@@ -126,7 +127,7 @@ class Homescreen extends StatelessWidget {
 
           // ============= تعديل مكان الـ BottomAppbar =================
           bottomNavigationBar: Container(
-            margin: EdgeInsets.only(left: 15, right: 15, bottom: 12),
+            margin: EdgeInsets.only(left: 15, right: 15, bottom: 5),
             child: Buttomappbar(),
           ),
           body: IndexedStack(

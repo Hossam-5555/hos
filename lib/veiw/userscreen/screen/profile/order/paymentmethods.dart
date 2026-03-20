@@ -32,7 +32,7 @@ class PaymentScreen extends StatelessWidget {
                 backgroundColor: Colors.black, // لون أسود فخم
                 elevation: 0,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(40),
                 ),
               ),
               onPressed: controller.addpayment,
