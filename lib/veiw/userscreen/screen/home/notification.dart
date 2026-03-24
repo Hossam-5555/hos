@@ -7,11 +7,10 @@ import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class NotificationPage extends StatelessWidget {
-   const NotificationPage({super.key});
+  const NotificationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     final double screenWidth = Get.width;
     final double screenHeight = Get.height;
 
@@ -31,7 +30,11 @@ class NotificationPage extends StatelessWidget {
                 icon: const Icon(Icons.delete),
                 onPressed: controller.deleteSelected,
               ),
-              onPressed: controller.closeselected,
+              onPressed: controller.selectionMode
+                  ? controller.closeselected
+                  : () {
+                      Navigator.of(context).pop();
+                    },
             );
           },
         ),
@@ -52,7 +55,7 @@ class NotificationPage extends StatelessWidget {
                   vertical: screenHeight * 0.01,
                 ),
                 // إذا تحميل نعرض 6 عناصر وهمية، وإلا نعرض طول القائمة الحقيقي
-                itemCount: isLoading ? 6 : controller.notificationlist.length,
+                itemCount: isLoading ? 4 : controller.notificationlist.length,
                 itemBuilder: (context, index) {
                   // -- متغيرات العرض --
                   String title;
@@ -69,7 +72,7 @@ class NotificationPage extends StatelessWidget {
                     final item = controller.notificationlist[index];
                     id = item.notificationId.toString();
                     title = item.notificationTitle ?? 'بدون عنوان';
-                    body = item.notificationBody?? 'بدون محتوى';
+                    body = item.notificationBody ?? 'بدون محتوى';
                   }
 
                   return GestureDetector(
