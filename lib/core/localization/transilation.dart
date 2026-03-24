@@ -10,14 +10,15 @@ class Mytransilation extends Translations {
       "Categories": "الفئات",
       "New Items": "عناصر جدد",
       "product": "المنتجات",
-      "Description":"الوصف",
-
+      "Description": "الوصف",
+      "Proceed to Checkout": "اتمام الشراء",
       //Homepage
       //orderpage
       "Order numper": "طلب رقم ",
       "Payment buy": " الدفع",
       "Status": "الحاله",
       "Total price": "الاجمالي  ",
+      "Discount": "الخصم",
       //orderpage
       //profile
       "Orders": "طلباتي",
@@ -51,7 +52,9 @@ class Mytransilation extends Translations {
       'Categories': "Categories",
       "New Items": "New Items",
       "product": "product",
-      "Description":"Description",
+      "Description": "Description",
+      "Discount": "Discount",
+      "Proceed to Checkout": "Proceed to Checkout",
       //Homepage
 
       //orderpage

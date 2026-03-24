@@ -149,6 +149,7 @@ class Settings extends StatelessWidget {
                   onTap: () {
                     Get.to(
                       EnglishAbout(),
+                      curve: Curves.easeInOut,
                       transition: Transition.fade,
                       duration: Duration(milliseconds: 400),
                     );

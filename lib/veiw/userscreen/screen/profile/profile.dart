@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/serveces/myservisec.dart';
-import 'package:hos/veiw/userscreen/screen/profile/order/paymentmethods.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -98,15 +97,15 @@ class ProfilePage extends StatelessWidget {
                     onTap: () => Get.toNamed(Approute.viewmyaddres),
                   ),
                   _buildDivider(),
-                  _buildListTile(
-                    icon: Icons.credit_card_outlined,
-                    title: "Payment Methods".tr,
-                    onTap: () => Get.to(
-                      () => PaymentScreen(),
-                      transition: Transition.cupertino,
-                    ),
-                  ),
-                  _buildDivider(),
+                  // _buildListTile(
+                  //   icon: Icons.credit_card_outlined,
+                  //   title: "Payment Methods".tr,
+                  //   onTap: () => Get.to(
+                  //     () => PaymentScreen(),
+                  //     transition: Transition.cupertino,
+                  //   ),
+                  // ),
+                  // _buildDivider(),
 
                   _buildListTile(
                     icon: Icons.settings_outlined,

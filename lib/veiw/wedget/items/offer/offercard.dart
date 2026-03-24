@@ -49,34 +49,30 @@ class ItemList extends GetView<Offercontroller> {
                 children: [
                   // صورة المنتج
                   Center(
-                    child: Hero(
-                      // ضفنا كلمة offer عشان الـ tag يكون مميز وميضربش مع tag المنتجات العادية
-                      tag: 'offer_${items.itemsId}', 
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Image.network(
-                          "${LinkApi.imageitems}/${items.itemsImage}",
-                          fit: BoxFit.contain,
-                          errorBuilder: (context, error, stackTrace) => const Icon(
-                            Icons.broken_image_rounded,
-                            size: 40,
-                            color: Colors.grey,
-                          ),
-                          // حافظنا على مؤشر التحميل بتاعك لأنه ممتاز للـ UX
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes != null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
-                                strokeWidth: 2,
-                                color: Colors.grey.shade400,
-                              ),
-                            );
-                          },
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Image.network(
+                        "${LinkApi.imageitems}/${items.itemsImage}",
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) => const Icon(
+                          Icons.broken_image_rounded,
+                          size: 40,
+                          color: Colors.grey,
                         ),
+                        // حافظنا على مؤشر التحميل بتاعك لأنه ممتاز للـ UX
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                              strokeWidth: 2,
+                              color: Colors.grey.shade400,
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ),

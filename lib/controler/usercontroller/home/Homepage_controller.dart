@@ -64,8 +64,8 @@ class HomepageController extends GetxController {
       () => Itemsdetailes(),
       binding: ItemDetailsBinding(),
 
-      transition: Transition.fadeIn,
-      curve: Curves.fastOutSlowIn,
+      transition: Transition.fade,
+      curve: Curves.easeInOutQuint,
       duration: Duration(milliseconds: 400),
       arguments: {"itemsmodel": itemsmodel},
     );

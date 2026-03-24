@@ -39,11 +39,11 @@ class BuildOrderSummary extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'الإجمالي',
+                'Total price'.tr,
                 style: TextStyle(fontSize: width * 0.04, color: Colors.grey),
               ),
               Text(
-                '${controller.totalprice} جنيه',
+                '${controller.totalprice}${" EGP".tr}',
                 style: TextStyle(
                   fontSize: width * 0.045,
                   fontWeight: FontWeight.bold,
@@ -58,7 +58,7 @@ class BuildOrderSummary extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'الخصم',
+                'Discount'.tr,
                 style: TextStyle(fontSize: width * 0.04, color: Colors.grey),
               ),
               Text(
@@ -83,7 +83,7 @@ class BuildOrderSummary extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'المجموع الكلي',
+                'Total price'.tr,
                 style: TextStyle(
                   fontSize: width * 0.048,
                   fontWeight: FontWeight.bold,
@@ -107,7 +107,7 @@ class BuildOrderSummary extends StatelessWidget {
                     curve: Curves.easeOut,
                     builder: (context, value, child) {
                       return Text(
-                        '${value.toStringAsFixed(0)} جنيه',
+                        '${value.toStringAsFixed(0)}${" EGP".tr}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
@@ -127,19 +127,19 @@ class BuildOrderSummary extends StatelessWidget {
           // زر إتمام الشراء
           Row(
             children: [
-              // Container(
-              //   height: height * 0.07,
-              //   width: height * 0.07,
-              //   decoration: BoxDecoration(
-              //     shape: BoxShape.circle,
-              //     color: const Color.fromARGB(255, 146, 146, 146).withAlpha(35),
-              //   ),
-              //   child: const Icon(
-              //     Icons.shopify_outlined,
-              //     color: Colors.black,
-              //     size: 24,
-              //   ),
-              // ),
+              Container(
+                height: height * 0.07,
+                width: height * 0.07,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: const Color.fromARGB(255, 146, 146, 146).withAlpha(35),
+                ),
+                child: const Icon(
+                  Icons.shopify_outlined,
+                  color: Colors.black,
+                  size: 24,
+                ),
+              ),
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
@@ -162,7 +162,7 @@ class BuildOrderSummary extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  child: const Text('إتمام الشراء'),
+                  child: Text('Proceed to Checkout'.tr),
                 ),
               ),
             ],
