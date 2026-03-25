@@ -12,7 +12,9 @@ class Crud {
     Map data,
   ) async {
     try {
-      if (await checkinterner()) {
+      if (true
+        // await checkinterner()
+        ) {
         var response = await http.post(Uri.parse(linkUrl), body: data);
 
         if (response.statusCode == 200 || response.statusCode == 201) {

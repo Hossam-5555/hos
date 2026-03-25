@@ -15,8 +15,8 @@ class Checkout extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6F9), // خلفية عصرية رمادي فاتح
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(65),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(65),
         child: Appbarbackicon(herotag: '', title: "إتمام الطلب"),
       ),
       // دمجنا شريط الدفع السفلي ليكون عائم وشيك

@@ -30,11 +30,7 @@ class NotificationPage extends StatelessWidget {
                 icon: const Icon(Icons.delete),
                 onPressed: controller.deleteSelected,
               ),
-              onPressed: controller.selectionMode
-                  ? controller.closeselected
-                  : () {
-                      Navigator.of(context).pop();
-                    },
+              onPressed: controller.closeselected,
             );
           },
         ),

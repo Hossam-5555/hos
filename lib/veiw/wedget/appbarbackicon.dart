@@ -48,7 +48,13 @@ class Appbarbackicon extends StatelessWidget implements PreferredSizeWidget {
                 // ضروري جداً داخل Hero عشان الـ Splash يظهر صح
                 color: Colors.transparent,
                 child: IconButton(
-                  onPressed: onPressed,
+                  onPressed: () {
+                    if (selected == true) {
+                      onPressed;
+                    } else {
+                      Navigator.of(context).pop();
+                    }
+                  },
                   icon: Icon(
                     selected == true ? Icons.close : Icons.arrow_back_ios_sharp,
                     color: Colors.black,
