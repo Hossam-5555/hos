@@ -61,8 +61,7 @@ class OfferCard extends StatelessWidget {
   final List<Color> colors; // <- إضافة متغير الألوان
   final VoidCallback onTap;
   final Widget icon;
-
-  const OfferCard({
+   const OfferCard({
     super.key,
     required this.title,
     required this.description,

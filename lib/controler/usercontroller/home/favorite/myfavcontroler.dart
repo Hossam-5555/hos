@@ -11,7 +11,7 @@ class Myfavcontroler extends SearchMix {
   // ignore: overridden_fields
   late Statusrequest statusrequest;
   List<myfavoritemodel> data = [];
-   RxInt get datacount => data.length.obs;
+  RxInt get datacount => data.length.obs;
 
   addfavdata favdata = addfavdata(Get.find());
   Myservisec myservisec = Get.find();
@@ -36,6 +36,7 @@ class Myfavcontroler extends SearchMix {
 
     update();
   }
+
 
   //الحذف من صفحه المفضله
   void deletefromfavpage(String favoriteid) {

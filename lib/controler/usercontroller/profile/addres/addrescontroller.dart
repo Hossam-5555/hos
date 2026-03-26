@@ -71,7 +71,7 @@ class AddressController extends GetxController {
       if (response['status'] == 'success') {
         // تحديث القائمة بعد الإضافة
         await viewaddres();
-       if (Get.isRegistered<Checkoutcontroller>()) {
+        if (Get.isRegistered<Checkoutcontroller>()) {
           Checkoutcontroller controller = Get.find<Checkoutcontroller>();
           await controller.getaddress();
         }
@@ -96,9 +96,9 @@ class AddressController extends GetxController {
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'success') {
         List data = response['data'];
-
         // تنظيف القائمة قبل الإضافة
         listaddresdata.clear();
+
         listaddresdata.addAll(data.map((e) => Addresmodel.fromJson(e)));
 
         if (listaddresdata.isEmpty) {
@@ -111,13 +111,28 @@ class AddressController extends GetxController {
     update();
   }
 
-  // deleteAddres
+  final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
+
   void deleteAddres(String addresid) {
+    // 🔹 نجيب index الصح
+    int index = listaddresdata.indexWhere(
+      (e) => e.addresId.toString() == addresid,
+    );
+
+    if (index == -1) return;
+
+    // 🔹 نحذف من الليست مباشرة
+    listaddresdata.removeAt(index);
+
+    // 🔹 استدعاء API للحذف
     addresdata.deleteAddresdata(addresid);
-    listaddresdata.removeWhere((e) => e.addresId.toString() == addresid);
+
+    // 🔹 حالة الليست فاضية
     if (listaddresdata.isEmpty) {
       statusrequest = Statusrequest.failure;
     }
+
+    // 🔹 تحديث الواجهة
     update();
   }
 

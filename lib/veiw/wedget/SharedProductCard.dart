@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
@@ -65,7 +66,11 @@ class SharedProductCard extends StatelessWidget {
           /// 3. التقييم
           Row(
             children: [
-              const Icon(Icons.star_rounded, size: 16, color: Colors.amber),
+              const Icon(
+                Icons.star_rounded,
+                size: 16,
+                color: Colors.amber,
+              ),
               const SizedBox(width: 4),
               Text(
                 rating.toString(),

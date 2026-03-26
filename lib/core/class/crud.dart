@@ -12,8 +12,8 @@ class Crud {
     Map data,
   ) async {
     try {
-      if (true
-        // await checkinterner()
+      if (
+        await checkinterner()
         ) {
         var response = await http.post(Uri.parse(linkUrl), body: data);
 

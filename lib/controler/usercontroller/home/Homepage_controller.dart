@@ -17,7 +17,6 @@ import 'package:hos/veiw/wedget/Homepage/dicountcard.dart';
 
 class HomepageController extends GetxController {
   Myservisec myservisec = Get.put(Myservisec());
-
   String? username;
   List<Itemsmodel> items = [];
   List<categoriesmodel> categories = [];
