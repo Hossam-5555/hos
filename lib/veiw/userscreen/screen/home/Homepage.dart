@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
 import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
+import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/imageasset.dart';
@@ -12,6 +14,7 @@ import 'package:hos/veiw/wedget/Homepage/categorieswidget.dart';
 import 'package:hos/veiw/wedget/Homepage/dicountcard.dart';
 import 'package:hos/veiw/wedget/Homepage/titles.dart';
 import 'package:hos/veiw/wedget/SharedProductCard.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -58,16 +61,21 @@ class HomePage extends StatelessWidget {
                             itemCount: controller.categories.length,
                             itemBuilder: (context, index) {
                               final cat = controller.categories[index];
-                              return CategoryItem(
-                                index: index,
-                                name: cat.categoriesName ?? "",
-                                imageUrl:
-                                    "${LinkApi.imagecategories}/${cat.categoriesImage}",
+                              return Skeletonizer(
+                                containersColor: Colors.grey[20],
+                                enabled:
+                                    controller.statusrequest ==
+                                    Statusrequest.loading,
+                                child: CategoryItem(
+                                  index: index,
+                                  name: cat.categoriesName ?? "",
+                                  imageUrl:
+                                      "${LinkApi.imagecategories}/${cat.categoriesImage}",
+                                ),
                               );
                             },
                           ),
                         ),
-                   
 
                         /// Main Offer
                         AutoRotatingOffers(),
@@ -118,40 +126,26 @@ class HomePage extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final item = controller.items[index];
 
-                            return SharedProductCard(
-                              // أو ProductListCard لو حبيت تحتفظ بنفس الاسم
-                              image: "${LinkApi.imageitems}/${item.itemsImage}",
-                              title: item.itemsName ?? "بدون اسم",
-                              price: "${item.itemsPrice} ", // ضفنا علامة العملة
-                              rating:
-                                  4.5, // مؤقتاً لحد ما تجيب التقييم من الـ API
-                              onTap: () {
-                                controller.gotoitemsdatails(item);
-                              },
-
-                              // 👈 زرار الأكشن المخصص لصفحة الـ Home (زرار إضافة للسلة)
-                              actionButton: InkWell(
+                            return Skeletonizer(
+                              enabled:
+                                  controller.statusrequest ==
+                                  Statusrequest.loading,
+                              child: SharedProductCard(
+                                // أو ProductListCard لو حبيت تحتفظ بنفس الاسم
+                                image:
+                                    "${LinkApi.imageitems}/${item.itemsImage}",
+                                title: item.itemsName ?? "بدون اسم",
+                                price:
+                                    "${item.itemsPrice} ", // ضفنا علامة العملة
+                                rating:
+                                    4.5, // مؤقتاً لحد ما تجيب التقييم من الـ API
                                 onTap: () {
-                                  // هنا هتحط الفانكشن بتاعة إضافة المنتج للسلة
-                                  // controller.addToCart(item.itemsId.toString());
+                                  controller.gotoitemsdatails(item);
                                 },
-                                borderRadius: BorderRadius.circular(50),
-                                child: Container(
-                                  height: 32,
-                                  width: 32,
-                                  padding: const EdgeInsets.all(6),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.black, // الستايل الفخم
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    Imageasset
-                                        .cart, // اتأكد إن مسار الأيقونة صح
-                                    colorFilter: const ColorFilter.mode(
-                                      Colors.white,
-                                      BlendMode.srcIn,
-                                    ),
-                                  ),
+
+                                // 👈 زرار الأكشن المخصص لصفحة الـ Home (زرار إضافة للسلة)
+                                actionButton: AddToCartButton(
+                                  itemId: item.itemsId.toString(),
                                 ),
                               ),
                             );
@@ -207,35 +201,14 @@ class HomePage extends StatelessWidget {
                               title: item.itemsName ?? "بدون اسم",
                               price: "${item.itemsPrice} ", // ضفنا علامة العملة
                               rating:
-                                  4.5, // مؤقتاً لحد ما تجيب التقييم من الـ API
+                                  4.8, // مؤقتاً لحد ما تجيب التقييم من الـ API
                               onTap: () {
                                 controller.gotoitemsdatails(item);
                               },
 
                               // 👈 زرار الأكشن المخصص لصفحة الـ Home (زرار إضافة للسلة)
-                              actionButton: InkWell(
-                                onTap: () {
-                                  // هنا هتحط الفانكشن بتاعة إضافة المنتج للسلة
-                                  // controller.addToCart(item.itemsId.toString());
-                                },
-                                borderRadius: BorderRadius.circular(50),
-                                child: Container(
-                                  height: 32,
-                                  width: 32,
-                                  padding: const EdgeInsets.all(6),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.black, // الستايل الفخم
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    Imageasset
-                                        .cart, // اتأكد إن مسار الأيقونة صح
-                                    colorFilter: const ColorFilter.mode(
-                                      Colors.white,
-                                      BlendMode.srcIn,
-                                    ),
-                                  ),
-                                ),
+                              actionButton: AddToCartButton(
+                                itemId: item.itemsId.toString(),
                               ),
                             );
                           },
@@ -250,5 +223,65 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class AddToCartButton extends StatelessWidget {
+  final String itemId;
+
+  AddToCartButton({super.key, required this.itemId});
+
+  // متغير الحالة الخاص بالزر ده فقط
+  final RxBool added = false.obs;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      return InkWell(
+        onTap: () {
+          // 1️⃣ إضافة للـ Cart
+          CartController().addtocart(itemId, 1);
+
+          // 2️⃣ تغيير اللون لعلامة صح
+          added.value = true;
+
+          // 3️⃣ بعد ثانية يرجع للوضع الطبيعي
+          Future.delayed(const Duration(seconds: 1), () {
+            added.value = false;
+          });
+        },
+        borderRadius: BorderRadius.circular(50),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          height: 32,
+          width: 32,
+          padding: const EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            color: added.value ? Colors.green : Colors.black,
+            shape: BoxShape.circle,
+          ),
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            transitionBuilder: (child, animation) =>
+                ScaleTransition(scale: animation, child: child),
+            child: added.value
+                ? const Icon(
+                    Icons.check,
+                    key: ValueKey('check'),
+                    color: Colors.white,
+                    size: 20,
+                  )
+                : SvgPicture.asset(
+                    Imageasset.cart,
+                    key: const ValueKey('cart'),
+                    colorFilter: const ColorFilter.mode(
+                      Colors.white,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+          ),
+        ),
+      );
+    });
   }
 }

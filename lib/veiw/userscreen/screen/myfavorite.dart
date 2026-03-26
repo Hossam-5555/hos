@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/favorite/myfavcontroler.dart';
+import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/linkApi.dart';
 import 'package:hos/data/model/myfavorite.dart';
 import 'package:hos/veiw/wedget/items/itemsappbar.dart';
 import 'package:hos/veiw/wedget/SharedProductCard.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class Myfavorite extends StatelessWidget {
   const Myfavorite({super.key});
@@ -27,22 +29,27 @@ class Myfavorite extends StatelessWidget {
               child: GetBuilder<Myfavcontroler>(
                 builder: (controller) => Handlingdataview(
                   statusrequest: controller.statusrequest,
-                  widget: GridView.builder(
-                    shrinkWrap: true,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: controller.data.length,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: width * 0.03,
-                      vertical: height * 0.015,
+
+                  widget: Skeletonizer(
+                    containersColor: Colors.grey.withAlpha(90),
+                    enabled: controller.statusrequest == Statusrequest.loading,
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: controller.data.length,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: width * 0.03,
+                        vertical: height * 0.015,
+                      ),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: width / (height * 0.70), // نسبي
+                        crossAxisSpacing: width * 0.03,
+                        mainAxisSpacing: height * 0.015,
+                      ),
+                      itemBuilder: (context, i) =>
+                          FavCard(items: controller.data[i]),
                     ),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: width / (height * 0.70), // نسبي
-                      crossAxisSpacing: width * 0.03,
-                      mainAxisSpacing: height * 0.015,
-                    ),
-                    itemBuilder: (context, i) =>
-                        FavCard(items: controller.data[i]),
                   ),
                 ),
               ),
@@ -53,7 +60,6 @@ class Myfavorite extends StatelessWidget {
     );
   }
 }
-
 
 class FavCard extends GetView<Myfavcontroler> {
   final myfavoritemodel items;
@@ -73,7 +79,8 @@ class FavCard extends GetView<Myfavcontroler> {
       // 👈 هنا بنصمم الزرار الخاص بصفحة المفضلة (زرار الحذف)
       actionButton: IconButton(
         padding: EdgeInsets.zero,
-        constraints: const BoxConstraints(), // عشان نشيل المسافات الافتراضية للزرار
+        constraints:
+            const BoxConstraints(), // عشان نشيل المسافات الافتراضية للزرار
         onPressed: () {
           controller.deletefromfavpage(items.favId.toString());
         },

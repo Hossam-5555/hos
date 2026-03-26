@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/addres/addrescontroller.dart';
+import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/data/model/Addresmodel.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ViewMyAddres extends StatelessWidget {
   ViewMyAddres({super.key});
@@ -31,18 +33,24 @@ class ViewMyAddres extends StatelessWidget {
 
       body: GetBuilder<AddressController>(
         builder: (_) {
+          bool isenable = controller.statusrequest == Statusrequest.loading;
           return Handlingdataview(
             statusrequest: controller.statusrequest!,
-            widget: ListView.builder(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
-              itemCount: controller.listaddresdata.length,
-              itemBuilder: (context, index) {
-                final address = controller.listaddresdata[index];
+            widget: Skeletonizer(
+              containersColor: Colors.grey.withAlpha(90),
 
-                return _card(address, () {
-                  controller.deleteAddres(address.addresId.toString());
-                });
-              },
+              enabled: isenable,
+              child: ListView.builder(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
+                itemCount: controller.listaddresdata.length,
+                itemBuilder: (context, index) {
+                  final address = controller.listaddresdata[index];
+
+                  return _card(address, () {
+                    controller.deleteAddres(address.addresId.toString());
+                  });
+                },
+              ),
             ),
           );
         },
@@ -79,20 +87,43 @@ Widget _card(Addresmodel address, VoidCallback onDelete) {
         child: Icon(Icons.location_on, color: Appcolor.primaryColor, size: 26),
       ),
 
-      title: Text(
-        address.addresName ?? "No Name",
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-      ),
-
-      subtitle: Text(
-        "${address.addresStreet ?? 'No Street'} - ${address.addresCity ?? 'No City'}",
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(color: Colors.grey.shade600, fontSize: 14, height: 1.3),
+      title: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "${address.addresName}${"Addres"}",
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          Text(
+            "${address.addresStreet ?? 'No Street'}${":Street"} - ${address.addresCity ?? 'No City'}${":City"}",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: Colors.grey.shade600,
+              fontSize: 14,
+              height: 1.3,
+            ),
+          ),
+          Text(
+            "phone-numper:01023426561",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: Colors.grey.shade600,
+              fontSize: 14,
+              height: 1.3,
+            ),
+          ),
+        ],
       ),
 
       trailing: IconButton(
-        icon: const Icon(Icons.delete_outline, color: Colors.redAccent, size: 26),
+        icon: const Icon(
+          Icons.delete_outline,
+          color: Colors.redAccent,
+          size: 26,
+        ),
         onPressed: onDelete,
         tooltip: 'Delete Address',
       ),
