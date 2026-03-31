@@ -68,7 +68,7 @@ class FavCard extends GetView<Myfavcontroler> {
   @override
   Widget build(BuildContext context) {
     // استخدمنا الكارت الموحد هنا!
-    return SharedProductCard(
+    return SharedProductCard(height: 220,
       image: "${LinkApi.imageitems}/${items.itemsImage}",
       title: items.itemsName ?? "بدون اسم",
       price: "${items.itemsPrice ?? "0"} ج.م",

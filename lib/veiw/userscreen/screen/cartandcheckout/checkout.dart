@@ -295,7 +295,7 @@ class Checkout extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "\$${c.totalprice}",
+                  '${double.parse(c.totalprice.toString()).toStringAsFixed(2)} \$',
                   style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w900,

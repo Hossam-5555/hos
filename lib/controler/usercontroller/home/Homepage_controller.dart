@@ -73,13 +73,14 @@ class HomepageController extends GetxController {
 
   final List<OfferModel> offers = [
     OfferModel(
-      image: "https://i.pinimg.com/webp/1200x/34/6e/7a/346e7ac45123572b94af0843a37a19d9.webp",
+      image:
+          "https://i.pinimg.com/webp/1200x/34/6e/7a/346e7ac45123572b94af0843a37a19d9.webp",
       title: 'عرض الصيف',
       description: 'اشتري قطعة واحصل على الثانية بنصف الثمن.',
       discount: 'خصم 50%',
       colors: const [
         Color.fromARGB(255, 19, 3, 0),
-        Colors.white
+        Colors.white,
       ], // برتقالي وزهري
     ),
     OfferModel(
@@ -105,7 +106,7 @@ class HomepageController extends GetxController {
       ], // أزرق وبنفسجي
     ),
   ];
-
+  int i = 0; // متغير لتغيير cross Axis gridview  العرض الحالي
   int currentIndex = 0;
   Timer? timer;
 

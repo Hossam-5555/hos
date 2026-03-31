@@ -71,13 +71,8 @@ class BuildOrderSummary extends StatelessWidget {
             ],
           ),
           Divider(height: height * 0.03),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: width * 0.04,
-              vertical: height * 0.015,
-            ),
-            child: Coubone(),
-          ),
+          Coubone(),
+          Divider(height: height * 0.03),
           // المجموع الكلي
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

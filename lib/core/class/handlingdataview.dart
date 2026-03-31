@@ -33,6 +33,19 @@ class Handlingdataview extends StatelessWidget {
       return routeMessages[Get.currentRoute] ?? "لا توجد بيانات";
     }
 
+    String getEmptyAnimation() {
+      final Map<String, String> routeanimations = {
+        Approute.notificationPage: Imageasset.nodata,
+        Approute.ShoppingCartPage: Imageasset.nodata,
+        Approute.myfavorite: Imageasset.nodata,
+        Approute.viewmyaddres: Imageasset.nodata,
+        Approute.Orders: Imageasset.nodata,
+      };
+      print(routeanimations[Get.currentRoute]);
+      // بيحاول يجيب الرسالة بناءً على الـ route، ولو مش موجودة بيرجع الرسالة الافتراضية
+      return routeanimations[Get.currentRoute] ?? "لا توجد بيانات";
+    }
+
     if (statusrequest == Statusrequest.checkinterner) {
       return Center(
         child: Animationforstatus(animationPath: Imageasset.loading),
