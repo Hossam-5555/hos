@@ -24,9 +24,11 @@ class Searchbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: const Color(0xffF5F6F8),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xffF5F6F8),
+        borderRadius: BorderRadius.circular(40),
+      ),
       child: TextFormField(
         focusNode: focusNode,
         textInputAction: textInputAction,
@@ -44,7 +46,8 @@ class Searchbar extends StatelessWidget {
 
           prefixIcon: Padding(
             padding: const EdgeInsets.all(12),
-            child: SvgPicture.asset(color: const Color.fromARGB(255, 14, 16, 17),
+            child: SvgPicture.asset(
+              color: const Color.fromARGB(255, 14, 16, 17),
               Imageasset.search,
               height: 20,
               width: 20,
