@@ -7,9 +7,12 @@ class Countofproduct extends GetView<Itemdetailscontroller> {
   final count;
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 200,
-      height: 50,
+    return Container(
+      width: 200,height: 50,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(40),
+        color: Colors.grey[200],
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [

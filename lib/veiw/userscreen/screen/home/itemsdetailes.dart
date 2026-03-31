@@ -24,9 +24,9 @@ class Itemsdetailes extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: Colors.white,
-          appBar: const PreferredSize(
+          appBar: PreferredSize(
             preferredSize: Size.fromHeight(60),
-            child: Appbarbackicon(title: "تفاصيل المنتج", herotag: ""),
+            child: Appbarbackicon(title: "product Details".tr, herotag: ""),
           ),
 
           // ✨ التعديل الاحترافي: تثبيت زر الشراء والعداد في الأسفل دائماً
@@ -93,6 +93,7 @@ class Itemsdetailes extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
+                                maxLines: 2,
                                 item.itemsName ?? '',
                                 style: const TextStyle(
                                   fontSize: 22,
@@ -106,7 +107,7 @@ class Itemsdetailes extends StatelessWidget {
                               children: [
                                 const Icon(
                                   Icons.star_rounded,
-                                  color: Colors.amber,
+                                  color: Color.fromARGB(255, 255, 116, 2),
                                   size: 22,
                                 ),
                                 const SizedBox(width: 4),
@@ -187,53 +188,52 @@ class Itemsdetailes extends StatelessWidget {
 
       child: SafeArea(
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // مكون العداد الخاص بك
             Countofproduct(count: controller.itemcount),
 
             // زر الإضافة للسلة
-            Expanded(
-              child: SizedBox(
-                height: 55,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black, // لون أسود فخم
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(40),
-                    ),
+            SizedBox(
+              height: 55,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black, // لون أسود فخم
+                  elevation: 1,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40),
                   ),
-                  onPressed: () {
-                    if (controller.itemcount == 0) {
-                      Get.snackbar(
-                        "تنبيه",
-                        "يرجى اختيار الكمية أولاً",
-                        backgroundColor: Colors.red.shade50,
-                        colorText: Colors.red,
-                      );
-                    } else {
-                      controller.isadded = true;
-                      Get.find<CartController>().addtocart(
-                        controller.itemsmodel.itemsId!.toString(),
-                        controller.itemcount,
-                      );
-                    }
-                  },
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.shopping_bag_outlined, color: Colors.white),
-                      SizedBox(width: 8),
-                      Text(
-                        "Add to Card",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+                ),
+                onPressed: () {
+                  if (controller.itemcount == 0) {
+                    Get.snackbar(
+                      "تنبيه",
+                      "يرجى اختيار الكمية أولاً",
+                      backgroundColor: Colors.red.shade50,
+                      colorText: Colors.red,
+                    );
+                  } else {
+                    controller.isadded = true;
+                    Get.find<CartController>().addtocart(
+                      controller.itemsmodel.itemsId!.toString(),
+                      controller.itemcount,
+                    );
+                  }
+                },
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.shopping_bag_outlined, color: Colors.white),
+                    SizedBox(width: 8),
+                    Text(
+                      "Add to Card",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

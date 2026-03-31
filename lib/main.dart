@@ -11,6 +11,7 @@ import 'package:hos/core/localization/transilation.dart';
 import 'package:hos/core/serveces/binding.dart';
 
 import 'package:hos/core/serveces/myservisec.dart';
+import 'package:hos/veiw/adminscreen/Home/AdminHome.dart';
 // import 'package:hos/test.dart';
 // import 'package:hos/veiw/wedget/SharedProductCard.dart';
 // import 'package:http/http.dart' as http;
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     LocalController controller = Get.put(LocalController());
     return GetMaterialApp(
-      // home: MyAnimatedList(),
+      // home: AdminDashboard(),
       debugShowCheckedModeBanner: false,
       initialBinding: MyBinding(),
       locale: controller.language,

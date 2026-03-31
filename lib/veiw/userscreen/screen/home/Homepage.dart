@@ -104,8 +104,28 @@ class HomePage extends StatelessWidget {
                             ),
                           ],
                         ),
+                        const CurvedItemsView(),
 
                         /// 🔥 Products List (FIXED)
+                        ///
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Titles(title: "Most Sale".tr),
+                            TextButton.icon(
+                              onPressed: () {},
+                              icon: const Text("See All"),
+                              label: const Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                              ),
+                              style: TextButton.styleFrom(
+                                foregroundColor: Appcolor.primaryColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: height * 0.02),
                         GridView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
@@ -152,27 +172,6 @@ class HomePage extends StatelessWidget {
                           },
                         ),
                         SizedBox(height: height * 0.02),
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Titles(title: "Most Sale".tr),
-                            TextButton.icon(
-                              onPressed: () {},
-                              icon: const Text("See All"),
-                              label: const Icon(
-                                Icons.arrow_forward_ios,
-                                size: 16,
-                              ),
-                              style: TextButton.styleFrom(
-                                foregroundColor: Appcolor.primaryColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: height * 0.02),
-
-                        const CurvedItemsView(),
 
                         SizedBox(height: height * 0.015),
                         GridView.builder(

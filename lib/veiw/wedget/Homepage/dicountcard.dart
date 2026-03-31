@@ -8,14 +8,14 @@ class OfferModel {
   final String description;
   final String discount;
   final List<Color> colors;
-  final IconData icon;
+  final String image;
 
   OfferModel({
     required this.title,
     required this.description,
     required this.discount,
     required this.colors,
-    required this.icon,
+    required this.image,
   });
 }
 
@@ -45,7 +45,9 @@ class AutoRotatingOffers extends StatelessWidget {
                 "تم الضغط على: ${controller.offers[controller.currentIndex].title}",
               );
             },
-            icon: Icon(controller.offers[controller.currentIndex].icon),
+            icon: NetworkImage(
+              controller.offers[controller.currentIndex].image,
+            ),
           ),
         );
       },
@@ -60,8 +62,8 @@ class OfferCard extends StatelessWidget {
   final String discount;
   final List<Color> colors; // <- إضافة متغير الألوان
   final VoidCallback onTap;
-  final Widget icon;
-   const OfferCard({
+  final ImageProvider<Object> icon;
+  const OfferCard({
     super.key,
     required this.title,
     required this.description,
@@ -77,9 +79,12 @@ class OfferCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(18),
       onTap: onTap,
       child: Container(
+        height: 120,
         width: double.infinity,
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
+          image: DecorationImage(
+            image: icon, fit: BoxFit.cover),
           gradient: LinearGradient(
             colors: colors, // <- استخدام الألوان الممررة
           ),
@@ -130,7 +135,6 @@ class OfferCard extends StatelessWidget {
             ),
 
             /// 🎯 أيقونة
-            icon,
           ],
         ),
       ),

@@ -73,33 +73,35 @@ class HomepageController extends GetxController {
 
   final List<OfferModel> offers = [
     OfferModel(
-      icon: Icons.ac_unit_outlined,
+      image: "https://i.pinimg.com/webp/1200x/34/6e/7a/346e7ac45123572b94af0843a37a19d9.webp",
       title: 'عرض الصيف',
       description: 'اشتري قطعة واحصل على الثانية بنصف الثمن.',
       discount: 'خصم 50%',
       colors: const [
         Color.fromARGB(255, 19, 3, 0),
-        Color(0xffDD2476),
+        Colors.white
       ], // برتقالي وزهري
     ),
     OfferModel(
-      icon: Icons.snapchat,
+      image:
+          "https://i.pinimg.com/736x/81/b1/a2/81b1a2ea2ace6297da864a42fe014d98.jpg",
       title: 'عروض التقنية',
       description: 'أفضل الخصومات على الهواتف والسماعات الذكية.',
       discount: 'خصم 30%',
       colors: const [
         Color.fromARGB(255, 19, 0, 4),
-        Color.fromARGB(255, 77, 65, 0),
+        Color.fromARGB(255, 32, 1, 1),
       ], // أخضر متدرج
     ),
     OfferModel(
-      icon: Icons.sports_baseball_outlined,
+      image:
+          "https://i.pinimg.com/webp/1200x/49/bb/12/49bb129c93b7d6454a2e34504be5e488.webp",
       title: 'تصفية نهاية العام',
       description: 'لا تفوت الفرصة! الكمية محدودة جداً.',
       discount: 'خصم يصل لـ 70%',
       colors: const [
-        Color.fromARGB(255, 66, 2, 2),
-        Color.fromARGB(255, 170, 57, 4),
+        Color.fromARGB(255, 7, 6, 6),
+        Color.fromARGB(255, 204, 200, 198),
       ], // أزرق وبنفسجي
     ),
   ];
@@ -130,7 +132,7 @@ class HomepageController extends GetxController {
     pageController = PageController(
       initialPage: 0,
       viewportFraction:
-          0.8, // مهم جداً: هذا الرقم هو ما يظهر جزءاً من الكروت الجانبية
+          0.5, // مهم جداً: هذا الرقم هو ما يظهر جزءاً من الكروت الجانبية
     );
     getdata();
     username = myservisec.sharedPreferences.getString("username");

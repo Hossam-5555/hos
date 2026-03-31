@@ -37,29 +37,34 @@ class Homescreen extends StatelessWidget {
               centerTitle: false,
               scrolledUnderElevation:
                   0, // منع تغير اللون عند السكرول في Material 3
-              title: const Text.rich(
-                TextSpan(
-                  // ستايل أساسي للكلمة كلها عشان تبان كأنها لوجو
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: 1.2,
+              title: Column(
+                children: [
+                  const Text.rich(
+                    TextSpan(
+                      // ستايل أساسي للكلمة كلها عشان تبان كأنها لوجو
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1.2,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: "A",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                        TextSpan(
+                          text: "r",
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                        TextSpan(
+                          text: "a",
+                          style: TextStyle(color: Colors.green),
+                        ),
+                      ],
+                    ),
+                    
                   ),
-                  children: [
-                    TextSpan(
-                      text: "A",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                    TextSpan(
-                      text: "r",
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                    TextSpan(
-                      text: "a",
-                      style: TextStyle(color: Colors.green),
-                    ),
-                  ],
-                ),
+                ],
               ),
               actions: [
                 // زر البحث

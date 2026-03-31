@@ -142,3 +142,319 @@ class AdminHome extends StatelessWidget {
     );
   }
 }
+
+// ================= Dashboard =================
+
+class AdminDashboard extends StatelessWidget {
+  const AdminDashboard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      bottomNavigationBar: const BottomNavBar(),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: ListView(
+            children: const [
+              Header(),
+              SizedBox(height: 16),
+              SearchBarWidget(),
+              SizedBox(height: 20),
+              StatsSection(),
+              SizedBox(height: 20),
+              SalesChart(),
+              SizedBox(height: 20),
+              RecentOrders(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ================= Header =================
+
+class Header extends StatelessWidget {
+  const Header({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const CircleAvatar(
+          radius: 20,
+          backgroundImage: NetworkImage("https://i.pravatar.cc/150?img=3"),
+        ),
+        const SizedBox(width: 10),
+        const Text(
+          "Hello, Admin",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        const Spacer(),
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.notifications_none),
+        ),
+      ],
+    );
+  }
+}
+
+// ================= Search =================
+
+class SearchBarWidget extends StatelessWidget {
+  const SearchBarWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      decoration: InputDecoration(
+        hintText: "Search orders, products...",
+        prefixIcon: const Icon(Icons.search),
+        filled: true,
+        fillColor: Colors.grey.shade200,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide.none,
+        ),
+      ),
+    );
+  }
+}
+
+// ================= Stats =================
+
+class StatsSection extends StatelessWidget {
+  const StatsSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: const [
+            Expanded(
+              child: StatCard(
+                title: "Total Sales",
+                value: "\$128,500",
+                growth: "+8.5%",
+              ),
+            ),
+            SizedBox(width: 10),
+            Expanded(
+              child: StatCard(
+                title: "Total Orders",
+                value: "3,420",
+                growth: "+12%",
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Row(
+          children: const [
+            Expanded(
+              child: StatCard(title: "Products", value: "450 Active"),
+            ),
+            SizedBox(width: 10),
+            Expanded(
+              child: StatCard(
+                title: "Customers",
+                value: "21,800",
+                growth: "+5%",
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+// ================= Stat Card =================
+
+class StatCard extends StatelessWidget {
+  final String title;
+  final String value;
+  final String? growth;
+
+  const StatCard({
+    super.key,
+    required this.title,
+    required this.value,
+    this.growth,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title),
+          const SizedBox(height: 10),
+          Text(
+            value,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          if (growth != null)
+            Text(growth!, style: const TextStyle(color: Colors.green)),
+        ],
+      ),
+    );
+  }
+}
+
+// ================= Chart =================
+
+class SalesChart extends StatelessWidget {
+  const SalesChart({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 220,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Sales Overview",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: const [
+              Chip(label: Text("Day")),
+              SizedBox(width: 5),
+              Chip(label: Text("Week")),
+              SizedBox(width: 5),
+              Chip(label: Text("Month")),
+              SizedBox(width: 5),
+              Chip(label: Text("Year")),
+            ],
+          ),
+          const Expanded(child: Center(child: Text("Chart Here"))),
+        ],
+      ),
+    );
+  }
+}
+
+// ================= Orders =================
+
+class RecentOrders extends StatelessWidget {
+  const RecentOrders({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            const Text(
+              "Recent Orders",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const Spacer(),
+            TextButton(onPressed: () {}, child: const Text("View All")),
+          ],
+        ),
+        const OrderItem(
+          name: "Sarah Johnson",
+          status: "Fulfilled",
+          color: Colors.green,
+        ),
+        const OrderItem(
+          name: "Mike Williams",
+          status: "Pending",
+          color: Colors.orange,
+        ),
+        const OrderItem(
+          name: "Emily Davis",
+          status: "Cancelled",
+          color: Colors.red,
+        ),
+      ],
+    );
+  }
+}
+
+// ================= Order Item =================
+
+class OrderItem extends StatelessWidget {
+  final String name;
+  final String status;
+  final Color color;
+
+  const OrderItem({
+    super.key,
+    required this.name,
+    required this.status,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      title: Text("Order - $name"),
+      subtitle: const Text("Nov 15"),
+      trailing: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Text(status, style: TextStyle(color: color)),
+      ),
+    );
+  }
+}
+
+// ================= Bottom Nav =================
+
+class BottomNavBar extends StatelessWidget {
+  const BottomNavBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      currentIndex: 0,
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.dashboard, color: Colors.black),
+          label: "",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.list, color: Colors.black),
+          label: "",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.inventory, color: Colors.black),
+          label: "",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person, color: Colors.black),
+          label: "",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings, color: Colors.black),
+          label: "",
+        ),
+      ],
+    );
+  }
+}

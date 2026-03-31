@@ -12,6 +12,8 @@ class Mytransilation extends Translations {
       "product": "المنتجات",
       "Description": "الوصف",
       "Proceed to Checkout": "اتمام الشراء",
+      "product Details": "تفاصيل المنتج",
+
       //Homepage
       //orderpage
       "Order numper": "طلب رقم ",
@@ -55,6 +57,7 @@ class Mytransilation extends Translations {
       "Description": "Description",
       "Discount": "Discount",
       "Proceed to Checkout": "Proceed to Checkout",
+      "product Details": "product Details",
       //Homepage
 
       //orderpage
