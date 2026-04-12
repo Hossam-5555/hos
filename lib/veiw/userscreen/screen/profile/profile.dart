@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/serveces/myservisec.dart';
+import 'package:hos/veiw/userscreen/screen/profile/order/paymentmethods.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -97,15 +98,15 @@ class ProfilePage extends StatelessWidget {
                     onTap: () => Get.toNamed(Approute.viewmyaddres),
                   ),
                   _buildDivider(),
-                  // _buildListTile(
-                  //   icon: Icons.credit_card_outlined,
-                  //   title: "Payment Methods".tr,
-                  //   onTap: () => Get.to(
-                  //     () => PaymentScreen(),
-                  //     transition: Transition.cupertino,
-                  //   ),
-                  // ),
-                  // _buildDivider(),
+                  _buildListTile(
+                    icon: Icons.credit_card_outlined,
+                    title: "Payment Methods".tr,
+                    onTap: () => Get.to(
+                      () => PaymentScreen(),
+                      transition: Transition.cupertino,
+                    ),
+                  ),
+                  _buildDivider(),
 
                   _buildListTile(
                     icon: Icons.settings_outlined,
@@ -166,6 +167,21 @@ class ProfilePage extends StatelessWidget {
         const SizedBox(height: 4),
         Text(email, style: TextStyle(color: Colors.grey[600], fontSize: 14)),
         const SizedBox(height: 16),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: primaryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+          ),
+          onPressed: () {
+          },
+          child: const Text(
+            "Edit Profile",
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
+        ),
       ],
     );
   }
