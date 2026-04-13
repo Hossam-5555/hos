@@ -36,116 +36,131 @@ class Signup extends StatelessWidget {
 
                 // 🔹 الأنيميشن أعلى الشاشة
                 Positioned(
-                  top: height * 0.05,
-                  child: Animationlottie(
-                    h: 200,w: 200,
-                    animationPath: Imageasset
-                        .loginanimation, // أو اعمل signupanimation لو عندك
+                  top: height * 0.02,
+                  child: Column(
+                    children: [
+                      Animationlottie(
+                        h: 200,w: 200,
+                        animationPath: Imageasset
+                            .loginanimation, // أو اعمل signupanimation لو عندك
+                      ),
+                      Text(
+                        "Create New Account".tr,
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Appcolor.black,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
 
                 // 🔹 الفورم الزجاجي
-                Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(25),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                      child: Container(
-                        width: width * 0.9,
-                        constraints: BoxConstraints(maxHeight: height * 0.75),
-                        decoration: BoxDecoration(
-                          color: Appcolor.glass.withAlpha(51), // 0.2 * 255 = 51
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(
-                            color: const Color.fromARGB(
-                              240,
-                              145,
-                              222,
-                              255,
-                            ).withAlpha(77), // 0.3 * 255 = 77
-                          ),
-                        ),
-                        child: Form(
-                          key: signUpcontroller.signuokey,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: width * 0.05,
+                Positioned(
+                  top: height * 0.30,
+                  child: Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(25),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                        child: Container(
+                          width: width * 0.9,
+                          constraints: BoxConstraints(maxHeight: height * 0.75),
+                          decoration: BoxDecoration(
+                            color: Appcolor.glass.withAlpha(51), // 0.2 * 255 = 51
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(
+                              color: const Color.fromARGB(
+                                240,
+                                145,
+                                222,
+                                255,
+                              ).withAlpha(77), // 0.3 * 255 = 77
                             ),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(height: height * 0.03),
-                                  Textfealdauth(
-                                    valid: (val) =>
-                                        validInput(val!, 6, 20, "username"),
-                                    textEditingController:
-                                        signUpcontroller.username,
-                                    // label: 'username',
-                                    suffixIcon: Icons.person_outline,
-                                    hint: "Enter Your username",
-                                  ),
-                                  SizedBox(height: height * 0.025),
-                                  Textfealdauth(
-                                    valid: (val) =>
-                                        validInput(val!, 10, 30, "email"),
-                                    textEditingController:
-                                        signUpcontroller.email,
-                                    // label: 'email',
-                                    suffixIcon: Icons.email_outlined,
-                                    hint: 'Enter your Email',
-                                  ),
-                                  SizedBox(height: height * 0.025),
-                                  Textfealdauth(
-                                    valid: (val) =>
-                                        validInput(val!, 5, 20, "password"),
-                                    textEditingController:
-                                        signUpcontroller.passward,
-                                    // label: 'passward',
-                                    suffixIcon: Icons.remove_red_eye_outlined,
-                                    hint: "Enter Your Passward",
-                                  ),
-                                  SizedBox(height: height * 0.025),
-                                  Checkbutton(
-                                    onTap: () {
-                                      signUpcontroller.signup();
-                                    },
-                                    buttonName: 'Sign Up',
-                                    width: width * 0.75,
-                                    buttonColor: Colors.black,
-                                  ),
-                                  SizedBox(height: height * 0.02),
-                                  InkWell(
-                                    onTap: () {
-                                      signUpcontroller.gotologinin();
-                                    },
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      margin: EdgeInsets.symmetric(
-                                        vertical: height * 0.015,
-                                      ),
-                                      child: RichText(
-                                        text: TextSpan(
-                                          children: [
-                                            TextSpan(
-                                              text: "have An account ? ",
-                                              style: TextStyle(
-                                                color: Appcolor.black,
+                          ),
+                          child: Form(
+                            key: signUpcontroller.signuokey,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.05,
+                              ),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: height * 0.03),
+                                    Textfealdauth(
+                                      valid: (val) =>
+                                          validInput(val!, 6, 20, "username"),
+                                      textEditingController:
+                                          signUpcontroller.username,
+                                      // label: 'username',
+                                      suffixIcon: Icons.person_outline,
+                                      hint: "Enter Your username",
+                                    ),
+                                    SizedBox(height: height * 0.025),
+                                    Textfealdauth(
+                                      valid: (val) =>
+                                          validInput(val!, 10, 30, "email"),
+                                      textEditingController:
+                                          signUpcontroller.email,
+                                      // label: 'email',
+                                      suffixIcon: Icons.email_outlined,
+                                      hint: 'Enter your Email',
+                                    ),
+                                    SizedBox(height: height * 0.025),
+                                    Textfealdauth(
+                                      valid: (val) =>
+                                          validInput(val!, 5, 20, "password"),
+                                      textEditingController:
+                                          signUpcontroller.passward,
+                                      // label: 'passward',
+                                      suffixIcon: Icons.remove_red_eye_outlined,
+                                      hint: "Enter Your Passward",
+                                    ),
+                                    SizedBox(height: height * 0.025),
+                                    Checkbutton(
+                                      onTap: () {
+                                        signUpcontroller.signup();
+                                      },
+                                      buttonName: 'Sign Up',
+                                      width: width * 0.75,
+                                      buttonColor: Colors.black,
+                                    ),
+                                    SizedBox(height: height * 0.02),
+                                    InkWell(
+                                      onTap: () {
+                                        signUpcontroller.gotologinin();
+                                      },
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        margin: EdgeInsets.symmetric(
+                                          vertical: height * 0.015,
+                                        ),
+                                        child: RichText(
+                                          text: TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: "have An account ? ",
+                                                style: TextStyle(
+                                                  color: Appcolor.black,
+                                                ),
                                               ),
-                                            ),
-                                            TextSpan(
-                                              text: 'Login',
-                                              style: TextStyle(
-                                                color: Appcolor.primaryColor,
+                                              TextSpan(
+                                                text: 'Login',
+                                                style: TextStyle(
+                                                  color: Appcolor.primaryColor,
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(height: height * 0.03),
-                                ],
+                                    SizedBox(height: height * 0.03),
+                                  ],
+                                ),
                               ),
                             ),
                           ),

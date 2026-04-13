@@ -163,7 +163,23 @@ class HomePage extends StatelessWidget {
                             );
                           },
                         ),
-
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Titles(title: "Most View".tr),
+                            TextButton.icon(
+                              onPressed: () {},
+                              icon: const Text("See All"),
+                              label: const Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                              ),
+                              style: TextButton.styleFrom(
+                                foregroundColor: Appcolor.primaryColor,
+                              ),
+                            ),
+                          ],
+                        ),
                         SizedBox(height: height * 0.015),
                         MasonryGridView.builder(
                           shrinkWrap: true,

@@ -17,7 +17,7 @@ class ItemsControler extends SearchMix {
   @override
   // ignore: overridden_fields
   Statusrequest statusrequest = Statusrequest.none;
-  Myservisec myservisec = Get.find();
+  Myservisec myservisec1 = Get.find();
   itemsdata itemdata = itemsdata(Get.find());
 
   void changcat(int val, String catigid) {
@@ -45,7 +45,7 @@ class ItemsControler extends SearchMix {
     update();
     var response = await itemdata.postdata(
       catid,
-      myservisec.sharedPreferences.getString("id")!,
+      myservisec1.sharedPreferences.getString("id")!,
     );
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {

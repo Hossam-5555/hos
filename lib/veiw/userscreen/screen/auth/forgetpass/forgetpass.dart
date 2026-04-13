@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/auth/forgetpass/checkemail_controller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/validinput.dart';
+import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
@@ -27,7 +29,25 @@ class ForgetPass extends StatelessWidget {
                 children: [
                   Text(
                     'Check Email',
-                    style: Theme.of(context).textTheme.headlineLarge,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Appcolor.black,
+                    ),
+                  ),
+                  Text(
+                    'Please enter your email to receive a link to create a new password via email',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontSize: 14,
+                      color: Appcolor.grey,
+                    ),
+                  ),
+                  Animationlottie(
+                    h: 250,
+                    w: 250,
+                    animationPath:
+                        Imageasset.email, // أو اعمل signupanimation لو عندك
                   ),
                   const SizedBox(height: 100),
                   SizedBox(
@@ -50,7 +70,7 @@ class ForgetPass extends StatelessWidget {
                       controller.checkemail();
                     },
                     buttonName: 'Check',
-                    width: 300,
+                    width: 250,
                     buttonColor: Appcolor.black,
                   ),
                 ],

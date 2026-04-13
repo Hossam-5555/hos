@@ -11,6 +11,7 @@ class Imageasset {
   static String loading = "$routeImage/loading.json";
   static String mail = "$routeImage/mail.json";
   static String celebiration = "$routeImage/Confetti.json";
+  static String email = "$routeImage/email.json";
 
   //Animation
   static String visa = "$routeImage/visa.png";
