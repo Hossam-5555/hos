@@ -62,7 +62,6 @@ class Homescreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    
                   ),
                 ],
               ),
@@ -111,8 +110,8 @@ class Homescreen extends StatelessWidget {
                           isLabelVisible:
                               hasUnread, // دي الطريقة الصح لإخفاء البادج
                           alignment: const Alignment(
-                            0.6,
-                            -0.6,
+                            0.1,
+                            0.90,
                           ), // تظبيط مكان النقطة على الأيقونة
                           smallSize: 9, // حجم النقطة مناسب للعين
                           backgroundColor: Colors.redAccent,
@@ -135,8 +134,11 @@ class Homescreen extends StatelessWidget {
             margin: EdgeInsets.only(left: 15, right: 15, bottom: 5),
             child: Buttomappbar(),
           ),
-          body: IndexedStack(
-            index: controller.Currentpage,
+          body: PageView(
+            controller: controller.pageControllers,
+            onPageChanged: (i) {
+              controller.onpagechnage(i);
+            },
             children: controller.pages,
           ),
         ),

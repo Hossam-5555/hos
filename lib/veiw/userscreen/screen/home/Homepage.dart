@@ -210,10 +210,9 @@ class HomePage extends StatelessWidget {
                                 itemId: item.itemsId.toString(),
                               ),
 
-                              /// 🔥 أهم سطر
                               height: index.isEven
                                   ? 260
-                                  : 320, // 👈 خلي الكارت يقبل height
+                                  : 320, //  خلي الكارت يقبل height
                             );
                           },
                         ),

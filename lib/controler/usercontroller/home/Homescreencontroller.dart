@@ -13,11 +13,26 @@ import 'package:hos/veiw/userscreen/screen/profile/profile.dart';
 class Homescreencontroller extends SearchMix {
   // ignore: non_constant_identifier_names
   int Currentpage = 0;
+  PageController pageControllers = PageController();
+  void onpagechnage(int i) {
+    Currentpage = i;
+    update();
+  }
+
   void changpage(int i) {
+    if ((Currentpage - i) > 1) {
+      pageControllers.jumpToPage(i);
+    } else {
+      pageControllers.animateToPage(
+        i,
+        duration: Duration(milliseconds: 250),
+        curve: Curves.easeIn,
+      );
+    }
     Currentpage = i;
 
     // 👇 تحكم في تايمر الهوم
-    if (i == 0&& Get.currentRoute!=Approute.Homepage) {
+    if (i == 0 && Get.currentRoute != Approute.Homepage) {
       Get.find<HomepageController>().startTimer();
     } else {
       Get.find<HomepageController>().stopTimer();
@@ -57,6 +72,7 @@ class Homescreencontroller extends SearchMix {
   void onClose() {
     scrollController.removeListener(secrolcotroller);
     scrollController.dispose();
+    pageControllers.dispose();
   }
 
   List<List<dynamic>> appbartitle = [
