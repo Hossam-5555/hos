@@ -194,7 +194,7 @@ class ProfilePage extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return Material(
-      elevation: 1,
+      elevation: 0.5,
       color: Colors.white,
       borderRadius: BorderRadius.circular(20),
       child: InkWell(

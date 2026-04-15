@@ -34,6 +34,7 @@ class Settings extends StatelessWidget {
                   subtitle: 'Edit Account'.tr,
                   onTap: () {},
                 ),
+                builddivider(),
 
                 _buildSettingsTile(
                   icon: Icons.language_sharp,
@@ -98,21 +99,23 @@ class Settings extends StatelessWidget {
             const SizedBox(height: 20),
             _buildSettingsGroup(
               context,
-              title: 'التخصيص والإشعارات',
+              title: 'General'.tr,
               children: [
                 // استخدم Obx لإعادة بناء هذه الويدجت فقط عند تغيير قيمتها
                 Obx(
                   () => SwitchListTile(
                     secondary: const Icon(Icons.notifications_outlined),
-                    title: const Text('تفعيل الإشعارات'),
+                    title: Text('Enable notifications'.tr),
                     value: controller.notificationsEnabled.value,
                     onChanged: controller.toggleNotifications,
-                    activeColor: Theme.of(context).colorScheme.primary,
+                    activeColor: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
+                builddivider(),
+
                 ListTile(
                   leading: const Icon(Icons.color_lens_outlined),
-                  title: const Text('المظهر'),
+                  title: Text('Theme'.tr),
                   trailing: Obx(
                     () => DropdownButton<String>(
                       value: controller.selectedTheme.value,
@@ -140,12 +143,12 @@ class Settings extends StatelessWidget {
             const SizedBox(height: 20),
             _buildSettingsGroup(
               context,
-              title: 'حول',
+              title: 'Support'.tr,
               children: [
                 _buildSettingsTile(
                   icon: Icons.info_outline,
-                  title: 'عن التطبيق',
-                  subtitle: 'الإصدار 1.0.0',
+                  title: 'About the app'.tr,
+                  subtitle: '${"version".tr} 1.0.0',
                   onTap: () {
                     Get.to(
                       EnglishAbout(),
@@ -155,9 +158,10 @@ class Settings extends StatelessWidget {
                     );
                   },
                 ),
+                builddivider(),
                 _buildSettingsTile(
                   icon: Icons.call_outlined,
-                  title: 'تواصل معنا',
+                  title: 'Contact us'.tr,
                   onTap: controller.makePhoneCall,
                   trailing: Obx(
                     () => controller.isLoading.value
@@ -171,9 +175,10 @@ class Settings extends StatelessWidget {
                           ),
                   ),
                 ),
+                builddivider(),
 
-                ListTile(
-                  leading: const Icon(Icons.logout, color: Colors.red),
+                ListTile(trailing:Icon(Icons.arrow_forward_ios, size: 16) ,
+                  leading: const Icon(Icons.logout, color: Colors.black),
                   title: Text('Logout'.tr, style: TextStyle(color: Colors.red)),
                   onTap: () {
                     controller.logout();
@@ -196,7 +201,6 @@ class Settings extends StatelessWidget {
   }) {
     return Card(
       color: Colors.white,
-      elevation: 5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,9 +214,9 @@ class Settings extends StatelessWidget {
             ),
             child: Text(
               title,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary,
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ),
@@ -240,4 +244,11 @@ class Settings extends StatelessWidget {
       onTap: onTap,
     );
   }
+}
+
+Widget builddivider() {
+  return Padding(
+    padding: const EdgeInsets.only(left: 60, right: 20), // لترك مساحة للأيقونة
+    child: Divider(height: 1, color: Colors.grey[200]),
+  );
 }

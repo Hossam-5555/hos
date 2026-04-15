@@ -32,6 +32,13 @@ class Mytransilation extends Translations {
       "Edit Account": "تعديل الحساب",
       "public Setting": "الاعدادات العامه",
       "Logout": "تسجيل الخروج",
+      "Contact us": "تواصل معنا",
+      "About the app": "عن التطبيق",
+      "version":"الإصدار",
+      "Support":"الدعم",
+      "General":"عام",
+      "Enable notifications":"تفعيل الإشعارات",
+      "Theme":"المظهر",
       //profile
       "Notifications": "الاشعارات",
       //search
@@ -76,6 +83,13 @@ class Mytransilation extends Translations {
       "Edit Account": "Edit Account",
       "public Setting": "public Setting",
       "Logout": "Logout",
+      "Contact us": "Contact us",
+      "About the app": "About the app",
+      "version" :"version",
+      "Support":"Support",
+      "General":"General",
+      "Enable notifications":"Enable notifications",
+      "Theme":"Theme",
       //profile
       //massage
       "Notifications": "Notifications",
