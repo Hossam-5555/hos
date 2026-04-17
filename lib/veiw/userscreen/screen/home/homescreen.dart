@@ -43,24 +43,26 @@ class Homescreen extends StatelessWidget {
               ),
               actions: [
                 // زر البحث
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: Homescrenaction(
-                    herotag: "Search",
-                    onPressed: () {
-                      Get.to(
-                        () => Searchpage(),
-                        transition: Transition.fadeIn,
-                        duration: const Duration(milliseconds: 400),
-                      );
-                    },
-                    child: SvgPicture.asset(
-                      Imageasset.search,
-                      height: 24, // توحيد الحجم
-                      width: 24,
-                    ),
-                  ),
-                ),
+                controller.Currentpage == 3
+                    ? SizedBox.shrink()
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Homescrenaction(
+                          herotag: "Search",
+                          onPressed: () {
+                            Get.to(
+                              () => Searchpage(),
+                              transition: Transition.fadeIn,
+                              duration: const Duration(milliseconds: 400),
+                            );
+                          },
+                          child: SvgPicture.asset(
+                            Imageasset.search,
+                            height: 24, // توحيد الحجم
+                            width: 24,
+                          ),
+                        ),
+                      ),
 
                 // زر الإشعارات
                 Padding(
@@ -107,7 +109,7 @@ class Homescreen extends StatelessWidget {
 
           // ============= تعديل مكان الـ BottomAppbar =================
           bottomNavigationBar: Container(
-            margin: EdgeInsets.only(left: 15, right: 15, bottom: 5),
+            margin: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
             child: Buttomappbar(),
           ),
           body: PageView(

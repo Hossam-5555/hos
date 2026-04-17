@@ -20,15 +20,7 @@ class Homescreencontroller extends SearchMix {
   }
 
   void changpage(int i) {
-    // if ((Currentpage - i) > 1) {
-    //   pageControllers.jumpToPage(i);
-    // } else {
-    //   pageControllers.animateToPage(
-    //     i,
-    //     duration: Duration(milliseconds: 250),
-    //     curve: Curves.easeIn,
-    //   );
-    // }
+  
     pageControllers.jumpToPage(i);
     Currentpage = i;
 

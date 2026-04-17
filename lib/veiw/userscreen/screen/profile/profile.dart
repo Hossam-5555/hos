@@ -169,7 +169,7 @@ class ProfilePage extends StatelessWidget {
         const SizedBox(height: 16),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: primaryColor,
+            backgroundColor: Colors.grey[100],
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
@@ -179,7 +179,7 @@ class ProfilePage extends StatelessWidget {
           },
           child: const Text(
             "Edit Profile",
-            style: TextStyle(fontSize: 16, color: Colors.white),
+            style: TextStyle(fontSize: 16, color: Colors.grey),
           ),
         ),
       ],
@@ -206,8 +206,8 @@ class ProfilePage extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.02),
-                blurRadius: 8,
+                color: Colors.black.withOpacity(0.01),
+                blurRadius: 1,
                 offset: const Offset(0, 2),
               ),
             ],

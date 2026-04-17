@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 
 class Buttomappbar extends GetView<Homescreencontroller> {
   const Buttomappbar({super.key});
@@ -46,18 +47,33 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SvgPicture.asset(
-                              controller.appbartitle[index][1],
-                              height:isSelected?25: 22,
-                              width: isSelected?25: 22,
-                            ),
+                            index == 3
+                                ? ClipOval(
+                                    child: SizedBox(
+                                      height: isSelected ? 30 : 25,
+                                      width: isSelected ? 30 : 25,
+                                      child: Image.asset(
+                                        Imageasset.twetter,
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                  )
+                                : SvgPicture.asset(
+                                    controller.appbartitle[index][1],
+                                    height: isSelected ? 25 : 22,
+                                    width: isSelected ? 25 : 22,
+                                  ),
                             // if (isSelected)
                             Text(
                               controller.appbartitle[index][0],
-                              style:  TextStyle(
-                                fontSize:isSelected? 12:10,
-                                fontWeight:isSelected? FontWeight.bold:FontWeight.w200,
-                                color:isSelected? Colors.black:Colors.grey.shade700,
+                              style: TextStyle(
+                                fontSize: isSelected ? 12 : 10,
+                                fontWeight: isSelected
+                                    ? FontWeight.bold
+                                    : FontWeight.w200,
+                                color: isSelected
+                                    ? Colors.black
+                                    : Colors.grey.shade700,
                               ),
                             ),
                           ],
