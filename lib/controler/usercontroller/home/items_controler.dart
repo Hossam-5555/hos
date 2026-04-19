@@ -9,11 +9,11 @@ import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 
 class ItemsControler extends SearchMix {
-  List<categoriesmodel> categories = [];
+  List<categoriesmodel2> categories = [];
   int? selecteditem;
   int? selectedfilter;
   late String catid;
-  List<Itemsmodel> data = [];
+  List<ItemsModel1> data = [];
   @override
   // ignore: overridden_fields
   Statusrequest statusrequest = Statusrequest.none;
@@ -49,9 +49,9 @@ class ItemsControler extends SearchMix {
     );
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
-      if (response['status'] == 'success') {
+      if (response['status'] == true) {
         List itemlist = response["data"];
-        data.addAll(itemlist.map((e) => Itemsmodel.fromJson(e)));
+        data.addAll(itemlist.map((e) => ItemsModel1.fromJson(e)));
       } else {
         statusrequest = Statusrequest.failure;
       }

@@ -19,7 +19,7 @@ class HomepageController extends GetxController {
   Myservisec myservisec = Get.put(Myservisec());
   String? username;
   List<Itemsmodel> items = [];
-  List<categoriesmodel> categories = [];
+  List<categoriesmodel2> categories = [];
   Statusrequest statusrequest = Statusrequest.none;
 
   Homedata homedata = Homedata(Get.find());
@@ -28,14 +28,19 @@ class HomepageController extends GetxController {
     statusrequest = Statusrequest.loading;
     update();
     var response = await homedata.postdata();
-    // print("Response==========================: $response");
+    print("Response==========================: $response");
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
-      if (response["status"] == "success") {
-        List categorylist = response["categories"];
-        categories.addAll(categorylist.map((e) => categoriesmodel.fromJson(e)));
-        List itmeslist = response["items"];
-        items.addAll(itmeslist.map((e) => Itemsmodel.fromJson(e)));
+      if (response["status"] == true) {
+        List categorylist =
+            // response["categories"];
+            response["data"];
+        print(response["data"]);
+        categories.addAll(
+          categorylist.map((e) => categoriesmodel2.fromJson(e)),
+        );
+        // List itmeslist = response["items"];
+        // items.addAll(itmeslist.map((e) => Itemsmodel.fromJson(e)));
       } else {
         statusrequest = Statusrequest.failure;
       }
@@ -83,17 +88,7 @@ class HomepageController extends GetxController {
         Colors.white,
       ], // برتقالي وزهري
     ),
-    OfferModel(
-      image:
-          "https://i.pinimg.com/736x/81/b1/a2/81b1a2ea2ace6297da864a42fe014d98.jpg",
-      title: 'عروض التقنية',
-      description: 'أفضل الخصومات على الهواتف والسماعات الذكية.',
-      discount: 'خصم 30%',
-      colors: const [
-        Color.fromARGB(255, 19, 0, 4),
-        Color.fromARGB(255, 32, 1, 1),
-      ], // أخضر متدرج
-    ),
+  
     OfferModel(
       image:
           "https://i.pinimg.com/webp/1200x/49/bb/12/49bb129c93b7d6454a2e34504be5e488.webp",

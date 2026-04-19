@@ -51,6 +51,11 @@ class HomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         /// Categories Title
+
+                        /// Main Offer
+                        AutoRotatingOffers(),
+
+                        SizedBox(height: height * 0.02),
                         Titles(title: "Categories".tr),
                         // SizedBox(height: height * 0.012),
 
@@ -69,19 +74,14 @@ class HomePage extends StatelessWidget {
                                     Statusrequest.loading,
                                 child: CategoryItem(
                                   index: index,
-                                  name: cat.categoriesName ?? "",
-                                  imageUrl:
-                                      "${LinkApi.imagecategories}/${cat.categoriesImage}",
+                                  name: cat.name ?? "",
+                                  imageUrl: cat.image.toString(),
+                                  // "${LinkApi.imagecategories}/${cat.image}",
                                 ),
                               );
                             },
                           ),
                         ),
-
-                        /// Main Offer
-                        AutoRotatingOffers(),
-
-                        SizedBox(height: height * 0.02),
 
                         /// Curved Items
                         // const CurvedItemsView(),
@@ -105,7 +105,7 @@ class HomePage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const CurvedItemsView(),
+                        // const CurvedItemsView(),
 
                         /// 🔥 Products List (FIXED)
                         ///
@@ -127,95 +127,95 @@ class HomePage extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height: height * 0.02),
-                        MasonryGridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: EdgeInsets.symmetric(
-                            vertical: height * 0.01,
-                          ),
-                          gridDelegate:
-                              const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                              ),
-                          mainAxisSpacing: 16,
-                          crossAxisSpacing: 12,
-                          itemCount: controller.items.length,
-                          itemBuilder: (context, index) {
-                            final item = controller.items[index];
+                        // MasonryGridView.builder(
+                        //   shrinkWrap: true,
+                        //   physics: const NeverScrollableScrollPhysics(),
+                        //   padding: EdgeInsets.symmetric(
+                        //     vertical: height * 0.01,
+                        //   ),
+                        //   gridDelegate:
+                        //       const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                        //         crossAxisCount: 2,
+                        //       ),
+                        //   mainAxisSpacing: 16,
+                        //   crossAxisSpacing: 12,
+                        //   itemCount: controller.items.length,
+                        //   itemBuilder: (context, index) {
+                        //     final item = controller.items[index];
 
-                            return SharedProductCard(
-                              image: "${LinkApi.imageitems}/${item.itemsImage}",
-                              title: item.itemsName ?? "بدون اسم",
-                              price: "${item.itemsPrice}",
-                              rating: 4.8,
-                              onTap: () {
-                                controller.gotoitemsdatails(item);
-                              },
+                        //     return SharedProductCard(
+                        //       image: "${LinkApi.imageitems}/${item.itemsImage}",
+                        //       title: item.itemsName ?? "بدون اسم",
+                        //       price: "${item.itemsPrice}",
+                        //       rating: 4.8,
+                        //       onTap: () {
+                        //         controller.gotoitemsdatails(item);
+                        //       },
 
-                              actionButton: AddToCartButton(
-                                itemId: item.itemsId.toString(),
-                              ),
+                        //       actionButton: AddToCartButton(
+                        //         itemId: item.itemsId.toString(),
+                        //       ),
 
-                              /// 🔥 أهم سطر
-                              height: index.isEven
-                                  ? 260
-                                  : 320, // 👈 خلي الكارت يقبل height
-                            );
-                          },
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Titles(title: "Most View".tr),
-                            TextButton.icon(
-                              onPressed: () {},
-                              icon: const Text("See All"),
-                              label: const Icon(
-                                Icons.arrow_forward_ios,
-                                size: 16,
-                              ),
-                              style: TextButton.styleFrom(
-                                foregroundColor: Appcolor.primaryColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: height * 0.015),
-                        MasonryGridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: EdgeInsets.symmetric(
-                            vertical: height * 0.01,
-                          ),
-                          gridDelegate:
-                              const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                              ),
-                          mainAxisSpacing: 16,
-                          crossAxisSpacing: 12,
-                          itemCount: controller.items.length,
-                          itemBuilder: (context, index) {
-                            final item = controller.items[index];
+                        //       /// 🔥 أهم سطر
+                        //       height: index.isEven
+                        //           ? 260
+                        //           : 320, // 👈 خلي الكارت يقبل height
+                        //     );
+                        //   },
+                        // ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     Titles(title: "Most View".tr),
+                        //     TextButton.icon(
+                        //       onPressed: () {},
+                        //       icon: const Text("See All"),
+                        //       label: const Icon(
+                        //         Icons.arrow_forward_ios,
+                        //         size: 16,
+                        //       ),
+                        //       style: TextButton.styleFrom(
+                        //         foregroundColor: Appcolor.primaryColor,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        // SizedBox(height: height * 0.015),
+                        // MasonryGridView.builder(
+                        //   shrinkWrap: true,
+                        //   physics: const NeverScrollableScrollPhysics(),
+                        //   padding: EdgeInsets.symmetric(
+                        //     vertical: height * 0.01,
+                        //   ),
+                        //   gridDelegate:
+                        //       const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                        //         crossAxisCount: 2,
+                        //       ),
+                        //   mainAxisSpacing: 16,
+                        //   crossAxisSpacing: 12,
+                        //   itemCount: controller.items.length,
+                        //   itemBuilder: (context, index) {
+                        //     final item = controller.items[index];
 
-                            return SharedProductCard(
-                              image: "${LinkApi.imageitems}/${item.itemsImage}",
-                              title: item.itemsName ?? "بدون اسم",
-                              price: "${item.itemsPrice}",
-                              rating: 4.8,
-                              onTap: () {
-                                controller.gotoitemsdatails(item);
-                              },
+                        //     return SharedProductCard(
+                        //       image: "${LinkApi.imageitems}/${item.itemsImage}",
+                        //       title: item.itemsName ?? "بدون اسم",
+                        //       price: "${item.itemsPrice}",
+                        //       rating: 4.8,
+                        //       onTap: () {
+                        //         controller.gotoitemsdatails(item);
+                        //       },
 
-                              actionButton: AddToCartButton(
-                                itemId: item.itemsId.toString(),
-                              ),
+                        //       actionButton: AddToCartButton(
+                        //         itemId: item.itemsId.toString(),
+                        //       ),
 
-                              height: index.isEven
-                                  ? 260
-                                  : 320, //  خلي الكارت يقبل height
-                            );
-                          },
-                        ),
+                        //       height: index.isEven
+                        //           ? 260
+                        //           : 320, //  خلي الكارت يقبل height
+                        //     );
+                        //   },
+                        // ),
                       ],
                     ),
                   ),

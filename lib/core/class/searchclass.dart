@@ -9,7 +9,7 @@ import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/veiw/userscreen/screen/home/itemsdetailes.dart';
 
 class SearchMix extends GetxController {
-  List<Itemsmodel> searchlist = [];
+  List<ItemsModel1> searchlist = [];
   Statusrequest statusrequest = Statusrequest.none;
   TextEditingController? search;
   Homedata homedata = Homedata(Get.find());
@@ -34,9 +34,9 @@ class SearchMix extends GetxController {
     statusrequest = handling(response);
 
     if (Statusrequest.success == statusrequest) {
-      if (response["status"] == "success") {
+      if (response["status"] == true) {
         List responsebody = response['data'];
-        searchlist.addAll(responsebody.map((e) => Itemsmodel.fromJson(e)));
+        searchlist.addAll(responsebody.map((e) => ItemsModel1.fromJson(e)));
 
         focusNode.unfocus();
       } else {
@@ -79,7 +79,7 @@ class SearchMix extends GetxController {
     update();
   }
 
-  void gotoitemsdatails(Itemsmodel itemsmodel) {
+  void gotoitemsdatails(ItemsModel1 itemsmodel) {
     Get.to(
       () => Itemsdetailes(),
       binding: ItemDetailsBinding(),

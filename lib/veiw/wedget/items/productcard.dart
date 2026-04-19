@@ -19,7 +19,7 @@ class ItemsCard extends GetView<ItemsControler> {
 
 // ignore: must_be_immutable
 class ItemList extends GetView<ItemsControler> {
-  final Itemsmodel items;
+  final ItemsModel1 items;
   bool active;
   final int index;
 
@@ -57,11 +57,11 @@ class ItemList extends GetView<ItemsControler> {
                   // صورة المنتج
                   Center(
                     child: Hero(
-                      tag: '${items.itemsId}',
+                      tag: '${items.id}',
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Image.network(
-                          "${LinkApi.imageitems}/${items.itemsImage}",
+                          "${items.itemsImage}",
                           fit: BoxFit.contain,
                           errorBuilder: (context, error, stackTrace) => const Icon(
                             Icons.broken_image,
@@ -74,7 +74,7 @@ class ItemList extends GetView<ItemsControler> {
                   ),
 
                   // علامة الخصم (لو موجودة)
-                  if (controller.data[index].itemsDiscount != "0.00")
+                  if (controller.data[index].itemsDiscount.toString() != "0.00")
                     Positioned(
                       top: 0,
                       left: 0,
@@ -93,15 +93,15 @@ class ItemList extends GetView<ItemsControler> {
                     right: 8,
                     child: GetBuilder<FavController>(
                       builder: (favController) {
-                        bool isFav = favController.isfavorite[items.itemsId] == "1";
+                        bool isFav = favController.isfavorite[items.id] == "1";
                         return GestureDetector(
                           onTap: () {
                             if (isFav) {
-                              favController.chasngfav(items.itemsId, "0");
-                              favController.removefromfav(items.itemsId!.toString());
+                              favController.chasngfav(items.id, "0");
+                              favController.removefromfav(items.id!.toString());
                             } else {
-                              favController.chasngfav(items.itemsId, "1");
-                              favController.addfav(items.itemsId!.toString());
+                              favController.chasngfav(items.id, "1");
+                              favController.addfav(items.id!.toString());
                             }
                           },
                           child: Padding(
@@ -154,7 +154,7 @@ class ItemList extends GetView<ItemsControler> {
 
           // السعر
           Text(
-            "${double.parse(items.itemspricediscount.toString()).toStringAsFixed(0)} EGP", // شلت الكسور عشان يبقى زي الصورة $39
+            "${double.parse(items.itemsPrice.toString()).toStringAsFixed(0)} EGP", // شلت الكسور عشان يبقى زي الصورة $39
             style: const TextStyle(
               color: Colors.green,
               fontWeight: FontWeight.w800,

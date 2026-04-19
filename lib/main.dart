@@ -80,6 +80,7 @@ class Testname extends GetxController {
   }
 }
 
+// ignore: must_be_immutable
 class TestView extends StatelessWidget {
   TestView({super.key});
   Testname testname = Get.put(Testname());

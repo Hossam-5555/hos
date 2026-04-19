@@ -47,8 +47,7 @@ class Items extends StatelessWidget {
                   itemCount: controller.categories.length,
                   itemBuilder: (_, i) {
                     final catmodel = controller.categories[i];
-                    final icon =
-                        "${LinkApi.imagecategories}/${catmodel.categoriesImage}";
+                    final icon = "${catmodel.image}";
                     return BuildCategoryItems(
                       catmodel: catmodel,
                       urlIcon: icon,

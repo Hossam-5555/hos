@@ -6,7 +6,7 @@ import 'package:hos/data/model/itemsmodel.dart';
 
 // ignore: camel_case_types
 class Itemdetailscontroller extends GetxController {
-  late Itemsmodel itemsmodel;
+  late ItemsModel1 itemsmodel;
   Cartdata cartdata = Cartdata(Get.find());
   Myservisec myservisec = Get.find();
   //

@@ -167,7 +167,12 @@ class ProfilePage extends StatelessWidget {
         const SizedBox(height: 4),
         Text(email, style: TextStyle(color: Colors.grey[600], fontSize: 14)),
         const SizedBox(height: 16),
-        ElevatedButton(
+        ElevatedButton.icon(
+          label: Text(
+            "Edit Profile",
+            style: TextStyle(fontSize: 16, color: Colors.grey),
+          ),
+          icon: const Icon(Icons.edit, color: Colors.grey),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.grey[100],
             shape: RoundedRectangleBorder(
@@ -175,12 +180,7 @@ class ProfilePage extends StatelessWidget {
             ),
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
           ),
-          onPressed: () {
-          },
-          child: const Text(
-            "Edit Profile",
-            style: TextStyle(fontSize: 16, color: Colors.grey),
-          ),
+          onPressed: () {},
         ),
       ],
     );

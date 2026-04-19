@@ -25,7 +25,7 @@ class CategoryItem extends StatelessWidget {
             controller.gotoitems(
               controller.categories,
               index,
-              controller.categories[index].categoriesId!,
+              controller.categories[index].id.toString(),
             );
           },
           child: Container(
@@ -38,8 +38,14 @@ class CategoryItem extends StatelessWidget {
                 Container(
                   height: 60,
                   width: 60,
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
+                  // padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    )
+                  ],
                     shape: BoxShape.circle,
                     color: const Color.fromARGB(
                       255,
@@ -48,12 +54,21 @@ class CategoryItem extends StatelessWidget {
                       146,
                     ).withAlpha(35),
                   ),
-                  child: SvgPicture.network(
-                    imageUrl,
-                    fit: BoxFit.contain,
-                    placeholderBuilder: (_) =>
-                        const CircularProgressIndicator(strokeWidth: 2),
+                  child: ClipOval(
+                    child: Image.network(
+                      imageUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(Icons.error);
+                      },
+                    ),
                   ),
+                  //  SvgPicture.network(
+                  //   imageUrl,
+                  //   fit: BoxFit.contain,
+                  //   placeholderBuilder: (_) =>
+                  //       const CircularProgressIndicator(strokeWidth: 2),
+                  // ),
                 ),
 
                 const SizedBox(height: 4),

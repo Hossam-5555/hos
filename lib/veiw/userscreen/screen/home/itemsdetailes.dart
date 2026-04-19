@@ -58,9 +58,9 @@ class Itemsdetailes extends StatelessWidget {
                         ),
                         child: Center(
                           child: Hero(
-                            tag: '${item.itemsId}',
+                            tag: '${item.id}',
                             child: Image.network(
-                              "${LinkApi.imageitems}/${item.itemsImage!}",
+                              "${item.itemsImage!}",
                               height: Get.height * 0.28,
                               fit: BoxFit.contain,
                             ),
@@ -215,7 +215,7 @@ class Itemsdetailes extends StatelessWidget {
                   } else {
                     controller.isadded = true;
                     Get.find<CartController>().addtocart(
-                      controller.itemsmodel.itemsId!.toString(),
+                      controller.itemsmodel.id!.toString(),
                       controller.itemcount,
                     );
                   }
@@ -243,11 +243,11 @@ class Itemsdetailes extends StatelessWidget {
     );
   }
 
-  Widget _buildPriceSection(Itemsmodel item) {
+  Widget _buildPriceSection(ItemsModel1 item) {
     double discount = double.tryParse(item.itemsDiscount.toString()) ?? 0;
     double price = double.tryParse(item.itemsPrice.toString()) ?? 0;
     double priceDiscount =
-        double.tryParse(item.itemspricediscount.toString()) ?? 0;
+        double.tryParse(item.priceAfterDiscount.toString()) ?? 0;
 
     return Row(
       children: [
@@ -316,7 +316,7 @@ class Itemsdetailes extends StatelessWidget {
     );
   }
 
-  void _showDescriptionSheet(BuildContext context, Itemsmodel item) {
+  void _showDescriptionSheet(BuildContext context, ItemsModel1 item) {
     showModalBottomSheet(
       backgroundColor: Colors.white,
       context: context,

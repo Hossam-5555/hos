@@ -12,10 +12,29 @@ class Crud {
     Map data,
   ) async {
     try {
-      if (
-        await checkinterner()
-        ) {
+      if (await checkinterner()) {
         var response = await http.post(Uri.parse(linkUrl), body: data);
+
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          var responsebody = jsonDecode(response.body);
+          return Right(responsebody);
+        } else {
+          return Left(Statusrequest.failure);
+        }
+      } else {
+        return Left(Statusrequest.checkinterner);
+      }
+    } catch (e) {
+      return Left(Statusrequest.serverfailure);
+    }
+  }
+
+  Future<Either<Statusrequest, Map>> getrequset(
+    String linkUrl,
+  ) async {
+    try {
+      if (await checkinterner()) {
+        var response = await http.get(Uri.parse(linkUrl));
 
         if (response.statusCode == 200 || response.statusCode == 201) {
           var responsebody = jsonDecode(response.body);
@@ -33,7 +52,7 @@ class Crud {
 
   //to add file
   Future<Either<Statusrequest, Map>> addRequestWithImageOne(
-   String url,
+    String url,
     Map data,
     File? image, [
     String? namerequest,
