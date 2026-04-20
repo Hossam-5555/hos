@@ -40,7 +40,7 @@ Widget buildCartItemCard(
               8,
             ), // مسافة داخلية عشان الصورة متلمسش الحواف
             child: Image.network(
-              "",
+              "${cart.itemimage}",
               fit: BoxFit.contain, // يضمن إن الصورة تظهر كاملة بدون قص
               errorBuilder: (context, error, stackTrace) =>
                   const Icon(Icons.broken_image_rounded, color: Colors.grey),

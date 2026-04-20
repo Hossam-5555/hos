@@ -50,8 +50,7 @@ class viewitem extends StatelessWidget {
               separatorBuilder: (_, _) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
                 final item = controller.itemlist[index];
-                final imageUrl =
-                    "${LinkApi.imageitems}/${item.itemsImage}";
+                final imageUrl = "${LinkApi.imageitems}/${item.itemsImage}";
 
                 return Container(
                   decoration: BoxDecoration(
@@ -74,9 +73,7 @@ class viewitem extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                       child:
                           (item.itemsImage != null &&
-                              item.itemsImage!.toLowerCase().endsWith(
-                                ".svg",
-                              ))
+                              item.itemsImage!.toLowerCase().endsWith(".svg"))
                           ? SvgPicture.network(
                               imageUrl,
                               width: 60,
@@ -137,7 +134,7 @@ class viewitem extends StatelessWidget {
                               buttonColor: Colors.redAccent,
                               onConfirm: () {
                                 controller.delete(
-                                  item.itemsId!.toString(),
+                                  item.id!.toString(),
                                   item.itemsImage!,
                                 );
                                 Get.back();

@@ -39,7 +39,7 @@ class LinkApi {
   static String coupone = '$server/coupone/chechcoupone.php';
   // AddresLink
   static String addaddres = '$lravelserver/Address';
-  static String deleteAddres = '$server/address/delete.php';
+  static String deleteAddres = '$lravelserver/delelteaddres';
   static String viewAddres = '$lravelserver/Address/';
   static String editAddres = '$server/address/edit.php';
   //orders

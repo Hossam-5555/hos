@@ -23,7 +23,7 @@ class ItemsCardhome extends GetView<HomepageController> {
 // --- ⭐️ الكلاس المُعدل ⭐️ ---
 
 class ItemList extends GetView<HomepageController> {
-  final Itemsmodel items;
+  final ItemsModel items;
   const ItemList({super.key, required this.items});
 
   @override
@@ -33,7 +33,10 @@ class ItemList extends GetView<HomepageController> {
     final height = size.height;
 
     return InkWell(
-      onTap: () => controller.gotoitemsdatails(items),
+      onTap: () {
+        // controller.gotoitemsdatails(items),
+      },
+
       // ❌ تم حذف ClipPath لاستخدام الزوايا الدائرية من BoxDecoration
       child: Container(
         decoration: BoxDecoration(

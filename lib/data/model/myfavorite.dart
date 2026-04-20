@@ -3,7 +3,7 @@ import 'package:hos/data/model/itemsmodel.dart';
 class favoriteModel {
   int? id;
   int? userId;
-  ItemsModel1? item; // استخدام الموديل الموجود عندك
+  ItemsModel? item; // استخدام الموديل الموجود عندك
   String? createdAt;
 
   favoriteModel({this.id, this.userId, this.item, this.createdAt});
@@ -12,7 +12,7 @@ class favoriteModel {
     id = json['id'];
     userId = json['user_id'];
     // هنا نقوم بتحويل الجزء الخاص بالمنتج باستخدام الموديل الجاهز لديك
-    item = json['item'] != null ? ItemsModel1.fromJson(json['item']) : null;
+    item = json['item'] != null ? ItemsModel.fromJson(json['item']) : null;
     createdAt = json['created_at'];
   }
 

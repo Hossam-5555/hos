@@ -10,7 +10,7 @@ import 'package:hos/veiw/adminscreen/Home/itemsview/edititem.dart';
 class ViewItemController extends GetxController {
   admindataitem admindata = admindataitem(Get.find());
   Statusrequest statusrequest = Statusrequest.none;
-  List<Itemsmodel> itemlist = [];
+  List<ItemsModel> itemlist = [];
 
   @override
   void onInit() {
@@ -32,7 +32,7 @@ class ViewItemController extends GetxController {
 
         /// ✳️ المهم هنا:
         itemlist.clear(); // فضي الليست القديمة
-        itemlist.addAll(data.map((e) => Itemsmodel.fromJson(e)));
+        itemlist.addAll(data.map((e) => ItemsModel.fromJson(e)));
       } else {
         statusrequest = Statusrequest.failure;
       }
@@ -42,11 +42,11 @@ class ViewItemController extends GetxController {
 
   void delete(String itemid, String imagename) {
     admindata.deleteitem(itemid, imagename);
-    itemlist.removeWhere((element) => element.itemsId.toString() == itemid);
+    itemlist.removeWhere((element) => element.id.toString() == itemid);
     update();
   }
 
-  void gotoeditpage(Itemsmodel itemsmodel) {
+  void gotoeditpage(ItemsModel itemsmodel) {
     Get.to(() => EditItem(), arguments: {"itemsmodel": itemsmodel});
   }
 

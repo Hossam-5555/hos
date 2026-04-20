@@ -18,7 +18,7 @@ class Offercard extends GetView<Offercontroller> {
 }
 
 class ItemList extends GetView<Offercontroller> {
-  final Itemsmodel items;
+  final ItemsModel items;
   final int index;
 
   const ItemList({super.key, required this.items, required this.index});
@@ -95,13 +95,12 @@ class ItemList extends GetView<Offercontroller> {
                     right: 8,
                     child: GetBuilder<FavController>(
                       builder: (favController) {
-                        bool isFav =
-                            favController.isfavorite[items.itemsId] == "1";
+                        bool isFav = favController.isfavorite[items.id] == "1";
                         return GestureDetector(
                           onTap: () {
-                            favController.favmanget(items.itemsId!);
+                            favController.favmanget(items.id!);
                             favController.chasngfav(
-                              items.itemsId,
+                              items.id,
                               isFav ? "0" : "1",
                             );
                           },
@@ -156,7 +155,7 @@ class ItemList extends GetView<Offercontroller> {
 
           // السعر
           Text(
-            "${double.parse(items.itemspricediscount.toString()).toStringAsFixed(0)} ${"EGP".tr}",
+            "${double.parse(items.priceAfterDiscount.toString()).toStringAsFixed(0)} ${"EGP".tr}",
             style: const TextStyle(
               color: Colors.green,
               fontWeight: FontWeight.w800,

@@ -243,7 +243,7 @@ class Itemsdetailes extends StatelessWidget {
     );
   }
 
-  Widget _buildPriceSection(ItemsModel1 item) {
+  Widget _buildPriceSection(ItemsModel item) {
     double discount = double.tryParse(item.itemsDiscount.toString()) ?? 0;
     double price = double.tryParse(item.itemsPrice.toString()) ?? 0;
     double priceDiscount =
@@ -316,7 +316,7 @@ class Itemsdetailes extends StatelessWidget {
     );
   }
 
-  void _showDescriptionSheet(BuildContext context, ItemsModel1 item) {
+  void _showDescriptionSheet(BuildContext context, ItemsModel item) {
     showModalBottomSheet(
       backgroundColor: Colors.white,
       context: context,

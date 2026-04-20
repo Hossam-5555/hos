@@ -25,7 +25,7 @@ class Edititemcontroller extends GetxController {
   late TextEditingController itemcat;
   GlobalKey<FormState> editkey = GlobalKey<FormState>();
   File? file;
-  Itemsmodel? itemsmodel;
+  ItemsModel? itemsmodel;
   void showoptionimage() {
     showImagePickerBottomSheet(chooseimagecamera, chooseimagegalary);
   }
@@ -80,7 +80,7 @@ class Edititemcontroller extends GetxController {
   @override
   void onInit() {
     itemsmodel = Get.arguments['itemsmodel'];
-    itemid = itemsmodel!.itemsId.toString();
+    itemid = itemsmodel!.id.toString();
     active = itemsmodel!.itemsActive.toString();
     imagename = itemsmodel!.itemsImage;
     name = TextEditingController();
@@ -95,10 +95,10 @@ class Edititemcontroller extends GetxController {
     namear.text = itemsmodel!.itemsNameAr!;
     description.text = itemsmodel!.itemsDesc!;
     descriptionar.text = itemsmodel!.itemsDescAr!;
-    count.text = itemsmodel!.itemsCount.toString();
-    price.text = itemsmodel!.itemsPrice!;
-    descount.text = itemsmodel!.itemsDiscount!;
-    itemcat.text = itemsmodel!.itemsCat.toString();
+    count.text = itemsmodel!.stock.toString();
+    price.text = itemsmodel!.itemsPrice.toString();
+    descount.text = itemsmodel!.itemsDiscount!.toString();
+    itemcat.text = itemsmodel!.categoryId.toString();
     super.onInit();
   }
 

@@ -99,10 +99,6 @@ class AddressController extends GetxController {
         listaddresdata.clear();
 
         listaddresdata.addAll(data.map((e) => AddresModel.fromJson(e)));
-
-        if (listaddresdata.isEmpty) {
-          statusrequest = Statusrequest.failure;
-        }
       } else {
         statusrequest = Statusrequest.failure;
       }
@@ -112,9 +108,9 @@ class AddressController extends GetxController {
 
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
 
-  void deleteAddres(String addresid) {
+  void deleteAddres(int addresid) {
     // 🔹 نجيب index الصح
-    int index = listaddresdata.indexWhere((e) => e.id.toString() == addresid);
+    int index = listaddresdata.indexWhere((e) => e.id == addresid);
 
     if (index == -1) return;
 

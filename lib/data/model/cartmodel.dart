@@ -92,6 +92,7 @@ class CartModel {
   int? itemsprice;
   int? cartCount;
   int? subtotal;
+  String? itemimage;
   String? createdAt;
 
   CartModel(
@@ -102,6 +103,7 @@ class CartModel {
       this.itemsprice,
       this.cartCount,
       this.subtotal,
+      this.itemimage,
       this.createdAt});
 
   CartModel.fromJson(Map<String, dynamic> json) {
@@ -112,6 +114,7 @@ class CartModel {
     itemsprice = json['itemsprice'];
     cartCount = json['cart_count'];
     subtotal = json['subtotal'];
+    itemimage = json['item_image'];
     createdAt = json['created_at'];
   }
 
@@ -124,6 +127,7 @@ class CartModel {
     data['itemsprice'] = this.itemsprice;
     data['cart_count'] = this.cartCount;
     data['subtotal'] = this.subtotal;
+    data['item_image'] = this.itemimage;
     data['created_at'] = this.createdAt;
     return data;
   }

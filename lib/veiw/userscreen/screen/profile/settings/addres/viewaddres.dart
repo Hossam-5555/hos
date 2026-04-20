@@ -47,7 +47,7 @@ class ViewMyAddres extends StatelessWidget {
                   final address = controller.listaddresdata[index];
 
                   return _card(address, () {
-                    controller.deleteAddres(address.id.toString());
+                    controller.deleteAddres(address.id!);
                   });
                 },
               ),
@@ -63,70 +63,113 @@ class ViewMyAddres extends StatelessWidget {
 Widget _card(AddresModel address, VoidCallback onDelete) {
   return Container(
     margin: const EdgeInsets.only(bottom: 16),
+    padding: const EdgeInsets.all(16), // إضافة مسافات داخلية مريحة
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(16),
+      border: Border.all(color: Colors.grey.shade200, width: 1.5),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.05),
-          blurRadius: 8,
+          color: Colors.black.withOpacity(0.04),
+          blurRadius: 10,
           offset: const Offset(0, 4),
         ),
       ],
-      border: Border.all(color: Colors.grey.shade200),
     ),
-    child: ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-
-      leading: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: Appcolor.primaryColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Icon(Icons.location_on, color: Appcolor.primaryColor, size: 26),
-      ),
-
-      title: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "${address.name}${"Addres"}",
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          Text(
-            "${address.street ?? 'No Street'}${":Street"} - ${address.city ?? 'No City'}${":City"}",
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: Colors.grey.shade600,
-              fontSize: 14,
-              height: 1.3,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // ---------------- الجزء العلوي: العنوان وزرار الحذف ----------------
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Appcolor.primaryColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(
+                    Icons.location_on_rounded, // أيقونة شكلها أحدث
+                    color: Appcolor.primaryColor,
+                    size: 22,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  "${address.name} Address", // تم تعديل شكل النص ليكون احترافي
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
             ),
-          ),
-          Text(
-            "phone-numper:01023426561",
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: Colors.grey.shade600,
-              fontSize: 14,
-              height: 1.3,
+            IconButton(
+              icon: const Icon(
+                Icons.delete_outline_rounded,
+                color: Colors.redAccent,
+                size: 24,
+              ),
+              onPressed: onDelete,
+              tooltip: 'Delete Address',
+              padding: EdgeInsets.zero,
+              constraints:
+                  const BoxConstraints(), // عشان زرار الحذف مياخدش مساحة كبيرة
             ),
-          ),
-        ],
-      ),
-
-      trailing: IconButton(
-        icon: const Icon(
-          Icons.delete_outline,
-          color: Colors.redAccent,
-          size: 26,
+          ],
         ),
-        onPressed: onDelete,
-        tooltip: 'Delete Address',
-      ),
+
+        // ---------------- خط فاصل ----------------
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Divider(color: Colors.grey.shade200, thickness: 1, height: 1),
+        ),
+
+        // ---------------- الجزء السفلي: تفاصيل العنوان ----------------
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(Icons.map_outlined, color: Colors.grey.shade400, size: 20),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Street: ${address.street ?? 'No Street'}", // ترتيب النص بشكل منطقي
+                    style: TextStyle(
+                      color: Colors.grey.shade700,
+                      fontSize: 14,
+                      height: 1.4,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    "City: ${address.city ?? 'No City'}",
+                    style: TextStyle(
+                      color: Colors.grey.shade700,
+                      fontSize: 14,
+                      height: 1.4,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    "Phone: 01023426561", // لو عندك متغير للتليفون يفضل تحطه هنا بدل الرقم الثابت
+                    style: TextStyle(
+                      color: Colors.grey.shade700,
+                      fontSize: 14,
+                      height: 1.4,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
     ),
   );
 }

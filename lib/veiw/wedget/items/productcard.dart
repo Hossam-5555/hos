@@ -19,7 +19,7 @@ class ItemsCard extends GetView<ItemsControler> {
 
 // ignore: must_be_immutable
 class ItemList extends GetView<ItemsControler> {
-  final ItemsModel1 items;
+  final ItemsModel items;
   bool active;
   final int index;
 

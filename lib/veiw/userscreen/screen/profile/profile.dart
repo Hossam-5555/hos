@@ -259,7 +259,7 @@ class ProfilePage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
+                  color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(icon, color: Colors.grey[800], size: 22),

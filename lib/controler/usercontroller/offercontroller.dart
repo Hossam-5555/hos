@@ -19,7 +19,7 @@ class Offercontroller extends GetxController {
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
         List data = response["data"];
-        offerList.addAll(data.map((e) => Itemsmodel.fromJson(e)).toList());
+        offerList.addAll(data.map((e) => ItemsModel.fromJson(e)).toList());
       } else {
         statusrequest = Statusrequest.failure;
       }

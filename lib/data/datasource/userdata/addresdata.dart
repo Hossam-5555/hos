@@ -53,9 +53,9 @@ class Addresdata {
   }
 
   //deletfrom favorite page
-  deleteAddresdata(String addresid) async {
+  deleteAddresdata(int addresid) async {
     var response = await crud.postrequset(LinkApi.deleteAddres, {
-      "addresid": addresid,
+      "id": addresid,
     });
     return response.fold((l) => l, (r) => r);
   }

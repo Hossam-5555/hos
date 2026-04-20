@@ -30,7 +30,7 @@ class Myfavcontroler extends SearchMix {
       if (response['status'] == true) {
         List responsedata = response['data'];
         data.addAll(responsedata.map((e) => favoriteModel.fromJson(e)));
-        // data.isEmpty ? statusrequest = Statusrequest.nodata : null;
+        data.isEmpty ? statusrequest = Statusrequest.failure : null;
       } else {
         statusrequest = Statusrequest.failure;
       }
@@ -43,9 +43,11 @@ class Myfavcontroler extends SearchMix {
   void deletefromfavpage(int itemid) {
     favdata.favoritemanger(2, itemid);
 
-    data.removeWhere((e) => e.id == itemid);
-
-    update();
+    data.removeWhere((e) => e.item!.id == itemid);
+    if (data.isEmpty) {
+      statusrequest = Statusrequest.failure;
+      update();
+    }
   }
 
   @override

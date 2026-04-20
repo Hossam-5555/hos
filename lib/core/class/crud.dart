@@ -55,6 +55,8 @@ class Crud {
     }
   }
 
+
+
   //to add file
   Future<Either<Statusrequest, Map>> addRequestWithImageOne(
     String url,

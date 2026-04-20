@@ -13,7 +13,7 @@ class ItemsControler extends SearchMix {
   int? selecteditem;
   int? selectedfilter;
   late String catid;
-  List<ItemsModel1> data = [];
+  List<ItemsModel> data = [];
   @override
   // ignore: overridden_fields
   Statusrequest statusrequest = Statusrequest.none;
@@ -51,7 +51,7 @@ class ItemsControler extends SearchMix {
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
         List itemlist = response["data"];
-        data.addAll(itemlist.map((e) => ItemsModel1.fromJson(e)));
+        data.addAll(itemlist.map((e) => ItemsModel.fromJson(e)));
       } else {
         statusrequest = Statusrequest.failure;
       }

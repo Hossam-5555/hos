@@ -18,7 +18,7 @@ import 'package:hos/veiw/wedget/Homepage/dicountcard.dart';
 class HomepageController extends GetxController {
   Myservisec myservisec = Get.put(Myservisec());
   String? username;
-  List<Itemsmodel> items = [];
+  List<ItemsModel> items = [];
   List<categoriesmodel2> categories = [];
   Statusrequest statusrequest = Statusrequest.none;
 
@@ -63,7 +63,7 @@ class HomepageController extends GetxController {
     update();
   }
 
-  void gotoitemsdatails(Itemsmodel itemsmodel) {
+  void gotoitemsdetails(ItemsModel itemsmodel) {
     Get.to(
       () => Itemsdetailes(),
       binding: ItemDetailsBinding(),
