@@ -28,7 +28,7 @@ class ViewMyAddres extends StatelessWidget {
         backgroundColor: Colors.black,
         onPressed: () => Get.toNamed(Approute.addnewaddres),
         icon: const Icon(Icons.add_location_alt_outlined, color: Colors.white),
-        label: const Text("Add Address"),
+        label: const Text("Add Address", style: TextStyle(color: Colors.white)),
       ),
 
       body: GetBuilder<AddressController>(
@@ -47,7 +47,7 @@ class ViewMyAddres extends StatelessWidget {
                   final address = controller.listaddresdata[index];
 
                   return _card(address, () {
-                    controller.deleteAddres(address.addresId.toString());
+                    controller.deleteAddres(address.id.toString());
                   });
                 },
               ),
@@ -60,7 +60,7 @@ class ViewMyAddres extends StatelessWidget {
 }
 
 /// 📦 UI Card محسّن
-Widget _card(Addresmodel address, VoidCallback onDelete) {
+Widget _card(AddresModel address, VoidCallback onDelete) {
   return Container(
     margin: const EdgeInsets.only(bottom: 16),
     decoration: BoxDecoration(
@@ -92,11 +92,11 @@ Widget _card(Addresmodel address, VoidCallback onDelete) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "${address.addresName}${"Addres"}",
+            "${address.name}${"Addres"}",
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
           Text(
-            "${address.addresStreet ?? 'No Street'}${":Street"} - ${address.addresCity ?? 'No City'}${":City"}",
+            "${address.street ?? 'No Street'}${":Street"} - ${address.city ?? 'No City'}${":City"}",
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(

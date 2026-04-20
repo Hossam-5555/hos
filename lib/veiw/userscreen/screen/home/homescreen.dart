@@ -82,14 +82,18 @@ class Homescreen extends StatelessWidget {
                     child: GetBuilder<Notificationcontroller>(
                       builder: (controller) {
                         // نتحقق إذا كان فيه إشعارات ولا لأ
-                        bool hasUnread = controller.notificationlist.isNotEmpty;
+                        int hasUnread = controller.notificationcount;
 
                         return Badge(
                           isLabelVisible:
-                              hasUnread, // دي الطريقة الصح لإخفاء البادج
-                          alignment: const Alignment(
-                            0.1,
-                            0.90,
+                              hasUnread > 0, // دي الطريقة الصح لإخفاء البادج
+                          alignment: const Alignment(0.1, 0.90),
+                          label: Text(
+                            hasUnread.toString(),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
                           ), // تظبيط مكان النقطة على الأيقونة
                           smallSize: 9, // حجم النقطة مناسب للعين
                           backgroundColor: Colors.redAccent,

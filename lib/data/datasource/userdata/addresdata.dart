@@ -7,20 +7,22 @@ class Addresdata {
 
   // ignore: strict_top_level_inference
   AddAddresdata(
-    String userid,
+    int userid,
     String name,
     String street,
     String city,
     String lat,
     String long,
+    String phone,
   ) async {
     var response = await crud.postrequset(LinkApi.addaddres, {
-      "userid": userid,
-      "name": name,
-      "street": street,
-      "city": city,
-      "lat": lat,
-      "lang": long,
+      "user_id": userid,
+      "addres_name": name,
+      "addres_street": street,
+      "addres_city": city,
+      "addres_lat": lat,
+      "addres_long": long,
+      "phone": phone,
     });
     return response.fold((l) => l, (r) => r);
   }
@@ -46,9 +48,7 @@ class Addresdata {
 
   // ignore: strict_top_level_inference
   viewAddresdata(String userid) async {
-    var response = await crud.postrequset(LinkApi.viewAddres, {
-      "userid": userid,
-    });
+    var response = await crud.getrequset(LinkApi.viewAddres + userid);
     return response.fold((l) => l, (r) => r);
   }
 

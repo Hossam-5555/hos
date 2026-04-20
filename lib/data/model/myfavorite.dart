@@ -1,76 +1,29 @@
-class myfavoritemodel {
-  String? favId;
-  int? favUsersid;
-  int? favItemsid;
-  int? itemsId;
-  String? itemsName;
-  String? itemsNameAr;
-  String? itemsDesc;
-  String? itemsDescAr;
-  String? itemsImage;
-  int? itemsCount;
-  int? itemsActive;
-  String? itemsPrice;
-  String? itemsDiscount;
-  String? itemsDate;
-  int? itemsCat;
-  int? usersId;
+import 'package:hos/data/model/itemsmodel.dart';
 
-  myfavoritemodel(
-      {this.favId,
-      this.favUsersid,
-      this.favItemsid,
-      this.itemsId,
-      this.itemsName,
-      this.itemsNameAr,
-      this.itemsDesc,
-      this.itemsDescAr,
-      this.itemsImage,
-      this.itemsCount,
-      this.itemsActive,
-      this.itemsPrice,
-      this.itemsDiscount,
-      this.itemsDate,
-      this.itemsCat,
-      this.usersId});
+class favoriteModel {
+  int? id;
+  int? userId;
+  ItemsModel1? item; // استخدام الموديل الموجود عندك
+  String? createdAt;
 
-  myfavoritemodel.fromJson(Map<String, dynamic> json) {
-    favId = json['fav_id'].toString();
-    favUsersid = json['fav_usersid'];
-    favItemsid = json['fav_itemsid'];
-    itemsId = json['items_id'];
-    itemsName = json['items_name'];
-    itemsNameAr = json['items_name_ar'];
-    itemsDesc = json['items_desc'];
-    itemsDescAr = json['items_desc_ar'];
-    itemsImage = json['items_image'];
-    itemsCount = json['items_count'];
-    itemsActive = json['items_active'];
-    itemsPrice = json['items_price'];
-    itemsDiscount = json['items_discount'];
-    itemsDate = json['items_date'];
-    itemsCat = json['items_cat'];
-    usersId = json['users_id'];
+  favoriteModel({this.id, this.userId, this.item, this.createdAt});
+
+  favoriteModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    // هنا نقوم بتحويل الجزء الخاص بالمنتج باستخدام الموديل الجاهز لديك
+    item = json['item'] != null ? ItemsModel1.fromJson(json['item']) : null;
+    createdAt = json['created_at'];
   }
 
-  // Map<String, dynamic> toJson() {
-  //   final Map<String, dynamic> data = new Map<String, dynamic>();
-  //   data['fav_id'] = this.favId;
-  //   data['fav_usersid'] = this.favUsersid;
-  //   data['fav_itemsid'] = this.favItemsid;
-  //   data['items_id'] = this.itemsId;
-  //   data['items_name'] = this.itemsName;
-  //   data['items_name_ar'] = this.itemsNameAr;
-  //   data['items_desc'] = this.itemsDesc;
-  //   data['items_desc_ar'] = this.itemsDescAr;
-  //   data['items_image'] = this.itemsImage;
-  //   data['items_count'] = this.itemsCount;
-  //   data['items_active'] = this.itemsActive;
-  //   data['items_price'] = this.itemsPrice;
-  //   data['items_discount'] = this.itemsDiscount;
-  //   data['items_date'] = this.itemsDate;
-  //   data['items_cat'] = this.itemsCat;
-  //   data['users_id'] = this.usersId;
-  //   return data;
-  // }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_id'] = userId;
+    if (item != null) {
+      data['item'] = item!.toJson();
+    }
+    data['created_at'] = createdAt;
+    return data;
+  }
 }

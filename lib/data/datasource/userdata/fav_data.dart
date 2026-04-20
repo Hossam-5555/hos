@@ -5,32 +5,25 @@ class addfavdata {
   Crud crud;
   addfavdata(this.crud);
 
-  // ignore: strict_top_level_inference
-  removefav(String userid, String itemid) async {
-    var response = await crud.postrequset(LinkApi.remove, {
-      "userid": userid,
-      "itemid": itemid,
+
+  favoritemanger(int userid, int itemid) async {
+    var response = await crud.postrequset(LinkApi.favoritemanger, {
+      "fav_user_id": userid,
+      "fav_item_id": itemid,
     });
     return response.fold((l) => l, (r) => r);
   }
 
   // ignore: strict_top_level_inference
-  addfavorite(String userid, String itemid) async {
-    var response = await crud.postrequset(LinkApi.addfav, {
-      "userid": userid,
-      "itemid": itemid,
+  veiwfav(int userid) async {
+    var response = await crud.postrequset(LinkApi.view, {
+      "user_id": userid,
     });
-    return response.fold((l) => l, (r) => r);
-  }
-
-  // ignore: strict_top_level_inference
-  veiwfav(String userid) async {
-    var response = await crud.postrequset(LinkApi.view, {"userid": userid});
     return response.fold((l) => l, (r) => r);
   }
 
   //deletfrom favorite page
-  deletefromfavorite(String favid) async {
+  deletefromfavorite(int favid) async {
     var response = await crud.postrequset(LinkApi.deletefromfavorite, {
       "favid": favid,
     });

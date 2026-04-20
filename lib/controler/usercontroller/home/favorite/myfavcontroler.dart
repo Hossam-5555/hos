@@ -10,7 +10,7 @@ class Myfavcontroler extends SearchMix {
   @override
   // ignore: overridden_fields
   late Statusrequest statusrequest;
-  List<myfavoritemodel> data = [];
+  List<favoriteModel> data = [];
   RxInt get datacount => data.length.obs;
 
   addfavdata favdata = addfavdata(Get.find());
@@ -21,14 +21,16 @@ class Myfavcontroler extends SearchMix {
     statusrequest = Statusrequest.loading;
 
     var response = await favdata.veiwfav(
-      myservisec.sharedPreferences.getString("id")!,
+      // myservisec.sharedPreferences.getString("id")!,
+      2,
     );
 
     statusrequest = handling(response);
     if (statusrequest == Statusrequest.success) {
-      if (response['status'] == 'success') {
+      if (response['status'] == true) {
         List responsedata = response['data'];
-        data.addAll(responsedata.map((e) => myfavoritemodel.fromJson(e)));
+        data.addAll(responsedata.map((e) => favoriteModel.fromJson(e)));
+        // data.isEmpty ? statusrequest = Statusrequest.nodata : null;
       } else {
         statusrequest = Statusrequest.failure;
       }
@@ -37,12 +39,11 @@ class Myfavcontroler extends SearchMix {
     update();
   }
 
-
   //الحذف من صفحه المفضله
-  void deletefromfavpage(String favoriteid) {
-    favdata.deletefromfavorite(favoriteid);
+  void deletefromfavpage(int itemid) {
+    favdata.favoritemanger(2, itemid);
 
-    data.removeWhere((e) => e.favId == favoriteid);
+    data.removeWhere((e) => e.id == itemid);
 
     update();
   }

@@ -8,13 +8,16 @@ class Homedata {
   postdata() async {
     var response = await crud.getrequset(
       // LinkApi.homepage
-      "http://10.0.2.2:8000/api/category"
-      ,);
+      "http://10.0.2.2:8000/api/category",
+    );
     return response.fold((l) => l, (r) => r);
   }
 
   searchdata(String search) async {
-    var response = await crud.postrequset(LinkApi.search, {'search': search});
+    var response = await crud.postrequset(LinkApi.search, {
+      'query': search,
+      "user_id": 2,
+    });
     return response.fold((l) => l, (r) => r);
   }
 }

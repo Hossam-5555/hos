@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
-import 'package:hos/core/conistant/linkApi.dart';
 import 'package:hos/data/model/cartmodel.dart';
 
 Widget buildCartItemCard(
   BuildContext context,
-  cartmodel cart,
+  CartModel cart,
   CartController controller,
   int i,
 ) {
@@ -18,7 +17,10 @@ Widget buildCartItemCard(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: const Color.fromARGB(255, 46, 45, 45).withAlpha(140), offset: Offset(0, 00.4)),
+          BoxShadow(
+            color: const Color.fromARGB(255, 46, 45, 45).withAlpha(140),
+            offset: Offset(0, 00.4),
+          ),
         ],
         // استخدام حد خفيف جداً بدل الظل (Shadow) لشكل أنظف
         border: Border.all(color: Colors.grey.shade500.withAlpha(70)),
@@ -38,7 +40,7 @@ Widget buildCartItemCard(
               8,
             ), // مسافة داخلية عشان الصورة متلمسش الحواف
             child: Image.network(
-              "${LinkApi.imageitems}/${cart.itemsImage}",
+              "",
               fit: BoxFit.contain, // يضمن إن الصورة تظهر كاملة بدون قص
               errorBuilder: (context, error, stackTrace) =>
                   const Icon(Icons.broken_image_rounded, color: Colors.grey),
@@ -54,7 +56,7 @@ Widget buildCartItemCard(
               children: [
                 // اسم المنتج
                 Text(
-                  cart.itemsName ?? "بدون اسم",
+                  cart.itemsname ?? "بدون اسم",
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
@@ -72,7 +74,7 @@ Widget buildCartItemCard(
                   children: [
                     // السعر
                     Text(
-                      '${double.parse(controller.data[i].totalprice.toString()).toStringAsFixed(2)} \$',
+                      '${double.parse(controller.data[i].subtotal.toString()).toStringAsFixed(2)} \$',
                       style: const TextStyle(
                         fontSize: 16,
                         color: Colors
@@ -107,7 +109,7 @@ Widget buildCartItemCard(
                               color: Colors.black,
                             ),
                             onPressed: () {
-                              controller.decrement(cart.itemsId!);
+                              controller.decrement(cart.itemid!);
                             },
                           ),
 
@@ -134,7 +136,7 @@ Widget buildCartItemCard(
                               color: Colors.black,
                             ),
                             onPressed: () {
-                              controller.increment(cart.itemsId!.toString());
+                              controller.increment(cart.itemid!);
                             },
                           ),
                         ],

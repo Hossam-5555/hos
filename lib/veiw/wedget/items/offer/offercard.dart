@@ -38,11 +38,11 @@ class ItemList extends GetView<Offercontroller> {
               width: double.infinity,
               decoration: BoxDecoration(
                 color: const Color.fromARGB(
-                      255,
-                      146,
-                      146,
-                      146,
-                    ).withAlpha(35), // لون رمادي فاتح 
+                  255,
+                  146,
+                  146,
+                  146,
+                ).withAlpha(35), // لون رمادي فاتح
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Stack(
@@ -54,11 +54,12 @@ class ItemList extends GetView<Offercontroller> {
                       child: Image.network(
                         "${LinkApi.imageitems}/${items.itemsImage}",
                         fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) => const Icon(
-                          Icons.broken_image_rounded,
-                          size: 40,
-                          color: Colors.grey,
-                        ),
+                        errorBuilder: (context, error, stackTrace) =>
+                            const Icon(
+                              Icons.broken_image_rounded,
+                              size: 40,
+                              color: Colors.grey,
+                            ),
                         // حافظنا على مؤشر التحميل بتاعك لأنه ممتاز للـ UX
                         loadingBuilder: (context, child, loadingProgress) {
                           if (loadingProgress == null) return child;
@@ -66,7 +67,7 @@ class ItemList extends GetView<Offercontroller> {
                             child: CircularProgressIndicator(
                               value: loadingProgress.expectedTotalBytes != null
                                   ? loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes!
+                                        loadingProgress.expectedTotalBytes!
                                   : null,
                               strokeWidth: 2,
                               color: Colors.grey.shade400,
@@ -94,21 +95,22 @@ class ItemList extends GetView<Offercontroller> {
                     right: 8,
                     child: GetBuilder<FavController>(
                       builder: (favController) {
-                        bool isFav = favController.isfavorite[items.itemsId] == "1";
+                        bool isFav =
+                            favController.isfavorite[items.itemsId] == "1";
                         return GestureDetector(
                           onTap: () {
-                            if (isFav) {
-                              favController.chasngfav(items.itemsId, "0");
-                              favController.removefromfav(items.itemsId!.toString());
-                            } else {
-                              favController.chasngfav(items.itemsId, "1");
-                              favController.addfav(items.itemsId!.toString());
-                            }
+                            favController.favmanget(items.itemsId!);
+                            favController.chasngfav(
+                              items.itemsId,
+                              isFav ? "0" : "1",
+                            );
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: Icon(
-                              isFav ? Icons.favorite : Icons.favorite_border_rounded,
+                              isFav
+                                  ? Icons.favorite
+                                  : Icons.favorite_border_rounded,
                               color: isFav ? Colors.redAccent : Colors.black54,
                               size: 20,
                             ),
@@ -123,7 +125,6 @@ class ItemList extends GetView<Offercontroller> {
           ),
 
           const SizedBox(height: 10), // مسافة بين الصورة والنصوص
-
           /// 2. تفاصيل المنتج تحت الصورة
           // اسم المنتج
           Text(
@@ -132,11 +133,11 @@ class ItemList extends GetView<Offercontroller> {
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               color: Colors.black,
-              fontWeight: FontWeight.w700, 
+              fontWeight: FontWeight.w700,
               fontSize: 14,
             ),
           ),
-          
+
           const SizedBox(height: 2),
 
           // وصف قصير (لو عندك وصف في الموديل يفضل تحطه هنا بدل النص الثابت)
@@ -150,7 +151,7 @@ class ItemList extends GetView<Offercontroller> {
               fontWeight: FontWeight.w400,
             ),
           ),
-          
+
           const SizedBox(height: 6),
 
           // السعر

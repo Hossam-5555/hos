@@ -1,8 +1,7 @@
 class LinkApi {
   static String server = 'http://10.0.2.2/ecommerce';
   // static String server = "http://192.168.1.8/ecommerce";
-
-  static String linktest = "$server/test.php";
+  static String lravelserver = "http://10.0.2.2:8000/api";
   //imagelink=============================
   static String imagelink = 'http://10.0.2.2/ecommerce/upload';
   // static String imagelink = 'http://192.168.1.8/ecommerce/upload';
@@ -24,24 +23,24 @@ class LinkApi {
   static String homepage = '$server/home.php';
 
   // items
-  static String items = '$server/items/items.php';
-  static String search = '$server//items/search.php';
+  static String items = '$lravelserver/Getitems';
+  static String search = '$lravelserver/search';
 
   //favorite
-  static String addfav = '$server/favorite/add.php';
-  static String remove = '$server/favorite/remove.php';
-  static String view = '$server/favorite/view.php';
+
+  static String view = '$lravelserver/getfavorite';
+  static String favoritemanger = '$lravelserver/favoritemanger';
   static String deletefromfavorite = '$server/favorite/deletefromfavroite.php';
   //cart
-  static String addcart = '$server/cart/add.php';
-  static String deletcart = '$server/cart/delete.php';
-  static String viewcart = '$server/cart/view.php';
+  static String addcart = '$lravelserver/cart';
+  static String deletcart = '$lravelserver/decrease';
+  static String viewcart = '$lravelserver/cart/';
   static String getcount = '$server/cart/getcountitems.php';
   static String coupone = '$server/coupone/chechcoupone.php';
   // AddresLink
-  static String addaddres = '$server/address/add.php';
+  static String addaddres = '$lravelserver/Address';
   static String deleteAddres = '$server/address/delete.php';
-  static String viewAddres = '$server/address/view.php';
+  static String viewAddres = '$lravelserver/Address/';
   static String editAddres = '$server/address/edit.php';
   //orders
   static String checkout = '$server/orders/add.php';
@@ -51,7 +50,7 @@ class LinkApi {
   static String rating = '$server/rating.php';
 
   //notification
-  static String notification = '$server/notification.php';
+  static String notification = '$lravelserver/getmassage';
   static String deletnotification = '$server/deletenotification.php';
 
   //offer

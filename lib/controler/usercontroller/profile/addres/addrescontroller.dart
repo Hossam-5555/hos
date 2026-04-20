@@ -14,7 +14,7 @@ class AddressController extends GetxController {
   Addresdata addresdata = Addresdata(Get.find());
   Myservisec myservisec = Get.find();
   Statusrequest? statusrequest;
-  List<Addresmodel> listaddresdata = [];
+  List<AddresModel> listaddresdata = [];
   GlobalKey<FormState> addadredKey = GlobalKey();
 
   // متغيرات الحقول
@@ -58,17 +58,18 @@ class AddressController extends GetxController {
     update();
 
     var response = await addresdata.AddAddresdata(
-      myservisec.sharedPreferences.getString("id")!,
+      2,
       name!.text,
       city!.text,
       street!.text,
       lat.toString(),
       long.toString(),
+      "+201034567820",
     );
 
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
-      if (response['status'] == 'success') {
+      if (response['status'] == true) {
         // تحديث القائمة بعد الإضافة
         await viewaddres();
         if (Get.isRegistered<Checkoutcontroller>()) {
@@ -88,18 +89,16 @@ class AddressController extends GetxController {
     statusrequest = Statusrequest.loading;
     update();
 
-    var response = await addresdata.viewAddresdata(
-      myservisec.sharedPreferences.getString("id")!,
-    );
+    var response = await addresdata.viewAddresdata("2");
 
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
-      if (response['status'] == 'success') {
+      if (response['status'] == true) {
         List data = response['data'];
         // تنظيف القائمة قبل الإضافة
         listaddresdata.clear();
 
-        listaddresdata.addAll(data.map((e) => Addresmodel.fromJson(e)));
+        listaddresdata.addAll(data.map((e) => AddresModel.fromJson(e)));
 
         if (listaddresdata.isEmpty) {
           statusrequest = Statusrequest.failure;
@@ -115,9 +114,7 @@ class AddressController extends GetxController {
 
   void deleteAddres(String addresid) {
     // 🔹 نجيب index الصح
-    int index = listaddresdata.indexWhere(
-      (e) => e.addresId.toString() == addresid,
-    );
+    int index = listaddresdata.indexWhere((e) => e.id.toString() == addresid);
 
     if (index == -1) return;
 

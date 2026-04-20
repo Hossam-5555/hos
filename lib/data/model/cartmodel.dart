@@ -82,3 +82,49 @@ class cartmodel {
     return data;
   }
 }
+
+
+class CartModel {
+  int? userid;
+  String? username;
+  int? itemid;
+  String? itemsname;
+  int? itemsprice;
+  int? cartCount;
+  int? subtotal;
+  String? createdAt;
+
+  CartModel(
+      {this.userid,
+      this.username,
+      this.itemid,
+      this.itemsname,
+      this.itemsprice,
+      this.cartCount,
+      this.subtotal,
+      this.createdAt});
+
+  CartModel.fromJson(Map<String, dynamic> json) {
+    userid = json['userid'];
+    username = json['username'];
+    itemid = json['itemid'];
+    itemsname = json['itemsname'];
+    itemsprice = json['itemsprice'];
+    cartCount = json['cart_count'];
+    subtotal = json['subtotal'];
+    createdAt = json['created_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['userid'] = this.userid;
+    data['username'] = this.username;
+    data['itemid'] = this.itemid;
+    data['itemsname'] = this.itemsname;
+    data['itemsprice'] = this.itemsprice;
+    data['cart_count'] = this.cartCount;
+    data['subtotal'] = this.subtotal;
+    data['created_at'] = this.createdAt;
+    return data;
+  }
+}

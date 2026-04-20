@@ -76,7 +76,6 @@ class HomePage extends StatelessWidget {
                                   index: index,
                                   name: cat.name ?? "",
                                   imageUrl: cat.image.toString(),
-                                  // "${LinkApi.imagecategories}/${cat.image}",
                                 ),
                               );
                             },
@@ -230,7 +229,7 @@ class HomePage extends StatelessWidget {
 }
 
 class AddToCartButton extends StatelessWidget {
-  final String itemId;
+  final int itemId;
 
   AddToCartButton({super.key, required this.itemId});
 

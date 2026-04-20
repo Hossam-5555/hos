@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/favorite/myfavcontroler.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
-import 'package:hos/core/conistant/linkApi.dart';
 import 'package:hos/data/model/myfavorite.dart';
 import 'package:hos/veiw/wedget/items/itemsappbar.dart';
 import 'package:hos/veiw/wedget/SharedProductCard.dart';
@@ -62,16 +61,17 @@ class Myfavorite extends StatelessWidget {
 }
 
 class FavCard extends GetView<Myfavcontroler> {
-  final myfavoritemodel items;
+  final favoriteModel items;
   const FavCard({super.key, required this.items});
 
   @override
   Widget build(BuildContext context) {
     // استخدمنا الكارت الموحد هنا!
-    return SharedProductCard(height: 220,
-      image: "${LinkApi.imageitems}/${items.itemsImage}",
-      title: items.itemsName ?? "بدون اسم",
-      price: "${items.itemsPrice ?? "0"} ج.م",
+    return SharedProductCard(
+      height: 220,
+      image: "${items.item?.itemsImage}",
+      title: items.item?.itemsName ?? "بدون اسم",
+      price: "${items.item?.itemsPrice ?? "0"} ج.م",
       rating: 4.5, // لو الموديل فيه تقييم حطه هنا
       onTap: () {
         // controller.gotoitemsdatails(items);
@@ -82,7 +82,7 @@ class FavCard extends GetView<Myfavcontroler> {
         constraints:
             const BoxConstraints(), // عشان نشيل المسافات الافتراضية للزرار
         onPressed: () {
-          controller.deletefromfavpage(items.favId.toString());
+          controller.deletefromfavpage(items.item!.id!);
         },
         icon: const Icon(
           Icons.delete_outline_rounded,

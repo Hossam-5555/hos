@@ -4,6 +4,7 @@ import 'package:hos/controler/usercontroller/notificationcontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class NotificationPage extends StatelessWidget {
@@ -66,9 +67,9 @@ class NotificationPage extends StatelessWidget {
                   } else {
                     // البيانات الحقيقية
                     final item = controller.notificationlist[index];
-                    id = item.notificationId.toString();
-                    title = item.notificationTitle ?? 'بدون عنوان';
-                    body = item.notificationBody ?? 'بدون محتوى';
+                    id = item.id.toString();
+                    title = item.title ?? 'بدون عنوان';
+                    body = item.body ?? 'بدون محتوى';
                   }
 
                   return GestureDetector(
@@ -133,9 +134,15 @@ class NotificationPage extends StatelessWidget {
                                 )
                               : Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
+                                  children: [
                                     // يمكن وضع الوقت هنا لاحقاً
-                                    // Text("2m", style: TextStyle(fontSize: 10, color: Colors.grey)),
+                                    Text(
+                                      "${Jiffy.parse(controller.notificationlist.elementAt(index).createdAt ?? '')}",
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
                                   ],
                                 ),
                         ),

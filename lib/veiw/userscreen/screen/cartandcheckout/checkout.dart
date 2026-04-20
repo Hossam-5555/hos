@@ -101,7 +101,7 @@ class Checkout extends StatelessWidget {
   Widget _buildAddressSelector(Checkoutcontroller c) {
     return Obx(() {
       final addr = c.listaddresdata.firstWhere(
-        (e) => e.addresId == c.addressid.value,
+        (e) => e.id == c.addressid.value,
         orElse: () => c.listaddresdata.first,
       );
       return ListTile(
@@ -111,7 +111,7 @@ class Checkout extends StatelessWidget {
           child: Icon(Icons.home_work, color: Colors.blue),
         ),
         title: Text(
-          addr.addresName ?? "غير معروف",
+          addr.name ?? "غير معروف",
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         subtitle: const Text(
@@ -237,11 +237,11 @@ class Checkout extends StatelessWidget {
             ...c.listaddresdata.map(
               (addr) => Obx(
                 () => RadioListTile(
-                  value: addr.addresId,
+                  value: addr.id,
                   // ignore: deprecated_member_use
                   groupValue: c.addressid.value,
                   activeColor: Colors.blueAccent,
-                  title: Text(addr.addresName ?? ""),
+                  title: Text(addr.name ?? ""),
                   // ignore: deprecated_member_use
                   onChanged: (val) {
                     c.chooseAddres(val!);

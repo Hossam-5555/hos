@@ -6,27 +6,30 @@ class Cartdata {
   Cartdata(this.crud);
 
   // ignore: strict_top_level_inference
-  deletcartdata(String userid, String itemid) async {
+  deletcartdata(int userid, int itemid) async {
     var response = await crud.postrequset(LinkApi.deletcart, {
-      "userid": userid,
-      "itemid": itemid,
+      "cart_user_id": userid,
+      "cart_item_id": itemid,
     });
     return response.fold((l) => l, (r) => r);
   }
 
   // ignore: strict_top_level_inference
-  addcartdata(String userid, String itemid, int count) async {
+  addcartdata(int userid, int itemid, int count) async {
     var response = await crud.postrequset(LinkApi.addcart, {
-      "userid": userid,
-      "itemid": itemid,
-      "count": count.toString(),
+      "cart_user_id": userid,
+      "cart_item_id": itemid,
+      "cart_count": count,
     });
     return response.fold((l) => l, (r) => r);
   }
 
   // ignore: strict_top_level_inference
-  viewcart(String userid) async {
-    var response = await crud.postrequset(LinkApi.viewcart, {"userid": userid});
+  viewcart(int userid) async {
+    var response = await crud.getrequset(
+      "${LinkApi.viewcart}$userid",
+      // {"userid": userid},
+    );
     return response.fold((l) => l, (r) => r);
   }
 
@@ -38,13 +41,11 @@ class Cartdata {
     });
     return response.fold((l) => l, (r) => r);
   }
- 
-  couponedata(String couponeName)async{
-     var response = await crud.postrequset(LinkApi.coupone, {
+
+  couponedata(String couponeName) async {
+    var response = await crud.postrequset(LinkApi.coupone, {
       "couponeName": couponeName,
     });
     return response.fold((l) => l, (r) => r);
   }
-
-
 }

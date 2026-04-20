@@ -19,17 +19,15 @@ class FavController extends GetxController {
   Myservisec myservisec = Get.find();
 
   // 🔹 إضافة إلى المفضلة
-  Future<void> addfav(String itemid) async {
+  Future<void> favmanget(int itemid) async {
     statusrequest = Statusrequest.loading;
     update();
-    var response = await favdata.addfavorite(
-      myservisec.sharedPreferences.getString("id")!,
-      itemid,
-    );
+    var response = await favdata.favoritemanger(2, itemid);
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response["status"] == "success") {
-        Get.rawSnackbar(duration: Duration(milliseconds:850),
+        Get.rawSnackbar(
+          duration: Duration(milliseconds: 850),
           margin: EdgeInsets.all(16),
           borderRadius: 20,
           title: "إشعار",
@@ -40,30 +38,6 @@ class FavController extends GetxController {
       }
     }
   }
-
-  // 🔹 إزالة من المفضلة
-  Future<void> removefromfav(String itemid) async {
-    statusrequest = Statusrequest.loading;
-    var response = await favdata.removefav(
-      myservisec.sharedPreferences.getString("id")!,
-      itemid,
-    );
-    statusrequest = handling(response);
-    if (Statusrequest.success == statusrequest) {
-      if (response['status'] == 'success') {
-        Get.rawSnackbar(
-          padding: EdgeInsets.all(10),
-          borderRadius: 20,
-          title: "إشعار",
-          messageText: const Text("تمت إزالة العنصر من المفضلة"),
-        );
-      } else {
-        statusrequest = Statusrequest.failure;
-      }
-    }
-  }
-
- 
 
 
 }

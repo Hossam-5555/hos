@@ -5,9 +5,9 @@ class Notificationdata {
   Crud crud;
   Notificationdata(this.crud);
 
-  GetNotification(String userid) async {
+  GetNotification(int userid) async {
     var response = await crud.postrequset(LinkApi.notification, {
-      "userid": userid,
+      "user_id": userid,
     });
     return response.fold((l) => l, (r) => r);
   }

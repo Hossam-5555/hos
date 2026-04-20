@@ -13,8 +13,15 @@ class Crud {
   ) async {
     try {
       if (await checkinterner()) {
-        var response = await http.post(Uri.parse(linkUrl), body: data);
-
+        var response = await http.post(
+          Uri.parse(linkUrl),
+          body: jsonEncode(data),
+          headers: {
+            "Content-Type":
+                "application/json", // بتعرف السيرفر إن اللي مبعوث ده JSON مش String عادي
+            "Accept": "application/json",
+          },
+        );
         if (response.statusCode == 200 || response.statusCode == 201) {
           var responsebody = jsonDecode(response.body);
           return Right(responsebody);
@@ -29,9 +36,7 @@ class Crud {
     }
   }
 
-  Future<Either<Statusrequest, Map>> getrequset(
-    String linkUrl,
-  ) async {
+  Future<Either<Statusrequest, Map>> getrequset(String linkUrl) async {
     try {
       if (await checkinterner()) {
         var response = await http.get(Uri.parse(linkUrl));
@@ -100,5 +105,5 @@ enum Statusrequest {
   failure,
   serverfailure,
   success,
-  none,
+  none, nodata,
 }

@@ -15,8 +15,8 @@ class Notificationcontroller extends GetxController {
   Myservisec myservisec = Get.put(Myservisec());
   Notificationdata notificationdata = Get.put(Notificationdata(Get.find()));
 
-  RxList<NotificationModel> notificationlist = <NotificationModel>[].obs;
-  int get notificationcount => notificationlist.length;
+  RxList<MassageModel> notificationlist = <MassageModel>[].obs;
+  int notificationcount = 0;
 
   /// ====== MULTI SELECT ======
   bool selectionMode = false;
@@ -27,18 +27,18 @@ class Notificationcontroller extends GetxController {
     statusrequest = Statusrequest.loading;
     update();
 
-    var response = await notificationdata.GetNotification(
-      myservisec.sharedPreferences.getString("id").toString(),
-    );
+    var response = await notificationdata.GetNotification(2);
 
     statusrequest = handling(response);
 
-    if (Statusrequest.success == statusrequest &&
-        response['status'] == 'success') {
+    if (Statusrequest.success == statusrequest && response['status'] == true) {
       notificationlist.clear();
       notificationlist.addAll(
-        (response["data"] as List).map((e) => NotificationModel.fromJson(e)),
+        (response["data"]["messages"] as List).map(
+          (e) => MassageModel.fromJson(e),
+        ),
       );
+      notificationcount = response["data"]["total_inactive_count"];
     } else {
       statusrequest = Statusrequest.failure;
     }
@@ -79,7 +79,7 @@ class Notificationcontroller extends GetxController {
     await notificationdata.removeNotification(selectedIds);
 
     notificationlist.removeWhere(
-      (item) => selectedIds.contains(item.notificationId.toString()),
+      (item) => selectedIds.contains(item.id.toString()),
     );
 
     selectedIds.clear();

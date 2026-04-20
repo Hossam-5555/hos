@@ -13,27 +13,28 @@ class CartController extends GetxController {
   Cartdata cartdata = Cartdata(Get.find());
   Statusrequest statusrequest = Statusrequest.loading;
   Myservisec myservisec = Get.put(Myservisec());
-  cartmodel cart = cartmodel();
+  CartModel cart = CartModel();
   /////===========================
   ///
 
   double gettotalprice() {
     return (totalprice - totalprice * couponediscount / 100);
   }
-  double get totalpriceafterdiscount=>gettotalprice();
+
+  double get totalpriceafterdiscount => gettotalprice();
 
   late AnimationController controllerAnimation;
   late Animation<double> priceAnimation;
 
   ///////////////////ملكش دعوه بدول  //view data
-  List<cartmodel> data = [];
+  List<CartModel> data = [];
   RxInt get countitem => data.length.obs;
   int totalcount = 0;
   double totalprice = 0.0;
   ///////////////////////
 
   /// ================== زيادة العدد
-  void increment(String itemId) async {
+  void increment(int itemId) async {
     await addtocart(itemId, 1);
     await view(); // ✅ يحدث الداتا من السيرفر بعد الزيادة
     update();
@@ -43,32 +44,33 @@ class CartController extends GetxController {
   void decrement(int itemid) async {
     // نلاقي المنتج
     final item = data.firstWhere(
-      (e) => e.itemsId == itemid,
-      orElse: () => cartmodel(),
+      (e) => e.itemid == itemid,
+      orElse: () => CartModel(),
     );
-
+    print("==================decrement item count: ${item.cartCount}");
     int currentCount = item.cartCount ?? 0;
 
     if (currentCount >= 1) {
       // ينقص العدد (الباك إند هيخصم واحد)
-      await delete(itemid.toString());
+      await delete(itemid);
     }
 
     await view();
     update();
   }
 
-  Future<void> addtocart(String itemid, int count) async {
+  Future<void> addtocart(int itemid, int count) async {
     statusrequest = Statusrequest.loading;
     update();
     var response = await cartdata.addcartdata(
-      myservisec.sharedPreferences.getString("id")!,
+      // myservisec.sharedPreferences.getString("id")!,
+      2, // ✅ مؤقت لعدم وجود تسجيل دخول
       itemid,
       count,
     );
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
-      if (response["status"] == "success") {
+      if (response["status"] == true) {
         Get.snackbar("Success", "تم اضافه المنتج للسلة ✅");
         CartController cartController = Get.find();
         await cartController.view(); // ✅ يحدث الداتا من السيرفر بعد الزيادة
@@ -78,16 +80,17 @@ class CartController extends GetxController {
     }
   }
 
-  Future<void> delete(String itemid) async {
+  Future<void> delete(int itemid) async {
     statusrequest = Statusrequest.loading;
     update();
     var response = await cartdata.deletcartdata(
-      myservisec.sharedPreferences.getString("id")!,
+      // myservisec.sharedPreferences.getString("id")!,
+      2, // ✅ مؤقت لعدم وجود تسجيل دخول
       itemid,
     );
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
-      if (response["status"] == "success") {
+      if (response["status"] == true) {
       } else {
         statusrequest = Statusrequest.failure;
       }
@@ -119,28 +122,25 @@ class CartController extends GetxController {
 
     update(); // ✅ لازم تتفعل هنا علشان Handlingdataview تعرض الـ loading
     var response = await cartdata.viewcart(
-      myservisec.sharedPreferences.getString("id").toString(),
+      // myservisec.sharedPreferences.getString("id").toString(),
+      2, // ✅ مؤقت لعدم وجود تسجيل دخول
     );
 
     statusrequest = handling(response);
 
     if (Statusrequest.success == statusrequest) {
-      if (response["status"] == "success") {
+      if (response["status"] == true) {
         data.clear();
-        List datarespons = response["datacart"];
-        data.addAll(datarespons.map((e) => cartmodel.fromJson(e)));
-
-        Map dataresponsecountprice = response["countprice"];
+        List datarespons = response["data"]["cart"];
+        data.addAll(datarespons.map((e) => CartModel.fromJson(e)));
 
         totalcount =
-            int.tryParse(
-              dataresponsecountprice["totalcount"]?.toString() ?? "0",
-            ) ??
+            int.tryParse(response["data"]["total_count"]?.toString() ?? "0") ??
             0;
 
         totalprice =
             double.tryParse(
-              dataresponsecountprice["totalprice"]?.toString() ?? "0",
+              response["data"]["total_price"]?.toString() ?? "0",
             ) ??
             0.0;
         if (data.isEmpty) {

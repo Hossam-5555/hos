@@ -7,8 +7,7 @@ class itemsdata {
 
   postdata(String id, String userid) async {
     var response = await crud.postrequset(
-      // LinkApi.items
-      "http://10.0.2.2:8000/api/Getitems",
+      LinkApi.items,
       {"category_id": id, "user_id": userid},
     );
     return response.fold((l) => l, (r) => r);

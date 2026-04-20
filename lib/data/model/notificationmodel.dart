@@ -1,32 +1,36 @@
-class NotificationModel {
-  int? notificationId;
-  String? notificationTitle;
-  String? notificationBody;
-  int? notificationUserid;
-  int? notificationIsactive;
+class MassageModel {
+  int? id;
+  String? title;
+  String? body;
+  int? userId;
+  bool? isActive;
+  String? createdAt;
 
-  NotificationModel(
-      {this.notificationId,
-      this.notificationTitle,
-      this.notificationBody,
-      this.notificationUserid,
-      this.notificationIsactive});
+  MassageModel(
+      {this.id,
+      this.title,
+      this.body,
+      this.userId,
+      this.isActive,
+      this.createdAt});
 
-  NotificationModel.fromJson(Map<String, dynamic> json) {
-    notificationId = json['notification_id'];
-    notificationTitle = json['notification_title'];
-    notificationBody = json['notification_body'];
-    notificationUserid = json['notification_userid'];
-    notificationIsactive = json['notification_isactive'];
+  MassageModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    body = json['body'];
+    userId = json['user_id'];
+    isActive = json['is_active'];
+    createdAt = json['created_at'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['notification_id'] = this.notificationId;
-    data['notification_title'] = this.notificationTitle;
-    data['notification_body'] = this.notificationBody;
-    data['notification_userid'] = this.notificationUserid;
-    data['notification_isactive'] = this.notificationIsactive;
+    data['id'] = this.id;
+    data['title'] = this.title;
+    data['body'] = this.body;
+    data['user_id'] = this.userId;
+    data['is_active'] = this.isActive;
+    data['created_at'] = this.createdAt;
     return data;
   }
 }

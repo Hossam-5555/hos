@@ -42,7 +42,7 @@ class Checkoutcontroller extends GetxController {
   Myservisec myservisec = Get.find();
 
   Statusrequest? statusrequest;
-  List<Addresmodel> listaddresdata = [];
+  List<AddresModel> listaddresdata = [];
 
   //============================ جلب العناوين من السيرفر
   Future<void> getaddress() async {
@@ -50,18 +50,19 @@ class Checkoutcontroller extends GetxController {
     update();
 
     var response = await addresdata.viewAddresdata(
-      myservisec.sharedPreferences.getString("id")!,
+      // myservisec.sharedPreferences.getString("id")!,
+      "2",
     );
 
     statusrequest = handling(response);
 
     if (Statusrequest.success == statusrequest) {
-      if (response['status'] == 'success') {
+      if (response['status'] == true) {
         List data = response['data'];
 
         // تنظيف القائمة قبل الإضافة
         listaddresdata.clear();
-        listaddresdata.addAll(data.map((e) => Addresmodel.fromJson(e)));
+        listaddresdata.addAll(data.map((e) => AddresModel.fromJson(e)));
       }
     } else {
       statusrequest = Statusrequest.failure;

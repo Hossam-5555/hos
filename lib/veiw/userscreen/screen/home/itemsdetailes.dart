@@ -205,6 +205,7 @@ class Itemsdetailes extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
+               
                   if (controller.itemcount == 0) {
                     Get.snackbar(
                       "تنبيه",
@@ -213,9 +214,8 @@ class Itemsdetailes extends StatelessWidget {
                       colorText: Colors.red,
                     );
                   } else {
-                    controller.isadded = true;
                     Get.find<CartController>().addtocart(
-                      controller.itemsmodel.id!.toString(),
+                      controller.itemsmodel.id!,
                       controller.itemcount,
                     );
                   }

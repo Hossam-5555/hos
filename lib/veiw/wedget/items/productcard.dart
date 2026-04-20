@@ -45,11 +45,11 @@ class ItemList extends GetView<ItemsControler> {
               width: double.infinity,
               decoration: BoxDecoration(
                 color: const Color.fromARGB(
-                      255,
-                      146,
-                      146,
-                      146,
-                    ).withAlpha(35), // لون رمادي فاتح مطابق للصورة
+                  255,
+                  146,
+                  146,
+                  146,
+                ).withAlpha(35), // لون رمادي فاتح مطابق للصورة
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Stack(
@@ -63,11 +63,12 @@ class ItemList extends GetView<ItemsControler> {
                         child: Image.network(
                           "${items.itemsImage}",
                           fit: BoxFit.contain,
-                          errorBuilder: (context, error, stackTrace) => const Icon(
-                            Icons.broken_image,
-                            size: 40,
-                            color: Colors.grey,
-                          ),
+                          errorBuilder: (context, error, stackTrace) =>
+                              const Icon(
+                                Icons.broken_image,
+                                size: 40,
+                                color: Colors.grey,
+                              ),
                         ),
                       ),
                     ),
@@ -96,18 +97,18 @@ class ItemList extends GetView<ItemsControler> {
                         bool isFav = favController.isfavorite[items.id] == "1";
                         return GestureDetector(
                           onTap: () {
-                            if (isFav) {
-                              favController.chasngfav(items.id, "0");
-                              favController.removefromfav(items.id!.toString());
-                            } else {
-                              favController.chasngfav(items.id, "1");
-                              favController.addfav(items.id!.toString());
-                            }
+                            favController.favmanget(items.id!);
+                            favController.chasngfav(
+                              items.id,
+                              isFav ? "0" : "1",
+                            );
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: Icon(
-                              isFav ? Icons.favorite : Icons.favorite_border_rounded,
+                              isFav
+                                  ? Icons.favorite
+                                  : Icons.favorite_border_rounded,
                               color: isFav ? Colors.redAccent : Colors.black54,
                               size: 20,
                             ),
@@ -122,7 +123,6 @@ class ItemList extends GetView<ItemsControler> {
           ),
 
           const SizedBox(height: 10), // مسافة بين الصورة والنصوص
-
           /// 2. تفاصيل المنتج تحت الصورة
           // اسم المنتج
           Text(
@@ -135,7 +135,7 @@ class ItemList extends GetView<ItemsControler> {
               fontSize: 14,
             ),
           ),
-          
+
           const SizedBox(height: 2),
 
           // وصف قصير (زي Oversized clean drip في الصورة) - تقدر تغيره للوصف الفعلي من الـ model
@@ -149,7 +149,7 @@ class ItemList extends GetView<ItemsControler> {
               fontWeight: FontWeight.w400,
             ),
           ),
-          
+
           const SizedBox(height: 6),
 
           // السعر

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/searchclass.dart';
-import 'package:hos/core/conistant/linkApi.dart';
 import 'package:hos/veiw/wedget/items/itemsappbar.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';
 
@@ -146,7 +145,7 @@ class Searchpage extends StatelessWidget {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: Image.network(
-                                    "${LinkApi.imageitems}/${item.itemsImage}",
+                                    "${item.itemsImage}",
                                     fit: BoxFit
                                         .contain, // contain أحسن عشان الصورة متتقصش
                                   ),

@@ -17,7 +17,7 @@ class Offercontroller extends GetxController {
     var response = await notificationdata.getdata();
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
-      if (response['status'] == 'success') {
+      if (response['status'] == true) {
         List data = response["data"];
         offerList.addAll(data.map((e) => Itemsmodel.fromJson(e)).toList());
       } else {
