@@ -38,7 +38,7 @@ class Orderdetailes extends StatelessWidget {
               ),
             );
           }
-          controller.Getcolorandstause(order.ordersStatus!);
+          controller.Getcolorandstause(order.status);
           final color = controller.statusColor;
           final textstatus = controller.statusText;
           return SingleChildScrollView(
@@ -47,17 +47,18 @@ class Orderdetailes extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 1. قسم معلومات الطلب الأساسية (الحالة والتاريخ)
-                _buildStatusSection(order.ordersStatus!, color!, textstatus!),
+                _buildStatusSection(order.status, color!, textstatus!),
 
                 const SizedBox(height: 15),
 
                 // 2. قسم عنوان التوصيل والمعلومات الشخصية
                 _buildAddressCard(
-                  address: order.addresName ?? "غير محدد",
-                  status: order.ordersStatus!,
-                  addresscity: order.addresCity!,
-                  addressstreet: order.addresStreet!,
+                  address: order.shippingAddress.name ?? "غير محدد",
+                  status: order.status,
+                  addresscity: order.shippingAddress.city ?? "غير محدد",
+                  addressstreet: order.shippingAddress.street ?? "غير محدد",
                   order: order,
+                  phone: order.shippingAddress.phone ?? "غير محدد",
                   // يمكنك إضافة اسم العميل هنا إذا كان متوفراً في موديل الطلب العام
                   // customerName: order.userName,
                 ),
@@ -115,7 +116,7 @@ class Orderdetailes extends StatelessWidget {
                 const SizedBox(height: 20),
 
                 // 4. ملخص الفاتورة (السعر الإجمالي)
-                _buildPriceSummary(order.ordersTotalprice ?? "0"),
+                _buildPriceSummary("${order.totalAmount}"),
 
                 const SizedBox(height: 30),
               ],
@@ -156,23 +157,33 @@ class Orderdetailes extends StatelessWidget {
             children: [
               Text(
                 "Status".tr,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 decoration: BoxDecoration(
-                  color: statusColor.withOpacity(0.1),
+                  color: statusColor.withAlpha(25),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: statusColor.withOpacity(0.3)),
+                  border: Border.all(color: statusColor.withAlpha(100)),
                 ),
                 child: Text(
                   statusText.tr,
-                  style: TextStyle(color: statusColor, fontWeight: FontWeight.bold, fontSize: 13),
+                  style: TextStyle(
+                    color: statusColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
                 ),
               ),
             ],
           ),
-          
+
           // --- الجزء السفلي: شريط التقدم (يظهر فقط للحالات من 0 إلى 4) ---
           if (currentStep >= 0 && currentStep <= 4) ...[
             const Padding(
@@ -180,7 +191,7 @@ class Orderdetailes extends StatelessWidget {
               child: Divider(height: 1, thickness: 0.5),
             ),
             _buildTimeline(currentStep),
-          ]
+          ],
         ],
       ),
     );
@@ -191,19 +202,20 @@ class Orderdetailes extends StatelessWidget {
     // ربطنا كل رقم حالة بالأيقونة والاسم بتاعها من الكود بتاعك
     final List<Map<String, dynamic>> steps = [
       {"icon": Icons.receipt_long_rounded, "label": "قيد الانتظار"}, // 0
-      {"icon": Icons.thumb_up_alt_rounded, "label": "تم التأكيد"},   // 1
-      {"icon": Icons.inventory_2_rounded, "label": "يجهز"},         // 2
+      {"icon": Icons.thumb_up_alt_rounded, "label": "تم التأكيد"}, // 1
+      {"icon": Icons.inventory_2_rounded, "label": "يجهز"}, // 2
       {"icon": Icons.local_shipping_rounded, "label": "في الطريق"}, // 3
-      {"icon": Icons.check_circle_rounded, "label": "مكتمل"},       // 4
+      {"icon": Icons.check_circle_rounded, "label": "مكتمل"}, // 4
     ];
 
     // نستخدم لون موحد (مثل الأخضر أو الأزرق) لتمثيل "الخطوات المكتملة" في الشريط
-    const Color activeColor = Colors.green; 
+    const Color activeColor = Colors.green;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: List.generate(steps.length, (index) {
-        bool isCompleted = index <= currentStep; // هل الخطوة دي خلصت أو إحنا فيها؟
+        bool isCompleted =
+            index <= currentStep; // هل الخطوة دي خلصت أو إحنا فيها؟
         bool isLast = index == steps.length - 1; // هل دي آخر خطوة؟
         bool isFirst = index == 0; // هل دي أول خطوة؟
 
@@ -221,15 +233,20 @@ class Orderdetailes extends StatelessWidget {
                           : (isCompleted ? activeColor : Colors.grey.shade200),
                     ),
                   ),
-                  
+
                   // الدائرة والأيقونة
                   Container(
-                    padding: const EdgeInsets.all(6), // صغرنا البادينج عشان الـ 5 خطوات يكفوا
+                    padding: const EdgeInsets.all(
+                      6,
+                    ), // صغرنا البادينج عشان الـ 5 خطوات يكفوا
                     decoration: BoxDecoration(
                       color: isCompleted ? activeColor : Colors.grey.shade100,
                       shape: BoxShape.circle,
                       border: isCompleted
-                          ? Border.all(color: activeColor.withOpacity(0.3), width: 3)
+                          ? Border.all(
+                              color: activeColor.withOpacity(0.3),
+                              width: 3,
+                            )
                           : null,
                     ),
                     child: Icon(
@@ -238,23 +255,26 @@ class Orderdetailes extends StatelessWidget {
                       color: isCompleted ? Colors.white : Colors.grey.shade400,
                     ),
                   ),
-                  
+
                   // الخط الأيمن (مخفي لآخر خطوة عشان مفيش حاجة بعدها)
                   Expanded(
                     child: Container(
                       height: 3,
                       color: isLast
                           ? Colors.transparent
-                          : (index < currentStep ? activeColor : Colors.grey.shade200),
+                          : (index < currentStep
+                                ? activeColor
+                                : Colors.grey.shade200),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 8),
-              
+
               // نص الخطوة
               Text(
-                (steps[index]["label"] as String).tr, // لدعم الترجمة لو ضفتهم في ملفات اللغة
+                (steps[index]["label"] as String)
+                    .tr, // لدعم الترجمة لو ضفتهم في ملفات اللغة
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 10, // خط صغير مناسب لـ 5 عناصر جنب بعض
@@ -275,7 +295,7 @@ class Orderdetailes extends StatelessWidget {
     required String address,
     required String addresscity,
     required String addressstreet,
-
+    required String phone,
     required String status,
     required order,
   }) {
@@ -339,6 +359,14 @@ class Orderdetailes extends StatelessWidget {
             "$address-$addresscity-$addressstreet",
             style: TextStyle(
               color: const Color.fromARGB(255, 13, 95, 2),
+              height: 1.5,
+              fontSize: 15,
+            ),
+          ),
+          Text(
+            "$phone",
+            style: TextStyle(
+              color: const Color.fromARGB(255, 16, 17, 16),
               height: 1.5,
               fontSize: 15,
             ),

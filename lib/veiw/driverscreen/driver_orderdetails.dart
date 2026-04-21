@@ -23,7 +23,7 @@ class DriverOrderdetails extends StatelessWidget {
           if (order == null) {
             return const Center(child: Text("❌ لم يتم استلام بيانات الطلب"));
           }
-          controller.Getcolorandstause(order.ordersStatus!);
+          controller.Getcolorandstause(order.status!);
           final statusColor = controller.statusColor;
           final statusText = controller.statusText;
           return SingleChildScrollView(
@@ -33,7 +33,7 @@ class DriverOrderdetails extends StatelessWidget {
               children: [
                 // 1. قسم معلومات الطلب الأساسية (الحالة والتاريخ)
                 _buildStatusSection(
-                  order.ordersStatus!,
+                  order.status,
                   statusColor!,
                   statusText!,
                 ),
@@ -42,8 +42,8 @@ class DriverOrderdetails extends StatelessWidget {
 
                 // 2. قسم عنوان التوصيل والمعلومات الشخصية
                 _buildAddressCard(
-                  address: order.addresName ?? "غير محدد",
-                  status: order.ordersStatus!,
+                  address: order.shippingAddress.name ?? "غير محدد",
+                  status: order.status,
                   order: order,
                 ),
 
@@ -105,7 +105,7 @@ class DriverOrderdetails extends StatelessWidget {
                 const SizedBox(height: 20),
 
                 // 4. ملخص الفاتورة (السعر الإجمالي)
-                _buildPriceSummary(order.ordersTotalprice ?? "0"),
+                _buildPriceSummary(order.taxAmount ?? 0),
 
                 const SizedBox(height: 30),
               ],
@@ -249,7 +249,7 @@ Widget _buildAddressCard({
 }
 
 // ودجت لملخص السعر
-Widget _buildPriceSummary(String total) {
+Widget _buildPriceSummary(double total) {
   return Container(
     padding: const EdgeInsets.all(20),
     decoration: BoxDecoration(

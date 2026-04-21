@@ -27,7 +27,7 @@ class Driverorderdata {
   }
 
   //approveorder
-  approveorder(String orderid, String userid, String driverid) async {
+  approveorder(int orderid, int userid, int driverid) async {
     var response = await crud.postrequset(LinkApi.driverapproveorder, {
       "orderid": orderid,
       "userid": userid,

@@ -5,7 +5,6 @@ import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/veiw/userscreen/screen/profile/order/orderdetailes.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
-import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 import 'package:jiffy/jiffy.dart';
 
 class Orders extends StatelessWidget {
@@ -37,12 +36,9 @@ class Orders extends StatelessWidget {
 
               itemBuilder: (context, index) {
                 final order = controller.orders[index];
-                controller.Getcolorandstause(order.ordersStatus!);
+                controller.Getcolorandstause(order.status);
                 final color = controller.statusColor;
-                final payment = controller.translatePayment(
-                  order.ordersPaymentmethod.toString(),
-                );
-                final status = controller.statusText;
+                final status = order.status;
 
                 return GestureDetector(
                   onTap: () {
@@ -91,7 +87,8 @@ class Orders extends StatelessWidget {
                               ),
                               Text(
                                 Jiffy.parse(
-                                  order.ordersDatetime.toString(),
+                                  order.createdAt,
+                                  pattern: 'yyyy-MM-dd hh:mm a',
                                 ).fromNow(),
                                 style: TextStyle(
                                   color: Colors.green,
@@ -123,7 +120,7 @@ class Orders extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "${'Order numper'.tr}#${order.ordersId}",
+                                  "${'Order numper'.tr}#${order.orderNumber}",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: w * 0.04,
@@ -134,7 +131,7 @@ class Orders extends StatelessWidget {
                                     children: [
                                       TextSpan(text: 'Total price'.tr),
                                       TextSpan(
-                                        text: ":${order.ordersPrice}\$",
+                                        text: ":${order.totalAmount}\$",
                                         style: TextStyle(color: Colors.green),
                                       ),
                                     ],
@@ -143,9 +140,27 @@ class Orders extends StatelessWidget {
                                 Text.rich(
                                   TextSpan(
                                     children: [
-                                      TextSpan(text: 'Payment buy'.tr),
+                                      TextSpan(text: 'Payment'.tr),
                                       TextSpan(
-                                        text: ":${payment}\$",
+                                        text: ":${order.paymentMethod}",
+                                        style: TextStyle(
+                                          color: const Color.fromARGB(
+                                            255,
+                                            74,
+                                            158,
+                                            25,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(text: 'Payment'.tr),
+                                      TextSpan(
+                                        text: ":${order.paymentStatus}",
                                         style: TextStyle(
                                           color: const Color.fromARGB(
                                             255,
@@ -170,7 +185,7 @@ class Orders extends StatelessWidget {
                             ),
 
                             // زر الحذف
-                            order.ordersStatus == "0"
+                            order.status == "0"
                                 ? IconButton(
                                     icon: Icon(
                                       Icons.delete_outline_outlined,
@@ -178,100 +193,96 @@ class Orders extends StatelessWidget {
                                       color: Colors.grey,
                                     ),
                                     onPressed: () => controller.deleteorders(
-                                      order.ordersId!,
+                                      order.orderId.toString(),
                                     ),
                                   )
-                                // زر التقييم
-                                : order.ordersStatus == "4" &&
-                                      order.rating == '0'
-                                ? TextButton(
-                                    child: Text(
-                                      "rating",
-                                      style: TextStyle(fontSize: w * 0.030),
-                                    ),
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            title: Text("Rating"),
-                                            content: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                GetBuilder<Ordercontroller>(
-                                                  builder: (controller) {
-                                                    return Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: List.generate(5, (
-                                                        i,
-                                                      ) {
-                                                        int s = i + 1;
-                                                        return IconButton(
-                                                          onPressed: () =>
-                                                              controller
-                                                                  .changeRatingColor(
-                                                                    i,
-                                                                  ),
-                                                          icon: Icon(
-                                                            Icons.star,
-                                                            size: w * 0.08,
-                                                            color:
-                                                                s <=
-                                                                    controller
-                                                                        .selectedRating
-                                                                ? Colors.amber
-                                                                : Colors.grey,
-                                                          ),
-                                                        );
-                                                      }),
-                                                    );
-                                                  },
-                                                ),
-
-                                                SizedBox(height: 20),
-
-                                                SizedBox(
-                                                  height: h * 0.12,
-                                                  width: w * 0.6,
-                                                  child: Textfealdauth(
-                                                    suffixIcon: Icons.comment,
-                                                    hint: "comment",
-                                                    textEditingController:
-                                                        controller.comment!,
-                                                    valid: (x) => null,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () =>
-                                                    controller.viewrating(
-                                                      order.ordersId!,
-                                                      controller.selectedRating
-                                                          .toString(),
-                                                    ),
-                                                child: Text("Submit"),
-                                              ),
-
-                                              TextButton(
-                                                onPressed: () => Get.back(),
-                                                child: Text("Cancel"),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                  )
-                                // عرض التقييم
-                                : Text(
-                                    order.ordersStatus == "4"
-                                        ? "${order.rating} ⭐"
-                                        : "",
+                                :
+                                  // زر التقييم
+                                  // : order.status == "4" &&
+                                  //       order == '0'
+                                  // ? TextButton(
+                                  //     child: Text(
+                                  //       "rating",
+                                  //       style: TextStyle(fontSize: w * 0.030),
+                                  //     ),
+                                  //     onPressed: () {
+                                  //       showDialog(
+                                  //         context: context,
+                                  //         builder: (context) {
+                                  //           return AlertDialog(
+                                  //             title: Text("Rating"),
+                                  //             content: Column(
+                                  //               mainAxisSize: MainAxisSize.min,
+                                  //               children: [
+                                  //                 GetBuilder<Ordercontroller>(
+                                  //                   builder: (controller) {
+                                  //                     return Row(
+                                  //                       mainAxisAlignment:
+                                  //                           MainAxisAlignment
+                                  //                               .center,
+                                  //                       children: List.generate(5, (
+                                  //                         i,
+                                  //                       ) {
+                                  //                         int s = i + 1;
+                                  //                         return IconButton(
+                                  //                           onPressed: () =>
+                                  //                               controller
+                                  //                                   .changeRatingColor(
+                                  //                                     i,
+                                  //                                   ),
+                                  //                           icon: Icon(
+                                  //                             Icons.star,
+                                  //                             size: w * 0.08,
+                                  //                             color:
+                                  //                                 s <=
+                                  //                                     controller
+                                  //                                         .selectedRating
+                                  //                                 ? Colors.amber
+                                  //                                 : Colors.grey,
+                                  //                           ),
+                                  //                         );
+                                  //                       }),
+                                  //                     );
+                                  //                   },
+                                  //                 ),
+                                  //                 SizedBox(height: 20),
+                                  //                 SizedBox(
+                                  //                   height: h * 0.12,
+                                  //                   width: w * 0.6,
+                                  //                   child: Textfealdauth(
+                                  //                     suffixIcon: Icons.comment,
+                                  //                     hint: "comment",
+                                  //                     textEditingController:
+                                  //                         controller.comment!,
+                                  //                     valid: (x) => null,
+                                  //                   ),
+                                  //                 ),
+                                  //               ],
+                                  //             ),
+                                  //             actions: [
+                                  //               TextButton(
+                                  //                 onPressed: () =>
+                                  //                     controller.viewrating(
+                                  //                       order.ordersId!,
+                                  //                       controller.selectedRating
+                                  //                           .toString(),
+                                  //                     ),
+                                  //                 child: Text("Submit"),
+                                  //               ),
+                                  //               TextButton(
+                                  //                 onPressed: () => Get.back(),
+                                  //                 child: Text("Cancel"),
+                                  //               ),
+                                  //             ],
+                                  //           );
+                                  //         },
+                                  //       );
+                                  //     },
+                                  //   )
+                                  // // عرض التقييم
+                                  // :
+                                  Text(
+                                    order.status == "4" ? "4 ⭐" : "",
                                     style: TextStyle(fontSize: w * 0.04),
                                   ),
                           ],

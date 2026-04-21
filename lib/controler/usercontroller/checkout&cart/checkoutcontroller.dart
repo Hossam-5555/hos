@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
-import 'package:hos/controler/usercontroller/profile/paymentcontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
@@ -10,27 +9,24 @@ import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/addresdata.dart';
 import 'package:hos/data/datasource/userdata/checkoutdata.dart';
 import 'package:hos/data/model/Addresmodel.dart';
+import 'package:hos/data/model/cartmodel.dart';
 
 class Checkoutcontroller extends GetxController {
   List<List> paymentMethodEnum = [
-    [PaymentMethod.cod, Imageasset.cash], //0
-    [PaymentMethod.creditCard, Imageasset.visa], //1
-    [PaymentMethod.mobileWallet, Imageasset.googlepay], //2
+    ["cash", Imageasset.cash], //0
+    ["credit", Imageasset.visa], //1
+    ["mobile", Imageasset.googlepay], //2
   ];
-  var selectedMethod = PaymentMethod.creditCard.obs;
-  void changePaymentMethod(PaymentMethod method) {
-    selectedMethod.value = method;
+  var selectedMethod = "credit";
+  void changePaymentMethod(String method) {
+    selectedMethod = method;
+    print(selectedMethod);
+    update();
   }
 
   //============================ المتغيرات
-  String? deleverytype;
   RxInt addressid = 0.obs;
   //============================ الدوال الخاصة بالاختيار
-
-  void choosedeleverytype(String val) {
-    deleverytype = val;
-    update();
-  }
 
   void chooseAddres(int val) {
     addressid.value = val;
@@ -72,90 +68,88 @@ class Checkoutcontroller extends GetxController {
   }
 
   //============================ تنفيذ عملية الطلب
-  Future<void> checkoutoder(double margen) async {
-    // تحقق من العنوان
-    if (addressid == 0) {
-      Get.snackbar("خطأ", "الرجاء إدخال العنوان");
-      return;
+  Future<void> checkoutoder() async {
+    // 1. التحقق من وجود عنوان
+    if (listaddresdata.isEmpty) {
+      Get.snackbar("تنبيه", "الرجاء إضافة عنوان أولاً");
+      return; // ضروري جداً لمنع إكمال الدالة
     }
 
-    // تحقق من وسيلة الدفع
-    if (selectedMethod.value == PaymentMethod.none) {
+    // 2. التحقق من وسيلة الدفع
+    if (selectedMethod == '') {
       Get.snackbar("خطأ", "الرجاء اختيار وسيلة الدفع");
       return;
-    }
-
-    // تحقق من وجود عنوان
-    if (listaddresdata.isEmpty) {
-      Get.snackbar("  تنبيه", "الرجاء اضافه  عنوان ");
     }
 
     // وضع حالة التحميل
     statusrequest = Statusrequest.loading;
     update();
 
-    // تجهيز البيانات
-    Map<String, dynamic> data = {
-      "userid": myservisec.sharedPreferences.getString("id")!,
-      "addressid": addressid.toString(),
-      "orderstype": "0",
-      "pricedelivery": "10",
-      "ordersprice": totalprice.toString(),
-      "couponid": couponeid.toString(),
-      "couponediscount": couponediscount.toString(),
-      "paymentmethod": selectedMethod.value.toString(),
-    };
+    try {
+      // تجهيز البيانات
+      Map<String, dynamic> data = {
+        "user_id": 2, // يفضل جلب الـ id من الـ Auth Service وليس كتابته يدوياً
+        "address_id": addressid.value,
+        "payment_method": selectedMethod,
+        "items": cartdata
+            .map((e) => {"product_id": e.itemid, "quantity": e.cartCount})
+            .toList(),
+      };
 
-    // تنفيذ الطلب
-    var response = await checkoutdata.Checkout(data);
-    statusrequest = handling(response);
+      // تنفيذ الطلب
+      var response = await checkoutdata.Checkout(data);
+      statusrequest = handling(response);
 
-    if (statusrequest == Statusrequest.success) {
-      if (response['status'] == 'success') {
-        // نجاح العملية
-        Get.snackbar("نجاح", "تم تنفيذ الطلب بنجاح");
-        Get.find<CartController>().view(); // مسح السلة بعد الطلب
-        // العودة للصفحة الرئيسية
-        Get.offAllNamed(Approute.Homescreen);
+      if (statusrequest == Statusrequest.success) {
+        if (response['status'] == true) {
+          // نجاح العملية
+          _showSnackBar("تم إرسال الطلب بنجاح");
+
+          // مسح السلة (يفضل تفعيلها لضمان عدم تكرار الطلب)
+          Get.find<CartController>().view();
+
+          Get.offAllNamed(Approute.Homescreen);
+        } else {
+          statusrequest = Statusrequest.failure;
+          _showSnackBar("خطأ في البيانات، الرجاء المحاولة مرة أخرى");
+        }
       } else {
-        statusrequest = Statusrequest.failure;
-        update();
-
-        ScaffoldMessenger.of(Get.context!).showSnackBar(
-          SnackBar(
-            content: Text("خطأ في البيانات\nالرجاء المحاولة مرة أخرى"),
-            duration: const Duration(seconds: 2),
-            behavior: SnackBarBehavior.floating,
-            margin: const EdgeInsets.all(16),
-          ),
-        );
+        // التعامل مع أخطاء السيرفر أو الإنترنت
+        _showSnackBar("حدث خطأ في الاتصال بالخادم");
       }
-    } else {
+    } catch (e) {
+      // حماية التطبيق من الانهيار في حال حدث خطأ غير متوقع
       statusrequest = Statusrequest.serverfailure;
-      update();
-
-      ScaffoldMessenger.of(Get.context!).showSnackBar(
-        SnackBar(
-          content: Text("حدث خطأ أثناء إرسال الطلب"),
-          duration: const Duration(seconds: 2),
-          behavior: SnackBarBehavior.floating,
-          margin: const EdgeInsets.all(16),
-        ),
-      );
+      _showSnackBar("حدث خطأ غير متوقع");
+    } finally {
+      update(); // تحديث الواجهة في كل الحالات
     }
+  }
+
+  // دالة مساعدة لتقليل تكرار كود السناك بار
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(Get.context!).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(16),
+      ),
+    );
   }
 
   //============================ متغيرات الكوبون والسعر
   String? couponeid;
-  late String totalprice;
   String couponediscount = "0";
 
+  late String totalprice;
+  List<CartModel> cartdata = [];
   @override
   void onInit() {
     couponeid = Get.arguments['couponeID'].toString();
     totalprice = Get.arguments['totalprice'].toString();
     couponediscount = Get.arguments['couponediscount'].toString();
-
+    cartdata = Get.arguments['Cartdata'];
     getaddress();
     super.onInit();
   }

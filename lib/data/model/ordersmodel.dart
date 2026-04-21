@@ -1,91 +1,98 @@
+import 'package:hos/data/model/Addresmodel.dart';
+
 class OrderModel {
-  String? ordersId;
-  String? ordersUsersid;
-  String? ordersAddress;
-  String? ordersType;
-  String? ordersPricedelivery;
-  String? ordersPrice;
-  String? ordersTotalprice;
-  String? ordersCoupon;
-  String? ordersPaymentmethod;
-  String? ordersStatus;
-  String? ordersDatetime;
-  String? addresId;
-  String? addresUserid;
-  String? addresName;
-  String? addresCity;
-  String? addresStreet;
-  double? addresLat;
-  double? addresLang;
-  String? rating;
-  String? comment;
+  final int orderId;
+  final String username;
+  final int userId;
+  final String orderNumber;
+  final double subtotal;
+  final double taxAmount;
+  final double shippingFee;
+  final double totalAmount;
+  final String status;
+  final String paymentStatus;
+  final String paymentMethod;
+  final String createdAt;
+  final List<OrderItemmodel> items;
+  final AddresModel shippingAddress;
 
   OrderModel({
-    this.ordersId,
-    this.ordersUsersid,
-    this.ordersAddress,
-    this.ordersType,
-    this.ordersPricedelivery,
-    this.ordersPrice,
-    this.ordersTotalprice,
-    this.ordersCoupon,
-    this.ordersPaymentmethod,
-    this.ordersStatus,
-    this.ordersDatetime,
-    this.addresId,
-    this.addresUserid,
-    this.addresName,
-    this.addresCity,
-    this.addresStreet,
-    this.addresLat,
-    this.addresLang,
-    this.rating,
-    this.comment,
+    required this.orderId,
+    required this.username,
+    required this.userId,
+    required this.orderNumber,
+    required this.subtotal,
+    required this.taxAmount,
+    required this.shippingFee,
+    required this.totalAmount,
+    required this.status,
+    required this.paymentStatus,
+    required this.paymentMethod,
+    required this.createdAt,
+    required this.items,
+    required this.shippingAddress,
   });
 
-  OrderModel.fromJson(Map<String, dynamic> json) {
-    ordersId = json['orders_id'].toString();
-    ordersUsersid = json['orders_usersid'].toString();
-    ordersAddress = json['orders_address'].toString();
-    ordersType = json['orders_type'].toString();
-    ordersPricedelivery = json['orders_pricedelivery'].toString();
-    ordersPrice = json['orders_price'].toString();
-    ordersTotalprice = json['orders_totalprice'].toString();
-    ordersCoupon = json['orders_coupon'].toString();
-    ordersPaymentmethod = json['orders_paymentmethod'].toString();
-    ordersStatus = json['orders_status'].toString();
-    ordersDatetime = json['orders_datetime'].toString();
-    addresId = json['addres_id'].toString();
-    addresUserid = json['addres_userid'].toString();
-    addresName = json['addres_name'].toString();
-    addresCity = json['addres_city'].toString();
-    addresStreet = json['addres_street'].toString();
-    addresLat = json['addres_lat'];
-    addresLang = json['addres_lang'];
-    rating = json['order_rating'].toString();
-    comment = json['comment'];
+  factory OrderModel.fromJson(Map<String, dynamic> json) {
+    return OrderModel(
+      orderId: json['order_id'],
+      username: json['username'],
+      userId: json['user_id'],
+      orderNumber: json['order_number'],
+      subtotal: (json['subtotal'] as num).toDouble(),
+      taxAmount: (json['tax_amount'] as num).toDouble(),
+      shippingFee: (json['shipping_fee'] as num).toDouble(),
+      totalAmount: (json['total_amount'] as num).toDouble(),
+      status: json['status'],
+      paymentStatus: json['payment_status'],
+      paymentMethod: json['payment_method'],
+      createdAt: json['created_at'],
+
+      // 🔥 تحويل الليست
+      items: List<OrderItemmodel>.from(
+        json['items'].map((e) => OrderItemmodel.fromJson(e)),
+      ),
+
+      // 🔥 تحويل العنوان
+      shippingAddress: AddresModel.fromJson(json['shipping_address']),
+    );
+  }
+}
+
+class OrderItemmodel {
+  int? orderId;
+  int? productId;
+  String? productName;
+  int? quantity;
+  int? price;
+  int? totalPrice;
+
+  OrderItemmodel({
+    this.orderId,
+    this.productId,
+    this.productName,
+    this.quantity,
+    this.price,
+    this.totalPrice,
+  });
+
+  OrderItemmodel.fromJson(Map<String, dynamic> json) {
+    orderId = json['order_id'];
+    productId = json['product_id'];
+    productName = json['product_name'];
+    quantity = json['quantity'];
+    price = json['price'];
+    totalPrice = json['total_price'];
   }
 
-  // Map<String, dynamic> toJson() {
-  //   final Map<String, dynamic> data = new Map<String, dynamic>();
-  //   data['orders_id'] = this.ordersId;
-  //   data['orders_usersid'] = this.ordersUsersid;
-  //   data['orders_address'] = this.ordersAddress;
-  //   data['orders_type'] = this.ordersType;
-  //   data['orders_pricedelivery'] = this.ordersPricedelivery;
-  //   data['orders_price'] = this.ordersPrice;
-  //   data['orders_totalprice'] = this.ordersTotalprice;
-  //   data['orders_coupon'] = this.ordersCoupon;
-  //   data['orders_paymentmethod'] = this.ordersPaymentmethod;
-  //   data['orders_status'] = this.ordersStatus;
-  //   data['orders_datetime'] = this.ordersDatetime;
-  //   data['addres_id'] = this.addresId;
-  //   data['addres_userid'] = this.addresUserid;
-  //   data['addres_name'] = this.addresName;
-  //   data['addres_city'] = this.addresCity;
-  //   data['addres_street'] = this.addresStreet;
-  //   data['addres_lat'] = this.addresLat;
-  //   data['addres_lang'] = this.addresLang;
-  //   return data;
-  // }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['order_id'] = this.orderId;
+    data['product_id'] = this.productId;
+    data['product_name'] = this.productName;
+    data['quantity'] = this.quantity;
+    data['price'] = this.price;
+    data['total_price'] = this.totalPrice;
+    return data;
+  }
 }

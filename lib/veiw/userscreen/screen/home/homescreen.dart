@@ -46,7 +46,9 @@ class Homescreen extends StatelessWidget {
                 controller.Currentpage == 3
                     ? SizedBox.shrink()
                     : Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        padding: const EdgeInsetsDirectional.symmetric(
+                          horizontal: 5,
+                        ),
                         child: Homescrenaction(
                           herotag: "Search",
                           onPressed: () {
@@ -66,9 +68,8 @@ class Homescreen extends StatelessWidget {
 
                 // زر الإشعارات
                 Padding(
-                  padding: const EdgeInsets.only(
-                    right: 16,
-                    left: 4,
+                  padding: EdgeInsetsDirectional.symmetric(
+                    horizontal: 10,
                   ), // مسافة ممتازة من الحافة
                   child: Homescrenaction(
                     herotag: "notification",
@@ -113,7 +114,10 @@ class Homescreen extends StatelessWidget {
 
           // ============= تعديل مكان الـ BottomAppbar =================
           bottomNavigationBar: Container(
-            margin: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+            margin: EdgeInsetsDirectional.symmetric(
+              horizontal: 12,
+              vertical: 5,
+            ),
             child: Buttomappbar(),
           ),
           body: PageView(

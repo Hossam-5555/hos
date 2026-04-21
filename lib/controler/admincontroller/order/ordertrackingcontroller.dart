@@ -28,8 +28,8 @@ class Trackingorderadmin extends GetxController {
     );
     cameraPosition = CameraPosition(
       target: LatLng(
-        double.parse(order.addresLat.toString()),
-        double.parse(order.addresLang.toString()),
+        double.parse(order.shippingAddress.lat.toString()),
+        double.parse(order.shippingAddress.lng.toString()),
       ),
       zoom: 19.151926040649414,
     );
@@ -38,8 +38,8 @@ class Trackingorderadmin extends GetxController {
       Marker(
         markerId: MarkerId('destination'),
         position: LatLng(
-          double.parse(order.addresLat.toString()),
-          double.parse(order.addresLang.toString()),
+          double.parse(order.shippingAddress.lat.toString()),
+          double.parse(order.shippingAddress.lng.toString()),
         ),
         infoWindow: InfoWindow(title: 'destination'),
       ),
@@ -89,8 +89,8 @@ class Trackingorderadmin extends GetxController {
   Set<Polyline> polylines = {};
 
   Future<void> inintpolyline() async {
-    destlat = double.parse(order.addresLat.toString());
-    destlong = double.parse(order.addresLang.toString());
+    destlat = double.parse(order.shippingAddress.lat.toString());
+    destlong = double.parse(order.shippingAddress.lng.toString());
     Future.delayed(Duration(seconds: 1));
     polylines = await getpolyline(currentlat, currentlong, destlat, destlong);
     update();

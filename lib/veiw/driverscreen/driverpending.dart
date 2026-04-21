@@ -25,10 +25,10 @@ class Driverpending extends StatelessWidget {
               separatorBuilder: (_, _) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
                 final order = controller.orderspending[index];
-                controller.Getcolorandstause(order.ordersStatus!);
+                controller.Getcolorandstause(order.status!);
                 final color = controller.statusColor;
                 final payment = controller.translatePayment(
-                  order.ordersPaymentmethod.toString(),
+                  order.paymentMethod.toString(),
                 );
                 final status = controller.statusText;
 
@@ -70,14 +70,14 @@ class Driverpending extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            "طلب رقم #${order.ordersId}",
+                            "طلب رقم #${order.orderId}",
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 15,
                             ),
                           ),
                           Text(
-                            "${Jiffy.parse(order.ordersDatetime.toString()).fromNow() // 25 years ago
+                            "${Jiffy.parse(order.createdAt.toString()).fromNow() // 25 years ago
                             }: التاريخ ",
                             style: const TextStyle(
                               color: Color.fromARGB(255, 54, 203, 17),
@@ -95,7 +95,7 @@ class Driverpending extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("المجموع: ${order.ordersPrice} ج.م"),
+                                Text("المجموع: ${order.taxAmount} ج.م"),
                                 Text("طريقة الدفع: $payment"),
                                 Text(
                                   "الحالة: $status",
@@ -112,8 +112,8 @@ class Driverpending extends StatelessWidget {
                             MaterialButton(
                               onPressed: () {
                                 controller.approvependingorder(
-                                  order.ordersUsersid!,
-                                  order.ordersId!,
+                                  order.userId,
+                                  order.orderId,
                                 );
                               },
                               child: Icon(Icons.add_alarm),

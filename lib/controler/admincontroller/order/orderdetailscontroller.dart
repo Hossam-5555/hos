@@ -19,7 +19,7 @@ class AdminOrderDetailesController extends Acceptedordercontroller {
   Future<void> adminorder() async {
     statusrequest = Statusrequest.loading;
     update();
-    var response = await orderdatadetails.orderdetailsdata(order!.ordersId!);
+    var response = await orderdatadetails.orderdetailsdata(order!.orderId);
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'success') {

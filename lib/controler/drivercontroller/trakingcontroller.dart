@@ -32,8 +32,8 @@ class Trakingdrivercontroller extends GetxController {
     );
     cameraPosition = CameraPosition(
       target: LatLng(
-        double.parse(order.addresLat.toString()),
-        double.parse(order.addresLang.toString()),
+        double.parse(order.shippingAddress.lat.toString()),
+        double.parse(order.shippingAddress.lng.toString()),
       ),
       zoom: 19.151926040649414,
     );
@@ -42,8 +42,8 @@ class Trakingdrivercontroller extends GetxController {
       Marker(
         markerId: MarkerId('destination'),
         position: LatLng(
-          double.parse(order.addresLat.toString()),
-          double.parse(order.addresLang.toString()),
+          double.parse(order.shippingAddress.lat.toString()),
+          double.parse(order.shippingAddress.lng.toString()),
         ),
         infoWindow: InfoWindow(title: 'destination'),
       ),
@@ -93,7 +93,7 @@ class Trakingdrivercontroller extends GetxController {
   Future<void> refreshlocationforuserApp()async {
    await Future.delayed(Duration(seconds: 10));
     timer = Timer(Duration(minutes: 1), () {
-      FirebaseFirestore.instance.collection("orders").doc(order.ordersId).set({
+      FirebaseFirestore.instance.collection("orders").doc(order.orderId.toString()).set({
         "driver_lat": currentlat,
         "driver_long": currentlong,
         "driverid": myservisec.sharedPreferences.getString("id"),
@@ -107,8 +107,8 @@ class Trakingdrivercontroller extends GetxController {
   Set<Polyline> polylines = {};
 
   Future<void> inintpolyline() async {
-    destlat = double.parse(order.addresLat.toString());
-    destlong = double.parse(order.addresLang.toString());
+    destlat = double.parse(order.shippingAddress.lat.toString());
+    destlong = double.parse(order.shippingAddress.lng.toString());
     Future.delayed(Duration(seconds: 1));
     polylines = await getpolyline(currentlat, currentlong, destlat, destlong);
     update();

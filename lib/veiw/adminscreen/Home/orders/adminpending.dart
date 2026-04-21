@@ -20,12 +20,12 @@ class Adminpending extends StatelessWidget {
             itemCount: controller.orderspending.length,
             separatorBuilder: (_, _) => const SizedBox(height: 10),
             itemBuilder: (context, index) {
-                final order = controller.orderspending[index];
-              controller.Getcolorandstause(order.ordersStatus!);
+              final order = controller.orderspending[index];
+              controller.Getcolorandstause(order.status!);
               final status = controller.statusText;
               final color = controller.statusColor;
               final payment = controller.translatePayment(
-                order.ordersPaymentmethod.toString(),
+                order.paymentMethod.toString(),
               );
 
               return InkWell(
@@ -63,14 +63,14 @@ class Adminpending extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "طلب رقم #${order.ordersId}",
+                          "طلب رقم #${order.orderNumber}",
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
                           ),
                         ),
                         Text(
-                          "${Jiffy.parse(order.ordersDatetime.toString()).fromNow() // 25 years ago
+                          "${Jiffy.parse(order.createdAt.toString()).fromNow() // 25 years ago
                           }: التاريخ ",
                           style: const TextStyle(
                             color: Color.fromARGB(255, 54, 203, 17),
@@ -88,7 +88,7 @@ class Adminpending extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("المجموع: ${order.ordersPrice} ج.م"),
+                              Text("المجموع: ${order.totalAmount} ج.م"),
                               Text("طريقة الدفع: $payment"),
                               Text(
                                 "الحالة: $status",
@@ -104,10 +104,10 @@ class Adminpending extends StatelessWidget {
 
                           MaterialButton(
                             onPressed: () {
-                              controller.approvependingorder(
-                                order.ordersUsersid!,
-                                order.ordersId!,
-                              );
+                              // controller.approvependingorder(
+                              //   order.userId!,
+                              //   order.orderId!,
+                              // );
                             },
                             child: Text("Aprove"),
                           ),

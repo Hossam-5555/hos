@@ -165,6 +165,7 @@ class CartController extends GetxController {
       () => Checkout(),
       transition: Transition.fadeIn,
       arguments: {
+        "Cartdata": data,
         "totalprice": totalpriceafterdiscount.toString(),
         "couponeID": couponeID ?? "0",
         "couponediscount": couponediscount.toString(),

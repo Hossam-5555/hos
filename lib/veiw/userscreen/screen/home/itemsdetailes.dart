@@ -1,11 +1,9 @@
 import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/controler/usercontroller/home/itemsdetailscontroller.dart';
 import 'package:hos/core/conistant/appcolor.dart';
-import 'package:hos/core/conistant/linkApi.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/countofproduct.dart';

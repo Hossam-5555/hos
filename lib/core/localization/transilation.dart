@@ -13,11 +13,15 @@ class Mytransilation extends Translations {
       "Description": "الوصف",
       "Proceed to Checkout": "اتمام الشراء",
       "product Details": "تفاصيل المنتج",
-
+      //cart&&checkout
+      "confirm order": "تأكيد الطلب",
+      "shipping address": "عنوان الشحن",
+      "Add new address": "اضافة عنوان جديد",
+      "Change address": "اضغط لتغيير العنوان",
       //Homepage
       //orderpage
       "Order numper": "طلب رقم ",
-      "Payment buy": " الدفع",
+      "Payment": " الدفع",
       "Status": "الحاله",
       "Total price": "الاجمالي  ",
       "Discount": "الخصم",
@@ -66,10 +70,13 @@ class Mytransilation extends Translations {
       "Proceed to Checkout": "Proceed to Checkout",
       "product Details": "product Details",
       //Homepage
-
+      "confirm order": "Confirm Order",
+      "shipping address": "Shipping Address",
+      "Add new address": "Add new address",
+      "Change address": "Change address",
       //orderpage
       "Order numper": "Order numper: ",
-      "Payment buy": "Payment buy",
+      "Payment": "Payment",
       "Status": "Status",
       "Total price": "Total price",
       //orderpage

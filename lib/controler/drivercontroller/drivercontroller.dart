@@ -78,13 +78,13 @@ class DriverViewOrderController extends GetxController {
     update();
   }
 
-  Future<void> approvependingorder(String userid, String orderid) async {
+  Future<void> approvependingorder(int userid, int orderid) async {
     statusrequest = Statusrequest.loading;
     update();
     var response = await driverorderdata.approveorder(
       orderid,
-      userid,
-      myservisec.sharedPreferences.getString("id")!,
+      userid,2
+      // myservisec.sharedPreferences.getString("id")!,
     );
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {

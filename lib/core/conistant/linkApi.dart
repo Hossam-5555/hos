@@ -43,8 +43,8 @@ class LinkApi {
   static String viewAddres = '$lravelserver/Address/';
   static String editAddres = '$server/address/edit.php';
   //orders
-  static String checkout = '$server/orders/add.php';
-  static String viewmyorder = '$server/orders/vieworders.php';
+  static String checkout = '$lravelserver/order';
+  static String viewmyorder = '$lravelserver/userorders/';
   static String orderdetails = '$server/orders/ordersdetails.php';
   static String deleteorder = '$server/orders/delete.php';
   static String rating = '$server/rating.php';

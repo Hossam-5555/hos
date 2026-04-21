@@ -25,7 +25,7 @@ class Appbarbackicon extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       leadingWidth: 70, // زيادة العرض قليلاً عشان الدايرة متتحشرش
       leading: Padding(
-        padding: const EdgeInsets.only(left: 10.0),
+        padding: EdgeInsetsDirectional.symmetric(horizontal: 10.0),
         child: Center(
           child: Hero(
             // تأكد أن الـ tag فريد لكل صفحة

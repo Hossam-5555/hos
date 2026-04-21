@@ -20,7 +20,7 @@ class DriverOrderDetailesController extends DriverViewOrderController {
   Future<void> driverorderdetails() async {
     statusrequestorderdetails = Statusrequest.loading;
     update();
-    var response = await orderdata.orderdetailsdata(order!.ordersId!);
+    var response = await orderdata.orderdetailsdata(order!.orderId!);
     statusrequestorderdetails = handling(response);
     if (Statusrequest.success == statusrequestorderdetails) {
       if (response['status'] == 'success') {

@@ -26,35 +26,40 @@ class Ordercontroller extends GetxController {
   String? get langage => myservisec.sharedPreferences.getString("lang");
   bool get lang => langage == "ar" ? true : false;
   // ignore: non_constant_identifier_names
-  void Getcolorandstause(String status) {
-    if (status == "0") {
-      statusColor = Colors.orange;
-      statusText = lang == true ? "قيد الانتظار" : 'Binding';
-    } else if (status == "1") {
-      statusColor = Colors.blue;
-      statusText = lang == true ? "تم التأكيد" : "Accepted";
-    } else if (status == "2") {
-      statusColor = const Color.fromARGB(255, 180, 65, 30);
-      statusText = lang == true ? " يجهز" : "prepare";
-    } else if (status == "3") {
-      statusColor = const Color.fromARGB(255, 179, 123, 39);
-      statusText = lang == true ? "في الطريق" : "in the way";
-    } else if (status == "4") {
-      statusColor = const Color.fromARGB(255, 33, 201, 10);
-      statusText = lang == true ? "مكتمل" : "done";
-    } else {
-      statusColor = const Color.fromARGB(200, 226, 226, 226);
-      statusText = "أرشيف";
-    }
+void Getcolorandstause(String status) {
+  if (status == "pending") {
+    statusColor = Colors.orange;
+    statusText = lang ? "قيد الانتظار" : "Pending";
+    
+  } else if (status == "processing") {
+    statusColor = Colors.blue;
+    statusText = lang ? "قيد التجهيز" : "Processing";
+    
+  } else if (status == "shipped") {
+    statusColor = const Color.fromARGB(255, 179, 123, 39);
+    statusText = lang ? "في الطريق" : "Shipped";
+    
+  } else if (status == "delivered") {
+    statusColor = const Color.fromARGB(255, 33, 201, 10);
+    statusText = lang ? "تم التسليم" : "Delivered";
+    
+  } else if (status == "cancelled") {
+    statusColor = Colors.red;
+    statusText = lang ? "ملغي" : "Cancelled";
+    
+  } else {
+    statusColor = const Color.fromARGB(200, 226, 226, 226);
+    statusText = lang ? "غير معروف" : "Unknown";
   }
+}
 
   String translatePayment(String val) {
     switch (val) {
-      case "PaymentMethod.credit":
+      case "credit":
         return " credit ";
-      case "PaymentMethod.cod":
+      case "ؤش":
         return "Cash ";
-      case "PaymentMethod.mobileWallet":
+      case "mobil":
         return " mobileWallet";
       default:
         return "غير معروف";
@@ -83,11 +88,12 @@ class Ordercontroller extends GetxController {
     statusrequest = Statusrequest.loading;
     update();
     var response = await orderdata.order(
-      myservisec.sharedPreferences.getString("id")!,
+      // myservisec.sharedPreferences.getString("id")!,
+      2,
     );
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
-      if (response['status'] == 'success') {
+      if (response['status'] == true) {
         List data = response["data"];
         orders.addAll(data.map((e) => OrderModel.fromJson(e)));
       } else {

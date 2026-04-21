@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
+import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/orderdata.dart';
 import 'package:hos/data/model/cartmodel.dart';
 import 'package:hos/data/model/ordersmodel.dart';
@@ -15,36 +16,38 @@ class Orderdetailescontroller extends GetxController {
   Orderdata orderdata = Get.put(Orderdata(Get.find()));
   Statusrequest statusrequest = Statusrequest.none;
   List<cartmodel> data = [];
-
+  Myservisec myservisec = Get.find();
   Color? statusColor;
   String? statusText;
+  String? get langage => myservisec.sharedPreferences.getString("lang");
+  bool get lang => langage == "ar" ? true : false;
   // ignore: non_constant_identifier_names
   void Getcolorandstause(String status) {
-    if (status == "0") {
+    if (status == "pending") {
       statusColor = Colors.orange;
-      statusText = "قيد الانتظار";
-    } else if (status == "1") {
+      statusText = lang ? "قيد الانتظار" : "Pending";
+    } else if (status == "processing") {
       statusColor = Colors.blue;
-      statusText = "تم التأكيد";
-    } else if (status == "2") {
-      statusColor = const Color.fromARGB(255, 180, 65, 30);
-      statusText = " يجهز";
-    } else if (status == "3") {
+      statusText = lang ? "قيد التجهيز" : "Processing";
+    } else if (status == "shipped") {
       statusColor = const Color.fromARGB(255, 179, 123, 39);
-      statusText = "في الطريق";
-    } else if (status == "4") {
+      statusText = lang ? "في الطريق" : "Shipped";
+    } else if (status == "delivered") {
       statusColor = const Color.fromARGB(255, 33, 201, 10);
-      statusText = "مكتمل";
+      statusText = lang ? "تم التسليم" : "Delivered";
+    } else if (status == "cancelled") {
+      statusColor = Colors.red;
+      statusText = lang ? "ملغي" : "Cancelled";
     } else {
       statusColor = const Color.fromARGB(200, 226, 226, 226);
-      statusText = "أرشيف";
+      statusText = lang ? "غير معروف" : "Unknown";
     }
   }
 
   Future<void> getordersdetailsdata() async {
     statusrequest = Statusrequest.loading;
     update();
-    var response = await orderdata.orderdetailsdata(order!.ordersId!);
+    var response = await orderdata.orderdetailsdata(order!.orderId);
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == 'success') {

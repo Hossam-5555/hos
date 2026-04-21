@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
-import 'package:hos/controler/usercontroller/profile/paymentcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/add.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
@@ -14,12 +13,11 @@ class Checkout extends StatelessWidget {
     Get.put(Checkoutcontroller());
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F6F9), // خلفية عصرية رمادي فاتح
+      backgroundColor: const Color(0xFFF4F6F9), // تم الحفاظ على الخلفية
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(65),
-        child: Appbarbackicon(herotag: '', title: "إتمام الطلب"),
+        child: Appbarbackicon(herotag: '', title: "confirm order".tr),
       ),
-      // دمجنا شريط الدفع السفلي ليكون عائم وشيك
       bottomNavigationBar: GetBuilder<Checkoutcontroller>(
         builder: (c) => _buildModernBottomBar(context, c),
       ),
@@ -30,26 +28,44 @@ class Checkout extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             physics: const BouncingScrollPhysics(),
             children: [
+              // قسم عنوان التوصيل
               _buildSectionCard(
-                title: "عنوان التوصيل",
+                title: "shipping address".tr,
                 icon: Icons.location_on_rounded,
                 child: c.listaddresdata.isEmpty
-                    ? _buildActionTile(
-                        "إضافة عنوان جديد",
-                        Icons.add_location_alt,
-                        () => Get.to(() => AddNewAddres()),
+                    ? ListTile(
+                        onTap: () => Get.to(() => AddNewAddres()),
+                        tileColor: const Color(0xFFF8F9FA),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        leading: const Icon(
+                          Icons.add_location_alt,
+                          color: Colors.black87,
+                        ),
+                        title: Text(
+                          "Add new address".tr,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        trailing: const Icon(
+                          Icons.add_circle,
+                          color: Colors.black,
+                        ),
                       )
                     : _buildAddressSelector(c),
               ),
               const SizedBox(height: 16),
+              // قسم طرق الدفع (بالتصميم الجديد)
               _buildSectionCard(
                 title: "Payment Methods".tr,
                 icon: Icons.account_balance_wallet_rounded,
-                child: Column(
-                  children: [
-                    _buildPaymentChips(c),
-                    Obx(() => _buildPaymentDetails(c.selectedMethod.value)),
-                  ],
+                child: GetBuilder<Checkoutcontroller>(
+                  builder: (c) => Column(
+                    children: c.paymentMethodEnum.map((methodList) {
+                      final method = methodList[0];
+                      return _buildPaymentOption(method, c);
+                    }).toList(),
+                  ),
                 ),
               ),
             ],
@@ -59,9 +75,8 @@ class Checkout extends StatelessWidget {
     );
   }
 
-  // ================= دوال التصميم (Helper Methods) =================
+  // ================= دوال التصميم =================
 
-  // 1. كارت موحد لكل قسم لتوحيد الشكل وتقليل الكود
   Widget _buildSectionCard({
     required String title,
     required IconData icon,
@@ -97,7 +112,6 @@ class Checkout extends StatelessWidget {
     );
   }
 
-  // 2. تصميم عنصر العنوان مع إمكانية تغييره
   Widget _buildAddressSelector(Checkoutcontroller c) {
     return Obx(() {
       final addr = c.listaddresdata.firstWhere(
@@ -114,9 +128,9 @@ class Checkout extends StatelessWidget {
           addr.name ?? "غير معروف",
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        subtitle: const Text(
-          "اضغط لتغيير العنوان",
-          style: TextStyle(fontSize: 12, color: Colors.grey),
+        subtitle: Text(
+          "Change address".tr,
+          style: const TextStyle(fontSize: 12, color: Colors.grey),
         ),
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
         onTap: () => _showAddressesSheet(c),
@@ -124,100 +138,80 @@ class Checkout extends StatelessWidget {
     });
   }
 
-  // 3. أزرار الدفع العصرية (Chips)
-  Widget _buildPaymentChips(Checkoutcontroller c) {
-    return SizedBox(
-      height: 50,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: c.paymentMethodEnum.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 10),
-        itemBuilder: (_, i) {
-          final method = c.paymentMethodEnum[i][0];
-          return Obx(() {
-            final isSelected = c.selectedMethod.value == method;
-            return ChoiceChip(
-              label: Text(method == PaymentMethod.cod ? "كاش" : "بطاقة/محفظة"),
-              selected: isSelected,
-              selectedColor: Colors.black,
-              labelStyle: TextStyle(
-                color: isSelected ? Colors.white : Colors.black87,
-                fontWeight: FontWeight.bold,
+  // تصميم طرق الدفع الجديد (كروت عمودية قابلة للتحديد)
+  Widget _buildPaymentOption(String method, Checkoutcontroller c) {
+    final isSelected = c.selectedMethod == method;
+    final details =
+        {
+          "credit": {
+            "icon": Icons.credit_card,
+            "title": "البطاقة البنكية",
+            "sub": "دفع إلكتروني آمن",
+          },
+          "mobile": {
+            "icon": Icons.phone_android,
+            "title": "محفظة إلكترونية",
+            "sub": "دفع سريع وآمن",
+          },
+          "cash": {
+            "icon": Icons.local_atm,
+            "title": "الدفع نقداً",
+            "sub": "الدفع عند الاستلام",
+          },
+        }[method] ??
+        {"icon": Icons.payment, "title": method, "sub": ""};
+
+    return InkWell(
+      onTap: () => c.changePaymentMethod(method),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? Colors.blue.withOpacity(0.05)
+              : const Color(0xFFF8F9FA),
+          border: Border.all(
+            color: isSelected ? Colors.blueAccent : Colors.grey.shade200,
+            width: isSelected ? 1.5 : 1,
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              details["icon"] as IconData,
+              color: isSelected ? Colors.blueAccent : Colors.black54,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    details["title"] as String,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: isSelected ? Colors.blueAccent : Colors.black87,
+                    ),
+                  ),
+                  Text(
+                    details["sub"] as String,
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ],
               ),
-              backgroundColor: Colors.grey.shade100,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              onSelected: (_) => c.changePaymentMethod(method),
-            );
-          });
-        },
+            ),
+            Icon(
+              isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
+              color: isSelected ? Colors.blueAccent : Colors.grey,
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  // 4. تفاصيل الدفع بناءً على الاختيار
-  Widget _buildPaymentDetails(PaymentMethod method) {
-    if (method == PaymentMethod.none) return const SizedBox.shrink();
-
-    final details = {
-      PaymentMethod.creditCard: {
-        "icon": Icons.credit_card,
-        "title": "البطاقة البنكية",
-        "sub": "تنتهي بـ 1234",
-      },
-      PaymentMethod.mobileWallet: {
-        "icon": Icons.phone_android,
-        "title": "محفظة إلكترونية",
-        "sub": "دفع سريع وآمن",
-      },
-      PaymentMethod.cod: {
-        "icon": Icons.delivery_dining,
-        "title": "الدفع عند الاستلام",
-        "sub": "ادفع نقداً للمندوب",
-      },
-    }[method]!;
-
-    return Padding(
-      padding: const EdgeInsets.only(top: 16),
-      child: _buildActionTile(
-        details["title"] as String,
-        details["icon"] as IconData,
-        null,
-        subtitle: details["sub"] as String,
-      ),
-    );
-  }
-
-  // 5. زر الأكشن (عنصر قائمة جاهز)
-  Widget _buildActionTile(
-    String title,
-    IconData icon,
-    VoidCallback? onTap, {
-    String? subtitle,
-  }) {
-    return ListTile(
-      onTap: onTap,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: Colors.grey.shade200),
-      ),
-      tileColor: const Color(0xFFF8F9FA),
-      leading: Icon(icon, color: Colors.black87),
-      title: Text(
-        title,
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-      ),
-      subtitle: subtitle != null
-          ? Text(subtitle, style: const TextStyle(fontSize: 12))
-          : null,
-      trailing: onTap != null
-          ? const Icon(Icons.add_circle, color: Colors.black)
-          : null,
-    );
-  }
-
-  // 6. البوتوم شيت لاختيار العنوان (مبسط)
   void _showAddressesSheet(Checkoutcontroller c) {
     Get.bottomSheet(
       Container(
@@ -229,20 +223,18 @@ class Checkout extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              "اختر عنوان التوصيل",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              "shipping address".tr,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             ...c.listaddresdata.map(
               (addr) => Obx(
                 () => RadioListTile(
                   value: addr.id,
-                  // ignore: deprecated_member_use
                   groupValue: c.addressid.value,
                   activeColor: Colors.blueAccent,
                   title: Text(addr.name ?? ""),
-                  // ignore: deprecated_member_use
                   onChanged: (val) {
                     c.chooseAddres(val!);
                     Get.back();
@@ -256,7 +248,7 @@ class Checkout extends StatelessWidget {
                 Get.to(() => AddNewAddres());
               },
               icon: const Icon(Icons.add),
-              label: const Text("إضافة عنوان جديد"),
+              label: Text("Add new address".tr),
             ),
           ],
         ),
@@ -264,7 +256,7 @@ class Checkout extends StatelessWidget {
     );
   }
 
-  // 7. شريط الدفع السفلي (نظيف ومختصر)
+  // تم الحفاظ على شريط الدفع السفلي كما هو بدون تغيير
   Widget _buildModernBottomBar(BuildContext context, Checkoutcontroller c) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
@@ -315,10 +307,12 @@ class Checkout extends StatelessWidget {
                     borderRadius: BorderRadius.circular(40),
                   ),
                 ),
-                onPressed: () =>
-                    c.checkoutoder(MediaQuery.of(context).size.height - 100),
-                child: const Text(
-                  "تأكيد الطلب",
+
+                onPressed: () {
+                  c.checkoutoder();
+                },
+                child: Text(
+                  "Confirm order".tr,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),

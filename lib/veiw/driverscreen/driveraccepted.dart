@@ -25,11 +25,11 @@ class Driveraccepted extends StatelessWidget {
               separatorBuilder: (_, _) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
                 final order = controller.ordersaccepted[index];
-                controller.Getcolorandstause(order.ordersStatus!);
+                controller.Getcolorandstause(order.status!);
                 final color = controller.statusColor;
 
                 final payment = controller.translatePayment(
-                  order.ordersPaymentmethod.toString(),
+                  order.paymentMethod.toString(),
                 );
                 final status = controller.statusText;
                 return InkWell(
@@ -70,14 +70,14 @@ class Driveraccepted extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            "طلب رقم #${order.ordersId}",
+                            "طلب رقم #${order.orderId}",
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                             ),
                           ),
                           Text(
-                            "${Jiffy.parse(order.ordersDatetime.toString()).fromNow() // 25 years ago
+                            "${Jiffy.parse(order.createdAt.toString()).fromNow() // 25 years ago
                             }: التاريخ ",
                             style: const TextStyle(
                               color: Color.fromARGB(255, 54, 203, 17),
@@ -95,7 +95,7 @@ class Driveraccepted extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("المجموع: ${order.ordersPrice} ج.م"),
+                                Text("المجموع: ${order.taxAmount} ج.م"),
                                 Text("طريقة الدفع: $payment"),
                                 Text(
                                   "الحالة: $status",
@@ -109,10 +109,10 @@ class Driveraccepted extends StatelessWidget {
                             ),
                             MaterialButton(
                               onPressed: () {
-                                controller.orderdone(
-                                  order.ordersId!,
-                                  order.ordersUsersid!,
-                                );
+                                // controller.orderdone(
+                                //   order.orderId,
+                                //   order.userId!,
+                                // );
                               },
                               child: Icon(Icons.ac_unit),
                             ),

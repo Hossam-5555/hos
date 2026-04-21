@@ -5,14 +5,12 @@ class Orderdata {
   Crud crud;
   Orderdata(this.crud);
 
-  order(String userid) async {
-    var response = await crud.postrequset(LinkApi.viewmyorder, {
-      "userid": userid,
-    });
+  order(int userid) async {
+    var response = await crud.getrequset("${LinkApi.viewmyorder}$userid");
     return response.fold((l) => l, (r) => r);
   }
 
-  orderdetailsdata(String orderid) async {
+  orderdetailsdata(int orderid) async {
     var response = await crud.postrequset(LinkApi.orderdetails, {
       "orderid": orderid,
     });
