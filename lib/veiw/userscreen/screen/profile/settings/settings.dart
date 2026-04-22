@@ -152,8 +152,8 @@ class Settings extends StatelessWidget {
                   onTap: () {
                     Get.to(
                       EnglishAbout(),
-                      curve: Curves.easeInOut,
-                      transition: Transition.fade,
+                      curve: Curves.easeIn,
+                      transition: Transition.fadeIn,
                       duration: Duration(milliseconds: 400),
                     );
                   },
@@ -216,7 +216,7 @@ class Settings extends StatelessWidget {
               title,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.w700,
-                color: Theme.of(context).colorScheme.onSurface,
+                color: Colors.lightBlue,
               ),
             ),
           ),

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:hos/core/serveces/myservisec.dart';
@@ -12,6 +13,12 @@ class Itemdetailscontroller extends GetxController {
   //
   bool isadded = false;
   //
+  PageController controller = PageController();
+  int curentpage = 0;
+  void onimagechange(int val) {
+    curentpage = val;
+    update();
+  }
 
   bool isExpanded = false;
 

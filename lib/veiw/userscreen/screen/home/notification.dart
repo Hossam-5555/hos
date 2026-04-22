@@ -12,11 +12,8 @@ class NotificationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = Get.width;
-    final double screenHeight = Get.height;
-
     return Scaffold(
-      /// ✅ 1. AppBar متفاعل مع التحديد
+      backgroundColor: const Color(0xffF8F9FD), // لون خلفية هادئ ومريح
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: GetBuilder<Notificationcontroller>(
@@ -24,20 +21,20 @@ class NotificationPage extends StatelessWidget {
             return Appbarbackicon(
               selected: controller.selectionMode,
               title: controller.selectionMode
-                  ? "${controller.selectedIds.length} محدد"
+                  ? "${controller.selectedIds.length} ${"Selected".tr}"
                   : "Notifications".tr,
               herotag: "notification",
-              iconButton: IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: controller.deleteSelected,
-              ),
+              iconButton: controller.selectionMode
+                  ? IconButton(
+                      icon: const Icon(Icons.delete_sweep_rounded, color: Colors.redAccent),
+                      onPressed: controller.deleteSelected,
+                    )
+                  : null,
               onPressed: controller.closeselected,
             );
           },
         ),
       ),
-
-      /// ✅ 2. الجسم (Body)
       body: GetBuilder<Notificationcontroller>(
         builder: (controller) {
           bool isLoading = controller.statusrequest == Statusrequest.loading;
@@ -47,104 +44,128 @@ class NotificationPage extends StatelessWidget {
             widget: Skeletonizer(
               enabled: isLoading,
               child: ListView.builder(
-                padding: EdgeInsets.symmetric(
-                  horizontal: screenWidth * 0.04,
-                  vertical: screenHeight * 0.01,
-                ),
-                // إذا تحميل نعرض 6 عناصر وهمية، وإلا نعرض طول القائمة الحقيقي
-                itemCount: isLoading ? 4 : controller.notificationlist.length,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                itemCount: isLoading ? 6 : controller.notificationlist.length,
                 itemBuilder: (context, index) {
-                  // -- متغيرات العرض --
-                  String title;
-                  String body;
+                  String title = "";
+                  String body = "";
                   String id = "";
+                  String time = "";
 
                   if (isLoading) {
-                    // بيانات وهمية للـ Skeleton فقط
-                    title = "عنوان الإشعار التجريبي هنا";
-                    body =
-                        "هذا النص هو مجرد نص تجريبي ليظهر شكل التحميل بشكل جميل";
+                    title = "Loading Notification Title";
+                    body = "This is a dummy description for skeleton loading effect.";
                   } else {
-                    // البيانات الحقيقية
                     final item = controller.notificationlist[index];
                     id = item.id.toString();
-                    title = item.title ?? 'بدون عنوان';
-                    body = item.body ?? 'بدون محتوى';
+                    title = item.title ?? '';
+                    body = item.body ?? '';
+                    time = Jiffy.parse(item.createdAt ?? DateTime.now().toString()).fromNow();
                   }
 
-                  return GestureDetector(
-                    // تعطيل الضغط أثناء التحميل
-                    onLongPress: isLoading
-                        ? null
-                        : () => controller.onLongPress(id),
-                    onTap: isLoading ? null : () => controller.onTap(id),
+                  bool isSelected = !isLoading && controller.isSelected(id);
 
-                    child: Card(
-                      // تغيير اللون عند التحديد
-                      color: Colors.white,
-                      elevation: 2,
-                      margin: EdgeInsets.symmetric(
-                        vertical: screenHeight * 0.008,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        side: (!isLoading && controller.isSelected(id))
-                            ? const BorderSide(color: Colors.blue, width: 1.5)
-                            : BorderSide.none,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.blue.withAlpha(25),
-                            child: const Icon(
-                              Icons.notifications_active,
-                              color: Colors.blue,
-                            ),
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: InkWell(
+                      onLongPress: isLoading ? null : () => controller.onLongPress(id),
+                      onTap: isLoading ? null : () => controller.onTap(id),
+                      borderRadius: BorderRadius.circular(20),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          color: isSelected ? Colors.blue.withOpacity(0.08) : Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: isSelected ? Colors.blue.withOpacity(0.5) : Colors.transparent,
+                            width: 1.5,
                           ),
-                          title: Text(
-                            title,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: screenWidth * 0.04,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.03),
+                              blurRadius: 15,
+                              offset: const Offset(0, 8),
                             ),
-                          ),
-                          subtitle: Padding(
-                            padding: const EdgeInsets.only(top: 5),
-                            child: Text(
-                              body,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 13,
+                          ],
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // --- Icon Section ---
+                            Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: isSelected 
+                                      ? [Colors.blue, Colors.blueAccent] 
+                                      : [Colors.blue.withOpacity(0.1), Colors.blue.withOpacity(0.05)],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.notifications_none_rounded,
+                                color: isSelected ? Colors.white : Colors.blue,
+                                size: 26,
                               ),
                             ),
-                          ),
-                          trailing: isLoading
-                              ? null // إخفاء الـ checkbox أثناء التحميل
-                              : controller.selectionMode
-                              ? Checkbox(
-                                  activeColor: Colors.blue,
-                                  value: controller.isSelected(id),
-                                  onChanged: (val) => controller.onTap(id),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                )
-                              : Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    // يمكن وضع الوقت هنا لاحقاً
-                                    Text(
-                                      "${Jiffy.parse(controller.notificationlist.elementAt(index).createdAt ?? '')}",
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        color: Colors.grey,
+                            const SizedBox(width: 15),
+
+                            // --- Text Content ---
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          title,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                            color: Colors.blueGrey[900],
+                                          ),
+                                        ),
                                       ),
+                                      if (!isLoading && !controller.selectionMode)
+                                        Text(
+                                          time,
+                                          style: TextStyle(fontSize: 10, color: Colors.grey[500]),
+                                        ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    body,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 13,
+                                      height: 1.4,
                                     ),
-                                  ],
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            // --- Selection Mode Checkbox ---
+                            if (controller.selectionMode && !isLoading)
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8),
+                                child: Checkbox(
+                                  value: isSelected,
+                                  activeColor: Colors.blue,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                                  onChanged: (val) => controller.onTap(id),
                                 ),
+                              ),
+                          ],
                         ),
                       ),
                     ),

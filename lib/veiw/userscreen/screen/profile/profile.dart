@@ -62,21 +62,6 @@ class ProfilePage extends StatelessWidget {
 
             SizedBox(height: h * 0.04),
 
-            /// ===== Settings Group =====
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 10, right: 5),
-                child: Text(
-                  "public Setting".tr,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[800],
-                  ),
-                ),
-              ),
-            ),
 
             Container(
               decoration: BoxDecoration(
@@ -84,7 +69,7 @@ class ProfilePage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.03),
+                    color: Colors.black.withAlpha(7),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -141,16 +126,13 @@ class ProfilePage extends StatelessWidget {
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(
-                  color: primaryColor.withOpacity(0.3),
-                  width: 2,
-                ),
+                border: Border.all(color: primaryColor, width: 2),
               ),
               child: CircleAvatar(
                 radius: 55,
                 backgroundColor: Colors.white,
                 backgroundImage: AssetImage(Imageasset.twetter),
-                onBackgroundImageError: (_, __) {},
+                onBackgroundImageError: (_, _) {},
               ),
             ),
           ],
@@ -170,15 +152,15 @@ class ProfilePage extends StatelessWidget {
         ElevatedButton.icon(
           label: Text(
             "Edit Profile",
-            style: TextStyle(fontSize: 16, color: Colors.grey),
+            style: TextStyle(fontSize: 16, color: Colors.white),
           ),
-          icon: const Icon(Icons.edit, color: Colors.grey),
+          icon: const Icon(Icons.edit, color: Colors.white),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.grey[100],
+            backgroundColor: Colors.grey[600],
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           ),
           onPressed: () {},
         ),
@@ -206,7 +188,7 @@ class ProfilePage extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.01),
+                color: Colors.black.withAlpha(3),
                 blurRadius: 1,
                 offset: const Offset(0, 2),
               ),
@@ -218,7 +200,7 @@ class ProfilePage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withAlpha(25),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(icon, color: color, size: 28),
@@ -262,7 +244,7 @@ class ProfilePage extends StatelessWidget {
                   color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(icon, color: Colors.grey[800], size: 22),
+                child: Icon(icon, color: Colors.grey[600], size: 22),
               ),
               const SizedBox(width: 16),
               Expanded(

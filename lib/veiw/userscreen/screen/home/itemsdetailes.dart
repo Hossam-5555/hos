@@ -1,4 +1,4 @@
-import 'dart:math';
+// import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
@@ -18,8 +18,6 @@ class Itemsdetailes extends StatelessWidget {
     return GetBuilder<Itemdetailscontroller>(
       builder: (controller) {
         final item = controller.itemsmodel;
-        double dis = double.parse(item.itemsDiscount.toString());
-
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: PreferredSize(
@@ -35,7 +33,7 @@ class Itemsdetailes extends StatelessWidget {
               ListView(
                 physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.only(
-                  bottom: 40,
+                  bottom: 20,
                 ), // مسافة قبل شريط الأسفل
                 children: [
                   // 1. صورة المنتج مع الشعار
@@ -43,7 +41,7 @@ class Itemsdetailes extends StatelessWidget {
                     alignment: Alignment.bottomLeft,
                     children: [
                       Container(
-                        height: Get.height * 0.40,
+                        height: Get.height * 0.45,
                         width: double.infinity,
                         margin: const EdgeInsets.only(bottom: 20),
                         decoration: BoxDecoration(
@@ -54,24 +52,50 @@ class Itemsdetailes extends StatelessWidget {
                             bottom: Radius.circular(40),
                           ),
                         ),
-                        child: Center(
-                          child: Hero(
-                            tag: '${item.id}',
-                            child: Image.network(
-                              "${item.itemsImage!}",
-                              height: Get.height * 0.28,
-                              fit: BoxFit.contain,
+                        child: PageView.builder(
+                          onPageChanged: (value) {
+                            controller.onimagechange(value);
+                          },
+                          itemCount: item.images!.length,
+                          itemBuilder: (context, index) => Center(
+                            child: Hero(
+                              tag: '${item.id}',
+                              child: Image.network(
+                                item.images![index],
+                                height: Get.height * 0.28,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+
+                          controller: controller.controller,
+                        ),
+                      ),
+                      // dis != 0
+                      //     ? Positioned(
+                      //         bottom: 0,
+                      //         left: 20,
+                      //         child: _buildHotProductBadge(),
+                      //       )
+                      //     : SizedBox.shrink(),
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(
+                            item.images!.length,
+                            (index) => AnimatedContainer(
+                              margin: EdgeInsets.all(10),
+                              width: controller.curentpage == index ? 40 : 10,
+                              height: 6,
+                              decoration: BoxDecoration(
+                                color: Appcolor.primaryColor,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              duration: Duration(milliseconds: 500),
                             ),
                           ),
                         ),
                       ),
-                      dis != 0
-                          ? Positioned(
-                              bottom: 0,
-                              left: 20,
-                              child: _buildHotProductBadge(),
-                            )
-                          : SizedBox.shrink(),
                     ],
                   ),
 
@@ -203,7 +227,6 @@ class Itemsdetailes extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-               
                   if (controller.itemcount == 0) {
                     Get.snackbar(
                       "تنبيه",
@@ -273,46 +296,46 @@ class Itemsdetailes extends StatelessWidget {
     );
   }
 
-  Widget _buildHotProductBadge() {
-    return Transform.rotate(
-      angle: pi / -20,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: Colors.grey.shade100,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: const Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.local_fire_department_rounded,
-              size: 18,
-              color: Color.fromARGB(255, 199, 67, 5),
-            ),
-            SizedBox(width: 6),
-            Center(
-              child: Text(
-                "Hot Product",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget _buildHotProductBadge() {
+  //   return Transform.rotate(
+  //     angle: pi / -20,
+  //     child: Container(
+  //       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+  //       decoration: BoxDecoration(
+  //         color: Colors.grey.shade100,
+  //         borderRadius: BorderRadius.circular(20),
+  //         boxShadow: [
+  //           BoxShadow(
+  //             color: Colors.black.withOpacity(0.2),
+  //             blurRadius: 8,
+  //             offset: const Offset(0, 4),
+  //           ),
+  //         ],
+  //       ),
+  //       child: const Row(
+  //         mainAxisSize: MainAxisSize.min,
+  //         children: [
+  //           Icon(
+  //             Icons.local_fire_department_rounded,
+  //             size: 18,
+  //             color: Color.fromARGB(255, 199, 67, 5),
+  //           ),
+  //           SizedBox(width: 6),
+  //           Center(
+  //             child: Text(
+  //               "Hot Product",
+  //               style: TextStyle(
+  //                 color: Colors.black,
+  //                 fontWeight: FontWeight.bold,
+  //                 fontSize: 12,
+  //               ),
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   void _showDescriptionSheet(BuildContext context, ItemsModel item) {
     showModalBottomSheet(

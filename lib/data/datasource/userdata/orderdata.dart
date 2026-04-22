@@ -10,12 +10,7 @@ class Orderdata {
     return response.fold((l) => l, (r) => r);
   }
 
-  orderdetailsdata(int orderid) async {
-    var response = await crud.postrequset(LinkApi.orderdetails, {
-      "orderid": orderid,
-    });
-    return response.fold((l) => l, (r) => r);
-  }
+
 
   deletedata(String orderid) async {
     var response = await crud.postrequset(LinkApi.deleteorder, {

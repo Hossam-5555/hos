@@ -17,21 +17,21 @@ class DriverOrderDetailesController extends DriverViewOrderController {
 
 
 
-  Future<void> driverorderdetails() async {
-    statusrequestorderdetails = Statusrequest.loading;
-    update();
-    var response = await orderdata.orderdetailsdata(order!.orderId!);
-    statusrequestorderdetails = handling(response);
-    if (Statusrequest.success == statusrequestorderdetails) {
-      if (response['status'] == 'success') {
-        List orderdata = response["data"];
-        data.addAll(orderdata.map((e) => cartmodel.fromJson(e)));
-      } else {
-        statusrequestorderdetails = Statusrequest.failure;
-      }
-    }
-    update();
-  }
+  // Future<void> driverorderdetails() async {
+  //   statusrequestorderdetails = Statusrequest.loading;
+  //   update();
+  //   var response = await orderdata.orderdetailsdata(order!.orderId!);
+  //   statusrequestorderdetails = handling(response);
+  //   if (Statusrequest.success == statusrequestorderdetails) {
+  //     if (response['status'] == 'success') {
+  //       List orderdata = response["data"];
+  //       data.addAll(orderdata.map((e) => cartmodel.fromJson(e)));
+  //     } else {
+  //       statusrequestorderdetails = Statusrequest.failure;
+  //     }
+  //   }
+  //   update();
+  // }
 
   @override
   void onInit() {
@@ -45,7 +45,7 @@ class DriverOrderDetailesController extends DriverViewOrderController {
       }
     }
 
-    driverorderdetails();
+    // driverorderdetails();
     super.onInit();
   }
 }

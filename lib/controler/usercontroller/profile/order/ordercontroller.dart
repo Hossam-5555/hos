@@ -15,7 +15,6 @@ class Ordercontroller extends GetxController {
   TextEditingController? comment;
 
   int selectedRating = 0;
-
   void changeRatingColor(int i) {
     selectedRating = i + 1; // خزن رقم النجمة اللي المستخدم ضغطها
     update(); // يحدث الواجهة
@@ -26,39 +25,34 @@ class Ordercontroller extends GetxController {
   String? get langage => myservisec.sharedPreferences.getString("lang");
   bool get lang => langage == "ar" ? true : false;
   // ignore: non_constant_identifier_names
-void Getcolorandstause(String status) {
-  if (status == "pending") {
-    statusColor = Colors.orange;
-    statusText = lang ? "قيد الانتظار" : "Pending";
-    
-  } else if (status == "processing") {
-    statusColor = Colors.blue;
-    statusText = lang ? "قيد التجهيز" : "Processing";
-    
-  } else if (status == "shipped") {
-    statusColor = const Color.fromARGB(255, 179, 123, 39);
-    statusText = lang ? "في الطريق" : "Shipped";
-    
-  } else if (status == "delivered") {
-    statusColor = const Color.fromARGB(255, 33, 201, 10);
-    statusText = lang ? "تم التسليم" : "Delivered";
-    
-  } else if (status == "cancelled") {
-    statusColor = Colors.red;
-    statusText = lang ? "ملغي" : "Cancelled";
-    
-  } else {
-    statusColor = const Color.fromARGB(200, 226, 226, 226);
-    statusText = lang ? "غير معروف" : "Unknown";
+  void Getcolorandstause(String status) {
+    if (status == "pending") {
+      statusColor = Colors.orange;
+      statusText = lang ? "قيد الانتظار" : "Pending";
+    } else if (status == "processing") {
+      statusColor = Colors.blue;
+      statusText = lang ? "قيد التجهيز" : "Processing";
+    } else if (status == "shipped") {
+      statusColor = const Color.fromARGB(255, 179, 123, 39);
+      statusText = lang ? "في الطريق" : "Shipped";
+    } else if (status == "delivered") {
+      statusColor = const Color.fromARGB(255, 33, 201, 10);
+      statusText = lang ? "تم التسليم" : "Delivered";
+    } else if (status == "cancelled") {
+      statusColor = Colors.red;
+      statusText = lang ? "ملغي" : "Cancelled";
+    } else {
+      statusColor = const Color.fromARGB(200, 226, 226, 226);
+      statusText = lang ? "غير معروف" : "Unknown";
+    }
   }
-}
 
   String translatePayment(String val) {
     switch (val) {
       case "credit":
         return " credit ";
-      case "ؤش":
-        return "Cash ";
+      case "cash":
+        return "Cash";
       case "mobil":
         return " mobileWallet";
       default:
@@ -102,7 +96,7 @@ void Getcolorandstause(String status) {
     }
     update();
   }
-
+ //هي الي هتخلي الاوردر ملغي
   Future<void> deleteorders(String orderid) async {
     statusrequest = Statusrequest.loading;
     update();

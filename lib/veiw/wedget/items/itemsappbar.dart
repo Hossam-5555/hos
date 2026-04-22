@@ -28,7 +28,7 @@ class CustomItemsAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: const BackButtonCircle(),
       actions: [
         Padding(
-          padding: EdgeInsets.all(2),
+          padding: EdgeInsetsDirectional.symmetric(horizontal: 5),
           child: Homescrenaction(
             onPressed: () {
               Get.to(
@@ -42,7 +42,7 @@ class CustomItemsAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(right: 16, left: 4),
+          padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
           child: _FilterButton(controller: controller),
         ),
       ],

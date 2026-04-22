@@ -37,9 +37,23 @@ class Homescreen extends StatelessWidget {
               centerTitle: false,
               scrolledUnderElevation:
                   0, // منع تغير اللون عند السكرول في Material 3
-              title: Text(
-                "${controller.appbartitle[controller.Currentpage][0]}",
-                style: Theme.of(context).textTheme.headlineMedium,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Homescrenaction(
+                    herotag: "ss",
+                    child: SvgPicture.asset(
+                      Imageasset.profile,
+                      height: 24, // توحيد الحجم
+                      width: 24,
+                    ),
+                  ),
+
+                  Text(
+                    "${controller.appbartitle[controller.Currentpage][0]}",
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                ],
               ),
               actions: [
                 // زر البحث

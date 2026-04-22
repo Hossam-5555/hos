@@ -16,21 +16,21 @@ class AdminOrderDetailesController extends Acceptedordercontroller {
   Statusrequest statusrequest = Statusrequest.none;
   List<cartmodel> data = [];
 
-  Future<void> adminorder() async {
-    statusrequest = Statusrequest.loading;
-    update();
-    var response = await orderdatadetails.orderdetailsdata(order!.orderId);
-    statusrequest = handling(response);
-    if (Statusrequest.success == statusrequest) {
-      if (response['status'] == 'success') {
-        List orderdata = response["data"];
-        data.addAll(orderdata.map((e) => cartmodel.fromJson(e)));
-      } else {
-        statusrequest = Statusrequest.failure;
-      }
-    }
-    update();
-  }
+  // Future<void> adminorder() async {
+  //   statusrequest = Statusrequest.loading;
+  //   update();
+  //   var response = await orderdatadetails.orderdetailsdata(order!.orderId);
+  //   statusrequest = handling(response);
+  //   if (Statusrequest.success == statusrequest) {
+  //     if (response['status'] == 'success') {
+  //       List orderdata = response["data"];
+  //       data.addAll(orderdata.map((e) => cartmodel.fromJson(e)));
+  //     } else {
+  //       statusrequest = Statusrequest.failure;
+  //     }
+  //   }
+  //   update();
+  // }
 
   void gototrackingorder() {
     Get.to(() => Trackinscreenadmin(), arguments: {"order": order});
@@ -48,7 +48,7 @@ class AdminOrderDetailesController extends Acceptedordercontroller {
       }
     }
 
-    adminorder();
+    // adminorder();
     super.onInit();
   }
 }

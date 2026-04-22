@@ -39,7 +39,7 @@ class Slideronboarding extends GetView<OnboardingControler> {
             children: [
               SizedBox(
                 child: Animationlottie(
-                  animationPath: onBoarding[i].img.toString(),
+                  animationPath: item.img.toString(),
                   h: 400,
                   w: 400,
                 ),
