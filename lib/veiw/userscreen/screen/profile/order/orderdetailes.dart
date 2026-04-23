@@ -25,7 +25,7 @@ class Orderdetailes extends StatelessWidget {
           ? Padding(
               padding: EdgeInsets.all(w * 0.04),
               child: ElevatedButton(
-                onPressed: () => c.deleteorders(c.order!.orderId.toString()),
+                onPressed: () => c.deleteorders(c.order!.orderId),
                 child: Text("Cancel Order"),
               ),
             )

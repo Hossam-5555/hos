@@ -22,13 +22,12 @@ class CheckemailController extends GetxController {
       update();
       var response = await checkemaildata.postdata(email.text);
       statusrequest = handling(response);
-      if (Statusrequest.success == statusrequest) {
-        if (response['status'] == 'success') {
-          Get.offNamed(Approute.Veryficode, arguments: {"email": email.text});
-        } else {
-          Get.defaultDialog(title: "Warning", middleText: "email Not Exist");
-          statusrequest = Statusrequest.failure;
-        }
+      if (Statusrequest.success == statusrequest &&
+          response['status'] == true) {
+        Get.offNamed(Approute.Veryficode, arguments: {"email": email.text});
+      } else {
+        Get.defaultDialog(title: "Warning", middleText: "email Not Exist");
+        statusrequest = Statusrequest.failure;
       }
       update();
     }

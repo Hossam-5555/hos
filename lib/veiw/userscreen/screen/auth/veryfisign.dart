@@ -39,7 +39,7 @@ class Veryfisign extends StatelessWidget {
                 Container(margin: EdgeInsets.only(bottom: 20),
                   child: OtpTextField(
                     numberOfFields: 5,enabledBorderColor: Colors.black,
-                    fieldWidth: 40.0,
+                    fieldWidth: 60.0,
                     borderRadius: BorderRadius.circular(30),
                     borderColor: Color.fromARGB(255, 0, 0, 0),
                     showFieldAsBox: true,

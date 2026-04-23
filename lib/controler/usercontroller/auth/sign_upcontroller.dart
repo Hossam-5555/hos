@@ -38,7 +38,6 @@ class Signupcontroller extends GetxController {
       statusrequest = handling(response);
       if (Statusrequest.success == statusrequest) {
         if (response['status'] == true) {
-          // data.addAll(response['data']);
           Get.offNamed(Approute.veryfisign, arguments: {"email": email.text});
         } else {
           Get.defaultDialog(title: "Warning", middleText: "email are Exist");

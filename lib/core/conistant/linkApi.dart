@@ -16,7 +16,7 @@ class LinkApi {
   static String resend = '$server/auth/resend.php';
 
   //forgetpassword====================
-  static String checkemail = '$server/forgetpassword/checkemail.php';
+  static String checkemail = '$lravelserver/forgot-password';
   static String resetpass = '$server/forgetpassword/resetpass.php';
   static String veryfycodeforgetpass = '$server/forgetpassword/verifycode.php';
   //Home

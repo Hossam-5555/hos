@@ -31,7 +31,7 @@ class Notificationcontroller extends GetxController {
     var response = await notificationdata.GetNotification(userid!);
 
     statusrequest = handling(response);
-
+    print(statusrequest);
     if (Statusrequest.success == statusrequest && response['status'] == true) {
       notificationlist.clear();
       notificationlist.addAll(
@@ -40,6 +40,9 @@ class Notificationcontroller extends GetxController {
         ),
       );
       notificationcount = response["data"]["total_inactive_count"];
+      if (notificationcount==0) {
+        statusrequest=Statusrequest.failure;
+      }
     } else {
       statusrequest = Statusrequest.failure;
     }

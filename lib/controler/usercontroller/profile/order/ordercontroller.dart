@@ -95,7 +95,7 @@ class Ordercontroller extends GetxController {
   }
 
   //هي الي هتخلي الاوردر ملغي
-  Future<void> deleteorders(String orderid) async {
+  Future<void> deleteorders(int orderid) async {
     statusrequest = Statusrequest.loading;
     update();
     var response = await orderdata.deletedata(orderid);

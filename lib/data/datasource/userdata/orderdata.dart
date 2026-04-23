@@ -12,7 +12,7 @@ class Orderdata {
 
 
 
-  deletedata(String orderid) async {
+  deletedata(int orderid) async {
     var response = await crud.postrequset(LinkApi.deleteorder, {
       "orderid": orderid,
     });
