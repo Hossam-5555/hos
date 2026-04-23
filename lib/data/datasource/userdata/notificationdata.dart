@@ -12,16 +12,15 @@ class Notificationdata {
     return response.fold((l) => l, (r) => r);
   }
 
-  Future<Object> removeNotification(List notificationid) async {
-    // بنحول كل عنصر في اللستة لـ String لأن http package
-    // بتتوقع الـ Map values تكون Strings في الـ Body
-    Map<String, String> data = {};
+  Future removeNotification(List ids,int userid) async {
+  var response = await crud.postrequset(
+    LinkApi.deletnotification,
+    {
+      "user_id": userid, // أو من SharedPreferences
+      "massage_id": ids.map((e) => e.toString()).toList(),
+    },
+  );
 
-    for (int i = 0; i < notificationid.length; i++) {
-      data["notificationid[$i]"] = notificationid[i].toString();
-    }
-
-    var response = await crud.postrequset(LinkApi.deletnotification, data);
-    return response.fold((l) => l, (r) => r);
-  }
+  return response.fold((l) => l, (r) => r);
+}
 }

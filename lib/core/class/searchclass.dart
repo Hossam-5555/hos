@@ -27,8 +27,9 @@ class SearchMix extends GetxController {
     searchlist.clear();
     statusrequest = Statusrequest.loading;
     update();
+    int id = myservisec.sharedPreferences.getInt("id")!;
 
-    var response = await homedata.searchdata(search!.text);
+    var response = await homedata.searchdata(search!.text, id);
     // print("Response==========================: $response");
 
     statusrequest = handling(response);

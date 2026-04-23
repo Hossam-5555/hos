@@ -10,9 +10,9 @@ class LinkApi {
   static String imageitems = '$imagelink/items';
 
   //Auth=============================
-  static String signup = '$server/auth/signup.php';
-  static String login = '$server/auth/login.php';
-  static String veryfisign = '$server/auth/veryfi.php';
+  static String signup = '$lravelserver/register';
+  static String login = '$lravelserver/login';
+  static String veryfisign = '$lravelserver/verify';
   static String resend = '$server/auth/resend.php';
 
   //forgetpassword====================
@@ -30,12 +30,10 @@ class LinkApi {
 
   static String view = '$lravelserver/getfavorite';
   static String favoritemanger = '$lravelserver/favoritemanger';
-  static String deletefromfavorite = '$server/favorite/deletefromfavroite.php';
   //cart
   static String addcart = '$lravelserver/cart';
   static String deletcart = '$lravelserver/decrease';
   static String viewcart = '$lravelserver/cart/';
-  static String getcount = '$server/cart/getcountitems.php';
   static String coupone = '$server/coupone/chechcoupone.php';
   // AddresLink
   static String addaddres = '$lravelserver/Address';
@@ -50,7 +48,7 @@ class LinkApi {
 
   //notification
   static String notification = '$lravelserver/getmassage';
-  static String deletnotification = '$server/deletenotification.php';
+  static String deletnotification = '$lravelserver/deleltemassage';
 
   //offer
   static String offer = '$server/offer.php';

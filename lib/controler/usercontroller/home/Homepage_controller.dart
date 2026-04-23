@@ -32,9 +32,7 @@ class HomepageController extends GetxController {
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response["status"] == true) {
-        List categorylist =
-            // response["categories"];
-            response["data"];
+        List categorylist = response["data"];
         print(response["data"]);
         categories.addAll(
           categorylist.map((e) => categoriesmodel2.fromJson(e)),
@@ -88,7 +86,7 @@ class HomepageController extends GetxController {
         Colors.white,
       ], // برتقالي وزهري
     ),
-  
+
     OfferModel(
       image:
           "https://i.pinimg.com/webp/1200x/49/bb/12/49bb129c93b7d6454a2e34504be5e488.webp",

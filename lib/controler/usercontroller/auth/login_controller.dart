@@ -1,5 +1,4 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
@@ -7,6 +6,7 @@ import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/auth/logindata.dart';
+import 'package:hos/data/model/UserModel.dart';
 import 'package:hos/veiw/userscreen/screen/auth/signup%20.dart';
 
 class LoginController extends GetxController {
@@ -14,6 +14,8 @@ class LoginController extends GetxController {
     Get.toNamed(Approute.checkemailpage);
   }
 
+  List<UserModel> userinfo = [];
+  String? token;
   void gotosignup() {
     Get.off(
       () => Signup(),
@@ -48,69 +50,54 @@ class LoginController extends GetxController {
   LoginData logindata = LoginData(Get.find());
   Statusrequest statusrequest = Statusrequest.none;
   Future<void> login() async {
-    //لقد انشأت عمود في قواعد البيانات ب نوع المستخدم )(admin,user,driver)
-    //ثم عند تسجيل الدخول بنحفظها ب شيرد برفرانس usertypeثم نعمل داله
+    if (!loginkey.currentState!.validate()) return;
 
-    // if (userType == "admin") {ادمن يروح صفحه admin ,user=>user,driver=driver
-    //             Get.offNamed(AdminApproate.adminHome);
-    //           } else if (userType == "driver") {
-    //             Get.offNamed(AdminApproate.driverHome);
-    //           } else {
-    //             Get.offNamed(Approute.Homescreen);
-    //           }
+    statusrequest = Statusrequest.loading;
+    update();
 
-    if (loginkey.currentState!.validate()) {
-      statusrequest = Statusrequest.loading;
-      update();
-      var response = await logindata.postdata(email.text, passward.text);
-      statusrequest = handling(response);
-      if (Statusrequest.success == statusrequest) {
-        if (response['status'] == 'success') {
-          if (response["data"]["users_aprove"] == 1) {
-            myservisec.sharedPreferences.setString(
-              "id",
-              response["data"]['users_id'].toString(),
-            );
-            String id = myservisec.sharedPreferences.getString("id") ?? "";
-            myservisec.sharedPreferences.setString(
-              "usersname",
-              response["data"]['users_name'],
-            );
-            myservisec.sharedPreferences.setString(
-              "email",
-              response["data"]['users_email'],
-            );
-            myservisec.sharedPreferences.setString(
-              "usertype",
-              response["data"]["users_type"],
-            );
+    var response = await logindata.postdata(email.text, passward.text);
+    statusrequest = handling(response);
 
-            print(response);
-            myservisec.sharedPreferences.setString("step", '2');
-            FirebaseMessaging.instance.subscribeToTopic("users");
-            FirebaseMessaging.instance.subscribeToTopic("users$id");
+    if (statusrequest == Statusrequest.success && response['status'] == true) {
+      print(response);
 
-            String userType = response["data"]["users_type"];
+      var data = response['data'];
+      var userJson = data['user'];
+      var token = data['token'];
 
-            if (userType == "admin") {
-              Get.offAllNamed(AdminApproate.adminHome);
-            } else if (userType == "driver") {
-              Get.offAllNamed(AdminApproate.driverHome);
-            } else {
-              Get.offAllNamed(Approute.Homescreen);
-            }
-          } else {
-            Get.toNamed(Approute.veryfisign, arguments: {"email": email.text});
-          }
+      // 🔥 تحويل المستخدم
+      UserModel user = UserModel.fromJson(userJson);
 
-          if (kDebugMode) {
-            print(response["data"]);
-          }
+      // 🔥 حفظ البيانات
+      await myservisec.sharedPreferences.setInt("id", user.id!);
+      await myservisec.sharedPreferences.setString("usersname", user.name!);
+      await myservisec.sharedPreferences.setString("email", user.email!);
+      await myservisec.sharedPreferences.setString("usertype", user.usersType!);
+      await myservisec.sharedPreferences.setString("token", token);
+      await myservisec.sharedPreferences.setString("step", "2");
+
+      int id = user.id!;
+
+      // 🔥 Firebase topics
+      FirebaseMessaging.instance.subscribeToTopic("users");
+      FirebaseMessaging.instance.subscribeToTopic("users$id");
+
+      // 🔥 Check approval
+      if (user.isAprove == 1) {
+        if (user.usersType == "admin") {
+          Get.offAllNamed(AdminApproate.adminHome);
+        } else if (user.usersType == "driver") {
+          Get.offAllNamed(AdminApproate.driverHome);
         } else {
-          statusrequest = Statusrequest.failure;
+          Get.offAllNamed(Approute.Homescreen);
         }
+      } else {
+        Get.toNamed(Approute.veryfisign, arguments: {"email": email.text});
       }
-      update();
+    } else {
+      statusrequest = Statusrequest.failure;
     }
+
+    update();
   }
 }

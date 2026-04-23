@@ -8,7 +8,7 @@ class VeryfiCodeSignupData {
   Future<dynamic> postdata(String email, String verifycode) async {
     var response = await crud.postrequset(LinkApi.veryfisign, {
       "email": email,
-      "verifycode": verifycode,
+      "code": verifycode,
     });
     return response.fold((l) => l, (r) => r);
   }

@@ -98,14 +98,6 @@ class Orders extends StatelessWidget {
                               ),
                             ],
                           ),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //   children: [
-                          //     Flexible(
-                          //       child:
-                          //     ),
-                          //   ],
-                          // ),
                         ],
                       ),
 
@@ -113,7 +105,7 @@ class Orders extends StatelessWidget {
                         padding: EdgeInsets.only(top: h * 0.01),
 
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
 
                           children: [
                             Column(
@@ -174,117 +166,113 @@ class Orders extends StatelessWidget {
                                   ),
                                 ),
 
-                                Text(
-                                  "${'Status'.tr}: $status",
-                                  style: TextStyle(
-                                    color: color,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "${'Status'.tr}: $status",
+                                      style: TextStyle(
+                                        color: color,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    SizedBox(width: w / 4),
+                                  ],
                                 ),
                               ],
                             ),
 
                             // زر الحذف
-                            order.status == "0"
-                                ? IconButton(
-                                    icon: Icon(
-                                      Icons.delete_outline_outlined,
-                                      size: w * 0.07,
-                                      color: Colors.grey,
-                                    ),
-                                    onPressed: () => controller.deleteorders(
-                                      order.orderId.toString(),
-                                    ),
-                                  )
-                                :
-                                  // زر التقييم
-                                  // : order.status == "4" &&
-                                  //       order == '0'
-                                  // ? TextButton(
-                                  //     child: Text(
-                                  //       "rating",
-                                  //       style: TextStyle(fontSize: w * 0.030),
-                                  //     ),
-                                  //     onPressed: () {
-                                  //       showDialog(
-                                  //         context: context,
-                                  //         builder: (context) {
-                                  //           return AlertDialog(
-                                  //             title: Text("Rating"),
-                                  //             content: Column(
-                                  //               mainAxisSize: MainAxisSize.min,
-                                  //               children: [
-                                  //                 GetBuilder<Ordercontroller>(
-                                  //                   builder: (controller) {
-                                  //                     return Row(
-                                  //                       mainAxisAlignment:
-                                  //                           MainAxisAlignment
-                                  //                               .center,
-                                  //                       children: List.generate(5, (
-                                  //                         i,
-                                  //                       ) {
-                                  //                         int s = i + 1;
-                                  //                         return IconButton(
-                                  //                           onPressed: () =>
-                                  //                               controller
-                                  //                                   .changeRatingColor(
-                                  //                                     i,
-                                  //                                   ),
-                                  //                           icon: Icon(
-                                  //                             Icons.star,
-                                  //                             size: w * 0.08,
-                                  //                             color:
-                                  //                                 s <=
-                                  //                                     controller
-                                  //                                         .selectedRating
-                                  //                                 ? Colors.amber
-                                  //                                 : Colors.grey,
-                                  //                           ),
-                                  //                         );
-                                  //                       }),
-                                  //                     );
-                                  //                   },
-                                  //                 ),
-                                  //                 SizedBox(height: 20),
-                                  //                 SizedBox(
-                                  //                   height: h * 0.12,
-                                  //                   width: w * 0.6,
-                                  //                   child: Textfealdauth(
-                                  //                     suffixIcon: Icons.comment,
-                                  //                     hint: "comment",
-                                  //                     textEditingController:
-                                  //                         controller.comment!,
-                                  //                     valid: (x) => null,
-                                  //                   ),
-                                  //                 ),
-                                  //               ],
-                                  //             ),
-                                  //             actions: [
-                                  //               TextButton(
-                                  //                 onPressed: () =>
-                                  //                     controller.viewrating(
-                                  //                       order.ordersId!,
-                                  //                       controller.selectedRating
-                                  //                           .toString(),
-                                  //                     ),
-                                  //                 child: Text("Submit"),
-                                  //               ),
-                                  //               TextButton(
-                                  //                 onPressed: () => Get.back(),
-                                  //                 child: Text("Cancel"),
-                                  //               ),
-                                  //             ],
-                                  //           );
-                                  //         },
-                                  //       );
-                                  //     },
-                                  //   )
-                                  // // عرض التقييم
-                                  // :
-                                  Text(
-                                    order.status == "4" ? "4 ⭐" : "",
-                                    style: TextStyle(fontSize: w * 0.04),
-                                  ),
+
+                            // زر التقييم
+                            // : order.status == "4" &&
+                            //       order == '0'
+                            // ? TextButton(
+                            //     child: Text(
+                            //       "rating",
+                            //       style: TextStyle(fontSize: w * 0.030),
+                            //     ),
+                            //     onPressed: () {
+                            //       showDialog(
+                            //         context: context,
+                            //         builder: (context) {
+                            //           return AlertDialog(
+                            //             title: Text("Rating"),
+                            //             content: Column(
+                            //               mainAxisSize: MainAxisSize.min,
+                            //               children: [
+                            //                 GetBuilder<Ordercontroller>(
+                            //                   builder: (controller) {
+                            //                     return Row(
+                            //                       mainAxisAlignment:
+                            //                           MainAxisAlignment
+                            //                               .center,
+                            //                       children: List.generate(5, (
+                            //                         i,
+                            //                       ) {
+                            //                         int s = i + 1;
+                            //                         return IconButton(
+                            //                           onPressed: () =>
+                            //                               controller
+                            //                                   .changeRatingColor(
+                            //                                     i,
+                            //                                   ),
+                            //                           icon: Icon(
+                            //                             Icons.star,
+                            //                             size: w * 0.08,
+                            //                             color:
+                            //                                 s <=
+                            //                                     controller
+                            //                                         .selectedRating
+                            //                                 ? Colors.amber
+                            //                                 : Colors.grey,
+                            //                           ),
+                            //                         );
+                            //                       }),
+                            //                     );
+                            //                   },
+                            //                 ),
+                            //                 SizedBox(height: 20),
+                            //                 SizedBox(
+                            //                   height: h * 0.12,
+                            //                   width: w * 0.6,
+                            //                   child: Textfealdauth(
+                            //                     suffixIcon: Icons.comment,
+                            //                     hint: "comment",
+                            //                     textEditingController:
+                            //                         controller.comment!,
+                            //                     valid: (x) => null,
+                            //                   ),
+                            //                 ),
+                            //               ],
+                            //             ),
+                            //             actions: [
+                            //               TextButton(
+                            //                 onPressed: () =>
+                            //                     controller.viewrating(
+                            //                       order.ordersId!,
+                            //                       controller.selectedRating
+                            //                           .toString(),
+                            //                     ),
+                            //                 child: Text("Submit"),
+                            //               ),
+                            //               TextButton(
+                            //                 onPressed: () => Get.back(),
+                            //                 child: Text("Cancel"),
+                            //               ),
+                            //             ],
+                            //           );
+                            //         },
+                            //       );
+                            //     },
+                            //   )
+                            // // عرض التقييم
+                            // :
+                            Text(
+                              order.status == "4" ? "4 ⭐" : "",
+                              style: TextStyle(fontSize: w * 0.04),
+                            ),
                           ],
                         ),
                       ),

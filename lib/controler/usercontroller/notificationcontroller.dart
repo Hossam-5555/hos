@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
@@ -14,20 +15,20 @@ class Notificationcontroller extends GetxController {
 
   Myservisec myservisec = Get.put(Myservisec());
   Notificationdata notificationdata = Get.put(Notificationdata(Get.find()));
-
+  int? get userid => myservisec.sharedPreferences.getInt("id");
   RxList<MassageModel> notificationlist = <MassageModel>[].obs;
   int notificationcount = 0;
 
   /// ====== MULTI SELECT ======
   bool selectionMode = false;
-  List<String> selectedIds = [];
+  List<int> selectedIds = [];
 
   /// جلب الإشعارات
   Future<void> getnotifier() async {
     statusrequest = Statusrequest.loading;
     update();
 
-    var response = await notificationdata.GetNotification(2);
+    var response = await notificationdata.GetNotification(userid!);
 
     statusrequest = handling(response);
 
@@ -47,7 +48,7 @@ class Notificationcontroller extends GetxController {
   }
 
   /// ضغط مطوّل
-  void onLongPress(String id) {
+  void onLongPress(int id) {
     selectionMode = true;
     if (!selectedIds.contains(id)) {
       selectedIds.add(id);
@@ -56,7 +57,7 @@ class Notificationcontroller extends GetxController {
   }
 
   /// ضغط عادي
-  void onTap(String id) {
+  void onTap(int id) {
     if (!selectionMode) return;
 
     if (selectedIds.contains(id)) {
@@ -70,23 +71,75 @@ class Notificationcontroller extends GetxController {
     update();
   }
 
-  bool isSelected(String id) {
+  bool isSelected(int id) {
     return selectedIds.contains(id);
   }
 
   /// حذف المحدد
-  Future<void> deleteSelected() async {
-    await notificationdata.removeNotification(selectedIds);
+  Future<void> deleteSelected(BuildContext context) async {
+    // 🟢 خزّن العناصر المحذوفة
+    final removedItems = notificationlist
+        .where((item) => selectedIds.contains(item.id))
+        .toList();
 
-    notificationlist.removeWhere(
-      (item) => selectedIds.contains(item.id.toString()),
+    // 🟢 احذف من UI مؤقتًا
+    notificationlist.removeWhere((item) => selectedIds.contains(item.id));
+
+    update();
+
+    bool isUndo = false;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: Duration(seconds: 4),
+        behavior: SnackBarBehavior.floating, // يخليه طاير مش لازق تحت
+        margin: EdgeInsets.all(12),
+        backgroundColor: Colors.grey.shade900,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15), // 🔥 حواف دائرية
+        ),
+
+        content: Row(
+          children: [
+            Icon(Icons.delete_outline, color: Colors.white),
+            SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                "Notifications deleted",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+
+        action: SnackBarAction(
+          label: "UNDO",
+          textColor: Colors.orangeAccent,
+          onPressed: () {
+            isUndo = true;
+            notificationlist.insertAll(0, removedItems);
+            update();
+          },
+        ),
+      ),
     );
 
+    // ⏳ استنى 4 ثواني
+    await Future.delayed(Duration(seconds: 4));
+
+    // 🔴 لو المستخدم ما ضغطش Undo
+    if (!isUndo) {
+      await notificationdata.removeNotification(selectedIds, userid!);
+    }
+
+    // تنظيف
     selectedIds.clear();
     selectionMode = false;
+
     if (notificationlist.isEmpty) {
       statusrequest = Statusrequest.failure;
     }
+
     update();
   }
 

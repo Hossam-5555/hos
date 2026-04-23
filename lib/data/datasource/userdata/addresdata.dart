@@ -47,8 +47,8 @@ class Addresdata {
   }
 
   // ignore: strict_top_level_inference
-  viewAddresdata(String userid) async {
-    var response = await crud.getrequset(LinkApi.viewAddres + userid);
+  viewAddresdata(int userid) async {
+    var response = await crud.getrequset("${LinkApi.viewAddres}$userid");
     return response.fold((l) => l, (r) => r);
   }
 

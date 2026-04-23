@@ -26,8 +26,13 @@ class NotificationPage extends StatelessWidget {
               herotag: "notification",
               iconButton: controller.selectionMode
                   ? IconButton(
-                      icon: const Icon(Icons.delete_sweep_rounded, color: Colors.redAccent),
-                      onPressed: controller.deleteSelected,
+                      icon: const Icon(
+                        Icons.delete_sweep_rounded,
+                        color: Colors.redAccent,
+                      ),
+                      onPressed: () {
+                        controller.deleteSelected(context);
+                      },
                     )
                   : null,
               onPressed: controller.closeselected,
@@ -44,23 +49,29 @@ class NotificationPage extends StatelessWidget {
             widget: Skeletonizer(
               enabled: isLoading,
               child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
                 itemCount: isLoading ? 6 : controller.notificationlist.length,
                 itemBuilder: (context, index) {
                   String title = "";
                   String body = "";
-                  String id = "";
+                  int id = 0;
                   String time = "";
 
                   if (isLoading) {
                     title = "Loading Notification Title";
-                    body = "This is a dummy description for skeleton loading effect.";
+                    body =
+                        "This is a dummy description for skeleton loading effect.";
                   } else {
                     final item = controller.notificationlist[index];
-                    id = item.id.toString();
+                    id = item.id!;
                     title = item.title ?? '';
                     body = item.body ?? '';
-                    time = Jiffy.parse(item.createdAt ?? DateTime.now().toString()).fromNow();
+                    time = Jiffy.parse(
+                      item.createdAt ?? DateTime.now().toString(),
+                    ).fromNow();
                   }
 
                   bool isSelected = !isLoading && controller.isSelected(id);
@@ -68,17 +79,23 @@ class NotificationPage extends StatelessWidget {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: InkWell(
-                      onLongPress: isLoading ? null : () => controller.onLongPress(id),
+                      onLongPress: isLoading
+                          ? null
+                          : () => controller.onLongPress(id),
                       onTap: isLoading ? null : () => controller.onTap(id),
                       borderRadius: BorderRadius.circular(20),
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 300),
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: isSelected ? Colors.blue.withOpacity(0.08) : Colors.white,
+                          color: isSelected
+                              ? Colors.blue.withOpacity(0.08)
+                              : Colors.white,
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
-                            color: isSelected ? Colors.blue.withOpacity(0.5) : Colors.transparent,
+                            color: isSelected
+                                ? Colors.blue.withOpacity(0.5)
+                                : Colors.transparent,
                             width: 1.5,
                           ),
                           boxShadow: [
@@ -98,9 +115,12 @@ class NotificationPage extends StatelessWidget {
                               width: 50,
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
-                                  colors: isSelected 
-                                      ? [Colors.blue, Colors.blueAccent] 
-                                      : [Colors.blue.withOpacity(0.1), Colors.blue.withOpacity(0.05)],
+                                  colors: isSelected
+                                      ? [Colors.blue, Colors.blueAccent]
+                                      : [
+                                          Colors.blue.withOpacity(0.1),
+                                          Colors.blue.withOpacity(0.05),
+                                        ],
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                 ),
@@ -120,7 +140,8 @@ class NotificationPage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Expanded(
                                         child: Text(
@@ -132,10 +153,14 @@ class NotificationPage extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      if (!isLoading && !controller.selectionMode)
+                                      if (!isLoading &&
+                                          !controller.selectionMode)
                                         Text(
                                           time,
-                                          style: TextStyle(fontSize: 10, color: Colors.grey[500]),
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            color: Colors.grey[500],
+                                          ),
                                         ),
                                     ],
                                   ),
@@ -161,7 +186,9 @@ class NotificationPage extends StatelessWidget {
                                 child: Checkbox(
                                   value: isSelected,
                                   activeColor: Colors.blue,
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
                                   onChanged: (val) => controller.onTap(id),
                                 ),
                               ),

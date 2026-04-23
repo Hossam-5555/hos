@@ -15,10 +15,9 @@ class VeryfiSignControler extends GetxController {
     var response = await veryficodesign.postdata(email!, verifycode);
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
-      if (response['status'] == 'success') {
+      if (response['status'] == true) {
         Get.snackbar("success", "تم انشاء حساب بنجاح");
             Get.offAllNamed(Approute.login);
-
       } else {
         Get.defaultDialog(
           title: "Warning",

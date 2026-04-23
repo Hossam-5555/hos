@@ -13,7 +13,7 @@ class Ordercontroller extends GetxController {
   Myservisec myservisec = Get.find();
   Orderdata orderdata = Orderdata(Get.find());
   TextEditingController? comment;
-
+  int? get userid => myservisec.sharedPreferences.getInt("id");
   int selectedRating = 0;
   void changeRatingColor(int i) {
     selectedRating = i + 1; // خزن رقم النجمة اللي المستخدم ضغطها
@@ -81,10 +81,7 @@ class Ordercontroller extends GetxController {
     orders.clear();
     statusrequest = Statusrequest.loading;
     update();
-    var response = await orderdata.order(
-      // myservisec.sharedPreferences.getString("id")!,
-      2,
-    );
+    var response = await orderdata.order(userid!);
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
@@ -96,14 +93,15 @@ class Ordercontroller extends GetxController {
     }
     update();
   }
- //هي الي هتخلي الاوردر ملغي
+
+  //هي الي هتخلي الاوردر ملغي
   Future<void> deleteorders(String orderid) async {
     statusrequest = Statusrequest.loading;
     update();
     var response = await orderdata.deletedata(orderid);
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
-      if (response['status'] == 'success') {
+      if (response['status'] == true) {
         viewmyorders();
       } else {
         statusrequest = Statusrequest.failure;

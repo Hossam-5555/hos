@@ -13,10 +13,10 @@ class Homedata {
     return response.fold((l) => l, (r) => r);
   }
 
-  searchdata(String search) async {
+  searchdata(String search,int id) async {
     var response = await crud.postrequset(LinkApi.search, {
       'query': search,
-      "user_id": 2,
+      "user_id": id,
     });
     return response.fold((l) => l, (r) => r);
   }

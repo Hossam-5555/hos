@@ -22,11 +22,5 @@ class addfavdata {
     return response.fold((l) => l, (r) => r);
   }
 
-  //deletfrom favorite page
-  deletefromfavorite(int favid) async {
-    var response = await crud.postrequset(LinkApi.deletefromfavorite, {
-      "favid": favid,
-    });
-    return response.fold((l) => l, (r) => r);
-  }
+
 }

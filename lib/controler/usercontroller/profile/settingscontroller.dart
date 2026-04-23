@@ -19,7 +19,7 @@ class SettingsController extends GetxController {
 
   //logout تسجيل الخروج من البرنامج
   void logout() {
-    String id = myservisec.sharedPreferences.getString("id")!;
+    int id = myservisec.sharedPreferences.getInt("id")!;
     FirebaseMessaging.instance.subscribeToTopic("users");
     FirebaseMessaging.instance.subscribeToTopic("users$id");
     myservisec.sharedPreferences.clear();
@@ -40,9 +40,8 @@ class SettingsController extends GetxController {
     final prefs = myservisec.sharedPreferences;
     await prefs.setBool('notificationsEnabled', value);
   }
-  
 
-var isLoading = false.obs;
+  var isLoading = false.obs;
 
   Future<void> makePhoneCall() async {
     isLoading.value = true;
@@ -63,9 +62,6 @@ var isLoading = false.obs;
 
     isLoading.value = false;
   }
-
-
-
 
   // دالة لحفظ إعداد المظهر
   void changeTheme(String? newTheme) async {

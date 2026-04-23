@@ -33,14 +33,7 @@ class Cartdata {
     return response.fold((l) => l, (r) => r);
   }
 
-  // ignore: strict_top_level_inference
-  getcount(String userid, String itemid) async {
-    var response = await crud.postrequset(LinkApi.getcount, {
-      "userid": userid,
-      'itemid': itemid,
-    });
-    return response.fold((l) => l, (r) => r);
-  }
+
 
   couponedata(String couponeName) async {
     var response = await crud.postrequset(LinkApi.coupone, {

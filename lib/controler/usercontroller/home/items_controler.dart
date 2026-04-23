@@ -45,7 +45,7 @@ class ItemsControler extends SearchMix {
     update();
     var response = await itemdata.postdata(
       catid,
-      myservisec1.sharedPreferences.getString("id")!,
+      myservisec1.sharedPreferences.getInt("id")!,
     );
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {

@@ -5,7 +5,7 @@ class itemsdata {
   Crud crud;
   itemsdata(this.crud);
 
-  postdata(String id, String userid) async {
+  postdata(String id, int userid) async {
     var response = await crud.postrequset(
       LinkApi.items,
       {"category_id": id, "user_id": userid},

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/order/orderdetailescontroller.dart';
+import 'package:hos/data/model/ordersmodel.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
 class Orderdetailes extends StatelessWidget {
@@ -8,197 +9,107 @@ class Orderdetailes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // حقن الكنترولر
-    final controller = Get.put(Orderdetailescontroller());
+    final c = Get.put(Orderdetailescontroller());
+    final w = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      // backgroundColor: Colors.grey[100], // خلفية رمادية فاتحة لإبراز البطاقات
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
+        preferredSize: Size.fromHeight(60),
         child: Appbarbackicon(
           herotag: '',
-          title: "${controller.order?.orderNumber}",
+          title: "${c.order?.orderNumber ?? ''}",
         ),
       ),
+
+      bottomNavigationBar: c.order?.status == "pending"
+          ? Padding(
+              padding: EdgeInsets.all(w * 0.04),
+              child: ElevatedButton(
+                onPressed: () => c.deleteorders(c.order!.orderId.toString()),
+                child: Text("Cancel Order"),
+              ),
+            )
+          : null,
+
       body: GetBuilder<Orderdetailescontroller>(
         builder: (_) {
-          final order = controller.order;
-          if (order == null) {
-            return const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.error_outline, size: 60, color: Colors.grey),
-                  SizedBox(height: 10),
-                  Text(
-                    "❌ لم يتم استلام بيانات الطلب",
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
-                  ),
-                ],
-              ),
-            );
-          }
-          controller.Getcolorandstause(order.status);
-          final color = controller.statusColor;
-          final textstatus = controller.statusText;
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // 1. قسم معلومات الطلب الأساسية (الحالة والتاريخ)
-                buildStatusSection(order.status, color!, textstatus!),
+          final o = c.order;
+          if (o == null) return Center(child: Text("No Data"));
 
-                const SizedBox(height: 15),
+          c.Getcolorandstause(o.status);
 
-                // 2. قسم عنوان التوصيل والمعلومات الشخصية
-                _buildAddressCard(
-                  address: order.shippingAddress.name ?? "غير محدد",
-                  status: order.status,
-                  addresscity: order.shippingAddress.city ?? "غير محدد",
-                  addressstreet: order.shippingAddress.street ?? "غير محدد",
-                  order: order,
-                  phone: order.shippingAddress.phone ?? "غير محدد",
-                  username: order.username,
-                  // يمكنك إضافة اسم العميل هنا إذا كان متوفراً في موديل الطلب العام
-                  // customerName: order.userName,
-                ),
-
-                const SizedBox(height: 20),
-                Text(
-                  "product".tr,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10),
-
-                // 3. قائمة المنتجات (Items List)
-                // بدلاً من تكرار العنوان، نعرض قائمة المنتجات فقط هنا
-                ListView.separated(
-                  shrinkWrap: true, // ضروري داخل SingleChildScrollView
-                  physics:
-                      const NeverScrollableScrollPhysics(), // منع السكرول الداخلي
-                  itemCount: controller.order!.items.length,
-                  separatorBuilder: (context, index) =>
-                      const Divider(height: 1),
-                  itemBuilder: (context, index) {
-                    final item = controller.order!.items[index];
-
-                    return Container(
-                      color: Colors.white,
-                      child: ListTile(
-                        leading: Container(alignment: Alignment.center,
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color: Colors.blue[50],
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text("${item.productId}"),
-                        ),
-                        title: Text(
-                          "${item.productName}",
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text("quantity: ${item.quantity}"),
-                        trailing: Text(
-                          "${item.price} \$", // تنسيق السعر
-                          style: const TextStyle(
-                            color: Colors.green,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-
-                const SizedBox(height: 20),
-
-                // 4. ملخص الفاتورة (السعر الإجمالي)
-                _buildPriceSummary(
-                  "${order.totalAmount}",
-                  "${order.subtotal}",
-                  "${order.shippingFee}",
-                  "${order.taxAmount}",
-                ),
-
-                const SizedBox(height: 30),
-              ],
-            ),
+          return ListView(
+            padding: EdgeInsets.all(w * 0.04),
+            children: [
+              _status(o.status, c.statusColor!, c.statusText!),
+              _card(_info(o)),
+              _card(_items(o)),
+              _card(_price(o)),
+            ],
           );
         },
       ),
     );
   }
 
-  // --- Widgets مساعدة للتصميم ---
+  // ---------------- UI ----------------
 
-  // ودجت لعرض الحالة بشكل جميل
-  // 1. ودجت عرض الحالة وشريط التقدم
-  Widget buildStatusSection(String status, Color color, String textstatus) {
-    int currentStep = _getStepIndex(status);
+  Widget _card(Widget child) => Container(
+    margin: const EdgeInsets.only(bottom: 12),
+    padding: const EdgeInsets.all(12),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12),
+      boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],
+    ),
+    child: child,
+  );
 
+  // status
+  Widget _status(String status, Color color, String text) {
     final steps = [
-      {"icon": Icons.receipt_long_rounded, "label": "قيد الانتظار"},
-      {"icon": Icons.inventory_2_rounded, "label": "processing"},
-      {"icon": Icons.local_shipping_rounded, "label": "shipped"},
-      {"icon": Icons.check_circle_rounded, "label": "delivered"},
+      {"icon": Icons.receipt_long, "label": "Pending"},
+      {"icon": Icons.inventory_2, "label": "Processing"},
+      {"icon": Icons.local_shipping, "label": "Shipped"},
+      {"icon": Icons.check_circle, "label": "Delivered"},
     ];
 
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
+    int current = [
+      "pending",
+      "processing",
+      "shipped",
+      "delivered",
+    ].indexOf(status);
+
+    return _card(
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // --- العنوان + الحالة الحالية ---
+          // 🔹 العنوان + الحالة
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Icon(
-                      Icons.info_outline,
-                      color: const Color.fromARGB(255, 11, 151, 231),
-                    ),
-                    SizedBox(width: 8),
-
-                    Text(
-                      "Status".tr,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
+              Row(
+                children: const [
+                  Icon(Icons.info_outline, size: 18),
+                  SizedBox(width: 6),
+                  Text("Status", style: TextStyle(fontWeight: FontWeight.bold)),
+                ],
               ),
               Text(
-                textstatus.tr,
-                style: TextStyle(
-                  color: color,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                ),
+                text,
+                style: TextStyle(color: color, fontWeight: FontWeight.bold),
               ),
             ],
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
 
-          // --- Horizontal Timeline ---
+          // 🔹 Timeline
           Row(
-            children: List.generate(steps.length, (index) {
-              bool isActive = index <= currentStep;
-              bool isLast = index == steps.length - 1;
+            children: List.generate(steps.length, (i) {
+              bool active = i <= current;
+              bool last = i == steps.length - 1;
 
               return Expanded(
                 child: Column(
@@ -209,25 +120,32 @@ class Orderdetailes extends StatelessWidget {
                         Expanded(
                           child: Container(
                             height: 2,
-                            color: index == 0
+                            color: i == 0
                                 ? Colors.transparent
-                                : (index <= currentStep
-                                      ? color
-                                      : Colors.grey.shade300),
+                                : (i <= current ? color : Colors.grey.shade300),
                           ),
                         ),
 
                         // الدائرة
-                        Container(
+                        AnimatedContainer(
+                          duration: Duration(milliseconds: 300),
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
-                            color: isActive ? color : Colors.grey.shade200,
+                            color: active ? color : Colors.grey.shade200,
                             shape: BoxShape.circle,
+                            boxShadow: active
+                                ? [
+                                    BoxShadow(
+                                      color: color.withOpacity(0.4),
+                                      blurRadius: 6,
+                                    ),
+                                  ]
+                                : [],
                           ),
                           child: Icon(
-                            steps[index]["icon"] as IconData,
+                            steps[i]["icon"] as IconData,
                             size: 14,
-                            color: isActive ? Colors.white : Colors.grey,
+                            color: active ? Colors.white : Colors.grey,
                           ),
                         ),
 
@@ -235,11 +153,9 @@ class Orderdetailes extends StatelessWidget {
                         Expanded(
                           child: Container(
                             height: 2,
-                            color: isLast
+                            color: last
                                 ? Colors.transparent
-                                : (index < currentStep
-                                      ? color
-                                      : Colors.grey.shade300),
+                                : (i < current ? color : Colors.grey.shade300),
                           ),
                         ),
                       ],
@@ -249,14 +165,14 @@ class Orderdetailes extends StatelessWidget {
 
                     // النص
                     Text(
-                      steps[index]["label"].toString().tr,
+                      steps[i]["label"].toString(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 10,
-                        fontWeight: isActive
+                        fontWeight: active
                             ? FontWeight.bold
-                            : FontWeight.w400,
-                        color: isActive ? color : Colors.grey,
+                            : FontWeight.normal,
+                        color: active ? color : Colors.grey,
                       ),
                     ),
                   ],
@@ -269,209 +185,74 @@ class Orderdetailes extends StatelessWidget {
     );
   }
 
-  // تحويل الحالة
-  int _getStepIndex(String status) {
-    switch (status) {
-      case "pending":
-        return 0;
-      case "processing":
-        return 1;
-      case "shipped":
-        return 2;
-      case "delivered":
-        return 3;
-      case "cancelled":
-        return -1;
-      default:
-        return 0;
-    }
-  }
-
-  // ودجت لعنوان التوصيل
-  Widget _buildAddressCard({
-    required String address,
-    required String addresscity,
-    required String addressstreet,
-    required String phone,
-    required String status,
-    required String username,
-    required order,
-  }) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withAlpha(26), // 0.1 * 255 = 26
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.person_outline,
-                  color: const Color.fromARGB(255, 11, 151, 231),
-                ),
-                SizedBox(width: 8),
-                Text(
-                  "Customer Information",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-              ],
-            ),
-          ),
-          Text(
-            "name:$username",
-            style: TextStyle(
-              color: const Color.fromARGB(255, 13, 95, 2),
-              height: 1.5,
-              fontSize: 15,
-            ),
-          ),
-          Text(
-            "phone:$phone",
-            style: TextStyle(
-              color: const Color.fromARGB(255, 16, 17, 16),
-              height: 1.5,
-              fontSize: 15,
-            ),
-          ),
-          const Divider(height: 25),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // ignore: avoid_unnecessary_containers
-              Container(
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.location_on_outlined,
-                      color: const Color.fromARGB(255, 11, 151, 231),
-                    ),
-                    SizedBox(width: 8),
-                    Text(
-                      "Address",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // status == '3'
-              //     ? ElevatedButton.icon(
-              //         onPressed: () {
-              //           Get.to(Trakinginuserapp(), arguments: {"order": order});
-
-              //           print(
-              //             "Tracking order...==============================",
-              //           );
-              //         },
-              //         icon: Icon(Icons.location_searching),
-              //         label: Text("Trake"),
-              //       )
-              //     : SizedBox.shrink(),
-            ],
-          ),
-
-          Text(
-            "$address-$addresscity-$addressstreet",
-            style: TextStyle(
-              color: const Color.fromARGB(255, 13, 95, 2),
-              height: 1.5,
-              fontSize: 15,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ودجت لملخص السعر
-  Widget _buildPriceSummary(
-    String total,
-    String subtotal,
-    String shippingfee,
-    String taxAmount,
-  ) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withAlpha(26), // 0.1 * 255 = 26
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          samarycard("shopingfee", shippingfee),
-          samarycard("taxAmount", taxAmount),
-
-          samarycard("Subtotal", subtotal),
-          Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Total price".tr,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              Text(
-                "$total \$",
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: const Color.fromARGB(255, 81, 230, 83),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-Widget samarycard(String title, String total) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  // info
+  Widget _info(order) => Column(
     children: [
-      Text(
-        title,
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Colors.grey[600],
+      _row(Icons.person, "Name", order.username),
+      _row(Icons.phone, "Phone", order.shippingAddress.phone),
+      _row(
+        Icons.location_on,
+        "Address",
+        "${order.shippingAddress.city} - ${order.shippingAddress.street}",
+      ),
+    ],
+  );
+
+  // items
+  Widget _items(OrderModel order) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text("Products", style: TextStyle(fontWeight: FontWeight.bold)),
+      ...order.items.map<Widget>(
+        (e) => ListTile(
+          leading: Container(
+            alignment: Alignment.center,
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: Colors.blue[50],
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text("${order.orderId}"),
+          ),
+          contentPadding: EdgeInsets.zero,
+          title: Text(e.productName!),
+          subtitle: Text("x${e.quantity}"),
+          trailing: Text("${e.price}\$", style: TextStyle(color: Colors.green)),
         ),
       ),
+    ],
+  );
+
+  // price
+  Widget _price(order) => Column(
+    children: [
+      _priceRow("Subtotal", order.subtotal),
+      _priceRow("Shipping", order.shippingFee),
+      _priceRow("Tax", order.taxAmount),
+      Divider(),
+      _priceRow("Total", order.totalAmount, big: true),
+    ],
+  );
+
+  // helpers
+  Widget _row(IconData i, String t, String? v) => ListTile(
+    contentPadding: EdgeInsets.zero,
+    leading: Icon(i),
+    title: Text(t),
+    subtitle: Text(v ?? "-"),
+  );
+
+  Widget _priceRow(String t, dynamic v, {bool big = false}) => Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Text(t),
       Text(
-        "$total\$",
-        style: const TextStyle(
-          fontSize: 18,
+        "$v\$",
+        style: TextStyle(
+          fontSize: big ? 18 : 14,
           fontWeight: FontWeight.bold,
-          color: Color.fromARGB(255, 81, 230, 83),
+          color: Colors.green,
         ),
       ),
     ],

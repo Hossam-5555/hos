@@ -49,10 +49,10 @@ class Homescreen extends StatelessWidget {
                     ),
                   ),
 
-                  Text(
-                    "${controller.appbartitle[controller.Currentpage][0]}",
-                    style: TextStyle(color: Colors.blue),
-                  ),
+                  // Text(
+                  //   "${controller.appbartitle[controller.Currentpage][0]}",
+                  //   style: TextStyle(color: Colors.blue),
+                  // ),
                 ],
               ),
               actions: [

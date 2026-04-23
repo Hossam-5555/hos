@@ -16,14 +16,13 @@ class Myfavcontroler extends SearchMix {
   addfavdata favdata = addfavdata(Get.find());
   Myservisec myservisec = Get.find();
 
+  int get id => myservisec.sharedPreferences.getInt("id")!;
+
   Future<void> getfav() async {
     data.clear();
     statusrequest = Statusrequest.loading;
 
-    var response = await favdata.veiwfav(
-      // myservisec.sharedPreferences.getString("id")!,
-      2,
-    );
+    var response = await favdata.veiwfav(id);
 
     statusrequest = handling(response);
     if (statusrequest == Statusrequest.success) {
@@ -41,7 +40,7 @@ class Myfavcontroler extends SearchMix {
 
   //الحذف من صفحه المفضله
   void deletefromfavpage(int itemid) {
-    favdata.favoritemanger(2, itemid);
+    favdata.favoritemanger(id, itemid);
 
     data.removeWhere((e) => e.item!.id == itemid);
     if (data.isEmpty) {

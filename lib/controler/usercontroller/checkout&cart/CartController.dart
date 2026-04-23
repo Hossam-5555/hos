@@ -15,7 +15,8 @@ class CartController extends GetxController {
   Myservisec myservisec = Get.put(Myservisec());
   CartModel cart = CartModel();
   /////===========================
-  ///
+
+  int? get userid => myservisec.sharedPreferences.getInt("id");
 
   double gettotalprice() {
     return (totalprice - totalprice * couponediscount / 100);
@@ -62,12 +63,7 @@ class CartController extends GetxController {
   Future<void> addtocart(int itemid, int count) async {
     statusrequest = Statusrequest.loading;
     update();
-    var response = await cartdata.addcartdata(
-      // myservisec.sharedPreferences.getString("id")!,
-      2, // ✅ مؤقت لعدم وجود تسجيل دخول
-      itemid,
-      count,
-    );
+    var response = await cartdata.addcartdata(userid!, itemid, count);
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response["status"] == true) {
@@ -83,33 +79,10 @@ class CartController extends GetxController {
   Future<void> delete(int itemid) async {
     statusrequest = Statusrequest.loading;
     update();
-    var response = await cartdata.deletcartdata(
-      // myservisec.sharedPreferences.getString("id")!,
-      2, // ✅ مؤقت لعدم وجود تسجيل دخول
-      itemid,
-    );
+    var response = await cartdata.deletcartdata(userid!, itemid);
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response["status"] == true) {
-      } else {
-        statusrequest = Statusrequest.failure;
-      }
-    }
-  }
-
-  Future<dynamic> getcountitem(String itemid) async {
-    statusrequest = Statusrequest.loading;
-    update();
-    var response = await cartdata.getcount(
-      myservisec.sharedPreferences.getString("id")!,
-      itemid,
-    );
-    statusrequest = handling(response);
-    if (Statusrequest.success == statusrequest) {
-      if (response["status"] == "success") {
-        int countitem = 0;
-        countitem = int.parse(response['data']);
-        return countitem;
       } else {
         statusrequest = Statusrequest.failure;
       }
@@ -121,10 +94,7 @@ class CartController extends GetxController {
     statusrequest = Statusrequest.loading;
 
     update(); // ✅ لازم تتفعل هنا علشان Handlingdataview تعرض الـ loading
-    var response = await cartdata.viewcart(
-      // myservisec.sharedPreferences.getString("id").toString(),
-      2, // ✅ مؤقت لعدم وجود تسجيل دخول
-    );
+    var response = await cartdata.viewcart(userid!);
 
     statusrequest = handling(response);
 

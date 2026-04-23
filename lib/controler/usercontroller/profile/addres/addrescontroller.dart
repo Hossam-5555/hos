@@ -16,7 +16,7 @@ class AddressController extends GetxController {
   Statusrequest? statusrequest;
   List<AddresModel> listaddresdata = [];
   GlobalKey<FormState> addadredKey = GlobalKey();
-
+  int get userid => myservisec.sharedPreferences.getInt("id")!;
   // متغيرات الحقول
   TextEditingController? name;
   TextEditingController? city;
@@ -58,7 +58,7 @@ class AddressController extends GetxController {
     update();
 
     var response = await addresdata.AddAddresdata(
-      2,
+      userid,
       name!.text,
       city!.text,
       street!.text,
@@ -89,7 +89,7 @@ class AddressController extends GetxController {
     statusrequest = Statusrequest.loading;
     update();
 
-    var response = await addresdata.viewAddresdata("2");
+    var response = await addresdata.viewAddresdata(userid);
 
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {

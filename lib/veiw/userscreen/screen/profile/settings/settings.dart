@@ -249,6 +249,6 @@ class Settings extends StatelessWidget {
 Widget builddivider() {
   return Padding(
     padding: const EdgeInsets.only(left: 60, right: 20), // لترك مساحة للأيقونة
-    child: Divider(height: 1, color: Colors.grey[200]),
+    child: Divider(height: 1.5, color: Colors.grey[500]),
   );
 }
