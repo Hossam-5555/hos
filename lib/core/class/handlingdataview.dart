@@ -78,67 +78,111 @@ class Handlingdataview extends StatelessWidget {
   }
 }
 
+// handlingdatrequest.dart
 class Handlingdatrequest extends StatelessWidget {
   const Handlingdatrequest({
     super.key,
     required this.statusrequest,
     required this.widget,
     this.onRetry,
+    // ✅ إضافة خاصية جديدة
+    this.onTapError,
   });
 
   final Statusrequest statusrequest;
   final Widget widget;
   final VoidCallback? onRetry;
+  // ✅ إضافة دالة لتغيير الحالة
+  final VoidCallback? onTapError;
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final height = size.height;
-    final width = size.width;
+    bool isError =
+        statusrequest == Statusrequest.failure ||
+        statusrequest == Statusrequest.serverfailure;
 
-    Widget buildOverlay(String path, String message) {
-      return Container(
-        width: width,
-        height: height,
-        color: Colors.black.withAlpha(50), // خلفية شفافة
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Animationforstatus(animationPath: path),
-            const SizedBox(height: 20),
-            Text(
-              message,
-              style: Theme.of(
-                context,
-              ).textTheme.headlineMedium?.copyWith(color: Colors.white),
-              textAlign: TextAlign.center,
-            ),
-            if (onRetry != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: ElevatedButton(
-                  onPressed: onRetry,
-                  child: const Text("إعادة المحاولة"),
-                ),
-              ),
-          ],
-        ),
-      );
-    }
+    bool isLoading =
+        statusrequest == Statusrequest.loading ||
+        statusrequest == Statusrequest.checkinterner;
 
     return Stack(
       children: [
-        widget, // الصفحة الأصلية دايمًا ظاهرة
-        if (statusrequest == Statusrequest.checkinterner)
-          buildOverlay(Imageasset.loading, "جاري التحقق من وجود انترنت ..."),
-        if (statusrequest == Statusrequest.loading)
-          buildOverlay(Imageasset.animation2, "جاري التحميل ..."),
-        if (statusrequest == Statusrequest.failure)
-          buildOverlay(Imageasset.animation3, "حدث خطأ في الخادم"),
-        if (statusrequest == Statusrequest.serverfailure)
-          buildOverlay(Imageasset.animation3, "فشل الاتصال بالخادم"),
+        // الصفحة الأصلية
+        widget,
+
+        // إذا كان هناك تحميل: نمنع اللمس ونغطي الشاشة
+        if (isLoading) _buildOverlay(context, isInteractive: false),
+
+        // إذا كان هناك خطأ: نظهر رسالة لكن نسمح باللمس من خلال IgnorePointer
+        if (isError)
+          IgnorePointer(
+            ignoring:
+                false, // يجب أن تكون false لكي يستقبل GestureDetector اللمس
+            child: GestureDetector(
+              // ✅ استدعاء دالة تغيير الحالة عند النقر
+              onTap: onTapError,
+              child: _buildOverlay(context, isInteractive: true),
+            ),
+          ),
       ],
     );
+  }
+
+  Widget _buildOverlay(BuildContext context, {required bool isInteractive}) {
+    final size = MediaQuery.of(context).size;
+    String path = _getAnimationPath();
+    String message = _getMessage();
+
+    return Container(
+      width: size.width,
+      height: size.height,
+      // في حالة الخطأ، نجعل الخلفية شفافة لكنها لا تزال تغطي الشاشة لاستقبال النقر
+      color: isInteractive ? Colors.transparent : Colors.black.withOpacity(0.3),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // تأكد من أن الـ Animationforstatus لا تغطي حقل الإدخال
+          Animationforstatus(animationPath: path),
+          const SizedBox(height: 20),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            decoration: BoxDecoration(
+              color: Colors.black45,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(
+              message,
+              style: const TextStyle(color: Colors.white, fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          // زر المحاولة
+          if (onRetry != null &&
+              !isInteractive) // لا نظهر الزر إذا كنا نسمح بالتفاعل للخلف
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: ElevatedButton(
+                onPressed: onRetry,
+                child: const Text("إعادة المحاولة"),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  // الدوال المساعدة (نفسها كما كانت)
+  String _getAnimationPath() {
+    if (statusrequest == Statusrequest.loading) return Imageasset.animation2;
+    if (statusrequest == Statusrequest.checkinterner) return Imageasset.loading;
+    return Imageasset.animation3; // للخطأ
+  }
+
+  // دالة مساعدة للحصول على الرسالة
+  String _getMessage() {
+    if (statusrequest == Statusrequest.loading) return "جاري التحميل ...";
+    if (statusrequest == Statusrequest.checkinterner)
+      return "جاري التحقق من الانترنت ...";
+    return "حدث خطأ ما";
   }
 }

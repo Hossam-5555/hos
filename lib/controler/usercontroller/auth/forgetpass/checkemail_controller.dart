@@ -26,7 +26,6 @@ class CheckemailController extends GetxController {
           response['status'] == true) {
         Get.offNamed(Approute.Veryficode, arguments: {"email": email.text});
       } else {
-        Get.defaultDialog(title: "Warning", middleText: "email Not Exist");
         statusrequest = Statusrequest.failure;
       }
       update();

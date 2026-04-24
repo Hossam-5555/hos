@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/auth/forgetpass/resetpasscontroller.dart';
+import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/functions/validinput.dart';
@@ -27,6 +28,11 @@ class Resetpass extends StatelessWidget {
       body: SafeArea(
         child: GetBuilder<Resetpasscontroller>(
           builder: (_) => Handlingdatrequest(
+            onTapError: () {
+              controller.statusrequest =
+                  Statusrequest.none; // أو الحالة الافتراضية عندك
+              controller.update();
+            },
             statusrequest: controller.statusrequest,
             widget: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
@@ -46,11 +52,11 @@ class Resetpass extends StatelessWidget {
                       Text(
                         'Create New Password',
                         textAlign: TextAlign.center,
-                        style:
-                            Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Appcolor.black,
-                                ),
+                        style: Theme.of(context).textTheme.headlineSmall!
+                            .copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Appcolor.black,
+                            ),
                       ),
 
                       const SizedBox(height: 10),
@@ -59,10 +65,9 @@ class Resetpass extends StatelessWidget {
                       Text(
                         'Your new password must be different from previous passwords',
                         textAlign: TextAlign.center,
-                        style:
-                            Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                  color: Colors.grey,
-                                ),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodyMedium!.copyWith(color: Colors.grey),
                       ),
 
                       SizedBox(height: size.height * 0.05),

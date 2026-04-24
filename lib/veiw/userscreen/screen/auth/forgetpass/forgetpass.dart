@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/auth/forgetpass/checkemail_controller.dart';
+import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/imageasset.dart';
@@ -29,6 +30,11 @@ class ForgetPass extends StatelessWidget {
       body: SafeArea(
         child: GetBuilder<CheckemailController>(
           builder: (_) => Handlingdatrequest(
+            onTapError: () {
+              controller.statusrequest =
+                  Statusrequest.none; // أو الحالة الافتراضية عندك
+              controller.update();
+            },
             statusrequest: controller.statusrequest,
             widget: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
@@ -46,7 +52,8 @@ class ForgetPass extends StatelessWidget {
                     Text(
                       'Check Email',
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                      style: Theme.of(context).textTheme.headlineSmall!
+                          .copyWith(
                             fontWeight: FontWeight.bold,
                             color: Appcolor.black,
                           ),
@@ -58,9 +65,9 @@ class ForgetPass extends StatelessWidget {
                     Text(
                       'Enter your email to receive a reset password code',
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: Appcolor.grey,
-                          ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium!.copyWith(color: Appcolor.grey),
                     ),
 
                     SizedBox(height: size.height * 0.04),
