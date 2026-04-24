@@ -23,10 +23,14 @@ class Resetpasscontroller extends GetxController {
     if (formstate.currentState!.validate()) {
       statusrequest = Statusrequest.loading;
       update();
-      var response = await resetPassData.postdata(email!, password.text);
+      var response = await resetPassData.postdata(
+        email!,
+        password.text,
+        repassword.text,
+      );
       statusrequest = handling(response);
       if (Statusrequest.success == statusrequest) {
-        if (response['status'] == 'success') {
+        if (response['status'] == true) {
           Get.snackbar("success", "تم إعادة تعيين كلمة المرور بنجاح");
           Get.offAllNamed(Approute.login);
         } else {

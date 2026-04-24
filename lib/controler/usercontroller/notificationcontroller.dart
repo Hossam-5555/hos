@@ -40,8 +40,8 @@ class Notificationcontroller extends GetxController {
         ),
       );
       notificationcount = response["data"]["total_inactive_count"];
-      if (notificationcount==0) {
-        statusrequest=Statusrequest.failure;
+      if (notificationcount == 0) {
+        statusrequest = Statusrequest.failure;
       }
     } else {
       statusrequest = Statusrequest.failure;
@@ -154,7 +154,12 @@ class Notificationcontroller extends GetxController {
 
   @override
   void onInit() {
-    getnotifier();
+    if (myservisec.sharedPreferences.getInt("id") == null) {
+      statusrequest = Statusrequest.none;
+      update();
+    } else {
+      getnotifier();
+    }
     super.onInit();
   }
 }

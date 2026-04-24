@@ -7,7 +7,7 @@ class VerifyCodeForgetpassdata {
   postdata(String email, String verifycode) async {
     var response = await crud.postrequset(LinkApi.veryfycodeforgetpass, {
       "email": email,
-      "verifycode": verifycode,
+      "code": verifycode,
     });
     return response.fold((l)=>l, (r)=>r);
   }

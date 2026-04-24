@@ -14,66 +14,96 @@ class ForgetPass extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(CheckemailController());
+    final controller = Get.put(CheckemailController());
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Forget Password')),
-      body: GetBuilder<CheckemailController>(
-        builder: (controller) => Handlingdatrequest(
-          statusrequest: controller.statusrequest,
-          widget: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center, // عموديًا
-                crossAxisAlignment: CrossAxisAlignment.center, // أفقيًا
-                children: [
-                  Text(
-                    'Check Email',
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Appcolor.black,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text('Forget Password'),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        foregroundColor: Appcolor.black,
+      ),
+      body: SafeArea(
+        child: GetBuilder<CheckemailController>(
+          builder: (_) => Handlingdatrequest(
+            statusrequest: controller.statusrequest,
+            widget: GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(
+                  horizontal: size.width * 0.07,
+                  vertical: 20,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: size.height * 0.02),
+
+                    /// 🟢 عنوان
+                    Text(
+                      'Check Email',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Appcolor.black,
+                          ),
                     ),
-                  ),
-                  Text(
-                    'Please enter your email to receive a link to create a new password via email',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontSize: 14,
-                      color: Appcolor.grey,
+
+                    const SizedBox(height: 10),
+
+                    /// 🟢 الوصف
+                    Text(
+                      'Enter your email to receive a reset password code',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Appcolor.grey,
+                          ),
                     ),
-                  ),
-                  Animationlottie(
-                    h: 250,
-                    w: 250,
-                    animationPath:
-                        Imageasset.email, // أو اعمل signupanimation لو عندك
-                  ),
-                  const SizedBox(height: 100),
-                  SizedBox(
-                    width: 300,
-                    child: Form(
+
+                    SizedBox(height: size.height * 0.04),
+
+                    /// 🟢 انيميشن
+                    Animationlottie(
+                      h: size.height * 0.25,
+                      w: size.width * 0.6,
+                      animationPath: Imageasset.email,
+                    ),
+
+                    SizedBox(height: size.height * 0.05),
+
+                    /// 🟢 الفورم
+                    Form(
                       key: controller.formstate,
                       child: Textfealdauth(
                         valid: (val) {
                           return validInput(val!, 10, 30, "email");
                         },
                         textEditingController: controller.email,
-                        suffixIcon: Icons.email_sharp,
+                        suffixIcon: Icons.email_outlined,
                         hint: 'Enter your Email',
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 40),
-                  Checkbutton(
-                    onTap: () {
-                      controller.checkemail();
-                    },
-                    buttonName: 'Check',
-                    width: 250,
-                    buttonColor: Appcolor.black,
-                  ),
-                ],
+
+                    SizedBox(height: size.height * 0.05),
+
+                    /// 🟢 الزرار
+                    SizedBox(
+                      width: double.infinity,
+                      child: Checkbutton(
+                        onTap: () {
+                          controller.checkemail();
+                        },
+                        buttonName: 'Send Code',
+                        buttonColor: Appcolor.black,
+                      ),
+                    ),
+
+                    SizedBox(height: size.height * 0.02),
+                  ],
+                ),
               ),
             ),
           ),

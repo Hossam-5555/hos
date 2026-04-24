@@ -6,7 +6,7 @@ import 'package:hos/data/datasource/userdata/auth/forgetpass/verifycode.dart';
 
 class VeryFiControler extends GetxController {
   String? email;
-  Statusrequest statusrequest=Statusrequest.none;
+  Statusrequest statusrequest = Statusrequest.none;
   VerifyCodeForgetpassdata verifyCodeForgetpassdata = VerifyCodeForgetpassdata(
     crud: Get.find(),
   );
@@ -16,7 +16,7 @@ class VeryFiControler extends GetxController {
     var response = await verifyCodeForgetpassdata.postdata(email!, verifycode);
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
-      if (response['status'] == 'success') {
+      if (response['status'] == true) {
         Get.offNamed(Approute.Resetpass, arguments: {"email": email});
       } else {
         Get.defaultDialog(
