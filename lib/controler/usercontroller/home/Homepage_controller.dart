@@ -18,33 +18,54 @@ import 'package:hos/veiw/wedget/Homepage/dicountcard.dart';
 class HomepageController extends GetxController {
   Myservisec myservisec = Get.put(Myservisec());
   String? username;
-  List<ItemsModel> items = [];
+  List<ItemsModel> mostsaleitem = [];
+  List<ItemsModel> newArival = [];
   List<categoriesmodel2> categories = [];
   Statusrequest statusrequest = Statusrequest.none;
 
   Homedata homedata = Homedata(Get.find());
 
-  Future<void> getdata() async {
-    statusrequest = Statusrequest.loading;
-    update();
+Future<void> getdata() async {
+  statusrequest = Statusrequest.loading;
+  update();
+
+  try {
     var response = await homedata.postdata();
-    print("Response==========================: $response");
+    print("Response: $response");
+    
     statusrequest = handling(response);
+
     if (Statusrequest.success == statusrequest) {
       if (response["status"] == true) {
-        List categorylist = response["data"];
-        print(response["data"]);
-        categories.addAll(
-          categorylist.map((e) => categoriesmodel2.fromJson(e)),
-        );
-        // List itmeslist = response["items"];
-        // items.addAll(itmeslist.map((e) => Itemsmodel.fromJson(e)));
+        // 1. مسح البيانات القديمة قبل إضافة الجديدة لتجنب التكرار
+        categories.clear();
+        mostsaleitem.clear();
+        newArival.clear();
+
+        // 2. الوصول للبيانات داخل "data" مباشرة
+        var data = response["data"];
+
+        // 3. تحويل البيانات بأسلوب مختصر ونظيف
+        categories.addAll(List<categoriesmodel2>.from(
+            data["categories"].map((e) => categoriesmodel2.fromJson(e))));
+            
+        mostsaleitem.addAll(List<ItemsModel>.from(
+            data["best_sellers"].map((e) => ItemsModel.fromJson(e))));
+
+        newArival.addAll(List<ItemsModel>.from(
+            data["new_arrivals"].map((e) => ItemsModel.fromJson(e))));
+
       } else {
         statusrequest = Statusrequest.failure;
       }
     }
-    update();
+  } catch (e) {
+    print("Error Parsing Data: $e");
+    statusrequest = Statusrequest.serverfailure;
   }
+
+  update();
+}
 
   void gotoitems(List categories, int selecteditem, String catid) {
     Get.to(

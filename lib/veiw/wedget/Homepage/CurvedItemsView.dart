@@ -11,7 +11,7 @@ class CurvedItemsView extends StatelessWidget {
     return GetBuilder<HomepageController>(
       builder: (controller) {
         // 1. فحص أمان للقائمة فقط: إذا كانت القائمة فارغة، نعرض مؤشر تحميل
-        if (controller.items.isEmpty) {
+        if (controller.newArival.isEmpty) {
           return const SizedBox(
             height: 290,
             child: Center(child: CircularProgressIndicator()),
@@ -27,7 +27,7 @@ class CurvedItemsView extends StatelessWidget {
           height: 290,
           child: PageView.builder(
             controller: pageController,
-            itemCount: controller.items.length,
+            itemCount: controller.newArival.length,
             scrollDirection: Axis.horizontal,
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {

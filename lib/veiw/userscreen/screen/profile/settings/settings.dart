@@ -35,65 +35,6 @@ class Settings extends StatelessWidget {
                   onTap: () {},
                 ),
                 builddivider(),
-
-                _buildSettingsTile(
-                  icon: Icons.language_sharp,
-                  title: "Languages".tr,
-                  subtitle: 'Choose language'.tr,
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          title: Text(
-                            "Choose language".tr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          content: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  controllerlang.Changelang('ar');
-                                  Navigator.pop(context);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                ),
-                                child: const Text("العربية"),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  controllerlang.Changelang('en');
-                                  Navigator.pop(context);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color.fromARGB(
-                                    255,
-                                    9,
-                                    181,
-                                    194,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                ),
-                                child: const Text("English"),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
               ],
             ),
             const SizedBox(height: 20),
@@ -160,6 +101,66 @@ class Settings extends StatelessWidget {
                 ),
                 builddivider(),
                 _buildSettingsTile(
+                  icon: Icons.language_sharp,
+                  title: "Languages".tr,
+                  subtitle: 'Choose language'.tr,
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          title: Text(
+                            "Choose language".tr,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          content: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  controllerlang.Changelang('ar');
+                                  Navigator.pop(context);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                ),
+                                child: const Text("العربية"),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  controllerlang.Changelang('en');
+                                  Navigator.pop(context);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color.fromARGB(
+                                    255,
+                                    9,
+                                    181,
+                                    194,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                ),
+                                child: const Text("English"),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+                builddivider(),
+
+                _buildSettingsTile(
                   icon: Icons.call_outlined,
                   title: 'Contact us'.tr,
                   onTap: controller.makePhoneCall,
@@ -177,7 +178,8 @@ class Settings extends StatelessWidget {
                 ),
                 builddivider(),
 
-                ListTile(trailing:Icon(Icons.arrow_forward_ios, size: 16) ,
+                ListTile(
+                  trailing: Icon(Icons.arrow_forward_ios, size: 16),
                   leading: const Icon(Icons.logout, color: Colors.black),
                   title: Text('Logout'.tr, style: TextStyle(color: Colors.red)),
                   onTap: () {
@@ -200,7 +202,7 @@ class Settings extends StatelessWidget {
     required List<Widget> children,
   }) {
     return Card(
-      color: Colors.white,
+      color: Colors.grey[100],
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

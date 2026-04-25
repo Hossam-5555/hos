@@ -20,7 +20,7 @@ class LinkApi {
   static String resetpass = '$lravelserver/resetPassword';
   static String veryfycodeforgetpass = '$lravelserver/verifyresetpass';
   //Home
-  static String homepage = '$server/home.php';
+  static String homepage = '$lravelserver/Home';
 
   // items
   static String items = '$lravelserver/Getitems';

@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
-import 'package:hos/core/conistant/linkApi.dart'; // افترض أن 'linkImageRoot' موجود هنا
 import 'package:hos/data/model/itemsmodel.dart';
 
 // 🔹 هذا الكلاس يبقى كما هو
@@ -13,10 +12,10 @@ class ItemsCardhome extends GetView<HomepageController> {
 
   @override
   Widget build(BuildContext context) {
-    if (controller.items.isEmpty ) {
+    if (controller.mostsaleitem.isEmpty ) {
       return const SizedBox();
     }
-    return ItemList(items: controller.items[index]);
+    return ItemList(items: controller.mostsaleitem[index]);
   }
 }
 
@@ -34,7 +33,7 @@ class ItemList extends GetView<HomepageController> {
 
     return InkWell(
       onTap: () {
-        // controller.gotoitemsdatails(items),
+        controller.gotoitemsdetails(items);
       },
 
       // ❌ تم حذف ClipPath لاستخدام الزوايا الدائرية من BoxDecoration
@@ -77,7 +76,7 @@ class ItemList extends GetView<HomepageController> {
                 child: Image.network(
                   // ✅ إصلاح: بناء رابط الصورة الصحيح
                   // (بافتراض أن المتغير اسمه linkImageRoot في ملف linkApi.dart)
-                  "${LinkApi.imageitems}/${items.itemsImage}",
+                  "${items.itemsImage}",
                   fit: BoxFit.cover,
                   width: double.infinity,
                   height: height * 0.20,

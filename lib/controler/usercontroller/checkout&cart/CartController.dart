@@ -182,15 +182,8 @@ class CartController extends GetxController {
   void onInit() {
     coubonecontroller = TextEditingController();
 
-    if (myservisec.sharedPreferences.getInt("id") != null) {
-      // لو فيه مستخدم فعلاً، هات البيانات
-      view();
-    } else {
-      // لو مفيش، خلي الحالة نجاح بس البيانات فاضية
-      // عشان التطبيق ما يعلقش على صفحة اللودنج
-      statusrequest = Statusrequest.success;
-      update();
-    }
+    view();
+
     super.onInit();
   }
 

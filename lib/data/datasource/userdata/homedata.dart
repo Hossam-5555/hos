@@ -7,8 +7,7 @@ class Homedata {
 
   postdata() async {
     var response = await crud.getrequset(
-      // LinkApi.homepage
-      "http://10.0.2.2:8000/api/category",
+      LinkApi.homepage
     );
     return response.fold((l) => l, (r) => r);
   }
