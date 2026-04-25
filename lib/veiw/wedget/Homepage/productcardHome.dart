@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -12,7 +13,7 @@ class ItemsCardhome extends GetView<HomepageController> {
 
   @override
   Widget build(BuildContext context) {
-    if (controller.mostsaleitem.isEmpty ) {
+    if (controller.mostsaleitem.isEmpty) {
       return const SizedBox();
     }
     return ItemList(items: controller.mostsaleitem[index]);
@@ -73,22 +74,18 @@ class ItemList extends GetView<HomepageController> {
               // ✅ نستخدم ClipRRect لقص زوايا الصورة
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(15)),
-                child: Image.network(
-                  // ✅ إصلاح: بناء رابط الصورة الصحيح
-                  // (بافتراض أن المتغير اسمه linkImageRoot في ملف linkApi.dart)
-                  "${items.itemsImage}",
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: height * 0.20,
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    color: Colors.grey[200],
-                    alignment: Alignment.center,
-                    child: const Icon(
-                      Icons.broken_image,
-                      size: 40,
-                      color: Colors.grey,
+                child: CachedNetworkImage(
+                  imageUrl: items.itemsImage!,
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               ),
             ),
@@ -115,23 +112,24 @@ class ItemList extends GetView<HomepageController> {
                         color: Colors.black87,
                       ),
                     ),
-                    Container(alignment: Alignment.centerRight,
+                    Container(
+                      alignment: Alignment.centerRight,
                       decoration: BoxDecoration(
                         color: Colors.white.withAlpha(51),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(
                         children: [
-                           Row(
-                                children: List.generate(
-                                  4,
-                                  (index) => const Icon(
-                                    Icons.star_rounded,
-                                    color: Colors.amber,
-                                    size: 15,
-                                  ),
-                                ),
+                          Row(
+                            children: List.generate(
+                              4,
+                              (index) => const Icon(
+                                Icons.star_rounded,
+                                color: Colors.amber,
+                                size: 15,
                               ),
+                            ),
+                          ),
                           Text(
                             "(Rating)",
                             style: const TextStyle(
@@ -147,7 +145,7 @@ class ItemList extends GetView<HomepageController> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "${items.itemsPrice ?? "0"} ج.م", // تم الإبقاء على العملة الخاصة بك
+                          "${items.itemsPrice ?? ""}${"EGP".tr}", // تم الإبقاء على العملة الخاصة بك
                           style: TextStyle(
                             fontSize: width * 0.042,
                             fontWeight: FontWeight.bold,

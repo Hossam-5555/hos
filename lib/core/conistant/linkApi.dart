@@ -51,7 +51,7 @@ class LinkApi {
   static String deletnotification = '$lravelserver/deleltemassage';
 
   //offer
-  static String offer = '$server/offer.php';
+  static String offer = '$lravelserver/offer';
 
   // driver
   static String driverpendingorder = '$server/driver/orders/pending.php';

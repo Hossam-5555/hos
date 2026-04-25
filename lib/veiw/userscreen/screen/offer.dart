@@ -24,7 +24,7 @@ class Offer extends StatelessWidget {
             widget: RefreshIndicator(
               color: const Color(0xFFFF512F),
               onRefresh: () async {
-                // controller.getOffers();
+                controller.getoffer();
               },
 
               child: CustomScrollView(

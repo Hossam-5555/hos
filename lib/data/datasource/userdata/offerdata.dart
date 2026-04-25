@@ -6,7 +6,7 @@ class Offerdata {
   Offerdata(this.crud);
 
   getdata() async {
-    var response = await crud.postrequset(LinkApi.offer, {});
+    var response = await crud.getrequset(LinkApi.offer);
     return response.fold((l) => l, (r) => r);
   }
 }

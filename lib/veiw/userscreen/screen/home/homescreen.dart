@@ -38,7 +38,7 @@ class Homescreen extends StatelessWidget {
               scrolledUnderElevation:
                   0, // منع تغير اللون عند السكرول في Material 3
               title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Homescrenaction(
                     herotag: "ss",
@@ -48,11 +48,13 @@ class Homescreen extends StatelessWidget {
                       width: 24,
                     ),
                   ),
-
-                  // Text(
-                  //   "${controller.appbartitle[controller.Currentpage][0]}",
-                  //   style: TextStyle(color: Colors.blue),
-                  // ),
+                  SizedBox(width: 10),
+                  Text(
+                    "hi,${controller.myservisec.sharedPreferences.getString("usersname")}👋",
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
                 ],
               ),
               actions: [
@@ -73,6 +75,7 @@ class Homescreen extends StatelessWidget {
                             );
                           },
                           child: SvgPicture.asset(
+                            color: const Color.fromARGB(255, 145, 2, 145),
                             Imageasset.search,
                             height: 24, // توحيد الحجم
                             width: 24,

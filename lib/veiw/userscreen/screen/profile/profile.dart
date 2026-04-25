@@ -42,18 +42,9 @@ class ProfilePage extends StatelessWidget {
               children: [
                 Expanded(
                   child: _buildQuickActionCard(
-                    icon: Icons.local_mall_outlined,
-                    title: "Orders".tr,
-                    color: const Color(0xFF10B981), // أخضر عصري
-                    onTap: () => Get.toNamed(Approute.Orders),
-                  ),
-                ),
-                const SizedBox(width: 15),
-                Expanded(
-                  child: _buildQuickActionCard(
-                    icon: Icons.favorite_border_rounded,
-                    title: "Favorite".tr,
-                    color: const Color(0xFFF43F5E), // أحمر وردي
+                    icon: Icons.camera_alt_outlined,
+                    title: "change profile image",
+                    color: const Color.fromARGB(255, 6, 110, 179), // أحمر وردي
                     onTap: () => Get.toNamed(Approute.myfavorite),
                   ),
                 ),
@@ -77,12 +68,28 @@ class ProfilePage extends StatelessWidget {
               child: Column(
                 children: [
                   _buildListTile(
+                    gradientColors: [Colors.black, Colors.blue],
+                    icon: Icons.local_mall_outlined,
+                    title: "Orders".tr,
+                    onTap: () => Get.toNamed(Approute.Orders),
+                  ),
+                  _buildDivider(),
+                  _buildListTile(
+                    gradientColors: [Colors.black, Colors.red],
+                    icon: Icons.favorite_border,
+                    title: "Favorite".tr,
+                    onTap: () => Get.toNamed(Approute.myfavorite),
+                  ),
+                  _buildDivider(),
+                  _buildListTile(
+                    gradientColors: [Colors.black, Colors.green],
                     icon: Icons.location_on_outlined,
                     title: "Saved Addresses".tr,
                     onTap: () => Get.toNamed(Approute.viewmyaddres),
                   ),
                   _buildDivider(),
                   _buildListTile(
+                    gradientColors: [Colors.black, Colors.orange],
                     icon: Icons.credit_card_outlined,
                     title: "Payment Methods".tr,
                     onTap: () => Get.to(
@@ -159,40 +166,40 @@ class ProfilePage extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return Material(
-      elevation: 0.5,
       color: Colors.white,
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(40),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(20),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsetsDirectional.all(5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withAlpha(3),
-                blurRadius: 1,
-                offset: const Offset(0, 2),
+                color: Colors.black.withOpacity(0.03),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
               ),
             ],
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: color.withAlpha(25),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(icon, color: color, size: 28),
               ),
-              const SizedBox(height: 12),
+              SizedBox(width: 10),
               Text(
                 title,
                 style: const TextStyle(
                   fontSize: 15,
+                  color: Colors.blue,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -209,6 +216,7 @@ class ProfilePage extends StatelessWidget {
     required String title,
     required VoidCallback onTap,
     bool isLast = false,
+    List<Color>? gradientColors, // أضفت باراميتر لتخصيص الألوان لكل أيقونة
   }) {
     return Material(
       color: Colors.transparent,
@@ -221,13 +229,33 @@ class ProfilePage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: Row(
             children: [
+              // الحاوية المعدلة مع التدرج اللوني
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.grey[300],
+                  // استخدام Linear Gradient هنا
+                  gradient: LinearGradient(
+                    colors:
+                        gradientColors ??
+                        [Colors.blue.shade400, Colors.blue.shade700],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
                   borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: (gradientColors?.last ?? Colors.blue.shade700)
+                          .withOpacity(0.3),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
                 ),
-                child: Icon(icon, color: Colors.grey[600], size: 22),
+                child: Icon(
+                  icon,
+                  color: Colors.white,
+                  size: 22,
+                ), // جعلت الأيقونة بيضاء لتتناسب مع التدرج
               ),
               const SizedBox(width: 16),
               Expanded(

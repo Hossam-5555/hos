@@ -1,4 +1,5 @@
 // import 'dart:math';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
@@ -60,10 +61,21 @@ class Itemsdetailes extends StatelessWidget {
                           itemBuilder: (context, index) => Center(
                             child: Hero(
                               tag: '${item.id}',
-                              child: Image.network(
-                                item.images![index],
-                                height: Get.height * 0.28,
-                                fit: BoxFit.contain,
+                              child: CachedNetworkImage(
+                                imageUrl: item.images![index],
+                                imageBuilder: (context, imageProvider) =>
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                placeholder: (context, url) =>
+                                    CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
                               ),
                             ),
                           ),

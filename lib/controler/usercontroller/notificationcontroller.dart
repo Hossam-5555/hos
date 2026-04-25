@@ -154,12 +154,8 @@ class Notificationcontroller extends GetxController {
 
   @override
   void onInit() {
-    if (myservisec.sharedPreferences.getInt("id") == null) {
-      statusrequest = Statusrequest.none;
-      update();
-    } else {
-      getnotifier();
-    }
+    getnotifier();
+
     super.onInit();
   }
 }

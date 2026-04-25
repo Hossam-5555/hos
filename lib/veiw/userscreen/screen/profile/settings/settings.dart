@@ -11,246 +11,214 @@ class Settings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // حقن الـ Controller في الـ View. سيتم إنشاؤه مرة واحدة فقط
     final SettingsController controller = Get.put(SettingsController());
 
     return Scaffold(
+      backgroundColor: Theme.of(context).brightness == Brightness.light 
+          ? Colors.grey[50] 
+          : Colors.grey[900],
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
-        child: Appbarbackicon(herotag: 'settings', title: "Settings"),
+        preferredSize: const Size.fromHeight(60),
+        child: Appbarbackicon(herotag: 'settings', title: "Settings".tr),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
+      body: SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSettingsGroup(
-              context,
-              title: "Acount",
-              children: [
-                _buildSettingsTile(
-                  icon: Icons.person,
-                  title: "user",
-                  subtitle: 'Edit Account'.tr,
-                  onTap: () {},
-                ),
-                builddivider(),
-              ],
-            ),
-            const SizedBox(height: 20),
-            _buildSettingsGroup(
-              context,
-              title: 'General'.tr,
-              children: [
-                // استخدم Obx لإعادة بناء هذه الويدجت فقط عند تغيير قيمتها
-                Obx(
-                  () => SwitchListTile(
-                    secondary: const Icon(Icons.notifications_outlined),
-                    title: Text('Enable notifications'.tr),
-                    value: controller.notificationsEnabled.value,
-                    onChanged: controller.toggleNotifications,
-                    activeColor: Theme.of(context).colorScheme.secondary,
-                  ),
-                ),
-                builddivider(),
-
-                ListTile(
-                  leading: const Icon(Icons.color_lens_outlined),
-                  title: Text('Theme'.tr),
-                  trailing: Obx(
-                    () => DropdownButton<String>(
-                      value: controller.selectedTheme.value,
-                      items: <String>['Light', 'Dark', 'System']
-                          .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            );
-                          })
-                          .toList(),
-                      onChanged: controller.changeTheme,
-                      underline: const SizedBox(), // لإخفاء الخط السفلي
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+                child: Column(
+                  children: [
+                    // المجموعة الأولى: الحساب
+                    _buildSettingsGroup(
+                      context,
+                      title: "Account".tr,
+                      children: [
+                        _buildSettingsTile(
+                          icon: Icons.person_outline,
+                          title: "Profile".tr,
+                          subtitle: 'Edit Account'.tr,
+                          onTap: () {},
+                          gradientColors: [Colors.indigo.shade400, Colors.indigo.shade700],
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            _buildSettingsGroup(
-              context,
-              title: 'Support'.tr,
-              children: [
-                _buildSettingsTile(
-                  icon: Icons.info_outline,
-                  title: 'About the app'.tr,
-                  subtitle: '${"version".tr} 1.0.0',
-                  onTap: () {
-                    Get.to(
-                      EnglishAbout(),
-                      curve: Curves.easeIn,
-                      transition: Transition.fadeIn,
-                      duration: Duration(milliseconds: 400),
-                    );
-                  },
-                ),
-                builddivider(),
-                _buildSettingsTile(
-                  icon: Icons.language_sharp,
-                  title: "Languages".tr,
-                  subtitle: 'Choose language'.tr,
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          title: Text(
-                            "Choose language".tr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          content: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  controllerlang.Changelang('ar');
-                                  Navigator.pop(context);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                ),
-                                child: const Text("العربية"),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  controllerlang.Changelang('en');
-                                  Navigator.pop(context);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color.fromARGB(
-                                    255,
-                                    9,
-                                    181,
-                                    194,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                ),
-                                child: const Text("English"),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-                builddivider(),
 
-                _buildSettingsTile(
-                  icon: Icons.call_outlined,
-                  title: 'Contact us'.tr,
-                  onTap: controller.makePhoneCall,
-                  trailing: Obx(
-                    () => controller.isLoading.value
-                        ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : const SizedBox(
-                            child: Icon(Icons.arrow_forward_ios, size: 16),
-                          ),
-                  ),
-                ),
-                builddivider(),
+                    const SizedBox(height: 16),
 
-                ListTile(
-                  trailing: Icon(Icons.arrow_forward_ios, size: 16),
-                  leading: const Icon(Icons.logout, color: Colors.black),
-                  title: Text('Logout'.tr, style: TextStyle(color: Colors.red)),
-                  onTap: () {
-                    controller.logout();
-                  },
+                    // المجموعة الثانية: الإعدادات العامة
+                    _buildSettingsGroup(
+                      context,
+                      title: 'General'.tr,
+                      children: [
+                        Obx(() => _buildSwitchTile(
+                              icon: Icons.notifications_none_outlined,
+                              title: 'Notifications'.tr,
+                              value: controller.notificationsEnabled.value,
+                              onChanged: controller.toggleNotifications,
+                              gradientColors: [Colors.blue.shade400, Colors.blue.shade700],
+                            )),
+                        _buildDivider(),
+                        _buildThemeTile(controller),
+                      ],
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // المجموعة الثالثة: الدعم
+                    _buildSettingsGroup(
+                      context,
+                      title: 'Support'.tr,
+                      children: [
+                        _buildSettingsTile(
+                          icon: Icons.info_outline,
+                          title: 'About App'.tr,
+                          subtitle: '${"version".tr} 1.0.0',
+                          onTap: () => Get.to(() => EnglishAbout(), transition: Transition.cupertino),
+                          gradientColors: [Colors.teal.shade400, Colors.teal.shade700],
+                        ),
+                        _buildDivider(),
+                        _buildSettingsTile(
+                          icon: Icons.language_outlined,
+                          title: "Language".tr,
+                          onTap: () => _showLanguageDialog(context),
+                          gradientColors: [Colors.orange.shade400, Colors.orange.shade700],
+                        ),
+                        _buildDivider(),
+                        _buildSettingsTile(
+                          icon: Icons.headset_mic_outlined,
+                          title: 'Contact Us'.tr,
+                          onTap: controller.makePhoneCall,
+                          trailing: Obx(() => controller.isLoading.value 
+                              ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                              : const Icon(Icons.arrow_forward_ios, size: 14)),
+                          gradientColors: [Colors.cyan.shade400, Colors.cyan.shade700],
+                        ),
+                        _buildDivider(),
+                        _buildSettingsTile(
+                          icon: Icons.logout_rounded,
+                          title: 'Logout'.tr,
+                          onTap: controller.logout,
+                          gradientColors: [Colors.red.shade400, Colors.red.shade700],
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-            const SizedBox(height: 20),
+            // Footer Section
+            _buildFooter(),
           ],
         ),
       ),
     );
   }
 
-  // ويدجت مخصصة لتجميع الإعدادات في بطاقة
-  Widget _buildSettingsGroup(
-    BuildContext context, {
-    required String title,
-    required List<Widget> children,
-  }) {
-    return Card(
-      color: Colors.grey[100],
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 16.0,
-              left: 16.0,
-              right: 16.0,
-              bottom: 8.0,
-            ),
-            child: Text(
-              title,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: Colors.lightBlue,
-              ),
-            ),
+  // ويدجت مجموعة الإعدادات بتصميم Card عصري
+  Widget _buildSettingsGroup(BuildContext context, {required String title, required List<Widget> children}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 8, bottom: 8),
+          child: Text(title, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blueGrey, fontSize: 14)),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).cardColor,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 10, offset: const Offset(0, 4))],
           ),
-          ...children,
-        ],
-      ),
+          child: Column(children: children),
+        ),
+      ],
     );
   }
 
-  // ويدجت مخصصة لعناصر الإعدادات العادية
+  // ويدجت عنصر الإعدادات مع الأيقونة المتدرجة
   Widget _buildSettingsTile({
     required IconData icon,
     required String title,
     String? subtitle,
     required VoidCallback onTap,
-    Widget? trailing, // ← أضفنا ده
+    Widget? trailing,
+    required List<Color> gradientColors,
   }) {
     return ListTile(
-      leading: Icon(icon),
-      title: Text(title),
-      subtitle: subtitle != null ? Text(subtitle) : null,
-      trailing:
-          trailing ??
-          const Icon(Icons.arrow_forward_ios, size: 16), // ← افتراضيًا السهم
       onTap: onTap,
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(colors: gradientColors, begin: Alignment.topLeft, end: Alignment.bottomRight),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(icon, color: Colors.white, size: 20),
+      ),
+      title: Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+      subtitle: subtitle != null ? Text(subtitle, style: const TextStyle(fontSize: 12)) : null,
+      trailing: trailing ?? const Icon(Icons.arrow_forward_ios, size: 14, color: Colors.grey),
     );
   }
-}
 
-Widget builddivider() {
-  return Padding(
-    padding: const EdgeInsets.only(left: 60, right: 20), // لترك مساحة للأيقونة
-    child: Divider(height: 1.5, color: Colors.grey[500]),
-  );
+  // ويدجت الـ Switch الخاص بالتنبيهات
+  Widget _buildSwitchTile({required IconData icon, required String title, required bool value, required Function(bool) onChanged, required List<Color> gradientColors}) {
+    return ListTile(
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(gradient: LinearGradient(colors: gradientColors), shape: BoxShape.circle),
+        child: Icon(icon, color: Colors.white, size: 20),
+      ),
+      title: Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+      trailing: Switch.adaptive(value: value, onChanged: onChanged),
+    );
+  }
+
+  // ويدجت اختيار الثيم بشكل مبسط
+  Widget _buildThemeTile(SettingsController controller) {
+    return ListTile(
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(gradient: LinearGradient(colors: [Colors.purple.shade400, Colors.purple.shade700]), shape: BoxShape.circle),
+        child: const Icon(Icons.palette_outlined, color: Colors.white, size: 20),
+      ),
+      title: Text('Theme'.tr, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+      trailing: Obx(() => DropdownButton<String>(
+            value: controller.selectedTheme.value,
+            items: ['Light', 'Dark', 'System'].map((t) => DropdownMenuItem(value: t, child: Text(t.tr, style: const TextStyle(fontSize: 14)))).toList(),
+            onChanged: controller.changeTheme,
+            underline: const SizedBox(),
+          )),
+    );
+  }
+
+  Widget _buildDivider() => Divider(height: 1, indent: 60, color: Colors.grey.withOpacity(0.1));
+
+  Widget _buildFooter() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Column(
+        children: [
+          Text("HOS App", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[400], letterSpacing: 1.2)),
+          const SizedBox(height: 4),
+          Text("© 2026 All Rights Reserved", style: TextStyle(color: Colors.grey[500], fontSize: 11)),
+        ],
+      ),
+    );
+  }
+
+  void _showLanguageDialog(BuildContext context) {
+    Get.defaultDialog(
+      title: "Choose Language".tr,
+      titleStyle: const TextStyle(fontWeight: FontWeight.bold),
+      content: Column(
+        children: [
+          ListTile(title: const Text("العربية"), leading: const Icon(Icons.language, color: Colors.green), onTap: () { controllerlang.Changelang('ar'); Get.back(); }),
+          ListTile(title: const Text("English"), leading: const Icon(Icons.language, color: Colors.blue), onTap: () { controllerlang.Changelang('en'); Get.back(); }),
+        ],
+      ),
+      radius: 15,
+    );
+  }
 }

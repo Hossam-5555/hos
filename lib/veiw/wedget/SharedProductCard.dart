@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
@@ -39,13 +40,18 @@ class SharedProductCard extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: Image.network(
-                    image,
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) => const Icon(
-                      Icons.broken_image_rounded,
-                      color: Colors.grey,
+                  child: CachedNetworkImage(
+                    imageUrl: image,
+                    imageBuilder: (context, imageProvider) => Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
                 ),
               ),
@@ -87,7 +93,7 @@ class SharedProductCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "${price}${"EGP".tr}",
+                  "$price${"EGP".tr}",
                   style: const TextStyle(
                     color: Colors.green,
                     fontWeight: FontWeight.w800,
