@@ -56,7 +56,6 @@ class HomePage extends StatelessWidget {
 
                         SizedBox(height: height * 0.02),
                         Titles(title: "Categories".tr),
-                        // SizedBox(height: height * 0.012),
 
                         /// Categories List
                         SizedBox(
