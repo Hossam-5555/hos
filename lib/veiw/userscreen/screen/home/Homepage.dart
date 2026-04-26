@@ -53,7 +53,7 @@ class HomePage extends StatelessWidget {
 
                         /// Main Offer
                         AutoRotatingOffers(),
-
+//Hossam iss================================
                         SizedBox(height: height * 0.02),
                         Titles(title: "Categories".tr),
 
