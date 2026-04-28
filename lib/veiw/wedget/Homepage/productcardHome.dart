@@ -47,8 +47,8 @@ class ItemList extends GetView<HomepageController> {
             BoxShadow(
               color: Colors.black.withAlpha(25), // 0.1 * 255 = 25
               // spreadRadius: 1,
-              blurRadius: 10,
-              offset: Offset(0, -5),
+              blurRadius: 5,
+              offset: Offset(0, -3),
             ),
           ],
         ),
@@ -61,12 +61,7 @@ class ItemList extends GetView<HomepageController> {
               // المارجن الخاص بك جيد لعمل الهامش الداخلي
               margin: EdgeInsets.only(left: 17, right: 17, top: 17),
               decoration: BoxDecoration(
-                color: Color.fromARGB(
-                  255,
-                  146,
-                  146,
-                  146,
-                ).withAlpha(35), // ✅ لون رمادي فاتح لخلفية الصورة
+                color: Colors.grey[200], // ✅ لون رمادي فاتح لخلفية الصورة
                 borderRadius: BorderRadius.all(
                   Radius.circular(15),
                 ), // ✅ زوايا دائرية لحامل الصورة
@@ -131,7 +126,7 @@ class ItemList extends GetView<HomepageController> {
                             ),
                           ),
                           Text(
-                            "(Rating)",
+                            "Rating",
                             style: const TextStyle(
                               color: Color.fromARGB(255, 0, 0, 0),
                               fontWeight: FontWeight.bold,

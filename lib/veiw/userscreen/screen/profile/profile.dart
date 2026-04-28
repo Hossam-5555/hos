@@ -14,9 +14,9 @@ class ProfilePage extends StatelessWidget {
   // لون أساسي مريح للتطبيق يمكن تغييره حسب الهوية البصرية لمشروعك
   final Color primaryColor = const Color.fromARGB(
     255,
-    190,
-    188,
-    223,
+    39,
+    39,
+    41,
   ); // لون نيلي عصري
 
   @override
@@ -55,7 +55,7 @@ class ProfilePage extends StatelessWidget {
 
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.grey[300],
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
@@ -132,7 +132,11 @@ class ProfilePage extends StatelessWidget {
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: primaryColor, width: 2),
+                border: Border.all(
+                  color: primaryColor,
+                  width: 2,
+                  style: BorderStyle.solid,
+                ),
               ),
               child: CircleAvatar(
                 radius: 55,
@@ -166,7 +170,8 @@ class ProfilePage extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return Material(
-      color: Colors.white,
+      elevation: 0.2,
+      color: Colors.grey[300],
       borderRadius: BorderRadius.circular(40),
       child: InkWell(
         onTap: onTap,
@@ -176,17 +181,14 @@ class ProfilePage extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.03),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
+              BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 5),
             ],
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
+                margin: EdgeInsetsDirectional.symmetric(horizontal: 10),
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: color.withAlpha(25),
@@ -194,13 +196,16 @@ class ProfilePage extends StatelessWidget {
                 ),
                 child: Icon(icon, color: color, size: 28),
               ),
-              SizedBox(width: 10),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 15,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.bold,
+              SizedBox(width: 20),
+              Container(
+                margin: EdgeInsetsDirectional.symmetric(horizontal: 10),
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w300,
+                  ),
                 ),
               ),
             ],

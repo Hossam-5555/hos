@@ -66,7 +66,7 @@ class HomePage extends StatelessWidget {
                             itemBuilder: (context, index) {
                               final cat = controller.categories[index];
                               return Skeletonizer(
-                                containersColor: Colors.grey[20],
+                                containersColor: Colors.grey[300],
                                 enabled:
                                     controller.statusrequest ==
                                     Statusrequest.loading,

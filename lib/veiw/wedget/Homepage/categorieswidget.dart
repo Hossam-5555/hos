@@ -38,20 +38,16 @@ class CategoryItem extends StatelessWidget {
                   height: 60,
                   width: 60,
                   // padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
-                    )
-                  ],
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                     shape: BoxShape.circle,
-                    color: const Color.fromARGB(
-                      255,
-                      146,
-                      146,
-                      146,
-                    ).withAlpha(35),
+                    color:  Colors.grey[300],
                   ),
                   child: ClipOval(
                     child: Image.network(
@@ -62,12 +58,6 @@ class CategoryItem extends StatelessWidget {
                       },
                     ),
                   ),
-                  //  SvgPicture.network(
-                  //   imageUrl,
-                  //   fit: BoxFit.contain,
-                  //   placeholderBuilder: (_) =>
-                  //       const CircularProgressIndicator(strokeWidth: 2),
-                  // ),
                 ),
 
                 const SizedBox(height: 4),
@@ -80,7 +70,7 @@ class CategoryItem extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: Colors.black,
-                    fontSize: 10,
+                    fontSize: 12,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

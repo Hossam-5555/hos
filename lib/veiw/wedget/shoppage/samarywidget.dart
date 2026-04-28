@@ -14,10 +14,10 @@ class BuildOrderSummary extends StatelessWidget {
     final height = size.height;
 
     return Container(
-      height: height * 0.45,
+      height:controller.value==false? height * 0.40:height*0.45,
       padding: EdgeInsets.all(width * 0.04),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.grey[300],
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withAlpha(25),
@@ -27,8 +27,8 @@ class BuildOrderSummary extends StatelessWidget {
           ),
         ],
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(width * 0.06),
-          topRight: Radius.circular(width * 0.06),
+          bottomRight: Radius.circular(width * 0.06),
+          bottomLeft: Radius.circular(width * 0.06),
         ),
       ),
       child: Column(
@@ -122,19 +122,6 @@ class BuildOrderSummary extends StatelessWidget {
           // زر إتمام الشراء
           Row(
             children: [
-              Container(
-                height: height * 0.07,
-                width: height * 0.07,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: const Color.fromARGB(255, 146, 146, 146).withAlpha(35),
-                ),
-                child: const Icon(
-                  Icons.shopify_outlined,
-                  color: Colors.black,
-                  size: 24,
-                ),
-              ),
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
@@ -146,18 +133,37 @@ class BuildOrderSummary extends StatelessWidget {
                           );
                   },
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: height * 0.02),
+                    padding: EdgeInsets.symmetric(vertical: height * 0.005),
                     backgroundColor: Colors.black,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(80),
                     ),
                     textStyle: TextStyle(
-                      fontSize: width * 0.045,
+                      fontSize: width * 0.040,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  child: Text('Proceed to Checkout'.tr),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        height: height * 0.06,
+                        width: height * 0.06,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: const Color.fromARGB(255, 54, 53, 53),
+                        ),
+                        child: const Icon(
+                          Icons.shopify_outlined,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      ),
+                      Text('Proceed to Checkout'.tr),
+                      Icon(Icons.keyboard_arrow_right_outlined)
+                    ],
+                  ),
                 ),
               ),
             ],

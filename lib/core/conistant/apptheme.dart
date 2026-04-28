@@ -4,6 +4,7 @@ import 'package:hos/core/conistant/appcolor.dart';
 ThemeData themeEnglish = ThemeData(
   // scaffoldBackgroundColor: Color(0xFFF5F6FA),
   scaffoldBackgroundColor: Colors.white,
+  
 
   // استخدام نظام ألوان متناسق
   colorScheme: ColorScheme.fromSeed(seedColor: Appcolor.primaryColor),

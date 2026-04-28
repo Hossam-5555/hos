@@ -75,7 +75,6 @@ class Homescreen extends StatelessWidget {
                             );
                           },
                           child: SvgPicture.asset(
-                            color: const Color.fromARGB(255, 145, 2, 145),
                             Imageasset.search,
                             height: 24, // توحيد الحجم
                             width: 24,
