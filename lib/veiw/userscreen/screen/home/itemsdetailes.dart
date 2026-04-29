@@ -97,7 +97,7 @@ class Itemsdetailes extends StatelessWidget {
                             item.images!.length,
                             (index) => AnimatedContainer(
                               margin: EdgeInsets.all(10),
-                              width: controller.curentpage == index ? 40 : 10,
+                              width: controller.curentpage == index ? 30 : 10,
                               height: 6,
                               decoration: BoxDecoration(
                                 color: Appcolor.primaryColor,
@@ -141,7 +141,7 @@ class Itemsdetailes extends StatelessWidget {
                               children: [
                                 const Icon(
                                   Icons.star_rounded,
-                                  color: Color.fromARGB(255, 255, 116, 2),
+                                  color: Colors.amber,
                                   size: 22,
                                 ),
                                 const SizedBox(width: 4),
@@ -289,7 +289,7 @@ class Itemsdetailes extends StatelessWidget {
           style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Colors.green,
+            color: Colors.blue,
           ),
         ),
         const SizedBox(width: 12),

@@ -128,10 +128,29 @@ class Checkoutcontroller extends GetxController {
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(Get.context!).showSnackBar(
       SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 2),
-        behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.all(16),
+        duration: Duration(seconds: 4),
+        behavior: SnackBarBehavior.floating, // يخليه طاير مش لازق تحت
+        margin: EdgeInsets.all(12),
+        backgroundColor: Colors.grey.shade900,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15), // 🔥 حواف دائرية
+        ),
+
+        content: Row(
+          children: [
+            Icon(Icons.delete_outline, color: Colors.white),
+            SizedBox(width: 10),
+            Expanded(
+              child: Text(message, style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        ),
+
+        action: SnackBarAction(
+          label: "Succes",
+          textColor: Colors.blue,
+          onPressed: () {},
+        ),
       ),
     );
   }
