@@ -95,7 +95,7 @@ class SharedProductCard extends StatelessWidget {
                 Text(
                   "$price${"EGP".tr}",
                   style: const TextStyle(
-                    color: Colors.green,
+                    color: Colors.blue,
                     fontWeight: FontWeight.w800,
                     fontSize: 14,
                   ),

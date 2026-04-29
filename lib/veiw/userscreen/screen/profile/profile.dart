@@ -55,7 +55,7 @@ class ProfilePage extends StatelessWidget {
 
             Container(
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: Colors.grey[200],
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
@@ -171,7 +171,7 @@ class ProfilePage extends StatelessWidget {
   }) {
     return Material(
       elevation: 0.2,
-      color: Colors.grey[300],
+      color: Colors.grey[200],
       borderRadius: BorderRadius.circular(40),
       child: InkWell(
         onTap: onTap,

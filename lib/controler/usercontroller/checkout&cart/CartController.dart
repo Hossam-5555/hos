@@ -27,6 +27,13 @@ class CartController extends GetxController {
   late AnimationController controllerAnimation;
   late Animation<double> priceAnimation;
 
+  var coupone = true.obs;
+  void havecoupone(bool value) async {
+    coupone.value = value;
+    final prefs = myservisec.sharedPreferences;
+    await prefs.setBool('cop', value);
+  }
+
   ///////////////////ملكش دعوه بدول  //view data
   List<CartModel> data = [];
   RxInt get countitem => data.length.obs;
@@ -171,16 +178,13 @@ class CartController extends GetxController {
     }
   }
 
-  bool value = false;
-  void onchangcheckbox(bool? val) {
-    value = val ?? false; // يتغير مع الضغط
-    update();
-  }
+  // 
   //coubone========================================
 
   @override
   void onInit() {
     coubonecontroller = TextEditingController();
+    coupone.value = myservisec.sharedPreferences.getBool('cop') ?? false;
 
     view();
 

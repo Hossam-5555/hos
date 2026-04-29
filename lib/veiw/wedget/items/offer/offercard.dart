@@ -10,19 +10,9 @@ import 'package:lottie/lottie.dart';
 
 class Offercard extends GetView<Offercontroller> {
   final int index;
-  const Offercard({super.key, required this.index});
-
-  @override
-  Widget build(BuildContext context) {
-    return ItemList(index: index, items: controller.offerList[index]);
-  }
-}
-
-class ItemList extends GetView<Offercontroller> {
   final ItemsModel items;
-  final int index;
 
-  const ItemList({super.key, required this.items, required this.index});
+   Offercard({super.key, required this.index, required this.items});
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +138,7 @@ class ItemList extends GetView<Offercontroller> {
           Text(
             "${double.parse(items.priceAfterDiscount.toString()).toStringAsFixed(0)} ${"EGP".tr}",
             style: const TextStyle(
-              color: Colors.green,
+              color: Colors.blue,
               fontWeight: FontWeight.w800,
               fontSize: 14,
             ),
@@ -156,5 +146,6 @@ class ItemList extends GetView<Offercontroller> {
         ],
       ),
     );
+    ;
   }
 }

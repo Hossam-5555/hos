@@ -14,10 +14,10 @@ class BuildOrderSummary extends StatelessWidget {
     final height = size.height;
 
     return Container(
-      height:controller.value==false? height * 0.40:height*0.45,
+      height: controller.coupone.value == false ? height * 0.40 : height * 0.45,
       padding: EdgeInsets.all(width * 0.04),
       decoration: BoxDecoration(
-        color: Colors.grey[300],
+        color: Colors.grey[100],
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withAlpha(25),
@@ -71,7 +71,11 @@ class BuildOrderSummary extends StatelessWidget {
             ],
           ),
           Divider(height: height * 0.03),
-          Coubone(),
+          Coubone(
+            onChanged: (val) {
+              controller.havecoupone(val);
+            },
+          ),
           Divider(height: height * 0.03),
           // المجموع الكلي
           Row(
@@ -161,7 +165,7 @@ class BuildOrderSummary extends StatelessWidget {
                         ),
                       ),
                       Text('Proceed to Checkout'.tr),
-                      Icon(Icons.keyboard_arrow_right_outlined)
+                      Icon(Icons.keyboard_arrow_right_outlined),
                     ],
                   ),
                 ),

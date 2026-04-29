@@ -15,7 +15,6 @@ class Offer extends StatelessWidget {
     Get.put(FavController());
 
     return Scaffold(
-
       body: GetBuilder<Offercontroller>(
         builder: (controller) {
           return Handlingdataview(
@@ -33,9 +32,7 @@ class Offer extends StatelessWidget {
                 ),
                 slivers: [
                   /// 🔥 Banner
-                  SliverToBoxAdapter(
-                    child: _buildPromoBanner(),
-                  ),
+                  SliverToBoxAdapter(child: _buildPromoBanner()),
 
                   /// ❌ Empty state
                   if (controller.offerList.isEmpty)
@@ -47,20 +44,24 @@ class Offer extends StatelessWidget {
                     /// 🧱 Grid Offers
                     SliverPadding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 10),
+                        horizontal: 16,
+                        vertical: 10,
+                      ),
                       sliver: SliverGrid(
                         delegate: SliverChildBuilderDelegate(
-                          (context, index) =>
-                              Offercard(index: index),
+                          (context, index) => Offercard(
+                            index: index,
+                            items: controller.offerList[index],
+                          ),
                           childCount: controller.offerList.length,
                         ),
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2, // ⭐ مهم
-                          mainAxisSpacing: 16,
-                          crossAxisSpacing: 12,
-                          childAspectRatio: 0.68, // ⭐ متظبط مع الكارد
-                        ),
+                              crossAxisCount: 2, // ⭐ مهم
+                              mainAxisSpacing: 16,
+                              crossAxisSpacing: 12,
+                              childAspectRatio: 0.68, // ⭐ متظبط مع الكارد
+                            ),
                       ),
                     ),
                 ],
@@ -123,10 +124,7 @@ class Offer extends StatelessWidget {
                 SizedBox(height: 4),
                 Text(
                   "سارع قبل نفاد الكمية",
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 13,
-                  ),
+                  style: TextStyle(color: Colors.white70, fontSize: 13),
                 ),
               ],
             ),
@@ -143,8 +141,7 @@ class Offer extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.local_offer_outlined,
-              size: 80, color: Colors.grey[400]),
+          Icon(Icons.local_offer_outlined, size: 80, color: Colors.grey[400]),
           const SizedBox(height: 16),
           Text(
             "لا توجد عروض حالياً",
@@ -157,10 +154,7 @@ class Offer extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             "تحقق مرة أخرى قريباً",
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[500],
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.grey[500]),
           ),
         ],
       ),

@@ -23,10 +23,19 @@ class Orderdetailes extends StatelessWidget {
 
       bottomNavigationBar: c.order?.status == "pending"
           ? Padding(
-              padding: EdgeInsets.all(w * 0.04),
-              child: ElevatedButton(
-                onPressed: () => c.deleteorders(c.order!.orderId),
-                child: Text("Cancel Order"),
+              padding: EdgeInsets.all(w * 0.06),
+              child: Container(height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0.2,
+                    backgroundColor: Colors.black,
+                  ),
+                  onPressed: () => c.deleteorders(c.order!.orderId),
+                  child: Text(
+                    "Cancel Order",
+                    style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
+                ),
               ),
             )
           : null,
