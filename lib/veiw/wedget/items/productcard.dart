@@ -7,28 +7,10 @@ import 'package:hos/data/model/itemsmodel.dart';
 import 'package:lottie/lottie.dart';
 
 class ItemsCard extends GetView<ItemsControler> {
-  final int i;
-  const ItemsCard({super.key, required this.i});
+  // final int i;
+  ItemsModel items;
 
-  @override
-  Widget build(BuildContext context) {
-    return ItemList(index: i, active: true, items: controller.data[i]);
-  }
-}
-
-// ignore: must_be_immutable
-class ItemList extends GetView<ItemsControler> {
-  final ItemsModel items;
-  bool active;
-  final int index;
-
-  ItemList({
-    super.key,
-    required this.items,
-    required this.active,
-    required this.index,
-  });
-
+  ItemsCard({super.key, required this.items});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -43,12 +25,12 @@ class ItemList extends GetView<ItemsControler> {
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: const Color.fromARGB(
-                  255,
-                  146,
-                  146,
-                  146,
-                ).withAlpha(35), // لون رمادي فاتح مطابق للصورة
+                // color: const Color.fromARGB(
+                //   255,
+                //   146,
+                //   146,
+                //   146,
+                // ).withAlpha(35), // لون رمادي فاتح مطابق للصورة
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Stack(
@@ -74,7 +56,7 @@ class ItemList extends GetView<ItemsControler> {
                   ),
 
                   // علامة الخصم (لو موجودة)
-                  if (controller.data[index].itemsDiscount.toString() != "0.00")
+                  if (items.itemsDiscount.toString() != "0.00")
                     Positioned(
                       top: 0,
                       left: 0,
@@ -153,7 +135,7 @@ class ItemList extends GetView<ItemsControler> {
 
           // السعر
           Text(
-            "${double.parse(items.itemsPrice.toString()).toStringAsFixed(0)} EGP", // شلت الكسور عشان يبقى زي الصورة $39
+            "${items.itemsPrice}${"Egp".tr}", // شلت الكسور عشان يبقى زي الصورة $39
             style: const TextStyle(
               color: Colors.green,
               fontWeight: FontWeight.w800,

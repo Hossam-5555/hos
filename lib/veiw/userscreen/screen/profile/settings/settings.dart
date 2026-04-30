@@ -12,11 +12,8 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SettingsController controller = Get.put(SettingsController());
-
+    LocalController local = Get.put(LocalController());
     return Scaffold(
-      backgroundColor: Theme.of(context).brightness == Brightness.light 
-          ? Colors.grey[50] 
-          : Colors.grey[900],
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: Appbarbackicon(herotag: 'settings', title: "Settings".tr),
@@ -27,7 +24,10 @@ class Settings extends StatelessWidget {
             Expanded(
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 10,
+                ),
                 child: Column(
                   children: [
                     // المجموعة الأولى: الحساب
@@ -40,7 +40,10 @@ class Settings extends StatelessWidget {
                           title: "Profile".tr,
                           subtitle: 'Edit Account'.tr,
                           onTap: () {},
-                          gradientColors: [Colors.indigo.shade400, Colors.indigo.shade700],
+                          gradientColors: [
+                            Colors.indigo.shade400,
+                            Colors.indigo.shade700,
+                          ],
                         ),
                       ],
                     ),
@@ -52,15 +55,20 @@ class Settings extends StatelessWidget {
                       context,
                       title: 'General'.tr,
                       children: [
-                        Obx(() => _buildSwitchTile(
-                              icon: Icons.notifications_none_outlined,
-                              title: 'Notifications'.tr,
-                              value: controller.notificationsEnabled.value,
-                              onChanged: controller.toggleNotifications,
-                              gradientColors: [Colors.blue.shade400, Colors.blue.shade700],
-                            )),
+                        Obx(
+                          () => _buildSwitchTile(
+                            icon: Icons.notifications_none_outlined,
+                            title: 'Notifications'.tr,
+                            value: controller.notificationsEnabled.value,
+                            onChanged: controller.toggleNotifications,
+                            gradientColors: [
+                              Colors.blue.shade400,
+                              Colors.blue.shade700,
+                            ],
+                          ),
+                        ),
                         _buildDivider(),
-                        _buildThemeTile(controller),
+                        _buildThemeTile(local),
                       ],
                     ),
 
@@ -75,32 +83,55 @@ class Settings extends StatelessWidget {
                           icon: Icons.info_outline,
                           title: 'About App'.tr,
                           subtitle: '${"version".tr} 1.0.0',
-                          onTap: () => Get.to(() => EnglishAbout(), transition: Transition.cupertino),
-                          gradientColors: [Colors.teal.shade400, Colors.teal.shade700],
+                          onTap: () => Get.to(
+                            () => EnglishAbout(),
+                            transition: Transition.cupertino,
+                          ),
+                          gradientColors: [
+                            Colors.teal.shade400,
+                            Colors.teal.shade700,
+                          ],
                         ),
                         _buildDivider(),
                         _buildSettingsTile(
                           icon: Icons.language_outlined,
                           title: "Language".tr,
                           onTap: () => _showLanguageDialog(context),
-                          gradientColors: [Colors.orange.shade400, Colors.orange.shade700],
+                          gradientColors: [
+                            Colors.orange.shade400,
+                            Colors.orange.shade700,
+                          ],
                         ),
                         _buildDivider(),
                         _buildSettingsTile(
                           icon: Icons.headset_mic_outlined,
                           title: 'Contact Us'.tr,
                           onTap: controller.makePhoneCall,
-                          trailing: Obx(() => controller.isLoading.value 
-                              ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
-                              : const Icon(Icons.arrow_forward_ios, size: 14)),
-                          gradientColors: [Colors.cyan.shade400, Colors.cyan.shade700],
+                          trailing: Obx(
+                            () => controller.isLoading.value
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : const Icon(Icons.arrow_forward_ios, size: 14),
+                          ),
+                          gradientColors: [
+                            Colors.cyan.shade400,
+                            Colors.cyan.shade700,
+                          ],
                         ),
                         _buildDivider(),
                         _buildSettingsTile(
                           icon: Icons.logout_rounded,
                           title: 'Logout'.tr,
                           onTap: controller.logout,
-                          gradientColors: [Colors.red.shade400, Colors.red.shade700],
+                          gradientColors: [
+                            Colors.red.shade400,
+                            Colors.red.shade700,
+                          ],
                         ),
                       ],
                     ),
@@ -117,19 +148,36 @@ class Settings extends StatelessWidget {
   }
 
   // ويدجت مجموعة الإعدادات بتصميم Card عصري
-  Widget _buildSettingsGroup(BuildContext context, {required String title, required List<Widget> children}) {
+  Widget _buildSettingsGroup(
+    BuildContext context, {
+    required String title,
+    required List<Widget> children,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 8, bottom: 8),
-          child: Text(title, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blueGrey, fontSize: 14)),
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blueGrey,
+              fontSize: 14,
+            ),
+          ),
         ),
         Container(
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(16),
-            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 10, offset: const Offset(0, 4))],
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.03),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
           child: Column(children: children),
         ),
@@ -151,58 +199,113 @@ class Settings extends StatelessWidget {
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          gradient: LinearGradient(colors: gradientColors, begin: Alignment.topLeft, end: Alignment.bottomRight),
+          gradient: LinearGradient(
+            colors: gradientColors,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           shape: BoxShape.circle,
         ),
         child: Icon(icon, color: Colors.white, size: 20),
       ),
-      title: Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-      subtitle: subtitle != null ? Text(subtitle, style: const TextStyle(fontSize: 12)) : null,
-      trailing: trailing ?? const Icon(Icons.arrow_forward_ios, size: 14, color: Colors.grey),
+      title: Text(
+        title,
+        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+      ),
+      subtitle: subtitle != null
+          ? Text(subtitle, style: const TextStyle(fontSize: 12))
+          : null,
+      trailing:
+          trailing ??
+          const Icon(Icons.arrow_forward_ios, size: 14, color: Colors.grey),
     );
   }
 
   // ويدجت الـ Switch الخاص بالتنبيهات
-  Widget _buildSwitchTile({required IconData icon, required String title, required bool value, required Function(bool) onChanged, required List<Color> gradientColors}) {
+  Widget _buildSwitchTile({
+    required IconData icon,
+    required String title,
+    required bool value,
+    required Function(bool) onChanged,
+    required List<Color> gradientColors,
+  }) {
     return ListTile(
       leading: Container(
         padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(gradient: LinearGradient(colors: gradientColors), shape: BoxShape.circle),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(colors: gradientColors),
+          shape: BoxShape.circle,
+        ),
         child: Icon(icon, color: Colors.white, size: 20),
       ),
-      title: Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+      title: Text(
+        title,
+        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+      ),
       trailing: Switch.adaptive(value: value, onChanged: onChanged),
     );
   }
 
   // ويدجت اختيار الثيم بشكل مبسط
-  Widget _buildThemeTile(SettingsController controller) {
+  Widget _buildThemeTile(LocalController controller) {
     return ListTile(
       leading: Container(
         padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(gradient: LinearGradient(colors: [Colors.purple.shade400, Colors.purple.shade700]), shape: BoxShape.circle),
-        child: const Icon(Icons.palette_outlined, color: Colors.white, size: 20),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.purple.shade400, Colors.purple.shade700],
+          ),
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(
+          Icons.palette_outlined,
+          color: Colors.white,
+          size: 20,
+        ),
       ),
-      title: Text('Theme'.tr, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-      trailing: Obx(() => DropdownButton<String>(
-            value: controller.selectedTheme.value,
-            items: ['Light', 'Dark', 'System'].map((t) => DropdownMenuItem(value: t, child: Text(t.tr, style: const TextStyle(fontSize: 14)))).toList(),
-            onChanged: controller.changeTheme,
-            underline: const SizedBox(),
-          )),
+      title: Text(
+        'Theme'.tr,
+        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+      ),
+      trailing: Obx(
+        () => DropdownButton<String>(
+          value: controller.selectedTheme.value,
+          underline: const SizedBox(),
+          items: ['Light', 'Dark', 'System']
+              .map(
+                (t) => DropdownMenuItem(
+                  value: t,
+                  child: Text(t.tr, style: const TextStyle(fontSize: 14)),
+                ),
+              )
+              .toList(),
+          onChanged: (val) => controller.changeTheme(val),
+        ),
+      ),
     );
   }
 
-  Widget _buildDivider() => Divider(height: 1, indent: 60, color: Colors.grey.withOpacity(0.1));
+  Widget _buildDivider() =>
+      Divider(height: 1, indent: 60, color: Colors.grey.withOpacity(0.1));
 
   Widget _buildFooter() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Column(
         children: [
-          Text("HOS App", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[400], letterSpacing: 1.2)),
+          Text(
+            "HOS App",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[400],
+              letterSpacing: 1.2,
+            ),
+          ),
           const SizedBox(height: 4),
-          Text("© 2026 All Rights Reserved", style: TextStyle(color: Colors.grey[500], fontSize: 11)),
+          Text(
+            "© 2026 All Rights Reserved",
+            style: TextStyle(color: Colors.grey[500], fontSize: 11),
+          ),
         ],
       ),
     );
@@ -214,8 +317,22 @@ class Settings extends StatelessWidget {
       titleStyle: const TextStyle(fontWeight: FontWeight.bold),
       content: Column(
         children: [
-          ListTile(title: const Text("العربية"), leading: const Icon(Icons.language, color: Colors.green), onTap: () { controllerlang.Changelang('ar'); Get.back(); }),
-          ListTile(title: const Text("English"), leading: const Icon(Icons.language, color: Colors.blue), onTap: () { controllerlang.Changelang('en'); Get.back(); }),
+          ListTile(
+            title: const Text("العربية"),
+            leading: const Icon(Icons.language, color: Colors.green),
+            onTap: () {
+              controllerlang.changeLang('ar');
+              Get.back();
+            },
+          ),
+          ListTile(
+            title: const Text("English"),
+            leading: const Icon(Icons.language, color: Colors.blue),
+            onTap: () {
+              controllerlang.changeLang('en');
+              Get.back();
+            },
+          ),
         ],
       ),
       radius: 15,

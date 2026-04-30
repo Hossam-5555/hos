@@ -13,7 +13,6 @@ class Checkout extends StatelessWidget {
     Get.put(Checkoutcontroller());
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F6F9), // تم الحفاظ على الخلفية
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(65),
         child: Appbarbackicon(herotag: '', title: "confirm order".tr),
@@ -23,7 +22,7 @@ class Checkout extends StatelessWidget {
       ),
       body: GetBuilder<Checkoutcontroller>(
         builder: (c) => Handlingdataview(
-          statusrequest: c.statusrequest!,
+          statusrequest: c.statusrequest,
           widget: ListView(
             padding: const EdgeInsets.all(16),
             physics: const BouncingScrollPhysics(),

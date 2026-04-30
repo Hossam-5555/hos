@@ -20,7 +20,6 @@ class Itemsdetailes extends StatelessWidget {
       builder: (controller) {
         final item = controller.itemsmodel;
         return Scaffold(
-          backgroundColor: Colors.white,
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(60),
             child: Appbarbackicon(title: "product Details".tr, herotag: ""),

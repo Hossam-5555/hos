@@ -21,12 +21,8 @@ class ShoppingCartPage extends StatelessWidget {
           return Handlingdataview(
             statusrequest: controller.statusrequest,
             widget: CustomScrollView(
-              physics: const BouncingScrollPhysics(), // سكرول مرن
+              physics: const BouncingScrollPhysics(), 
               slivers: [
-                // 1️⃣ قائمة المنتجات (بديل ListView)
-                // إذا كانت القائمة فارغة، يمكن عرض رسالة، وإلا نعرض المنتجات
-
-                // 3️⃣ ملخص الطلب (SliverToBoxAdapter)
                 SliverToBoxAdapter(
                   child: BuildOrderSummary(controller: controller),
                 ),

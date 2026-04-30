@@ -14,7 +14,6 @@ class Veryfisign extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Verification Code'),
         centerTitle: true,

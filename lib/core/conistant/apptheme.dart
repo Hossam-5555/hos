@@ -1,153 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 
-ThemeData themeEnglish = ThemeData(
-  // scaffoldBackgroundColor: Color(0xFFF5F6FA),
-  scaffoldBackgroundColor: Colors.white,
-  
+class AppTheme {
+  // دالة مساعدة لإنشاء مقاسات النصوص الموحدة
+  static TextTheme _getTextTheme(String fontFamily, bool isDark) {
+    Color textColor = isDark ? Colors.white : Colors.black;
+    Color bodyColor = isDark ? Colors.grey[400]! : Appcolor.grey;
 
-  // استخدام نظام ألوان متناسق
-  colorScheme: ColorScheme.fromSeed(seedColor: Appcolor.primaryColor),
-  snackBarTheme: SnackBarThemeData(
-    backgroundColor: Appcolor.primaryColor,
-    contentTextStyle: TextStyle(color: Colors.white),
-  ),
-  appBarTheme: AppBarTheme(
-    iconTheme: IconThemeData(color: Colors.black, size: 24), // ← الحجم القياسي
-    leadingWidth: 70, // ← العرض القياسي
-    actionsIconTheme: IconThemeData(
-      color: Colors.black,
-      size: 24,
-    ), // ← الحجم القياسي
-    titleTextStyle: TextStyle(
-      color: Appcolor.black,
-      fontSize: 22, // ← حجم أنسب لعنوان الصفحة
-      fontFamily: 'RobotoMono', // ← استخدم اسم الخط هنا
-      fontWeight: FontWeight.bold,
-    ),
-    elevation: 0.0,
-    // shape: const RoundedRectangleBorder(
-    //   borderRadius: BorderRadius.only(
-    //     bottomLeft: Radius.circular(25),
-    //     bottomRight: Radius.circular(25),
-    //   ),
-    // ),
-    centerTitle: true,
-    // backgroundColor: Color(0xFFF5F6FA),
-    backgroundColor: Colors.white,
-  ),
+    return TextTheme(
+      headlineLarge: TextStyle(fontWeight: FontWeight.bold, fontSize: 32, fontFamily: fontFamily, color: textColor),
+      headlineMedium: TextStyle(fontWeight: FontWeight.bold, fontSize: 28, fontFamily: fontFamily, color: textColor),
+      headlineSmall: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, fontFamily: fontFamily, color: textColor),
+      titleLarge: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, fontFamily: fontFamily, color: textColor),
+      bodyLarge: TextStyle(fontSize: 16, fontFamily: fontFamily, color: bodyColor, height: 1.5),
+      bodyMedium: TextStyle(fontSize: 14, fontFamily: fontFamily, color: bodyColor.withAlpha(204), height: 1.4),
+    );
+  }
 
-  textTheme: TextTheme(
-    // مقياس نصوص هرمي وواضح
-    headlineLarge: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 32,
-      fontFamily: 'RobotoMono',
-    ),
-    headlineMedium: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 28,
-      fontFamily: 'RobotoMono',
-    ),
-    headlineSmall: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 20,
-      color: Colors.black,
-      fontFamily: 'RobotoMono',
-    ),
-    titleLarge: TextStyle(
-      // يمكن استخدامه لعناوين الأقسام
-      fontWeight: FontWeight.bold,
-      fontSize: 22,
-      fontFamily: 'RobotoMono',
-    ),
-    bodyLarge: TextStyle(
-      // النص الأساسي
-      fontSize: 16,
-      fontFamily: 'RobotoMono',
-      color: Appcolor.grey,
-      height: 1.5, // ← ارتفاع سطر مريح للقراءة
-    ),
-    bodyMedium: TextStyle(
-      // نص ثانوي
-      fontSize: 14,
-      fontFamily: 'RobotoMono',
-      color: Appcolor.grey.withAlpha(204),
-      height: 1.4,
-    ),
-  ),
-);
+  static AppBarTheme _appBar(Color bg, Color content, String font) {
+    return AppBarTheme(
+      backgroundColor: bg,
+      elevation: 0.0,
+      centerTitle: true,
+      iconTheme: IconThemeData(color: content, size: 24),
+      titleTextStyle: TextStyle(color: content, fontSize: 22, fontFamily: font, fontWeight: FontWeight.bold),
+    );
+  }
 
-// for Arabic
-ThemeData themeArabic = ThemeData(
-  // scaffoldBackgroundColor: Color(0xFFF5F6FA),
-  scaffoldBackgroundColor: Colors.white,
+  // الـ 4 قوالب الأساسية
+  static ThemeData lightEn = ThemeData(
+    brightness: Brightness.light,
+    scaffoldBackgroundColor: Colors.white,
+    appBarTheme: _appBar(Colors.white, Colors.black, 'RobotoMono'),
+    textTheme: _getTextTheme('RobotoMono', false),
+    colorScheme: ColorScheme.fromSeed(seedColor: Appcolor.primaryColor),
+  );
 
-  // استخدام نظام ألوان متناسق
-  colorScheme: ColorScheme.fromSeed(seedColor: Appcolor.primaryColor),
+  static ThemeData darkEn = ThemeData(
+    brightness: Brightness.dark,
+    scaffoldBackgroundColor: const Color(0xFF121212),
+    appBarTheme: _appBar(const Color(0xFF121212), Colors.white, 'RobotoMono'),
+    textTheme: _getTextTheme('RobotoMono', true),
+    colorScheme: ColorScheme.fromSeed(seedColor: Appcolor.primaryColor, brightness: Brightness.dark),
+  );
 
-  appBarTheme: AppBarTheme(
-    iconTheme: IconThemeData(color: Colors.black, size: 24), // ← الحجم القياسي
-    leadingWidth: 70, // ← العرض القياسي
-    actionsIconTheme: IconThemeData(
-      color: Colors.black,
-      size: 24,
-    ), // ← الحجم القياسي
-    titleTextStyle: TextStyle(
-      color: Appcolor.black,
-      fontSize: 22, // ← حجم أنسب لعنوان الصفحة
-      fontFamily: 'cairo', // ← استخدم اسم الخط هنا
-      fontWeight: FontWeight.bold,
-    ),
-    elevation: 0.0,
-    // shape: const RoundedRectangleBorder(
-    //   borderRadius: BorderRadius.only(
-    //     bottomLeft: Radius.circular(25),
-    //     bottomRight: Radius.circular(25),
-    //   ),
-    // ),
-    centerTitle: true,
-    // backgroundColor: Color(0xFFF5F6FA),
-    backgroundColor: Colors.white,
-  ),
+  static ThemeData lightAr = ThemeData(
+    brightness: Brightness.light,
+    scaffoldBackgroundColor: Colors.white,
+    appBarTheme: _appBar(Colors.white, Colors.black, 'cairo'),
+    textTheme: _getTextTheme('cairo', false),
+    colorScheme: ColorScheme.fromSeed(seedColor: Appcolor.primaryColor),
+  );
 
-  textTheme: TextTheme(
-    // مقياس نصوص هرمي وواضح
-    headlineLarge: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 32,
-      fontFamily: 'cairo',
-    ),
-    headlineMedium: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 28,
-      fontFamily: 'cairo',
-    ),
-    headlineSmall: TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 20,
-      color: Colors.black,
-      fontFamily: 'cairo',
-    ),
-    titleLarge: TextStyle(
-      // يمكن استخدامه لعناوين الأقسام
-      fontWeight: FontWeight.bold,
-      fontSize: 22,
-      fontFamily: 'cairo',
-    ),
-    bodyLarge: TextStyle(
-      // النص الأساسي
-      fontSize: 16,
-      fontFamily: 'cairo',
-      color: Appcolor.grey,
-      height: 1.5, // ← ارتفاع سطر مريح للقراءة
-    ),
-    bodyMedium: TextStyle(
-      // نص ثانوي
-      fontSize: 14,
-      fontFamily: 'cairo',
-      color: Appcolor.grey.withAlpha(204),
-      height: 1.4,
-    ),
-  ),
-);
+  static ThemeData darkAr = ThemeData(
+    brightness: Brightness.dark,
+    scaffoldBackgroundColor: const Color(0xFF121212),
+    appBarTheme: _appBar(const Color(0xFF121212), Colors.white, 'cairo'),
+    textTheme: _getTextTheme('cairo', true),
+    colorScheme: ColorScheme.fromSeed(seedColor: Appcolor.primaryColor, brightness: Brightness.dark),
+  );
+}

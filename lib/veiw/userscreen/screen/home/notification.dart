@@ -13,7 +13,6 @@ class NotificationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF8F9FD), // لون خلفية هادئ ومريح
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: GetBuilder<Notificationcontroller>(

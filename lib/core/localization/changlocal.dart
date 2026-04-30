@@ -1,41 +1,80 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/get_core.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_navigation/get_navigation.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get.dart';
 import 'package:hos/core/conistant/apptheme.dart';
 import 'package:hos/core/functions/appmassaging.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 
 class LocalController extends GetxController {
   Myservisec myservisec = Get.find();
-  ThemeData apptheme = themeEnglish;
+
   late Locale language;
-  // ignore: non_constant_identifier_names
-  void Changelang(String Codelang) {
-    Locale locale = Locale(Codelang);
-    myservisec.sharedPreferences.setString('lang', Codelang);
-    apptheme = language == 'ar' ? themeArabic : themeEnglish;
-    Get.changeTheme(apptheme);
+  var selectedTheme = 'System'.obs;
+  ThemeData apptheme = AppTheme.darkEn;
+
+  // تغيير اللغة
+  void changeLang(String codeLang) {
+    Locale locale = Locale(codeLang);
+    myservisec.sharedPreferences.setString('lang', codeLang);
     Get.updateLocale(locale);
+    _updateThemeLogic(); // تحديث الثيم عشان يغير نوع الخط فوراً
+  }
+
+  // تغيير الثيم من الـ Dropdown
+  void changeTheme(String? newTheme) {
+    if (newTheme == null) return;
+    selectedTheme.value = newTheme;
+    myservisec.sharedPreferences.setString("theme_mode", newTheme);
+    _updateThemeLogic();
+  }
+
+  // المنطق الموحد لتطبيق الثيم واللغة
+  void _updateThemeLogic() {
+    String lang = myservisec.sharedPreferences.getString("lang") ?? 'en';
+    String themePref = selectedTheme.value;
+
+    ThemeMode mode;
+    ThemeData themeData;
+
+    if (themePref == 'Light') {
+      mode = ThemeMode.light;
+      themeData = (lang == 'ar') ? AppTheme.lightAr : AppTheme.lightEn;
+    } else if (themePref == 'Dark') {
+      mode = ThemeMode.dark;
+      themeData = (lang == 'ar') ? AppTheme.darkAr : AppTheme.darkEn;
+    } else {
+      // System Mode
+      mode = ThemeMode.system;
+      // بنختار ثيم افتراضي والـ OS بيقرر، لكن بنحدد الخط بناءً على اللغة
+      bool isDeviceDark = Get.isPlatformDarkMode;
+      if (lang == 'ar') {
+        themeData = isDeviceDark ? AppTheme.darkAr : AppTheme.lightAr;
+      } else {
+        themeData = isDeviceDark ? AppTheme.darkEn : AppTheme.lightEn;
+      }
+    }
+
+    Get.changeThemeMode(mode);
+    Get.changeTheme(themeData);
   }
 
   @override
   void onInit() {
+    // 1. استعادة اللغة
+    String? sharedPreflang = myservisec.sharedPreferences.getString("lang");
+    language = (sharedPreflang == "ar")
+        ? const Locale('ar')
+        : const Locale('en');
+
+    // 2. استعادة الثيم
+    selectedTheme.value =
+        myservisec.sharedPreferences.getString("theme_mode") ?? 'System';
+
+    // 3. تطبيق الإعدادات عند التشغيل
+    _updateThemeLogic();
+
+    // 4. صلاحيات ومساجات (وظائفك القديمة)
     requestpermition();
     appmassging();
-    determinePosition();
-    String? sharedPreflang = myservisec.sharedPreferences.getString("lang");
-    if (sharedPreflang == "ar") {
-      language = Locale('ar');
-      apptheme = themeArabic;
-    } else if (sharedPreflang == 'en') {
-      language = Locale('en');
-      apptheme = themeEnglish;
-    } else {
-      language = Locale(Get.deviceLocale!.languageCode);
-    }
-
     super.onInit();
   }
 }

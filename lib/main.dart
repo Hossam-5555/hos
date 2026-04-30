@@ -30,6 +30,11 @@ class MyApp extends StatelessWidget {
       getPages: routes,
       translations: Mytransilation(),
       theme: controller.apptheme,
+      themeMode: controller.selectedTheme.value == 'Light'
+          ? ThemeMode.light
+          : controller.selectedTheme.value == 'Dark'
+          ? ThemeMode.dark
+          : ThemeMode.system,
     );
   }
 }

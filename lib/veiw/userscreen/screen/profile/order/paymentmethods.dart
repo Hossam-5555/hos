@@ -11,7 +11,6 @@ class PaymentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),
         child: Appbarbackicon(title: "طرق الدفع", herotag: "paymentScreen"),
