@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/favorite/fav_controller.dart';
 import 'package:hos/controler/usercontroller/offercontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
-import 'package:hos/core/conistant/linkApi.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 import 'package:lottie/lottie.dart';
 
@@ -12,7 +11,7 @@ class Offercard extends GetView<Offercontroller> {
   final int index;
   final ItemsModel items;
 
-   Offercard({super.key, required this.index, required this.items});
+  Offercard({super.key, required this.index, required this.items});
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +90,7 @@ class Offercard extends GetView<Offercontroller> {
                               isFav
                                   ? Icons.favorite
                                   : Icons.favorite_border_rounded,
-                              color: isFav ? Colors.redAccent : Colors.black54,
+                              color: isFav ? Colors.redAccent : Colors.white,
                               size: 20,
                             ),
                           ),
@@ -111,11 +110,6 @@ class Offercard extends GetView<Offercontroller> {
             items.itemsName ?? "بدون اسم",
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w700,
-              fontSize: 14,
-            ),
           ),
 
           const SizedBox(height: 2),
@@ -146,6 +140,5 @@ class Offercard extends GetView<Offercontroller> {
         ],
       ),
     );
-    ;
   }
 }

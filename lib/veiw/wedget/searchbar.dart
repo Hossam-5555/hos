@@ -26,8 +26,11 @@ class Searchbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xffF5F6F8),
-        borderRadius: BorderRadius.circular(40),
+        borderRadius: BorderRadius.all(Radius.circular(25)),
+        border: Border.all(
+          color: Colors.grey.withAlpha(50),
+          strokeAlign: BorderSide.strokeAlignCenter,
+        ),
       ),
       child: TextFormField(
         focusNode: focusNode,
@@ -39,7 +42,7 @@ class Searchbar extends StatelessWidget {
             onPressedIcon!();
           }
         },
-        style: const TextStyle(color: Colors.black),
+        // style: const TextStyle(color: Colors.black),
         decoration: InputDecoration(
           hintText: title,
           hintStyle: const TextStyle(color: Colors.grey),
@@ -47,7 +50,7 @@ class Searchbar extends StatelessWidget {
           prefixIcon: Padding(
             padding: const EdgeInsets.all(12),
             child: SvgPicture.asset(
-              color: const Color.fromARGB(255, 14, 16, 17),
+              color: const Color.fromARGB(255, 103, 105, 105),
               Imageasset.search,
               height: 20,
               width: 20,
@@ -61,16 +64,13 @@ class Searchbar extends StatelessWidget {
               children: [
                 const SizedBox(
                   height: 20,
-                  child: VerticalDivider(color: Colors.grey, thickness: 1),
+                  child: VerticalDivider(color: Colors.grey, thickness: 0.5),
                 ),
                 TextButton(
                   onPressed: onPressedIcon,
                   child: Text(
                     "search".tr,
-                    style: TextStyle(
-                      color: Color(0xff9B2501),
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.w600),
                   ),
                 ),
               ],

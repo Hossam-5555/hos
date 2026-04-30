@@ -47,7 +47,7 @@ class CategoryItem extends StatelessWidget {
                       ),
                     ],
                     shape: BoxShape.circle,
-                    color:  Colors.grey[300],
+                    color: Colors.grey[300],
                   ),
                   child: ClipOval(
                     child: Image.network(
@@ -68,11 +68,7 @@ class CategoryItem extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
               ],
             ),

@@ -45,9 +45,9 @@ class Itemsdetailes extends StatelessWidget {
                         width: double.infinity,
                         margin: const EdgeInsets.only(bottom: 20),
                         decoration: BoxDecoration(
-                          color: const Color(
-                            0xFFF8F9FA,
-                          ), // خلفية رمادي فاتح جداً تبرز الصورة
+                          // color: const Color(
+                          //   0xFFF8F9FA,
+                          // ), // خلفية رمادي فاتح جداً تبرز الصورة
                           borderRadius: const BorderRadius.vertical(
                             bottom: Radius.circular(40),
                           ),
@@ -128,12 +128,12 @@ class Itemsdetailes extends StatelessWidget {
                               child: Text(
                                 maxLines: 2,
                                 item.itemsName ?? '',
-                                style: const TextStyle(
-                                  fontSize: 22,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  height: 1.3,
-                                ),
+                                // style: const TextStyle(
+                                //   fontSize: 22,
+                                //   color: Colors.black,
+                                //   fontWeight: FontWeight.bold,
+                                //   height: 1.3,
+                                // ),
                               ),
                             ),
                             Row(
@@ -169,13 +169,7 @@ class Itemsdetailes extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              "Description".tr,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            Text("Description".tr),
                             InkWell(
                               onTap: () => _showDescriptionSheet(context, item),
                               child: Text(
@@ -191,11 +185,7 @@ class Itemsdetailes extends StatelessWidget {
                         const SizedBox(height: 10),
                         Text(
                           "${item.itemsDesc}",
-                          style: TextStyle(
-                            height: 1.6,
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
+
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                         ),

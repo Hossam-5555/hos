@@ -89,21 +89,15 @@ class NotificationPage extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: isSelected
                               ? Colors.blue.withOpacity(0.08)
-                              : Colors.white,
+                              : Colors.transparent,
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
                             color: isSelected
                                 ? Colors.blue.withOpacity(0.5)
-                                : Colors.transparent,
-                            width: 1.5,
+                                :   Colors.grey.withAlpha(50),
+                            width: 1,
+                            strokeAlign: BorderSide.strokeAlignCenter
                           ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.03),
-                              blurRadius: 15,
-                              offset: const Offset(0, 8),
-                            ),
-                          ],
                         ),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -205,3 +199,5 @@ class NotificationPage extends StatelessWidget {
     );
   }
 }
+
+

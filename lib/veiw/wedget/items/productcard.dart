@@ -86,12 +86,16 @@ class ItemsCard extends GetView<ItemsControler> {
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
-                            child: Icon(
-                              isFav
-                                  ? Icons.favorite
-                                  : Icons.favorite_border_rounded,
-                              color: isFav ? Colors.redAccent : Colors.black54,
-                              size: 20,
+                            child: Container(height: 30,width: 30,
+                              decoration: BoxDecoration(color: Colors.grey,
+                                shape: BoxShape.circle),
+                              child: Icon(
+                                isFav
+                                    ? Icons.favorite
+                                    : Icons.favorite_border_rounded,
+                                color: isFav ? Colors.redAccent : Colors.black,
+                                size: 20,
+                              ),
                             ),
                           ),
                         );
@@ -110,18 +114,13 @@ class ItemsCard extends GetView<ItemsControler> {
             items.itemsName ?? "بدون اسم",
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w700, // خط عريض
-              fontSize: 14,
-            ),
           ),
 
           const SizedBox(height: 2),
 
           // وصف قصير (زي Oversized clean drip في الصورة) - تقدر تغيره للوصف الفعلي من الـ model
           Text(
-            "Built for movement", // يفضل تخليها: items.itemsDesc أو أي حقل مناسب عندك
+            "${items.itemsDesc}", // يفضل تخليها: items.itemsDesc أو أي حقل مناسب عندك
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
@@ -137,7 +136,7 @@ class ItemsCard extends GetView<ItemsControler> {
           Text(
             "${items.itemsPrice}${"Egp".tr}", // شلت الكسور عشان يبقى زي الصورة $39
             style: const TextStyle(
-              color: Colors.green,
+              color: Colors.blue,
               fontWeight: FontWeight.w800,
               fontSize: 14,
             ),

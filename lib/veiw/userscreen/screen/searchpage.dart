@@ -20,7 +20,7 @@ class Searchpage extends StatelessWidget {
       body: GetBuilder<SearchMix>(
         builder: (controller) {
           return Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -39,38 +39,19 @@ class Searchpage extends StatelessWidget {
                 SizedBox(height: 20),
                 controller.recentSearches.isEmpty &&
                         controller.search!.text.isEmpty
-                    ? Center(
-                        child: Text(
-                          "Type to search...".tr,
-                          style: TextStyle(
-                            color: Colors.grey.shade500,
-                            fontSize: 16,
-                          ),
-                        ),
-                      )
+                    ? Center(child: Text("Type to search...".tr))
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             "Recent Searches".tr,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
-                            ),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           InkWell(
                             onTap: () {
                               controller.clearRecentSearches();
                             },
-                            child: Text(
-                              "Clear All".tr,
-                              style: const TextStyle(
-                                fontSize: 13,
-                                color: Colors.redAccent,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
+                            child: Text("Clear All".tr),
                           ),
                         ],
                       ),
@@ -84,12 +65,8 @@ class Searchpage extends StatelessWidget {
                     return ActionChip(
                       label: Text(
                         controller.recentSearches[index],
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.grey.shade800,
-                        ),
+                        style: TextStyle(fontSize: 13),
                       ),
-                      backgroundColor: Colors.grey.shade100,
                       side: BorderSide.none,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -124,13 +101,13 @@ class Searchpage extends StatelessWidget {
                             horizontal: 16,
                             vertical: 8,
                           ),
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.all(Radius.circular(25)),
                             border: Border.all(
-                              color: Colors.grey.shade200,
-                            ), // إطار خفيف بدل الـ Card العادي
+                              color: Colors.grey.withAlpha(50),
+                              strokeAlign: BorderSide.strokeAlignCenter,
+                            ),
                           ),
                           child: Row(
                             children: [
@@ -160,9 +137,9 @@ class Searchpage extends StatelessWidget {
                                     Text(
                                       item.itemsName ?? "",
                                       style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black87,
+                                        // fontSize: 16,
+                                        // fontWeight: FontWeight.bold,
+                                        // color: Colors.black87,
                                       ),
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
@@ -171,9 +148,9 @@ class Searchpage extends StatelessWidget {
                                     Text(
                                       '${item.itemsPrice} ${"EGP".tr}',
                                       style: TextStyle(
-                                        fontSize: 15,
-                                        color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.w700,
+                                        // fontSize: 15,
+                                        color: Colors.blue,
+                                        // fontWeight: FontWeight.w700,
                                       ),
                                     ),
                                   ],

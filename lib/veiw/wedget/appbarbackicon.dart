@@ -21,7 +21,7 @@ class Appbarbackicon extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       elevation: 0,
       actions: [if (selected == true && iconButton != null) iconButton!],
-      title: Text(title, style: const TextStyle(color: Colors.black)),
+      title: Text(title),
       centerTitle: true,
       leadingWidth: 70, // زيادة العرض قليلاً عشان الدايرة متتحشرش
       leading: Padding(

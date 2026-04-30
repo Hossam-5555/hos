@@ -107,7 +107,11 @@ class BackButtonCircle extends StatelessWidget {
             color: Colors.transparent,
             child: IconButton(
               onPressed: () => Navigator.of(context).pop(),
-              icon: const Icon(Icons.arrow_back_ios_sharp, size: 20),
+              icon: const Icon(
+                Icons.arrow_back_ios_sharp,
+                size: 20,
+                color: Colors.black,
+              ),
             ),
           ),
         ),

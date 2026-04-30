@@ -24,8 +24,9 @@ class Buttomappbar extends GetView<Homescreencontroller> {
             height: 75, // ← ارتفاع ثابت ومناسب
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: Colors.grey[50],
                 borderRadius: BorderRadius.circular(40),
+                border: Border.all(color: Colors.grey.withAlpha(50)),
               ),
               child: Row(
                 children: List.generate(controller.pages.length, (index) {
@@ -41,7 +42,7 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                         width: isSelected ? 65 : 48,
                         height: isSelected ? 65 : 48,
                         decoration: BoxDecoration(
-                          color: isSelected ? Colors.white : null,
+                          color: isSelected ? const Color.fromARGB(255, 200, 216, 233) : null,
                           borderRadius: BorderRadius.circular(40),
                         ),
                         child: Column(

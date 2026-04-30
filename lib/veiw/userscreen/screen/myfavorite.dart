@@ -51,7 +51,7 @@ class Myfavorite extends StatelessWidget {
                           height: 220,
                           image: "${items.item?.itemsImage}",
                           title: items.item?.itemsName ?? "بدون اسم",
-                          price: "${items.item?.itemsPrice ?? "0"} ج.م",
+                          price: "${items.item?.itemsPrice ?? "0"}",
                           rating: 4.5, // لو الموديل فيه تقييم حطه هنا
                           onTap: () {
                             // controller.gotoitemsdatails(items);

@@ -55,7 +55,6 @@ class ProfilePage extends StatelessWidget {
 
             Container(
               decoration: BoxDecoration(
-                color: Colors.grey[100],
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
@@ -68,28 +67,40 @@ class ProfilePage extends StatelessWidget {
               child: Column(
                 children: [
                   _buildListTile(
-                    gradientColors: [Colors.black, Colors.blue],
+                    gradientColors: [
+                      const Color.fromARGB(255, 3, 60, 218),
+                      Colors.blue,
+                    ],
                     icon: Icons.local_mall_outlined,
                     title: "Orders".tr,
                     onTap: () => Get.toNamed(Approute.Orders),
                   ),
                   _buildDivider(),
                   _buildListTile(
-                    gradientColors: [Colors.black, Colors.red],
+                    gradientColors: [
+                      const Color.fromARGB(255, 243, 9, 9),
+                      Colors.red,
+                    ],
                     icon: Icons.favorite_border,
                     title: "Favorite".tr,
                     onTap: () => Get.toNamed(Approute.myfavorite),
                   ),
                   _buildDivider(),
                   _buildListTile(
-                    gradientColors: [Colors.black, Colors.green],
+                    gradientColors: [
+                      const Color.fromARGB(255, 31, 253, 2),
+                      Colors.green,
+                    ],
                     icon: Icons.location_on_outlined,
                     title: "Saved Addresses".tr,
                     onTap: () => Get.toNamed(Approute.viewmyaddres),
                   ),
                   _buildDivider(),
                   _buildListTile(
-                    gradientColors: [Colors.black, Colors.orange],
+                    gradientColors: [
+                      const Color.fromARGB(255, 196, 136, 8),
+                      Colors.orange,
+                    ],
                     icon: Icons.credit_card_outlined,
                     title: "Payment Methods".tr,
                     onTap: () => Get.to(
@@ -170,19 +181,19 @@ class ProfilePage extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return Material(
-      elevation: 0.2,
-      color: Colors.grey[200],
+      color: Colors.transparent,
       borderRadius: BorderRadius.circular(40),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(40),
         child: Container(
           padding: const EdgeInsetsDirectional.all(5),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 5),
-            ],
+            borderRadius: BorderRadius.all(Radius.circular(25)),
+            border: Border.all(
+              color: Colors.grey.withAlpha(50),
+              strokeAlign: BorderSide.strokeAlignCenter,
+            ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -199,14 +210,7 @@ class ProfilePage extends StatelessWidget {
               SizedBox(width: 20),
               Container(
                 margin: EdgeInsetsDirectional.symmetric(horizontal: 10),
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
+                child: Text(title),
               ),
             ],
           ),
@@ -224,7 +228,8 @@ class ProfilePage extends StatelessWidget {
     List<Color>? gradientColors, // أضفت باراميتر لتخصيص الألوان لكل أيقونة
   }) {
     return Material(
-      color: Colors.transparent,
+      borderRadius: BorderRadiusGeometry.circular(20),
+      // color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
         borderRadius: isLast
@@ -251,8 +256,8 @@ class ProfilePage extends StatelessWidget {
                     BoxShadow(
                       color: (gradientColors?.last ?? Colors.blue.shade700)
                           .withOpacity(0.3),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
+                      blurRadius: 5,
+                      offset: const Offset(0, 2),
                     ),
                   ],
                 ),
@@ -291,7 +296,7 @@ class ProfilePage extends StatelessWidget {
         left: 60,
         right: 20,
       ), // لترك مساحة للأيقونة
-      child: Divider(height: 1, color: Colors.grey[200]),
+      child: Divider(height: 0.2, color: Colors.grey[100]),
     );
   }
 }

@@ -24,7 +24,8 @@ class Orderdetailes extends StatelessWidget {
       bottomNavigationBar: c.order?.status == "pending"
           ? Padding(
               padding: EdgeInsets.all(w * 0.06),
-              child: Container(height: 50,
+              child: Container(
+                height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     elevation: 0.2,
@@ -67,9 +68,9 @@ class Orderdetailes extends StatelessWidget {
     margin: const EdgeInsets.only(bottom: 12),
     padding: const EdgeInsets.all(12),
     decoration: BoxDecoration(
-      color: Colors.white,
+      border: Border.all(color: Colors.grey.withAlpha(50)),
       borderRadius: BorderRadius.circular(12),
-      boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],
+      // boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],
     ),
     child: child,
   );

@@ -26,8 +26,17 @@ class SharedProductCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        padding: EdgeInsets.all(5),
         height: height,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(25)),
+          border: Border.all(
+            color: Colors.grey.withAlpha(50),
+            strokeAlign: BorderSide.strokeAlignCenter,
+          ),
+        ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             /// 1. الصورة
@@ -35,8 +44,10 @@ class SharedProductCard extends StatelessWidget {
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 146, 146, 146).withAlpha(35),
-                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.grey[100], // ✅ لون رمادي فاتح لخلفية الصورة
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(25),
+                  ), // ✅ زوايا دائرية لحامل الصورة
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -59,16 +70,7 @@ class SharedProductCard extends StatelessWidget {
             const SizedBox(height: 10),
 
             /// 2. تفاصيل المنتج
-            Text(
-              title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w700,
-                fontSize: 14,
-              ),
-            ),
+            Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
             const SizedBox(height: 4),
 
             /// 3. التقييم
@@ -90,16 +92,13 @@ class SharedProductCard extends StatelessWidget {
 
             /// 4. السعر + الأكشن (متغير حسب الصفحة)
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
                   "$price${"EGP".tr}",
-                  style: const TextStyle(
-                    color: Colors.blue,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 14,
-                  ),
+                  style: const TextStyle(color: Colors.blue, fontSize: 14),
                 ),
+                SizedBox(width: 4,),
                 actionButton, // 👈 هنا هيتعرض الزرار اللي هتبعتهوله
               ],
             ),

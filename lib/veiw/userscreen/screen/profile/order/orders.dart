@@ -48,20 +48,11 @@ class Orders extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: h * 0.01),
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(w * 0.04),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withAlpha(13), // 0.05 * 255 = 13
-                          blurRadius: 6,
-                          offset: Offset(0, 3),
-                        ),
-                        BoxShadow(
-                          color: Colors.black.withAlpha(13), // 0.05 * 255 = 13
-                          blurRadius: 6,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
+                      borderRadius: BorderRadius.all(Radius.circular(25)),
+                      border: Border.all(
+                        color: Colors.grey.withAlpha(50),
+                        strokeAlign: BorderSide.strokeAlignCenter,
+                      ),
                     ),
 
                     child: ListTile(
@@ -270,7 +261,7 @@ class Orders extends StatelessWidget {
                             // // عرض التقييم
                             // :
                             Text(
-                              order.status == "4" ? "4 ⭐" : "",
+                              order.status == "delivered" ? "4 ⭐" : "",
                               style: TextStyle(fontSize: w * 0.04),
                             ),
                           ],

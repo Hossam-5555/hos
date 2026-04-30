@@ -53,7 +53,7 @@ class HomePage extends StatelessWidget {
 
                         /// Main Offer
                         AutoRotatingOffers(),
-//Hossam iss================================
+                        //Hossam iss================================
                         SizedBox(height: height * 0.02),
                         Titles(title: "Categories".tr),
 
@@ -102,7 +102,7 @@ class HomePage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const CurvedItemsView(),
+                        CurvedItemsView(),
 
                         /// 🔥 Products List (FIXED)
                         ///
