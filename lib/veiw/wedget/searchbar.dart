@@ -81,7 +81,7 @@ class Searchbar extends StatelessWidget {
           fillColor: Colors.transparent,
 
           contentPadding: const EdgeInsets.symmetric(
-            vertical: 14,
+            vertical: 10,
             horizontal: 16,
           ),
 

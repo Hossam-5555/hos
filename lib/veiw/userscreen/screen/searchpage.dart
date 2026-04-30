@@ -14,6 +14,18 @@ class Searchpage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Searchbar(
+          focusNode: controller.focusNode,
+          textInputAction: controller.textInputAction,
+          onPressedIcon: () {
+            // 👈 لما يدوس بحث، بنضيف الكلمة للسجل وننفذ البحث
+            controller.addToRecentSearches(controller.search!.text);
+            controller.onsearch();
+          },
+          onChanged: controller.checksearch,
+          title: "Search products...".tr,
+          mycontroller: controller.search!,
+        ),
         elevation: 0,
         leading: Hero(tag: "Search", child: BackButtonCircle()),
       ),
@@ -24,19 +36,6 @@ class Searchpage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Searchbar(
-                  focusNode: controller.focusNode,
-                  textInputAction: controller.textInputAction,
-                  onPressedIcon: () {
-                    // 👈 لما يدوس بحث، بنضيف الكلمة للسجل وننفذ البحث
-                    controller.addToRecentSearches(controller.search!.text);
-                    controller.onsearch();
-                  },
-                  onChanged: controller.checksearch,
-                  title: "Search products...".tr,
-                  mycontroller: controller.search!,
-                ),
-                SizedBox(height: 20),
                 controller.recentSearches.isEmpty &&
                         controller.search!.text.isEmpty
                     ? Center(child: Text("Type to search...".tr))
