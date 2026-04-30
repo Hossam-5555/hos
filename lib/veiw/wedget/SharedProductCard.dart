@@ -23,6 +23,9 @@ class SharedProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    double h = size.height;
+    double w = size.width;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -76,13 +79,13 @@ class SharedProductCard extends StatelessWidget {
             /// 3. التقييم
             Row(
               children: [
-                const Icon(Icons.star_rounded, size: 16, color: Colors.amber),
+                Icon(Icons.star_rounded, size: w * 0.035, color: Colors.amber),
                 const SizedBox(width: 4),
                 Text(
                   rating.toString(),
                   style: TextStyle(
                     color: Colors.grey.shade600,
-                    fontSize: 12,
+                    fontSize: w * 0.03,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -98,7 +101,7 @@ class SharedProductCard extends StatelessWidget {
                   "$price${"EGP".tr}",
                   style: const TextStyle(color: Colors.blue, fontSize: 14),
                 ),
-                SizedBox(width: 4,),
+                SizedBox(width: 4),
                 actionButton, // 👈 هنا هيتعرض الزرار اللي هتبعتهوله
               ],
             ),

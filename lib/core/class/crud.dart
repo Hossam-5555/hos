@@ -40,7 +40,7 @@ class Crud {
     try {
       if (await checkinterner()) {
         var response = await http.get(Uri.parse(linkUrl));
-
+        print(response.body);
         if (response.statusCode == 200 || response.statusCode == 201) {
           var responsebody = jsonDecode(response.body);
           return Right(responsebody);
@@ -54,8 +54,6 @@ class Crud {
       return Left(Statusrequest.serverfailure);
     }
   }
-
-
 
   //to add file
   Future<Either<Statusrequest, Map>> addRequestWithImageOne(
@@ -107,5 +105,6 @@ enum Statusrequest {
   failure,
   serverfailure,
   success,
-  none, nodata,
+  none,
+  nodata,
 }

@@ -8,29 +8,35 @@ import 'package:hos/data/model/itemsmodel.dart';
 
 class CurvedItemsView extends StatelessWidget {
   CurvedItemsView({super.key});
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final width = size.width;
     final height = size.height;
+
+    // تحديد ارتفاع متناسب مع طول الشاشة (مثلاً 35% من طول الشاشة)
+    // هذا يضمن أن التصميم لا يظهر صغيراً جداً في الشاشات الطويلة
+    final double viewHeight = height * 0.35;
+
     return GetBuilder<HomepageController>(
       builder: (controller) {
-        // 1. فحص أمان للقائمة فقط: إذا كانت القائمة فارغة، نعرض مؤشر تحميل
         if (controller.newArival.isEmpty) {
-          return const SizedBox(
-            height: 290,
-            child: Center(child: CircularProgressIndicator()),
+          return SizedBox(
+            height: viewHeight,
+            child: const Center(child: CircularProgressIndicator()),
           );
         }
 
-        // 2. تعيين قيمة افتراضية للـ PageController إذا لم يتم تهيئته في الكنترولر بعد
-        // استخدمنا (??) بحيث إذا كان null يأخذ النسخة الافتراضية
         final PageController pageController =
             controller.pageController ??
-            PageController(initialPage: 0, viewportFraction: 0.5);
+            PageController(
+              initialPage: 0,
+              viewportFraction: 0.55,
+            ); // زيادة النسبة قليلاً لعرض محتوى أفضل
 
         return SizedBox(
-          height: 290,
+          height: viewHeight,
           child: PageView.builder(
             controller: pageController,
             itemCount: controller.newArival.length,
@@ -46,179 +52,153 @@ class CurvedItemsView extends StatelessWidget {
                   double rotation = 0.0;
                   double translateY = 0.0;
 
-                  // 3. التأكد من أن الكنترولر مرتبط بالواجهة قبل طلب القيم
                   if (pageController.hasClients &&
                       pageController.position.haveDimensions) {
-                    // المتغير page قد يكون null في اللحظات الأولى، لذا نستخدم initialPage كبديل
                     double currentPage =
                         pageController.page ??
                         pageController.initialPage.toDouble();
-
-                    // حساب الفرق بين مكان العنصر والصفحة الحالية
                     double diff = (index - currentPage);
-
-                    // حساب التحجيم (Scale)
-                    value = (1 - (diff.abs() * 0.25)).clamp(0.75, 1.0);
-
-                    // حساب الدوران (Rotation)
+                    value = (1 - (diff.abs() * 0.2)).clamp(0.8, 1.0);
                     rotation = diff * 0.1;
-
-                    // حساب الإزاحة العمودية
-                    translateY = 60 * (1 - value);
+                    // جعل الإزاحة متناسبة مع طول العنصر
+                    translateY = (viewHeight * 0.2) * (1 - value);
                   } else {
-                    // القيمة الافتراضية عند بدء التشغيل قبل السكرول
-                    if (index == pageController.initialPage) {
-                      value = 1.0;
-                      translateY = 0.0;
-                    } else {
-                      value = 0.75; // حجم العناصر الجانبية
-                      translateY = 60 * (1 - value);
+                    if (index != pageController.initialPage) {
+                      value = 0.8;
+                      translateY = (viewHeight * 0.2) * (1 - value);
                     }
                   }
 
-                  // 4. تطبيق التحويلات
                   return Transform.translate(
-                    offset: Offset(0, translateY), // النزول للأسفل
+                    offset: Offset(0, translateY),
                     child: Transform.scale(
-                      scale: value, // التصغير والتكبير
+                      scale: value,
                       child: Transform.rotate(
-                        angle: rotation, // الدوران الخفيف
+                        angle: rotation,
                         child: Opacity(
-                          opacity: value.clamp(0.5, 1.0),
+                          opacity: value.clamp(0.6, 1.0),
                           child: InkWell(
-                            onTap: () {
-                              controller.gotoitemsdetails(items);
-                            },
-
-                            // ❌ تم حذف ClipPath لاستخدام الزوايا الدائرية من BoxDecoration
+                            onTap: () => controller.gotoitemsdetails(items),
                             child: Container(
+                              margin: EdgeInsets.symmetric(
+                                horizontal: width * 0.02,
+                              ), // هامش جانبي مرن
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(25),
-                                ),
+                                // color: Colors.white,
+                                borderRadius: BorderRadius.circular(
+                                  width * 0.06,
+                                ), // زوايا مرنة
+
                                 border: Border.all(
-                                  color: Colors.grey.withAlpha(50),
-                                  strokeAlign: BorderSide.strokeAlignCenter,
+                                  color: Colors.grey.withAlpha(30),
                                 ),
-                                
                               ),
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  // 🖼 الصورة
-                                  Container(
-                                    height: height * 0.17,
-                                    // المارجن الخاص بك جيد لعمل الهامش الداخلي
-                                    margin: EdgeInsets.only(
-                                      left: 17,
-                                      right: 17,
-                                      top: 17,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Colors
-                                          .grey[100], // ✅ لون رمادي فاتح لخلفية الصورة
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(15),
-                                      ), // ✅ زوايا دائرية لحامل الصورة
-                                    ),
-                                    // ✅ نستخدم ClipRRect لقص زوايا الصورة
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(15),
+                                  // 🖼 قسم الصورة المحسن
+                                  Expanded(
+                                    flex: 2, // تأخذ 60% من مساحة الكارد
+                                    child: Container(
+                                      width: double.infinity,
+                                      margin: EdgeInsets.all(width * 0.03),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[100],
+                                        borderRadius: BorderRadius.circular(
+                                          width * 0.04,
+                                        ),
                                       ),
-                                      child: CachedNetworkImage(
-                                        imageUrl: items.itemsImage!,
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                      image: imageProvider,
-                                                      fit: BoxFit.cover,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                          width * 0.04,
+                                        ),
+                                        child: CachedNetworkImage(
+                                          imageUrl: items.itemsImage!,
+                                          fit: BoxFit
+                                              .contain, // أفضل لعرض المنتجات بدون قص
+                                          placeholder: (context, url) =>
+                                              const Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                      strokeWidth: 2,
                                                     ),
-                                                  ),
-                                                ),
-                                        placeholder: (context, url) =>
-                                            CircularProgressIndicator(),
-                                        errorWidget: (context, url, error) =>
-                                            Icon(Icons.error),
+                                              ),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.broken_image),
+                                        ),
                                       ),
                                     ),
                                   ),
 
-                                  // 🔹 الاسم والسعر وزر السلة
-                                  // هذا الجزء كان منظماً بشكل جيد
+                                  // 🔹 قسم البيانات المحسن
                                   Expanded(
+                                    flex: 1, // تأخذ 40% من مساحة الكارد
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(
-                                        horizontal:
-                                            width * 0.040, // تعديل بسيط للهوامش
-                                        vertical: height * 0.012,
+                                        horizontal: width * 0.03,
+                                        vertical: 4,
                                       ),
                                       child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            items.itemsName ?? "بدون اسم",
+                                            items.itemsName ?? "",
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
-                                              fontSize: width * 0.038,
-                                              fontWeight: FontWeight.w600,
+                                              fontSize:
+                                                  width * 0.035, // خط متجاوب
+                                              fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          Container(
-                                            alignment: Alignment.centerRight,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                const Icon(
-                                                  Icons.star_rounded,
-                                                  size: 16,
-                                                  color: Colors.amber,
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.star_rounded,
+                                                size: width * 0.035,
+                                                color: Colors.amber,
+                                              ),
+                                              const SizedBox(width: 2),
+                                              Text(
+                                                "4.5",
+                                                style: TextStyle(
+                                                  fontSize: width * 0.03,
+                                                  color: Colors.grey,
                                                 ),
-                                                const SizedBox(width: 4),
-                                                Text(
-                                                  '4.5',
-                                                  style: TextStyle(
-                                                    color: Colors.grey.shade600,
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                "${items.itemsPrice ?? ""}${"EGP".tr}", // تم الإبقاء على العملة الخاصة بك
-                                                style: TextStyle(
-                                                  fontSize: width * 0.042,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.blue,
+                                              Flexible(
+                                                child: Text(
+                                                  "${items.itemsPrice} ${"EGP".tr}",
+                                                  style: TextStyle(
+                                                    fontSize: width * 0.038,
+                                                    fontWeight: FontWeight.w900,
+                                                    color: const Color(
+                                                      0xFF2D5BFF,
+                                                    ), // اللون الأزرق من الصورة السابقة
+                                                  ),
                                                 ),
                                               ),
+                                              // زر السلة المتجاوب
                                               Container(
-                                                padding: EdgeInsets.all(8),
-                                                height: height * 0.05,
-                                                width: height * 0.05,
+                                                padding: const EdgeInsets.all(
+                                                  6,
+                                                ),
                                                 decoration: const BoxDecoration(
                                                   color: Colors.black,
                                                   shape: BoxShape.circle,
                                                 ),
                                                 child: SvgPicture.asset(
                                                   Imageasset.cart,
-                                                  height: 20,
-                                                  width: 20,
+                                                  height: width * 0.04,
+                                                  width: width * 0.04,
                                                   color: Colors.white,
                                                 ),
                                               ),
