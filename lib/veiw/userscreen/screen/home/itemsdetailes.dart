@@ -15,6 +15,8 @@ class Itemsdetailes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    double h = size.height;
     // نغلف الـ Scaffold بالكامل بـ GetBuilder عشان الـ BottomBar يتحدث مع العداد
     return GetBuilder<Itemdetailscontroller>(
       builder: (controller) {
@@ -38,7 +40,7 @@ class Itemsdetailes extends StatelessWidget {
                 children: [
                   // 1. صورة المنتج مع الشعار
                   Stack(
-                    alignment: Alignment.bottomLeft,
+                    alignment: Alignment.center,
                     children: [
                       Container(
                         height: Get.height * 0.45,
@@ -65,6 +67,10 @@ class Itemsdetailes extends StatelessWidget {
                                 imageBuilder: (context, imageProvider) =>
                                     Container(
                                       decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                          bottomRight: Radius.circular(20),
+                                          bottomLeft: Radius.circular(20),
+                                        ),
                                         image: DecorationImage(
                                           image: imageProvider,
                                           fit: BoxFit.cover,
@@ -89,20 +95,26 @@ class Itemsdetailes extends StatelessWidget {
                       //         child: _buildHotProductBadge(),
                       //       )
                       //     : SizedBox.shrink(),
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: List.generate(
-                            item.images!.length,
-                            (index) => AnimatedContainer(
-                              margin: EdgeInsets.all(10),
-                              width: controller.curentpage == index ? 30 : 10,
-                              height: 6,
-                              decoration: BoxDecoration(
-                                color: Appcolor.primaryColor,
-                                borderRadius: BorderRadius.circular(20),
+                      Positioned(
+                        top: h * 0.41,
+                        child: Container(
+                          decoration: BoxDecoration(color: Colors.grey[50],
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: List.generate(
+                              item.images!.length,
+                              (index) => AnimatedContainer(
+                                margin: EdgeInsets.all(10),
+                                width: controller.curentpage == index ? 15 : 5,
+                                height: 6,
+                                decoration: BoxDecoration(
+                                  color: Appcolor.primaryColor,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                duration: Duration(milliseconds: 500),
                               ),
-                              duration: Duration(milliseconds: 500),
                             ),
                           ),
                         ),
@@ -214,48 +226,50 @@ class Itemsdetailes extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // مكون العداد الخاص بك
-            Countofproduct(count: controller.itemcount),
-
+            Flexible(child: Countofproduct(count: controller.itemcount)),
+            SizedBox(width: 10),
             // زر الإضافة للسلة
-            SizedBox(
-              height: 55,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black, // لون أسود فخم
-                  elevation: 1,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                ),
-                onPressed: () {
-                  if (controller.itemcount == 0) {
-                    Get.snackbar(
-                      "تنبيه",
-                      "يرجى اختيار الكمية أولاً",
-                      backgroundColor: Colors.red.shade50,
-                      colorText: Colors.red,
-                    );
-                  } else {
-                    Get.find<CartController>().addtocart(
-                      controller.itemsmodel.id!,
-                      controller.itemcount,
-                    );
-                  }
-                },
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.shopping_bag_outlined, color: Colors.white),
-                    SizedBox(width: 8),
-                    Text(
-                      "Add to Card",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+            Flexible(
+              child: SizedBox(
+                height: 55,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black, // لون أسود فخم
+                    // elevation: 1,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40),
                     ),
-                  ],
+                  ),
+                  onPressed: () {
+                    if (controller.itemcount == 0) {
+                      Get.snackbar(
+                        "تنبيه",
+                        "يرجى اختيار الكمية أولاً",
+                        backgroundColor: Colors.red.shade50,
+                        colorText: Colors.red,
+                      );
+                    } else {
+                      Get.find<CartController>().addtocart(
+                        controller.itemsmodel.id!,
+                        controller.itemcount,
+                      );
+                    }
+                  },
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.shopping_bag_outlined, color: Colors.white),
+                      SizedBox(width: 8),
+                      Text(
+                        "Add to Card",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

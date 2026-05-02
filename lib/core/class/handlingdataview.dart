@@ -50,7 +50,8 @@ class Handlingdataview extends StatelessWidget {
       return Center(
         child: Animationforstatus(animationPath: Imageasset.loading),
       );
-    } else if (statusrequest == Statusrequest.failure) {
+    } else if (statusrequest == Statusrequest.failure ||
+        statusrequest == Statusrequest.nodata) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -70,6 +71,8 @@ class Handlingdataview extends StatelessWidget {
       return Center(
         child: Animationforstatus(animationPath: Imageasset.nodata),
       );
+    } else if (statusrequest == Statusrequest.nodata) {
+      return Center(child: Animationforstatus(animationPath: Imageasset.nodata));
     }
 
     // 2. في حالة التحميل (Loading) أو النجاح (Success)

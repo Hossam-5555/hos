@@ -17,7 +17,6 @@ class ViewMyAddres extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),
         child: Appbarbackicon(herotag: '', title: "My Addresses"),
@@ -35,21 +34,16 @@ class ViewMyAddres extends StatelessWidget {
           bool isenable = controller.statusrequest == Statusrequest.loading;
           return Handlingdataview(
             statusrequest: controller.statusrequest!,
-            widget: Skeletonizer(
-              containersColor: Colors.grey.withAlpha(90),
+            widget: ListView.builder(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
+              itemCount: controller.listaddresdata.length,
+              itemBuilder: (context, index) {
+                final address = controller.listaddresdata[index];
 
-              enabled: isenable,
-              child: ListView.builder(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
-                itemCount: controller.listaddresdata.length,
-                itemBuilder: (context, index) {
-                  final address = controller.listaddresdata[index];
-
-                  return _card(address, () {
-                    controller.deleteAddres(address.id!);
-                  });
-                },
-              ),
+                return _card(address, () {
+                  controller.deleteAddres(address.id!);
+                });
+              },
             ),
           );
         },
@@ -64,16 +58,16 @@ Widget _card(AddresModel address, VoidCallback onDelete) {
     margin: const EdgeInsets.only(bottom: 16),
     padding: const EdgeInsets.all(16), // إضافة مسافات داخلية مريحة
     decoration: BoxDecoration(
-      color: Colors.white,
+      // color: Colors.white,
       borderRadius: BorderRadius.circular(16),
       border: Border.all(color: Colors.grey.shade200, width: 1.5),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.04),
-          blurRadius: 10,
-          offset: const Offset(0, 4),
-        ),
-      ],
+      // boxShadow: [
+      //   BoxShadow(
+      //     color: Colors.black.withOpacity(0.04),
+      //     blurRadius: 10,
+      //     offset: const Offset(0, 4),
+      //   ),
+      // ],
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,

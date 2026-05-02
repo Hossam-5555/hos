@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/favorite/fav_controller.dart';
 import 'package:hos/controler/usercontroller/offercontroller.dart';
+import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/veiw/wedget/items/offer/offercard.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class Offer extends StatelessWidget {
   const Offer({super.key});
@@ -35,12 +37,12 @@ class Offer extends StatelessWidget {
                   SliverToBoxAdapter(child: _buildPromoBanner()),
 
                   /// ❌ Empty state
-                  if (controller.offerList.isEmpty)
-                    SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: _buildEmptyState(),
-                    )
-                  else
+                  // if (controller.offerList.isEmpty)
+                  //   SliverFillRemaining(
+                  //     hasScrollBody: false,
+                  //     child: _buildEmptyState(),
+                  //   )
+                  // else
                     /// 🧱 Grid Offers
                     SliverPadding(
                       padding: const EdgeInsets.symmetric(
@@ -49,9 +51,14 @@ class Offer extends StatelessWidget {
                       ),
                       sliver: SliverGrid(
                         delegate: SliverChildBuilderDelegate(
-                          (context, index) => Offercard(
-                            index: index,
-                            items: controller.offerList[index],
+                          (context, index) => Skeletonizer(
+                            enabled:
+                                controller.statusrequest ==
+                                Statusrequest.loading,
+                            child: Offercard(
+                              index: index,
+                              items: controller.offerList[index],
+                            ),
                           ),
                           childCount: controller.offerList.length,
                         ),

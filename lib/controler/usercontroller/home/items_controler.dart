@@ -52,6 +52,9 @@ class ItemsControler extends SearchMix {
       if (response['status'] == true) {
         List itemlist = response["data"];
         data.addAll(itemlist.map((e) => ItemsModel.fromJson(e)));
+        if (data.isEmpty) {
+          statusrequest = Statusrequest.nodata;
+        }
       } else {
         statusrequest = Statusrequest.failure;
       }

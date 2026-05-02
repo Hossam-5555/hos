@@ -77,7 +77,8 @@ class Items extends StatelessWidget {
                       itemCount: controller.data.length,
                       itemBuilder: (context, i) {
                         // تم إزالة سطر الـ favController من هنا للحفاظ على سلاسة السكرول
-                        return ItemsCard(items: controller.data[i]);
+                        return 
+                        ItemsCard(items: controller.data[i]);
                       },
                     ),
                   ),

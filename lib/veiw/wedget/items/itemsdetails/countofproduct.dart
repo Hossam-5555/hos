@@ -8,8 +8,13 @@ class Countofproduct extends GetView<Itemdetailscontroller> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 200,height: 50,
+      height: 55,
       decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: AlignmentGeometry.topLeft,
+          end: AlignmentGeometry.bottomRight,
+          colors: [Colors.blue,Colors.white, const Color.fromARGB(255, 111, 132, 170)],
+        ),
         borderRadius: BorderRadius.circular(40),
         color: Colors.grey[200],
       ),
@@ -20,18 +25,18 @@ class Countofproduct extends GetView<Itemdetailscontroller> {
             onPressed: () {
               controller.remove();
             },
-            icon: Icon(Icons.remove),
+            icon: Icon(Icons.remove,color: Colors.black,),
           ),
           Text(
             " $count ",
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold,color: Colors.black87),
           ),
           IconButton(
             onPressed: () {
               controller.add();
             },
-            icon: Icon(Icons.add),
+            icon: Icon(Icons.add,color: Colors.black,),
           ),
         ],
       ),

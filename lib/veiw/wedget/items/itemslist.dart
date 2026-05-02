@@ -114,7 +114,7 @@ class BuildCategoryItems extends StatelessWidget {
     return AnimatedDefaultTextStyle(
       duration: const Duration(milliseconds: 300),
       style: TextStyle(
-        color: isSelected ? Colors.white : Colors.black87,
+        color: isSelected ? Colors.blue : Colors.grey,
         fontSize: 14,
         fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
         letterSpacing: 0.3,
