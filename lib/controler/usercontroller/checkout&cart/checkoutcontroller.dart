@@ -106,7 +106,9 @@ class Checkoutcontroller extends GetxController {
           // مسح السلة (يفضل تفعيلها لضمان عدم تكرار الطلب)
           Get.find<CartController>().view();
 
+          Future.delayed(const Duration(milliseconds: 300), () {
           Get.offAllNamed(Approute.Homescreen);
+        });
         } else {
           statusrequest = Statusrequest.failure;
           _showSnackBar("خطأ في البيانات، الرجاء المحاولة مرة أخرى");
@@ -138,18 +140,12 @@ class Checkoutcontroller extends GetxController {
 
         content: Row(
           children: [
-            Icon(Icons.delete_outline, color: Colors.white),
+            Icon(Icons.check_circle, color: Colors.green),
             SizedBox(width: 10),
             Expanded(
               child: Text(message, style: TextStyle(color: Colors.white)),
             ),
           ],
-        ),
-
-        action: SnackBarAction(
-          label: "Succes",
-          textColor: Colors.blue,
-          onPressed: () {},
         ),
       ),
     );

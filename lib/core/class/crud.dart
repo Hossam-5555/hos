@@ -55,6 +55,38 @@ class Crud {
     }
   }
 
+  Future<Either<Statusrequest, Map>> putandpacth(
+    String linkUrl,
+    Map data,
+  ) async {
+    try {
+      if (await checkinterner()) {
+        var response = await http.patch(
+          Uri.parse(linkUrl),
+          body: jsonEncode(data),
+          headers: {
+            "Content-Type":
+                "application/json", // بتعرف السيرفر إن اللي مبعوث ده JSON مش String عادي
+            "Accept": "application/json",
+          },
+        );
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          var responsebody = jsonDecode(response.body);
+          return Right(responsebody);
+        } else {
+          return Left(Statusrequest.failure);
+        }
+      } else {
+        return Left(Statusrequest.checkinterner);
+      }
+    } catch (e) {
+      return Left(Statusrequest.serverfailure);
+    }
+  }
+
+
+
+
   //to add file
   Future<Either<Statusrequest, Map>> addRequestWithImageOne(
     String url,

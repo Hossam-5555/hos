@@ -16,67 +16,83 @@ class Handlingdataview extends StatelessWidget {
   final Statusrequest statusrequest;
   final Widget widget;
 
-  @override
-  Widget build(BuildContext context) {
-    // 1. في حالة الخطأ أو الفشل، نعرض رسالة الخطأ فقط ولا نبني الصفحة الأصلية
-    // هذا يمنع الـ Crash الناتج عن محاولة قراءة بيانات فارغة
-    String getEmptyMessage() {
-      final Map<String, String> routeMessages = {
-        Approute.notificationPage: "No notifications yet".tr,
-        Approute.ShoppingCartPage: "Start shopping now".tr,
-        Approute.myfavorite: "No items in your favorites".tr,
-        Approute.viewmyaddres: "لا يوجد عناوين",
-        Approute.Orders: "You have no orders yet".tr,
-      };
-      print(routeMessages[Get.currentRoute]);
-      // بيحاول يجيب الرسالة بناءً على الـ route، ولو مش موجودة بيرجع الرسالة الافتراضية
-      return routeMessages[Get.currentRoute] ?? "لا توجد بيانات";
-    }
+  String getEmptyMessage() {
+    final Map<String, String> routeMessages = {
+      Approute.notificationPage: "No notifications yet".tr,
+      Approute.ShoppingCartPage: "Start shopping now".tr,
+      Approute.myfavorite: "No items in your favorites".tr,
+      Approute.viewmyaddres: "لا يوجد عناوين",
+      Approute.Orders: "You have no orders yet".tr,
+    };
 
-    // String getEmptyAnimation() {
-    //   final Map<String, String> routeanimations = {
-    //     Approute.notificationPage: Imageasset.nodata,
-    //     Approute.ShoppingCartPage: Imageasset.nodata,
-    //     Approute.myfavorite: Imageasset.nodata,
-    //     Approute.viewmyaddres: Imageasset.nodata,
-    //     Approute.Orders: Imageasset.nodata,
-    //   };
-    //   print(routeanimations[Get.currentRoute]);
-    //   // بيحاول يجيب الرسالة بناءً على الـ route، ولو مش موجودة بيرجع الرسالة الافتراضية
-    //   return routeanimations[Get.currentRoute] ?? "لا توجد بيانات";
-    // }
+    return routeMessages[Get.currentRoute] ?? "لا توجد بيانات";
+  }
 
-    if (statusrequest == Statusrequest.checkinterner) {
-      return Center(
-        child: Animationforstatus(animationPath: Imageasset.loading),
-      );
-    } else if (statusrequest == Statusrequest.failure ||
-        statusrequest == Statusrequest.nodata) {
-      return Center(
+  Widget buildState({
+    required BuildContext context,
+    required String animation,
+    required String? message,
+  }) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Animationforstatus(animationPath: Imageasset.nodata),
-            const SizedBox(height: 50),
-            Text(
-              getEmptyMessage(),
-              style: Theme.of(context).textTheme.bodyMedium,
-              textAlign: TextAlign.center,
-            ),
+            Animationforstatus(animationPath: animation),
+
+            const SizedBox(height: 30),
+
+            if (message != null)
+              Text(
+                message,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Colors.grey.shade600,
+                  fontSize: 16,
+                ),
+                textAlign: TextAlign.center,
+              ),
           ],
         ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (statusrequest == Statusrequest.checkinterner) {
+      return buildState(
+        context: context,
+        animation: Imageasset.loading,
+        message: "Check your internet connection",
       );
-    } else if (statusrequest == Statusrequest.serverfailure) {
-      // لا توجد بيانات
-      return Center(
-        child: Animationforstatus(animationPath: Imageasset.nodata),
-      );
-    } else if (statusrequest == Statusrequest.nodata) {
-      return Center(child: Animationforstatus(animationPath: Imageasset.nodata));
     }
 
-    // 2. في حالة التحميل (Loading) أو النجاح (Success)
-    // نعرض الصفحة الأصلية (التي تحتوي على Skeletonizer)
+    if (statusrequest == Statusrequest.loading) {
+      return buildState(
+        context: context,
+        animation: Imageasset.loading,
+        message: null,
+      );
+    }
+
+    if (statusrequest == Statusrequest.failure ||
+        statusrequest == Statusrequest.nodata) {
+      return buildState(
+        context: context,
+        animation: Imageasset.nodata,
+        message: getEmptyMessage(),
+      );
+    }
+
+    if (statusrequest == Statusrequest.serverfailure) {
+      return buildState(
+        context: context,
+        animation: Imageasset.nodata,
+        message: "Server error, try again later",
+      );
+    }
+
     return widget;
   }
 }

@@ -50,10 +50,7 @@ class Homescreen extends StatelessWidget {
                   ),
                   SizedBox(width: 10),
                   Text(
-                    "hi,${controller.myservisec.sharedPreferences.getString("usersname")}👋",
-                    style: TextStyle(
-                      fontSize: 14,
-                    ),
+                    "Hi,${controller.myservisec.sharedPreferences.getString("usersname")}👋",
                   ),
                 ],
               ),

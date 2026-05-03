@@ -13,8 +13,8 @@ class Orderdata {
 
 
   deletedata(int orderid) async {
-    var response = await crud.postrequset(LinkApi.deleteorder, {
-      "orderid": orderid,
+    var response = await crud.putandpacth("${LinkApi.deleteorder}$orderid", {
+      "status": "cancelled",
     });
     return response.fold((l) => l, (r) => r);
   }

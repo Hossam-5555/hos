@@ -14,9 +14,9 @@ class ProfilePage extends StatelessWidget {
   // لون أساسي مريح للتطبيق يمكن تغييره حسب الهوية البصرية لمشروعك
   final Color primaryColor = const Color.fromARGB(
     255,
-    39,
-    39,
-    41,
+    4,
+    134,
+    173,
   ); // لون نيلي عصري
 
   @override
@@ -144,14 +144,14 @@ class ProfilePage extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: primaryColor,
+                  color: Colors.blueAccent,
                   width: 2,
                   style: BorderStyle.solid,
                 ),
               ),
               child: CircleAvatar(
                 radius: 55,
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.blue,
                 backgroundImage: AssetImage(Imageasset.twetter),
                 onBackgroundImageError: (_, _) {},
               ),
@@ -181,7 +181,7 @@ class ProfilePage extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return Material(
-      color: Colors.transparent,
+      elevation: 1,
       borderRadius: BorderRadius.circular(40),
       child: InkWell(
         onTap: onTap,
@@ -189,9 +189,9 @@ class ProfilePage extends StatelessWidget {
         child: Container(
           padding: const EdgeInsetsDirectional.all(5),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(25)),
+            borderRadius: BorderRadius.all(Radius.circular(40)),
             border: Border.all(
-              color: Colors.grey.withAlpha(50),
+              color: Colors.grey,
               strokeAlign: BorderSide.strokeAlignCenter,
             ),
           ),

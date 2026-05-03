@@ -6,6 +6,7 @@ import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 import 'package:lottie/lottie.dart';
 
+// ignore: must_be_immutable
 class ItemsCard extends GetView<ItemsControler> {
   // final int i;
   ItemsModel items;
@@ -25,12 +26,6 @@ class ItemsCard extends GetView<ItemsControler> {
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                // color: const Color.fromARGB(
-                //   255,
-                //   146,
-                //   146,
-                //   146,
-                // ).withAlpha(35), // لون رمادي فاتح مطابق للصورة
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Stack(

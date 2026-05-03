@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hos/controler/usercontroller/profile/order/ordercontroller.dart';
 import 'package:hos/controler/usercontroller/profile/order/orderdetailescontroller.dart';
 import 'package:hos/data/model/ordersmodel.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
@@ -11,27 +12,28 @@ class Orderdetailes extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = Get.put(Orderdetailescontroller());
     final w = MediaQuery.of(context).size.width;
-
+    // داخل صفحة DetailView
+    Ordercontroller controller = Get.find();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
         child: Appbarbackicon(
           herotag: '',
-          title: "${c.order?.orderNumber ?? ''}",
+          title: c.order?.orderNumber ?? '',
         ),
       ),
 
       bottomNavigationBar: c.order?.status == "pending"
           ? Padding(
               padding: EdgeInsets.all(w * 0.06),
-              child: Container(
+              child: SizedBox(
                 height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     elevation: 0.2,
                     backgroundColor: Colors.black,
                   ),
-                  onPressed: () => c.deleteorders(c.order!.orderId),
+                  onPressed: () => controller.deleteorders(c.order!.orderId),
                   child: Text(
                     "Cancel Order",
                     style: TextStyle(color: Colors.white, fontSize: 15),

@@ -30,141 +30,144 @@ class HomePage extends StatelessWidget {
       builder: (_) => Scaffold(
         resizeToAvoidBottomInset: true, // مهم مع الكيبورد
         body: SafeArea(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final width = constraints.maxWidth;
-              final height = constraints.maxHeight;
+          child: RefreshIndicator(
+            onRefresh: () => controller.getdata(),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final width = constraints.maxWidth;
+                final height = constraints.maxHeight;
 
-              return SingleChildScrollView(
-                controller: homescreencontroller.scrollController,
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: width * 0.04,
-                    vertical: height * 0.015,
-                  ),
-                  child: Handlingdataview(
-                    statusrequest: controller.statusrequest,
-                    widget: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        /// Categories Title
+                return SingleChildScrollView(
+                  controller: homescreencontroller.scrollController,
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: width * 0.04,
+                      vertical: height * 0.015,
+                    ),
+                    child: Handlingdataview(
+                      statusrequest: controller.statusrequest,
+                      widget: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          /// Categories Title
 
-                        /// Main Offer
-                        AutoRotatingOffers(),
-                        //Hossam iss================================
-                        SizedBox(height: height * 0.02),
-                        Titles(title: "Categories".tr),
+                          /// Main Offer
+                          AutoRotatingOffers(),
+                          //Hossam iss================================
+                          SizedBox(height: height * 0.02),
+                          Titles(title: "Categories".tr),
 
-                        /// Categories List
-                        SizedBox(
-                          height: height * 0.16,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: controller.categories.length,
-                            itemBuilder: (context, index) {
-                              final cat = controller.categories[index];
-                              return Skeletonizer(
-                                containersColor: Colors.grey[300],
-                                enabled:
-                                    controller.statusrequest ==
-                                    Statusrequest.loading,
-                                child: CategoryItem(
-                                  index: index,
-                                  name: cat.name ?? "",
-                                  imageUrl: cat.image.toString(),
+                          /// Categories List
+                          SizedBox(
+                            height: height * 0.16,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: controller.categories.length,
+                              itemBuilder: (context, index) {
+                                final cat = controller.categories[index];
+                                return Skeletonizer(
+                                  containersColor: Colors.grey[300],
+                                  enabled:
+                                      controller.statusrequest ==
+                                      Statusrequest.loading,
+                                  child: CategoryItem(
+                                    index: index,
+                                    name: cat.name ?? "",
+                                    imageUrl: cat.image.toString(),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+
+                          /// Curved Items
+                          // const CurvedItemsView(),
+                          SizedBox(height: height * 0.025),
+
+                          /// New Offers Header
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Titles(title: "New Items".tr),
+                              TextButton.icon(
+                                onPressed: () {},
+                                icon: const Text("See All"),
+                                label: const Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 16,
                                 ),
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Appcolor.primaryColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                          CurvedItemsView(),
+
+                          /// 🔥 Products List (FIXED)
+                          ///
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Titles(title: "Most Sale".tr),
+                              TextButton.icon(
+                                onPressed: () {},
+                                icon: const Text("See All"),
+                                label: const Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 16,
+                                ),
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Appcolor.primaryColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: height * 0.02),
+
+                          MasonryGridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.symmetric(
+                              vertical: height * 0.01,
+                            ),
+                            gridDelegate:
+                                const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                ),
+                            mainAxisSpacing: 16,
+                            crossAxisSpacing: 12,
+                            itemCount: controller.mostsaleitem.length,
+                            itemBuilder: (context, index) {
+                              final item = controller.mostsaleitem[index];
+
+                              return SharedProductCard(
+                                image: "${item.itemsImage}",
+                                title: item.itemsName ?? "بدون اسم",
+                                price: "${item.itemsPrice}",
+                                rating: 4.8,
+                                onTap: () {
+                                  controller.gotoitemsdetails(item);
+                                },
+
+                                actionButton: AddToCartButton(itemId: item.id!),
+
+                                /// 🔥 أهم سطر
+                                height: index.isEven
+                                    ? 260
+                                    : 320, // 👈 خلي الكارت يقبل height
                               );
                             },
                           ),
-                        ),
-
-                        /// Curved Items
-                        // const CurvedItemsView(),
-                        SizedBox(height: height * 0.025),
-
-                        /// New Offers Header
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Titles(title: "New Items".tr),
-                            TextButton.icon(
-                              onPressed: () {},
-                              icon: const Text("See All"),
-                              label: const Icon(
-                                Icons.arrow_forward_ios,
-                                size: 16,
-                              ),
-                              style: TextButton.styleFrom(
-                                foregroundColor: Appcolor.primaryColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                        CurvedItemsView(),
-
-                        /// 🔥 Products List (FIXED)
-                        ///
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Titles(title: "Most Sale".tr),
-                            TextButton.icon(
-                              onPressed: () {},
-                              icon: const Text("See All"),
-                              label: const Icon(
-                                Icons.arrow_forward_ios,
-                                size: 16,
-                              ),
-                              style: TextButton.styleFrom(
-                                foregroundColor: Appcolor.primaryColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: height * 0.02),
-
-                        MasonryGridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: EdgeInsets.symmetric(
-                            vertical: height * 0.01,
-                          ),
-                          gridDelegate:
-                              const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                              ),
-                          mainAxisSpacing: 16,
-                          crossAxisSpacing: 12,
-                          itemCount: controller.mostsaleitem.length,
-                          itemBuilder: (context, index) {
-                            final item = controller.mostsaleitem[index];
-
-                            return SharedProductCard(
-                              image: "${item.itemsImage}",
-                              title: item.itemsName ?? "بدون اسم",
-                              price: "${item.itemsPrice}",
-                              rating: 4.8,
-                              onTap: () {
-                                controller.gotoitemsdetails(item);
-                              },
-
-                              actionButton: AddToCartButton(itemId: item.id!),
-
-                              /// 🔥 أهم سطر
-                              height: index.isEven
-                                  ? 260
-                                  : 320, // 👈 خلي الكارت يقبل height
-                            );
-                          },
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ),

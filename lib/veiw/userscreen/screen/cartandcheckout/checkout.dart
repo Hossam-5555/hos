@@ -13,12 +13,12 @@ class Checkout extends StatelessWidget {
     Get.put(Checkoutcontroller());
 
     return Scaffold(
+      bottomNavigationBar: GetBuilder<Checkoutcontroller>(
+        builder: (c) => _buildModernBottomBar(context, c),
+      ),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(65),
         child: Appbarbackicon(herotag: '', title: "confirm order".tr),
-      ),
-      bottomNavigationBar: GetBuilder<Checkoutcontroller>(
-        builder: (c) => _buildModernBottomBar(context, c),
       ),
       body: GetBuilder<Checkoutcontroller>(
         builder: (c) => Handlingdataview(
@@ -59,7 +59,7 @@ class Checkout extends StatelessWidget {
                 title: "Payment Methods".tr,
                 icon: Icons.account_balance_wallet_rounded,
                 child: GetBuilder<Checkoutcontroller>(
-                  builder: (c) => Column(
+                  builder: (c) => Row(
                     children: c.paymentMethodEnum.map((methodList) {
                       final method = methodList[0];
                       return _buildPaymentOption(method, c);
@@ -83,7 +83,7 @@ class Checkout extends StatelessWidget {
   }) {
     return Card(
       elevation: 0,
-      color: Colors.white,
+      // color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -164,43 +164,32 @@ class Checkout extends StatelessWidget {
       onTap: () => c.changePaymentMethod(method),
       borderRadius: BorderRadius.circular(12),
       child: Container(
-        margin: const EdgeInsets.only(bottom: 10),
+        margin: const EdgeInsets.only(bottom: 5),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: isSelected
-              ? Colors.blue.withOpacity(0.05)
-              : const Color(0xFFF8F9FA),
           border: Border.all(
-            color: isSelected ? Colors.blueAccent : Colors.grey.shade200,
+            color: isSelected ? Colors.blueAccent : Colors.transparent,
             width: isSelected ? 1.5 : 1,
           ),
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Row(
+        child: Column(
           children: [
             Icon(
               details["icon"] as IconData,
-              color: isSelected ? Colors.blueAccent : Colors.black54,
+              color: isSelected ? Colors.blueAccent : Colors.amber,
             ),
             const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    details["title"] as String,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: isSelected ? Colors.blueAccent : Colors.black87,
-                    ),
-                  ),
-                  Text(
-                    details["sub"] as String,
-                    style: const TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                ],
-              ),
+            Text(
+              details["title"] as String,
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
+            Text(
+              details["sub"] as String,
+              style: const TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+            const SizedBox(width: 12),
+
             Icon(
               isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
               color: isSelected ? Colors.blueAccent : Colors.grey,
@@ -233,7 +222,10 @@ class Checkout extends StatelessWidget {
                   value: addr.id,
                   groupValue: c.addressid.value,
                   activeColor: Colors.blueAccent,
-                  title: Text(addr.name ?? ""),
+                  title: Text(
+                    addr.name ?? "",
+                    style: TextStyle(color: Colors.black),
+                  ),
                   onChanged: (val) {
                     c.chooseAddres(val!);
                     Get.back();
@@ -258,35 +250,37 @@ class Checkout extends StatelessWidget {
   // تم الحفاظ على شريط الدفع السفلي كما هو بدون تغيير
   Widget _buildModernBottomBar(BuildContext context, Checkoutcontroller c) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 15,
-            offset: Offset(0, -5),
-          ),
-        ],
-      ),
+      margin: EdgeInsetsDirectional.all(20),
       child: SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // تفاصيل السعر والتوصيل[]
+            _buildPriceRow("Sipping".tr, "${50} \$"),
+            const SizedBox(height: 8),
+            _buildPriceRow("Subtotal".tr, "${c.totalprice} \$"),
+            const SizedBox(height: 8),
+            _buildPriceRow(
+              "موعد التوصيل المتوقع:",
+              "خلال 3 أيام",
+              isDate: true,
+            ),
+
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 12),
+              child: Divider(thickness: 1),
+            ),
+
+            // الإجمالي الكلي
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  "الإجمالي (شامل التوصيل):",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w600,
-                  ),
+                Text(
+                  "Total price".tr,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  '${double.parse(c.totalprice.toString()).toStringAsFixed(2)} \$',
+                  '${c.totalprice} \$',
                   style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w900,
@@ -295,7 +289,10 @@ class Checkout extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+
+            const SizedBox(height: 20),
+
+            // زر التأكيد
             SizedBox(
               width: double.infinity,
               height: 55,
@@ -306,19 +303,41 @@ class Checkout extends StatelessWidget {
                     borderRadius: BorderRadius.circular(40),
                   ),
                 ),
-
-                onPressed: () {
-                  c.checkoutoder();
-                },
+                onPressed: () => c.checkoutoder(),
                 child: Text(
                   "Confirm order".tr,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  // "Widget" مساعد لبناء صفوف التفاصيل بشكل منسق
+  Widget _buildPriceRow(String label, String value, {bool isDate = false}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+        ),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: isDate ? Colors.green : Colors.blue,
+          ),
+        ),
+      ],
     );
   }
 }

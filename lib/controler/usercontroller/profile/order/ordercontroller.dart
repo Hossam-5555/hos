@@ -98,16 +98,53 @@ class Ordercontroller extends GetxController {
   Future<void> deleteorders(int orderid) async {
     statusrequest = Statusrequest.loading;
     update();
-    var response = await orderdata.deletedata(orderid);
-    statusrequest = handling(response);
-    if (Statusrequest.success == statusrequest) {
-      if (response['status'] == true) {
-        viewmyorders();
-      } else {
-        statusrequest = Statusrequest.failure;
+
+    try {
+      var response = await orderdata.deletedata(orderid);
+      statusrequest = handling(response);
+
+      if (Statusrequest.success == statusrequest) {
+        if (response['status'] == true) {
+          orders.removeWhere((e) => e.orderId == orderid);
+          // 2. إظهار الرسالة
+          _showSnackBar("تم إلغاء الطلب بنجاح");
+          viewmyorders();
+          Get.back();
+          // 3. العودة للخلف أولاً
+        } 
+      }
+    } catch (e) {
+      statusrequest = Statusrequest.serverfailure;
+    } finally {
+      // التحقق من أن الكنترولر لا يزال "حي" قبل التحديث
+      if (Get.isRegistered<Ordercontroller>()) {
+        update();
       }
     }
-    update();
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(Get.context!).showSnackBar(
+      SnackBar(
+        duration: Duration(seconds: 4),
+        behavior: SnackBarBehavior.floating, // يخليه طاير مش لازق تحت
+        margin: EdgeInsets.all(12),
+        backgroundColor: Colors.grey.shade900,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15), // 🔥 حواف دائرية
+        ),
+
+        content: Row(
+          children: [
+            Icon(Icons.check_circle, color: Colors.green),
+            SizedBox(width: 10),
+            Expanded(
+              child: Text(message, style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override

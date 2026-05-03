@@ -4,16 +4,46 @@ import 'package:hos/core/conistant/appcolor.dart';
 class AppTheme {
   // دالة مساعدة لإنشاء مقاسات النصوص الموحدة
   static TextTheme _getTextTheme(String fontFamily, bool isDark) {
-    Color textColor = isDark ? Colors.white : Colors.black;
-    Color bodyColor = isDark ? Colors.grey[400]! : Appcolor.grey;
+    Color textColor = isDark ? Colors.grey[100]! : Colors.black;
+    Color bodyColor = isDark ? Colors.white : Appcolor.grey;
 
     return TextTheme(
-      headlineLarge: TextStyle(fontWeight: FontWeight.bold, fontSize: 32, fontFamily: fontFamily, color: textColor),
-      headlineMedium: TextStyle(fontWeight: FontWeight.bold, fontSize: 28, fontFamily: fontFamily, color: textColor),
-      headlineSmall: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, fontFamily: fontFamily, color: textColor),
-      titleLarge: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, fontFamily: fontFamily, color: textColor),
-      bodyLarge: TextStyle(fontSize: 16, fontFamily: fontFamily, color: bodyColor, height: 1.5),
-      bodyMedium: TextStyle(fontSize: 14, fontFamily: fontFamily, color: bodyColor.withAlpha(204), height: 1.4),
+      headlineLarge: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 32,
+        fontFamily: fontFamily,
+        color: textColor,
+      ),
+      headlineMedium: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 28,
+        fontFamily: fontFamily,
+        color: textColor,
+      ),
+      headlineSmall: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 20,
+        fontFamily: fontFamily,
+        color: textColor,
+      ),
+      titleLarge: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 22,
+        fontFamily: fontFamily,
+        color: textColor,
+      ),
+      bodyLarge: TextStyle(
+        fontSize: 16,
+        fontFamily: fontFamily,
+        color: bodyColor,
+        height: 1.5,
+      ),
+      bodyMedium: TextStyle(
+        fontSize: 14,
+        fontFamily: fontFamily,
+        color: bodyColor.withAlpha(204),
+        height: 1.4,
+      ),
     );
   }
 
@@ -23,7 +53,12 @@ class AppTheme {
       elevation: 0.0,
       centerTitle: true,
       iconTheme: IconThemeData(color: content, size: 24),
-      titleTextStyle: TextStyle(color: content, fontSize: 22, fontFamily: font, fontWeight: FontWeight.bold),
+      titleTextStyle: TextStyle(
+        color: content,
+        fontSize: 22,
+        fontFamily: font,
+        fontWeight: FontWeight.bold,
+      ),
     );
   }
 
@@ -41,7 +76,10 @@ class AppTheme {
     scaffoldBackgroundColor: const Color(0xFF121212),
     appBarTheme: _appBar(const Color(0xFF121212), Colors.white, 'RobotoMono'),
     textTheme: _getTextTheme('RobotoMono', true),
-    colorScheme: ColorScheme.fromSeed(seedColor: Appcolor.primaryColor, brightness: Brightness.dark),
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Appcolor.primaryColor,
+      brightness: Brightness.dark,
+    ),
   );
 
   static ThemeData lightAr = ThemeData(
@@ -57,6 +95,9 @@ class AppTheme {
     scaffoldBackgroundColor: const Color(0xFF121212),
     appBarTheme: _appBar(const Color(0xFF121212), Colors.white, 'cairo'),
     textTheme: _getTextTheme('cairo', true),
-    colorScheme: ColorScheme.fromSeed(seedColor: Appcolor.primaryColor, brightness: Brightness.dark),
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Appcolor.primaryColor,
+      brightness: Brightness.dark,
+    ),
   );
 }

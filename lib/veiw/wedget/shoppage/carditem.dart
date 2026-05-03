@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
@@ -14,14 +15,8 @@ Widget buildCartItemCard(
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       padding: const EdgeInsets.all(12.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        // color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: const Color.fromARGB(255, 46, 45, 45).withAlpha(140),
-            offset: Offset(0, 00.4),
-          ),
-        ],
         // استخدام حد خفيف جداً بدل الظل (Shadow) لشكل أنظف
         border: Border.all(color: Colors.grey.shade500.withAlpha(70)),
       ),
@@ -39,11 +34,18 @@ Widget buildCartItemCard(
             padding: const EdgeInsets.all(
               8,
             ), // مسافة داخلية عشان الصورة متلمسش الحواف
-            child: Image.network(
-              "${cart.itemimage}",
-              fit: BoxFit.contain, // يضمن إن الصورة تظهر كاملة بدون قص
-              errorBuilder: (context, error, stackTrace) =>
-                  const Icon(Icons.broken_image_rounded, color: Colors.grey),
+            child: CachedNetworkImage(
+              imageUrl: cart.itemimage!,
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              placeholder: (context, url) => CircularProgressIndicator(),
+              errorWidget: (context, url, error) => Icon(Icons.error),
             ),
           ),
 
@@ -60,7 +62,7 @@ Widget buildCartItemCard(
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
-                    color: Colors.black87,
+                    // color: Colors.black87,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -77,8 +79,7 @@ Widget buildCartItemCard(
                       '${double.parse(controller.data[i].subtotal.toString()).toStringAsFixed(2)} \$',
                       style: const TextStyle(
                         fontSize: 16,
-                        color: Colors
-                            .black, // الأسود بيدي فخامة أكتر من اللون الأساسي هنا
+                        color: Colors.blueAccent,
                         fontWeight: FontWeight.w800,
                       ),
                     ),

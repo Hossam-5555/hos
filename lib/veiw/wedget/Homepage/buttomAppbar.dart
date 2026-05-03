@@ -24,7 +24,7 @@ class Buttomappbar extends GetView<Homescreencontroller> {
             height: 75, // ← ارتفاع ثابت ومناسب
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.grey[50],
+                color: Colors.grey[150],
                 borderRadius: BorderRadius.circular(40),
                 border: Border.all(color: Colors.grey.withAlpha(50)),
               ),
@@ -38,11 +38,10 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                       child: AnimatedContainer(
                         margin: EdgeInsets.symmetric(horizontal: 5),
                         duration: const Duration(milliseconds: 250),
-                        // curve: Curves.fastOutSlowIn,
                         width: isSelected ? 65 : 48,
                         height: isSelected ? 65 : 48,
                         decoration: BoxDecoration(
-                          color: isSelected ? const Color.fromARGB(255, 200, 216, 233) : null,
+                          color: isSelected ?  Colors.blueAccent.withAlpha(50) : null,
                           borderRadius: BorderRadius.circular(40),
                         ),
                         child: Column(
@@ -59,7 +58,9 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                                       ),
                                     ),
                                   )
-                                : SvgPicture.asset(
+                                : SvgPicture.asset(color:  isSelected
+                                            ? Colors.blue
+                                            : Colors.grey,
                                     controller.appbartitle[index][1],
                                     height: isSelected ? 25 : 22,
                                     width: isSelected ? 25 : 22,

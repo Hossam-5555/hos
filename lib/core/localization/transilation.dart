@@ -18,11 +18,13 @@ class Mytransilation extends Translations {
       "shipping address": "عنوان الشحن",
       "Add new address": "اضافة عنوان جديد",
       "Change address": "اضغط لتغيير العنوان",
+      "Sipping": "رسوم التوصيل",
       //Homepage
       //orderpage
       "Order numper": "طلب رقم ",
       "Payment": " الدفع",
       "Status": "الحاله",
+      "Subtotal": "سعر المتجات",
       "Total price": "الاجمالي  ",
       "Discount": "الخصم",
       //orderpage
@@ -38,11 +40,11 @@ class Mytransilation extends Translations {
       "Logout": "تسجيل الخروج",
       "Contact us": "تواصل معنا",
       "About the app": "عن التطبيق",
-      "version":"الإصدار",
-      "Support":"الدعم",
-      "General":"عام",
-      "Enable notifications":"تفعيل الإشعارات",
-      "Theme":"المظهر",
+      "version": "الإصدار",
+      "Support": "الدعم",
+      "General": "عام",
+      "Enable notifications": "تفعيل الإشعارات",
+      "Theme": "المظهر",
       //profile
       "Notifications": "الاشعارات",
       //search
@@ -74,10 +76,12 @@ class Mytransilation extends Translations {
       "shipping address": "Shipping Address",
       "Add new address": "Add new address",
       "Change address": "Change address",
+      "Sipping": "Sipping",
       //orderpage
       "Order numper": "Order numper: ",
       "Payment": "Payment",
       "Status": "Status",
+      "Subtotal": "Subtotal",
       "Total price": "Total price",
       //orderpage
       //profie
@@ -92,11 +96,11 @@ class Mytransilation extends Translations {
       "Logout": "Logout",
       "Contact us": "Contact us",
       "About the app": "About the app",
-      "version" :"version",
-      "Support":"Support",
-      "General":"General",
-      "Enable notifications":"Enable notifications",
-      "Theme":"Theme",
+      "version": "version",
+      "Support": "Support",
+      "General": "General",
+      "Enable notifications": "Enable notifications",
+      "Theme": "Theme",
       //profile
       //massage
       "Notifications": "Notifications",

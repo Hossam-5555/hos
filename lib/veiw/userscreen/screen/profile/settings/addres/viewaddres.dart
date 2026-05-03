@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/addres/addrescontroller.dart';
-import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/routs.dart';
@@ -31,7 +30,6 @@ class ViewMyAddres extends StatelessWidget {
 
       body: GetBuilder<AddressController>(
         builder: (_) {
-          bool isenable = controller.statusrequest == Statusrequest.loading;
           return Handlingdataview(
             statusrequest: controller.statusrequest!,
             widget: ListView.builder(

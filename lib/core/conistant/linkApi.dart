@@ -43,7 +43,7 @@ class LinkApi {
   //orders
   static String checkout = '$lravelserver/order';
   static String viewmyorder = '$lravelserver/userorders/';
-  static String deleteorder = '$server/orders/delete.php';
+  static String deleteorder = '$lravelserver/order/';
   static String rating = '$server/rating.php';
 
   //notification
