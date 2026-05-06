@@ -34,23 +34,10 @@ class ProfilePage extends StatelessWidget {
         ),
         child: Column(
           children: [
-            _buildProfileHeader(),
+            _buildProfileHeader(Colors.lightBlue),
             SizedBox(height: h * 0.04),
 
-            /// ===== Quick Actions (Orders & Wishlist) =====
-            Row(
-              children: [
-                Expanded(
-                  child: _buildQuickActionCard(
-                    icon: Icons.camera_alt_outlined,
-                    title: "change profile image",
-                    color: const Color.fromARGB(255, 6, 110, 179), // أحمر وردي
-                    onTap: () => Get.toNamed(Approute.myfavorite),
-                  ),
-                ),
-              ],
-            ),
-
+         
             SizedBox(height: h * 0.04),
 
             Container(
@@ -129,7 +116,7 @@ class ProfilePage extends StatelessWidget {
   }
 
   // ================= Header =================
-  Widget _buildProfileHeader() {
+  Widget _buildProfileHeader(Color color) {
     String userName =
         myservisec.sharedPreferences.getString("usersname") ?? "User Name";
     String email =
@@ -144,16 +131,29 @@ class ProfilePage extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: Colors.blueAccent,
+                  color: Colors.grey,
                   width: 2,
                   style: BorderStyle.solid,
                 ),
               ),
               child: CircleAvatar(
                 radius: 55,
-                backgroundColor: Colors.blue,
+                // backgroundColor: Colors.blue,
                 backgroundImage: AssetImage(Imageasset.twetter),
                 onBackgroundImageError: (_, _) {},
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Container(
+                margin: EdgeInsetsDirectional.symmetric(horizontal: 10),
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.camera_alt_outlined, color: color, size: 28),
               ),
             ),
           ],
@@ -174,50 +174,6 @@ class ProfilePage extends StatelessWidget {
   }
 
   // ================= Quick Action Cards =================
-  Widget _buildQuickActionCard({
-    required IconData icon,
-    required String title,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return Material(
-      elevation: 1,
-      borderRadius: BorderRadius.circular(40),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(40),
-        child: Container(
-          padding: const EdgeInsetsDirectional.all(5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(40)),
-            border: Border.all(
-              color: Colors.grey,
-              strokeAlign: BorderSide.strokeAlignCenter,
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                margin: EdgeInsetsDirectional.symmetric(horizontal: 10),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: color.withAlpha(25),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(icon, color: color, size: 28),
-              ),
-              SizedBox(width: 20),
-              Container(
-                margin: EdgeInsetsDirectional.symmetric(horizontal: 10),
-                child: Text(title),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 
   // ================= Settings Group Items =================
   Widget _buildListTile({
@@ -236,12 +192,12 @@ class ProfilePage extends StatelessWidget {
             ? const BorderRadius.vertical(bottom: Radius.circular(20))
             : BorderRadius.zero,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          padding: const EdgeInsets.all(15),
           child: Row(
             children: [
               // الحاوية المعدلة مع التدرج اللوني
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   // استخدام Linear Gradient هنا
                   gradient: LinearGradient(
