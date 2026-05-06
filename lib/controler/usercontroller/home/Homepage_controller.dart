@@ -95,31 +95,40 @@ Future<void> getdata() async {
   }
   //==================================================cart
 
-  final List<OfferModel> offers = [
-    OfferModel(
-      image:
-          "https://i.pinimg.com/webp/1200x/34/6e/7a/346e7ac45123572b94af0843a37a19d9.webp",
-      title: 'عرض الصيف',
-      description: 'اشتري قطعة واحصل على الثانية بنصف الثمن.',
-      discount: 'خصم 50%',
-      colors: const [
-        Color.fromARGB(255, 19, 3, 0),
-        Colors.white,
-      ], // برتقالي وزهري
-    ),
+final List<OfferModel> offers = [
+  OfferModel(
+    image: "https://images.unsplash.com/photo-1616348436168-de43ad0db179?q=80&w=1000&auto=format&fit=crop", // صورة iPhone/Smartphone
+    title: 'أحدث إصدارات الهواتف',
+    description: 'اكتشف قوة الأداء مع كاميرا فائقة الدقة ومعالج هو الأسرع.',
+    discount: 'خصم 15%',
+    colors: const [
+      Color(0xFF000000), // أسود ملكي
+      Color(0xFF1A1A1B), // رمادي داكن جداً
+    ],
+  ),
+  
+  OfferModel(
+    image: "https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?q=80&w=1000&auto=format&fit=crop", // صورة Laptop احترافي
+    title: 'أجهزة الـ Laptop الاحترافية',
+    description: 'ارفع مستوى إنتاجيتك مع أجهزة مخصصة للمبرمجين والمصممين.',
+    discount: 'وفر حتى 500 ريال',
+    colors: const [
+      Color(0xFF0F2027), // أزرق ليلي داكن
+      Color(0xFF203A43), 
+    ],
+  ),
 
-    OfferModel(
-      image:
-          "https://i.pinimg.com/webp/1200x/49/bb/12/49bb129c93b7d6454a2e34504be5e488.webp",
-      title: 'تصفية نهاية العام',
-      description: 'لا تفوت الفرصة! الكمية محدودة جداً.',
-      discount: 'خصم يصل لـ 70%',
-      colors: const [
-        Color.fromARGB(255, 7, 6, 6),
-        Color.fromARGB(255, 204, 200, 198),
-      ], // أزرق وبنفسجي
-    ),
-  ];
+  OfferModel(
+    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop", // صورة سماعات Headphones
+    title: 'عالم الصوتيات الذكي',
+    description: 'تجربة صوتية محيطية مع تقنية عزل الضجيج النشطة.',
+    discount: 'لفترة محدودة',
+    colors: const [
+      Color(0xFF141E30), // مزيج بين الكحلي والأسود
+      Color(0xFF243B55),
+    ],
+  ),
+];
   int i = 0; // متغير لتغيير cross Axis gridview  العرض الحالي
   int currentIndex = 0;
   Timer? timer;

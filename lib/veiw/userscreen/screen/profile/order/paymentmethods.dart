@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/paymentcontroller.dart';
@@ -15,14 +16,11 @@ class PaymentScreen extends StatelessWidget {
         preferredSize: Size.fromHeight(60),
         child: Appbarbackicon(title: "طرق الدفع", herotag: "paymentScreen"),
       ),
-      
+
       // ✨ التعديل الاحترافي: زر الدفع ثابت تحت عشان الكيبورد ميغطيش عليه
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(top: BorderSide(color: Colors.grey.shade200)),
-        ),
+
         child: SafeArea(
           child: SizedBox(
             height: 55,
@@ -37,7 +35,11 @@ class PaymentScreen extends StatelessWidget {
               onPressed: controller.addpayment,
               child: const Text(
                 'تأكيد الدفع',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
@@ -46,7 +48,8 @@ class PaymentScreen extends StatelessWidget {
 
       body: Form(
         key: controller.formKey,
-        child: ListView( // 👈 ListView أفضل من SingleChildScrollView هنا
+        child: ListView(
+          // 👈 ListView أفضل من SingleChildScrollView هنا
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.all(20.0),
           children: [
@@ -94,7 +97,10 @@ class PaymentScreen extends StatelessWidget {
                 transitionBuilder: (child, animation) => FadeTransition(
                   opacity: animation,
                   child: SlideTransition(
-                    position: Tween<Offset>(begin: const Offset(0, 0.05), end: Offset.zero).animate(animation),
+                    position: Tween<Offset>(
+                      begin: const Offset(0, 0.05),
+                      end: Offset.zero,
+                    ).animate(animation),
                     child: child,
                   ),
                 ),
@@ -111,7 +117,11 @@ class PaymentScreen extends StatelessWidget {
   // دوال بناء الواجهة
   // ==========================================
 
-  Widget _buildPaymentMethod({required String title, required IconData icon, required PaymentMethod method}) {
+  Widget _buildPaymentMethod({
+    required String title,
+    required IconData icon,
+    required PaymentMethod method,
+  }) {
     final isSelected = controller.selectedMethod.value == method;
     return Expanded(
       child: GestureDetector(
@@ -129,7 +139,11 @@ class PaymentScreen extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Icon(icon, color: isSelected ? Colors.white : Colors.black87, size: 28),
+              Icon(
+                icon,
+                color: isSelected ? Colors.white : Colors.black87,
+                size: 28,
+              ),
               const SizedBox(height: 8),
               Text(
                 title,
@@ -155,7 +169,7 @@ class PaymentScreen extends StatelessWidget {
       case PaymentMethod.cod:
         return _buildCODForm();
       case PaymentMethod.none:
-      return const SizedBox.shrink(); // لو مفيش حاجة مختارة
+        return const SizedBox.shrink(); // لو مفيش حاجة مختارة
     }
   }
 
@@ -176,7 +190,11 @@ class PaymentScreen extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
-              BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 15, offset: const Offset(0, 8)),
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 15,
+                offset: const Offset(0, 8),
+              ),
             ],
           ),
           child: Column(
@@ -185,38 +203,86 @@ class PaymentScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Icon(Icons.contactless_rounded, color: Colors.white70, size: 28),
+                  const Icon(
+                    Icons.contactless_rounded,
+                    color: Colors.white70,
+                    size: 28,
+                  ),
                   // صورة لوجو ماستركارد من النت كمثال للاحترافية
-                  Image.network('https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png', height: 24),
+                  CachedNetworkImage(
+                    imageUrl:
+                        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png",
+                    imageBuilder: (context, imageProvider) => Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
                 ],
               ),
               const SizedBox(height: 30),
               const Text(
                 '**** **** **** 1234',
-                style: TextStyle(color: Colors.white, fontSize: 22, letterSpacing: 2, fontFamily: 'Courier'),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  letterSpacing: 2,
+                  fontFamily: 'Courier',
+                ),
                 textDirection: TextDirection.ltr,
               ),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('MOHAMED AHMED', style: TextStyle(color: Colors.white70, fontSize: 14)),
-                  const Text('12/24', style: TextStyle(color: Colors.white70, fontSize: 14)),
+                  const Text(
+                    'MOHAMED AHMED',
+                    style: TextStyle(color: Colors.white70, fontSize: 14),
+                  ),
+                  const Text(
+                    '12/24',
+                    style: TextStyle(color: Colors.white70, fontSize: 14),
+                  ),
                 ],
               ),
             ],
           ),
         ),
         const SizedBox(height: 24),
-        const Text('بيانات البطاقة الجديدة', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        const Text(
+          'بيانات البطاقة الجديدة',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 16),
-        _buildTextField(label: 'رقم البطاقة', icon: Icons.credit_card, type: TextInputType.number),
+        _buildTextField(
+          label: 'رقم البطاقة',
+          icon: Icons.credit_card,
+          type: TextInputType.number,
+        ),
         const SizedBox(height: 16),
         Row(
           children: [
-            Expanded(child: _buildTextField(label: 'MM/YY', icon: Icons.calendar_month, type: TextInputType.datetime)),
+            Expanded(
+              child: _buildTextField(
+                label: 'MM/YY',
+                icon: Icons.calendar_month,
+                type: TextInputType.datetime,
+              ),
+            ),
             const SizedBox(width: 16),
-            Expanded(child: _buildTextField(label: 'CVV', icon: Icons.lock, type: TextInputType.number, isSecure: true)),
+            Expanded(
+              child: _buildTextField(
+                label: 'CVV',
+                icon: Icons.lock,
+                type: TextInputType.number,
+                isSecure: true,
+              ),
+            ),
           ],
         ),
       ],
@@ -230,7 +296,11 @@ class PaymentScreen extends StatelessWidget {
       children: [
         _buildInfoBox('يرجى التأكد من أن المحفظة مفعلة وبها رصيد كافٍ.'),
         const SizedBox(height: 16),
-        _buildTextField(label: 'رقم الهاتف المرتبط بالمحفظة', icon: Icons.phone_iphone_rounded, type: TextInputType.phone),
+        _buildTextField(
+          label: 'رقم الهاتف المرتبط بالمحفظة',
+          icon: Icons.phone_iphone_rounded,
+          type: TextInputType.phone,
+        ),
       ],
     );
   }
@@ -247,7 +317,11 @@ class PaymentScreen extends StatelessWidget {
   // ويدجتس مساعدة (Helper Widgets)
   // ==========================================
 
-  Widget _buildInfoBox(String text, {Key? key, IconData icon = Icons.info_outline}) {
+  Widget _buildInfoBox(
+    String text, {
+    Key? key,
+    IconData icon = Icons.info_outline,
+  }) {
     return Container(
       key: key,
       padding: const EdgeInsets.all(16),
@@ -260,25 +334,41 @@ class PaymentScreen extends StatelessWidget {
         children: [
           Icon(icon, color: Colors.black87),
           const SizedBox(width: 12),
-          Expanded(child: Text(text, style: TextStyle(color: Colors.grey.shade800, height: 1.5))),
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(color: Colors.grey.shade800, height: 1.5),
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildTextField({required String label, required IconData icon, required TextInputType type, bool isSecure = false}) {
+  Widget _buildTextField({
+    required String label,
+    required IconData icon,
+    required TextInputType type,
+    bool isSecure = false,
+  }) {
     return TextFormField(
       keyboardType: type,
       obscureText: isSecure,
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: Colors.grey.shade500, fontSize: 14),
-        prefixIcon: Icon(icon, color: Colors.grey.shade400, size: 20),
+        // labelStyle: TextStyle(color: Colors.black, fontSize: 14),
+        prefixIcon: Icon(icon, color: Colors.black, size: 20),
         filled: true,
-        fillColor: const Color(0xFFF8F9FA), // لون هادي للعين
+        fillColor: const Color.fromARGB(255, 248, 249, 250), // لون هادي للعين
         contentPadding: const EdgeInsets.symmetric(vertical: 16),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.black, width: 1.5)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Colors.black, width: 1.5),
+        ),
       ),
       validator: (v) => v!.trim().isEmpty ? 'مطلوب' : null,
     );

@@ -37,18 +37,18 @@ class HomePage extends StatelessWidget {
                 final width = constraints.maxWidth;
                 final height = constraints.maxHeight;
 
-                return SingleChildScrollView(
-                  controller: homescreencontroller.scrollController,
-                  keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: width * 0.04,
-                      vertical: height * 0.015,
-                    ),
-                    child: Handlingdataview(
-                      statusrequest: controller.statusrequest,
-                      widget: Column(
+                return Handlingdataview(
+                  statusrequest: controller.statusrequest,
+                  widget: SingleChildScrollView(
+                    controller: homescreencontroller.scrollController,
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: width * 0.04,
+                        vertical: height * 0.015,
+                      ),
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           /// Categories Title

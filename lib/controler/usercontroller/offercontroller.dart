@@ -20,6 +20,9 @@ class Offercontroller extends GetxController {
       if (response['status'] == true) {
         List data = response["data"];
         offerList.addAll(data.map((e) => ItemsModel.fromJson(e)).toList());
+        if (offerList.isEmpty) {
+          statusrequest = Statusrequest.nodata;
+        }
       } else {
         statusrequest = Statusrequest.failure;
       }
@@ -27,6 +30,18 @@ class Offercontroller extends GetxController {
     update();
   }
 
+  List<ItemsModel> skeletonData = List.generate(
+    6,
+    (index) => ItemsModel(
+      id: 0,
+      itemsName: "اسم المنتج يظهر هنا", // نص بطول متوسط
+      itemsPrice: 1000,
+      priceAfterDiscount: 800,
+      itemsImage: "", // اتركها فارغة، السكيليتون سيرسم مربعاً مكانها
+      itemsDiscount: 10,
+      isFavorite: false,
+    ),
+  );
   @override
   void onInit() {
     getoffer();

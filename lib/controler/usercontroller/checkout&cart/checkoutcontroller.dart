@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/imageasset.dart';
-import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/addresdata.dart';
@@ -67,7 +66,7 @@ class Checkoutcontroller extends GetxController {
   //============================ تنفيذ عملية الطلب
   Future<void> checkoutoder() async {
     // 1. التحقق من وجود عنوان
-    if (listaddresdata.isEmpty) {
+    if (addressid.value==0) {
       Get.snackbar("تنبيه", "الرجاء إضافة عنوان أولاً");
       return; // ضروري جداً لمنع إكمال الدالة
     }
@@ -107,7 +106,7 @@ class Checkoutcontroller extends GetxController {
           Get.find<CartController>().view();
 
           Future.delayed(const Duration(milliseconds: 300), () {
-          Get.offAllNamed(Approute.Homescreen);
+          Get.back();
         });
         } else {
           statusrequest = Statusrequest.failure;

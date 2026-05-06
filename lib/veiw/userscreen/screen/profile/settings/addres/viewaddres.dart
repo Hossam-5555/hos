@@ -24,7 +24,7 @@ class ViewMyAddres extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Colors.black,
         onPressed: () => Get.toNamed(Approute.addnewaddres),
-        icon: const Icon(Icons.add_location_alt_outlined, color: Colors.white),
+        icon: const Icon(Icons.add_location_alt_outlined, color: Colors.green),
         label: const Text("Add Address", style: TextStyle(color: Colors.white)),
       ),
 
@@ -84,7 +84,7 @@ Widget _card(AddresModel address, VoidCallback onDelete) {
                   ),
                   child: Icon(
                     Icons.location_on_rounded, // أيقونة شكلها أحدث
-                    color: Appcolor.primaryColor,
+                    color: Colors.green,
                     size: 22,
                   ),
                 ),

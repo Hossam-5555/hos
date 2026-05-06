@@ -33,21 +33,17 @@ class AutoRotatingOffers extends StatelessWidget {
           transitionBuilder: (Widget child, Animation<double> animation) {
             return FadeTransition(opacity: animation, child: child);
           },
+          // داخل AnimatedSwitcher في AutoRotatingOffers
           child: OfferCard(
-            // Key ضروري جداً هنا لكي يفهم AnimatedSwitcher أن الكارت تغير ويعمل أنيميشن
             key: ValueKey<int>(controller.currentIndex),
             title: controller.offers[controller.currentIndex].title,
             description: controller.offers[controller.currentIndex].description,
             discount: controller.offers[controller.currentIndex].discount,
             colors: controller.offers[controller.currentIndex].colors,
-            onTap: () {
-              print(
-                "تم الضغط على: ${controller.offers[controller.currentIndex].title}",
-              );
-            },
-            icon: NetworkImage(
-              controller.offers[controller.currentIndex].image,
-            ),
+            image: controller
+                .offers[controller.currentIndex]
+                .image, // تمرير الرابط
+            onTap: () => print("Clicked"),
           ),
         );
       },
@@ -60,82 +56,113 @@ class OfferCard extends StatelessWidget {
   final String title;
   final String description;
   final String discount;
-  final List<Color> colors; // <- إضافة متغير الألوان
+  final List<Color> colors;
   final VoidCallback onTap;
-  final ImageProvider<Object> icon;
+  final String image; // غيرناه لـ String لسهولة التعامل مع URL
+
   const OfferCard({
     super.key,
     required this.title,
     required this.description,
     required this.discount,
-    required this.colors, // <- استقبال الألوان
+    required this.colors,
     required this.onTap,
-    required this.icon,
+    required this.image,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.circular(18),
       onTap: onTap,
+      borderRadius: BorderRadius.circular(
+        40,
+      ), // زوايا دائرية كبيرة جداً كالصورة
       child: Container(
-        height: 120,
+        height: 140, // زيادة الارتفاع قليلاً لراحة التصميم
         width: double.infinity,
-        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: icon, fit: BoxFit.cover),
           gradient: LinearGradient(
-            colors: colors, // <- استخدام الألوان الممررة
+            colors: colors.isNotEmpty
+                ? colors
+                : [Colors.black, Colors.grey[900]!],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
           ),
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(40),
           boxShadow: [
             BoxShadow(
-              color: colors.last.withOpacity(
-                .3,
-              ), // جعل لون الظل متناسق مع العرض
-              blurRadius: 10,
-              offset: const Offset(0, 6),
+              color: (colors.isNotEmpty ? colors.last : Colors.black)
+                  .withOpacity(0.2),
+              blurRadius: 15,
+              offset: const Offset(0, 8),
             ),
           ],
         ),
-        child: Row(
-          children: [
-            /// 🔥 النصوص
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    discount,
-                    style: const TextStyle(
-                      color: Colors.yellow,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    description,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Colors.white70, fontSize: 12),
-                  ),
-                ],
+        child: ClipRRect(
+          // لقص الصورة لتناسب زوايا الكونتينر
+          borderRadius: BorderRadius.circular(40),
+          child: Stack(
+            children: [
+              // الصورة في جهة اليسار بتصميم متداخل
+              Positioned(
+                left: -20,
+                top: -10,
+                bottom: -10,
+                width: MediaQuery.of(context).size.width * 0.45,
+                child: Image.network(image, fit: BoxFit.cover),
               ),
-            ),
-
-            /// 🎯 أيقونة
-          ],
+              // غطاء شفاف (Gradient overlay) لجعل النص مقروءاً فوق الصورة
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.black.withOpacity(0.6), Colors.transparent],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
+                ),
+              ),
+              // محتوى النصوص في جهة اليمين
+              Align(
+                alignment: Alignment.centerRight,
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  padding: const EdgeInsets.only(right: 30),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        discount,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22, // نص الخصم كبير
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      // زر "Learn more" كما في الصورة
+                      Text(
+                        "Learn more...",
+                        style: TextStyle(
+                          color: Colors.grey[400],
+                          fontSize: 12,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

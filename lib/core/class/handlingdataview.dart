@@ -21,7 +21,7 @@ class Handlingdataview extends StatelessWidget {
       Approute.notificationPage: "No notifications yet".tr,
       Approute.ShoppingCartPage: "Start shopping now".tr,
       Approute.myfavorite: "No items in your favorites".tr,
-      Approute.viewmyaddres: "لا يوجد عناوين",
+      Approute.viewmyaddres: "add new address",
       Approute.Orders: "You have no orders yet".tr,
     };
 

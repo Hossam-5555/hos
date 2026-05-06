@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:hos/controler/usercontroller/home/filtercontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/userscreen/screen/searchpage.dart';
 import 'package:hos/veiw/wedget/Homepage/homescrenAction.dart';
@@ -119,14 +120,17 @@ class BackButtonCircle extends StatelessWidget {
     );
   }
 }
-
 void openAdvancedFilter(BuildContext context) {
-  Get.put(FilterController());
+  // استخدام findOrPut لضمان عدم تكرار إنشاء الكنترولر إذا كان موجوداً بالفعل
+  if (!Get.isRegistered<FilterController>()) {
+    Get.put(FilterController());
+  }
 
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    backgroundColor: Colors.white,
+    // إزالة اللون الثابت ليتماشى مع التعديلات التي أجريناها في الـ Sheet
+    backgroundColor: Colors.transparent, 
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),

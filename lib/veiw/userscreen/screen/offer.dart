@@ -2,75 +2,58 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/favorite/fav_controller.dart';
 import 'package:hos/controler/usercontroller/offercontroller.dart';
-import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/veiw/wedget/items/offer/offercard.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class Offer extends StatelessWidget {
   const Offer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // ✅ الأفضل خارج الـ build لكن ماشي مؤقتاً
+    // تهيئة الكنترولرز
     Get.put(Offercontroller());
     Get.put(FavController());
 
     return Scaffold(
       body: GetBuilder<Offercontroller>(
         builder: (controller) {
+
           return Handlingdataview(
             statusrequest: controller.statusrequest,
-
             widget: RefreshIndicator(
-              color: const Color(0xFFFF512F),
-              onRefresh: () async {
-                controller.getoffer();
-              },
-
+              color: const Color.fromARGB(255, 8, 110, 150),
+              onRefresh: () async => controller.getoffer(),
               child: CustomScrollView(
                 physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics(),
                 ),
                 slivers: [
-                  /// 🔥 Banner
-                  SliverToBoxAdapter(child: _buildPromoBanner()),
+                  // 🔥 الجزء العلوي: البانر الإعلاني المتحرك أو الثابت
+                  SliverToBoxAdapter(child: _buildResponsiveBanner(context)),
 
-                  /// ❌ Empty state
-                  // if (controller.offerList.isEmpty)
-                  //   SliverFillRemaining(
-                  //     hasScrollBody: false,
-                  //     child: _buildEmptyState(),
-                  //   )
-                  // else
-                    /// 🧱 Grid Offers
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 10,
-                      ),
-                      sliver: SliverGrid(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) => Skeletonizer(
-                            enabled:
-                                controller.statusrequest ==
-                                Statusrequest.loading,
-                            child: Offercard(
-                              index: index,
-                              items: controller.offerList[index],
-                            ),
-                          ),
-                          childCount: controller.offerList.length,
-                        ),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, // ⭐ مهم
-                              mainAxisSpacing: 16,
-                              crossAxisSpacing: 12,
-                              childAspectRatio: 0.68, // ⭐ متظبط مع الكارد
-                            ),
-                      ),
+                  // 🧱 شبكة العروض (Grid) مع الـ Skeletonizer
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 10,
                     ),
+                    sliver: SliverGrid(
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        return Offercard(
+                          index: index,
+                          // تمرير بيانات وهمية في حالة التحميل لمنع الخطأ ولتفعيل السكيليتون
+                          items: controller.offerList[index],
+                        );
+                      }, childCount: controller.offerList.length),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 16,
+                            crossAxisSpacing: 12,
+                            childAspectRatio: 0.65, // متناسب مع أغلب الشاشات
+                          ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -80,88 +63,54 @@ class Offer extends StatelessWidget {
     );
   }
 
-  // ================= Banner =================
+  // تصميم البانر ليكون متجاوباً (Responsive)
+  Widget _buildResponsiveBanner(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
 
-  Widget _buildPromoBanner() {
     return Container(
-      margin: const EdgeInsets.fromLTRB(16, 8, 16, 6),
-      padding: const EdgeInsets.all(18),
+      width: screenWidth,
+      margin: const EdgeInsets.fromLTRB(16, 40, 16, 10),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFFFF512F), Color(0xFFDD2476)],
+          colors: [Color(0xFF0F2027), Color(0xFF203A43)], // ألوان تقنية غامقة
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(
+          screenWidth * 0.1,
+        ), // زوايا دائرية نسبية
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFDD2476).withOpacity(.25),
-            blurRadius: 14,
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 15,
             offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Row(
         children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(.2),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.local_fire_department_rounded,
-              color: Colors.white,
-              size: 26,
-            ),
-          ),
-          const SizedBox(width: 14),
-          const Expanded(
+          const Icon(Icons.bolt, color: Colors.yellow, size: 30),
+          const SizedBox(width: 12),
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              mainAxisSize: MainAxisSize.min,
+              children: const [
                 Text(
-                  "عروض قوية لفترة محدودة",
+                  "أقوى عروض الإلكترونيات",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 4),
                 Text(
-                  "سارع قبل نفاد الكمية",
+                  "تخفيضات تصل إلى 50% على السماعات",
                   style: TextStyle(color: Colors.white70, fontSize: 13),
                 ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ================= Empty =================
-
-  Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.local_offer_outlined, size: 80, color: Colors.grey[400]),
-          const SizedBox(height: 16),
-          Text(
-            "لا توجد عروض حالياً",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey[800],
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            "تحقق مرة أخرى قريباً",
-            style: TextStyle(fontSize: 14, color: Colors.grey[500]),
           ),
         ],
       ),
