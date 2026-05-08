@@ -24,7 +24,7 @@ class SharedProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    double h = size.height;
+    // double h = size.height;
     double w = size.width;
     return GestureDetector(
       onTap: onTap,

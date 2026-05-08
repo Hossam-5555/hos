@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/favorite/fav_controller.dart';
 import 'package:hos/controler/usercontroller/offercontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
-import 'package:hos/veiw/wedget/items/offer/offercard.dart';
+import 'package:hos/veiw/wedget/items/productcard.dart';
 
 class Offer extends StatelessWidget {
   const Offer({super.key});
@@ -17,7 +17,6 @@ class Offer extends StatelessWidget {
     return Scaffold(
       body: GetBuilder<Offercontroller>(
         builder: (controller) {
-
           return Handlingdataview(
             statusrequest: controller.statusrequest,
             widget: RefreshIndicator(
@@ -39,11 +38,7 @@ class Offer extends StatelessWidget {
                     ),
                     sliver: SliverGrid(
                       delegate: SliverChildBuilderDelegate((context, index) {
-                        return Offercard(
-                          index: index,
-                          // تمرير بيانات وهمية في حالة التحميل لمنع الخطأ ولتفعيل السكيليتون
-                          items: controller.offerList[index],
-                        );
+                        return productcard(controller.offerList[index], () {});
                       }, childCount: controller.offerList.length),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
