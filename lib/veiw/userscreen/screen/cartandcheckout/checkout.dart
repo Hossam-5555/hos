@@ -21,14 +21,15 @@ class Checkout extends StatelessWidget {
         child: Appbarbackicon(herotag: '', title: "confirm order".tr),
       ),
       body: GetBuilder<Checkoutcontroller>(
-        builder: (c) => Handlingdataview(
-          statusrequest: c.statusrequest,
-          widget: ListView(
-            padding: const EdgeInsets.all(16),
-            physics: const BouncingScrollPhysics(),
-            children: [
-              // قسم عنوان التوصيل
-              _buildSectionCard(
+        builder: (c) => ListView(
+          padding: const EdgeInsets.all(16),
+          physics: const BouncingScrollPhysics(),
+          children: [
+            // قسم عنوان التوصيل
+            Handlingdataview(
+              isFullScreen: false,
+              statusrequest: c.statusrequest,
+              widget: _buildSectionCard(
                 title: "shipping address".tr,
                 icon: Icons.location_on_rounded,
                 child: c.listaddresdata.isEmpty
@@ -53,22 +54,22 @@ class Checkout extends StatelessWidget {
                       )
                     : _buildAddressSelector(c),
               ),
-              const SizedBox(height: 16),
-              // قسم طرق الدفع (بالتصميم الجديد)
-              _buildSectionCard(
-                title: "Payment Methods".tr,
-                icon: Icons.account_balance_wallet_rounded,
-                child: GetBuilder<Checkoutcontroller>(
-                  builder: (c) => Row(
-                    children: c.paymentMethodEnum.map((methodList) {
-                      final method = methodList[0];
-                      return _buildPaymentOption(method, c);
-                    }).toList(),
-                  ),
+            ),
+            const SizedBox(height: 16),
+            // قسم طرق الدفع (بالتصميم الجديد)
+            _buildSectionCard(
+              title: "Payment Methods".tr,
+              icon: Icons.account_balance_wallet_rounded,
+              child: GetBuilder<Checkoutcontroller>(
+                builder: (c) => Row(
+                  children: c.paymentMethodEnum.map((methodList) {
+                    final method = methodList[0];
+                    return _buildPaymentOption(method, c);
+                  }).toList(),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

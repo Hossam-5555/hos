@@ -40,7 +40,7 @@ class AddNewAddres extends StatelessWidget {
                     children: [
                       /// الجزء العلوي (الخريطة أو Placeholder)
                       Container(
-                        height: size.height * 0.35,
+                        height: size.height * 0.40,
                         margin: const EdgeInsets.all(16),
 
                         decoration: BoxDecoration(

@@ -192,7 +192,7 @@ class ProfilePage extends StatelessWidget {
             ? const BorderRadius.vertical(bottom: Radius.circular(20))
             : BorderRadius.zero,
         child: Padding(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(10),
           child: Row(
             children: [
               // الحاوية المعدلة مع التدرج اللوني
@@ -248,11 +248,11 @@ class ProfilePage extends StatelessWidget {
   // ================= Custom Divider =================
   Widget _buildDivider() {
     return Padding(
-      padding: const EdgeInsets.only(
-        left: 60,
-        right: 20,
+      padding: const EdgeInsetsGeometry.directional(
+        start: 60,
+        end: 20,
       ), // لترك مساحة للأيقونة
-      child: Divider(height: 0.2, color: Colors.grey[100]),
+      child: Divider(height: 0.1, color: Colors.grey[100]),
     );
   }
 }

@@ -99,6 +99,10 @@ Widget _card(AddresModel address, VoidCallback onDelete) {
               ],
             ),
             IconButton(
+              style: ButtonStyle(
+                padding: WidgetStatePropertyAll(EdgeInsetsGeometry.all(10)),
+                backgroundColor: WidgetStatePropertyAll(Colors.grey),
+              ),
               icon: const Icon(
                 Icons.delete_outline_rounded,
                 color: Colors.redAccent,
