@@ -11,88 +11,145 @@ class AddNewAddres extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AddressController controller = Get.put(AddressController());
+
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
+      resizeToAvoidBottomInset: true,
+
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
+        preferredSize: const Size.fromHeight(60),
         child: Appbarbackicon(herotag: '', title: "Add Address"),
       ),
-      body: Column(
-        children: [
-          // الجزء العلوي (الخريطة أو Placeholder)
-          Expanded(
-            flex: 1,
-            child: Center(child: Text("هنا القاهره")),
-            //  Container(
-            //   color: Colors.grey[300],
-            //   child: Center(
-            //     child: GoogleMap(
-            //       mapType: MapType.normal,
-            //       initialCameraPosition: CameraPosition(
-            //         target: LatLng(
-            //           controller.selectedLat.value,
-            //           controller.selectedLng.value,
-            //         ),
-            //         zoom: 14,
-            //       ),
-            //       onTap: (position) {
-            //         controller.addmarker(position);
-            //       },
-            //       markers: controller.marker.toSet(),
-            //     ),
-            //   ),
-            // ),
-          ),
 
-          // الجزء السفلي (فورم التفاصيل)
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Form(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Textfealdauth(
-                      obscureText: false,
-                      suffixIcon: Icons.send,
-                      hint: 'Enter  name of location',
-                      textEditingController: controller.name!,
-                      valid: (String? val) {
-                        return null;
-                      },
-                    ),
-                    Textfealdauth(
-                      obscureText: false,
-                      suffixIcon: Icons.location_city,
-                      hint: 'Enter city name',
-                      textEditingController: controller.city!,
-                      valid: (String? val) {
-                        return null;
-                      },
-                    ),
-                    Textfealdauth(
-                      obscureText: false,
-                      suffixIcon: Icons.streetview,
-                      hint: 'Enter street name',
-                      textEditingController: controller.street!,
-                      valid: (String? val) {
-                        return null;
-                      },
-                    ),
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
 
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        controller.addaddres();
-                      },
-                      child: const Text("حفظ العنوان"),
-                    ),
-                  ],
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+
+                child: IntrinsicHeight(
+                  child: Column(
+                    children: [
+                      /// الجزء العلوي (الخريطة أو Placeholder)
+                      Container(
+                        height: size.height * 0.35,
+                        margin: const EdgeInsets.all(16),
+
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+
+                        child: Center(child: Text("هنا القاهره")),
+
+                        //  Container(
+                        //   color: Colors.grey[300],
+                        //   child: Center(
+                        //     child: GoogleMap(
+                        //       mapType: MapType.normal,
+                        //       initialCameraPosition: CameraPosition(
+                        //         target: LatLng(
+                        //           controller.selectedLat.value,
+                        //           controller.selectedLng.value,
+                        //         ),
+                        //         zoom: 14,
+                        //       ),
+                        //       onTap: (position) {
+                        //         controller.addmarker(position);
+                        //       },
+                        //       markers: controller.marker.toSet(),
+                        //     ),
+                        //   ),
+                        // ),
+                      ),
+
+                      /// الفورم
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 10,
+                          ),
+
+                          child: Form(
+                            child: Column(
+                              children: [
+                                Textfealdauth(
+                                  obscureText: false,
+                                  suffixIcon: Icons.send,
+                                  hint: 'Enter name of location',
+                                  textEditingController: controller.name!,
+                                  valid: (String? val) {
+                                    return null;
+                                  },
+                                ),
+
+                                const SizedBox(height: 16),
+
+                                Textfealdauth(
+                                  obscureText: false,
+                                  suffixIcon: Icons.location_city,
+                                  hint: 'Enter city name',
+                                  textEditingController: controller.city!,
+                                  valid: (String? val) {
+                                    return null;
+                                  },
+                                ),
+
+                                const SizedBox(height: 16),
+
+                                Textfealdauth(
+                                  obscureText: false,
+                                  suffixIcon: Icons.streetview,
+                                  hint: 'Enter street name',
+                                  textEditingController: controller.street!,
+                                  valid: (String? val) {
+                                    return null;
+                                  },
+                                ),
+
+                                const Spacer(),
+
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: 55,
+
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.black,
+                                    ),
+                                    onPressed: () {
+                                      controller.addaddres();
+                                    },
+
+                                    child: const Text(
+                                      "Save location",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+
+                                const SizedBox(height: 20),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ),
-        ],
+            );
+          },
+        ),
       ),
     );
   }

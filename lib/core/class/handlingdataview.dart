@@ -4,6 +4,7 @@ import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/veiw/wedget/animation.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 // استورد ويدجت الانيميشن الخاصة بك
 
 class Handlingdataview extends StatelessWidget {
@@ -11,10 +12,17 @@ class Handlingdataview extends StatelessWidget {
     super.key,
     required this.statusrequest,
     required this.widget,
+
+    this.isFullScreen = true,
+    this.loadingWidget,
   });
 
   final Statusrequest statusrequest;
   final Widget widget;
+
+  // 🔹 جديد
+  final bool isFullScreen;
+  final Widget? loadingWidget;
 
   String getEmptyMessage() {
     final Map<String, String> routeMessages = {
@@ -60,6 +68,8 @@ class Handlingdataview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // 🔹 الإنترنت
     if (statusrequest == Statusrequest.checkinterner) {
       return buildState(
         context: context,
@@ -68,14 +78,27 @@ class Handlingdataview extends StatelessWidget {
       );
     }
 
+    // 🔹 Loading
     if (statusrequest == Statusrequest.loading) {
-      return buildState(
-        context: context,
-        animation: Imageasset.loading,
-        message: null,
+
+      // ✅ Full Screen Loading
+      if (isFullScreen) {
+        return loadingWidget ??
+            buildState(
+              context: context,
+              animation: Imageasset.loading,
+              message: null,
+            );
+      }
+
+      // ✅ Skeleton Loading
+      return Skeletonizer(
+        enabled: true,
+        child: widget,
       );
     }
 
+    // 🔹 No Data
     if (statusrequest == Statusrequest.failure ||
         statusrequest == Statusrequest.nodata) {
       return buildState(
@@ -85,6 +108,7 @@ class Handlingdataview extends StatelessWidget {
       );
     }
 
+    // 🔹 Server Error
     if (statusrequest == Statusrequest.serverfailure) {
       return buildState(
         context: context,
@@ -93,6 +117,7 @@ class Handlingdataview extends StatelessWidget {
       );
     }
 
+    // ✅ Success
     return widget;
   }
 }

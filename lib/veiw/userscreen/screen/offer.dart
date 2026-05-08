@@ -17,12 +17,12 @@ class Offer extends StatelessWidget {
     return Scaffold(
       body: GetBuilder<Offercontroller>(
         builder: (controller) {
-          return Handlingdataview(
-            statusrequest: controller.statusrequest,
-            widget: RefreshIndicator(
-              color: const Color.fromARGB(255, 8, 110, 150),
-              onRefresh: () async => controller.getoffer(),
-              child: CustomScrollView(
+          return RefreshIndicator(
+            color: const Color.fromARGB(255, 8, 110, 150),
+            onRefresh: () async => controller.getoffer(),
+            child: Handlingdataview(
+              statusrequest: controller.statusrequest,
+              widget: CustomScrollView(
                 physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics(),
                 ),

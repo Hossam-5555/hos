@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
 import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
-import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/imageasset.dart';
@@ -14,7 +13,6 @@ import 'package:hos/veiw/wedget/Homepage/categorieswidget.dart';
 import 'package:hos/veiw/wedget/Homepage/dicountcard.dart';
 import 'package:hos/veiw/wedget/Homepage/titles.dart';
 import 'package:hos/veiw/wedget/SharedProductCard.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -37,57 +35,55 @@ class HomePage extends StatelessWidget {
                 final width = constraints.maxWidth;
                 final height = constraints.maxHeight;
 
-                return Handlingdataview(
-                  statusrequest: controller.statusrequest,
-                  widget: SingleChildScrollView(
-                    controller: homescreencontroller.scrollController,
-                    keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.onDrag,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: width * 0.04,
-                        vertical: height * 0.015,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          /// Categories Title
+                return SingleChildScrollView(
+                  controller: homescreencontroller.scrollController,
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: width * 0.04,
+                      vertical: height * 0.015,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        /// Categories Title
 
-                          /// Main Offer
-                          AutoRotatingOffers(),
-                          //Hossam iss================================
-                          SizedBox(height: height * 0.02),
-                          Titles(title: "Categories".tr),
+                        /// Main Offer
+                        AutoRotatingOffers(),
+                        //Hossam iss================================
+                        SizedBox(height: height * 0.02),
+                        Titles(title: "Categories".tr),
 
-                          /// Categories List
-                          SizedBox(
+                        /// Categories List
+                        Handlingdataview(
+                          isFullScreen: false,
+                          statusrequest: controller.statusrequest,
+                          widget: SizedBox(
                             height: height * 0.16,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemCount: controller.categories.length,
                               itemBuilder: (context, index) {
                                 final cat = controller.categories[index];
-                                return Skeletonizer(
-                                  containersColor: Colors.grey[300],
-                                  enabled:
-                                      controller.statusrequest ==
-                                      Statusrequest.loading,
-                                  child: CategoryItem(
-                                    index: index,
-                                    name: cat.name ?? "",
-                                    imageUrl: cat.image.toString(),
-                                  ),
+                                return CategoryItem(
+                                  index: index,
+                                  name: cat.name ?? "",
+                                  imageUrl: cat.image.toString(),
                                 );
                               },
                             ),
                           ),
+                        ),
 
-                          /// Curved Items
-                          // const CurvedItemsView(),
-                          SizedBox(height: height * 0.025),
+                        /// Curved Items
+                        SizedBox(height: height * 0.025),
 
-                          /// New Offers Header
-                          Row(
+                        /// New Offers Header
+                        Handlingdataview(
+                          isFullScreen: false,
+                          statusrequest: controller.statusrequest,
+                          widget: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Titles(title: "New Items".tr),
@@ -104,30 +100,34 @@ class HomePage extends StatelessWidget {
                               ),
                             ],
                           ),
-                          CurvedItemsView(),
+                        ),
+                        CurvedItemsView(),
 
-                          /// 🔥 Products List (FIXED)
-                          ///
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Titles(title: "Most Sale".tr),
-                              TextButton.icon(
-                                onPressed: () {},
-                                icon: const Text("See All"),
-                                label: const Icon(
-                                  Icons.arrow_forward_ios,
-                                  size: 16,
-                                ),
-                                style: TextButton.styleFrom(
-                                  foregroundColor: Appcolor.primaryColor,
-                                ),
+                        /// 🔥 Products List (FIXED)
+                        ///
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Titles(title: "Most Sale".tr),
+                            TextButton.icon(
+                              onPressed: () {},
+                              icon: const Text("See All"),
+                              label: const Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
                               ),
-                            ],
-                          ),
-                          SizedBox(height: height * 0.02),
+                              style: TextButton.styleFrom(
+                                foregroundColor: Appcolor.primaryColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: height * 0.02),
 
-                          MasonryGridView.builder(
+                        Handlingdataview(
+                          isFullScreen: false,
+                          statusrequest: controller.statusrequest,
+                          widget: MasonryGridView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             padding: EdgeInsets.symmetric(
@@ -161,8 +161,8 @@ class HomePage extends StatelessWidget {
                               );
                             },
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 );

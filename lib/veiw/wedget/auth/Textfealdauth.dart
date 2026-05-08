@@ -30,7 +30,7 @@ class Textfealdauth extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: height * 0.01),
       child: TextFormField(
         style: TextStyle(
-          color: const Color.fromARGB(255, 10, 10, 10),
+          // color: const Color.fromARGB(255, 10, 10, 10),
           fontSize: width * 0.045, // حجم الخط متناسب مع العرض
           fontWeight: FontWeight.w500,
         ),
@@ -50,7 +50,7 @@ class Textfealdauth extends StatelessWidget {
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(40),
-            borderSide: BorderSide(color: Appcolor.black.withAlpha(40)),
+            borderSide: BorderSide(color: Colors.grey),
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
@@ -63,13 +63,13 @@ class Textfealdauth extends StatelessWidget {
             child: Icon(
               suffixIcon,
               size: width * 0.060,
-              color: const Color.fromARGB(255, 10, 10, 10),
+              // color: const Color.fromARGB(255, 10, 10, 10),
             ),
           ),
 
           hintText: hint,
           hintStyle: TextStyle(
-            color: Colors.black.withAlpha(153), // 0.6 * 255 = 153
+            // color: Colors.black.withAlpha(153), // 0.6 * 255 = 153
             fontSize: width * 0.04,
           ),
         ),
