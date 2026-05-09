@@ -40,7 +40,8 @@ class Signup extends StatelessWidget {
                   child: Column(
                     children: [
                       Animationlottie(
-                        h: 200,w: 200,
+                        h: 200,
+                        w: 200,
                         animationPath: Imageasset
                             .loginanimation, // أو اعمل signupanimation لو عندك
                       ),
@@ -68,7 +69,9 @@ class Signup extends StatelessWidget {
                           width: width * 0.9,
                           constraints: BoxConstraints(maxHeight: height * 0.75),
                           decoration: BoxDecoration(
-                            color: Appcolor.glass.withAlpha(51), // 0.2 * 255 = 51
+                            color: Appcolor.glass.withAlpha(
+                              51,
+                            ), // 0.2 * 255 = 51
                             borderRadius: BorderRadius.circular(25),
                             border: Border.all(
                               color: const Color.fromARGB(
@@ -111,12 +114,18 @@ class Signup extends StatelessWidget {
                                     ),
                                     SizedBox(height: height * 0.025),
                                     Textfealdauth(
+                                      obscureText: controller.showpass,
+                                      onTapIcon: () {
+                                        controller.isshowpass();
+                                      },
                                       valid: (val) =>
                                           validInput(val!, 5, 20, "password"),
                                       textEditingController:
                                           signUpcontroller.passward,
                                       // label: 'passward',
-                                      suffixIcon: Icons.remove_red_eye_outlined,
+                                      suffixIcon: controller.showpass
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
                                       hint: "Enter Your Passward",
                                     ),
                                     SizedBox(height: height * 0.025),

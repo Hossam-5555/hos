@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/auth/login_controller.dart';
 import 'package:hos/core/class/crud.dart';
-import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/appexitalert.dart';
@@ -27,18 +26,19 @@ class Login extends StatelessWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      // ignore: deprecated_member_use
       body: WillPopScope(
         onWillPop: appexitAlert,
         child: GetBuilder<LoginController>(
           builder: (controller) {
-            // ✅ الحالة loading فقط نعرض فيها Handlingdatrequest
-            if (controller.statusrequest == Statusrequest.loading ||
-                controller.statusrequest == Statusrequest.checkinterner) {
-              return Handlingdatrequest(
-                statusrequest: controller.statusrequest,
-                widget: const SizedBox.shrink(),
-              );
-            }
+            // // ✅ الحالة loading فقط نعرض فيها Handlingdatrequest
+            // if (controller.statusrequest == Statusrequest.loading ||
+            //     controller.statusrequest == Statusrequest.checkinterner) {
+            //   return Handlingdatrequest(
+            //     statusrequest: controller.statusrequest,
+            //     widget: const SizedBox.shrink(),
+            //   );
+            // }
 
             // ✅ باقي الحالات (success أو failure أو none)
             return Stack(
@@ -124,7 +124,9 @@ class Login extends StatelessWidget {
                                           validInput(val!, 5, 30, 'password'),
                                       textEditingController:
                                           loginController.passward,
-                                      suffixIcon: Icons.remove_red_eye_outlined,
+                                      suffixIcon: controller.showpass
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
                                       hint: " Password",
                                     ),
 
@@ -153,6 +155,7 @@ class Login extends StatelessWidget {
                                     SizedBox(height: height * 0.01),
 
                                     Checkbutton(
+                                      statusrequest: controller.statusrequest,
                                       onTap: () {
                                         loginController.login();
                                       },
@@ -166,7 +169,8 @@ class Login extends StatelessWidget {
                                       margin: EdgeInsets.symmetric(
                                         vertical: height * 0.02,
                                       ),
-                                      child: GoogleFacetweter(w: width * 0.75,
+                                      child: GoogleFacetweter(
+                                        w: width * 0.75,
                                         image: Imageasset.google,
                                       ),
                                     ),

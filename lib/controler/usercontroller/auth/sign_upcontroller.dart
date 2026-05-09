@@ -10,7 +10,12 @@ class Signupcontroller extends GetxController {
   TextEditingController email = TextEditingController();
   TextEditingController passward = TextEditingController();
   TextEditingController username = TextEditingController();
+    bool showpass = true;
 
+  void isshowpass() {
+    showpass = showpass == true ? false : true;
+    update();
+  }
   GlobalKey<FormState> signuokey = GlobalKey();
   Statusrequest statusrequest = Statusrequest.none;
   List data = [];

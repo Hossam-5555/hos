@@ -110,16 +110,13 @@ class AddressController extends GetxController {
 
   void deleteAddres(int addresid) {
     // 🔹 نجيب index الصح
-    int index = listaddresdata.indexWhere((e) => e.id == addresid);
-
-    if (index == -1) return;
-
-    // 🔹 نحذف من الليست مباشرة
-    listaddresdata.removeAt(index);
-
-    // 🔹 استدعاء API للحذف
     addresdata.deleteAddresdata(addresid);
 
+    // 🔹 نحذف من الليست مباشرة
+    listaddresdata.removeWhere((e) => e.id == addresid);
+
+    // 🔹 استدعاء API للحذف
+    _showSnackBar("تم حذف العنوان بنجاح");
     // 🔹 حالة الليست فاضية
     if (listaddresdata.isEmpty) {
       statusrequest = Statusrequest.failure;
@@ -127,6 +124,30 @@ class AddressController extends GetxController {
 
     // 🔹 تحديث الواجهة
     update();
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(Get.context!).showSnackBar(
+      SnackBar(
+        duration: Duration(seconds: 4),
+        behavior: SnackBarBehavior.floating, // يخليه طاير مش لازق تحت
+        margin: EdgeInsets.all(12),
+        backgroundColor: Colors.grey.shade900,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15), // 🔥 حواف دائرية
+        ),
+
+        content: Row(
+          children: [
+            Icon(Icons.check_circle, color: Colors.green),
+            SizedBox(width: 10),
+            Expanded(
+              child: Text(message, style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   // دالة الحفظ
