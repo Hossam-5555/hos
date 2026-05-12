@@ -14,30 +14,11 @@ class viewitem extends StatelessWidget {
     final controller = Get.put(ViewItemController());
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
-      appBar: AppBar(
-        elevation: 2,
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: const Text(
-          "Items",
-          style: TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 0.5,
-          ),
-        ),
-        leading: IconButton(
-          onPressed: controller.backtohomebage,
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87),
-        ),
-      ),
-
       floatingActionButton: FloatingActionButton.extended(
         onPressed: controller.goToAddPage,
         backgroundColor: Colors.black,
         icon: const Icon(Icons.add, color: Colors.white),
-        label: const Text("إضافة item", style: TextStyle(color: Colors.white)),
+        label: const Text("add item", style: TextStyle(color: Colors.white)),
       ),
 
       body: GetBuilder<ViewItemController>(

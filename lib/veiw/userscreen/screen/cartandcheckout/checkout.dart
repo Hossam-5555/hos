@@ -4,6 +4,7 @@ import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.da
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/add.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
+import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 class Checkout extends StatelessWidget {
   const Checkout({super.key});
@@ -294,26 +295,19 @@ class Checkout extends StatelessWidget {
             const SizedBox(height: 20),
 
             // زر التأكيد
-            SizedBox(
-              width: double.infinity,
-              height: 55,
-              child: FilledButton(
-                style: FilledButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                ),
-                onPressed: () => c.checkoutoder(),
-                child: Text(
-                  "Confirm order".tr,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+            GetBuilder<Checkoutcontroller>(
+              builder: (controller) {
+                return Checkbutton(
+                  width: MediaQuery.of(context).size.width,
+                  buttonColor: Colors.black,
+                  onTap: () {
+                    print("Hssa");
+                    c.checkoutoder();
+                  },
+                  buttonName: "confirm order".tr,
+                  controller: controller,
+                );
+              },
             ),
           ],
         ),

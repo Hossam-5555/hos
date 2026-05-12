@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/addres/addrescontroller.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
+import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 class AddNewAddres extends StatelessWidget {
   const AddNewAddres({super.key});
@@ -118,23 +119,17 @@ class AddNewAddres extends StatelessWidget {
 
                                 const Spacer(),
 
-                                SizedBox(
-                                  width: double.infinity,
-                                  height: 55,
-
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.black,
-                                    ),
-                                    onPressed: () {
-                                      controller.addaddres();
-                                    },
-
-                                    child: const Text(
-                                      "Save location",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
+                                GetBuilder<AddressController>(
+                                  builder: (controller) {
+                                    return Checkbutton(controller: controller,
+                                      buttonColor: Colors.black,
+                                      width: size.width,
+                                      onTap: () {
+                                        controller.addaddres();
+                                      },
+                                      buttonName: "Save location",
+                                    );
+                                  },
                                 ),
 
                                 const SizedBox(height: 20),

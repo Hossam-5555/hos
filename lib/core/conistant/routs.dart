@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:get/get.dart';
-import 'package:hos/veiw/adminscreen/Home/AdminHome.dart';
+import 'package:hos/veiw/adminscreen/Adminhomescreen.dart';
 import 'package:hos/veiw/driverscreen/driverHome.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/cart.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/checkout.dart';

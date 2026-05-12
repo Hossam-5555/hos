@@ -4,6 +4,7 @@ import 'package:hos/controler/usercontroller/profile/order/ordercontroller.dart'
 import 'package:hos/controler/usercontroller/profile/order/orderdetailescontroller.dart';
 import 'package:hos/data/model/ordersmodel.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
+import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 class Orderdetailes extends StatelessWidget {
   const Orderdetailes({super.key});
@@ -17,28 +18,24 @@ class Orderdetailes extends StatelessWidget {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
-        child: Appbarbackicon(
-          herotag: '',
-          title: c.order?.orderNumber ?? '',
-        ),
+        child: Appbarbackicon(herotag: '', title: c.order?.orderNumber ?? ''),
       ),
 
       bottomNavigationBar: c.order?.status == "pending"
           ? Padding(
               padding: EdgeInsets.all(w * 0.06),
-              child: SizedBox(
-                height: 50,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0.2,
-                    backgroundColor: Colors.black,
-                  ),
-                  onPressed: () => controller.deleteorders(c.order!.orderId),
-                  child: Text(
-                    "Cancel Order",
-                    style: TextStyle(color: Colors.white, fontSize: 15),
-                  ),
-                ),
+              child: GetBuilder<Ordercontroller>(
+                builder: (controller) {
+                  return Checkbutton(
+                    controller: controller,
+                    buttonColor: Colors.black,
+                    width: w,
+                    onTap: () {
+                      controller.deleteorders(c.order!.orderId);
+                    },
+                    buttonName: "Cancel Order",
+                  );
+                },
               ),
             )
           : null,

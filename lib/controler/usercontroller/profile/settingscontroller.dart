@@ -10,18 +10,19 @@ class SettingsController extends GetxController {
   // استخدام .obs لجعل المتغيرات تفاعلية (reactive)
   var notificationsEnabled = true.obs;
   var selectedTheme = 'Light'.obs;
-
+  String? get usrtype => myservisec.sharedPreferences.getString("usertype");
   @override
   void onInit() {
     super.onInit();
     loadSettings(); // تحميل الإعدادات عند بدء تشغيل الـ controller
   }
 
+  Map userdata = {"user": "user", "admin": "admin", 'driver': "driver"};
   //logout تسجيل الخروج من البرنامج
   void logout() {
     int id = myservisec.sharedPreferences.getInt("id")!;
-    FirebaseMessaging.instance.subscribeToTopic("users");
-    FirebaseMessaging.instance.subscribeToTopic("users$id");
+    FirebaseMessaging.instance.unsubscribeFromTopic("${userdata[usrtype]}");
+    FirebaseMessaging.instance.unsubscribeFromTopic("${userdata[usrtype]}$id");
     myservisec.sharedPreferences.clear();
     Get.offAllNamed(Approute.login);
   }

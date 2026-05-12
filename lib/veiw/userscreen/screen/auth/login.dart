@@ -59,7 +59,6 @@ class Login extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Appcolor.black,
                         ),
                       ),
                     ],
@@ -154,23 +153,25 @@ class Login extends StatelessWidget {
 
                                     SizedBox(height: height * 0.01),
 
-                                    Checkbutton(
-                                      statusrequest: controller.statusrequest,
-                                      onTap: () {
-                                        loginController.login();
-                                      },
-                                      buttonName: 'Login',
-                                      width: width * 0.75,
-                                      buttonColor: Colors.black,
+                                    GetBuilder<LoginController>(
+                                      builder: (controller) => Checkbutton(
+                                        controller: controller,
+                                        onTap: () {
+                                          loginController.login();
+                                        },
+                                        buttonName: 'Login',
+                                        width: width * 0.75,
+                                        buttonColor: Colors.black,
+                                      ),
                                     ),
 
-                                    Container(
+                                    Container(height: 60,
                                       alignment: Alignment.center,
                                       margin: EdgeInsets.symmetric(
                                         vertical: height * 0.02,
                                       ),
                                       child: GoogleFacetweter(
-                                        w: width * 0.75,
+                                        w: width * 0.65,
                                         image: Imageasset.google,
                                       ),
                                     ),

@@ -13,25 +13,6 @@ class ViewCategories extends StatelessWidget {
     final controller = Get.put(ViewCatController());
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
-      appBar: AppBar(
-        elevation: 2,
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: const Text(
-          "الفئات",
-          style: TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 0.5,
-          ),
-        ),
-        leading: IconButton(
-          onPressed: controller.backtohomebage,
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87),
-        ),
-      ),
-
       floatingActionButton: FloatingActionButton.extended(
         onPressed: controller.goToAddPage,
         backgroundColor: Colors.black,
@@ -65,14 +46,17 @@ class ViewCategories extends StatelessWidget {
                     ],
                   ),
                   child: ListTile(
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 10,
+                    ),
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: (item.categoriesImage != null &&
-                              item.categoriesImage!
-                                  .toLowerCase()
-                                  .endsWith(".svg"))
+                      child:
+                          (item.categoriesImage != null &&
+                              item.categoriesImage!.toLowerCase().endsWith(
+                                ".svg",
+                              ))
                           ? SvgPicture.network(
                               imageUrl,
                               width: 60,
@@ -88,8 +72,10 @@ class ViewCategories extends StatelessWidget {
                                 width: 60,
                                 height: 60,
                                 color: Colors.grey[200],
-                                child: const Icon(Icons.image_not_supported,
-                                    color: Colors.grey),
+                                child: const Icon(
+                                  Icons.image_not_supported,
+                                  color: Colors.grey,
+                                ),
                               ),
                             ),
                     ),
@@ -103,21 +89,24 @@ class ViewCategories extends StatelessWidget {
                     ),
                     subtitle: Text(
                       item.categoriesNameAr ?? "",
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey[600],
-                      ),
+                      style: TextStyle(fontSize: 13, color: Colors.grey[600]),
                     ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.edit, color: Colors.blueAccent),
+                          icon: const Icon(
+                            Icons.edit,
+                            color: Colors.blueAccent,
+                          ),
                           onPressed: () => controller.gotoeditpage(item),
                           tooltip: "تعديل",
                         ),
                         IconButton(
-                          icon: const Icon(Icons.delete, color: Colors.redAccent),
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Colors.redAccent,
+                          ),
                           onPressed: () {
                             Get.defaultDialog(
                               title: "تحذير ⚠️",

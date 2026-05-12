@@ -31,7 +31,6 @@ class LoginController extends GetxController {
   bool showpass = true;
   @override
   void onInit() {
-    FirebaseMessaging.instance.getToken().then((val) {});
     super.onInit();
   }
 
@@ -78,17 +77,21 @@ class LoginController extends GetxController {
 
       int id = user.id!;
 
-      // 🔥 Firebase topics
-      FirebaseMessaging.instance.subscribeToTopic("users");
-      FirebaseMessaging.instance.subscribeToTopic("users$id");
+    
 
       // 🔥 Check approval
       if (user.isAprove == 1) {
         if (user.usersType == "admin") {
+          FirebaseMessaging.instance.subscribeToTopic("admin");
+          FirebaseMessaging.instance.subscribeToTopic("admin$id");
           Get.offAllNamed(AdminApproate.adminHome);
         } else if (user.usersType == "driver") {
+          FirebaseMessaging.instance.subscribeToTopic("driver");
+          FirebaseMessaging.instance.subscribeToTopic("driver$id");
           Get.offAllNamed(AdminApproate.driverHome);
         } else {
+          FirebaseMessaging.instance.subscribeToTopic("users");
+          FirebaseMessaging.instance.subscribeToTopic("users$id");
           Get.offAllNamed(Approute.Homescreen);
         }
       } else {

@@ -4,54 +4,75 @@ import 'package:hos/core/class/crud.dart';
 // ignore: must_be_immutable
 class Checkbutton extends StatelessWidget {
   Checkbutton({
-    this.statusrequest,
     super.key,
     required this.onTap,
     required this.buttonName,
     this.width,
     this.buttonColor,
+    this.controller,
   });
   void Function() onTap;
+  var controller;
   double? width;
   Color? buttonColor;
   String buttonName;
-  Statusrequest? statusrequest;
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
-      onPressed: onTap,
-      child: Container(
-        alignment: Alignment.center,
-        width: width,
-        padding: EdgeInsets.symmetric(vertical: 15), // مسافة داخل الزر
+    return Container(
+      child: IgnorePointer(
+        ignoring: controller.statusrequest == Statusrequest.loading,
+        child: AnimatedContainer(
+          decoration: BoxDecoration(
+            color: buttonColor ?? Colors.black,
+            borderRadius: BorderRadius.circular(
+              controller.statusrequest == Statusrequest.loading ? 30 : 40,
+            ),
+          ),
+          duration: Duration(milliseconds: 400),
+          width: controller.statusrequest == Statusrequest.loading ? 60 : width,
+          height: 60,
+          curve: Curves.easeInOut,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(30),
+              onTap: onTap,
+              child: Center(
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 250),
 
-        child: statusrequest == Statusrequest.loading
-            ? SizedBox(height: 35,
-              child: CircularProgressIndicator(color: Colors.white, strokeWidth: 3,),)
-            : Text(
-                buttonName,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
+                  transitionBuilder: (child, animation) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: ScaleTransition(scale: animation, child: child),
+                    );
+                  },
+
+                  child: controller.statusrequest == Statusrequest.loading
+                      ? const SizedBox(
+                          key: ValueKey("loading"),
+                          width: 26,
+                          height: 26,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.8,
+                            color: Colors.white,
+                          ),
+                        )
+                      : Text(
+                          "$buttonName",
+                          key: ValueKey("text"),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                 ),
               ),
+            ),
+          ),
+        ),
       ),
     );
-    // return InkWell(
-    //   onTap: onTap,
-    //   child: Container(
-    //     width: width,
-    //     padding: EdgeInsets.symmetric(vertical: 15), // مسافة داخل الزر
-    //     alignment: Alignment.center,
-    //     decoration: BoxDecoration(
-    //       color: buttonColor,
-    //       borderRadius: BorderRadius.circular(40),
-
-    //     ),
-    //     child:
-    //   ),
-    // );
   }
 }

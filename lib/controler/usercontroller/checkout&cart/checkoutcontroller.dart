@@ -41,8 +41,8 @@ class Checkoutcontroller extends GetxController {
 
   //============================ جلب العناوين من السيرفر
   Future<void> getaddress() async {
-    statusrequest = Statusrequest.loading;
-    update();
+    // statusrequest = Statusrequest.loading;
+    // update();
 
     var response = await addresdata.viewAddresdata(userid!);
 
@@ -165,4 +165,5 @@ class Checkoutcontroller extends GetxController {
     getaddress();
     super.onInit();
   }
+
 }
