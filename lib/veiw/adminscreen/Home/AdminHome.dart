@@ -104,8 +104,12 @@ class StatCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey.shade100,
+        // color: Colors.white,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: Colors.grey.withAlpha(50),
+          strokeAlign: BorderSide.strokeAlignCenter,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,8 +139,11 @@ class SalesChart extends StatelessWidget {
       height: 220,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey.shade100,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: Colors.grey.withAlpha(50),
+          strokeAlign: BorderSide.strokeAlignCenter,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

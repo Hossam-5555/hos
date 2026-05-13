@@ -1,211 +1,249 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/items/additemcontroller.dart';
-import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
+// قم بتعديل مسار الاستيراد حسب هيكل مشروعك
+// import 'package:hos/controller/additemcontroller.dart';
+// import 'package:hos/core/class/crud.dart';
 
 class Additem extends StatelessWidget {
-  const Additem({super.key});
+  const Additem({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final height = size.height;
-    final width = size.width;
-
+    // نهيئة الكنترولر وربطه بالصفحة
     Get.put(Additemcontroller());
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F8FB),
       appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        toolbarHeight: height * 0.08, // ارتفاع نسبي
         title: const Text(
-          "إضافة عنصر جديدة",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-            fontSize: 20,
-          ),
+          "إضافة منتج جديد",
+          style: TextStyle(fontWeight: FontWeight.bold,),
         ),
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.black87,
-            size: width * 0.06,
-          ),
-          onPressed: () => Get.back(),
-        ),
+        centerTitle: true,
+        elevation: 0,
       ),
       body: GetBuilder<Additemcontroller>(
-        builder: (controller) => SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-            horizontal: width * 0.05,
-            vertical: height * 0.03,
-          ),
-          child: Form(
+        builder: (controller) {
+          return Form(
             key: controller.itemvalidKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // رفع الصورة
-                Center(
-                  child: Column(
-                    children: [
-                      TextButton.icon(
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: width * 0.06,
-                            vertical: height * 0.015,
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // --- قسم اختيار الصورة ---
+                  Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        controller.showoptionimage();
+                      },
+                      child: Container(
+                        width: 150,
+                        height: 150,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: Colors.blue.shade200,
+                            width: 2,
                           ),
-                          backgroundColor: Colors.blueAccent.withOpacity(0.1),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.1),
+                              blurRadius: 10,
+                              spreadRadius: 2,
+                            ),
+                          ],
                         ),
-                        onPressed: () => controller.showoptionimage(),
-                        icon: const Icon(Icons.add_a_photo, color: Colors.blue),
-                        label: Text(
-                          "اختر صورة للعنصر",
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.w600,
-                            fontSize: width * 0.04,
-                          ),
+                        child: controller.file != null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(18),
+                                child: Image.file(
+                                  controller.file!,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                ),
+                              )
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.add_a_photo,
+                                    size: 50,
+                                    color: Colors.blue.shade300,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    "إضافة صورة",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+
+                  // --- الحقول الأساسية ---
+                  const Text(
+                    "البيانات الأساسية",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 15),
+
+                  _buildCustomTextField(
+                    controller: controller.namear,
+                    label: "اسم المنتج (عربي)",
+                    icon: Icons.title,
+                  ),
+                  _buildCustomTextField(
+                    controller: controller.name,
+                    label: "اسم المنتج (إنجليزي)",
+                    icon: Icons.title_outlined,
+                  ),
+                  _buildCustomTextField(
+                    controller: controller.descriptionar,
+                    label: "الوصف (عربي)",
+                    icon: Icons.description,
+                    maxLines: 3,
+                  ),
+                  _buildCustomTextField(
+                    controller: controller.description,
+                    label: "الوصف (إنجليزي)",
+                    icon: Icons.description_outlined,
+                    maxLines: 3,
+                  ),
+
+                  // --- تفاصيل السعر والكمية ---
+                  const SizedBox(height: 15),
+                  const Text(
+                    "تفاصيل التسعير والمخزون",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 15),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildCustomTextField(
+                          controller: controller.price,
+                          label: "السعر",
+                          icon: Icons.attach_money,
+                          isNumber: true,
                         ),
                       ),
-                      SizedBox(height: height * 0.02),
-                      if (controller.file != null)
-                        Container(
-                          height: height * 0.15,
-                          width: width * 0.35,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(color: Colors.blueAccent),
-                          ),
-                          child: Image.file(
-                            controller.file!,
-                            fit: BoxFit.cover,
-                          ),
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: _buildCustomTextField(
+                          controller: controller.descount,
+                          label: "الخصم (%)",
+                          icon: Icons.discount,
+                          isNumber: true,
                         ),
+                      ),
                     ],
                   ),
-                ),
-                SizedBox(height: height * 0.025),
-
-                // اسم العنصر بالإنجليزية
-                Textfealdauth(
-                  hint: "اكتب اسم العنصر بالإنجليزية",
-                  suffixIcon: Icons.category_outlined,
-                  textEditingController: controller.name,
-                  valid: (val) => val!.isEmpty ? "الاسم مطلوب" : null,
-                ),
-
-                // اسم العنصر بالعربية
-                Textfealdauth(
-                  hint: "اكتب اسم العنصر بالعربية",
-                  suffixIcon: Icons.language_outlined,
-                  textEditingController: controller.namear,
-                  valid: (val) => val!.isEmpty ? "الاسم بالعربية مطلوب" : null,
-                ),
-
-                // Description English
-                Textfealdauth(
-                  hint: "Description",
-                  suffixIcon: Icons.description_outlined,
-                  textEditingController: controller.description,
-                  valid: (val) => val!.isEmpty ? "الوصف مطلوب" : null,
-                ),
-
-                // Description Arabic
-                Textfealdauth(
-                  hint: "الوصف",
-                  suffixIcon: Icons.language_outlined,
-                  textEditingController: controller.descriptionar,
-                  valid: (val) => val!.isEmpty ? "الوصف بالعربية مطلوب" : null,
-                ),
-
-                // Count
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      height: height * 0.08,
-                      width: width * 0.4, // عرض نسبي
-                      alignment: Alignment.center,
-                      child: Textfealdauth(
-                        hint: "Stock Count",
-                        suffixIcon: Icons.format_list_numbered,
-                        textEditingController: controller.count,
-                        valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildCustomTextField(
+                          controller: controller.count,
+                          label: "الكمية المتاحة",
+                          icon: Icons.inventory_2,
+                          isNumber: true,
+                        ),
                       ),
-                    ),
-                    Container(
-                      height: height * 0.08,
-                      width: width * 0.4,
-                      alignment: Alignment.center,
-                      child: Textfealdauth(
-                        hint: "القسم",
-                        suffixIcon: Icons.discount_outlined,
-                        textEditingController: controller.itemcat,
-                        valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: _buildCustomTextField(
+                          controller: controller.itemcat,
+                          label: "رقم القسم",
+                          icon: Icons.category,
+                          isNumber: true,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-
-                // Price
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      height: height * 0.08,
-                      width: width * 0.4,
-                      alignment: Alignment.center,
-                      child: Textfealdauth(
-                        hint: "price",
-                        suffixIcon: Icons.attach_money_outlined,
-                        textEditingController: controller.price,
-                        valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
-                      ),
-                    ),
-
-                    // Discount
-                    Container(
-                      height: height * 0.08,
-                      width: width * 0.4,
-                      alignment: Alignment.center,
-                      child: Textfealdauth(
-                        hint: "Discount",
-                        suffixIcon: Icons.discount_outlined,
-                        textEditingController: controller.descount,
-                        valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
-                      ),
-                    ),
-                  ],
-                ),
-
-                // زر الإضافة
-                Center(
-                  child: GetBuilder<Additemcontroller>(
-                    builder: (controller) {
-                      return Checkbutton(
-                        width: width * 0.5,
-                        buttonColor: Colors.black,
-                        onTap: () {
-                          controller.additem();
-                        },
-                        buttonName: "Add Item",
-                        controller: controller,
-                      );
-                    },
+                    ],
                   ),
-                ),
-                SizedBox(height: height * 0.05),
-              ],
+
+                  const SizedBox(height: 30),
+
+                  // --- زر الإضافة ---
+                  SizedBox(
+                    width: double.infinity,
+                    height: 55,
+                    child: GetBuilder<Additemcontroller>(
+                      builder: (controller) {
+                        return Checkbutton(
+                          onTap: () {
+                            controller.additem();
+                          },
+                          controller: controller,
+                          buttonColor: Colors.blue,
+                          buttonName: "إضافة المنتج",
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
             ),
+          );
+        },
+      ),
+    );
+  }
+
+  // --- دالة مساعدة لإنشاء الحقول بشكل احترافي ومتناسق ---
+  Widget _buildCustomTextField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    int maxLines = 1,
+    bool isNumber = false,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15.0),
+      child: TextFormField(
+        controller: controller,
+        maxLines: maxLines,
+        keyboardType: isNumber ? TextInputType.number : TextInputType.text,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return "هذا الحقل مطلوب";
+          }
+          return null;
+        },
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(color: Colors.grey[700]),
+          prefixIcon: Icon(icon, color: Colors.blue),
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 15,
+            horizontal: 20,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide(color: Colors.grey.shade300, width: 1.5),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: const BorderSide(color: Colors.blue, width: 2),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: const BorderSide(color: Colors.red, width: 1.5),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: const BorderSide(color: Colors.red, width: 2),
           ),
         ),
       ),

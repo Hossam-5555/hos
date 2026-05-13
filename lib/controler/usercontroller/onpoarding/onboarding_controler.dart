@@ -23,6 +23,7 @@ class OnboardingControler extends GetxController {
       Get.offAll(
         () => Login(),
         transition: Transition.fadeIn,
+        curve: Curves.easeInOut,
         duration: const Duration(milliseconds: 900),
       );
     } else {

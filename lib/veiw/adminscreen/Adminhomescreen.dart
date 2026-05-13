@@ -34,7 +34,11 @@ class AdminHome extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
-                  Get.to(() => Settings());
+                  Get.to(
+                    () => Settings(),
+                    transition: Transition.rightToLeftWithFade,
+                    duration: const Duration(milliseconds: 500),
+                  );
                 },
                 icon: const Icon(Icons.settings),
               ),

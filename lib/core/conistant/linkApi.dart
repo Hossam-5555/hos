@@ -1,10 +1,9 @@
 class LinkApi {
   static String server = 'http://10.0.2.2/ecommerce';
-  // static String server = "http://192.168.1.8/ecommerce";
+  // static String lravelserver = "http://192.168.1.8/api";
   static String lravelserver = "http://10.0.2.2:8000/api";
   //imagelink=============================
   static String imagelink = 'http://10.0.2.2/ecommerce/upload';
-  // static String imagelink = 'http://192.168.1.8/ecommerce/upload';
 
   static String imagecategories = '$imagelink/categories';
   static String imageitems = '$imagelink/items';
@@ -13,7 +12,7 @@ class LinkApi {
   static String signup = '$lravelserver/register';
   static String login = '$lravelserver/login';
   static String veryfisign = '$lravelserver/verify';
-  static String resend = '$server/auth/resend.php';
+  static String resend = '$lravelserver/resend';
 
   //forgetpassword====================
   static String checkemail = '$lravelserver/forgot-password';

@@ -199,15 +199,16 @@ class AddToCartButton extends StatelessWidget {
             added.value = false;
           });
         },
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(20),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           height: 32,
-          width: 32,
+          width: 40,
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
             color: added.value ? Colors.green : Colors.black,
-            shape: BoxShape.circle,
+                    // shape: BoxShape.circle,
+            borderRadius: BorderRadius.circular(10),
           ),
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),

@@ -21,35 +21,20 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final h = Get.height;
+    // final h = Get.height;
 
     return Scaffold(
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        padding: EdgeInsets.only(
-          top: h * 0.03,
-          bottom: 40,
-          left: 20,
-          right: 20,
-        ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _buildProfileHeader(Colors.lightBlue),
-            SizedBox(height: h * 0.04),
-
-         
-            SizedBox(height: h * 0.04),
 
             Container(
               decoration: BoxDecoration(
+                color: ThemeMode == ThemeMode.light ? Colors.white : null,
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withAlpha(7),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
               ),
               child: Column(
                 children: [
@@ -62,7 +47,6 @@ class ProfilePage extends StatelessWidget {
                     title: "Orders".tr,
                     onTap: () => Get.toNamed(Approute.Orders),
                   ),
-                  _buildDivider(),
                   _buildListTile(
                     gradientColors: [
                       const Color.fromARGB(255, 243, 9, 9),
@@ -72,7 +56,6 @@ class ProfilePage extends StatelessWidget {
                     title: "Favorite".tr,
                     onTap: () => Get.toNamed(Approute.myfavorite),
                   ),
-                  _buildDivider(),
                   _buildListTile(
                     gradientColors: [
                       const Color.fromARGB(255, 31, 253, 2),
@@ -82,7 +65,6 @@ class ProfilePage extends StatelessWidget {
                     title: "Saved Addresses".tr,
                     onTap: () => Get.toNamed(Approute.viewmyaddres),
                   ),
-                  _buildDivider(),
                   _buildListTile(
                     gradientColors: [
                       const Color.fromARGB(255, 196, 136, 8),
@@ -95,7 +77,6 @@ class ProfilePage extends StatelessWidget {
                       transition: Transition.cupertino,
                     ),
                   ),
-                  _buildDivider(),
 
                   _buildListTile(
                     icon: Icons.settings_outlined,
@@ -147,13 +128,13 @@ class ProfilePage extends StatelessWidget {
               bottom: 0,
               right: 0,
               child: Container(
-                margin: EdgeInsetsDirectional.symmetric(horizontal: 10),
+                margin: EdgeInsetsDirectional.symmetric(horizontal: 5),
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.camera_alt_outlined, color: color, size: 28),
+                child: Icon(Icons.camera_alt_outlined, color: color, size: 20),
               ),
             ),
           ],
@@ -183,76 +164,58 @@ class ProfilePage extends StatelessWidget {
     bool isLast = false,
     List<Color>? gradientColors, // أضفت باراميتر لتخصيص الألوان لكل أيقونة
   }) {
-    return Material(
-      borderRadius: BorderRadiusGeometry.circular(20),
-      // color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: isLast
-            ? const BorderRadius.vertical(bottom: Radius.circular(20))
-            : BorderRadius.zero,
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            children: [
-              // الحاوية المعدلة مع التدرج اللوني
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  // استخدام Linear Gradient هنا
-                  gradient: LinearGradient(
-                    colors:
-                        gradientColors ??
-                        [Colors.blue.shade400, Colors.blue.shade700],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: (gradientColors?.last ?? Colors.blue.shade700)
-                          .withOpacity(0.3),
-                      blurRadius: 5,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          children: [
+            // الحاوية المعدلة مع التدرج اللوني
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                // استخدام Linear Gradient هنا
+                gradient: LinearGradient(
+                  colors:
+                      gradientColors ??
+                      [Colors.blue.shade400, Colors.blue.shade700],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
-                child: Icon(
-                  icon,
-                  color: Colors.white,
-                  size: 22,
-                ), // جعلت الأيقونة بيضاء لتتناسب مع التدرج
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
+                boxShadow: [
+                  BoxShadow(
+                    color: (gradientColors?.last ?? Colors.blue.shade700)
+                        .withOpacity(0.3),
+                    blurRadius: 5,
+                    offset: const Offset(0, 2),
                   ),
+                ],
+              ),
+              child: Icon(
+                icon,
+                color: Colors.white,
+                size: 22,
+              ), // جعلت الأيقونة بيضاء لتتناسب مع التدرج
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-              Icon(
-                Icons.arrow_forward_ios_rounded,
-                color: Colors.grey[400],
-                size: 16,
-              ),
-            ],
-          ),
+            ),
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: Colors.grey[400],
+              size: 16,
+            ),
+          ],
         ),
       ),
-    );
-  }
-
-  // ================= Custom Divider =================
-  Widget _buildDivider() {
-    return Padding(
-      padding: const EdgeInsetsGeometry.directional(
-        start: 60,
-        end: 20,
-      ), // لترك مساحة للأيقونة
-      child: Divider(height: 0.1, color: Colors.grey[100]),
     );
   }
 }
