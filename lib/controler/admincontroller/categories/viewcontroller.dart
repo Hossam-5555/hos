@@ -29,6 +29,7 @@ class ViewCatController extends GetxController {
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
         List data = response["data"];
+
         /// ✳️ المهم هنا:
         catdata.clear(); // فضي الليست القديمة
         catdata.addAll(data.map((e) => categoriesmodel2.fromJson(e)));
@@ -39,8 +40,8 @@ class ViewCatController extends GetxController {
     update();
   }
 
-  void delete(String catid, String imagename) {
-    admindata.deletecat(catid, imagename);
+  void delete(int catid) {
+    admindata.deletecat(catid);
 
     catdata.removeWhere((element) => element.id == catid);
     update();

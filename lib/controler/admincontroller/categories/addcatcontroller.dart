@@ -41,12 +41,15 @@ class Addcatcontroller extends GetxController {
       if (statusrequest == Statusrequest.success) {
         if (response['status'] == true) {
           showSnackBar(Get.context!, "تم إضافة الفئة بنجاح");
-          Get.back();
+          Future.delayed(Duration(seconds: 1), () {
+            Get.back(); // ارجع بعد ثانية
+          });
         }
       } else {
         statusrequest = Statusrequest.failure;
       }
     }
+    update();
   }
 
   @override

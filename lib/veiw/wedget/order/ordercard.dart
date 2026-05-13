@@ -31,7 +31,7 @@ class OrderCard extends StatelessWidget {
             begin: AlignmentGeometry.topCenter,
             end: AlignmentGeometry.topCenter,
             transform: GradientRotation(-0.5),
-            colors: [color.withAlpha(90), Colors.white.withAlpha(200)],
+            colors: [color.withAlpha(20), Colors.white.withAlpha(200)],
           ),
           borderRadius: BorderRadius.all(Radius.circular(25)),
           border: Border.all(
@@ -104,31 +104,37 @@ class OrderCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(text: 'Payment'.tr),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text.rich(
                           TextSpan(
-                            text: ":${order.paymentMethod}",
-                            style: TextStyle(
-                              color: const Color.fromARGB(255, 74, 158, 25),
-                            ),
+                            children: [
+                              TextSpan(text: 'paymentMethod'),
+                              TextSpan(
+                                text: ":${order.paymentMethod}",
+                                style: TextStyle(
+                                  color: const Color.fromARGB(255, 74, 158, 25),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(text: 'Payment'.tr),
+                        ),
+                        SizedBox(width: w / 6),
+                        Text.rich(
                           TextSpan(
-                            text: ":${order.paymentStatus}",
-                            style: TextStyle(
-                              color: const Color.fromARGB(255, 74, 158, 25),
-                            ),
+                            children: [
+                              TextSpan(text: 'Payment'.tr),
+                              TextSpan(
+                                text: ":${order.paymentStatus}",
+                                style: TextStyle(
+                                  color: const Color.fromARGB(255, 74, 158, 25),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
 
                     Row(
@@ -142,6 +148,11 @@ class OrderCard extends StatelessWidget {
                           ),
                         ),
                         SizedBox(width: w / 4),
+                        Text(
+                          order.status == "delivered"
+                              ? "4 ⭐(1k) reviews"
+                              : "",
+                        ),
                       ],
                     ),
                   ],
@@ -231,12 +242,6 @@ class OrderCard extends StatelessWidget {
                 //       );
                 //     },
                 //   )
-                // // عرض التقييم
-                // :
-                Text(
-                  order.status == "delivered" ? "4 ⭐" : "",
-                  style: TextStyle(fontSize: w * 0.04),
-                ),
               ],
             ),
           ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/AdminHome.dart';
-import 'package:hos/veiw/adminscreen/Home/profile.dart';
+import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
 
 class AdminHome extends StatelessWidget {
   AdminHome({super.key});
@@ -14,9 +14,7 @@ class AdminHome extends StatelessWidget {
           title: Row(
             children: [
               InkWell(
-                onTap: () {
-                  Get.to(() => ProfilePageAdmin());
-                },
+                onTap: () {},
                 child: const CircleAvatar(
                   radius: 20,
                   backgroundImage: NetworkImage(
@@ -34,13 +32,28 @@ class AdminHome extends StatelessWidget {
                 onPressed: () {},
                 icon: const Icon(Icons.notifications_none),
               ),
+              IconButton(
+                onPressed: () {
+                  Get.to(() => Settings());
+                },
+                icon: const Icon(Icons.settings),
+              ),
             ],
           ),
         ),
         bottomNavigationBar: GetBuilder<Adminhome>(
           builder: (controller) => BottomNavigationBar(
-            selectedItemColor: Colors.black,
+            selectedItemColor: Colors.blue,
             unselectedItemColor: Colors.grey,
+            showUnselectedLabels: true,
+            selectedLabelStyle: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
+            unselectedLabelStyle: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.normal,
+            ),
             onTap: (value) {
               controller.changePage(value);
             },

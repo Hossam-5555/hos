@@ -41,10 +41,9 @@ class AdmindaTaCaregores {
     return response.fold((l) => l, (r) => r);
   }
 
-  deletecat(String catid, String imagename) async {
+  deletecat(int catid) async {
     var response = await crud.postrequset(LinkApi.admindeletecat, {
-      "catid": catid,
-      "imagename": imagename,
+      "id": catid,
     });
     return response.fold((l) => l, (r) => r);
   }

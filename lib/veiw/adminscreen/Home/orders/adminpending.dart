@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/order/pindingcontroller.dart';
+import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/order/ordercard.dart';
 
 class Adminpending extends StatelessWidget {
@@ -73,7 +75,15 @@ class Adminpending extends StatelessWidget {
             // --- قسم الطلبات ---
             Expanded(
               child: controller.filteredOrders.isEmpty
-                  ? const Center(child: Text("لا توجد طلبات حالياً"))
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Animationforstatus(animationPath: Imageasset.nodata),
+                          Text("لا توجد طلبات حالياً"),
+                        ],
+                      ),
+                    )
                   : ListView.separated(
                       padding: const EdgeInsets.all(12),
                       itemCount: controller.filteredOrders.length,

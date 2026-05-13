@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/categories/addcatcontroller.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
+import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 class Addcategories extends StatelessWidget {
   const Addcategories({super.key});
@@ -19,10 +19,7 @@ class Addcategories extends StatelessWidget {
         centerTitle: true,
         title: const Text(
           "إضافة فئة جديدة",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
         ),
         backgroundColor: Colors.white,
         leading: IconButton(
@@ -47,7 +44,6 @@ class Addcategories extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-
 
                 Center(
                   child: Column(
@@ -87,7 +83,7 @@ class Addcategories extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: 20,),
+                SizedBox(height: 20),
 
                 // اسم الفئة
                 Textfealdauth(
@@ -118,36 +114,20 @@ class Addcategories extends StatelessWidget {
                 const SizedBox(height: 30),
 
                 // رفع الصورة
-                
-
                 const SizedBox(height: 40),
 
                 // زر الإضافة
                 Center(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black87,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 50,
-                        vertical: 14,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      elevation: 3,
-                    ),
-                    onPressed: () {
-                      controller.addcategories();
+                  child: GetBuilder<Addcatcontroller>(
+                    builder: (controller) {
+                      return Checkbutton(width: 200,
+                        onTap: () => controller.addcategories(),
+                        buttonName: "add category",
+
+                        buttonColor: Colors.black,
+                        controller: controller,
+                      );
                     },
-                    child: const Text(
-                      "إضافة الفئة",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1,
-                      ),
-                    ),
                   ),
                 ),
               ],

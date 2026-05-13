@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/items/additemcontroller.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
+import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 class Additem extends StatelessWidget {
   const Additem({super.key});
@@ -127,60 +128,79 @@ class Additem extends StatelessWidget {
                 ),
 
                 // Count
-                Textfealdauth(
-                  hint: "count",
-                  suffixIcon: Icons.format_list_numbered,
-                  textEditingController: controller.count,
-                  valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      height: height * 0.08,
+                      width: width * 0.4, // عرض نسبي
+                      alignment: Alignment.center,
+                      child: Textfealdauth(
+                        hint: "Stock Count",
+                        suffixIcon: Icons.format_list_numbered,
+                        textEditingController: controller.count,
+                        valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
+                      ),
+                    ),
+                    Container(
+                      height: height * 0.08,
+                      width: width * 0.4,
+                      alignment: Alignment.center,
+                      child: Textfealdauth(
+                        hint: "القسم",
+                        suffixIcon: Icons.discount_outlined,
+                        textEditingController: controller.itemcat,
+                        valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
+                      ),
+                    ),
+                  ],
                 ),
 
                 // Price
-                Textfealdauth(
-                  hint: "price",
-                  suffixIcon: Icons.attach_money_outlined,
-                  textEditingController: controller.price,
-                  valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      height: height * 0.08,
+                      width: width * 0.4,
+                      alignment: Alignment.center,
+                      child: Textfealdauth(
+                        hint: "price",
+                        suffixIcon: Icons.attach_money_outlined,
+                        textEditingController: controller.price,
+                        valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
+                      ),
+                    ),
+
+                    // Discount
+                    Container(
+                      height: height * 0.08,
+                      width: width * 0.4,
+                      alignment: Alignment.center,
+                      child: Textfealdauth(
+                        hint: "Discount",
+                        suffixIcon: Icons.discount_outlined,
+                        textEditingController: controller.descount,
+                        valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
+                      ),
+                    ),
+                  ],
                 ),
 
-                // Discount
-                Textfealdauth(
-                  hint: "Discount",
-                  suffixIcon: Icons.discount_outlined,
-                  textEditingController: controller.descount,
-                  valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
-                ),
-                Textfealdauth(
-                  hint: "القسم",
-                  suffixIcon: Icons.discount_outlined,
-                  textEditingController: controller.itemcat,
-                  valid: (val) => val!.isEmpty ? "الحقل مطلوب" : null,
-                ),
                 // زر الإضافة
                 Center(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black87,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: width * 0.1,
-                        vertical: height * 0.018,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      elevation: 3,
-                    ),
-                    onPressed: () {
-                      controller.additem();
+                  child: GetBuilder<Additemcontroller>(
+                    builder: (controller) {
+                      return Checkbutton(
+                        width: width * 0.5,
+                        buttonColor: Colors.black,
+                        onTap: () {
+                          controller.additem();
+                        },
+                        buttonName: "Add Item",
+                        controller: controller,
+                      );
                     },
-                    child: Text(
-                      "إضافة عنصر",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: width * 0.045,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1,
-                      ),
-                    ),
                   ),
                 ),
                 SizedBox(height: height * 0.05),
