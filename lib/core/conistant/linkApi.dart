@@ -62,9 +62,9 @@ class LinkApi {
   static String driverdoneorder = '$server/driver/orders/done.php';
 
   //Admin //categores
-  static String adminaddcat = '$server/admin/categories/add.php';
+  static String adminaddcat = '$lravelserver/category';
   static String admineditcat = '$server/admin/categories/edit.php';
-  static String adminviewcat = '$server/admin/categories/view.php';
+  static String adminviewcat = '$lravelserver/category';
   static String admindeletecat = '$server/admin/categories/delete.php';
   //Admin //items
   static String adminadditem = '$server/admin/items/add.php';
@@ -73,7 +73,7 @@ class LinkApi {
   static String admindeleteitems = '$server/admin/items/delete.php';
 
   //Admin//orders
-  static String adminorderpending = '$server/admin/orders/pending.php';
+  static String adminorderpending = '$lravelserver/order';
   static String adminorderaccepted = '$server/admin/orders/accepted.php';
   static String adminorderdetails = '$server/admin/orders/details.php';
   static String adminaprovedorder = '$server/admin/orders/approve.php';

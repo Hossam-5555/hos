@@ -4,9 +4,9 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
+import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/functions/upload_image.dart';
 import 'package:hos/data/datasource/admindata/categoriesdata.dart';
-import 'package:hos/veiw/adminscreen/Home/categories/viewcat.dart';
 
 class Addcatcontroller extends GetxController {
   Statusrequest statusrequest = Statusrequest.none;
@@ -17,14 +17,14 @@ class Addcatcontroller extends GetxController {
   File? file;
 
   Future<void> chooseimage() async {
-    file = await fileUploadGallery(isSvg: true);
+    file = await fileUploadGallery();
     update();
   }
 
   Future<void> addcategories() async {
     if (validkey.currentState!.validate()) {
       if (file == null) {
-        Get.snackbar("تنبيه", "من فضلك اختر صورة أولاً");
+        showSnackBar(Get.context!, "من فضلك اختر صورة أولاً");
         return;
       }
 
@@ -39,10 +39,9 @@ class Addcatcontroller extends GetxController {
 
       statusrequest = handling(response);
       if (statusrequest == Statusrequest.success) {
-        if (response['status'] == 'success') {
-          Get.snackbar("success", "    تم اضافه القسم بنجاح");
-
-          Get.off(() => ViewCategories());
+        if (response['status'] == true) {
+          showSnackBar(Get.context!, "تم إضافة الفئة بنجاح");
+          Get.back();
         }
       } else {
         statusrequest = Statusrequest.failure;

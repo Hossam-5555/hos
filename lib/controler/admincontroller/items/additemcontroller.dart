@@ -33,7 +33,7 @@ Future<void> chooseimagecamera() async {
 }
 
 Future<void> chooseimagegalary() async {
-  file = await fileUploadGallery(isSvg: false);
+  file = await fileUploadGallery();
   update();
 }
 

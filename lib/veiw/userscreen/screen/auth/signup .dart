@@ -1,8 +1,8 @@
+// ignore: file_names
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/auth/sign_upcontroller.dart';
-import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/appexitalert.dart';
@@ -24,6 +24,7 @@ class Signup extends StatelessWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      // ignore: deprecated_member_use
       body: WillPopScope(
         onWillPop: appexitAlert,
         child: GetBuilder<Signupcontroller>(

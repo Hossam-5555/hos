@@ -1,14 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/admincontroller/order/acceptedorder.dart';
+import 'package:hos/controler/admincontroller/order/pindingcontroller.dart';
 import 'package:hos/core/class/crud.dart';
-import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/data/datasource/userdata/orderdata.dart';
 import 'package:hos/data/model/cartmodel.dart';
 import 'package:hos/data/model/ordersmodel.dart';
 import 'package:hos/veiw/adminscreen/Home/orders/trackingorder.dart';
 
-class AdminOrderDetailesController extends Acceptedordercontroller {
+class AdminOrderDetailesController extends AdminPindingController {
   OrderModel? order;
 
   Orderdata orderdatadetails = Get.put(Orderdata(Get.find()));

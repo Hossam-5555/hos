@@ -10,7 +10,7 @@ class AdmindaTaCaregores {
   addcat(String name, String namear, File file) async {
     var response = await crud.addRequestWithImageOne(LinkApi.adminaddcat, {
       "name": name,
-      "namear": namear,
+      "name_ar": namear,
     }, file);
     return response.fold((l) => l, (r) => r);
   }
@@ -50,7 +50,7 @@ class AdmindaTaCaregores {
   }
 
   viewcat() async {
-    var response = await crud.postrequset(LinkApi.adminviewcat, {});
+    var response = await crud.getrequset(LinkApi.adminviewcat);
     return response.fold((l) => l, (r) => r);
   }
 }

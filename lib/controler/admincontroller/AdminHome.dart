@@ -45,7 +45,7 @@ class Adminhome extends GetxController {
 
   List<List<dynamic>> title = [
     ["Dashboard", Icons.home_outlined],
-    ["Orders", Icons.shopping_cart_outlined],
+    ["Orders", Icons.card_giftcard],
     ["Items", Icons.inventory_2_outlined],
     ["Categories", Icons.category_outlined],
   ];

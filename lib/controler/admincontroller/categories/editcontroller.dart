@@ -18,7 +18,7 @@ class Editcontroller extends GetxController {
   File? file;
   categoriesmodel? catmodel;
   Future<void> chooseimage() async {
-    file = await fileUploadGallery(isSvg: true);
+    file = await fileUploadGallery();
     update();
   }
 

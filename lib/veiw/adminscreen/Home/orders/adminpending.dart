@@ -1,124 +1,103 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/order/pindingcontroller.dart';
-import 'package:hos/core/class/handlingdataview.dart';
-import 'package:hos/core/conistant/appcolor.dart';
-import 'package:jiffy/jiffy.dart';
+import 'package:hos/veiw/wedget/order/ordercard.dart';
 
 class Adminpending extends StatelessWidget {
-  Adminpending({super.key});
-  final AdminPindingController controller = Get.put(AdminPindingController());
+  const Adminpending({
+    super.key,
+  }); // أضفنا const وإزالة التعريف الخارجي للـ controller لضمان حقنه عبر GetBuilder
+
   @override
   Widget build(BuildContext context) {
+    // يفضل استخدام Get.put داخل build أو في الـ Binding
+    Get.put(AdminPindingController());
+    final size = MediaQuery.of(context).size;
+
     return GetBuilder<AdminPindingController>(
-      builder: (controller) => Handlingdataview(
-        statusrequest: controller.statusrequest,
-        widget: RefreshIndicator(
-          onRefresh: () async => await controller.vieworderspending(),
-          child: ListView.separated(
-            padding: const EdgeInsets.all(12),
-            itemCount: controller.orderspending.length,
-            separatorBuilder: (_, _) => const SizedBox(height: 10),
-            itemBuilder: (context, index) {
-              final order = controller.orderspending[index];
-              controller.Getcolorandstause(order.status!);
-              final status = controller.statusText;
-              final color = controller.statusColor;
-              final payment = controller.translatePayment(
-                order.paymentMethod.toString(),
-              );
+      builder: (controller) => RefreshIndicator(
+        onRefresh: () async => await controller.vieworderspending(),
+        child: Column(
+          children: [
+            // --- قسم الأقسام (Status Tabs) ---
+            Container(
+              height: 40, // تحديد طول مناسب
+              margin: const EdgeInsets.symmetric(vertical: 2),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: controller.orderstatus.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      // هنا نمرر رقم القسم المختار للكنترولر لفلترة البيانات
+                      controller.changeSelectedStatus(index);
+                    },
+                    child: AnimatedContainer(
+                      duration: const Duration(
+                        milliseconds: 300,
+                      ), // لإضافة تأثير انتقالي
+                      curve: Curves.easeInOut,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      margin: const EdgeInsets.only(left: 10),
+                      decoration: BoxDecoration(
+                        gradient: controller.selectedStatus == index
+                            ? const LinearGradient(
+                                colors: [
+                                  Colors.blueAccent,
+                                  Colors.lightBlueAccent,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              )
+                            : null,
 
-              return InkWell(
-                onTap: () {
-                  controller.gotodetails(order);
+                        border: Border.all(
+                          color: Colors.grey,
+                        ), // إضافة حدود للتمييز
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        controller.orderstatus[index],
+                        style: const TextStyle(
+                          // color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  );
                 },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withAlpha(13),
-                        blurRadius: 6,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 16,
-                    ),
-                    leading: CircleAvatar(
-                      backgroundColor: Appcolor.primaryColor.withAlpha(26),
-                      radius: 28,
-                      child: Icon(
-                        Icons.shopping_bag,
-                        color: Appcolor.primaryColor,
-                        size: 28,
-                      ),
-                    ),
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          "طلب رقم #${order.orderNumber}",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                          ),
-                        ),
-                        Text(
-                          "${Jiffy.parse(order.createdAt.toString()).fromNow() // 25 years ago
-                          }: التاريخ ",
-                          style: const TextStyle(
-                            color: Color.fromARGB(255, 54, 203, 17),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                    subtitle: Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("المجموع: ${order.totalAmount} ج.م"),
-                              Text("طريقة الدفع: $payment"),
-                              Text(
-                                "الحالة: $status",
-                                style: TextStyle(
-                                  color: color,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
+              ),
+            ),
 
-                              const SizedBox(height: 5),
-                            ],
-                          ),
+            // --- قسم الطلبات ---
+            Expanded(
+              child: controller.filteredOrders.isEmpty
+                  ? const Center(child: Text("لا توجد طلبات حالياً"))
+                  : ListView.separated(
+                      padding: const EdgeInsets.all(12),
+                      itemCount: controller.filteredOrders.length,
+                      separatorBuilder: (_, _) => const SizedBox(height: 10),
+                      itemBuilder: (context, index) {
+                        final order = controller.filteredOrders[index];
 
-                          MaterialButton(
-                            onPressed: () {
-                              // controller.approvependingorder(
-                              //   order.userId!,
-                              //   order.orderId!,
-                              // );
-                            },
-                            child: Text("Aprove"),
-                          ),
-                        ],
-                      ),
+                        // جلب البيانات مباشرة دون تخزينها كمتغيرات عامة في الكنترولر لتجنب تداخل الألوان
+                        controller.Getcolorandstause(order.status);
+                        final statustext = controller.statusText;
+                        final statuscolor = controller.statusColor;
+
+                        return OrderCard(
+                          order: order,
+                          status: statustext!,
+                          color: statuscolor!,
+                          w: size.width,
+                          h: size.height,
+                          onTap: () => controller.gotodetails(order),
+                        );
+                      },
                     ),
-                  ),
-                ),
-              );
-            },
-          ),
+            ),
+          ],
         ),
       ),
     );

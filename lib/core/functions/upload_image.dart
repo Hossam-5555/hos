@@ -16,12 +16,10 @@ imageUploadCamera() async {
   }
 }
 
-fileUploadGallery({isSvg = false}) async {
+fileUploadGallery() async {
   FilePickerResult? result = await FilePicker.platform.pickFiles(
     type: FileType.custom,
-    allowedExtensions: isSvg
-        ? ["svg", "SVG"]
-        : ["png", "PNG", "jpg", "jpeg", "gif"],
+    allowedExtensions:  ["png", "PNG", "jpg", "jpeg", "gif"],
   );
 
   if (result != null) {

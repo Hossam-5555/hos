@@ -94,7 +94,7 @@ class Crud {
     File? image, [
     String? namerequest,
   ]) async {
-    namerequest ??= "files";
+    namerequest ??= "image";
 
     var uri = Uri.parse(url);
     var request = http.MultipartRequest("POST", uri);

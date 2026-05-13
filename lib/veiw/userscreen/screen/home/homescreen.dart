@@ -40,14 +40,6 @@ class Homescreen extends StatelessWidget {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Homescrenaction(
-                    herotag: "ss",
-                    child: SvgPicture.asset(
-                      Imageasset.profile,
-                      height: 24, // توحيد الحجم
-                      width: 24,
-                    ),
-                  ),
                   SizedBox(width: 10),
                   Text(
                     "Hi,${controller.myservisec.sharedPreferences.getString("usersname")}👋",

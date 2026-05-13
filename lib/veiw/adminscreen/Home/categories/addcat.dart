@@ -82,7 +82,7 @@ class Addcategories extends StatelessWidget {
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(color: Colors.blueAccent),
                           ),
-                          child: SvgPicture.file(controller.file!),
+                          child: Image.file(controller.file!),
                         ),
                     ],
                   ),

@@ -4,14 +4,13 @@ import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/data/datasource/admindata/categoriesdata.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/veiw/adminscreen/Adminhomescreen.dart';
-import 'package:hos/veiw/adminscreen/Home/AdminHome.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/addcat.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/editcat.dart';
 
 class ViewCatController extends GetxController {
   AdmindaTaCaregores admindata = AdmindaTaCaregores(Get.find());
   Statusrequest statusrequest = Statusrequest.none;
-  List<categoriesmodel> catdata = [];
+  List<categoriesmodel2> catdata = [];
 
   @override
   void onInit() {
@@ -24,14 +23,15 @@ class ViewCatController extends GetxController {
     update();
 
     var response = await admindata.viewcat();
+    print("=============================== Controller $response");
     statusrequest = handling(response);
 
     if (Statusrequest.success == statusrequest) {
-      if (response['status'] == 'success') {
+      if (response['status'] == true) {
         List data = response["data"];
         /// ✳️ المهم هنا:
         catdata.clear(); // فضي الليست القديمة
-        catdata.addAll(data.map((e) => categoriesmodel.fromJson(e)));
+        catdata.addAll(data.map((e) => categoriesmodel2.fromJson(e)));
       } else {
         statusrequest = Statusrequest.failure;
       }
@@ -42,7 +42,7 @@ class ViewCatController extends GetxController {
   void delete(String catid, String imagename) {
     admindata.deletecat(catid, imagename);
 
-    catdata.removeWhere((element) => element.categoriesId == catid);
+    catdata.removeWhere((element) => element.id == catid);
     update();
   }
 

@@ -1,12 +1,12 @@
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/linkApi.dart';
 
-class admindataorder {
+class AdminDataOrder {
   Crud crud;
-  admindataorder(this.crud);
+  AdminDataOrder(this.crud);
 
   pendingdata() async {
-    var response = await crud.postrequset(LinkApi.adminorderpending, {});
+    var response = await crud.getrequset(LinkApi.adminorderpending);
     return response.fold((l) => l, (r) => r);
   }
 
