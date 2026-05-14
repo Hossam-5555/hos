@@ -40,7 +40,7 @@ class admindataitem {
   }
 
   viewitem() async {
-    var response = await crud.postrequset(LinkApi.adminviewitem, {});
+    var response = await crud.getrequset(LinkApi.adminviewitem);
     return response.fold((l) => l, (r) => r);
   }
 }

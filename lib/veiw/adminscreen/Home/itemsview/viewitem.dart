@@ -1,10 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/items/viewitemcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
-import 'package:hos/core/conistant/linkApi.dart';
+import 'package:hos/veiw/wedget/searchbar.dart';
 
 // ignore: camel_case_types
 class viewitem extends StatelessWidget {
@@ -15,7 +14,6 @@ class viewitem extends StatelessWidget {
     final controller = Get.put(ViewItemController());
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA), // لون الخلفية الفاتح
       // زر الإضافة العائم المربع كما في الصورة
       floatingActionButton: FloatingActionButton(
         onPressed: controller.goToAddPage,
@@ -33,41 +31,43 @@ class viewitem extends StatelessWidget {
               right: 16.0,
               bottom: 12.0,
             ),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: "Search products, SKUs, or categories..",
-                hintStyle: TextStyle(color: Colors.grey.shade500),
-                prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                filled: true,
-                fillColor: Colors.white,
-                contentPadding: const EdgeInsets.symmetric(vertical: 0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: Colors.grey.shade300),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: Colors.grey.shade300),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: const BorderSide(color: Color(0xFF1134A6)),
-                ),
-              ),
+            child: Searchbar(
+              title: "Search products, SKUs, or categories..",
+              mycontroller: controller.controller,
             ),
           ),
 
           // 2. الفلاتر (Filter Chips)
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          SizedBox(
+            height: 60,
             child: Row(
               children: [
-                _buildFilterChip("All Products", true),
-                const SizedBox(width: 10),
-                _buildFilterChip("Electronics", false),
-                const SizedBox(width: 10),
-                _buildFilterChip("Fashion", false),
+                // استخدام Expanded هنا ضروري جداً
+                Expanded(
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 10,
+                    ),
+                    itemCount: controller.categorylist.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: 10),
+                    itemBuilder: (context, index) {
+                      return GetBuilder<ViewItemController>(
+                        builder: (controller) {
+                          return _buildFilterChip(
+                            controller.categorylist[index].name.toString(),
+                            // هنا يفضل ربط حالة الاختيار بالـ Controller
+                            controller.selectedCat == index,
+                            () {
+                              controller.chnagecat(index);
+                            },
+                          );
+                        }
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
           ),
@@ -84,19 +84,19 @@ class viewitem extends StatelessWidget {
                       horizontal: 16,
                       vertical: 8,
                     ),
-                    itemCount: controller.itemlist.length,
+                    itemCount: controller.filtereditem.length,
                     separatorBuilder: (_, _) => const SizedBox(height: 16),
                     itemBuilder: (context, index) {
-                      final item = controller.itemlist[index];
-                      final imageUrl =
-                          "${LinkApi.imageitems}/${item.itemsImage}";
+                      final item = controller.filtereditem[index];
+                      final imageUrl = "${item.itemsImage}";
 
                       // ملاحظة: يمكنك استبدال هذه القيم الوهمية بالمتغيرات الفعلية من الموديل الخاص بك
                       // مثلاً: String price = "\$${item.itemsPrice}";
                       String price = "\$199.00";
                       String sku = "SKU: WAT-001";
-                      bool inStock =
-                          index % 2 == 0; //จำลอง حالة المخزون (متوفر أم لا)
+                      bool inStock = item.stock! > 5
+                          ? true
+                          : false; //จำลอง حالة المخزون (متوفر أم لا)
 
                       return Card(
                         elevation: 0,
@@ -326,19 +326,25 @@ class viewitem extends StatelessWidget {
   }
 
   // دالة مساعدة لإنشاء أزرار الفلاتر (Chips)
-  Widget _buildFilterChip(String label, bool isSelected) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-      decoration: BoxDecoration(
-        color: isSelected ? const Color(0xFF2A42A5) : Colors.transparent,
-        borderRadius: BorderRadius.circular(20),
-        border: isSelected ? null : Border.all(color: Colors.grey.shade300),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: isSelected ? Colors.white : Colors.grey.shade700,
-          fontWeight: isSelected ? FontWeight.w500 : FontWeight.normal,
+  Widget _buildFilterChip(
+    String label,
+    bool isSelected,
+    void Function()? onTap,
+  ) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF2A42A5) : Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isSelected ? Colors.white : Colors.grey.shade700,
+            fontWeight: isSelected ? FontWeight.w500 : FontWeight.normal,
+          ),
         ),
       ),
     );

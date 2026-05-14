@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/AdminHome.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
 
 class AdminHome extends StatelessWidget {
@@ -28,9 +30,9 @@ class AdminHome extends StatelessWidget {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const Spacer(),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.notifications_none),
+              InkWell(
+                onTap: () {},
+                child: SvgPicture.asset(Imageasset.notification),
               ),
               IconButton(
                 onPressed: () {
