@@ -77,18 +77,12 @@ class LoginController extends GetxController {
 
       int id = user.id!;
 
-    
-
       // 🔥 Check approval
       if (user.isAprove == 1) {
         if (user.usersType == "admin") {
           FirebaseMessaging.instance.subscribeToTopic("admin");
           FirebaseMessaging.instance.subscribeToTopic("admin$id");
           Get.offAllNamed(AdminApproate.adminHome);
-        } else if (user.usersType == "driver") {
-          FirebaseMessaging.instance.subscribeToTopic("driver");
-          FirebaseMessaging.instance.subscribeToTopic("driver$id");
-          Get.offAllNamed(AdminApproate.driverHome);
         } else {
           FirebaseMessaging.instance.subscribeToTopic("users");
           FirebaseMessaging.instance.subscribeToTopic("users$id");

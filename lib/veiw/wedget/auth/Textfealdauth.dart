@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hos/core/conistant/appcolor.dart';
 
 // ignore: must_be_immutable
 class Textfealdauth extends StatelessWidget {

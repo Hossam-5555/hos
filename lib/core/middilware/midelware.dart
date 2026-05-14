@@ -38,11 +38,7 @@ class Midelware extends GetMiddleware {
         if (route != AdminApproate.adminHome) {
           return const RouteSettings(name: AdminApproate.adminHome);
         }
-      } else if (userType == "driver") {
-        if (route != AdminApproate.driverHome) {
-          return const RouteSettings(name: AdminApproate.driverHome);
-        }
-      } else {
+      }  else {
         if (route != Approute.Homescreen) {
           return RouteSettings(name: Approute.Homescreen);
         }

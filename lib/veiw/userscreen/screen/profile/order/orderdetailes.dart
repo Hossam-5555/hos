@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/order/ordercontroller.dart';
 import 'package:hos/controler/usercontroller/profile/order/orderdetailescontroller.dart';
-import 'package:hos/data/model/ordersmodel.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 import 'package:hos/veiw/wedget/order/detailsorder.dart';

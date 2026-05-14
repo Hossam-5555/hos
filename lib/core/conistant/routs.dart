@@ -2,7 +2,6 @@
 
 import 'package:get/get.dart';
 import 'package:hos/veiw/adminscreen/Adminhomescreen.dart';
-import 'package:hos/veiw/driverscreen/driverHome.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/cart.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/checkout.dart';
 import 'package:hos/veiw/userscreen/screen/home/Homepage.dart';
@@ -30,8 +29,7 @@ List<GetPage<dynamic>>? routes = [
   //Admin=================================================================
   GetPage(name: AdminApproate.adminHome, page: () => AdminHome()),
   //====================================================================
-  //dreiver
-  GetPage(name: AdminApproate.driverHome, page: () => Driverhome()),
+  
 
   //=========================================================
   //onBording
@@ -103,6 +101,5 @@ class Approute {
 class AdminApproate {
   //Admin Home
   static const String adminHome = "/adminHome";
-  //deleveryHome
-  static const String driverHome = "/driverHome";
+ 
 }
