@@ -18,7 +18,7 @@ class AdminOrderdetails extends StatelessWidget {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
-        child: Appbarbackicon(herotag: '', title: "Order Details"),
+        child: Appbarbackicon(herotag: '', title: controller.order!.orderNumber),
       ),
       body: GetBuilder<AdminOrderDetailesController>(
         builder: (_) {

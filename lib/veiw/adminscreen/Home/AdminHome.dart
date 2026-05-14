@@ -104,7 +104,7 @@ class StatCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        // color: Colors.white,
+        color: Colors.white.withAlpha(50),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: Colors.grey.withAlpha(50),
@@ -114,11 +114,15 @@ class StatCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title),
+          Text(title, style: TextStyle(color: Colors.black)),
           const SizedBox(height: 10),
           Text(
             value,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
           if (growth != null)
             Text(growth!, style: const TextStyle(color: Colors.green)),
@@ -141,7 +145,7 @@ class SalesChart extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: Colors.grey.withAlpha(50),
+        color: Colors.white.withAlpha(50),
           strokeAlign: BorderSide.strokeAlignCenter,
         ),
       ),

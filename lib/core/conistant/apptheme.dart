@@ -65,8 +65,8 @@ class AppTheme {
   // الـ 4 قوالب الأساسية
   static ThemeData lightEn = ThemeData(
     brightness: Brightness.light,
-    scaffoldBackgroundColor: Color(0xFFF4F6F8),
-    appBarTheme: _appBar(Color(0xFFF4F6F8), Colors.black, 'RobotoMono'),
+    scaffoldBackgroundColor: Color(0xFFF7F9FF),
+    appBarTheme: _appBar(Color(0xFFF7F9FF), Colors.black, 'RobotoMono'),
     textTheme: _getTextTheme('RobotoMono', false),
     colorScheme: ColorScheme.fromSeed(seedColor: Appcolor.primaryColor),
   );
@@ -84,8 +84,8 @@ class AppTheme {
 
   static ThemeData lightAr = ThemeData(
     brightness: Brightness.light,
-    scaffoldBackgroundColor: Color(0xFFF4F6F8),
-    appBarTheme: _appBar(Color(0xFFF4F6F8), Colors.black, 'cairo'),
+    scaffoldBackgroundColor: Color(0xFFF7F9FF),
+    appBarTheme: _appBar(Color(0xFFF7F9FF), Colors.black, 'cairo'),
     textTheme: _getTextTheme('cairo', false),
     colorScheme: ColorScheme.fromSeed(seedColor: Appcolor.primaryColor),
   );

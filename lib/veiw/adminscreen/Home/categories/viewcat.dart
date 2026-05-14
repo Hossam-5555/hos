@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/categories/viewcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
+import 'package:hos/veiw/adminscreen/Home/categories/addcat.dart';
+import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 class ViewCategories extends StatelessWidget {
   const ViewCategories({super.key});
@@ -15,32 +17,32 @@ class ViewCategories extends StatelessWidget {
     return Scaffold(
       body: GetBuilder<ViewCatController>(
         builder: (controller) {
+          double w = MediaQuery.of(context).size.width;
           return Handlingdataview(
             statusrequest: controller.statusrequest,
             widget: Column(
               children: [
                 SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    const Text(
-                      "Add Category",
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    IconButton.filled(
-                      tooltip: "Add Category",
-                      padding: EdgeInsets.all(5),
-                      style: ButtonStyle(
-                        elevation: MaterialStateProperty.all(0.50),
-                        backgroundColor: MaterialStateProperty.all(Colors.blue),
-                      ),
-                      icon: const Icon(Icons.add, color: Colors.black87),
-                      onPressed: () => controller.goToAddPage(),
-                    ),
-                  ],
+                SizedBox(
+                  height: 60,
+                  child: GetBuilder<ViewCatController>(
+                    builder: (controller) {
+                      return Checkbutton(
+                        buttonColor: Colors.blue,
+                        controller: controller,
+                        width: w / 2,
+                        onTap: () {
+                          Get.to(
+                            () => Addcategories(),
+                            transition: Transition.rightToLeft,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeInOut,
+                          );
+                        },
+                        buttonName: "Add New Category",
+                      );
+                    },
+                  ),
                 ),
                 Expanded(
                   child: ListView.separated(
@@ -54,15 +56,9 @@ class ViewCategories extends StatelessWidget {
 
                       return Container(
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          border: Border.all(color: Colors.grey),
+                          color: Colors.white.withAlpha(50),
                           borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.shade50,
-                              blurRadius: 2.5,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
                         ),
                         child: ListTile(
                           contentPadding: const EdgeInsets.symmetric(

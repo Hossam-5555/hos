@@ -25,69 +25,57 @@ class Searchbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(25)),
-        border: Border.all(
-          color: Colors.grey.withAlpha(50),
-          strokeAlign: BorderSide.strokeAlignCenter,
-        ),
-      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(40)),
       child: TextFormField(
         focusNode: focusNode,
         textInputAction: textInputAction,
         controller: mycontroller,
         onChanged: onChanged,
-        onFieldSubmitted: (value) {
-          if (onPressedIcon != null) {
-            onPressedIcon!();
-          }
-        },
-        // style: const TextStyle(color: Colors.black),
+
         decoration: InputDecoration(
           hintText: title,
-          hintStyle: const TextStyle(color: Colors.grey),
+          hintStyle: TextStyle(color: Colors.grey),
 
           prefixIcon: Padding(
             padding: const EdgeInsets.all(12),
             child: SvgPicture.asset(
-              color: const Color.fromARGB(255, 103, 105, 105),
               Imageasset.search,
               height: 20,
               width: 20,
+              color: Colors.grey.shade700,
             ),
           ),
 
           suffixIcon: SizedBox(
             width: 100,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                const SizedBox(
-                  height: 20,
-                  child: VerticalDivider(color: Colors.grey, thickness: 0.5),
-                ),
-                TextButton(
-                  onPressed: onPressedIcon,
-                  child: Text(
-                    "search".tr,
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                ),
-              ],
+            child: TextButton(
+              onPressed: onPressedIcon,
+              child: Text(
+                "search".tr,
+                style: const TextStyle(fontWeight: FontWeight.w600),
+              ),
             ),
           ),
 
+          // خلفية الحقل
           filled: true,
-          fillColor: Colors.transparent,
 
           contentPadding: const EdgeInsets.symmetric(
-            vertical: 10,
-            horizontal: 16,
+            horizontal: 20,
+            vertical: 14,
           ),
 
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(40),
-            borderSide: BorderSide.none,
+          // الشكل الطبيعي
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
+          ),
+
+          // عند الضغط عليه
+          focusedBorder: OutlineInputBorder(
+            
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(color: Colors.grey.shade400, width: 1),
           ),
         ),
       ),

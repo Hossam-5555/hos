@@ -18,7 +18,7 @@ class Additem extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           "إضافة منتج جديد",
-          style: TextStyle(fontWeight: FontWeight.bold,),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         elevation: 0,
@@ -210,6 +210,7 @@ class Additem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: TextFormField(
+        // style: TextStyle(color: Colors.white),
         controller: controller,
         maxLines: maxLines,
         keyboardType: isNumber ? TextInputType.number : TextInputType.text,
@@ -220,11 +221,10 @@ class Additem extends StatelessWidget {
           return null;
         },
         decoration: InputDecoration(
-          labelText: label,
-          labelStyle: TextStyle(color: Colors.grey[700]),
+          hintText: label,
+          // labelStyle: TextStyle(color: Colors.grey[700]),
           prefixIcon: Icon(icon, color: Colors.blue),
           filled: true,
-          fillColor: Colors.white,
           contentPadding: const EdgeInsets.symmetric(
             vertical: 15,
             horizontal: 20,

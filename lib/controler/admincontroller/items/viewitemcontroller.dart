@@ -27,7 +27,7 @@ class ViewItemController extends GetxController {
     statusrequest = handling(response);
 
     if (Statusrequest.success == statusrequest) {
-      if (response['status'] == 'success') {
+      if (response['status'] == true ) {
         List data = response["data"];
 
         /// ✳️ المهم هنا:

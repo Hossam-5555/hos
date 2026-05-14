@@ -14,6 +14,7 @@ class Orderdetailes extends StatelessWidget {
     final c = Get.put(Orderdetailescontroller());
     final w = MediaQuery.of(context).size.width;
     // داخل صفحة DetailView
+    // ignore: unused_local_variable
     Ordercontroller controller = Get.find();
     return Scaffold(
       appBar: PreferredSize(

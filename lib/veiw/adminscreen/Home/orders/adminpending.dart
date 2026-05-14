@@ -53,9 +53,6 @@ class Adminpending extends StatelessWidget {
                               )
                             : null,
 
-                        border: Border.all(
-                          color: Colors.grey,
-                        ), // إضافة حدود للتمييز
                         borderRadius: BorderRadius.circular(40),
                       ),
                       alignment: Alignment.center,

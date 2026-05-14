@@ -124,8 +124,8 @@ class Login extends StatelessWidget {
                                       textEditingController:
                                           loginController.passward,
                                       suffixIcon: controller.showpass
-                                          ? Icons.visibility
-                                          : Icons.visibility_off,
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
                                       hint: " Password",
                                     ),
 
