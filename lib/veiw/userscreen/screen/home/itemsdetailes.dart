@@ -8,8 +8,8 @@ import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/controler/usercontroller/home/itemsdetailscontroller.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/data/model/itemsmodel.dart';
-import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
+import 'package:hos/veiw/wedget/items/itemsappbar.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/countofproduct.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/description.dart';
 
@@ -25,11 +25,6 @@ class Itemsdetailes extends StatelessWidget {
       builder: (controller) {
         final item = controller.itemsmodel;
         return Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(60),
-            child: Appbarbackicon(title: "product Details".tr, herotag: ""),
-          ),
-
           // ✨ التعديل الاحترافي: تثبيت زر الشراء والعداد في الأسفل دائماً
           bottomNavigationBar: _buildBottomBar(controller),
 
@@ -46,7 +41,7 @@ class Itemsdetailes extends StatelessWidget {
                     alignment: Alignment.center,
                     children: [
                       Container(
-                        height: Get.height * 0.45,
+                        height: Get.height * 0.55,
                         width: double.infinity,
                         margin: const EdgeInsets.only(bottom: 20),
                         decoration: BoxDecoration(
@@ -91,17 +86,12 @@ class Itemsdetailes extends StatelessWidget {
                           controller: controller.controller,
                         ),
                       ),
-                      // dis != 0
-                      //     ? Positioned(
-                      //         bottom: 0,
-                      //         left: 20,
-                      //         child: _buildHotProductBadge(),
-                      //       )
-                      //     : SizedBox.shrink(),
+
                       Positioned(
-                        top: h * 0.41,
+                        top: h * 0.50,
                         child: Container(
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
                             color: Colors.white.withOpacity(0.3),
                           ),
                           child: ClipRRect(
@@ -114,7 +104,9 @@ class Itemsdetailes extends StatelessWidget {
                                   item.images!.length,
                                   (index) => AnimatedContainer(
                                     margin: EdgeInsets.all(10),
-                                    width: controller.curentpage == index ? 15 : 5,
+                                    width: controller.curentpage == index
+                                        ? 15
+                                        : 5,
                                     height: 6,
                                     decoration: BoxDecoration(
                                       color: Appcolor.primaryColor,
@@ -215,6 +207,12 @@ class Itemsdetailes extends StatelessWidget {
                   ),
                 ],
               ),
+              Positioned.directional(
+                top: 40,
+                start: 10,
+                textDirection: TextDirection.ltr,
+                child: BackButtonCircle(),
+              ),
             ],
           ),
         );
@@ -304,47 +302,6 @@ class Itemsdetailes extends StatelessWidget {
       ],
     );
   }
-
-  // Widget _buildHotProductBadge() {
-  //   return Transform.rotate(
-  //     angle: pi / -20,
-  //     child: Container(
-  //       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-  //       decoration: BoxDecoration(
-  //         color: Colors.grey.shade100,
-  //         borderRadius: BorderRadius.circular(20),
-  //         boxShadow: [
-  //           BoxShadow(
-  //             color: Colors.black.withOpacity(0.2),
-  //             blurRadius: 8,
-  //             offset: const Offset(0, 4),
-  //           ),
-  //         ],
-  //       ),
-  //       child: const Row(
-  //         mainAxisSize: MainAxisSize.min,
-  //         children: [
-  //           Icon(
-  //             Icons.local_fire_department_rounded,
-  //             size: 18,
-  //             color: Color.fromARGB(255, 199, 67, 5),
-  //           ),
-  //           SizedBox(width: 6),
-  //           Center(
-  //             child: Text(
-  //               "Hot Product",
-  //               style: TextStyle(
-  //                 color: Colors.black,
-  //                 fontWeight: FontWeight.bold,
-  //                 fontSize: 12,
-  //               ),
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 
   void _showDescriptionSheet(BuildContext context, ItemsModel item) {
     showModalBottomSheet(

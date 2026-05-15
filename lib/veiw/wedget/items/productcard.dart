@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -71,19 +73,27 @@ Widget productcard(ItemsModel items, void Function()? onTap) {
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
-                          child: Container(
-                            height: 30,
-                            width: 30,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(
-                              isFav
-                                  ? Icons.favorite
-                                  : Icons.favorite_border_rounded,
-                              color: isFav ? Colors.redAccent : Colors.black,
-                              size: 20,
+                          child: ClipPath(
+                            clipper: ShapeBorderClipper(shape: CircleBorder()),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.3),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  isFav
+                                      ? Icons.favorite
+                                      : Icons.favorite_border_rounded,
+                                  color: isFav
+                                      ? Colors.redAccent
+                                      : Colors.black,
+                                  size: 20,
+                                ),
+                              ),
                             ),
                           ),
                         ),

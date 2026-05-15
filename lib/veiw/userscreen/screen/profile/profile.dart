@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/conistant/imageasset.dart';
@@ -127,14 +129,24 @@ class ProfilePage extends StatelessWidget {
             Positioned(
               bottom: 0,
               right: 0,
-              child: Container(
-                margin: EdgeInsetsDirectional.symmetric(horizontal: 5),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
+              child: ClipPath(
+                clipper: ShapeBorderClipper(shape: CircleBorder()),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: Container(
+                    margin: EdgeInsetsDirectional.symmetric(horizontal: 5),
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withAlpha(75),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.camera_alt_outlined,
+                      color: color.withBlue(150),
+                      size: 20,
+                    ),
+                  ),
                 ),
-                child: Icon(Icons.camera_alt_outlined, color: color, size: 20),
               ),
             ),
           ],

@@ -83,7 +83,7 @@ class _FilterButton extends StatelessWidget {
 }
 
 class BackButtonCircle extends StatelessWidget {
-  const BackButtonCircle();
+  const BackButtonCircle({super.key});
 
   @override
   Widget build(BuildContext context) {
