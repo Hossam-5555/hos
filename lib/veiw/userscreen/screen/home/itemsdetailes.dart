@@ -1,4 +1,6 @@
 // import 'dart:math';
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,6 +9,7 @@ import 'package:hos/controler/usercontroller/home/itemsdetailscontroller.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
+import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/countofproduct.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/description.dart';
 
@@ -98,22 +101,28 @@ class Itemsdetailes extends StatelessWidget {
                       Positioned(
                         top: h * 0.41,
                         child: Container(
-                          decoration: BoxDecoration(color: Colors.grey[50],
-                            borderRadius: BorderRadius.circular(40),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
+                            color: Colors.white.withOpacity(0.3),
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(
-                              item.images!.length,
-                              (index) => AnimatedContainer(
-                                margin: EdgeInsets.all(10),
-                                width: controller.curentpage == index ? 15 : 5,
-                                height: 6,
-                                decoration: BoxDecoration(
-                                  color: Appcolor.primaryColor,
-                                  borderRadius: BorderRadius.circular(20),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: List.generate(
+                                  item.images!.length,
+                                  (index) => AnimatedContainer(
+                                    margin: EdgeInsets.all(10),
+                                    width: controller.curentpage == index ? 15 : 5,
+                                    height: 6,
+                                    decoration: BoxDecoration(
+                                      color: Appcolor.primaryColor,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    duration: Duration(milliseconds: 500),
+                                  ),
                                 ),
-                                duration: Duration(milliseconds: 500),
                               ),
                             ),
                           ),
@@ -232,44 +241,29 @@ class Itemsdetailes extends StatelessWidget {
             Flexible(
               child: SizedBox(
                 height: 55,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black, // لون أسود فخم
-                    // elevation: 1,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                  ),
-                  onPressed: () {
-                    if (controller.itemcount == 0) {
-                      Get.snackbar(
-                        "تنبيه",
-                        "يرجى اختيار الكمية أولاً",
-                        backgroundColor: Colors.red.shade50,
-                        colorText: Colors.red,
-                      );
-                    } else {
-                      Get.find<CartController>().addtocart(
-                        controller.itemsmodel.id!,
-                        controller.itemcount,
-                      );
-                    }
+                child: GetBuilder<Itemdetailscontroller>(
+                  builder: (controller) {
+                    return Checkbutton(
+                      controller: controller,
+                      buttonColor: Colors.black,
+                      onTap: () {
+                        if (controller.itemcount == 0) {
+                          Get.snackbar(
+                            "تنبيه",
+                            "يرجى اختيار الكمية أولاً",
+                            backgroundColor: Colors.red.shade50,
+                            colorText: Colors.red,
+                          );
+                        } else {
+                          Get.find<CartController>().addtocart(
+                            controller.itemsmodel.id!,
+                            controller.itemcount,
+                          );
+                        }
+                      },
+                      buttonName: "Add to Card",
+                    );
                   },
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.shopping_bag_outlined, color: Colors.white),
-                      SizedBox(width: 8),
-                      Text(
-                        "Add to Card",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
               ),
             ),

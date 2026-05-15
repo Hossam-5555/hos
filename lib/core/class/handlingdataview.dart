@@ -68,7 +68,6 @@ class Handlingdataview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // 🔹 الإنترنت
     if (statusrequest == Statusrequest.checkinterner) {
       return buildState(
@@ -80,7 +79,6 @@ class Handlingdataview extends StatelessWidget {
 
     // 🔹 Loading
     if (statusrequest == Statusrequest.loading) {
-
       // ✅ Full Screen Loading
       if (isFullScreen) {
         return loadingWidget ??
@@ -92,15 +90,13 @@ class Handlingdataview extends StatelessWidget {
       }
 
       // ✅ Skeleton Loading
-      return Skeletonizer(
-        enabled: true,
-        child: widget,
-      );
+      return Skeletonizer(enabled: true, child: widget);
     }
 
     // 🔹 No Data
-    if (statusrequest == Statusrequest.failure ||
-        statusrequest == Statusrequest.nodata) {
+    if ((statusrequest == Statusrequest.failure ||
+            statusrequest == Statusrequest.nodata) &&
+        isFullScreen == true) {
       return buildState(
         context: context,
         animation: Imageasset.nodata,
