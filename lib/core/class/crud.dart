@@ -84,11 +84,8 @@ class Crud {
     }
   }
 
-
-
-
   //to add file
-  Future<Either<Statusrequest, Map>> addRequestWithImageOne(
+  Future<Either<Statusrequest, Map>> addRequestWithImageOne(String method,
     String url,
     Map data,
     File? image, [
@@ -98,7 +95,7 @@ class Crud {
 
     var uri = Uri.parse(url);
     var request = http.MultipartRequest("POST", uri);
-    // request.headers.addAll();
+    request.fields['_method'] = method; // لتحديد نوع الطلب كـ PATCH
 
     if (image != null) {
       var length = await image.length();

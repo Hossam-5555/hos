@@ -242,7 +242,7 @@ class Itemsdetailes extends StatelessWidget {
                 child: GetBuilder<Itemdetailscontroller>(
                   builder: (controller) {
                     return Checkbutton(
-                      controller: controller,
+                      statusrequest: controller.statusrequest,
                       buttonColor: Colors.black,
                       onTap: () {
                         if (controller.itemcount == 0) {

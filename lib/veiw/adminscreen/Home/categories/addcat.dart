@@ -125,7 +125,7 @@ class Addcategories extends StatelessWidget {
                         buttonName: "add category",
 
                         buttonColor: Colors.black,
-                        controller: controller,
+                        statusrequest: controller.statusrequest,
                       );
                     },
                   ),

@@ -8,35 +8,29 @@ class AdmindaTaCaregores {
   AdmindaTaCaregores(this.crud);
 
   addcat(String name, String namear, File file) async {
-    var response = await crud.addRequestWithImageOne(LinkApi.adminaddcat, {
-      "name": name,
-      "name_ar": namear,
-    }, file);
+    var response = await crud.addRequestWithImageOne(
+      "POST",
+      LinkApi.adminaddcat,
+      {"name": name, "name_ar": namear},
+      file,
+    );
     return response.fold((l) => l, (r) => r);
   }
 
-  editcat(
-    String catid,
-    String name,
-    String namear,
-    String oldimage,
-    File? file,
-  ) async {
+  editcat(int catid, String name, String namear, File? file) async {
     Either<Statusrequest, Map<dynamic, dynamic>> response;
     if (file == null) {
-      response = await crud.postrequset(LinkApi.admineditcat, {
-        "catid": catid,
+      response = await crud.putandpacth("${LinkApi.admineditcat}/$catid", {
         "name": name,
-        "namear": namear,
-        "oldimage": oldimage,
+        "name_ar": namear,
       });
     } else {
-      response = await crud.addRequestWithImageOne(LinkApi.admineditcat, {
-        "catid": catid,
-        "name": name,
-        "namear": namear,
-        "oldimage": oldimage,
-      }, file);
+      response = await crud.addRequestWithImageOne(
+        "PATCH",
+        "${LinkApi.admineditcat}/$catid",
+        {"name": name, "name_ar": namear},
+        file,
+      );
     }
     return response.fold((l) => l, (r) => r);
   }

@@ -54,7 +54,7 @@ class LinkApi {
 
   //Admin //categores
   static String adminaddcat = '$lravelserver/category';
-  static String admineditcat = '$server/admin/categories/edit.php';
+  static String admineditcat = '$lravelserver/category';
   static String adminviewcat = '$lravelserver/category';
   static String admindeletecat = '$lravelserver/deletecategory';
   //Admin //items

@@ -182,7 +182,7 @@ class Additem extends StatelessWidget {
                           onTap: () {
                             controller.additem();
                           },
-                          controller: controller,
+                          statusrequest: controller.statusrequest,
                           buttonColor: Colors.blue,
                           buttonName: "إضافة المنتج",
                         );

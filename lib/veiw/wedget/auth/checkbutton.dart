@@ -9,27 +9,27 @@ class Checkbutton extends StatelessWidget {
     required this.buttonName,
     this.width,
     this.buttonColor,
-    this.controller,
+    this.statusrequest,
   });
   void Function() onTap;
-  var controller;
   double? width;
   Color? buttonColor;
   String buttonName;
+  Statusrequest? statusrequest;
   @override
   Widget build(BuildContext context) {
     return Container(
       child: IgnorePointer(
-        ignoring: controller.statusrequest == Statusrequest.loading,
+        ignoring:statusrequest == Statusrequest.loading,
         child: AnimatedContainer(
           decoration: BoxDecoration(
             color: buttonColor ?? Colors.black,
             borderRadius: BorderRadius.circular(
-              controller.statusrequest == Statusrequest.loading ? 30 : 40,
+              statusrequest == Statusrequest.loading ? 30 : 40,
             ),
           ),
           duration: Duration(milliseconds: 400),
-          width: controller.statusrequest == Statusrequest.loading ? 60 : width,
+          width:statusrequest == Statusrequest.loading ? 60 : width,
           height: 60,
           curve: Curves.easeInOut,
           child: Material(
@@ -48,7 +48,7 @@ class Checkbutton extends StatelessWidget {
                     );
                   },
 
-                  child: controller.statusrequest == Statusrequest.loading
+                  child: statusrequest == Statusrequest.loading
                       ? const SizedBox(
                           key: ValueKey("loading"),
                           width: 26,

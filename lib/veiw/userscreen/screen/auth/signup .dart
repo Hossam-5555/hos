@@ -128,7 +128,7 @@ class Signup extends StatelessWidget {
                                   SizedBox(height: height * 0.025),
                                   GetBuilder<Signupcontroller>(
                                     builder: (controller) => Checkbutton(
-                                      controller: controller,
+                                      statusrequest: controller.statusrequest,
                                       onTap: () {
                                         signUpcontroller.signup();
                                       },

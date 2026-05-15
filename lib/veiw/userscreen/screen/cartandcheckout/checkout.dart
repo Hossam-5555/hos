@@ -305,7 +305,7 @@ class Checkout extends StatelessWidget {
                     c.checkoutoder();
                   },
                   buttonName: "confirm order".tr,
-                  controller: controller,
+                  statusrequest: c.statusrequest,
                 );
               },
             ),

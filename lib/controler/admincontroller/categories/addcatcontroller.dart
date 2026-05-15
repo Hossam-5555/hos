@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:hos/controler/admincontroller/categories/viewcontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/functions/snackbar.dart';
@@ -41,6 +42,8 @@ class Addcatcontroller extends GetxController {
       if (statusrequest == Statusrequest.success) {
         if (response['status'] == true) {
           showSnackBar(Get.context!, "تم إضافة الفئة بنجاح");
+          Get.find<ViewCatController>().viewCat();
+
           Future.delayed(Duration(seconds: 1), () {
             Get.back(); // ارجع بعد ثانية
           });

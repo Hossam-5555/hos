@@ -121,7 +121,7 @@ class AddNewAddres extends StatelessWidget {
 
                                 GetBuilder<AddressController>(
                                   builder: (controller) {
-                                    return Checkbutton(controller: controller,
+                                    return Checkbutton(statusrequest: controller.statusrequest,
                                       buttonColor: Colors.black,
                                       width: size.width,
                                       onTap: () {

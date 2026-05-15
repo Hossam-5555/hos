@@ -9,7 +9,7 @@ class admindataitem {
   admindataitem(this.crud);
 
   additem(Map data, File file) async {
-    var response = await crud.addRequestWithImageOne(
+    var response = await crud.addRequestWithImageOne("POST",
       LinkApi.adminadditem,
       data,
       file,
@@ -22,7 +22,7 @@ class admindataitem {
     if (file == null) {
       response = await crud.postrequset(LinkApi.adminedititem, data);
     } else {
-      response = await crud.addRequestWithImageOne(
+      response = await crud.addRequestWithImageOne("PATCH",
         LinkApi.adminedititem,
         data,
         file,

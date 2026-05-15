@@ -28,7 +28,7 @@ class Orderdetailes extends StatelessWidget {
               child: GetBuilder<Ordercontroller>(
                 builder: (controller) {
                   return Checkbutton(
-                    controller: controller,
+                    statusrequest: controller.statusrequest,
                     buttonColor: Colors.black,
                     width: w,
                     onTap: () {

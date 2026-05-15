@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hos/controler/admincontroller/categories/editcontroller.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
+import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 class Editcat extends StatelessWidget {
   const Editcat({super.key});
@@ -12,11 +13,9 @@ class Editcat extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     Get.put(Editcontroller());
-
+    double w = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 2,
         centerTitle: true,
         title: Text(
@@ -55,29 +54,29 @@ class Editcat extends StatelessWidget {
                       ],
                     ),
                     child: controller.file != null
-                        ? (controller.file!.path.endsWith(".svg")
-                            ? SvgPicture.file(
-                                controller.file!,
-                                fit: BoxFit.cover,
-                              )
-                            : ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Image.file(
-                                  File(controller.file!.path),
-                                  fit: BoxFit.cover,
-                                ),
-                              ))
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.file(
+                              File(controller.file!.path),
+                              fit: BoxFit.cover,
+                            ),
+                          )
                         : Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.add_a_photo_outlined,
-                                  size: 40, color: Colors.grey[600]),
+                              Icon(
+                                Icons.add_a_photo_outlined,
+                                size: 40,
+                                color: Colors.grey[600],
+                              ),
                               const SizedBox(height: 8),
                               Text(
                                 "Add Photo",
                                 style: TextStyle(
-                                    color: Colors.grey[600], fontSize: 14),
-                              )
+                                  color: Colors.grey[600],
+                                  fontSize: 14,
+                                ),
+                              ),
                             ],
                           ),
                   ),
@@ -112,24 +111,15 @@ class Editcat extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   height: 55,
-                  child: ElevatedButton(
-                    onPressed: () => controller.edit(),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: theme.primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      shadowColor: Colors.black26,
-                      elevation: 5,
-                    ),
-                    child: const Text(
-                      "💾 Save Changes",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.5,
-                      ),
+                  child: GetBuilder<Editcontroller>(
+                    builder: (controller) => Checkbutton(
+                      width: w / 2,
+                      buttonColor: Colors.black,
+                      statusrequest: controller.statusrequest,
+                      onTap: () {
+                        controller.edit();
+                      },
+                      buttonName: 'save changes',
                     ),
                   ),
                 ),

@@ -47,7 +47,7 @@ class ViewCatController extends GetxController {
     update();
   }
 
-  void gotoeditpage(categoriesmodel catmodel) {
+  void gotoeditpage(categoriesmodel2 catmodel) {
     Get.to(() => Editcat(), arguments: {"catmodel": catmodel});
   }
 

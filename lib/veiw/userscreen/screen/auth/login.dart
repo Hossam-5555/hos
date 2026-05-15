@@ -155,7 +155,7 @@ class Login extends StatelessWidget {
 
                                     GetBuilder<LoginController>(
                                       builder: (controller) => Checkbutton(
-                                        controller: controller,
+                                        statusrequest: controller.statusrequest,
                                         onTap: () {
                                           loginController.login();
                                         },
