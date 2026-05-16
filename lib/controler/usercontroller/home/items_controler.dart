@@ -9,7 +9,7 @@ import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 
 class ItemsControler extends SearchMix {
-  List<categoriesmodel2> categories = [];
+  List<CategoriesModel> categories = [];
   int? selecteditem;
   int? selectedfilter;
   late String catid;

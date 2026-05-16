@@ -13,7 +13,7 @@ class ViewItemController extends GetxController {
   admindataitem admindata = admindataitem(Get.find());
   Statusrequest statusrequest = Statusrequest.none;
   List<ItemsModel> itemlist = [];
-  List<categoriesmodel2> categorylist = [];
+  List<CategoriesModel> categorylist = [];
   int selectedCat = 0; // لتتبع التصنيف المختار، -1 يعني لا يوجد تصنيف مختار
   void chnagecat(int index) {
     selectedCat = index;
@@ -24,25 +24,25 @@ class ViewItemController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
-    viewallitems();
+    ViewAllItems();
   }
 
   List<ItemsModel> get filtereditem {
-    // إذا كان المختار هو "الكل" (افترضنا أن index 0 هو الكل)
+    if (categorylist.isEmpty) return [];
 
     // الحصول على الـ id الخاص بالقسم المختار من قائمة الأقسام
     // نستخدم selectedCat كـ index للوصول للقسم الصحيح
     int selectedCategoryId = categorylist[selectedCat].id!;
-
     // إرجاع العناصر التي يطابق الـ categoryId الخاص بها الـ id المختار
     return itemlist
         .where((item) => item.categoryId == selectedCategoryId)
         .toList();
   }
 
-  viewallitems() async {
-    itemlist.clear(); // تنظيف القائمة قبل إضافة بيانات جديدة
+  Future<void> ViewAllItems() async {
+    itemlist.clear();
+    categorylist.clear();
+
     statusrequest = Statusrequest.loading;
     update();
 
@@ -51,28 +51,32 @@ class ViewItemController extends GetxController {
 
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
-        // حسب الـ JSON الخاص بك الحالة true وليس "success"
+        List categories = response['data'];
 
-        List categories = response['data']; // هذه قائمة التصنيفات
-        categorylist.addAll(
-          categories.map((e) => categoriesmodel2.fromJson(e)),
+        // 1. تحويل وإضافة التصنيفات باستخدام map عادي
+        categorylist.addAll(categories.map((e) => CategoriesModel.fromJson(e)));
+
+        // 2. 🚀 السحر هنا: استخدام map مع expand لتجميع كل المنتجات في سطر واحد بدون for
+        itemlist.addAll(
+          categories
+              .where(
+                (category) => category['items'] != null,
+              ) // التأكد إن التصنيف جواه منتجات
+              .expand(
+                (category) => (category['items'] as List).map(
+                  (e) => ItemsModel.fromJson(e),
+                ),
+              ),
         );
-        for (var category in categories) {
-          List itemsInCategory =
-              category['items']; // استخراج المنتجات من داخل كل تصنيف
-
-          // تحويل المنتجات إلى Model وإضافتها للقائمة الكبيرة
-          itemlist.addAll(itemsInCategory.map((e) => ItemsModel.fromJson(e)));
-        }
 
         if (itemlist.isEmpty) {
-          statusrequest =
-              Statusrequest.failure; // إذا لم توجد منتجات في أي تصنيف
+          statusrequest = Statusrequest.failure;
         }
       } else {
         statusrequest = Statusrequest.failure;
       }
     }
+
     update();
   }
 
@@ -88,7 +92,7 @@ class ViewItemController extends GetxController {
 
   void goToAddPage() async {
     await Get.to(() => Additem());
-    viewallitems();
+    ViewAllItems();
   }
 
   void backtohomebage() {

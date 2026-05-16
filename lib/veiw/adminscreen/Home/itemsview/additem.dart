@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/items/additemcontroller.dart';
+import 'package:hos/core/functions/upload_image.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 // قم بتعديل مسار الاستيراد حسب هيكل مشروعك
 // import 'package:hos/controller/additemcontroller.dart';
@@ -11,6 +12,8 @@ class Additem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double w = screenWidth * 0.05; // 5% من عرض الشاشة
     // نهيئة الكنترولر وربطه بالصفحة
     Get.put(Additemcontroller());
 
@@ -33,61 +36,122 @@ class Additem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // --- قسم اختيار الصورة ---
-                  Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        controller.showoptionimage();
-                      },
-                      child: Container(
-                        width: 150,
-                        height: 150,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: Colors.blue.shade200,
-                            width: 2,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.1),
-                              blurRadius: 10,
-                              spreadRadius: 2,
-                            ),
-                          ],
-                        ),
-                        child: controller.file != null
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(18),
-                                child: Image.file(
-                                  controller.file!,
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
+                  GetBuilder<Additemcontroller>(
+                    builder: (controller) {
+                      return Row(
+                        children: List.generate(3, (index) {
+                          final file = controller.selectedImages[index];
+                          final bool hasImage = file != null;
+
+                          return Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                // استدعاء دالتك الجاهزة مباشرة وتمرير الـ index المطلوب
+                                showImagePickerBottomSheet(
+                                  () => controller.chooseFromCamera(
+                                    index,
+                                  ), // كول باك الكاميرا
+                                  () => controller.chooseFromGallery(
+                                    index,
+                                  ), // كول باك المعرض
+                                );
+                              },
+                              child: Container(
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: index == 1 ? 6 : 0,
                                 ),
-                              )
-                            : Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.add_a_photo,
-                                    size: 50,
-                                    color: Colors.blue.shade300,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade50,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: hasImage
+                                        ? const Color(0xFF1134A6)
+                                        : Colors.grey.shade300,
+                                    style: hasImage
+                                        ? BorderStyle.solid
+                                        : BorderStyle.none,
+                                    width: 1.5,
                                   ),
-                                  const SizedBox(height: 10),
-                                  const Text(
-                                    "إضافة صورة",
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
+                                ),
+                                child: hasImage
+                                    ? Stack(
+                                        fit: StackFit.expand,
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              11,
+                                            ),
+                                            child: Image.file(
+                                              file,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          // زر الحذف الصغير العصري فوق الصورة
+                                          Positioned(
+                                            top: 4,
+                                            right: 4,
+                                            child: GestureDetector(
+                                              onTap: () =>
+                                                  controller.removeImage(index),
+                                              child: Container(
+                                                padding: const EdgeInsets.all(
+                                                  2,
+                                                ),
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.black54,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: const Icon(
+                                                  Icons.close,
+                                                  size: 14,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            index == 0
+                                                ? Icons.add_a_photo_rounded
+                                                : Icons
+                                                      .add_photo_alternate_outlined,
+                                            color: index == 0
+                                                ? const Color(0xFF1134A6)
+                                                : Colors.grey.shade400,
+                                            size: 26,
+                                          ),
+                                          const SizedBox(height: 6),
+                                          Text(
+                                            index == 0
+                                                ? "الرئيسية"
+                                                : "صورة ${index + 1}",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: index == 0
+                                                  ? FontWeight.bold
+                                                  : FontWeight.normal,
+                                              color: index == 0
+                                                  ? const Color(0xFF1134A6)
+                                                  : Colors.grey.shade600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                               ),
-                      ),
-                    ),
+                            ),
+                          );
+                        }),
+                      );
+                    },
                   ),
-                  const SizedBox(height: 30),
+
+                  SizedBox(height: 30),
 
                   // --- الحقول الأساسية ---
                   const Text(
@@ -179,6 +243,7 @@ class Additem extends StatelessWidget {
                     child: GetBuilder<Additemcontroller>(
                       builder: (controller) {
                         return Checkbutton(
+                          width: w,
                           onTap: () {
                             controller.additem();
                           },

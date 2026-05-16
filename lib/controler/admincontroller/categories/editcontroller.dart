@@ -17,7 +17,7 @@ class Editcontroller extends GetxController {
   late TextEditingController namear;
   GlobalKey<FormState> editkey = GlobalKey<FormState>();
   File? file;
-  categoriesmodel2? catmodel;
+  CategoriesModel? catmodel;
   Future<void> chooseimage() async {
     file = await fileUploadGallery();
     update();

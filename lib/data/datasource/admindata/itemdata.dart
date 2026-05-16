@@ -8,11 +8,12 @@ class admindataitem {
   Crud crud;
   admindataitem(this.crud);
 
-  additem(Map data, File file) async {
-    var response = await crud.addRequestWithImageOne("POST",
+  additem(Map data,List<File?> files) async {
+    var response = await crud.addRequestWithMultipleImages("POST",
       LinkApi.adminadditem,
       data,
-      file,
+      files,
+      "items_images[]",
     );
     return response.fold((l) => l, (r) => r);
   }
@@ -22,10 +23,10 @@ class admindataitem {
     if (file == null) {
       response = await crud.postrequset(LinkApi.adminedititem, data);
     } else {
-      response = await crud.addRequestWithImageOne("PATCH",
+      response = await crud.addRequestWithMultipleImages("PATCH",
         LinkApi.adminedititem,
         data,
-        file,
+        [file],
       );
     }
     return response.fold((l) => l, (r) => r);

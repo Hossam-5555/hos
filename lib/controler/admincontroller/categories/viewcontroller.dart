@@ -10,7 +10,7 @@ import 'package:hos/veiw/adminscreen/Home/categories/editcat.dart';
 class ViewCatController extends GetxController {
   AdmindaTaCaregores admindata = AdmindaTaCaregores(Get.find());
   Statusrequest statusrequest = Statusrequest.none;
-  List<categoriesmodel2> catdata = [];
+  List<CategoriesModel> catdata = [];
 
   @override
   void onInit() {
@@ -32,7 +32,7 @@ class ViewCatController extends GetxController {
 
         /// ✳️ المهم هنا:
         catdata.clear(); // فضي الليست القديمة
-        catdata.addAll(data.map((e) => categoriesmodel2.fromJson(e)));
+        catdata.addAll(data.map((e) => CategoriesModel.fromJson(e)));
       } else {
         statusrequest = Statusrequest.failure;
       }
@@ -47,7 +47,7 @@ class ViewCatController extends GetxController {
     update();
   }
 
-  void gotoeditpage(categoriesmodel2 catmodel) {
+  void gotoeditpage(CategoriesModel catmodel) {
     Get.to(() => Editcat(), arguments: {"catmodel": catmodel});
   }
 

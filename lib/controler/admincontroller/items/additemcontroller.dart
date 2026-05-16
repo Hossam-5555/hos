@@ -2,11 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:hos/controler/admincontroller/items/viewitemcontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
+import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/functions/upload_image.dart';
 import 'package:hos/data/datasource/admindata/itemdata.dart';
-import 'package:hos/veiw/adminscreen/Home/itemsview/viewitem.dart';
 
 class Additemcontroller extends GetxController {
   Statusrequest statusrequest = Statusrequest.none;
@@ -21,54 +22,93 @@ class Additemcontroller extends GetxController {
   late TextEditingController itemcat;
 
   GlobalKey<FormState> itemvalidKey = GlobalKey<FormState>();
-File? file;
+  File? file;
 
-void showoptionimage() {
-  showImagePickerBottomSheet(chooseimagecamera, chooseimagegalary);
-}
+  void showoptionimage() {
+    showImagePickerBottomSheet(
+      chooseFromCamera as VoidCallback,
+      chooseFromGallery as VoidCallback,
+    );
+  }
 
-Future<void> chooseimagecamera() async {
-  file = await imageUploadCamera();
-  update();
-}
+  List<File?> selectedImages = List<File?>.filled(3, null);
 
-Future<void> chooseimagegalary() async {
-  file = await fileUploadGallery();
-  update();
-}
+  // دالة التعامل مع اختيار الكاميرا للمربع المحدد
+  Future<void> chooseFromCamera(int index) async {
+    File? file = await imageUploadCamera(); // دالتك الجاهزة
+    if (file != null) {
+      selectedImages[index] = file;
+      update(); // تحديث الواجهة فوراً
+    }
+  }
+
+  // دالة التعامل مع اختيار المعرض للمربع المحدد
+  Future<void> chooseFromGallery(int index) async {
+    File? file = await fileUploadGallery(); // دالتك الجاهزة
+    if (file != null) {
+      selectedImages[index] = file;
+      update(); // تحديث الواجهة فوراً
+    }
+  }
+
+  // دالة لحذف الصورة من المربع
+  void removeImage(int index) {
+    selectedImages[index] = null;
+    update();
+  }
 
   Future<void> additem() async {
     if (itemvalidKey.currentState!.validate()) {
-      if (file == null) {
-        Get.snackbar("تنبيه", "من فضلك اختر صورة أولاً");
+      // 1. 🛑 التعديل هنا: التأكد من اختيار الصورة الرئيسية (المربع الأول) أولاً
+      if (selectedImages[0] == null) {
+        Get.snackbar(
+          "تنبيه",
+          "من فضلك اختر الصورة الرئيسية للمنتج (المربع الأول)",
+        );
         return;
       }
+
       statusrequest = Statusrequest.loading;
       update();
+
       Map data = {
-        "itemname": name.text,
-        "itemnamear": namear.text,
-        "itemdesc": description.text,
-        "itemdescar": descriptionar.text,
-        "itemscount": count.text,
-        "itemsprice": price.text,
-        "itemsdiscount": descount.text,
-        "itemscat": itemcat.text,
-        "datenow": DateTime.now().toString(),
+        "items_name": name.text,
+        "items_name_ar": namear.text,
+        "items_desc": description.text,
+        "items_desc_ar": descriptionar.text,
+        "items_active": "1",
+        "stock": count.text,
+        "items_price": price.text,
+        "items_discount": descount.text,
+        "category_id": itemcat
+            .text, // ملحوظة: شيلت المسافة الزيادة اللي كانت بعد كلمة category_id لضمان مطابقة الباك إند
       };
 
-      var response = await dataitem.additem(data, file!);
-
+      // 2. 🚀 استدعاء دالة الـ Data Layer وتمرير لستة الصور كاملة
+      var response = await dataitem.additem(data, selectedImages);
       statusrequest = handling(response);
-      if (statusrequest == Statusrequest.success) {
-        if (response['status'] == 'success') {
-          Get.snackbar("success", "    تم اضافه القسم بنجاح");
 
-          Get.off(() => viewitem());
+      if (statusrequest == Statusrequest.success) {
+        // ملحوظة: اللارافل عادة بيرجع الكود في ماب، التشييك بتاعك سليم
+        if (response['status'] == true) {
+          showSnackBar(Get.context!, "Product Added Successfully");
+
+          // إعادة تهيئة مصفوفة الصور لتصبح فارغة بعد النجاح استعداداً لإضافة منتج آخر
+          selectedImages = List<File?>.filled(3, null);
+
+          Get.find<ViewItemController>().ViewAllItems();
+          Future.delayed(Duration(seconds: 1), () {
+            Get.back(); // الرجوع بعد ثواني قليلة لإظهار الـ Snackbar
+          });
+        } else {
+          // لو الباك إند رجع status false لسبب ما (مثلاً مشكلة validation في اللارافل)
+          statusrequest = Statusrequest.failure;
+          Get.snackbar("فشل", response['message'] ?? "لم يتم حفظ المنتج");
         }
       } else {
         statusrequest = Statusrequest.failure;
       }
+      update(); // لتحديث حالة الـ UI وإخفاء الـ Loading
     }
   }
 

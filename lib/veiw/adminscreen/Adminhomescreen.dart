@@ -32,7 +32,10 @@ class AdminHome extends StatelessWidget {
               const Spacer(),
               InkWell(
                 onTap: () {},
-                child: SvgPicture.asset(Imageasset.notification),
+                child: SvgPicture.asset(
+                  Imageasset.notification,
+                  color: Colors.grey.shade600,
+                ),
               ),
               IconButton(
                 onPressed: () {
@@ -42,7 +45,7 @@ class AdminHome extends StatelessWidget {
                     duration: const Duration(milliseconds: 500),
                   );
                 },
-                icon: const Icon(Icons.settings),
+                icon: Icon(Icons.settings, color: Colors.grey.shade600),
               ),
             ],
           ),

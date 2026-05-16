@@ -4,7 +4,7 @@ import 'package:hos/controler/usercontroller/home/items_controler.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 
 class BuildCategoryItems extends StatelessWidget {
-  final categoriesmodel2 catmodel;
+  final CategoriesModel catmodel;
   final int i;
   final String urlIcon;
 

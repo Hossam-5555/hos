@@ -8,11 +8,11 @@ class AdmindaTaCaregores {
   AdmindaTaCaregores(this.crud);
 
   addcat(String name, String namear, File file) async {
-    var response = await crud.addRequestWithImageOne(
+    var response = await crud.addRequestWithMultipleImages(
       "POST",
       LinkApi.adminaddcat,
       {"name": name, "name_ar": namear},
-      file,
+      [file],
     );
     return response.fold((l) => l, (r) => r);
   }
@@ -25,11 +25,11 @@ class AdmindaTaCaregores {
         "name_ar": namear,
       });
     } else {
-      response = await crud.addRequestWithImageOne(
+      response = await crud.addRequestWithMultipleImages(
         "PATCH",
         "${LinkApi.admineditcat}/$catid",
         {"name": name, "name_ar": namear},
-        file,
+        [file],
       );
     }
     return response.fold((l) => l, (r) => r);

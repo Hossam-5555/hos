@@ -39,7 +39,7 @@ class Adminhome extends GetxController {
   List<Widget> pages = [
     AdminHome2(),
     Adminpending(),
-    viewitem(),
+    ViewItemScreen(),
     ViewCategories(),
   ];
 

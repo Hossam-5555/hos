@@ -85,42 +85,50 @@ class Crud {
   }
 
   //to add file
-  Future<Either<Statusrequest, Map>> addRequestWithImageOne(String method,
+  Future<Either<Statusrequest, Map>> addRequestWithMultipleImages(
+    String method,
     String url,
     Map data,
-    File? image, [
+    List<File?> images, [ // 👈 غيرناها هنا لـ List عشان تشيل الـ 3 صور
     String? namerequest,
   ]) async {
+    // الاسم الافتراضي لو متبعتش، وفي حالتنا للعناصر هنمرر له "items_images[]"
     namerequest ??= "image";
 
     var uri = Uri.parse(url);
     var request = http.MultipartRequest("POST", uri);
-    request.fields['_method'] = method; // لتحديد نوع الطلب كـ PATCH
+    request.fields['_method'] = method;
 
-    if (image != null) {
-      var length = await image.length();
-      var stream = http.ByteStream(image.openRead());
-      stream.cast();
-      var multipartFile = http.MultipartFile(
-        namerequest,
-        stream,
-        length,
-        filename: basename(image.path),
-      );
-      request.files.add(multipartFile);
+    // 📁 لف على قائمة الصور وأضف الصور الصالحة (المش null) فقط
+    for (var image in images) {
+      if (image != null) {
+        var length = await image.length();
+        var stream = http.ByteStream(image.openRead());
+        stream.cast();
+
+        var multipartFile = http.MultipartFile(
+          namerequest, // 👈 نفس المفتاح لكل الصور عشان اللارافل يستقبلها كـ Array
+          stream,
+          length,
+          filename: basename(image.path),
+        );
+        request.files.add(multipartFile);
+      }
     }
 
     // add Data to request
     data.forEach((key, value) {
-      request.fields[key] = value;
+      request.fields[key] = value
+          .toString(); // تحويل القيم لنصوص لضمان عدم حدوث خطأ
     });
-    // add Data to request
+
     // Send Request
     var myrequest = await request.send();
-    // For get Response Body
     var response = await http.Response.fromStream(myrequest);
     if (response.statusCode == 200 || response.statusCode == 201) {
       Map responsebody = jsonDecode(response.body);
+      print(responsebody); // طباعة الرد الكامل للتأكد من البيانات المستلمة
+
       return Right(responsebody);
     } else {
       return const Left(Statusrequest.serverfailure);

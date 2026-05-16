@@ -20,7 +20,7 @@ class HomepageController extends GetxController {
   String? username;
   List<ItemsModel> mostsaleitem = [];
   List<ItemsModel> newArival = [];
-  List<categoriesmodel2> categories = [];
+  List<CategoriesModel> categories = [];
   Statusrequest statusrequest = Statusrequest.none;
 
   Homedata homedata = Homedata(Get.find());
@@ -46,8 +46,8 @@ Future<void> getdata() async {
         var data = response["data"];
 
         // 3. تحويل البيانات بأسلوب مختصر ونظيف
-        categories.addAll(List<categoriesmodel2>.from(
-            data["categories"].map((e) => categoriesmodel2.fromJson(e))));
+        categories.addAll(List<CategoriesModel>.from(
+            data["categories"].map((e) => CategoriesModel.fromJson(e))));
             
         mostsaleitem.addAll(List<ItemsModel>.from(
             data["best_sellers"].map((e) => ItemsModel.fromJson(e))));

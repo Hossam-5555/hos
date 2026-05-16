@@ -65,7 +65,7 @@ class Edititemcontroller extends GetxController {
         Get.snackbar("success", "    تم تعديل العنصر بنجاح");
 
         Get.offAll(
-          () => viewitem(),
+          () => ViewItemScreen(),
           transition: Transition.fadeIn,
           duration: Duration(milliseconds: 250),
         );
