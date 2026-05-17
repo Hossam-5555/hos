@@ -40,7 +40,6 @@ class ViewItemController extends GetxController {
   }
 
   Future<void> ViewAllItems() async {
-    itemlist.clear();
     categorylist.clear();
 
     statusrequest = Statusrequest.loading;

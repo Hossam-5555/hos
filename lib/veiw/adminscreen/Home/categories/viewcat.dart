@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/categories/viewcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
+import 'package:hos/core/functions/showdialoge.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/addcat.dart';
 
 class ViewCategories extends StatelessWidget {
@@ -13,18 +14,37 @@ class ViewCategories extends StatelessWidget {
     // حقن الـ Controller في الـ Memory
     Get.put(ViewCatController());
 
-    final ThemeData theme = Theme.of(context);
+    // final ThemeData theme = Theme.of(context);
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton(
         onPressed: () => Get.to(() => const Addcategories()),
-        label: const Text(
-          "قسم جديد",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        backgroundColor: Colors.transparent, // شفاف ليظهر التدرج
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(
+            color: Colors.cyanAccent.withOpacity(0.5),
+            width: 1.5,
+          ),
         ),
-        icon: const Icon(Icons.add_rounded),
-        backgroundColor: theme.primaryColor,
-        elevation: 4,
+        child: Ink(
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [Color(0xFF00F2FE), Color(0xFF4FACFE)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Center(
+            child: Icon(
+              Icons.add_moderator_rounded,
+              color: Colors.white,
+              size: 28,
+            ),
+          ),
+        ),
       ),
       body: GetBuilder<ViewCatController>(
         builder: (controller) {
@@ -49,11 +69,24 @@ class ViewCategories extends StatelessWidget {
                   return CategoryCard(
                     item: categoryItem,
                     onEdit: () => controller.gotoeditpage(categoryItem),
-                    onDelete: () => _showDeleteConfirmationDialog(
-                      context,
-                      controller,
-                      categoryItem,
-                    ),
+                    onDelete: () {
+                      AppDialog.show(
+                        title: "حذف القسم",
+
+                        message:
+                            "هل أنت متأكد من حذف قسم '${categoryItem.name}'؟\nسيتم حذف جميع العناصر المرتبطة به نهائياً.",
+
+                        icon: Icons.delete,
+
+                        color: Colors.red,
+
+                        confirmText: "حذف",
+
+                        onConfirm: () {
+                          controller.delete(categoryItem.id!);
+                        },
+                      );
+                    },
                   );
                 },
               ),
@@ -65,28 +98,6 @@ class ViewCategories extends StatelessWidget {
   }
 
   // دالة إظهار نافذة التأكيد منفصلة ومستقلة لتبسيط الـ build method
-  void _showDeleteConfirmationDialog(
-    BuildContext context,
-    ViewCatController controller,
-    dynamic item,
-  ) {
-    Get.defaultDialog(
-      title: "تأكيد الحذف",
-      titleStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-      contentPadding: const EdgeInsets.all(16),
-      middleText:
-          "هل أنت متأكد من حذف قسم '${item.name}'؟\nسيتم حذف جميع العناصر المرتبطة به نهائياً.",
-      middleTextStyle: const TextStyle(color: Colors.black54, height: 1.5),
-      textCancel: "إلغاء",
-      textConfirm: "حذف",
-      confirmTextColor: Colors.white,
-      buttonColor: Theme.of(context).colorScheme.error,
-      onConfirm: () {
-        controller.delete(item.id!);
-        Get.back();
-      },
-    );
-  }
 }
 
 // ==========================================

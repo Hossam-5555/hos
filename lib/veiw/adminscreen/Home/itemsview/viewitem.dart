@@ -1,8 +1,10 @@
+import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/items/viewitemcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
+import 'package:hos/core/functions/showdialoge.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';
 
 class ViewItemScreen extends StatelessWidget {
@@ -10,83 +12,152 @@ class ViewItemScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     final controller = Get.put(ViewItemController());
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: controller.goToAddPage,
-        backgroundColor: const Color(0xFF1134A6),
-        elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: const Icon(Icons.add, color: Colors.white, size: 28),
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            // 1. شريط البحث
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-              child: Searchbar(
-                title: "ابحث عن منتج، رمز، أو قسم...",
-                mycontroller: controller.controller,
-              ),
-            ),
+      // جعلنا خلفية الـ Scaffold شفافة لنظهر الخلفية الكونية خلفها
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Column(
+              children: [
+                // شريط البحث (مغلف بتأثير متلألئ خفيف)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.cyanAccent.withAlpha(25), // 0.1 * 255
+                          blurRadius: 10,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: Searchbar(
+                      title: "ابحث عن منتج، رمز، أو قسم...",
+                      mycontroller: controller.controller,
+                    ),
+                  ),
+                ),
 
-            // 2. الفلاتر (أقسام المنتجات)
-            SizedBox(
-              height: 50,
-              child: GetBuilder<ViewItemController>(
-                builder: (controller) {
-                  return ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: controller.categorylist.length,
-                    separatorBuilder: (_, __) => const SizedBox(width: 10),
-                    itemBuilder: (context, index) {
-                      final isSelected = controller.selectedCat == index;
-                      return _buildFilterChip(
-                        label: controller.categorylist[index].name.toString(),
-                        isSelected: isSelected,
-                        onTap: () => controller.chnagecat(index),
+                // الفلاتر العصرية (أقسام المنتجات - تأثير النيون)
+                SizedBox(
+                  height: 55,
+                  child: GetBuilder<ViewItemController>(
+                    builder: (controller) {
+                      return ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        physics: const BouncingScrollPhysics(),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 5,
+                        ),
+                        itemCount: controller.categorylist.length,
+                        separatorBuilder: (_, _) => const SizedBox(width: 12),
+                        itemBuilder: (context, index) {
+                          final isSelected = controller.selectedCat == index;
+                          return _buildFuturisticFilterChip(
+                            label: controller.categorylist[index].name
+                                .toString(),
+                            isSelected: isSelected,
+                            onTap: () => controller.chnagecat(index),
+                          );
+                        },
                       );
                     },
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 12),
+                  ),
+                ),
+                const SizedBox(height: 12),
 
-            // 3. قائمة المنتجات
-            Expanded(
-              child: GetBuilder<ViewItemController>(
-                builder: (controller) {
-                  return Handlingdataview(
-                    statusrequest: controller.statusrequest,
-                    widget: ListView.separated(
-                      physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 80), // مسافة سفلية للزر العائم
-                      itemCount: controller.filtereditem.length,
-                      separatorBuilder: (_, _) => const SizedBox(height: 16),
-                      itemBuilder: (context, index) {
-                        return ProductCard(
-                          item: controller.filtereditem[index],
-                          controller: controller,
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
+                // قائمة المنتجات
+                Expanded(
+                  child: GetBuilder<ViewItemController>(
+                    builder: (controller) {
+                      return Handlingdataview(
+                        statusrequest: controller.statusrequest,
+                        widget: GridView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
+                          itemCount: controller.filtereditem.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: screenWidth > 700 ? 4 : 2,
+                                childAspectRatio:
+                                    0.58, // تعديل الارتفاع ليناسب التصميم الجديد
+                                crossAxisSpacing: 16,
+                                mainAxisSpacing: 16,
+                              ),
+                          itemBuilder: (context, index) {
+                            return ProductCard(
+                              item: controller.filtereditem[index],
+                              controller: controller,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+
+      // ==========================================
+      // 3. الزر العائم المستقبلي (Neon FAB)
+      // ==========================================
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.cyanAccent.withAlpha(128), // 0.5 * 255
+              blurRadius: 20,
+              spreadRadius: 2,
+              offset: const Offset(0, 4),
             ),
           ],
+        ),
+        child: FloatingActionButton(
+          onPressed: controller.goToAddPage,
+          backgroundColor: Colors.transparent, // شفاف ليظهر التدرج
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(
+              color: Colors.cyanAccent.withAlpha(128), // 0.5 * 255
+              width: 1.5,
+            ),
+          ),
+          child: Ink(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFF00F2FE), Color(0xFF4FACFE)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Center(
+              child: Icon(
+                Icons.add_moderator_rounded,
+                color: Colors.white,
+                size: 28,
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 
-  // تصميم الفلاتر العصري
-  Widget _buildFilterChip({
+  // تصميم الفلاتر المستقبلي (Neon / Glass)
+  Widget _buildFuturisticFilterChip({
     required String label,
     required bool isSelected,
     required VoidCallback onTap,
@@ -95,29 +166,39 @@ class ViewItemScreen extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        curve: Curves.easeInOut,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF1134A6) : Colors.white,
-          borderRadius: BorderRadius.circular(25),
+          color: isSelected
+              ? Colors.cyanAccent.withAlpha(51) // 0.2 * 255
+              : Colors.white.withAlpha(13), // 0.05 * 255
+          borderRadius: BorderRadius.circular(30),
           border: Border.all(
-            color: isSelected ? Colors.transparent : Colors.grey.shade300,
+            color: isSelected
+                ? Colors.cyanAccent
+                : Colors.white.withAlpha(25),
+            width: isSelected ? 1.5 : 1.0,
           ),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: const Color(0xFF1134A6).withOpacity(0.3),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
-                  )
+                    color: Colors.cyanAccent.withAlpha(102), // 0.4 * 255
+                    blurRadius: 5,
+                    offset: const Offset(0, 2),
+                  ),
                 ]
               : [],
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? Colors.white : Colors.grey.shade700,
-            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+            color: isSelected ? Colors.cyanAccent : Colors.grey,
+            fontWeight: isSelected ? FontWeight.w800 : FontWeight.w500,
+            letterSpacing: 1.2,
+            shadows: isSelected
+                ? [const Shadow(color: Colors.blueAccent, blurRadius: 5)]
+                : [],
           ),
         ),
       ),
@@ -126,10 +207,10 @@ class ViewItemScreen extends StatelessWidget {
 }
 
 // ==========================================
-// ويدجت مستقل لكارت المنتج (لترتيب الكود وتنظيفه)
+// كارت المنتج بتأثير Glassmorphism الفضائي
 // ==========================================
 class ProductCard extends StatelessWidget {
-  final dynamic item; // يفضل تغييره لنوع الموديل الخاص بك (مثلاً ItemModel)
+  final dynamic item;
   final ViewItemController controller;
 
   const ProductCard({super.key, required this.item, required this.controller});
@@ -137,76 +218,234 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String imageUrl = "${item.itemsImage}";
-    const String price = "\$199.00"; // استبدلها بـ: "\$${item.itemsPrice}"
-    const String sku = "SKU: WAT-001";
-    final bool inStock = (item.stock ?? 0) > 5; // محاكاة المخزون
+    final String price = "${item.itemsPrice}";
 
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 10,
-            spreadRadius: 1,
-            offset: const Offset(0, 4),
+    final bool inStock = (item.stock ?? 0) > 15;
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(24),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white, // زجاجي شفاف
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: Colors.grey.withAlpha(51), // 0.2 * 255
+              width: 1.2,
+            ),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colors.white.withAlpha(25), // 0.1 * 255
+                Colors.white.withAlpha(5), // 0.02 * 255
+              ],
+            ),
           ),
-        ],
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 1. صورة المنتج وحالة المخزون
-          Stack(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: 160,
-                width: double.infinity,
-                color: Colors.grey.shade100,
-                child: CachedNetworkImage(
-                  imageUrl: imageUrl,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => const Center(
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                  errorWidget: (context, url, error) => const Icon(
-                    Icons.image_not_supported_outlined,
-                    color: Colors.grey,
-                    size: 40,
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 12,
-                right: 12,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: inStock
-                        ? Colors.green.shade50.withOpacity(0.9)
-                        : Colors.red.shade50.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: inStock ? Colors.green.shade200 : Colors.red.shade200,
+              /// صورة المنتج مع إطار مضيء
+              Stack(
+                children: [
+                  Container(
+                    height: 180,
+                    width: double.infinity,
+                    margin: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.white.withAlpha(76), // 0.3 * 255
+                          blurRadius: 2,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: CachedNetworkImage(
+                      imageUrl: imageUrl,
+                      fit: BoxFit.contain,
+                      placeholder: (context, url) {
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.cyanAccent,
+                            strokeWidth: 2,
+                          ),
+                        );
+                      },
+                      errorWidget: (context, url, error) {
+                        return const Icon(
+                          Icons.image_not_supported,
+                          size: 40,
+                          color: Colors.white54,
+                        );
+                      },
                     ),
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        inStock ? Icons.check_circle : Icons.warning_rounded,
-                        size: 14,
-                        color: inStock ? Colors.green.shade700 : Colors.red.shade700,
+
+                  // حالة المخزون بتصميم النيون
+                  Positioned(
+                    top: 16,
+                    right: 16,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
                       ),
-                      const SizedBox(width: 4),
-                      Text(
+                      decoration: BoxDecoration(
+                        color: inStock
+                            ? Colors.greenAccent.withAlpha(51) // 0.2 * 255
+                            : Colors.redAccent.withAlpha(51), // 0.2 * 255
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: inStock
+                              ? Colors.greenAccent
+                              : Colors.redAccent,
+                          width: 1,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: inStock
+                                ? Colors.greenAccent.withAlpha(128) // 0.5 * 255
+                                : Colors.redAccent.withAlpha(128), // 0.5 * 255
+                            blurRadius: 8,
+                          ),
+                        ],
+                      ),
+                      child: Text(
                         inStock ? "متوفر" : "قارب على النفاذ",
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 10,
                           fontWeight: FontWeight.bold,
-                          color: inStock ? Colors.green.shade700 : Colors.red.shade700,
+
+                          shadows: [
+                            Shadow(
+                              color: inStock
+                                  ? Colors.greenAccent
+                                  : Colors.redAccent,
+                              blurRadius: 5,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 8,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      /// اسم المنتج
+                      Text(
+                        item.itemsName ?? "بدون اسم",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          // color: Colors.white,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+
+                      const SizedBox(height: 6),
+
+                      /// السعر (تأثير نيون مضيء)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "$price\t ${"EGP".tr}",
+                            style: const TextStyle(
+                              fontSize: 15,
+                              color: Colors.cyanAccent,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Text("4", style: TextStyle(fontSize: 10)),
+                              Icon(
+                                Icons.star_rounded,
+                                color: Colors.amberAccent,
+                                size: 10,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 6),
+
+                      /// SKU والأزرار
+                      SizedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () => controller.gotoeditpage(item),
+                              child: Container(
+                                padding: const EdgeInsets.all(6),
+                                decoration: BoxDecoration(
+                                  color: Colors.blueAccent.withOpacity(0.2),
+                                  shape: BoxShape.rectangle,
+                                  border: Border.all(color: Colors.blueAccent),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: const Icon(
+                                  Icons.edit_rounded,
+                                  color: Colors.blueAccent,
+                                  size: 16,
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                AppDialog.show(
+                                  title: "حذف المنتج",
+
+                                  message: "هل تريد حذف المنتج نهائياً؟",
+
+                                  icon: Icons.delete,
+
+                                  color: Colors.red,
+
+                                  confirmText: "حذف",
+
+                                  onConfirm: () {
+                                    controller.delete(
+                                      item.id.toString(),
+
+                                      item.itemsImage!,
+                                    );
+                                  },
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(6),
+                                decoration: BoxDecoration(
+                                  color: Colors.redAccent.withOpacity(0.2),
+                                  shape: BoxShape.rectangle,
+                                  border: Border.all(color: Colors.redAccent),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: const Icon(
+                                  Icons.delete_outline_rounded,
+                                  color: Colors.redAccent,
+                                  size: 16,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -215,122 +454,8 @@ class ProductCard extends StatelessWidget {
               ),
             ],
           ),
-
-          // 2. تفاصيل المنتج
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        item.itemsName ?? "بدون اسم",
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      price,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w900,
-                        color: Color(0xFF1134A6),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 6),
-                
-                // التقييم (يمكن جعله Dynamic لاحقاً)
-                Row(
-                  children: [
-                    ...List.generate(
-                      4,
-                      (index) => Icon(Icons.star_rounded, size: 18, color: Colors.amber.shade400),
-                    ),
-                    Icon(Icons.star_outline_rounded, size: 18, color: Colors.grey.shade400),
-                    const SizedBox(width: 6),
-                    Text(
-                      "(42)",
-                      style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
-                    ),
-                  ],
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12),
-                  child: Divider(height: 1),
-                ),
-
-                // 3. الإجراءات (تعديل - حذف - SKU)
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade100,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Text(
-                        sku,
-                        style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
-                      ),
-                    ),
-                    const Spacer(),
-                    Material(
-                      color: Colors.transparent,
-                      child: IconButton(
-                        icon: const Icon(Icons.edit_rounded, color: Color(0xFF1134A6)),
-                        onPressed: () => controller.gotoeditpage(item),
-                        tooltip: "تعديل",
-                        splashRadius: 24,
-                      ),
-                    ),
-                    Material(
-                      color: Colors.transparent,
-                      child: IconButton(
-                        icon: const Icon(Icons.delete_rounded, color: Colors.redAccent),
-                        onPressed: () => _showDeleteDialog(context),
-                        tooltip: "حذف",
-                        splashRadius: 24,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
-    );
-  }
-
-  // دالة عرض تحذير الحذف بتصميم أنيق
-  void _showDeleteDialog(BuildContext context) {
-    Get.defaultDialog(
-      title: "تأكيد الحذف",
-      titleStyle: const TextStyle(fontWeight: FontWeight.bold, color: Colors.redAccent),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      middleText: "هل أنت متأكد من رغبتك في حذف هذا المنتج بشكل نهائي؟",
-      textCancel: "إلغاء",
-      textConfirm: "حذف",
-      cancelTextColor: Colors.grey.shade800,
-      confirmTextColor: Colors.white,
-      buttonColor: Colors.redAccent,
-      radius: 12,
-      onConfirm: () {
-        controller.delete(item.id!.toString(), item.itemsImage!);
-        Get.back(); // لإغلاق النافذة
-      },
     );
   }
 }

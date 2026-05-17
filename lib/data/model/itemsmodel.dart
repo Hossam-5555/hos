@@ -14,7 +14,7 @@ class ItemsModel {
   int? categoryId;
   String? categoryName;
   String? categoryNameAr;
-  int? priceAfterDiscount;
+  var priceAfterDiscount;
   bool? isFavorite;
 
   ItemsModel(
