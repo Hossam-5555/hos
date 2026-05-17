@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/AdminHome.dart';
 import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/veiw/userscreen/screen/home/notification.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
 
 class AdminHome extends StatelessWidget {
@@ -31,7 +32,9 @@ class AdminHome extends StatelessWidget {
               ),
               const Spacer(),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Get.to(() => NotificationPage());
+                },
                 child: SvgPicture.asset(
                   Imageasset.notification,
                   color: Colors.grey.shade600,

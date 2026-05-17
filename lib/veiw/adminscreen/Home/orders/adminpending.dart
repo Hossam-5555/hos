@@ -1,65 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/order/pindingcontroller.dart';
-import 'package:hos/core/conistant/imageasset.dart';
-import 'package:hos/veiw/wedget/animation.dart';
+import 'package:hos/core/class/handlingdataview.dart'; 
 import 'package:hos/veiw/wedget/order/ordercard.dart';
 
 class Adminpending extends StatelessWidget {
-  const Adminpending({
-    super.key,
-  }); // أضفنا const وإزالة التعريف الخارجي للـ controller لضمان حقنه عبر GetBuilder
+  const Adminpending({super.key}); 
 
   @override
   Widget build(BuildContext context) {
-    // يفضل استخدام Get.put داخل build أو في الـ Binding
+    // حقن الكنترولر للتأكد من توفره في الذاكرة ومطابقة الاسم الصحيح للكلاس
     Get.put(AdminPindingController());
     final size = MediaQuery.of(context).size;
 
     return GetBuilder<AdminPindingController>(
       builder: (controller) => RefreshIndicator(
-        onRefresh: () async => await controller.vieworderspending(),
+        // جلب وتحديث بيانات القسم الحالي المفتوح بدقة عند سحب الشاشة للأسفل
+        onRefresh: () async => await controller.viewOrders(
+          controller.statusKeys[controller.selectedStatus],
+        ), 
         child: Column(
           children: [
-            // --- قسم الأقسام (Status Tabs) ---
+            
+            /// 🗂️ 1. أقسام حالات الطلبات (Status Tabs)
             Container(
-              height: 40, // تحديد طول مناسب
+              height: 40, 
               margin: const EdgeInsets.symmetric(vertical: 2),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: controller.orderstatus.length,
+                itemCount: controller.orderstatus.length, 
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
-                      // هنا نمرر رقم القسم المختار للكنترولر لفلترة البيانات
+                      // تغيير الحالة وجلب بياناتها فوراً من الباك إند
                       controller.changeSelectedStatus(index);
                     },
                     child: AnimatedContainer(
-                      duration: const Duration(
-                        milliseconds: 300,
-                      ), // لإضافة تأثير انتقالي
+                      duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOut,
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       margin: const EdgeInsets.only(left: 10),
                       decoration: BoxDecoration(
                         gradient: controller.selectedStatus == index
                             ? const LinearGradient(
-                                colors: [
-                                  Colors.blueAccent,
-                                  Colors.lightBlueAccent,
-                                ],
+                                colors: [Colors.blueAccent, Colors.lightBlueAccent],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               )
                             : null,
-
+                        color: controller.selectedStatus == index 
+                            ? null 
+                            : (Get.isDarkMode ? Colors.grey[800] : Colors.grey[200]),
                         borderRadius: BorderRadius.circular(40),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         controller.orderstatus[index],
-                        style: const TextStyle(
-                          // color: Colors.black,
+                        style: TextStyle(
+                          color: controller.selectedStatus == index 
+                              ? Colors.white 
+                              : (Get.isDarkMode ? Colors.white70 : Colors.black54),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -69,40 +69,34 @@ class Adminpending extends StatelessWidget {
               ),
             ),
 
-            // --- قسم الطلبات ---
+            /// 📦 2. قائمة عرض الطلبات المستلمة
             Expanded(
-              child: controller.filteredOrders.isEmpty
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Animationforstatus(animationPath: Imageasset.nodata),
-                          Text("لا توجد طلبات حالياً"),
-                        ],
-                      ),
-                    )
-                  : ListView.separated(
-                      padding: const EdgeInsets.all(12),
-                      itemCount: controller.filteredOrders.length,
-                      separatorBuilder: (_, _) => const SizedBox(height: 10),
-                      itemBuilder: (context, index) {
-                        final order = controller.filteredOrders[index];
+              child: Handlingdataview(
+                statusrequest: controller.statusrequest, // يتكفل تلقائياً بالـ Loading، والـ No Data بناءً على استجابة السيرفر
+                widget: ListView.separated(
+                  physics: const AlwaysScrollableScrollPhysics(), // لضمان بقاء الـ RefreshIndicator يعمل بكفاءة
+                  padding: const EdgeInsets.all(12),
+                  itemCount: controller.orderspending.length, 
+                  separatorBuilder: (_, _) => const SizedBox(height: 10),
+                  itemBuilder: (context, index) {
+                    final order = controller.orderspending[index];
 
-                        // جلب البيانات مباشرة دون تخزينها كمتغيرات عامة في الكنترولر لتجنب تداخل الألوان
-                        controller.Getcolorandstause(order.status);
-                        final statustext = controller.statusText;
-                        final statuscolor = controller.statusColor;
+                    // استخراج حالة التصميم والترجمة الخاصة بهذا الكارت بأسلوب آمن
+                    controller.getcolorandstause(order.status ?? "");
+                    final statustext = controller.statusText ?? "غير معروف";
+                    final statuscolor = controller.statusColor ?? Colors.grey;
 
-                        return OrderCard(
-                          order: order,
-                          status: statustext!,
-                          color: statuscolor!,
-                          w: size.width,
-                          h: size.height,
-                          onTap: () => controller.gotodetails(order),
-                        );
-                      },
-                    ),
+                    return OrderCard(
+                      order: order,
+                      status: statustext,
+                      color: statuscolor,
+                      w: size.width,
+                      h: size.height,
+                      onTap: () => controller.gotodetails(order),
+                    );
+                  },
+                ),
+              ),
             ),
           ],
         ),

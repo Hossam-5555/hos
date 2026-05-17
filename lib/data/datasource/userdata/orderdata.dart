@@ -19,12 +19,12 @@ class Orderdata {
     return response.fold((l) => l, (r) => r);
   }
 
-  ratingdata(String orderid, String rating, String comment) async {
-    var response = await crud.postrequset(LinkApi.rating, {
-      "orderid": orderid,
-      "rating": rating,
-      "comment": comment,
-    });
-    return response.fold((l) => l, (r) => r);
-  }
+  // ratingdata(String orderid, String rating, String comment) async {
+  //   var response = await crud.postrequset(LinkApi.rating, {
+  //     "orderid": orderid,
+  //     "rating": rating,
+  //     "comment": comment,
+  //   });
+  //   return response.fold((l) => l, (r) => r);
+  // }
 }

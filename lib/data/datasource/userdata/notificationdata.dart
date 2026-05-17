@@ -11,6 +11,10 @@ class Notificationdata {
     });
     return response.fold((l) => l, (r) => r);
   }
+  getNotificationsData()async{
+       var response = await crud.getrequset(LinkApi.adminnotification);
+    return response.fold((l) => l, (r) => r);
+  }
 
   Future removeNotification(List ids,int userid) async {
   var response = await crud.postrequset(

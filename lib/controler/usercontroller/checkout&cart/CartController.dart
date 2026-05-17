@@ -151,32 +151,32 @@ class CartController extends GetxController {
     );
   }
 
-  Future<void> chechcoupone() async {
-    statusrequest = Statusrequest.loading;
-    update();
-    if (data.isNotEmpty) {
-      var response = await cartdata.couponedata(coubonecontroller!.text);
-      statusrequest = handling(response);
-      if (Statusrequest.success == statusrequest) {
-        if (response["status"] == "success") {
-          Map<String, dynamic> dataCoupone = response['data'];
-          couponeModel = CouponeModel.fromJson(dataCoupone);
-          couponediscount = double.parse(couponeModel!.couponDiscount!);
-          couponename = couponeModel!.couponName;
-          couponeID = couponeModel!.couponId.toString();
-          Get.snackbar("الكوبون", "✅تم تطبيق الكوبون ");
-        } else {
-          couponediscount = 0;
-          couponename = null;
-          couponeID = null;
-          Get.snackbar("خطأ في البيانات ", "الرجاء المحاوله مره اخري");
-        }
-      }
-      update();
-    } else {
-      Get.snackbar("السلله  فارغه", "لا يمكن تطبيق الكوبون");
-    }
-  }
+  // Future<void> chechcoupone() async {
+  //   statusrequest = Statusrequest.loading;
+  //   update();
+  //   if (data.isNotEmpty) {
+  //     var response = await cartdata.couponedata(coubonecontroller!.text);
+  //     statusrequest = handling(response);
+  //     if (Statusrequest.success == statusrequest) {
+  //       if (response["status"] == "success") {
+  //         Map<String, dynamic> dataCoupone = response['data'];
+  //         couponeModel = CouponeModel.fromJson(dataCoupone);
+  //         couponediscount = double.parse(couponeModel!.couponDiscount!);
+  //         couponename = couponeModel!.couponName;
+  //         couponeID = couponeModel!.couponId.toString();
+  //         Get.snackbar("الكوبون", "✅تم تطبيق الكوبون ");
+  //       } else {
+  //         couponediscount = 0;
+  //         couponename = null;
+  //         couponeID = null;
+  //         Get.snackbar("خطأ في البيانات ", "الرجاء المحاوله مره اخري");
+  //       }
+  //     }
+  //     update();
+  //   } else {
+  //     Get.snackbar("السلله  فارغه", "لا يمكن تطبيق الكوبون");
+  //   }
+  // }
 
   // 
   //coubone========================================

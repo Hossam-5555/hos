@@ -41,7 +41,7 @@ class Addcatcontroller extends GetxController {
       statusrequest = handling(response);
       if (statusrequest == Statusrequest.success) {
         if (response['status'] == true) {
-          showSnackBar(Get.context!, "تم إضافة الفئة بنجاح");
+          showSnackBar(Get.context!, "تم إضافة الفئة بنجاح",);
           Get.find<ViewCatController>().viewCat();
 
           Future.delayed(Duration(seconds: 1), () {

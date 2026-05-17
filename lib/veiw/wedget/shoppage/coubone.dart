@@ -52,7 +52,7 @@ class Coubone extends GetView<CartController> {
                         ),
                         const SizedBox(width: 10),
                         ElevatedButton(
-                          onPressed: () => controller.chechcoupone(),
+                          onPressed: () {},
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,
                             foregroundColor: Colors.white,

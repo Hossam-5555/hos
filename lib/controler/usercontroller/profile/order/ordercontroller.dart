@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
+import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/orderdata.dart';
 import 'package:hos/data/model/ordersmodel.dart';
@@ -47,35 +48,24 @@ class Ordercontroller extends GetxController {
     }
   }
 
-  String translatePayment(String val) {
-    switch (val) {
-      case "credit":
-        return " credit ";
-      case "cash":
-        return "Cash";
-      case "mobil":
-        return " mobileWallet";
-      default:
-        return "غير معروف";
-    }
-  }
+ 
 
-  Future<void> viewrating(String id, String rating) async {
-    orders.clear();
-    statusrequest = Statusrequest.loading;
-    update();
-    var response = await orderdata.ratingdata(id, rating, comment!.text);
-    statusrequest = handling(response);
-    if (Statusrequest.success == statusrequest) {
-      if (response['status'] == 'success') {
-        viewmyorders();
-        Get.back();
-      } else {
-        statusrequest = Statusrequest.failure;
-      }
-    }
-    update();
-  }
+  // Future<void> viewrating(String id, String rating) async {
+  //   orders.clear();
+  //   statusrequest = Statusrequest.loading;
+  //   update();
+  //   var response = await orderdata.ratingdata(id, rating, comment!.text);
+  //   statusrequest = handling(response);
+  //   if (Statusrequest.success == statusrequest) {
+  //     if (response['status'] == 'success') {
+  //       viewmyorders();
+  //       Get.back();
+  //     } else {
+  //       statusrequest = Statusrequest.failure;
+  //     }
+  //   }
+  //   update();
+  // }
 
   Future<void> viewmyorders() async {
     orders.clear();
@@ -107,11 +97,11 @@ class Ordercontroller extends GetxController {
         if (response['status'] == true) {
           orders.removeWhere((e) => e.orderId == orderid);
           // 2. إظهار الرسالة
-          _showSnackBar("تم إلغاء الطلب بنجاح");
+          showSnackBar(Get.context!, "تم إلغاء الطلب بنجاح");
           viewmyorders();
           Get.back();
           // 3. العودة للخلف أولاً
-        } 
+        }
       }
     } catch (e) {
       statusrequest = Statusrequest.serverfailure;
@@ -121,30 +111,6 @@ class Ordercontroller extends GetxController {
         update();
       }
     }
-  }
-
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(Get.context!).showSnackBar(
-      SnackBar(
-        duration: Duration(seconds: 4),
-        behavior: SnackBarBehavior.floating, // يخليه طاير مش لازق تحت
-        margin: EdgeInsets.all(12),
-        backgroundColor: Colors.grey.shade900,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15), // 🔥 حواف دائرية
-        ),
-
-        content: Row(
-          children: [
-            Icon(Icons.check_circle, color: Colors.green),
-            SizedBox(width: 10),
-            Expanded(
-              child: Text(message, style: TextStyle(color: Colors.white)),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   @override

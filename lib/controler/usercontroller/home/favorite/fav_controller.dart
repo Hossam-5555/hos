@@ -1,7 +1,7 @@
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
+import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/fav_data.dart';
 
@@ -28,13 +28,7 @@ class FavController extends GetxController {
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response["status"] == "success") {
-        Get.rawSnackbar(
-          duration: Duration(milliseconds: 850),
-          margin: EdgeInsets.all(16),
-          borderRadius: 20,
-          title: "إشعار",
-          messageText: const Text("تمت إضافة العنصر إلى المفضلة"),
-        );
+        showSnackBar(Get.context!, "Item added to favorite");
       } else {
         statusrequest = Statusrequest.failure;
       }

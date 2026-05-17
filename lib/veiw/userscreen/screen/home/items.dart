@@ -61,26 +61,51 @@ class Items extends StatelessWidget {
                 child: GetBuilder<ItemsControler>(
                   builder: (controller) => Handlingdataview(
                     statusrequest: controller.statusrequest,
-                    widget: GridView.builder(
-                      // padding ممتاز
-                      padding: EdgeInsets.symmetric(
-                        horizontal: width * 0.04,
-                        vertical: 10,
-                      ),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        // رقم ثابت يضمن إن الكارت مستطيل مناسب لشكل الـ E-commerce
-                        childAspectRatio: 0.65,
-                        crossAxisSpacing: width * 0.03,
-                        mainAxisSpacing: 15,
-                      ),
-                      itemCount: controller.data.length,
-                      itemBuilder: (context, i) {
-                        // تم إزالة سطر الـ favController من هنا للحفاظ على سلاسة السكرول
-                        return productcard(controller.data[i], () {
-                          controller.gotoitemsdatails(controller.data[i]);
-                        });
+
+                    /// ✳️ 1. غلفنا الـ GridView بـ NotificationListener لمراقبة التمرير
+                    widget: NotificationListener<ScrollNotification>(
+                      onNotification: (ScrollNotification scrollInfo) {
+                        // إذا وصل المستخدم لنهاية الشاشة تقريباً
+                        if (scrollInfo.metrics.pixels >=
+                            scrollInfo.metrics.maxScrollExtent - 100) {
+                          // استدعاء الدالة (الكنترولر سيتجاهل الطلب لو مفيش صفحات تانية أو لو بيحمل حالياً)
+                          controller.getitems(controller.catid);
+                        }
+                        return false;
                       },
+                      child: GridView.builder(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: width * 0.04,
+                          vertical: 10,
+                        ),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.65,
+                          crossAxisSpacing: width * 0.03,
+                          mainAxisSpacing: 15,
+                        ),
+
+                        /// ✳️ 2. نزود عدد العناصر بمقدار 1 فقط لو كنا بنحمل بيانات إضافية عشان نظهر مؤشر التحميل
+                        itemCount:
+                            controller.data.length +
+                            (controller.isLoadMore ? 1 : 0),
+
+                        itemBuilder: (context, i) {
+                          /// ✳️ 3. لو وصلنا للرقم الإضافي الأخير، نعرض مؤشر تحميل دائري
+                          if (i == controller.data.length) {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: Appcolor.primaryColor,
+                              ),
+                            );
+                          }
+
+                          // عرض الكارت العادي لباقي المنتجات
+                          return productcard(controller.data[i], () {
+                            controller.gotoitemsdatails(controller.data[i]);
+                          });
+                        },
+                      ),
                     ),
                   ),
                 ),

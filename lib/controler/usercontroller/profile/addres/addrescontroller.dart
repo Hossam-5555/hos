@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
+import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/addresdata.dart';
 import 'package:hos/data/model/Addresmodel.dart';
@@ -25,11 +26,7 @@ class AddressController extends GetxController {
   double long = 23.3344;
 
   /////////////////////////
-  ///
-  ///
-  ///
-  ///
-  ///
+ 
   Completer<GoogleMapController>? completercontroller;
 
   List<Marker> markers = [];
@@ -116,7 +113,7 @@ class AddressController extends GetxController {
     listaddresdata.removeWhere((e) => e.id == addresid);
 
     // 🔹 استدعاء API للحذف
-    _showSnackBar("تم حذف العنوان بنجاح");
+    showSnackBar(Get.context!, "تم حذف العنوان بنجاح");
     // 🔹 حالة الليست فاضية
     if (listaddresdata.isEmpty) {
       statusrequest = Statusrequest.failure;
@@ -124,30 +121,6 @@ class AddressController extends GetxController {
 
     // 🔹 تحديث الواجهة
     update();
-  }
-
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(Get.context!).showSnackBar(
-      SnackBar(
-        duration: Duration(seconds: 4),
-        behavior: SnackBarBehavior.floating, // يخليه طاير مش لازق تحت
-        margin: EdgeInsets.all(12),
-        backgroundColor: Colors.grey.shade900,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15), // 🔥 حواف دائرية
-        ),
-
-        content: Row(
-          children: [
-            Icon(Icons.check_circle, color: Colors.green),
-            SizedBox(width: 10),
-            Expanded(
-              child: Text(message, style: TextStyle(color: Colors.white)),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   // دالة الحفظ

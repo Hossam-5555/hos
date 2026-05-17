@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/veiw/adminscreen/Home/AdminHome.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/viewcat.dart';
-import 'package:hos/veiw/adminscreen/Home/itemsview/viewitem.dart';
 import 'package:hos/veiw/adminscreen/Home/orders/adminpending.dart';
 
 class Adminhome extends GetxController {

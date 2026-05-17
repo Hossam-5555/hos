@@ -14,17 +14,22 @@ class ItemsControler extends SearchMix {
   int? selectedfilter;
   late String catid;
   List<ItemsModel> data = [];
+  
   @override
-  // ignore: overridden_fields
   Statusrequest statusrequest = Statusrequest.none;
   Myservisec myservisec1 = Get.find();
-  itemsdata itemdata = itemsdata(Get.find());
+  Itemsdata itemdata = Itemsdata(Get.find());
+
+  // ✳️ المتغيرات الجديدة التي تم إضافتها للـ Pagination:
+  int currentPage = 1;      // الصفحة الحالية
+  bool hasMoreData = true;   // هل توجد صفحات أخرى؟
+  bool isLoadMore = false;   // لتجنب إرسال طلبين في نفس الوقت أثناء التمرير
 
   void changcat(int val, String catigid) {
     selecteditem = val;
     catid = catigid;
     update(); // يحدث الواجهة مباشرة
-    getitems(catid); // بعدين يجيب البيانات
+    getitems(catid, isNewCategory: true); // ✳️ أضفنا علامة تفيد بتغيير القسم بالكامل
   }
 
   void filtesortedby(int val) {
@@ -39,19 +44,55 @@ class ItemsControler extends SearchMix {
     getitems(catid);
   }
 
-  Future<void> getitems(String catid) async {
-    data.clear();
-    statusrequest = Statusrequest.loading;
-    update();
+  // ✳️ تم تعديل الدالة لاستقبال اختيارات التحديث والصفحات
+  Future<void> getitems(String catid, {bool isRefresh = false, bool isNewCategory = false}) async {
+    // إذا قام المستخدم بالسحب للتحديث أو غير القسم، نعيد العدادات للبداية
+    if (isRefresh || isNewCategory) {
+      currentPage = 1;
+      hasMoreData = true;
+      isLoadMore = false;
+    }
+
+    // إذا وصلنا للنهاية أو جاري تحميل صفحة بالفعل، توقف
+    if (!hasMoreData || isLoadMore) return;
+
+    // حالة التحميل الكامل للشاشة تظهر فقط في الصفحة الأولى
+    if (currentPage == 1) {
+      data.clear(); // نمسح فقط لو بنبدأ من جديد
+      statusrequest = Statusrequest.loading;
+      update();
+    } else {
+      // إذا كنا في الصفحة 2 أو أكثر، نضع حالة تحميل خفيفة في الأسفل فقط
+      isLoadMore = true;
+      update();
+    }
+
+    // ⚠️ ملاحظة: يجب أن تعدل دالة 'postdata' داخل كود الـ ItemData لتستقبل الـ currentPage وتمرره للرابط كـ Query Parameter مثل (?page=1)
     var response = await itemdata.postdata(
       catid,
       myservisec1.sharedPreferences.getInt("id")!,
+      page: currentPage, // ✳️ تمرير الصفحة الحالية
     );
+
     statusrequest = handling(response);
+
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
-        List itemlist = response["data"];
+        
+        // ✳️ استخراج البيانات بحسب الـ JSON المعقد الخاص بـ Laravel Resource
+        List itemlist = response["data"]["data"]; 
+        int lastPage = response["data"]["meta"]["last_page"];
+
+        // تحويل البيانات وإضافتها للقائمة الحالية (بدون حذف العناصر القديمة)
         data.addAll(itemlist.map((e) => ItemsModel.fromJson(e)));
+
+        // التحقق من حالة انتهاء البيانات
+        if (currentPage >= lastPage) {
+          hasMoreData = false; // وصلنا لآخر صفحة
+        } else {
+          currentPage++; // نجهز العداد للصفحة القادمة
+        }
+
         if (data.isEmpty) {
           statusrequest = Statusrequest.nodata;
         }
@@ -59,6 +100,9 @@ class ItemsControler extends SearchMix {
         statusrequest = Statusrequest.failure;
       }
     }
+
+    // إعادة ضبط متغير التحميل الفرعي
+    isLoadMore = false;
     update();
   }
 

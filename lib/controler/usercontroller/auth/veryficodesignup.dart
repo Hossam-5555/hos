@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/handlingdata.dart';
+import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/data/datasource/userdata/auth/veryvicodesign.dart';
 
 class VeryfiSignControler extends GetxController {
@@ -16,8 +17,8 @@ class VeryfiSignControler extends GetxController {
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
-        Get.snackbar("success", "تم انشاء حساب بنجاح");
-            Get.offAllNamed(Approute.login);
+        showSnackBar(Get.context!, "Acout added sussecfuly");
+        Get.offAllNamed(Approute.login);
       } else {
         Get.defaultDialog(
           title: "Warning",
@@ -27,8 +28,6 @@ class VeryfiSignControler extends GetxController {
       update();
     }
   }
-
-
 
   void resendcode() {
     veryficodesign.resend(email!);

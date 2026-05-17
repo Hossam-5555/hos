@@ -1,12 +1,7 @@
 class LinkApi {
-  static String server = 'http://10.0.2.2/ecommerce';
   // static String lravelserver = "http://192.168.1.8/api";
   static String lravelserver = "http://10.0.2.2:8000/api";
   //imagelink=============================
-  static String imagelink = 'http://10.0.2.2/ecommerce/upload';
-
-  static String imagecategories = '$imagelink/categories';
-  static String imageitems = '$imagelink/items';
 
   //Auth=============================
   static String signup = '$lravelserver/register';
@@ -33,20 +28,21 @@ class LinkApi {
   static String addcart = '$lravelserver/cart';
   static String deletcart = '$lravelserver/decrease';
   static String viewcart = '$lravelserver/cart/';
-  static String coupone = '$server/coupone/chechcoupone.php';
+  // static String coupone = '$server/coupone/chechcoupone.php';
   // AddresLink
   static String addaddres = '$lravelserver/Address';
   static String deleteAddres = '$lravelserver/delelteaddres';
   static String viewAddres = '$lravelserver/Address/';
-  static String editAddres = '$server/address/edit.php';
+  // static String editAddres = '$server/address/edit.php';
   //orders
   static String checkout = '$lravelserver/order';
   static String viewmyorder = '$lravelserver/userorders/';
   static String deleteorder = '$lravelserver/order/';
-  static String rating = '$server/rating.php';
+  // static String rating = '$server/rating.php';
 
   //notification
   static String notification = '$lravelserver/getmassage';
+  static String adminnotification="$lravelserver/massage";
   static String deletnotification = '$lravelserver/deleltemassage';
 
   //offer
@@ -59,14 +55,13 @@ class LinkApi {
   static String admindeletecat = '$lravelserver/deletecategory';
   //Admin //items
   static String adminadditem = '$lravelserver/items';
-  static String adminviewitem = '$lravelserver/shop';
+  static String adminviewitem = '$lravelserver/category';
   static String adminedititem = '$lravelserver/admin/items/edit.php';
   static String admindeleteitems = '$lravelserver/admin/items/delete.php';
 
   //Admin//orders
   static String adminorderpending = '$lravelserver/order';
-  static String adminorderaccepted = '$server/admin/orders/accepted.php';
-  static String adminorderdetails = '$server/admin/orders/details.php';
-  static String adminaprovedorder = '$server/admin/orders/approve.php';
-  static String prepareorder = '$server/admin/orders/prepare.php';
+  // static String adminorderaccepted = '$server/admin/orders/accepted.php';
+  // static String adminaprovedorder = '$server/admin/orders/approve.php';
+  // static String prepareorder = '$server/admin/orders/prepare.php';
 }

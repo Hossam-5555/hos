@@ -96,7 +96,7 @@ class Additemcontroller extends GetxController {
           // إعادة تهيئة مصفوفة الصور لتصبح فارغة بعد النجاح استعداداً لإضافة منتج آخر
           selectedImages = List<File?>.filled(3, null);
 
-          Get.find<ViewItemController>().ViewAllItems();
+          Get.find<ViewItemController>().viewCategoryItems(Get.arguments["catid"]);
           Future.delayed(Duration(seconds: 1), () {
             Get.back(); // الرجوع بعد ثواني قليلة لإظهار الـ Snackbar
           });

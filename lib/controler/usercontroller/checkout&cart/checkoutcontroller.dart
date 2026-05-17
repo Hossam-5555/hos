@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/handlingdata.dart';
+import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/addresdata.dart';
 import 'package:hos/data/datasource/userdata/checkoutdata.dart';
@@ -66,7 +66,7 @@ class Checkoutcontroller extends GetxController {
   //============================ تنفيذ عملية الطلب
   Future<void> checkoutoder() async {
     // 1. التحقق من وجود عنوان
-    if (addressid.value==0) {
+    if (addressid.value == 0) {
       Get.snackbar("تنبيه", "الرجاء إضافة عنوان أولاً");
       return; // ضروري جداً لمنع إكمال الدالة
     }
@@ -100,54 +100,32 @@ class Checkoutcontroller extends GetxController {
       if (statusrequest == Statusrequest.success) {
         if (response['status'] == true) {
           // نجاح العملية
-          _showSnackBar("تم إرسال الطلب بنجاح");
+          showSnackBar(Get.context!, "تم إرسال الطلب بنجاح");
 
           // مسح السلة (يفضل تفعيلها لضمان عدم تكرار الطلب)
           Get.find<CartController>().view();
 
           Future.delayed(const Duration(milliseconds: 300), () {
-          Get.back();
-        });
+            Get.back();
+          });
         } else {
           statusrequest = Statusrequest.failure;
-          _showSnackBar("خطأ في البيانات، الرجاء المحاولة مرة أخرى");
+          showSnackBar(
+            Get.context!,
+            "خطأ في البيانات، الرجاء المحاولة مرة أخرى",
+          );
         }
       } else {
         // التعامل مع أخطاء السيرفر أو الإنترنت
-        _showSnackBar("حدث خطأ في الاتصال بالخادم");
+        showSnackBar(Get.context!, "حدث خطأ في الاتصال بالخادم");
       }
     } catch (e) {
       // حماية التطبيق من الانهيار في حال حدث خطأ غير متوقع
       statusrequest = Statusrequest.serverfailure;
-      _showSnackBar("حدث خطأ غير متوقع");
+      showSnackBar(Get.context!, "حدث خطأ غير متوقع");
     } finally {
       update(); // تحديث الواجهة في كل الحالات
     }
-  }
-
-  // دالة مساعدة لتقليل تكرار كود السناك بار
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(Get.context!).showSnackBar(
-      SnackBar(
-        duration: Duration(seconds: 4),
-        behavior: SnackBarBehavior.floating, // يخليه طاير مش لازق تحت
-        margin: EdgeInsets.all(12),
-        backgroundColor: Colors.grey.shade900,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15), // 🔥 حواف دائرية
-        ),
-
-        content: Row(
-          children: [
-            Icon(Icons.check_circle, color: Colors.green),
-            SizedBox(width: 10),
-            Expanded(
-              child: Text(message, style: TextStyle(color: Colors.white)),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   //============================ متغيرات الكوبون والسعر
@@ -165,5 +143,4 @@ class Checkoutcontroller extends GetxController {
     getaddress();
     super.onInit();
   }
-
 }

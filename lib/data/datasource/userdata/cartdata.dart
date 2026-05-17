@@ -35,10 +35,10 @@ class Cartdata {
 
 
 
-  couponedata(String couponeName) async {
-    var response = await crud.postrequset(LinkApi.coupone, {
-      "couponeName": couponeName,
-    });
-    return response.fold((l) => l, (r) => r);
-  }
+  // couponedata(String couponeName) async {
+  //   var response = await crud.postrequset(LinkApi.coupone, {
+  //     "couponeName": couponeName,
+  //   });
+  //   return response.fold((l) => l, (r) => r);
+  // }
 }

@@ -12,63 +12,59 @@ import 'package:hos/veiw/adminscreen/Home/itemsview/edititem.dart';
 class ViewItemController extends GetxController {
   admindataitem admindata = admindataitem(Get.find());
   Statusrequest statusrequest = Statusrequest.none;
-  List<ItemsModel> itemlist = [];
-  List<CategoriesModel> categorylist = [];
+  
+  List<ItemsModel> itemlist = []; // قائمة المنتجات للقسم المختار فقط
   CategoriesModel? catcodel;
-  int selectedCat = -1; // لتتبع التصنيف المختار، -1 يعني لا يوجد تصنيف مختار
-  void chnagecat(int index) {
-    selectedCat = index;
-    update();
-  }
+  
+  int selectedCat = -1; 
   String? catname;
+  
   TextEditingController controller = TextEditingController();
+
   @override
   void onInit() {
     super.onInit();
+    // استقبال القسم المختار من الشاشة السابقة
     catcodel = Get.arguments['catid'];
     selectedCat = catcodel!.id!;
     catname = catcodel!.name;
-    print(selectedCat);
-    ViewAllItems();
+    
+    // جلب المنتجات فور فتح الشاشة
+    viewCategoryItems(selectedCat);
   }
 
-  List<ItemsModel> get filtereditem {
-    if (categorylist.isEmpty) return [];
-
-    return itemlist.where((item) => item.categoryId == selectedCat).toList();
+  // دالة تغيير القسم من داخل الشاشة (لو الأدمن ضغط على قسم آخر)
+  void chnagecat(int index) {
+    selectedCat = index;
+    update();
+    // ✳️ بمجرد تغيير القسم، نمسح القديم ونجلب بيانات القسم الجديد
+    viewCategoryItems(selectedCat); 
   }
 
-  Future<void> ViewAllItems() async {
-    categorylist.clear();
-    itemlist.clear();
+  // ✳️ تم تغيير اسم الدالة ومنطقها لتجلب منتجات قسم واحد فقط
+  Future<void> viewCategoryItems(int categoryId) async {
+    itemlist.clear(); // مسح منتجات القسم القديم من الشاشة لتجنب التداخل
     statusrequest = Statusrequest.loading;
     update();
 
-    var response = await admindata.viewitem();
+    // ⚠️ ملاحظة: تأكد أن دالة viewitem في ملف admindata تستقبل الـ categoryId وترسله للرابط
+    var response = await admindata.viewitem(categoryId.toString());
+    
     statusrequest = handling(response);
 
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
-        List categories = response['data'];
+        
+        // جلب المنتجات من داخل كائن القسم الراجع من السيرفر
+        // افترضنا هنا أن Laravel يرجع المنتجات داخل key اسمه 'items'
+        if (response['data']['items'] != null) {
+          List items = response['data']['items'];
+          itemlist.addAll(items.map((e) => ItemsModel.fromJson(e)));
+        }
 
-        // 1. تحويل وإضافة التصنيفات باستخدام map عادي
-        categorylist.addAll(categories.map((e) => CategoriesModel.fromJson(e)));
-
-        // 2. 🚀 السحر هنا: استخدام map مع expand لتجميع كل المنتجات في سطر واحد بدون for
-        itemlist.addAll(
-          categories
-              .where(
-                (category) => category['items'] != null,
-              ) // التأكد إن التصنيف جواه منتجات
-              .expand(
-                (category) => (category['items'] as List).map(
-                  (e) => ItemsModel.fromJson(e),
-                ),
-              ),
-        );
-
+        // لو القسم فارغ ولا يوجد به منتجات
         if (itemlist.isEmpty) {
-          statusrequest = Statusrequest.failure;
+          statusrequest = Statusrequest.nodata;
         }
       } else {
         statusrequest = Statusrequest.failure;
@@ -90,7 +86,7 @@ class ViewItemController extends GetxController {
 
   void goToAddPage() async {
     await Get.to(() => Additem(), arguments: {"catid": selectedCat, "catname": catname});
-    ViewAllItems();
+    viewCategoryItems(selectedCat); // تحديث القائمة بعد إضافة منتج جديد
   }
 
   void backtohomebage() {

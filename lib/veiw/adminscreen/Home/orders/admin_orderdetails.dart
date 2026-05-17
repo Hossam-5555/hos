@@ -18,19 +18,26 @@ class AdminOrderdetails extends StatelessWidget {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
-        child: Appbarbackicon(herotag: '', title: controller.order!.orderNumber),
+        child: Appbarbackicon(
+          herotag: '',
+          title: controller.order!.orderNumber,
+        ),
       ),
       body: GetBuilder<AdminOrderDetailesController>(
         builder: (_) {
           final o = controller.order;
           if (o == null) return Center(child: Text("No Data"));
 
-          controller.Getcolorandstause(o.status);
+          controller.getcolorandstause(o.status);
 
           return ListView(
             padding: EdgeInsets.all(w * 0.04),
             children: [
-              statusorder(o.status, controller.statusColor!, controller.statusText!),
+              statusorder(
+                o.status,
+                controller.statusColor!,
+                controller.statusText!,
+              ),
               card(info(o)),
               card(items(o)),
               card(price(o)),
@@ -67,4 +74,3 @@ class AdminOrderdetails extends StatelessWidget {
 // ),
 
 // ودجت لعرض الحالة بشكل جميل
-
