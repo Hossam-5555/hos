@@ -229,6 +229,7 @@ class Additem extends StatelessWidget {
                           label: "رقم القسم",
                           icon: Icons.category,
                           isNumber: true,
+                          enabled: false
                         ),
                       ),
                     ],
@@ -266,6 +267,7 @@ class Additem extends StatelessWidget {
 
   // --- دالة مساعدة لإنشاء الحقول بشكل احترافي ومتناسق ---
   Widget _buildCustomTextField({
+    enabled = true,
     required TextEditingController controller,
     required String label,
     required IconData icon,
@@ -275,6 +277,7 @@ class Additem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: TextFormField(
+        enabled: enabled,
         // style: TextStyle(color: Colors.white),
         controller: controller,
         maxLines: maxLines,

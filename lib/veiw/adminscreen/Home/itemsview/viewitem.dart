@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/items/viewitemcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/functions/showdialoge.dart';
+import 'package:hos/veiw/wedget/items/itemsappbar.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';
 
 class ViewItemScreen extends StatelessWidget {
@@ -16,8 +17,8 @@ class ViewItemScreen extends StatelessWidget {
     final controller = Get.put(ViewItemController());
 
     return Scaffold(
+      appBar: AppBar(leading: BackButtonCircle()),
       // جعلنا خلفية الـ Scaffold شفافة لنظهر الخلفية الكونية خلفها
-      backgroundColor: Colors.transparent,
       body: Stack(
         children: [
           SafeArea(
@@ -43,35 +44,6 @@ class ViewItemScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                // الفلاتر العصرية (أقسام المنتجات - تأثير النيون)
-                SizedBox(
-                  height: 55,
-                  child: GetBuilder<ViewItemController>(
-                    builder: (controller) {
-                      return ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        physics: const BouncingScrollPhysics(),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 5,
-                        ),
-                        itemCount: controller.categorylist.length,
-                        separatorBuilder: (_, _) => const SizedBox(width: 12),
-                        itemBuilder: (context, index) {
-                          final isSelected = controller.selectedCat == index;
-                          return _buildFuturisticFilterChip(
-                            label: controller.categorylist[index].name
-                                .toString(),
-                            isSelected: isSelected,
-                            onTap: () => controller.chnagecat(index),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(height: 12),
 
                 // قائمة المنتجات
                 Expanded(
@@ -155,55 +127,6 @@ class ViewItemScreen extends StatelessWidget {
       ),
     );
   }
-
-  // تصميم الفلاتر المستقبلي (Neon / Glass)
-  Widget _buildFuturisticFilterChip({
-    required String label,
-    required bool isSelected,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: isSelected
-              ? Colors.cyanAccent.withAlpha(51) // 0.2 * 255
-              : Colors.white.withAlpha(13), // 0.05 * 255
-          borderRadius: BorderRadius.circular(30),
-          border: Border.all(
-            color: isSelected
-                ? Colors.cyanAccent
-                : Colors.white.withAlpha(25),
-            width: isSelected ? 1.5 : 1.0,
-          ),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: Colors.cyanAccent.withAlpha(102), // 0.4 * 255
-                    blurRadius: 5,
-                    offset: const Offset(0, 2),
-                  ),
-                ]
-              : [],
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: isSelected ? Colors.cyanAccent : Colors.grey,
-            fontWeight: isSelected ? FontWeight.w800 : FontWeight.w500,
-            letterSpacing: 1.2,
-            shadows: isSelected
-                ? [const Shadow(color: Colors.blueAccent, blurRadius: 5)]
-                : [],
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 // ==========================================
@@ -254,14 +177,20 @@ class ProductCard extends StatelessWidget {
                     width: double.infinity,
                     margin: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.white.withAlpha(76), // 0.3 * 255
-                          blurRadius: 2,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
+                      color: Colors.white, // زجاجي شفاف
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(
+                        color: Colors.grey.withAlpha(51), // 0.2 * 255
+                        width: 1.2,
+                      ),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.white.withAlpha(25), // 0.1 * 255
+                          Colors.white.withAlpha(5), // 0.02 * 255
+                        ],
+                      ),
                     ),
                     clipBehavior: Clip.antiAlias,
                     child: CachedNetworkImage(
@@ -315,7 +244,7 @@ class ProductCard extends StatelessWidget {
                         ],
                       ),
                       child: Text(
-                        inStock ? "متوفر" : "قارب على النفاذ",
+                        inStock ? "In Stock" : "Low Stock",
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.bold,

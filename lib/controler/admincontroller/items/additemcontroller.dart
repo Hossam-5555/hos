@@ -112,6 +112,7 @@ class Additemcontroller extends GetxController {
     }
   }
 
+String? catname;
   @override
   void onInit() {
     name = TextEditingController();
@@ -122,6 +123,8 @@ class Additemcontroller extends GetxController {
     price = TextEditingController();
     descount = TextEditingController();
     itemcat = TextEditingController();
+    itemcat.text = Get.arguments["catid"].toString();
+    catname = Get.arguments["catname"];
     super.onInit();
   }
 

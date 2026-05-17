@@ -67,6 +67,9 @@ class ViewCategories extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final categoryItem = controller.catdata[index];
                   return CategoryCard(
+                    onTap: () {
+                      controller.gotoproducts(categoryItem);
+                    },
                     item: categoryItem,
                     onEdit: () => controller.gotoeditpage(categoryItem),
                     onDelete: () {
@@ -107,125 +110,129 @@ class CategoryCard extends StatelessWidget {
   final dynamic item;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
-
+  final void Function() onTap;
   const CategoryCard({
     super.key,
     required this.item,
     required this.onEdit,
     required this.onDelete,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24), // حواف دائرية ناعمة جداً
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // 1. عرض الصورة بالكامل في النصف العلوي
-                Expanded(
-                  flex: 11,
-                  child: CachedNetworkImage(
-                    imageUrl: item.image ?? "",
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
-                      color: Colors.grey[100],
-                      child: const Center(
-                        child: SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: CircularProgressIndicator(strokeWidth: 2.5),
-                        ),
-                      ),
-                    ),
-                    errorWidget: (context, url, error) => Container(
-                      color: const Color(0xffF4F6FA),
-                      child: const Icon(
-                        Icons.image_not_supported_rounded,
-                        color: Colors.grey,
-                        size: 28,
-                      ),
-                    ),
-                  ),
-                ),
-                // 2. تفاصيل النصوص في النصف السفلي
-                Expanded(
-                  flex: 8,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          item.name ?? "",
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow
-                              .ellipsis, // حماية الكارت من الـ Overflow
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          item.nameAr ?? "",
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.black45,
-                            fontFamily:
-                                'Cairo', // يفضل لو تستخدم خط كايرو للعربي
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-
-            // 3. أزرار التحكم العائمة بتصميم زجاجي أنيق فوق الصورة
-            Positioned(
-              top: 8,
-              right: 8,
-              child: _buildActionButton(
-                icon: Icons.edit_rounded,
-                iconColor: Colors.blueAccent,
-                onTap: onEdit,
-              ),
-            ),
-            Positioned(
-              top: 8,
-              left: 8,
-              child: _buildActionButton(
-                icon: Icons.delete_outline_rounded,
-                iconColor: Theme.of(context).colorScheme.error,
-                onTap: onDelete,
-              ),
+    return GestureDetector(
+      onTap: onTap, // النقر على الكارت نفسه يفتح صفحة التعديل
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24), // حواف دائرية ناعمة جداً
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.04),
+              blurRadius: 16,
+              offset: const Offset(0, 8),
             ),
           ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: Stack(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // 1. عرض الصورة بالكامل في النصف العلوي
+                  Expanded(
+                    flex: 11,
+                    child: CachedNetworkImage(
+                      imageUrl: item.image ?? "",
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Container(
+                        color: Colors.grey[100],
+                        child: const Center(
+                          child: SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(strokeWidth: 2.5),
+                          ),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => Container(
+                        color: const Color(0xffF4F6FA),
+                        child: const Icon(
+                          Icons.image_not_supported_rounded,
+                          color: Colors.grey,
+                          size: 28,
+                        ),
+                      ),
+                    ),
+                  ),
+                  // 2. تفاصيل النصوص في النصف السفلي
+                  Expanded(
+                    flex: 8,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            item.name ?? "",
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow
+                                .ellipsis, // حماية الكارت من الـ Overflow
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            item.nameAr ?? "",
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.black45,
+                              fontFamily:
+                                  'Cairo', // يفضل لو تستخدم خط كايرو للعربي
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              // 3. أزرار التحكم العائمة بتصميم زجاجي أنيق فوق الصورة
+              Positioned(
+                top: 8,
+                right: 8,
+                child: _buildActionButton(
+                  icon: Icons.edit_rounded,
+                  iconColor: Colors.blueAccent,
+                  onTap: onEdit,
+                ),
+              ),
+              Positioned(
+                top: 8,
+                left: 8,
+                child: _buildActionButton(
+                  icon: Icons.delete_outline_rounded,
+                  iconColor: Theme.of(context).colorScheme.error,
+                  onTap: onDelete,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

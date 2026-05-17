@@ -14,34 +14,33 @@ class ViewItemController extends GetxController {
   Statusrequest statusrequest = Statusrequest.none;
   List<ItemsModel> itemlist = [];
   List<CategoriesModel> categorylist = [];
-  int selectedCat = 0; // لتتبع التصنيف المختار، -1 يعني لا يوجد تصنيف مختار
+  CategoriesModel? catcodel;
+  int selectedCat = -1; // لتتبع التصنيف المختار، -1 يعني لا يوجد تصنيف مختار
   void chnagecat(int index) {
     selectedCat = index;
     update();
   }
-
+  String? catname;
   TextEditingController controller = TextEditingController();
   @override
   void onInit() {
     super.onInit();
+    catcodel = Get.arguments['catid'];
+    selectedCat = catcodel!.id!;
+    catname = catcodel!.name;
+    print(selectedCat);
     ViewAllItems();
   }
 
   List<ItemsModel> get filtereditem {
     if (categorylist.isEmpty) return [];
 
-    // الحصول على الـ id الخاص بالقسم المختار من قائمة الأقسام
-    // نستخدم selectedCat كـ index للوصول للقسم الصحيح
-    int selectedCategoryId = categorylist[selectedCat].id!;
-    // إرجاع العناصر التي يطابق الـ categoryId الخاص بها الـ id المختار
-    return itemlist
-        .where((item) => item.categoryId == selectedCategoryId)
-        .toList();
+    return itemlist.where((item) => item.categoryId == selectedCat).toList();
   }
 
   Future<void> ViewAllItems() async {
     categorylist.clear();
-
+    itemlist.clear();
     statusrequest = Statusrequest.loading;
     update();
 
@@ -90,7 +89,7 @@ class ViewItemController extends GetxController {
   }
 
   void goToAddPage() async {
-    await Get.to(() => Additem());
+    await Get.to(() => Additem(), arguments: {"catid": selectedCat, "catname": catname});
     ViewAllItems();
   }
 
