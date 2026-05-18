@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/items/additemcontroller.dart';
-import 'package:hos/core/functions/upload_image.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
-// قم بتعديل مسار الاستيراد حسب هيكل مشروعك
-// import 'package:hos/controller/additemcontroller.dart';
-// import 'package:hos/core/class/crud.dart';
 
 class Additem extends StatelessWidget {
   const Additem({Key? key}) : super(key: key);
@@ -13,7 +9,6 @@ class Additem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double w = screenWidth * 0.05; // 5% من عرض الشاشة
     // نهيئة الكنترولر وربطه بالصفحة
     Get.put(Additemcontroller());
 
@@ -38,115 +33,139 @@ class Additem extends StatelessWidget {
                 children: [
                   GetBuilder<Additemcontroller>(
                     builder: (controller) {
-                      return Row(
-                        children: List.generate(3, (index) {
-                          final file = controller.selectedImages[index];
-                          final bool hasImage = file != null;
+                      // تصفية القائمة لمعرفة الصور التي تم اختيارها فعلياً (تجاهل القيم null)
+                      final selectedFiles = controller.selectedImages
+                          .where((file) => file != null)
+                          .toList();
 
-                          return Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                // استدعاء دالتك الجاهزة مباشرة وتمرير الـ index المطلوب
-                                showImagePickerBottomSheet(
-                                  () => controller.chooseFromCamera(
-                                    index,
-                                  ), // كول باك الكاميرا
-                                  () => controller.chooseFromGallery(
-                                    index,
-                                  ), // كول باك المعرض
-                                );
-                              },
-                              child: Container(
-                                margin: EdgeInsets.symmetric(
-                                  horizontal: index == 1 ? 6 : 0,
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // 1. زر إضافة الصور (مربع واحد كبير)
+                          GestureDetector(
+                            onTap: () {
+                              // هنا نستدعي دالة اختيار صور متعددة من الكنترولر
+                              controller.pickMultipleImagesFromGallery();
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade50,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: const Color(0xFF1134A6),
+                                  width: 1.5,
                                 ),
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade50,
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: hasImage
-                                        ? const Color(0xFF1134A6)
-                                        : Colors.grey.shade300,
-                                    style: hasImage
-                                        ? BorderStyle.solid
-                                        : BorderStyle.none,
-                                    width: 1.5,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.add_photo_alternate_rounded,
+                                    color: Color(0xFF1134A6),
+                                    size: 36,
                                   ),
-                                ),
-                                child: hasImage
-                                    ? Stack(
-                                        fit: StackFit.expand,
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(
-                                              11,
+                                  const SizedBox(height: 8),
+                                  const Text(
+                                    "اضغط لاختيار الصور",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF1134A6),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    "يمكنك تحديد أكثر من صورة معاً",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.grey.shade600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          // 2. عرض الصور المختارة أسفل الزر (تظهر فقط إذا تم اختيار صور)
+                          if (selectedFiles.isNotEmpty) ...[
+                            const SizedBox(height: 16),
+                            Wrap(
+                              spacing: 10, // المسافة الأفقية بين الصور
+                              runSpacing: 10, // المسافة العمودية
+                              children: List.generate(
+                                controller.selectedImages.length,
+                                (index) {
+                                  final file = controller.selectedImages[index];
+                                  if (file == null)
+                                    return const SizedBox.shrink();
+
+                                  return Stack(
+                                    clipBehavior: Clip.none,
+                                    children: [
+                                      // الصورة المصغرة
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: Image.file(
+                                          file,
+                                          width: 80,
+                                          height: 80,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      // زر الحذف
+                                      Positioned(
+                                        top: -6,
+                                        right: -6,
+                                        child: GestureDetector(
+                                          onTap: () =>
+                                              controller.removeImage(index),
+                                          child: Container(
+                                            padding: const EdgeInsets.all(4),
+                                            decoration: const BoxDecoration(
+                                              color: Colors.redAccent,
+                                              shape: BoxShape.circle,
                                             ),
-                                            child: Image.file(
-                                              file,
-                                              fit: BoxFit.cover,
+                                            child: const Icon(
+                                              Icons.close,
+                                              size: 14,
+                                              color: Colors.white,
                                             ),
                                           ),
-                                          // زر الحذف الصغير العصري فوق الصورة
-                                          Positioned(
-                                            top: 4,
-                                            right: 4,
-                                            child: GestureDetector(
-                                              onTap: () =>
-                                                  controller.removeImage(index),
-                                              child: Container(
-                                                padding: const EdgeInsets.all(
-                                                  2,
-                                                ),
-                                                decoration: const BoxDecoration(
-                                                  color: Colors.black54,
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                child: const Icon(
-                                                  Icons.close,
-                                                  size: 14,
-                                                  color: Colors.white,
-                                                ),
+                                        ),
+                                      ),
+                                      // علامة تميز الصورة الرئيسية (أول صورة)
+                                      if (index == 0)
+                                        Positioned(
+                                          bottom: 4,
+                                          left: 4,
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 6,
+                                              vertical: 2,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFF1134A6),
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
+                                            child: const Text(
+                                              "الرئيسية",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 9,
                                               ),
                                             ),
                                           ),
-                                        ],
-                                      )
-                                    : Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            index == 0
-                                                ? Icons.add_a_photo_rounded
-                                                : Icons
-                                                      .add_photo_alternate_outlined,
-                                            color: index == 0
-                                                ? const Color(0xFF1134A6)
-                                                : Colors.grey.shade400,
-                                            size: 26,
-                                          ),
-                                          const SizedBox(height: 6),
-                                          Text(
-                                            index == 0
-                                                ? "الرئيسية"
-                                                : "صورة ${index + 1}",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: index == 0
-                                                  ? FontWeight.bold
-                                                  : FontWeight.normal,
-                                              color: index == 0
-                                                  ? const Color(0xFF1134A6)
-                                                  : Colors.grey.shade600,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                        ),
+                                    ],
+                                  );
+                                },
                               ),
                             ),
-                          );
-                        }),
+                          ],
+                        ],
                       );
                     },
                   ),
@@ -160,23 +179,23 @@ class Additem extends StatelessWidget {
                   ),
                   const SizedBox(height: 15),
 
-                  _buildCustomTextField(
+                  buildCustomTextField(
                     controller: controller.namear,
                     label: "اسم المنتج (عربي)",
                     icon: Icons.title,
                   ),
-                  _buildCustomTextField(
+                  buildCustomTextField(
                     controller: controller.name,
                     label: "اسم المنتج (إنجليزي)",
                     icon: Icons.title_outlined,
                   ),
-                  _buildCustomTextField(
+                  buildCustomTextField(
                     controller: controller.descriptionar,
                     label: "الوصف (عربي)",
                     icon: Icons.description,
                     maxLines: 3,
                   ),
-                  _buildCustomTextField(
+                  buildCustomTextField(
                     controller: controller.description,
                     label: "الوصف (إنجليزي)",
                     icon: Icons.description_outlined,
@@ -194,7 +213,7 @@ class Additem extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: _buildCustomTextField(
+                        child: buildCustomTextField(
                           controller: controller.price,
                           label: "السعر",
                           icon: Icons.attach_money,
@@ -203,7 +222,7 @@ class Additem extends StatelessWidget {
                       ),
                       const SizedBox(width: 15),
                       Expanded(
-                        child: _buildCustomTextField(
+                        child: buildCustomTextField(
                           controller: controller.descount,
                           label: "الخصم (%)",
                           icon: Icons.discount,
@@ -212,27 +231,85 @@ class Additem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildCustomTextField(
-                          controller: controller.count,
-                          label: "الكمية المتاحة",
-                          icon: Icons.inventory_2,
-                          isNumber: true,
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 5,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey[400]!),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "المخزون (الكمية):",
+                          style: TextStyle(fontSize: 16),
                         ),
-                      ),
-                      const SizedBox(width: 15),
-                      Expanded(
-                        child: _buildCustomTextField(
-                          controller: controller.itemcat,
-                          label: "رقم القسم",
-                          icon: Icons.category,
-                          isNumber: true,
-                          enabled: false
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                int current =
+                                    int.tryParse(controller.count.text) ?? 0;
+                                if (current > 0) {
+                                  controller.count.text = (current - 1)
+                                      .toString();
+                                  controller.update();
+                                }
+                              },
+                              icon: const Icon(
+                                Icons.remove_circle_outline,
+                                color: Colors.redAccent,
+                              ),
+                            ),
+                            Text(
+                              controller.count.text,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                int current =
+                                    int.tryParse(controller.count.text) ?? 0;
+                                controller.count.text = (current + 1)
+                                    .toString();
+                                controller.update();
+                              },
+                              icon: const Icon(
+                                Icons.add_circle_outline,
+                                color: Colors.green,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+
+                  SwitchListTile(
+                    title: const Text(
+                      "حالة المنتج",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    subtitle: Text(
+                      controller.active == 1 ? "مفعل ويظهر للعملاء" : "مخفي",
+                      style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                    ),
+                    value: controller.active == 1,
+                    activeColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      side: BorderSide(color: Colors.grey[400]!),
+                    ),
+                    onChanged: (val) {
+                      controller.active = val ? 1 : 0;
+                      controller.update();
+                    },
                   ),
 
                   const SizedBox(height: 30),
@@ -244,7 +321,7 @@ class Additem extends StatelessWidget {
                     child: GetBuilder<Additemcontroller>(
                       builder: (controller) {
                         return Checkbutton(
-                          width: w,
+                          width: screenWidth,
                           onTap: () {
                             controller.additem();
                           },
@@ -266,7 +343,10 @@ class Additem extends StatelessWidget {
   }
 
   // --- دالة مساعدة لإنشاء الحقول بشكل احترافي ومتناسق ---
-  Widget _buildCustomTextField({
+
+}
+
+  Widget buildCustomTextField({
     enabled = true,
     required TextEditingController controller,
     required String label,
@@ -317,4 +397,3 @@ class Additem extends StatelessWidget {
       ),
     );
   }
-}

@@ -4,13 +4,13 @@ import 'package:dartz/dartz.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/linkApi.dart';
 
-class admindataitem {
+class Admindataitem {
   Crud crud;
-  admindataitem(this.crud);
+  Admindataitem(this.crud);
 
   additem(Map data,List<File?> files) async {
     var response = await crud.addRequestWithMultipleImages("POST",
-      LinkApi.adminadditem,
+      LinkApi.cruditemsadmin,
       data,
       files,
       "items_images[]",
@@ -18,13 +18,13 @@ class admindataitem {
     return response.fold((l) => l, (r) => r);
   }
 
-  edititem(Map data, File? file) async {
+  edititem(Map data, File? file,int id) async {
     Either<Statusrequest, Map<dynamic, dynamic>> response;
     if (file == null) {
-      response = await crud.postrequset(LinkApi.adminedititem, data);
+      response = await crud.putandpacth("${LinkApi.cruditemsadmin}/$id", data);
     } else {
       response = await crud.addRequestWithMultipleImages("PATCH",
-        LinkApi.adminedititem,
+        LinkApi.cruditemsadmin,
         data,
         [file],
       );
@@ -32,11 +32,8 @@ class admindataitem {
     return response.fold((l) => l, (r) => r);
   }
 
-  deleteitem(String itemid, String imagename) async {
-    var response = await crud.postrequset(LinkApi.admindeleteitems, {
-      "itemid": itemid,
-      "imagename": imagename,
-    });
+  deleteitem(int itemid,) async {
+    var response = await crud.deleterequwst("${LinkApi.cruditemsadmin}/$itemid",{});
     return response.fold((l) => l, (r) => r);
   }
 

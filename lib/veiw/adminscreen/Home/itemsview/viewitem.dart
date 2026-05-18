@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/items/viewitemcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
@@ -51,17 +52,16 @@ class ViewItemScreen extends StatelessWidget {
                 builder: (controller) {
                   return Handlingdataview(
                     statusrequest: controller.statusrequest,
-                    widget: GridView.builder(
+                    widget: MasonryGridView.builder(
+                      gridDelegate:
+                          SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: screenWidth > 700 ? 4 : 2,
+                          ),
                       physics: const BouncingScrollPhysics(),
                       padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
+                      mainAxisSpacing: 12, // 👈 مسافة عمودية بين الكروت
+                      crossAxisSpacing: 12, // 👈 مسافة أفقية بين الكروت
                       itemCount: controller.itemlist.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: screenWidth > 700 ? 4 : 2,
-                        // نسبة الطول إلى العرض آمنة ومريحة للشاشات المختلفة
-                        childAspectRatio: screenWidth > 700 ? 0.65 : 0.60, 
-                        crossAxisSpacing: 14,
-                        mainAxisSpacing: 14,
-                      ),
                       itemBuilder: (context, index) {
                         return ProductCard(
                           item: controller.itemlist[index],
@@ -95,7 +95,10 @@ class ViewItemScreen extends StatelessWidget {
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
-            side: BorderSide(color: Colors.cyanAccent.withOpacity(0.5), width: 1.5),
+            side: BorderSide(
+              color: Colors.cyanAccent.withOpacity(0.5),
+              width: 1.5,
+            ),
           ),
           child: Ink(
             decoration: BoxDecoration(
@@ -107,7 +110,11 @@ class ViewItemScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: const Center(
-              child: Icon(Icons.add_moderator_rounded, color: Colors.white, size: 26),
+              child: Icon(
+                Icons.add_moderator_rounded,
+                color: Colors.white,
+                size: 26,
+              ),
             ),
           ),
         ),
@@ -128,6 +135,7 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool inStock = (item.stock ?? 0) > 15;
+    final Color stockColor = inStock ? Colors.green : Colors.red;
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
@@ -140,136 +148,117 @@ class ProductCard extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-                Colors.white.withOpacity(0.08),
-                Colors.white.withOpacity(0.02),
-              ],
+              colors: [Colors.white.withOpacity(0.08), Colors.white.withOpacity(0.02)],
             ),
           ),
+          // تم إزالة الـ Column الداخلي المعقد والـ Expanded
           child: Column(
+            mainAxisSize: MainAxisSize.min, // 👈 يجعل الكارت يأخذ حجم محتواه فقط
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
-              /// 🖼️ أ) صورة المنتج (أصبحت ديناميكية ومحمية من الـ Overflow)
-              Expanded(
-                flex: 11, // تعطي المساحة الأكبر للصورة
-                child: Stack(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      margin: const EdgeInsets.all(6),
+              /// 🖼️ أ) صورة المنتج (إعطاؤها طول ثابت ليناسب الـ Masonry)
+              Stack(
+                children: [
+                  Container(
+                    height: 150, // 👈 طول ثابت ومناسب جداً للصورة لتظهر كالجزء الأكبر
+                    width: double.infinity,
+                    margin: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.05),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: CachedNetworkImage(
+                      imageUrl: "${item.itemsImage}",
+                      fit: BoxFit.contain,
+                      placeholder: (_, __) => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                      errorWidget: (_, __, ___) => const Icon(Icons.image_not_supported, size: 30),
+                    ),
+                  ),
+                  Positioned(
+                    top: 12,
+                    right: 12,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.05),
-                        borderRadius: BorderRadius.circular(16),
+                        color: stockColor.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: stockColor, width: 1),
                       ),
-                      clipBehavior: Clip.antiAlias,
-                      child: CachedNetworkImage(
-                        imageUrl: "${item.itemsImage}",
-                        fit: BoxFit.contain,
-                        placeholder: (_, __) => const Center(
-                          child: CircularProgressIndicator(color: Colors.cyanAccent, strokeWidth: 2),
-                        ),
-                        errorWidget: (_, __, ___) => const Icon(Icons.image_not_supported, size: 30, color: Colors.white30),
+                      child: Text(
+                        inStock ? "In Stock" : "Low Stock",
+                        style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: stockColor),
                       ),
                     ),
-
-                    // مؤشر حالة المخزون النيون
-                    Positioned(
-                      top: 12,
-                      right: 12,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                        decoration: BoxDecoration(
-                          color: inStock ? Colors.greenAccent.withOpacity(0.15) : Colors.redAccent.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: inStock ? Colors.greenAccent : Colors.redAccent, width: 1),
-                          boxShadow: [
-                            BoxShadow(
-                              color: inStock ? Colors.greenAccent.withOpacity(0.3) : Colors.redAccent.withOpacity(0.3),
-                              blurRadius: 6,
-                            ),
-                          ],
-                        ),
-                        child: Text(
-                          inStock ? "In Stock" : "Low Stock",
-                          style: TextStyle(
-                            fontSize: 9,
-                            fontWeight: FontWeight.bold,
-                            color: inStock ? Colors.greenAccent : Colors.redAccent,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
 
-              /// 📝 ب) تفاصيل المنتج والأزرار (مغلفة بـ Flexible لتجنب أي تداخل مستقبلي)
-              Flexible(
-                flex: 8, // مساحة كافية للنصوص والتحكم
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 2, 10, 8),
-                  child: Column(
-                    // توزيع العناصر بالتساوي لضمان المظهر المتناسق مهما اختلف حجم الخط
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly, 
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // اسم المنتج
-                      Text(
-                        item.itemsName ?? "بدون اسم",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 0.5),
-                      ),
+              /// 📝 ب) تفاصيل المنتج والأزرار
+              Padding(
+                padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // اسم المنتج (بدون لون مخصص لدعم النهار والليل)
+                    Text(
+                      item.itemsName ?? "بدون اسم",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    ),
+                    
+                    const SizedBox(height: 6),
+                    
+                    // السعر والتقييم
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            "${item.itemsPrice} ${"EGP".tr}",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w900),
+                          ),
+                        ),
+                        const Row(
+                          children: [
+                            Text("4", style: TextStyle(fontSize: 10)),
+                            Icon(Icons.star_rounded, color: Colors.amberAccent, size: 12),
+                          ],
+                        ),
+                      ],
+                    ),
 
-                      // السعر والتقييم
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                            child: Text(
-                              "${item.itemsPrice} ${"EGP".tr}",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(fontSize: 13, color: Colors.cyanAccent, fontWeight: FontWeight.w900),
-                            ),
-                          ),
-                          const Row(
-                            children: [
-                              Text("4", style: TextStyle(fontSize: 10)),
-                              Icon(Icons.star_rounded, color: Colors.amberAccent, size: 12),
-                            ],
-                          ),
-                        ],
-                      ),
+                    const SizedBox(height: 12), // مسافة تفصل السعر عن الأزرار
 
-                      // أزرار التحكم للأدمن (تعديل / حذف)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          _buildAdminButton(
-                            icon: Icons.edit_rounded,
-                            color: Colors.blueAccent,
-                            onTap: () => controller.gotoeditpage(item),
-                          ),
-                          _buildAdminButton(
-                            icon: Icons.delete_outline_rounded,
-                            color: Colors.redAccent,
-                            onTap: () {
-                              AppDialog.show(
-                                title: "حذف المنتج",
-                                message: "هل تريد حذف المنتج نهائياً؟",
-                                icon: Icons.delete,
-                                color: Colors.red,
-                                confirmText: "حذف",
-                                onConfirm: () => controller.delete(item.id.toString(), item.itemsImage!),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                    // أزرار التحكم للأدمن
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildAdminButton(
+                          icon: Icons.edit_rounded,
+                          color: Colors.blueAccent,
+                          onTap: () => controller.gotoeditpage(item),
+                        ),
+                        _buildAdminButton(
+                          icon: Icons.delete_outline_rounded,
+                          color: Colors.redAccent,
+                          onTap: () {
+                            AppDialog.show(
+                              title: "حذف المنتج",
+                              message: "هل تريد حذف المنتج نهائياً؟",
+                              icon: Icons.delete,
+                              color: Colors.red,
+                              confirmText: "حذف",
+                              onConfirm: () => controller.delete(item.id),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -278,9 +267,11 @@ class ProductCard extends StatelessWidget {
       ),
     );
   }
-
-  // دالة مساعدة (Helper Method) لاختصار كود تصميم أزرار التعديل والحذف وتجنب التكرار
-  Widget _buildAdminButton({required IconData icon, required Color color, required VoidCallback onTap}) {
+    Widget _buildAdminButton({
+    required IconData icon,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(

@@ -10,15 +10,15 @@ import 'package:hos/veiw/adminscreen/Home/itemsview/additem.dart';
 import 'package:hos/veiw/adminscreen/Home/itemsview/edititem.dart';
 
 class ViewItemController extends GetxController {
-  admindataitem admindata = admindataitem(Get.find());
+  Admindataitem admindata = Admindataitem(Get.find());
   Statusrequest statusrequest = Statusrequest.none;
-  
+
   List<ItemsModel> itemlist = []; // قائمة المنتجات للقسم المختار فقط
   CategoriesModel? catcodel;
-  
-  int selectedCat = -1; 
+
+  int selectedCat = -1;
   String? catname;
-  
+
   TextEditingController controller = TextEditingController();
 
   @override
@@ -28,7 +28,7 @@ class ViewItemController extends GetxController {
     catcodel = Get.arguments['catid'];
     selectedCat = catcodel!.id!;
     catname = catcodel!.name;
-    
+
     // جلب المنتجات فور فتح الشاشة
     viewCategoryItems(selectedCat);
   }
@@ -38,7 +38,7 @@ class ViewItemController extends GetxController {
     selectedCat = index;
     update();
     // ✳️ بمجرد تغيير القسم، نمسح القديم ونجلب بيانات القسم الجديد
-    viewCategoryItems(selectedCat); 
+    viewCategoryItems(selectedCat);
   }
 
   // ✳️ تم تغيير اسم الدالة ومنطقها لتجلب منتجات قسم واحد فقط
@@ -49,12 +49,11 @@ class ViewItemController extends GetxController {
 
     // ⚠️ ملاحظة: تأكد أن دالة viewitem في ملف admindata تستقبل الـ categoryId وترسله للرابط
     var response = await admindata.viewitem(categoryId.toString());
-    
+
     statusrequest = handling(response);
 
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
-        
         // جلب المنتجات من داخل كائن القسم الراجع من السيرفر
         // افترضنا هنا أن Laravel يرجع المنتجات داخل key اسمه 'items'
         if (response['data']['items'] != null) {
@@ -74,9 +73,10 @@ class ViewItemController extends GetxController {
     update();
   }
 
-  void delete(String itemid, String imagename) {
-    admindata.deleteitem(itemid, imagename);
-    itemlist.removeWhere((element) => element.id.toString() == itemid);
+  void delete(int itemid) {
+    admindata.deleteitem(itemid);
+    
+    itemlist.removeWhere((element) => element.id == itemid);
     update();
   }
 
@@ -85,7 +85,10 @@ class ViewItemController extends GetxController {
   }
 
   void goToAddPage() async {
-    await Get.to(() => Additem(), arguments: {"catid": selectedCat, "catname": catname});
+    await Get.to(
+      () => Additem(),
+      arguments: {"catid": selectedCat, "catname": catname},
+    );
     viewCategoryItems(selectedCat); // تحديث القائمة بعد إضافة منتج جديد
   }
 

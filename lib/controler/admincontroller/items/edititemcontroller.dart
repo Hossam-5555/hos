@@ -4,16 +4,16 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
-import 'package:hos/core/functions/upload_image.dart';
+import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/data/datasource/admindata/itemdata.dart';
 import 'package:hos/data/model/itemsmodel.dart';
-import 'package:hos/veiw/adminscreen/Home/itemsview/viewitem.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Edititemcontroller extends GetxController {
   Statusrequest statusrequest = Statusrequest.none;
-  admindataitem dataitem = admindataitem(Get.find());
-  String? itemid;
-  String? active;
+  Admindataitem dataitem = Admindataitem(Get.find());
+  int? itemid;
+  int? active;
   String? imagename;
   late TextEditingController name;
   late TextEditingController namear;
@@ -26,19 +26,36 @@ class Edititemcontroller extends GetxController {
   GlobalKey<FormState> editkey = GlobalKey<FormState>();
   File? file;
   ItemsModel? itemsmodel;
-  void showoptionimage() {
-    showImagePickerBottomSheet(chooseimagecamera, chooseimagegalary);
+
+  final ImagePicker _picker = ImagePicker(); // 👈 كائن اختيار الصور
+
+  // مصفوفة الصور ثابتة الحجم (3 صور كحد أقصى) لكي لا يتأثر كود الـ additem الخاص بك
+  List<File?> selectedImages = List<File?>.filled(3, null);
+
+  /// 👈 الدالة الجديدة التي ستقوم باستدعائها من زر الواجهة الجديد
+  Future<void> pickMultipleImagesFromGallery() async {
+    try {
+      // تفتح معرض الهاتف وتسمح للمستخدم بتحديد عدة صور دفعة واحدة
+      final List<XFile>? pickedFiles = await _picker.pickMultiImage(
+        imageQuality: 80, // لتقليل الحجم والحفاظ على سرعة الرفع
+      );
+
+      if (pickedFiles != null && pickedFiles.isNotEmpty) {
+        // تفريغ المصفوفة أولاً عند اختيار صور جديدة
+        selectedImages = List<File?>.filled(3, null);
+
+        // ملء المصفوفة بأول 3 صور اختارها المستخدم كحد أقصى
+        for (int i = 0; i < pickedFiles.length && i < 3; i++) {
+          selectedImages[i] = File(pickedFiles[i].path);
+        }
+        update(); // تحديث الواجهة (GetBuilder) لرؤية الصور فوراً
+      }
+    } catch (e) {
+      Get.snackbar("خطأ", "حدث خطأ أثناء اختيار الصور: $e");
+    }
   }
 
-  Future<void> chooseimagecamera() async {
-    file = await imageUploadCamera();
-    update();
-  }
-
-  Future<void> chooseimagegalary() async {
-    file = await fileUploadGallery();
-    update();
-  }
+  // دالة التعامل مع اختيار الكاميرا للمربع المحدد
 
   Future<void> edit() async {
     if (!editkey.currentState!.validate()) return;
@@ -46,30 +63,22 @@ class Edititemcontroller extends GetxController {
     statusrequest = Statusrequest.loading;
     update();
     Map data = {
-      "itemid": itemid,
-      "itemscat": itemcat.text,
-      "itemname": name.text,
-      "itemnamear": namear.text,
-      "itemdesc": description.text,
-      "itemdescar": descriptionar.text,
-      "itemscount": count.text,
-      // "itemsactive": active,
-      "itemsprice": price.text,
-      "itemsdiscount": descount.text,
-      "oldimage": imagename,
+      "items_name": name.text,
+      "items_name_ar": namear.text,
+      "items_desc": description.text,
+      "items_desc_ar": descriptionar.text,
+      "items_active": active,
+      "stock": count.text,
+      "items_price": price.text,
+      "items_discount": descount.text,
+      "category_id": itemcat
+          .text, // ملحوظة: شيلت المسافة الزيادة اللي كانت بعد كلمة category_id لضمان مطابقة الباك إند
     };
-    var response = await dataitem.edititem(data, file);
+    var response = await dataitem.edititem(data, file, itemid!);
     statusrequest = handling(response);
-    if (statusrequest == Statusrequest.success) {
-      if (response['status'] == 'success') {
-        Get.snackbar("success", "    تم تعديل العنصر بنجاح");
-
-        Get.offAll(
-          () => ViewItemScreen(),
-          transition: Transition.fadeIn,
-          duration: Duration(milliseconds: 250),
-        );
-      }
+    if (statusrequest == Statusrequest.success && response['status'] == true) {
+      showSnackBar(Get.context!, "saved succesfuly");
+      Get.back();
     } else {
       statusrequest = Statusrequest.failure;
     }
@@ -77,11 +86,16 @@ class Edititemcontroller extends GetxController {
     update();
   }
 
+  void removeImage(int index) {
+    selectedImages[index] = null;
+    update();
+  }
+
   @override
   void onInit() {
     itemsmodel = Get.arguments['itemsmodel'];
-    itemid = itemsmodel!.id.toString();
-    active = itemsmodel!.itemsActive.toString();
+    itemid = itemsmodel!.id;
+    active = itemsmodel!.itemsActive;
     imagename = itemsmodel!.itemsImage;
     name = TextEditingController();
     namear = TextEditingController();

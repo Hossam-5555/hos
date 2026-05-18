@@ -55,7 +55,6 @@ class AdminHome extends StatelessWidget {
         ),
         bottomNavigationBar: GetBuilder<Adminhome>(
           builder: (controller) => BottomNavigationBar(
-            backgroundColor: Colors.white,
             selectedItemColor: Colors.blue,
             unselectedItemColor: Colors.grey,
             showUnselectedLabels: true,

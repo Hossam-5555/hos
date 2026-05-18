@@ -82,7 +82,7 @@ class Adminpending extends StatelessWidget {
                     final order = controller.orderspending[index];
 
                     // استخراج حالة التصميم والترجمة الخاصة بهذا الكارت بأسلوب آمن
-                    controller.getcolorandstause(order.status ?? "");
+                    controller.getcolorandstause(order.status );
                     final statustext = controller.statusText ?? "غير معروف";
                     final statuscolor = controller.statusColor ?? Colors.grey;
 

@@ -1,7 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart'; // 👈 تأكد من وجود هذا الإنبورت لاختيار الصور المتعددة
 import 'package:hos/controler/admincontroller/items/viewitemcontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
@@ -11,7 +11,7 @@ import 'package:hos/data/datasource/admindata/itemdata.dart';
 
 class Additemcontroller extends GetxController {
   Statusrequest statusrequest = Statusrequest.none;
-  admindataitem dataitem = admindataitem(Get.find());
+  Admindataitem dataitem = Admindataitem(Get.find());
   late TextEditingController name;
   late TextEditingController namear;
   late TextEditingController description;
@@ -20,10 +20,45 @@ class Additemcontroller extends GetxController {
   late TextEditingController price;
   late TextEditingController descount;
   late TextEditingController itemcat;
-
+  int active = 1;
   GlobalKey<FormState> itemvalidKey = GlobalKey<FormState>();
   File? file;
 
+  final ImagePicker _picker = ImagePicker(); // 👈 كائن اختيار الصور
+
+  // مصفوفة الصور ثابتة الحجم (3 صور كحد أقصى) لكي لا يتأثر كود الـ additem الخاص بك
+  List<File?> selectedImages = List<File?>.filled(3, null);
+
+  /// 👈 الدالة الجديدة التي ستقوم باستدعائها من زر الواجهة الجديد
+  Future<void> pickMultipleImagesFromGallery() async {
+    try {
+      // تفتح معرض الهاتف وتسمح للمستخدم بتحديد عدة صور دفعة واحدة
+      final List<XFile>? pickedFiles = await _picker.pickMultiImage(
+        imageQuality: 80, // لتقليل الحجم والحفاظ على سرعة الرفع
+      );
+
+      if (pickedFiles != null && pickedFiles.isNotEmpty) {
+        // تفريغ المصفوفة أولاً عند اختيار صور جديدة
+        selectedImages = List<File?>.filled(3, null);
+
+        // ملء المصفوفة بأول 3 صور اختارها المستخدم كحد أقصى
+        for (int i = 0; i < pickedFiles.length && i < 3; i++) {
+          selectedImages[i] = File(pickedFiles[i].path);
+        }
+        update(); // تحديث الواجهة (GetBuilder) لرؤية الصور فوراً
+      }
+    } catch (e) {
+      Get.snackbar("خطأ", "حدث خطأ أثناء اختيار الصور: $e");
+    }
+  }
+
+  // دالة لحذف صورة معينة من الواجهة عند الضغط على زر X
+  void removeImage(int index) {
+    selectedImages[index] = null;
+    update();
+  }
+
+  // 🛑 ملاحظة: تركت لك الدوال القديمة لربما تحتاجها في مكان آخر (أو يمكنك حذفها)
   void showoptionimage() {
     showImagePickerBottomSheet(
       chooseFromCamera as VoidCallback,
@@ -31,39 +66,29 @@ class Additemcontroller extends GetxController {
     );
   }
 
-  List<File?> selectedImages = List<File?>.filled(3, null);
-
-  // دالة التعامل مع اختيار الكاميرا للمربع المحدد
   Future<void> chooseFromCamera(int index) async {
-    File? file = await imageUploadCamera(); // دالتك الجاهزة
+    File? file = await imageUploadCamera();
     if (file != null) {
       selectedImages[index] = file;
-      update(); // تحديث الواجهة فوراً
+      update();
     }
   }
 
-  // دالة التعامل مع اختيار المعرض للمربع المحدد
   Future<void> chooseFromGallery(int index) async {
-    File? file = await fileUploadGallery(); // دالتك الجاهزة
+    File? file = await fileUploadGallery();
     if (file != null) {
       selectedImages[index] = file;
-      update(); // تحديث الواجهة فوراً
+      update();
     }
-  }
-
-  // دالة لحذف الصورة من المربع
-  void removeImage(int index) {
-    selectedImages[index] = null;
-    update();
   }
 
   Future<void> additem() async {
     if (itemvalidKey.currentState!.validate()) {
-      // 1. 🛑 التعديل هنا: التأكد من اختيار الصورة الرئيسية (المربع الأول) أولاً
+      // التأكد من اختيار الصورة الرئيسية (المربع الأول) أولاً
       if (selectedImages[0] == null) {
         Get.snackbar(
           "تنبيه",
-          "من فضلك اختر الصورة الرئيسية للمنتج (المربع الأول)",
+          "من فضلك اختر الصورة الرئيسية للمنتج (أول صورة)",
         );
         return;
       }
@@ -80,39 +105,35 @@ class Additemcontroller extends GetxController {
         "stock": count.text,
         "items_price": price.text,
         "items_discount": descount.text,
-        "category_id": itemcat
-            .text, // ملحوظة: شيلت المسافة الزيادة اللي كانت بعد كلمة category_id لضمان مطابقة الباك إند
+        "category_id": itemcat.text,
       };
 
-      // 2. 🚀 استدعاء دالة الـ Data Layer وتمرير لستة الصور كاملة
+      // يتم إرسال لستة الصور كالمعتاد دون أي تغيير في الـ Data Layer أو الباك إند
       var response = await dataitem.additem(data, selectedImages);
       statusrequest = handling(response);
 
       if (statusrequest == Statusrequest.success) {
-        // ملحوظة: اللارافل عادة بيرجع الكود في ماب، التشييك بتاعك سليم
         if (response['status'] == true) {
           showSnackBar(Get.context!, "Product Added Successfully");
 
-          // إعادة تهيئة مصفوفة الصور لتصبح فارغة بعد النجاح استعداداً لإضافة منتج آخر
           selectedImages = List<File?>.filled(3, null);
 
           Get.find<ViewItemController>().viewCategoryItems(Get.arguments["catid"]);
-          Future.delayed(Duration(seconds: 1), () {
-            Get.back(); // الرجوع بعد ثواني قليلة لإظهار الـ Snackbar
+          Future.delayed(const Duration(seconds: 1), () {
+            Get.back();
           });
         } else {
-          // لو الباك إند رجع status false لسبب ما (مثلاً مشكلة validation في اللارافل)
           statusrequest = Statusrequest.failure;
           Get.snackbar("فشل", response['message'] ?? "لم يتم حفظ المنتج");
         }
       } else {
         statusrequest = Statusrequest.failure;
       }
-      update(); // لتحديث حالة الـ UI وإخفاء الـ Loading
+      update();
     }
   }
 
-String? catname;
+  String? catname;
   @override
   void onInit() {
     name = TextEditingController();
