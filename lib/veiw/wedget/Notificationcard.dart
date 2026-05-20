@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jiffy/jiffy.dart';
 
 class NotificationCard extends StatelessWidget {
   final String title;
@@ -9,9 +10,11 @@ class NotificationCard extends StatelessWidget {
   final bool selectionMode;
   final void Function()? onLongPress;
   final void Function()? onTap;
+  final bool isactive;
 
   const NotificationCard({
     super.key,
+    required this.isactive,
     required this.title,
     required this.body,
     required this.time,
@@ -34,10 +37,15 @@ class NotificationCard extends StatelessWidget {
           duration: const Duration(milliseconds: 300),
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: isSelected ? Colors.blue.withOpacity(0.08) : Colors.transparent,
+           
+            color: isSelected
+                ? Colors.blue.withOpacity(0.08)
+                : Colors.transparent,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: isSelected ? Colors.blue.withOpacity(0.5) : Colors.grey.withAlpha(50),
+              color: isSelected
+                  ? Colors.blue.withOpacity(0.5)
+                  : Colors.grey.withAlpha(50),
               width: 1,
               strokeAlign: BorderSide.strokeAlignCenter,
             ),
@@ -46,26 +54,28 @@ class NotificationCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // --- قسم الأيقونة ---
-              Container(
-                height: 50,
-                width: 50,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: isSelected
-                        ? [Colors.blue, Colors.blueAccent]
-                        : [
-                            Colors.blue.withOpacity(0.1),
-                            Colors.blue.withOpacity(0.05),
-                          ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+              Badge(isLabelVisible: isactive,
+                child: Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: isSelected
+                          ? [Colors.blue, Colors.blueAccent]
+                          : [
+                              Colors.blue.withOpacity(0.1),
+                              Colors.blue.withOpacity(0.05),
+                            ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    shape: BoxShape.circle,
                   ),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.notifications_none_rounded,
-                  color: isSelected ? Colors.white : Colors.blue,
-                  size: 26,
+                  child: Icon(
+                    Icons.notifications_none_rounded,
+                    color: isSelected ? Colors.white : Colors.blue,
+                    size: 26,
+                  ),
                 ),
               ),
               const SizedBox(width: 15),
@@ -84,13 +94,18 @@ class NotificationCard extends StatelessWidget {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 15,
-                              color: Colors.blueGrey[900], // يمكن ربطها بالثيم لو أردت
+                              color: Colors
+                                  .blueGrey[900], // يمكن ربطها بالثيم لو أردت
                             ),
                           ),
                         ),
                         if (!isLoading && !selectionMode)
                           Text(
-                            time,
+                            Jiffy.parse(
+                              pattern: 'yyyy-MM-dd hh:mm a',
+                              isUtc: true,
+                              time,
+                            ).fromNow(),
                             style: TextStyle(
                               fontSize: 10,
                               color: Colors.grey[500],

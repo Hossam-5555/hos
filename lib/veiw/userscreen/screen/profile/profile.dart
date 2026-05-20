@@ -86,7 +86,9 @@ class ProfilePage extends StatelessWidget {
                     isLast: true, // لإزالة الفاصل في العنصر الأخير
                     onTap: () => Get.to(
                       () => Settings(),
-                      transition: Transition.cupertino,
+                      transition: Transition.leftToRightWithFade,
+                      duration: Duration(milliseconds: 500),
+                      curve: Curves.fastOutSlowIn
                     ),
                   ),
                 ],

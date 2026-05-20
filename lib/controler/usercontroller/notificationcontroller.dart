@@ -14,6 +14,7 @@ class Notificationcontroller extends GetxController {
   String body = "محتوى الإشعار";
 
   Myservisec myservisec = Get.put(Myservisec());
+  String? get usertype => myservisec.sharedPreferences.getString("usertype");
   Notificationdata notificationdata = Get.put(Notificationdata(Get.find()));
   int? get userid => myservisec.sharedPreferences.getInt("id");
   RxList<MassageModel> notificationlist = <MassageModel>[].obs;
@@ -61,6 +62,7 @@ class Notificationcontroller extends GetxController {
 
   /// ضغط عادي
   void onTap(int id) {
+    markAsRead(id);
     if (!selectionMode) return;
 
     if (selectedIds.contains(id)) {
@@ -146,51 +148,49 @@ class Notificationcontroller extends GetxController {
     update();
   }
 
-  // List<MassageModel> notificationsList = []; // تحويلها لتقرأ من الموديل مباشرة
+  // 📥 جلب البيانات الحقيقية المتوافقة مع دالة index() بالباك إند
+  Future<void> getNotifications() async {
+    notificationlist.clear();
+    statusrequest = Statusrequest.loading;
+    update();
 
-  // // 📥 جلب البيانات الحقيقية المتوافقة مع دالة index() بالباك إند
-  // Future<void> getNotifications() async {
-  //   notificationsList.clear();
-  //   statusrequest = Statusrequest.loading;
-  //   update();
+    // استبدل هذا الجزء بطلب الـ API الحقيقي الخاص بك (GET)
+    var response = await notificationdata.getNotificationsData();
 
-  //   // استبدل هذا الجزء بطلب الـ API الحقيقي الخاص بك (GET)
-  //   var response = await notificationdata.getNotificationsData();
+    statusrequest = handling(response);
 
-  //   statusrequest = handling(response);
+    if (Statusrequest.success == statusrequest) {
+      if (response['status'] == true && response['data'] != null) {
+        List rawData = [];
+        // فك حزمة الـ Pagination المرتجعة من لارافل كما فعلنا في الطلبات
+        if (response['data'] is Map && response['data']['data'] != null) {
+          rawData = response['data']['data'];
+        } else if (response['data'] is List) {
+          rawData = response['data'];
+        }
 
-  //   if (Statusrequest.success == statusrequest) {
-  //     if (response['status'] == true && response['data'] != null) {
-  //       List rawData = [];
-  //       // فك حزمة الـ Pagination المرتجعة من لارافل كما فعلنا في الطلبات
-  //       if (response['data'] is Map && response['data']['data'] != null) {
-  //         rawData = response['data']['data'];
-  //       } else if (response['data'] is List) {
-  //         rawData = response['data'];
-  //       }
+        notificationlist.addAll(rawData.map((e) => MassageModel.fromJson(e)));
 
-  //       notificationsList.addAll(rawData.map((e) => MassageModel.fromJson(e)));
+        if (notificationlist.isEmpty) {
+          statusrequest = Statusrequest.nodata;
+        }
+      } else {
+        statusrequest = Statusrequest.failure;
+      }
+    }
+    update();
+  }
 
-  //       if (notificationsList.isEmpty) {
-  //         statusrequest = Statusrequest.nodata;
-  //       }
-  //     } else {
-  //       statusrequest = Statusrequest.failure;
-  //     }
-  //   }
-  //   update();
-  // }
+  // 🔔 تحديث حالة الرسالة في الواجهة والسيرفر عند الضغط عليها
+  Future<void> markAsRead(int index) async {
+    if (notificationlist[index].isActive == false) {
+      notificationlist[index].isActive == true;
+      update();
 
-  // // 🔔 تحديث حالة الرسالة في الواجهة والسيرفر عند الضغط عليها
-  // Future<void> markAsRead(int id, int index) async {
-  //   if (notificationsList[index].isActive == 0) {
-  //     notificationsList[index].isActive == 1;
-  //     update();
-
-  //     // هنا ترسل طلب للباك إند لتحديث حقل is_read في جدول massages إلى 1
-  //     // await notificationData.makeNotificationRead(id.toString());
-  //   }
-  // }
+      // هنا ترسل طلب للباك إند لتحديث حقل is_read في جدول massages إلى 1
+      // await notificationData.makeNotificationRead(id.toString());
+    }
+  }
 
   void closeselected() {
     selectionMode = false;
@@ -200,7 +200,11 @@ class Notificationcontroller extends GetxController {
 
   @override
   void onInit() {
-    getnotifier();
+    if (usertype == "admin") {
+      getNotifications();
+    } else {
+      getnotifier();
+    }
 
     super.onInit();
   }

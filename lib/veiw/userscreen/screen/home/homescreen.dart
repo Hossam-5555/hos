@@ -93,16 +93,16 @@ class Homescreen extends StatelessWidget {
                         return Badge(
                           isLabelVisible:
                               hasUnread > 0, // دي الطريقة الصح لإخفاء البادج
-                          alignment: const Alignment(0.1, 0.90),
-                          label: Text(
-                            hasUnread.toString(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                            ),
-                          ), // تظبيط مكان النقطة على الأيقونة
-                          smallSize: 9, // حجم النقطة مناسب للعين
-                          backgroundColor: Colors.redAccent,
+                          // alignment: const Alignment(0.1, 0.90),
+                          // label: Text(
+                          //   hasUnread.toString(),
+                          //   style: const TextStyle(
+                          //     color: Colors.white,
+                          //     fontSize: 12,
+                          //   ),
+                          // ), // تظبيط مكان النقطة على الأيقونة
+                          // smallSize: 9, // حجم النقطة مناسب للعين
+                          // backgroundColor: Colors.redAccent,
                           child: SvgPicture.asset(
                             Imageasset.notification,
                             height: 24, // توحيد الحجم

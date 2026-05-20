@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/items/viewitemcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/functions/showdialoge.dart';
+import 'package:hos/veiw/wedget/items/itemsappbar.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';
 
 class ViewItemScreen extends StatelessWidget {
@@ -20,7 +21,7 @@ class ViewItemScreen extends StatelessWidget {
       // عرض اسم القسم المختار ديناميكياً في الـ AppBar
       appBar: AppBar(
         title: Text(controller.catname ?? "المنتجات"),
-        leading: const BackButton(),
+        leading: const BackButtonCircle(),
       ),
       body: SafeArea(
         child: Column(

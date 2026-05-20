@@ -74,7 +74,7 @@ class LocalController extends GetxController {
 
     // 4. صلاحيات ومساجات (وظائفك القديمة)
     requestpermition();
-    appmassging();
+    appMessaging();
     super.onInit();
   }
 }

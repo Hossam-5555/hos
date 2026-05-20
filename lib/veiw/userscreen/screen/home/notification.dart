@@ -5,7 +5,6 @@ import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/veiw/wedget/Notificationcard.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class NotificationPage extends StatelessWidget {
@@ -49,10 +48,12 @@ class NotificationPage extends StatelessWidget {
             widget: Skeletonizer(
               enabled: isLoading,
               child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
                 itemCount: isLoading ? 6 : controller.notificationlist.length,
                 itemBuilder: (context, index) {
-                  
                   String title = "";
                   String body = "";
                   int id = 0;
@@ -61,21 +62,24 @@ class NotificationPage extends StatelessWidget {
                   // تجهيز البيانات
                   if (isLoading) {
                     title = "Loading Notification Title";
-                    body = "This is a dummy description for skeleton loading effect.";
+                    body =
+                        "This is a dummy description for skeleton loading effect.";
                   } else {
                     final item = controller.notificationlist[index];
                     id = item.id!;
                     title = item.title ?? '';
                     body = item.body ?? '';
-                    time = Jiffy.parse(
-                      item.createdAt ?? DateTime.now().toString(),
-                    ).fromNow();
+                    time = item.createdAt!;
                   }
+                  final item = controller.notificationlist[index];
+
+                  bool active = item.isActive!;
 
                   bool isSelected = !isLoading && controller.isSelected(id);
-
+               print(active);
                   // ✳️ استخدام الودجت المجمعة هنا
                   return NotificationCard(
+                    isactive: active,
                     title: title,
                     body: body,
                     time: time,
@@ -83,9 +87,8 @@ class NotificationPage extends StatelessWidget {
                     isLoading: isLoading,
                     selectionMode: controller.selectionMode,
                     onLongPress: () => controller.onLongPress(id),
-                    onTap: () => controller.onTap(id),
+                    onTap: () => controller.onTap(index),
                   );
-                  
                 },
               ),
             ),

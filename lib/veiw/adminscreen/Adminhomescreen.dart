@@ -35,16 +35,19 @@ class AdminHome extends StatelessWidget {
                 onTap: () {
                   Get.to(() => NotificationPage());
                 },
-                child: SvgPicture.asset(
-                  Imageasset.notification,
-                  color: Colors.grey.shade600,
+                child: Badge(isLabelVisible: true,
+                  child: SvgPicture.asset(
+                    Imageasset.notification,
+                    color: Colors.grey.shade600,
+                  ),
                 ),
               ),
               IconButton(
                 onPressed: () {
                   Get.to(
                     () => Settings(),
-                    transition: Transition.rightToLeftWithFade,
+                    transition: Transition.fadeIn,
+                    curve: Curves.decelerate,
                     duration: const Duration(milliseconds: 500),
                   );
                 },

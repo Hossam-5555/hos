@@ -61,7 +61,7 @@ class OrderCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    Jiffy.parse(
+                    Jiffy.parse(  isUtc: true,
                       order.createdAt,
                       pattern: 'yyyy-MM-dd hh:mm a',
                     ).fromNow(),
