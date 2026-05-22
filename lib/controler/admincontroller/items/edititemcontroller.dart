@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
@@ -77,7 +78,7 @@ class Edititemcontroller extends GetxController {
     var response = await dataitem.edititem(data, file, itemid!);
     statusrequest = handling(response);
     if (statusrequest == Statusrequest.success && response['status'] == true) {
-      showSnackBar(Get.context!, "saved succesfuly");
+      showSnackBar(Get.context!, "saved succesfuly",Icon(Icons.edit,color: Colors.blue,));
       Get.back();
     } else {
       statusrequest = Statusrequest.failure;

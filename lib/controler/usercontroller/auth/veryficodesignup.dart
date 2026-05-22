@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/routs.dart';
@@ -17,7 +18,7 @@ class VeryfiSignControler extends GetxController {
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
-        showSnackBar(Get.context!, "Acout added sussecfuly");
+        showSnackBar(Get.context!, "Acout added sussecfuly",Icon(Icons.check_circle));
         Get.offAllNamed(Approute.login);
       } else {
         Get.defaultDialog(

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
@@ -27,9 +28,10 @@ class FavController extends GetxController {
     var response = await favdata.favoritemanger(id, itemid);
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
-      if (response["status"] == "success") {
-        showSnackBar(Get.context!, "Item added to favorite");
-      } else {
+      if (response["status"] == true) {
+      } else if (response["status"] == false) {
+        showSnackBar(Get.context!, response['message'],Icon(Icons.question_mark,color: Colors.red,));
+
         statusrequest = Statusrequest.failure;
       }
     }

@@ -7,7 +7,38 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
 class Crud {
-  Future<Either<Statusrequest, Map>> postrequset(
+  // Future<Either<Statusrequest, Map>> postrequset(
+  //   String linkUrl,
+  //   Map data,
+  // ) async {
+  //   try {
+  //     if (await checkinterner()) {
+  //       var response = await http.post(
+  //         Uri.parse(linkUrl),
+  //         body: jsonEncode(data),
+  //         headers: {
+  //           "Content-Type":
+  //               "application/json", // بتعرف السيرفر إن اللي مبعوث ده JSON مش String عادي
+  //           "Accept": "application/json",
+  //         },
+  //       );
+  //       if (response.statusCode == 200 || response.statusCode == 201) {
+  //         var responsebody = jsonDecode(response.body);
+  //         return Right(responsebody);
+  //       } else {
+  //         return Left(Statusrequest.failure);
+  //       }
+  //     } else {
+  //       return Left(Statusrequest.checkinterner);
+  //     }
+  //   } catch (e) {
+  //     return Left(Statusrequest.serverfailure);
+  //   }
+  // }
+
+
+
+Future<Either<Statusrequest, Map>> postrequset(
     String linkUrl,
     Map data,
   ) async {
@@ -17,17 +48,32 @@ class Crud {
           Uri.parse(linkUrl),
           body: jsonEncode(data),
           headers: {
-            "Content-Type":
-                "application/json", // بتعرف السيرفر إن اللي مبعوث ده JSON مش String عادي
+            "Content-Type": "application/json", 
             "Accept": "application/json",
           },
         );
+
+        // 1. تحقق أولاً إذا كان السيرفر أرسل داتا بصيغة JSON (سواء نجح الطلب أو فشل مثل 429 أو 422)
+        // أخطاء لاراول وعمليات الـ Rate Limit تعود دائماً بـ JSON يحتوي على حقول مثل "message" أو "status"
+        if (response.body.isNotEmpty) {
+          try {
+            var responsebody = jsonDecode(response.body);
+            
+            // إذا كان السيرفر أرسل رد JSON صالح، نمرره فوراً لـ Right لكي تستطيع قراءته في الـ Controller
+            // وبذلك سيتعامل الـ Controller مع الـ status: false أو الرسالة القادمة بشكل طبيعي.
+            return Right(responsebody);
+          } catch (jsonError) {
+            // إذا لم يكن الرد JSON (مثلاً صفحة خطأ HTML من السيرفر 500) سيذهب للخطوة التالية
+          }
+        }
+
+        // 2. في حال لم يكن هناك Body وكان الكود يمثل نجاحاً
         if (response.statusCode == 200 || response.statusCode == 201) {
-          var responsebody = jsonDecode(response.body);
-          return Right(responsebody);
+          return Right({});
         } else {
           return Left(Statusrequest.failure);
         }
+
       } else {
         return Left(Statusrequest.checkinterner);
       }
@@ -35,7 +81,6 @@ class Crud {
       return Left(Statusrequest.serverfailure);
     }
   }
-
   Future<Either<Statusrequest, Map>> getrequset(String linkUrl) async {
     try {
       if (await checkinterner()) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-void showSnackBar(BuildContext context, String message ) {
+void showSnackBar(BuildContext context, String message,Icon icon ) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       duration: const Duration(seconds: 4),
@@ -10,7 +10,7 @@ void showSnackBar(BuildContext context, String message ) {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       content: Row(
         children: [
-          const Icon(Icons.check_circle, color: Colors.green),
+           icon,
           const SizedBox(width: 10),
           Expanded(
             child: Text(message, style: const TextStyle(color: Colors.white)),

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/categories/viewcontroller.dart';
@@ -43,7 +44,7 @@ class Editcontroller extends GetxController {
 
       if (statusrequest == Statusrequest.success &&
           response['status'] == true) {
-        showSnackBar(Get.context!, "  تم التعديل بنجاح");
+        showSnackBar(Get.context!, "  تم التعديل بنجاح",Icon(Icons.edit));
         Get.find<ViewCatController>().viewCat();
       } else {
         statusrequest = Statusrequest.failure;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
+import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/cartdata.dart';
 import 'package:hos/data/model/Couponemodel.dart';
@@ -70,17 +71,49 @@ class CartController extends GetxController {
   Future<void> addtocart(int itemid, int count) async {
     statusrequest = Statusrequest.loading;
     update();
+
     var response = await cartdata.addcartdata(userid!, itemid, count);
+
+    // 1. تحديد حالة الطلب (ستكون Success طالما السيرفر أرسل JSON)
     statusrequest = handling(response);
-    if (Statusrequest.success == statusrequest) {
+
+    if (statusrequest == Statusrequest.success) {
+      // الفحص الأول: إذا كان السيرفر أرسل رد المتجر المعتاد بنجاح
       if (response["status"] == true) {
-        Get.snackbar("Success", "تم اضافه المنتج للسلة ✅");
         CartController cartController = Get.find();
-        await cartController.view(); // ✅ يحدث الداتا من السيرفر بعد الزيادة
-      } else {
+        await cartController.view(); // تحديث السلة من السيرفر
+      }
+      // الفحص الثاني: إذا أرسل السيرفر status عادية بقيمة false
+      else if (response["status"] == false) {
+        showSnackBar(
+          Get.context!,
+          response["message"],
+          Icon(Icons.question_mark,color: Colors.red,),
+        );
+        statusrequest =
+            Statusrequest.failure; // تحويل الحالة لفشل بدلاً من نجاح
+      }
+      // الفحص الثالث (مهم جداً للـ Rate Limit وأخطاء لاراول الافتراضية):
+      // لاراول يرسل حقل "message" مباشرة بدون حقل "status" عند تخطي الـ Rate limit
+      else if (response.containsKey("message")) {
+        showSnackBar(
+          Get.context!,
+          response["message"],
+          Icon(Icons.question_mark,color: Colors.red),
+        );
         statusrequest = Statusrequest.failure;
       }
+    } else {
+      // في حال فشل الاتصال بالإنترنت تماماً أو انهار السيرفر (كود 500 بدون JSON)
+      showSnackBar(
+        Get.context!,
+        "عذراً، حدث خطأ في الاتصال بالسيرفر",
+        Icon(Icons.question_mark),
+      );
+      statusrequest = Statusrequest.none;
     }
+
+    update(); // تحديث الواجهة لإخفاء الـ Loading وتحديث الحالة
   }
 
   Future<void> delete(int itemid) async {
@@ -178,7 +211,7 @@ class CartController extends GetxController {
   //   }
   // }
 
-  // 
+  //
   //coubone========================================
 
   @override

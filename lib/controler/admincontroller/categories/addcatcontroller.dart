@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/categories/viewcontroller.dart';
@@ -25,7 +26,11 @@ class Addcatcontroller extends GetxController {
   Future<void> addcategories() async {
     if (validkey.currentState!.validate()) {
       if (file == null) {
-        showSnackBar(Get.context!, "من فضلك اختر صورة أولاً");
+        showSnackBar(
+          Get.context!,
+          "من فضلك اختر صورة أولاً",
+          Icon(Icons.image_search_rounded),
+        );
         return;
       }
 
@@ -41,7 +46,11 @@ class Addcatcontroller extends GetxController {
       statusrequest = handling(response);
       if (statusrequest == Statusrequest.success) {
         if (response['status'] == true) {
-          showSnackBar(Get.context!, "تم إضافة الفئة بنجاح",);
+          showSnackBar(
+            Get.context!,
+            "تم إضافة الفئة بنجاح",
+            Icon(Icons.check_circle),
+          );
           Get.find<ViewCatController>().viewCat();
 
           Future.delayed(Duration(seconds: 1), () {

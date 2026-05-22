@@ -113,7 +113,7 @@ class AddressController extends GetxController {
     listaddresdata.removeWhere((e) => e.id == addresid);
 
     // 🔹 استدعاء API للحذف
-    showSnackBar(Get.context!, "تم حذف العنوان بنجاح");
+    showSnackBar(Get.context!, "تم حذف العنوان بنجاح",Icon(Icons.check_circle));
     // 🔹 حالة الليست فاضية
     if (listaddresdata.isEmpty) {
       statusrequest = Statusrequest.failure;

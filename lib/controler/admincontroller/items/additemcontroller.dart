@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart'; // 👈 تأكد من وجود هذا الإنبورت لاختيار الصور المتعددة
@@ -86,10 +87,7 @@ class Additemcontroller extends GetxController {
     if (itemvalidKey.currentState!.validate()) {
       // التأكد من اختيار الصورة الرئيسية (المربع الأول) أولاً
       if (selectedImages[0] == null) {
-        Get.snackbar(
-          "تنبيه",
-          "من فضلك اختر الصورة الرئيسية للمنتج (أول صورة)",
-        );
+        Get.snackbar("تنبيه", "من فضلك اختر الصورة الرئيسية للمنتج (أول صورة)");
         return;
       }
 
@@ -114,11 +112,17 @@ class Additemcontroller extends GetxController {
 
       if (statusrequest == Statusrequest.success) {
         if (response['status'] == true) {
-          showSnackBar(Get.context!, "Product Added Successfully");
+          showSnackBar(
+            Get.context!,
+            "Product Added Successfully",
+            Icon(Icons.check,color: Colors.green,),
+          );
 
           selectedImages = List<File?>.filled(3, null);
 
-          Get.find<ViewItemController>().viewCategoryItems(Get.arguments["catid"]);
+          Get.find<ViewItemController>().viewCategoryItems(
+            Get.arguments["catid"],
+          );
           Future.delayed(const Duration(seconds: 1), () {
             Get.back();
           });

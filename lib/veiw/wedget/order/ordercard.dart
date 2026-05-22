@@ -61,12 +61,12 @@ class OrderCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    Jiffy.parse(  isUtc: true,
+                    Jiffy.parse(
+                      isUtc: true,
                       order.createdAt,
                       pattern: 'yyyy-MM-dd hh:mm a',
                     ).fromNow(),
                     style: TextStyle(
-                      color: Colors.black,
                       fontSize: w * 0.035,
                       fontWeight: FontWeight.w600,
                     ),
@@ -149,9 +149,7 @@ class OrderCard extends StatelessWidget {
                         ),
                         SizedBox(width: w / 4),
                         Text(
-                          order.status == "delivered"
-                              ? "4 ⭐(1k) reviews"
-                              : "",
+                          order.status == "delivered" ? "4 ⭐(1k) reviews" : "",
                         ),
                       ],
                     ),

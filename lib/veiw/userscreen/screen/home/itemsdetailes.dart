@@ -71,7 +71,7 @@ class Itemsdetailes extends StatelessWidget {
                                         ),
                                         image: DecorationImage(
                                           image: imageProvider,
-                                          fit: BoxFit.cover,
+                                          fit: BoxFit.contain,
                                         ),
                                       ),
                                     ),

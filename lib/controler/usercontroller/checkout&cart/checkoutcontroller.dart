@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/core/class/crud.dart';
@@ -100,7 +101,11 @@ class Checkoutcontroller extends GetxController {
       if (statusrequest == Statusrequest.success) {
         if (response['status'] == true) {
           // نجاح العملية
-          showSnackBar(Get.context!, "تم إرسال الطلب بنجاح");
+          showSnackBar(
+            Get.context!,
+            "تم إرسال الطلب بنجاح",
+            Icon(Icons.check_circle, color: Colors.green),
+          );
 
           // مسح السلة (يفضل تفعيلها لضمان عدم تكرار الطلب)
           Get.find<CartController>().view();
@@ -113,16 +118,25 @@ class Checkoutcontroller extends GetxController {
           showSnackBar(
             Get.context!,
             "خطأ في البيانات، الرجاء المحاولة مرة أخرى",
+            Icon(Icons.question_mark, color: Colors.red),
           );
         }
       } else {
         // التعامل مع أخطاء السيرفر أو الإنترنت
-        showSnackBar(Get.context!, "حدث خطأ في الاتصال بالخادم");
+        showSnackBar(
+          Get.context!,
+          "حدث خطأ في الاتصال بالخادم",
+          Icon(Icons.question_mark, color: Colors.red),
+        );
       }
     } catch (e) {
       // حماية التطبيق من الانهيار في حال حدث خطأ غير متوقع
       statusrequest = Statusrequest.serverfailure;
-      showSnackBar(Get.context!, "حدث خطأ غير متوقع");
+      showSnackBar(
+        Get.context!,
+        "حدث خطأ غير متوقع",
+        Icon(Icons.question_mark, color: Colors.red),
+      );
     } finally {
       update(); // تحديث الواجهة في كل الحالات
     }

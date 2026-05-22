@@ -97,7 +97,7 @@ class Ordercontroller extends GetxController {
         if (response['status'] == true) {
           orders.removeWhere((e) => e.orderId == orderid);
           // 2. إظهار الرسالة
-          showSnackBar(Get.context!, "تم إلغاء الطلب بنجاح");
+          showSnackBar(Get.context!, "تم إلغاء الطلب بنجاح",Icon(Icons.check_circle));
           viewmyorders();
           Get.back();
           // 3. العودة للخلف أولاً
