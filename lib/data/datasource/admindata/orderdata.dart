@@ -13,10 +13,12 @@ class AdminDataOrder {
     return response.fold((l) => l, (r) => r);
   }
 
-  // acceptedorderdata() async {
-  //   var response = await crud.postrequset(LinkApi.adminorderaccepted, {});
-  //   return response.fold((l) => l, (r) => r);
-  // }
+  changestatus(int orderid,String status) async {
+    var response = await crud.putandpacth("${LinkApi.adminorderpending}/$orderid", {
+      "status":status
+    });
+    return response.fold((l) => l, (r) => r);
+  }
 
   
 

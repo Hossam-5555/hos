@@ -49,7 +49,7 @@ class SharedProductCard extends StatelessWidget {
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Colors.grey[100], // ✅ لون رمادي فاتح لخلفية الصورة
+                  // color: Colors.grey[100], // ✅ لون رمادي فاتح لخلفية الصورة
                   borderRadius: BorderRadius.all(
                     Radius.circular(25),
                   ), // ✅ زوايا دائرية لحامل الصورة

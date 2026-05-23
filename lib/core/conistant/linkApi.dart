@@ -59,7 +59,6 @@ class LinkApi {
 
   //Admin//orders
   static String adminorderpending = '$lravelserver/order';
-  // static String adminorderaccepted = '$server/admin/orders/accepted.php';
   // static String adminaprovedorder = '$server/admin/orders/approve.php';
   // static String prepareorder = '$server/admin/orders/prepare.php';
 }

@@ -20,10 +20,6 @@ class AdminHome2 extends StatelessWidget {
           child: ListView(
             children: [
               const SizedBox(height: 16),
-              Searchbar(
-                title: 'Search orders, products...',
-                mycontroller: c.searchcontroller,
-              ),
               const SizedBox(height: 20),
               const StatsSection(),
               const SizedBox(height: 20),
@@ -145,7 +141,7 @@ class SalesChart extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-        color: Colors.white.withAlpha(50),
+          color: Colors.white.withAlpha(50),
           strokeAlign: BorderSide.strokeAlignCenter,
         ),
       ),
