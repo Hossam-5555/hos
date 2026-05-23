@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:hos/controler/admincontroller/AdminHome.dart';
-import 'package:hos/veiw/wedget/searchbar.dart';
+
 
 // ignore: must_be_immutable
 class AdminHome2 extends StatelessWidget {
@@ -9,10 +7,8 @@ class AdminHome2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final size = MediaQuery.of(context).size;
-    // final height = size.height;
-    // final width = size.width;
-    final c = Get.put(Adminhome());
+    
+    // final c = Get.put(Adminhome());
     return Scaffold(
       body: SafeArea(
         child: Padding(

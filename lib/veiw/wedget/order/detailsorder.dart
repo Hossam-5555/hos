@@ -1,25 +1,34 @@
-  import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:hos/data/model/ordersmodel.dart';
 
 Widget card(Widget child) => Container(
-    margin: const EdgeInsets.only(bottom: 12),
-    padding: const EdgeInsets.all(12),
-    decoration: BoxDecoration(
-      border: Border.all(color: Colors.grey.withAlpha(50)),
-      borderRadius: BorderRadius.circular(12),
-      // boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],
-    ),
-    child: child,
-  );
+  margin: const EdgeInsets.only(bottom: 12),
+  padding: const EdgeInsets.all(12),
+  decoration: BoxDecoration(
+    border: Border.all(color: Colors.grey.withAlpha(50)),
+    borderRadius: BorderRadius.circular(12),
+    // boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],
+  ),
+  child: child,
+);
 
-  // status
-  Widget statusorder(String status, Color currentColor, String text) {
+// status
+Widget statusorder(String status, Color currentColor, String text) {
   // 1️⃣ أضفنا اللون المخصص لكل حالة داخل الـ Map
   final steps = [
     {"icon": Icons.receipt_long, "label": "Pending", "color": Colors.orange},
     {"icon": Icons.inventory_2, "label": "Processing", "color": Colors.blue},
-    {"icon": Icons.local_shipping, "label": "Shipped", "color": const Color.fromARGB(255, 179, 123, 39)},
-    {"icon": Icons.check_circle, "label": "Delivered", "color": const Color.fromARGB(255, 33, 201, 10)},
+    {
+      "icon": Icons.local_shipping,
+      "label": "Shipped",
+      "color": const Color.fromARGB(255, 179, 123, 39),
+    },
+    {
+      "icon": Icons.check_circle,
+      "label": "Delivered",
+      "color": const Color.fromARGB(255, 33, 201, 10),
+    },
   ];
 
   int current = [
@@ -48,7 +57,11 @@ Widget card(Widget child) => Container(
             ),
             AnimatedDefaultTextStyle(
               duration: animationDuration,
-              style: TextStyle(color: currentColor, fontWeight: FontWeight.bold, fontSize: 14),
+              style: TextStyle(
+                color: currentColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
               child: Text(text),
             ),
           ],
@@ -61,7 +74,7 @@ Widget card(Widget child) => Container(
           children: List.generate(steps.length, (i) {
             bool active = i <= current;
             bool last = i == steps.length - 1;
-            
+
             // 2️⃣ استخراج لون الخطوة الحالية
             Color stepColor = steps[i]["color"] as Color;
 
@@ -77,7 +90,9 @@ Widget card(Widget child) => Container(
                           height: 2,
                           color: i == 0
                               ? Colors.transparent
-                              : (i <= current ? (steps[i - 1]["color"] as Color) : Colors.grey.shade300),
+                              : (i <= current
+                                    ? (steps[i - 1]["color"] as Color)
+                                    : Colors.grey.shade300),
                         ),
                       ),
 
@@ -112,7 +127,9 @@ Widget card(Widget child) => Container(
                           height: 2,
                           color: last
                               ? Colors.transparent
-                              : (i < current ? stepColor : Colors.grey.shade300),
+                              : (i < current
+                                    ? stepColor
+                                    : Colors.grey.shade300),
                         ),
                       ),
                     ],
@@ -142,75 +159,86 @@ Widget card(Widget child) => Container(
   );
 }
 
-  // info
-  Widget info(order) => Column(
-    children: [
-      row(Icons.person, "Name", order.username),
-      row(Icons.phone, "Phone", order.shippingAddress.phone),
-      row(
-        Icons.location_on,
-        "Address",
-        "${order.shippingAddress.city} - ${order.shippingAddress.street}",
-      ),
-    ],
-  );
+// info
+Widget info(order) => Column(
+  children: [
+    row(Icons.person, "Name", order.username),
+    row(Icons.phone, "Phone", order.shippingAddress.phone),
+    row(
+      Icons.location_on,
+      "Address",
+      "${order.shippingAddress.city} - ${order.shippingAddress.street}",
+    ),
+  ],
+);
 
-  // items
-  Widget items(OrderModel order) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text("Products", style: TextStyle(fontWeight: FontWeight.bold)),
-      ...order.items.map<Widget>(
-        (e) => ListTile(
-          leading: Container(
-            alignment: Alignment.center,
-            width: 80,
-            height: 80,
-            decoration: BoxDecoration(
-              color: Colors.blue[50],
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Text("${order.orderId}"),
+// items
+Widget items(OrderModel order) => Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Text("Products", style: TextStyle(fontWeight: FontWeight.bold)),
+    ...order.items.map<Widget>(
+      (e) => ListTile(
+        leading: Container(
+          alignment: Alignment.center,
+          width: 80,
+          height: 80,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
           ),
-          contentPadding: EdgeInsets.zero,
-          title: Text(e.productName!),
-          subtitle: Text("x${e.quantity}"),
-          trailing: Text("${e.price}\$", style: TextStyle(color: Colors.green)),
+          child: CachedNetworkImage(
+            imageUrl: e.image.toString(),
+            imageBuilder: (context, imageProvider) => Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+          ),
         ),
+        contentPadding: EdgeInsets.zero,
+        title: Text(e.productName!),
+        subtitle: Text("x${e.quantity}"),
+        trailing: Text("${e.price}\$", style: TextStyle(color: Colors.green)),
       ),
-    ],
-  );
+    ),
+  ],
+);
 
-  // price
-  Widget price(order) => Column(
-    children: [
-      priceRow("Subtotal", order.subtotal),
-      priceRow("Shipping", order.shippingFee),
-      priceRow("Tax", order.taxAmount),
-      Divider(),
-      priceRow("Total", order.totalAmount, big: true),
-    ],
-  );
+// price
+Widget price(order) => Column(
+  children: [
+    priceRow("Subtotal", order.subtotal),
+    priceRow("Shipping", order.shippingFee),
+    priceRow("Tax", order.taxAmount),
+    Divider(),
+    priceRow("Total", order.totalAmount, big: true),
+  ],
+);
 
-  // helpers
-  Widget row(IconData i, String t, String? v) => ListTile(
-    contentPadding: EdgeInsets.zero,
-    leading: Icon(i),
-    title: Text(t),
-    subtitle: Text(v ?? "-"),
-  );
+// helpers
+Widget row(IconData i, String t, String? v) => ListTile(
+  contentPadding: EdgeInsets.zero,
+  leading: Icon(i),
+  title: Text(t),
+  subtitle: Text(v ?? "-"),
+);
 
-  Widget priceRow(String t, dynamic v, {bool big = false}) => Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Text(t),
-      Text(
-        "$v\$",
-        style: TextStyle(
-          fontSize: big ? 18 : 14,
-          fontWeight: FontWeight.bold,
-          color: Colors.green,
-        ),
+Widget priceRow(String t, dynamic v, {bool big = false}) => Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    Text(t),
+    Text(
+      "$v\$",
+      style: TextStyle(
+        fontSize: big ? 18 : 14,
+        fontWeight: FontWeight.bold,
+        color: Colors.green,
       ),
-    ],
-  );
+    ),
+  ],
+);

@@ -62,7 +62,7 @@ class Notificationcontroller extends GetxController {
 
   /// ضغط عادي
   void onTap(int id) {
-    markAsRead(id);
+    // markAsRead(id);
     if (!selectionMode) return;
 
     if (selectedIds.contains(id)) {

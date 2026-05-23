@@ -66,6 +66,7 @@ class OrderItemmodel {
   int? quantity;
   int? price;
   int? totalPrice;
+  String? image;
 
   OrderItemmodel({
     this.orderId,
@@ -74,6 +75,7 @@ class OrderItemmodel {
     this.quantity,
     this.price,
     this.totalPrice,
+     this.image,
   });
 
   OrderItemmodel.fromJson(Map<String, dynamic> json) {
@@ -83,6 +85,7 @@ class OrderItemmodel {
     quantity = json['quantity'];
     price = json['price'];
     totalPrice = json['total_price'];
+    image = json["image"];
   }
 
   Map<String, dynamic> toJson() {
@@ -93,6 +96,7 @@ class OrderItemmodel {
     data['quantity'] = this.quantity;
     data['price'] = this.price;
     data['total_price'] = this.totalPrice;
+    data["image"] = this.image;
     return data;
   }
 }

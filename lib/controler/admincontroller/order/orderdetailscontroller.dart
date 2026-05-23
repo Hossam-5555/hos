@@ -1,3 +1,4 @@
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,9 +13,9 @@ import '../../../core/class/crud.dart';
 
 class AdminOrderDetailesController extends GetxController {
   OrderModel? order;
-  
+
   // 🔹 1. متغير محلي جديد لحفظ الحالة الحالية وقابل للتعديل
-  String currentStatus = 'pending'; 
+  String currentStatus = 'pending';
 
   Myservisec myservisec = Get.find();
   AdminDataOrder dataOrder = Get.put(AdminDataOrder(Get.find()));
@@ -54,7 +55,7 @@ class AdminOrderDetailesController extends GetxController {
     if (args != null && args["order"] != null) {
       order = args["order"];
       // 🔹 2. نأخذ الحالة الابتدائية من الـ Model عند فتح الصفحة
-      currentStatus = order!.status; 
+      currentStatus = order!.status;
       getcolorandstause(currentStatus);
     }
     super.onInit();
@@ -69,10 +70,9 @@ class AdminOrderDetailesController extends GetxController {
 
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
-        
         // 🔹 3. هنا الحل! بنعدل المتغير المحلي للـ Controller مش الـ Model
-        currentStatus = s; 
-        getcolorandstause(s); 
+        currentStatus = s;
+        getcolorandstause(s);
 
         showSnackBar(
           Get.context!,
@@ -83,7 +83,10 @@ class AdminOrderDetailesController extends GetxController {
         try {
           if (Get.isRegistered<AdminPindingController>()) {
             final pendingCtrl = Get.find<AdminPindingController>();
-            pendingCtrl.viewOrders(s); 
+            pendingCtrl.viewOrders(s);
+
+            int currentstat = pendingCtrl.statusKeys.indexWhere((e) => e == s);
+            pendingCtrl.selectedStatus = currentstat;
           }
         } catch (e) {
           if (kDebugMode) print("Error: $e");
@@ -92,6 +95,6 @@ class AdminOrderDetailesController extends GetxController {
         statusrequest = Statusrequest.failure;
       }
     }
-    update(); 
+    update();
   }
 }

@@ -118,8 +118,8 @@ class AdminOrderdetails extends StatelessWidget {
     Get.bottomSheet(
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-        decoration: const BoxDecoration(
-          color: Colors.white,
+        decoration:  BoxDecoration(
+          color:  const Color.fromARGB(255, 0, 0, 0),
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: Column(
@@ -137,7 +137,7 @@ class AdminOrderdetails extends StatelessWidget {
             if (currentStatus == 'pending') ...[
               _buildStatusTile(
                 "قبول وتجهيز الطلب",
-                Colors.blue,
+                controller.statusColor,
                 () => controller.updateStatus('processing'),
               ),
               _buildStatusTile(
@@ -150,7 +150,7 @@ class AdminOrderdetails extends StatelessWidget {
             if (currentStatus == 'processing') ...[
               _buildStatusTile(
                 "تسليم للمندوب (شحن)",
-                Colors.purple,
+                controller.statusColor,
                 () => controller.updateStatus('shipped'),
               ),
               _buildStatusTile(
@@ -163,7 +163,7 @@ class AdminOrderdetails extends StatelessWidget {
             if (currentStatus == 'shipped') ...[
               _buildStatusTile(
                 "تم توصيل الطلب بنجاح",
-                Colors.green,
+                controller.statusColor,
                 () => controller.updateStatus('delivered'),
               ),
               // _buildStatusTile(
@@ -180,13 +180,13 @@ class AdminOrderdetails extends StatelessWidget {
   }
 
   // ودجت فرعية لبناء عناصر قائمة الحالات بشكل نظيف وعملي
-  Widget _buildStatusTile(String title, Color color, VoidCallback onTap) {
+  Widget _buildStatusTile(String title, Color? color, VoidCallback onTap) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       leading: CircleAvatar(radius: 7, backgroundColor: color),
       title: Text(
         title,
-        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15,color: color),
       ),
       trailing: const Icon(
         Icons.arrow_forward_ios,
