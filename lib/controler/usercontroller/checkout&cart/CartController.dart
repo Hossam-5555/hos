@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hos/controler/usercontroller/home/itemsdetailscontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/functions/snackbar.dart';
@@ -10,14 +11,32 @@ import 'package:hos/data/model/cartmodel.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/checkout.dart';
 
 class CartController extends GetxController {
-  ///////////////======================ملكش دعوه
+  // الاعتمادات والخدمات
   Cartdata cartdata = Cartdata(Get.find());
-  Statusrequest statusrequest = Statusrequest.loading;
+  Statusrequest statusrequest = Statusrequest.none; // يفضل أن تبدأ بـ none
   Myservisec myservisec = Get.put(Myservisec());
   CartModel cart = CartModel();
-  /////===========================
 
   int? get userid => myservisec.sharedPreferences.getInt("id");
+  bool isCartLoaded = false; // 🌟 علم لمعرفة هل تم تحميل السلة مسبقاً أم لا
+
+  // الأنيميشن
+  late AnimationController controllerAnimation;
+  late Animation<double> priceAnimation;
+
+  // الكوبون
+  var coupone = true.obs;
+  TextEditingController? coubonecontroller;
+  CouponeModel? couponeModel;
+  double couponediscount = 0;
+  String? couponename;
+  String? couponeID;
+
+  // بيانات السلة
+  List<CartModel> data = [];
+  RxInt get countitem => data.length.obs;
+  int totalcount = 0;
+  double totalprice = 0.0;
 
   double gettotalprice() {
     return (totalprice - totalprice * couponediscount / 100);
@@ -25,121 +44,22 @@ class CartController extends GetxController {
 
   double get totalpriceafterdiscount => gettotalprice();
 
-  late AnimationController controllerAnimation;
-  late Animation<double> priceAnimation;
-
-  var coupone = true.obs;
   void havecoupone(bool value) async {
     coupone.value = value;
     final prefs = myservisec.sharedPreferences;
     await prefs.setBool('cop', value);
   }
 
-  ///////////////////ملكش دعوه بدول  //view data
-  List<CartModel> data = [];
-  RxInt get countitem => data.length.obs;
-  int totalcount = 0;
-  double totalprice = 0.0;
-  ///////////////////////
-
-  /// ================== زيادة العدد
-  void increment(int itemId) async {
-    await addtocart(itemId, 1);
-    await view(); // ✅ يحدث الداتا من السيرفر بعد الزيادة
-    update();
-  }
-
-  /// ================== نقصان العدد
-  void decrement(int itemid) async {
-    // نلاقي المنتج
-    final item = data.firstWhere(
-      (e) => e.itemid == itemid,
-      orElse: () => CartModel(),
-    );
-    print("==================decrement item count: ${item.cartCount}");
-    int currentCount = item.cartCount ?? 0;
-
-    if (currentCount >= 1) {
-      // ينقص العدد (الباك إند هيخصم واحد)
-      await delete(itemid);
+  /// ================== دالة عرض السلة (مع تحديث صامت) ==================
+  // 🌟 أضفنا showLoading عشان نقدر نحدث البيانات في الخلفية بدون ما نوقف الشاشة
+  Future<void> view({bool showLoading = true}) async {
+    // نعرض اللودينج فقط لو دي أول مرة نفتح فيها السلة
+    if (showLoading && !isCartLoaded) {
+      statusrequest = Statusrequest.loading;
+      update();
     }
 
-    await view();
-    update();
-  }
-
-  Future<void> addtocart(int itemid, int count) async {
-    statusrequest = Statusrequest.loading;
-    update();
-
-    var response = await cartdata.addcartdata(userid!, itemid, count);
-
-    // 1. تحديد حالة الطلب (ستكون Success طالما السيرفر أرسل JSON)
-    statusrequest = handling(response);
-
-    if (statusrequest == Statusrequest.success) {
-      // الفحص الأول: إذا كان السيرفر أرسل رد المتجر المعتاد بنجاح
-      if (response["status"] == true) {
-        if (Get.isRegistered<CartController>()) {
-          return;
-        } else {
-          Get.find<CartController>().view();
-          // تحديث السلة من السيرفر
-        }
-      }
-      // الفحص الثاني: إذا أرسل السيرفر status عادية بقيمة false
-      else if (response["status"] == false) {
-        showSnackBar(
-          Get.context!,
-          response["message"],
-          Icon(Icons.question_mark, color: Colors.red),
-        );
-        statusrequest =
-            Statusrequest.failure; // تحويل الحالة لفشل بدلاً من نجاح
-      }
-      // الفحص الثالث (مهم جداً للـ Rate Limit وأخطاء لاراول الافتراضية):
-      // لاراول يرسل حقل "message" مباشرة بدون حقل "status" عند تخطي الـ Rate limit
-      else if (response.containsKey("message")) {
-        showSnackBar(
-          Get.context!,
-          response["message"],
-          Icon(Icons.question_mark, color: Colors.red),
-        );
-        statusrequest = Statusrequest.failure;
-      }
-    } else {
-      // في حال فشل الاتصال بالإنترنت تماماً أو انهار السيرفر (كود 500 بدون JSON)
-      showSnackBar(
-        Get.context!,
-        "عذراً، حدث خطأ في الاتصال بالسيرفر",
-        Icon(Icons.question_mark),
-      );
-      statusrequest = Statusrequest.none;
-    }
-
-    update(); // تحديث الواجهة لإخفاء الـ Loading وتحديث الحالة
-  }
-
-  Future<void> delete(int itemid) async {
-    statusrequest = Statusrequest.loading;
-    update();
-    var response = await cartdata.deletcartdata(userid!, itemid);
-    statusrequest = handling(response);
-    if (Statusrequest.success == statusrequest) {
-      if (response["status"] == true) {
-      } else {
-        statusrequest = Statusrequest.failure;
-      }
-    }
-  }
-
-  Future<void> view() async {
-    data.clear(); // ✅ تنظيف القديم
-    statusrequest = Statusrequest.loading;
-
-    update(); // ✅ لازم تتفعل هنا علشان Handlingdataview تعرض الـ loading
     var response = await cartdata.viewcart(userid!);
-
     statusrequest = handling(response);
 
     if (Statusrequest.success == statusrequest) {
@@ -151,12 +71,14 @@ class CartController extends GetxController {
         totalcount =
             int.tryParse(response["data"]["total_count"]?.toString() ?? "0") ??
             0;
-
         totalprice =
             double.tryParse(
               response["data"]["total_price"]?.toString() ?? "0",
             ) ??
             0.0;
+
+        isCartLoaded = true; // ✅ تم التحميل بنجاح
+
         if (data.isEmpty) {
           statusrequest = Statusrequest.failure;
         }
@@ -164,19 +86,130 @@ class CartController extends GetxController {
         statusrequest = Statusrequest.failure;
       }
     }
-    update(); // ✅ لتحديث الواجهة بالبيانات بعد الرد
+    update();
   }
 
-  //coubone========================================
-  TextEditingController? coubonecontroller;
-  CouponeModel? couponeModel;
-  double couponediscount = 0;
-  String? couponename;
-  String? couponeID;
+  /// ================== دالة الإضافة للسلة (Optimistic Update) ==================
+  Future<void> addtocart(int itemid, int count) async {
+    // 1. أخذ نسخة احتياطية من البيانات الحالية للـ Rollback في حال الفشل
+    int oldTotalCount = totalcount;
+    double oldTotalPrice = totalprice;
+    var oldData = List<CartModel>.from(data);
 
+    // 2. تحديث الـ UI محلياً فوراً (بدون loading)
+    totalcount += count;
+
+    // لو بنضيف المنتج من داخل صفحة السلة، نحدث الكمية بتاعته محلياً
+    var index = data.indexWhere((e) => e.itemid == itemid);
+    if (index != -1) {
+      data[index].cartCount = (data[index].cartCount ?? 0) + count;
+      // حساب السعر محلياً (تأكد أن حقل itemsPrice موجود بالاسم الصحيح في المودل)
+      double itemPrice =
+          double.tryParse(data[index].itemsprice?.toString() ?? "0") ?? 0.0;
+      totalprice += (itemPrice * count);
+    }
+    update(); // التحديث اللحظي للواجهة 🚀
+
+    // 3. إرسال الطلب للسيرفر في الخلفية
+    var response = await cartdata.addcartdata(userid!, itemid, count);
+    var requestStatus = handling(response);
+
+    if (requestStatus == Statusrequest.success && response["status"] == true) {
+      // 4. السيرفر نجح: نعمل مزامنة صامتة عشان نتأكد إن كل الداتا دقيقة 100%
+      await view(showLoading: false);
+      if (Get.isRegistered<Itemdetailscontroller>()) {
+        showSnackBar(
+          Get.context!,
+          "Add Item to cart",
+          Icon(Icons.check_circle_outlined, color: Colors.green),
+        );
+      }
+    } else {
+      // 5. في حال الفشل: تراجع عن التحديثات (Rollback) ونبه المستخدم
+      totalcount = oldTotalCount;
+      totalprice = oldTotalPrice;
+      data = oldData;
+      update();
+
+      String errorMsg = response["message"] ?? "حدث خطأ في الاتصال بالسيرفر";
+      showSnackBar(
+        Get.context!,
+        errorMsg,
+        const Icon(Icons.error_outline, color: Colors.red),
+      );
+    }
+  }
+
+  /// ================== زيادة العدد ==================
+  void increment(int itemId) async {
+    await addtocart(itemId, 1);
+  }
+
+  /// ================== نقصان العدد / حذف منتج ==================
+  void decrement(int itemid) async {
+    var index = data.indexWhere((e) => e.itemid == itemid);
+    if (index == -1) return;
+
+    int currentCount = data[index].cartCount ?? 0;
+
+    // إذا كانت الكمية الحالية 1 والمستخدم ضغط ناقص (يعني هيحذف)
+    if (currentCount >= 1) {
+      await delete(itemid);
+    }
+  }
+
+  Future<void> delete(int itemid) async {
+    // 1. تجهيز الـ Rollback
+    int oldTotalCount = totalcount;
+    double oldTotalPrice = totalprice;
+    var oldData = List<CartModel>.from(data);
+
+    var index = data.indexWhere((e) => e.itemid == itemid);
+    if (index == -1) return;
+
+    int currentCount = data[index].cartCount ?? 0;
+    double itemPrice =
+        double.tryParse(data[index].itemsprice?.toString() ?? "0") ?? 0.0;
+
+    // 2. تحديث الـ UI محلياً فوراً
+    totalcount -= 1;
+    totalprice -= itemPrice;
+
+    if (currentCount <= 1) {
+      data.removeAt(index); // إزالة العنصر تماماً من السلة لو كان آخر حبة
+      if (data.isEmpty) statusrequest = Statusrequest.failure;
+    } else {
+      data[index].cartCount = currentCount - 1; // تنقيص حبة واحدة
+    }
+    update(); // التحديث اللحظي 🚀
+
+    // 3. إرسال طلب الحذف للسيرفر
+    var response = await cartdata.deletcartdata(userid!, itemid);
+    var requestStatus = handling(response);
+
+    if (requestStatus == Statusrequest.success && response["status"] == true) {
+      // 4. مزامنة صامتة بعد النجاح
+      await view(showLoading: false);
+    } else {
+      // 5. التراجع (Rollback) في حال الفشل
+      totalcount = oldTotalCount;
+      totalprice = oldTotalPrice;
+      data = oldData;
+      if (data.isNotEmpty) statusrequest = Statusrequest.success;
+      update();
+
+      showSnackBar(
+        Get.context!,
+        "فشل تنفيذ العملية",
+        const Icon(Icons.error_outline, color: Colors.red),
+      );
+    }
+  }
+
+  /// ================== الانتقال للدفع ==================
   void gotochechout() {
     Get.to(
-      () => Checkout(),
+      () => const Checkout(),
       transition: Transition.fadeIn,
       arguments: {
         "Cartdata": data,
@@ -188,43 +221,13 @@ class CartController extends GetxController {
     );
   }
 
-  // Future<void> chechcoupone() async {
-  //   statusrequest = Statusrequest.loading;
-  //   update();
-  //   if (data.isNotEmpty) {
-  //     var response = await cartdata.couponedata(coubonecontroller!.text);
-  //     statusrequest = handling(response);
-  //     if (Statusrequest.success == statusrequest) {
-  //       if (response["status"] == "success") {
-  //         Map<String, dynamic> dataCoupone = response['data'];
-  //         couponeModel = CouponeModel.fromJson(dataCoupone);
-  //         couponediscount = double.parse(couponeModel!.couponDiscount!);
-  //         couponename = couponeModel!.couponName;
-  //         couponeID = couponeModel!.couponId.toString();
-  //         Get.snackbar("الكوبون", "✅تم تطبيق الكوبون ");
-  //       } else {
-  //         couponediscount = 0;
-  //         couponename = null;
-  //         couponeID = null;
-  //         Get.snackbar("خطأ في البيانات ", "الرجاء المحاوله مره اخري");
-  //       }
-  //     }
-  //     update();
-  //   } else {
-  //     Get.snackbar("السلله  فارغه", "لا يمكن تطبيق الكوبون");
-  //   }
-  // }
-
-  //
-  //coubone========================================
-
   @override
   void onInit() {
     coubonecontroller = TextEditingController();
     coupone.value = myservisec.sharedPreferences.getBool('cop') ?? false;
 
+    // نستدعي البيانات أول مرة يفتح فيها التطبيق
     view();
-
     super.onInit();
   }
 
