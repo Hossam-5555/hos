@@ -80,15 +80,19 @@ class CartController extends GetxController {
     if (statusrequest == Statusrequest.success) {
       // الفحص الأول: إذا كان السيرفر أرسل رد المتجر المعتاد بنجاح
       if (response["status"] == true) {
-        CartController cartController = Get.find();
-        await cartController.view(); // تحديث السلة من السيرفر
+        if (Get.isRegistered<CartController>()) {
+          return;
+        } else {
+          Get.find<CartController>().view();
+          // تحديث السلة من السيرفر
+        }
       }
       // الفحص الثاني: إذا أرسل السيرفر status عادية بقيمة false
       else if (response["status"] == false) {
         showSnackBar(
           Get.context!,
           response["message"],
-          Icon(Icons.question_mark,color: Colors.red,),
+          Icon(Icons.question_mark, color: Colors.red),
         );
         statusrequest =
             Statusrequest.failure; // تحويل الحالة لفشل بدلاً من نجاح
@@ -99,7 +103,7 @@ class CartController extends GetxController {
         showSnackBar(
           Get.context!,
           response["message"],
-          Icon(Icons.question_mark,color: Colors.red),
+          Icon(Icons.question_mark, color: Colors.red),
         );
         statusrequest = Statusrequest.failure;
       }

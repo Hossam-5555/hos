@@ -36,34 +36,37 @@ class Coubone extends GetView<CartController> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: controller.couponename == null
-                  ? Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: controller.coubonecontroller,
-                            decoration: InputDecoration(
-                              hintText: "أدخل كود الخصم",
-                              border: OutlineInputBorder(
+                  ? AnimatedScale(duration: Duration(seconds: 1),
+                  scale: 1,
+                    child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: controller.coubonecontroller,
+                              decoration: InputDecoration(
+                                hintText: "أدخل كود الخصم",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                             ),
+                            child: const Text("Apply"),
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: const Text("Apply"),
-                        ),
-                      ],
-                    )
+                        ],
+                      ),
+                  )
                   : Container(
                       alignment: Alignment.center,
                       padding: const EdgeInsets.all(10),
