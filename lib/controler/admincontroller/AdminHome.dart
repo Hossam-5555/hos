@@ -41,11 +41,11 @@ class Adminhome extends GetxController {
     // ViewItemScreen(),
     ViewCategories(),
   ];
-
+  List time=["day","mounth","year"];
+   
   List<List<dynamic>> title = [
     ["Dashboard", Icons.home_outlined],
     ["Orders", Icons.card_giftcard],
-    ["Items", Icons.inventory_2_outlined],
     ["Categories", Icons.category_outlined],
   ];
 }

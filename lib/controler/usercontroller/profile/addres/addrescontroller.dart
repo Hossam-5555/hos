@@ -6,7 +6,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
-import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/addresdata.dart';
 import 'package:hos/data/model/Addresmodel.dart';
@@ -15,7 +14,7 @@ class AddressController extends GetxController {
   Addresdata addresdata = Addresdata(Get.find());
   Myservisec myservisec = Get.find();
   Statusrequest? statusrequest;
-  List<AddresModel> listaddresdata = [];
+  List<AddresModel> listaddresdata = <AddresModel>[].obs;
   GlobalKey<FormState> addadredKey = GlobalKey();
   int get userid => myservisec.sharedPreferences.getInt("id")!;
   // متغيرات الحقول
@@ -26,7 +25,7 @@ class AddressController extends GetxController {
   double long = 23.3344;
 
   /////////////////////////
- 
+
   Completer<GoogleMapController>? completercontroller;
 
   List<Marker> markers = [];
@@ -103,24 +102,113 @@ class AddressController extends GetxController {
     update();
   }
 
-  final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
+  final GlobalKey<AnimatedListState> Addressket =
+      GlobalKey<AnimatedListState>();
 
   void deleteAddres(int addresid) {
-    // 🔹 نجيب index الصح
-    addresdata.deleteAddresdata(addresid);
+    // 1️⃣ البحث عن الـ index الخاص بالعنوان داخل القائمة المحلية قبل حذفه
+    int index = listaddresdata.indexWhere((e) => e.id == addresid);
+    // 💡 ملاحظة: تأكد هل اسم المتغير في الموديل addressId أم id .. قمت بكتابتها تبعاً لمنطق الكود لديك
 
-    // 🔹 نحذف من الليست مباشرة
-    listaddresdata.removeWhere((e) => e.id == addresid);
+    // 2️⃣ التأكد من أن العنصر موجود فعلياً في القائمة لتفادي الـ Crash
+    if (index != -1) {
+      // أخذ نسخة من العنصر لعرض بياناته أثناء حركية الحذف قبل مسحه من القائمة
+      var removedItem = listaddresdata[index];
 
-    // 🔹 استدعاء API للحذف
-    showSnackBar(Get.context!, "تم حذف العنوان بنجاح",Icon(Icons.check_circle));
-    // 🔹 حالة الليست فاضية
-    if (listaddresdata.isEmpty) {
-      statusrequest = Statusrequest.failure;
+      // 3️⃣ تحديث الـ AnimatedListState بشكل آمن
+      if (Addressket.currentState != null) {
+        Addressket.currentState!.removeItem(
+          index, // تم التعديل هنا ليأخذ الـ index وليس الـ id
+          (context, animation) => ScaleTransition(
+            scale: animation,
+            child: Card(
+              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              elevation: 0, // إلغاء الظل الثقيل لجعلها عصرية ومسطحة Flat
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12), // زوايا دائرية ناعمة
+                side: BorderSide(
+                  color: Colors
+                      .red
+                      .shade200, // إطار خارجي خفيف جداً بلون أحمر هادئ
+                  width: 1,
+                ),
+              ),
+              color: Colors
+                  .red
+                  .shade50, // خلفية حمراء باهتة ومريحة جداً للعين (Soft Red)
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  // شريط أحمر رأسي جهة اليمين/اليسار يعطي لمسة جمالية واحترافية
+                  decoration: BoxDecoration(
+                    border: Border(
+                      right: BorderSide(
+                        color: Colors.red.shade600,
+                        width: 5,
+                      ), // إذا كان التطبيق عربي
+                      // left: BorderSide(color: Colors.red.shade600, width: 5), // غيرها لـ left لو واجهة التطبيق إنجليزي
+                    ),
+                  ),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 4,
+                    ),
+                    leading: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.red.shade100,
+                        shape: BoxShape
+                            .circle, // وضع الأيقونة داخل دائرة خلفيتها حمراء فاتحة
+                      ),
+                      child: Icon(
+                        Icons
+                            .delete_sweep_rounded, // أيقونة حذف أكثر احترافية وديناميكية
+                        color: Colors.red.shade700,
+                        size: 22,
+                      ),
+                    ),
+                    title: Text(
+                      "تم حذف ${removedItem.name ?? 'العنوان'}",
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: Colors
+                            .red
+                            .shade900, // لون الخط متناسق مع الخلفية الحمراء
+                        fontFamily:
+                            "sans-serif", // استبدله بخط تطبيقك إذا كان لديك خط مخصص
+                      ),
+                    ),
+                    subtitle: const Text(
+                      "تم نقل العنصر للمهملات بنجاح",
+                      style: TextStyle(fontSize: 12, color: Colors.black54),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          duration: const Duration(milliseconds:500),
+        );
+      }
+
+      // 4️⃣ حذف العنصر من القائمة المحلية (List) بعد تمرير الـ index للأنيميشن
+      listaddresdata.removeAt(index);
+
+      // 5️⃣ استدعاء الـ API لحذف العنوان من السيرفر
+      addresdata.deleteAddresdata(addresid, userid);
+
+      // 7️⃣ تحديث حالة الواجهة إذا أصبحت القائمة فارغة
+      if (listaddresdata.isEmpty) {
+        statusrequest = Statusrequest.failure;
+      }
+
+      // 8️⃣ تحديث الواجهة (GetX Update)
+      update();
+    } else {
+      print("خطأ: العنصر غير موجود في القائمة المحلية أساساً!");
     }
-
-    // 🔹 تحديث الواجهة
-    update();
   }
 
   // دالة الحفظ

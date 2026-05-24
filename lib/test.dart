@@ -67,6 +67,33 @@ class MyAnimatedList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: PopupMenuButton(
+          shape: BeveledRectangleBorder(
+            borderRadius: BorderRadiusGeometry.circular(20),
+          ),
+          menuPadding: EdgeInsets.all(20),
+          popUpAnimationStyle: AnimationStyle(
+            curve: Curves.fastOutSlowIn,
+            duration: Duration(milliseconds: 500),
+          ),
+          onOpened: () {
+            print("Hossam");
+          },
+          color: Colors.amber,
+          elevation: 1,
+
+          borderRadius: BorderRadius.circular(30),
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              child: Text("Go to Aim"),
+              onTap: () {
+                print("Hosssam is the beast");
+              },
+            ),
+            PopupMenuItem(child: Text("data")),
+            PopupMenuItem(child: Text("data")),
+          ],
+        ),
         title: const Text("AnimatedList مع GetX ودمج الحركات"),
         backgroundColor: Colors.indigo,
       ),
@@ -76,11 +103,11 @@ class MyAnimatedList extends StatelessWidget {
         initialItemCount: controller.items.length,
         itemBuilder: (context, index, animation) {
           // بناء العنصر مع تأثير حركي مزدوج
-          return SizeTransition(
-            sizeFactor: animation, // الحركة الأولى: التلاشي (0 -> 1)
+          return ScaleTransition(
+            scale: animation, // الحركة الأولى: التلاشي (0 -> 1)
             child: SlideTransition(
               position: Tween<Offset>(
-                begin: const Offset(1, 0), // الدخول من اليمين (1 -> 0)
+                begin: const Offset(0, 1), // الدخول من اليمين (1 -> 0)
                 end: Offset.zero,
               ).animate(animation), // الحركة الثانية: الانزلاق
               child: Card(

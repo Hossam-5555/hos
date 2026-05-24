@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
-
 // ignore: must_be_immutable
 class AdminHome2 extends StatelessWidget {
   AdminHome2({super.key});
 
   @override
   Widget build(BuildContext context) {
-    
     // final c = Get.put(Adminhome());
     return Scaffold(
       body: SafeArea(
@@ -141,8 +139,9 @@ class SalesChart extends StatelessWidget {
           strokeAlign: BorderSide.strokeAlignCenter,
         ),
       ),
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           const Text(
             "Sales Overview",
@@ -150,14 +149,15 @@ class SalesChart extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Row(
+            mainAxisSize: MainAxisSize.min,
             children: const [
-              Chip(label: Text("Day")),
+              Chip(label: Text("Day", style: TextStyle(fontSize: 6))),
               SizedBox(width: 5),
-              Chip(label: Text("Week")),
+              Chip(label: Text("Week", style: TextStyle(fontSize: 6))),
               SizedBox(width: 5),
-              Chip(label: Text("Month")),
+              Chip(label: Text("Month", style: TextStyle(fontSize: 6))),
               SizedBox(width: 5),
-              Chip(label: Text("Year")),
+              Chip(label: Text("Year", style: TextStyle(fontSize: 6))),
             ],
           ),
           const Expanded(child: Center(child: Text("Chart Here"))),
