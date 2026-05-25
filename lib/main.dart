@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/conistant/routs.dart';
@@ -6,7 +5,6 @@ import 'package:hos/core/localization/transilation.dart';
 import 'package:hos/core/serveces/binding.dart';
 
 import 'package:hos/core/serveces/myservisec.dart';
-import 'package:hos/test.dart';
 
 import 'core/localization/changlocal.dart';
 

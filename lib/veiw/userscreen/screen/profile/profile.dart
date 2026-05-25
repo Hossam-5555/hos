@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/conistant/imageasset.dart';
@@ -40,14 +41,32 @@ class ProfilePage extends StatelessWidget {
               ),
               child: Column(
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      OrderCard("الطلبات و\nالمشتريات", Imageasset.google, () {
+                        Get.toNamed(Approute.Orders);
+                      }),
+                      OrderCard("نقاط\nالمكافأه", Imageasset.goold, () {}),
+                      OrderCard("الاعدادات و\nالخصوصيه", Imageasset.settings, () {
+                        Get.to(
+                          () => Settings(),
+                          transition: Transition.fadeIn,
+                          duration: Duration(milliseconds: 400),
+                          curve: Curves.fastOutSlowIn,
+                        );
+                      }),
+                    ],
+                  ),
+
                   _buildListTile(
                     gradientColors: [
-                      const Color.fromARGB(255, 3, 60, 218),
-                      Colors.blue,
+                      const Color.fromARGB(255, 95, 182, 8),
+                      const Color.fromARGB(255, 97, 97, 97),
                     ],
-                    icon: Icons.local_mall_outlined,
-                    title: "Orders".tr,
-                    onTap: () => Get.toNamed(Approute.Orders),
+                    icon: Icons.location_on_outlined,
+                    title: "Saved Addresses".tr,
+                    onTap: () => Get.toNamed(Approute.viewmyaddres),
                   ),
                   _buildListTile(
                     gradientColors: [
@@ -58,27 +77,6 @@ class ProfilePage extends StatelessWidget {
                     title: "Favorite".tr,
                     onTap: () => Get.toNamed(Approute.myfavorite),
                   ),
-                  _buildListTile(
-                    gradientColors: [
-                      const Color.fromARGB(255, 31, 253, 2),
-                      Colors.green,
-                    ],
-                    icon: Icons.location_on_outlined,
-                    title: "Saved Addresses".tr,
-                    onTap: () => Get.toNamed(Approute.viewmyaddres),
-                  ),
-                  _buildListTile(
-                    gradientColors: [
-                      const Color.fromARGB(255, 196, 136, 8),
-                      Colors.orange,
-                    ],
-                    icon: Icons.credit_card_outlined,
-                    title: "Payment Methods".tr,
-                    onTap: () => Get.to(
-                      () => PaymentScreen(),
-                      transition: Transition.cupertino,
-                    ),
-                  ),
 
                   _buildListTile(
                     icon: Icons.settings_outlined,
@@ -88,7 +86,7 @@ class ProfilePage extends StatelessWidget {
                       () => Settings(),
                       transition: Transition.leftToRightWithFade,
                       duration: Duration(milliseconds: 500),
-                      curve: Curves.fastOutSlowIn
+                      curve: Curves.fastOutSlowIn,
                     ),
                   ),
                 ],
@@ -232,4 +230,61 @@ class ProfilePage extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget OrderCard(String title, String image, Function()? onTap) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.white.withOpacity(
+            0.15,
+          ), // الحواف المضيئة الخفيفة اللي باينة في الصورة
+          width: 1,
+        ),
+        borderRadius: BorderRadius.circular(15),
+        color: Colors.grey[600],
+        gradient: RadialGradient(
+          center: Alignment(0.0, -0.2), // مكان بؤرة الإضاءة (مرفوعة لفوق شوية)
+          radius: 1.2,
+          colors: [
+            Color(0xFF555A60), // الدرجة الفاتحة المائل للرمادي/الفضي في المنتصف
+            Color(0xFF2C2F33), // الدرجة الأغمق اللي بتقفل على الأطراف
+            Color(0xFF1A1C1E), // الدرجة الداكنة جداً عند الزوايا
+          ],
+          stops: const [0.0, 0.6, 1.0],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.4),
+            blurRadius: 10,
+            offset: const Offset(0, 4), // الظل الخفيف تحت الكارت
+          ),
+        ],
+      ),
+      height: 300,
+      width: 130,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 25,
+              color: Colors.grey[50],
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 10),
+          Image.asset(
+            image,
+            errorBuilder: (context, imageProvider, s) =>
+                Icon(Icons.error_outline),
+          ),
+        ],
+      ),
+    ),
+  );
 }
