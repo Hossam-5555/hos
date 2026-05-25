@@ -1,12 +1,10 @@
 import 'dart:ui';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/serveces/myservisec.dart';
-import 'package:hos/veiw/userscreen/screen/profile/order/paymentmethods.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -44,18 +42,22 @@ class ProfilePage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      OrderCard("الطلبات و\nالمشتريات", Imageasset.google, () {
+                      OrderCard("الطلبات و\nالمشتريات", Imageasset.order, () {
                         Get.toNamed(Approute.Orders);
                       }),
                       OrderCard("نقاط\nالمكافأه", Imageasset.goold, () {}),
-                      OrderCard("الاعدادات و\nالخصوصيه", Imageasset.settings, () {
-                        Get.to(
-                          () => Settings(),
-                          transition: Transition.fadeIn,
-                          duration: Duration(milliseconds: 400),
-                          curve: Curves.fastOutSlowIn,
-                        );
-                      }),
+                      OrderCard(
+                        "الاعدادات و\nالخصوصيه",
+                        Imageasset.settings,
+                        () {
+                          Get.to(
+                            () => Settings(),
+                            transition: Transition.fadeIn,
+                            duration: Duration(milliseconds: 400),
+                            curve: Curves.fastOutSlowIn,
+                          );
+                        },
+                      ),
                     ],
                   ),
 
@@ -251,8 +253,9 @@ Widget OrderCard(String title, String image, Function()? onTap) {
           radius: 1.2,
           colors: [
             Color(0xFF555A60), // الدرجة الفاتحة المائل للرمادي/الفضي في المنتصف
-            Color(0xFF2C2F33), // الدرجة الأغمق اللي بتقفل على الأطراف
-            Color(0xFF1A1C1E), // الدرجة الداكنة جداً عند الزوايا
+            Color.fromARGB(255, 144, 148, 153), // الدرجة الأغمق اللي بتقفل على الأطراف
+            Color(0xFF1A1C1E), 
+            // الدرجة الداكنة جداً عند الزوايا
           ],
           stops: const [0.0, 0.6, 1.0],
         ),
@@ -265,11 +268,11 @@ Widget OrderCard(String title, String image, Function()? onTap) {
         ],
       ),
       height: 300,
-      width: 130,
+      width: 120,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
+          Text(textAlign: TextAlign.center,
             title,
             style: TextStyle(
               fontSize: 25,
@@ -277,8 +280,8 @@ Widget OrderCard(String title, String image, Function()? onTap) {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 10),
           Image.asset(
+            filterQuality: FilterQuality.low,fit: BoxFit.cover,
             image,
             errorBuilder: (context, imageProvider, s) =>
                 Icon(Icons.error_outline),

@@ -5,6 +5,7 @@ import 'package:hos/core/localization/transilation.dart';
 import 'package:hos/core/serveces/binding.dart';
 
 import 'package:hos/core/serveces/myservisec.dart';
+import 'package:hos/veiw/userscreen/screen/profile/profile.dart';
 
 import 'core/localization/changlocal.dart';
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     LocalController controller = Get.put(LocalController());
     return GetMaterialApp(
-      // home: MyAnimatedList(),
+      // home: ProfilePage(),
       debugShowCheckedModeBanner: false,
       initialBinding: MyBinding(),
       locale: controller.language,

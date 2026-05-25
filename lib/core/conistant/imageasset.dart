@@ -28,5 +28,6 @@ class Imageasset {
   static String filter = "$routeImage/filter-svgrepo-com.svg";
   static String search = "$routeImage/search-alt-2-svgrepo-com.svg";
   static String settings = "$routeImage/setting.png";
-  static String goold = "$routeImage/output_transparent.png";
+  static String goold = "$routeImage/sc.png";
+  static String order = "$routeImage/order.png";
 }
