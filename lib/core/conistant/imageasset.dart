@@ -16,7 +16,7 @@ class Imageasset {
   //Animation
   static String visa = "$routeImage/visa.png";
   static String cash = "$routeImage/cash.jpg";
-  static String googlepay = "$routeImage/googlepayjpg.jpg";
+  static String googlepay = "$routeImage/googlepaypal.png";
   static String sale = "$routeImage/Sale.json";
   static String homesvg = "$routeImage/home-1-svgrepo-com.svg";
   static String offer = "$routeImage/offer-svgrepo-com.svg";
