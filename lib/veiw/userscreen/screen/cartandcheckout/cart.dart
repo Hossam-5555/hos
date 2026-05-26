@@ -192,7 +192,7 @@ class ShoppingCartPage extends StatelessWidget {
                                   ),
                                 ),
                                 Text('Proceed to Checkout'.tr),
-                                const Icon(Icons.keyboard_arrow_right_outlined),
+                                const Icon(Icons.navigate_next_outlined),
                               ],
                             ),
                           ),

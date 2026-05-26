@@ -38,15 +38,16 @@ class ProfilePage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      OrderCard("الطلبات و\nالمشتريات", Imageasset.order, () {
+                      orderCard("الطلبات و\nالمشتريات", Imageasset.order, () {
                         Get.toNamed(Approute.Orders);
                       }),
-                      OrderCard("نقاط\nالمكافأه", Imageasset.goold, () {}),
-                      OrderCard(
+                      orderCard("نقاط\nالمكافأه", Imageasset.goold, () {}),
+                      orderCard(
                         "الاعدادات و\nالخصوصيه",
                         Imageasset.settings,
                         () {
@@ -61,34 +62,59 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
 
-                  _buildListTile(
-                    gradientColors: [
-                      const Color.fromARGB(255, 95, 182, 8),
-                      const Color.fromARGB(255, 97, 97, 97),
-                    ],
-                    icon: Icons.location_on_outlined,
-                    title: "Saved Addresses".tr,
-                    onTap: () => Get.toNamed(Approute.viewmyaddres),
-                  ),
-                  _buildListTile(
-                    gradientColors: [
-                      const Color.fromARGB(255, 243, 9, 9),
-                      Colors.red,
-                    ],
-                    icon: Icons.favorite_border,
-                    title: "Favorite".tr,
-                    onTap: () => Get.toNamed(Approute.myfavorite),
-                  ),
-
-                  _buildListTile(
-                    icon: Icons.settings_outlined,
-                    title: "App Settings".tr,
-                    isLast: true, // لإزالة الفاصل في العنصر الأخير
-                    onTap: () => Get.to(
-                      () => Settings(),
-                      transition: Transition.leftToRightWithFade,
-                      duration: Duration(milliseconds: 500),
-                      curve: Curves.fastOutSlowIn,
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    margin: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: Colors.grey.withAlpha(50)),
+                    ),
+                    child: Column(
+                      children: [
+                        _buildListTile(
+                          gradientColors: [
+                            const Color.fromARGB(255, 95, 182, 8),
+                            const Color.fromARGB(255, 97, 97, 97),
+                          ],
+                          icon: Icons.location_on_outlined,
+                          title: "Saved Addresses".tr,
+                          onTap: () => Get.toNamed(Approute.viewmyaddres),
+                        ),
+                        Padding(
+                          padding: const EdgeInsetsDirectional.only(
+                            start: 60,
+                            end: 20,
+                          ),
+                          child: Divider(color: Colors.grey.withAlpha(50)),
+                        ),
+                        _buildListTile(
+                          gradientColors: [
+                            const Color.fromARGB(255, 243, 9, 9),
+                            Colors.red,
+                          ],
+                          icon: Icons.favorite_border,
+                          title: "Favorite".tr,
+                          onTap: () => Get.toNamed(Approute.myfavorite),
+                        ),
+                        Padding(
+                          padding: const EdgeInsetsDirectional.only(
+                            start: 60,
+                            end: 20,
+                          ),
+                          child: Divider(color: Colors.grey.withAlpha(50)),
+                        ),
+                        _buildListTile(
+                          icon: Icons.settings_outlined,
+                          title: "App Settings".tr,
+                          isLast: true, // لإزالة الفاصل في العنصر الأخير
+                          onTap: () => Get.to(
+                            () => Settings(),
+                            transition: Transition.leftToRightWithFade,
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.fastOutSlowIn,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -113,14 +139,7 @@ class ProfilePage extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 2,
-                  style: BorderStyle.solid,
-                ),
-              ),
+              decoration: BoxDecoration(shape: BoxShape.circle),
               child: CircleAvatar(
                 radius: 55,
                 // backgroundColor: Colors.blue,
@@ -153,11 +172,11 @@ class ProfilePage extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 10),
         Text(
           userName,
           style: const TextStyle(
-            fontSize: 22,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
             letterSpacing: 0.5,
           ),
@@ -181,12 +200,12 @@ class ProfilePage extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(5),
         child: Row(
           children: [
             // الحاوية المعدلة مع التدرج اللوني
             Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(5),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 // استخدام Linear Gradient هنا
@@ -234,59 +253,87 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-Widget OrderCard(String title, String image, Function()? onTap) {
+Widget orderCard(String title, String image, Function()? onTap) {
   return GestureDetector(
     onTap: onTap,
-    child: Container(
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.white.withOpacity(
-            0.15,
-          ), // الحواف المضيئة الخفيفة اللي باينة في الصورة
-          width: 1,
-        ),
-        borderRadius: BorderRadius.circular(15),
-        color: Colors.grey[600],
-        gradient: RadialGradient(
-          center: Alignment(0.0, -0.2), // مكان بؤرة الإضاءة (مرفوعة لفوق شوية)
-          radius: 1.2,
-          colors: [
-            Color(0xFF555A60), // الدرجة الفاتحة المائل للرمادي/الفضي في المنتصف
-            Color.fromARGB(255, 144, 148, 153), // الدرجة الأغمق اللي بتقفل على الأطراف
-            Color(0xFF1A1C1E), 
-            // الدرجة الداكنة جداً عند الزوايا
-          ],
-          stops: const [0.0, 0.6, 1.0],
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.4),
-            blurRadius: 10,
-            offset: const Offset(0, 4), // الظل الخفيف تحت الكارت
+    child: ClipRRect(
+      // تم تعديل BorderRadius لتجنب مشاكل الـ Geometry ولتتطابق مع الـ Container بالداخل
+      borderRadius: BorderRadius.circular(20),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          height: 290,
+          width: 120,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            // الحواف المضيئة الخفيفة (نفس الـ Stroke اللي في الصورة)
+            border: Border.all(color: Colors.white.withOpacity(0.18), width: 1),
+            // التدرج الدائري اللي بيحاكي إضاءة المعدن الداكن
+            gradient: RadialGradient(
+              center: const Alignment(
+                0.0,
+                -0.1,
+              ), // الإضاءة متركزة في الثلث العلوي للمركز
+              radius: 1.3,
+              colors: [
+                const Color(
+                  0xFF4A4B4D,
+                ), // الدرجة الفاتحة (مركز الإضاءة الفضي الداكن)
+                const Color(0xFF232526), // الدرجة الوسطى الرمادية
+                const Color(
+                  0xFF111314,
+                ), // الأطراف الداكنة جداً القريبة من الأسود
+              ],
+              stops: const [0.0, 0.55, 1.0],
+            ),
+            // ظل خفيف جداً وناعم يتناسب مع الخلفية الغامقة
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.5),
+                blurRadius: 15,
+                offset: const Offset(0, 5),
+              ),
+            ],
           ),
-        ],
-      ),
-      height: 300,
-      width: 120,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(textAlign: TextAlign.center,
-            title,
-            style: TextStyle(
-              fontSize: 25,
-              color: Colors.grey[50],
-              fontWeight: FontWeight.bold,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 16.0,
+              horizontal: 8.0,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment
+                  .spaceBetween, // لتوزيع النص فوق والصورة تحت زي الصورة
+              children: [
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize:
+                        16, // تصغير الخط ليناسب عرض الكارت (120) ولا يحدث OverFlow
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    height: 1.3,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Expanded(
+                  child: Image.asset(
+                    image,
+                    filterQuality: FilterQuality.medium,
+                    fit: BoxFit
+                        .contain, // contain أفضل هنا عشان تفاصيل الـ 3D تظهر كاملة بدون قص
+                    errorBuilder: (context, error, stackTrace) => const Icon(
+                      Icons.error_outline,
+                      color: Colors.white54,
+                      size: 40,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          Image.asset(
-            filterQuality: FilterQuality.low,fit: BoxFit.cover,
-            image,
-            errorBuilder: (context, imageProvider, s) =>
-                Icon(Icons.error_outline),
-          ),
-        ],
+        ),
       ),
     ),
   );

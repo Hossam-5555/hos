@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
+import 'package:hos/controler/usercontroller/profile/paymentcontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/handlingdata.dart';
@@ -12,17 +13,21 @@ import 'package:hos/data/model/Addresmodel.dart';
 import 'package:hos/data/model/cartmodel.dart';
 
 class Checkoutcontroller extends GetxController {
+  final formKey = GlobalKey<FormState>();
+  var selectedMethod = PaymentMethod.creditCard.obs;
+
+  // مفتاح الفورم للتحقق من صحة البيانات
+  // دالة لتغيير طريقة الدفع
+  void changePaymentMethod(PaymentMethod method) {
+    selectedMethod.value = method;
+  }
+
   List<List> paymentMethodEnum = [
     ["cash", Imageasset.cash], //0
     ["credit", Imageasset.visa], //1
     ["mobile", Imageasset.googlepay], //2
   ];
-  var selectedMethod = "credit";
-  void changePaymentMethod(String method) {
-    selectedMethod = method;
-    print(selectedMethod);
-    update();
-  }
+
 
   //============================ المتغيرات
   RxInt addressid = 0.obs;

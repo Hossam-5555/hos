@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
+import 'package:hos/controler/usercontroller/profile/paymentcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/add.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
+import 'package:hos/veiw/wedget/paymentmethods.dart';
 
 class Checkout extends StatelessWidget {
   const Checkout({super.key});
@@ -12,11 +14,10 @@ class Checkout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(Checkoutcontroller());
+    PaymentController controller1 = Get.put(PaymentController());
 
     return Scaffold(
-      bottomNavigationBar: GetBuilder<Checkoutcontroller>(
-        builder: (c) => _buildModernBottomBar(context, c),
-      ),
+      // شيلنا الـ bottomNavigationBar خالص لأن الزرار اتنقل جوة الشاشة
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(65),
         child: Appbarbackicon(herotag: '', title: "confirm order".tr),
@@ -24,7 +25,6 @@ class Checkout extends StatelessWidget {
       body: GetBuilder<Checkoutcontroller>(
         builder: (c) => ListView(
           padding: const EdgeInsets.all(16),
-          physics: const BouncingScrollPhysics(),
           children: [
             // قسم عنوان التوصيل
             Handlingdataview(
@@ -57,17 +57,129 @@ class Checkout extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            // قسم طرق الدفع (بالتصميم الجديد)
-            _buildSectionCard(
-              title: "Payment Methods".tr,
-              icon: Icons.account_balance_wallet_rounded,
-              child: GetBuilder<Checkoutcontroller>(
-                builder: (c) => Row(
-                  children: c.paymentMethodEnum.map((methodList) {
-                    final method = methodList[0];
-                    return _buildPaymentOption(method, c);
-                  }).toList(),
-                ),
+
+            const SizedBox(height: 16),
+
+            // الـ Form وبداخله اختيارات الدفع وزرار التأكيد الجديد
+            Form(
+              key: controller1.formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'اختر طريقة الدفع',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // 1. اختيارات الدفع (بطاقة، محفظة، كاش)
+                  Obx(
+                    () => Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        buildPaymentMethod(
+                          controller: controller1,
+                          title: 'بطاقة ائتمان',
+                          icon: Icons.credit_card_rounded,
+                          method: PaymentMethod.creditCard,
+                        ),
+                        const SizedBox(width: 8),
+                        buildPaymentMethod(
+                          controller: controller1,
+                          title: 'محفظة',
+                          icon: Icons.account_balance_wallet_rounded,
+                          method: PaymentMethod.mobileWallet,
+                        ),
+                        const SizedBox(width: 8),
+                        buildPaymentMethod(
+                          controller: controller1,
+                          title: 'كاش',
+                          icon: Icons.money_rounded,
+                          method: PaymentMethod.cod,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 24),
+                    child: Divider(height: 1),
+                  ),
+
+                  // 2. نموذج الدفع الديناميكي (بيظهر حسب الاختيار)
+                  Obx(
+                    () => AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      switchInCurve: Curves.easeOutCubic,
+                      transitionBuilder: (child, animation) => FadeTransition(
+                        opacity: animation,
+                        child: SlideTransition(
+                          position: Tween<Offset>(
+                            begin: const Offset(0, 0.05),
+                            end: Offset.zero,
+                          ).animate(animation),
+                          child: child,
+                        ),
+                      ),
+                      child: buildFormContent(c),
+                    ),
+                  ),
+
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 24),
+                    child: Divider(thickness: 1),
+                  ),
+
+                  // 3. تفاصيل الحساب والأسعار تحت الـ Form مباشرة
+                  _buildPriceRow("Sipping".tr, "${50} \$"),
+                  const SizedBox(height: 8),
+                  _buildPriceRow("Subtotal".tr, "${c.totalprice} \$"),
+                  const SizedBox(height: 8),
+                  _buildPriceRow(
+                    "موعد التوصيل المتوقع:",
+                    "خلال 3 أيام",
+                    isDate: true,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                    child: Divider(thickness: 1),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Total price".tr,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '${c.totalprice} \$',
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.blueAccent,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // 🔥 زرار التأكيد تم وضعه هنا (تحت الـ Form والأسعار مباشرة)
+                  Checkbutton(
+                    width: MediaQuery.of(context).size.width,
+                    buttonColor: Colors.black,
+                    onTap: () {
+                      print("Hssa");
+                      c.checkoutoder(); // الآن يستدعي الكنترولر بأمان بدون تعارض
+                    },
+                    buttonName: "confirm order".tr,
+                    statusrequest: c.statusrequest,
+                  ),
+                  const SizedBox(height: 20), // مسافة أمان أسفل الشاشة
+                ],
               ),
             ),
           ],
@@ -76,7 +188,7 @@ class Checkout extends StatelessWidget {
     );
   }
 
-  // ================= دوال التصميم =================
+  // ================= دوال التصميم الفرعية =================
 
   Widget _buildSectionCard({
     required String title,
@@ -85,7 +197,6 @@ class Checkout extends StatelessWidget {
   }) {
     return Card(
       elevation: 0,
-      // color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -139,69 +250,6 @@ class Checkout extends StatelessWidget {
     });
   }
 
-  // تصميم طرق الدفع الجديد (كروت عمودية قابلة للتحديد)
-  Widget _buildPaymentOption(String method, Checkoutcontroller c) {
-    final isSelected = c.selectedMethod == method;
-    final details =
-        {
-          "credit": {
-            "icon": Icons.credit_card,
-            "title": "البطاقة البنكية",
-            "sub": "دفع إلكتروني آمن",
-          },
-          "mobile": {
-            "icon": Icons.phone_android,
-            "title": "محفظة إلكترونية",
-            "sub": "دفع سريع وآمن",
-          },
-          "cash": {
-            "icon": Icons.local_atm,
-            "title": "الدفع نقداً",
-            "sub": "الدفع عند الاستلام",
-          },
-        }[method] ??
-        {"icon": Icons.payment, "title": method, "sub": ""};
-
-    return InkWell(
-      onTap: () => c.changePaymentMethod(method),
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 5),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: isSelected ? Colors.blueAccent : Colors.transparent,
-            width: isSelected ? 1.5 : 1,
-          ),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          children: [
-            Icon(
-              details["icon"] as IconData,
-              color: isSelected ? Colors.blueAccent : Colors.amber,
-            ),
-            const SizedBox(width: 12),
-            Text(
-              details["title"] as String,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            Text(
-              details["sub"] as String,
-              style: const TextStyle(fontSize: 12, color: Colors.grey),
-            ),
-            const SizedBox(width: 12),
-
-            Icon(
-              isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
-              color: isSelected ? Colors.blueAccent : Colors.grey,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   void _showAddressesSheet(Checkoutcontroller c) {
     Get.bottomSheet(
       Container(
@@ -226,7 +274,7 @@ class Checkout extends StatelessWidget {
                   activeColor: Colors.blueAccent,
                   title: Text(
                     addr.name ?? "",
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                   ),
                   onChanged: (val) {
                     c.chooseAddres(val!);
@@ -249,73 +297,6 @@ class Checkout extends StatelessWidget {
     );
   }
 
-  // تم الحفاظ على شريط الدفع السفلي كما هو بدون تغيير
-  Widget _buildModernBottomBar(BuildContext context, Checkoutcontroller c) {
-    return Container(
-      margin: EdgeInsetsDirectional.all(20),
-      child: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // تفاصيل السعر والتوصيل[]
-            _buildPriceRow("Sipping".tr, "${50} \$"),
-            const SizedBox(height: 8),
-            _buildPriceRow("Subtotal".tr, "${c.totalprice} \$"),
-            const SizedBox(height: 8),
-            _buildPriceRow(
-              "موعد التوصيل المتوقع:",
-              "خلال 3 أيام",
-              isDate: true,
-            ),
-
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 12),
-              child: Divider(thickness: 1),
-            ),
-
-            // الإجمالي الكلي
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Total price".tr,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  '${c.totalprice} \$',
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w900,
-                    color: Colors.blueAccent,
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 20),
-
-            // زر التأكيد
-            GetBuilder<Checkoutcontroller>(
-              builder: (controller) {
-                return Checkbutton(
-                  width: MediaQuery.of(context).size.width,
-                  buttonColor: Colors.black,
-                  onTap: () {
-                    print("Hssa");
-                    c.checkoutoder();
-                  },
-                  buttonName: "confirm order".tr,
-                  statusrequest: c.statusrequest,
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // "Widget" مساعد لبناء صفوف التفاصيل بشكل منسق
   Widget _buildPriceRow(String label, String value, {bool isDate = false}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

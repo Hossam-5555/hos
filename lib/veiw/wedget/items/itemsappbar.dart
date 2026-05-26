@@ -88,11 +88,11 @@ class BackButtonCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 10),
+      padding: const EdgeInsetsDirectional.only(start: 10),
       child: Center(
         child: Container(
-          width: 45,
-          height: 45,
+          width: 50,
+          height: 50,
           decoration: BoxDecoration(
             color: Colors.white,
             shape: BoxShape.circle,

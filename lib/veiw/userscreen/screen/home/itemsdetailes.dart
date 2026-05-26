@@ -207,10 +207,9 @@ class Itemsdetailes extends StatelessWidget {
                   ),
                 ],
               ),
-              Positioned.directional(
+              PositionedDirectional(
                 top: 40,
                 start: 10,
-                textDirection: TextDirection.ltr,
                 child: BackButtonCircle(),
               ),
             ],
