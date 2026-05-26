@@ -48,7 +48,7 @@ class ProfilePage extends StatelessWidget {
                       }),
                       orderCard("نقاط\nالمكافأه", Imageasset.goold, () {}),
                       orderCard(
-                        "الاعدادات و\nالخصوصيه",
+                        "App Settings and Privacy".tr,
                         Imageasset.settings,
                         () {
                           Get.to(
@@ -104,8 +104,8 @@ class ProfilePage extends StatelessWidget {
                           child: Divider(color: Colors.grey.withAlpha(50)),
                         ),
                         _buildListTile(
-                          icon: Icons.settings_outlined,
-                          title: "App Settings".tr,
+                          icon: Icons.note_alt_sharp,
+                          title: "مراجعاتي",
                           isLast: true, // لإزالة الفاصل في العنصر الأخير
                           onTap: () => Get.to(
                             () => Settings(),

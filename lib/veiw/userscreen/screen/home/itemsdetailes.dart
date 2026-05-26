@@ -20,12 +20,14 @@ class Itemsdetailes extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     double h = size.height;
-    // نغلف الـ Scaffold بالكامل بـ GetBuilder عشان الـ BottomBar يتحدث مع العداد
+    
+    // متغير محلي سريع من GetX للتحكم في حالة عرض الوصف كاملاً أو اختصاره
+    final RxBool isDescriptionExpanded = false.obs;
+
     return GetBuilder<Itemdetailscontroller>(
       builder: (controller) {
         final item = controller.itemsmodel;
         return Scaffold(
-          // ✨ التعديل الاحترافي: تثبيت زر الشراء والعداد في الأسفل دائماً
           bottomNavigationBar: _buildBottomBar(controller),
 
           body: Stack(
@@ -33,22 +35,19 @@ class Itemsdetailes extends StatelessWidget {
               ListView(
                 physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.only(
-                  bottom: 20,
-                ), // مسافة قبل شريط الأسفل
+                  bottom: 40, // زيادة مسافة الأمان السفلية لجميع الشاشات
+                ), 
                 children: [
                   // 1. صورة المنتج مع الشعار
                   Stack(
                     alignment: Alignment.center,
                     children: [
                       Container(
-                        height: Get.height * 0.55,
+                        height: h * 0.55, // متناسق ديناميكياً مع ارتفاع الشاشة
                         width: double.infinity,
                         margin: const EdgeInsets.only(bottom: 20),
-                        decoration: BoxDecoration(
-                          // color: const Color(
-                          //   0xFFF8F9FA,
-                          // ), // خلفية رمادي فاتح جداً تبرز الصورة
-                          borderRadius: const BorderRadius.vertical(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.vertical(
                             bottom: Radius.circular(40),
                           ),
                         ),
@@ -65,7 +64,7 @@ class Itemsdetailes extends StatelessWidget {
                                 imageBuilder: (context, imageProvider) =>
                                     Container(
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(
+                                        borderRadius: const BorderRadius.only(
                                           bottomRight: Radius.circular(20),
                                           bottomLeft: Radius.circular(20),
                                         ),
@@ -76,19 +75,18 @@ class Itemsdetailes extends StatelessWidget {
                                       ),
                                     ),
                                 placeholder: (context, url) =>
-                                    CircularProgressIndicator(),
+                                    const CircularProgressIndicator(),
                                 errorWidget: (context, url, error) =>
-                                    Icon(Icons.error),
+                                    const Icon(Icons.error),
                               ),
                             ),
                           ),
-
                           controller: controller.controller,
                         ),
                       ),
 
                       Positioned(
-                        top: h * 0.50,
+                        top: h * 0.50, // متناسق ديناميكياً ليناسب الهواتف الطويلة والقصيرة
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
@@ -103,7 +101,7 @@ class Itemsdetailes extends StatelessWidget {
                                 children: List.generate(
                                   item.images!.length,
                                   (index) => AnimatedContainer(
-                                    margin: EdgeInsets.all(10),
+                                    margin: const EdgeInsets.all(10),
                                     width: controller.curentpage == index
                                         ? 15
                                         : 5,
@@ -112,7 +110,7 @@ class Itemsdetailes extends StatelessWidget {
                                       color: Appcolor.primaryColor,
                                       borderRadius: BorderRadius.circular(20),
                                     ),
-                                    duration: Duration(milliseconds: 500),
+                                    duration: const Duration(milliseconds: 500),
                                   ),
                                 ),
                               ),
@@ -141,12 +139,10 @@ class Itemsdetailes extends StatelessWidget {
                               child: Text(
                                 maxLines: 2,
                                 item.itemsName ?? '',
-                                // style: const TextStyle(
-                                //   fontSize: 22,
-                                //   color: Colors.black,
-                                //   fontWeight: FontWeight.bold,
-                                //   height: 1.3,
-                                // ),
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                             Row(
@@ -157,13 +153,13 @@ class Itemsdetailes extends StatelessWidget {
                                   size: 22,
                                 ),
                                 const SizedBox(width: 4),
-                                const Text(
+                                Text(
                                   "4.8",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 16,
+                                    fontSize: h * 0.018, // حجم خط مرن يتناسب مع الشاشة
                                   ),
-                                ), // لو متاح تقييم
+                                ), 
                               ],
                             ),
                           ],
@@ -178,30 +174,42 @@ class Itemsdetailes extends StatelessWidget {
                           child: Divider(height: 1, color: Color(0xFFEEEEEE)),
                         ),
 
-                        // الوصف
+                        // 🔥 تعديل قسم الوصف: التحكم في العرض هنا داخلياً وإلغاء الـ BottomSheet
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Description".tr),
+                            Text(
+                              "Description".tr,
+                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
                             InkWell(
-                              onTap: () => _showDescriptionSheet(context, item),
-                              child: Text(
-                                "See more",
-                                style: TextStyle(
-                                  color: Appcolor.primaryColor,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              onTap: () => isDescriptionExpanded.toggle(), // يعكس الحالة مباشرة عند الضغط
+                              child: Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: Obx(() => Text(
+                                  isDescriptionExpanded.value ? "See less".tr : "See more".tr,
+                                  style: TextStyle(
+                                    color: Appcolor.primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )),
                               ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 10),
-                        Text(
-                          "${item.itemsDesc}",
-
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
+                        
+                        // يظهر الـ SmartDescriptionView كاملة عند التمديد، أو نصاً مختصراً بـ 3 أسطر
+                        Obx(() => isDescriptionExpanded.value
+                            ? SmartDescriptionView(rawText: "${item.itemsDesc}")
+                            : Text(
+                                "${item.itemsDesc}",
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(height: 1.4, ),
+                              ),
                         ),
+                        const SizedBox(height: 40), // مساحة إضافية لتسهيل السكرول فوق الـ bottomNavigationBar
                       ],
                     ),
                   ),
@@ -210,7 +218,7 @@ class Itemsdetailes extends StatelessWidget {
               PositionedDirectional(
                 top: 40,
                 start: 10,
-                child: BackButtonCircle(),
+                child: const BackButtonCircle(),
               ),
             ],
           ),
@@ -226,15 +234,12 @@ class Itemsdetailes extends StatelessWidget {
   Widget _buildBottomBar(Itemdetailscontroller controller) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-
       child: SafeArea(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // مكون العداد الخاص بك
             Flexible(child: Countofproduct(count: controller.itemcount)),
-            SizedBox(width: 10),
-            // زر الإضافة للسلة
+            const SizedBox(width: 10),
             Flexible(
               child: SizedBox(
                 height: 55,
@@ -293,54 +298,11 @@ class Itemsdetailes extends StatelessWidget {
             style: const TextStyle(
               fontSize: 16,
               color: Colors.grey,
-              decoration:
-                  TextDecoration.lineThrough, // الطريقة الاحترافية لشطب السعر
+              decoration: TextDecoration.lineThrough,
               decorationThickness: 1,
             ),
           ),
       ],
-    );
-  }
-
-  void _showDescriptionSheet(BuildContext context, ItemsModel item) {
-    showModalBottomSheet(
-      backgroundColor: Colors.white,
-      context: context,
-      isScrollControlled: true, // عشان ياخد الارتفاع اللي محتاجه
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (_) => Container(
-        padding: const EdgeInsets.all(24),
-        height: Get.height * 0.65,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Container(
-                width: 40,
-                height: 5,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              "تفاصيل المنتج",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: SmartDescriptionView(rawText: "${item.itemsDesc}"),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

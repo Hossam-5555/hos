@@ -43,7 +43,6 @@ class SmartDescriptionView extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 15,
                     height: 1.5,
-                    color: Colors.black87,
                     // جعل العناوين القصيرة Bold تلقائياً
                     fontWeight: trimmedLine.length < 30 && !isNumbered 
                         ? FontWeight.bold 
