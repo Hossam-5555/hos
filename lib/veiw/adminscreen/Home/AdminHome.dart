@@ -1,4 +1,8 @@
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hos/controler/admincontroller/AdminHome.dart';
 
 // ignore: must_be_immutable
 class AdminHome2 extends StatelessWidget {
@@ -6,18 +10,17 @@ class AdminHome2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final c = Get.put(Adminhome());
+    final c = Get.put(Adminhome());
     return Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: ListView(
             children: [
-              const SizedBox(height: 16),
               const SizedBox(height: 20),
-              const StatsSection(),
+              StatsSection(c: c),
               const SizedBox(height: 20),
-              const SalesChart(),
+              SalesChart(c: c),
               const SizedBox(height: 20),
               const RecentOrders(),
             ],
@@ -29,26 +32,26 @@ class AdminHome2 extends StatelessWidget {
 }
 
 class StatsSection extends StatelessWidget {
-  const StatsSection({super.key});
-
+  StatsSection({super.key, required this.c});
+  Adminhome c;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Row(
-          children: const [
+          children: [
             Expanded(
               child: StatCard(
                 title: "Total Sales",
-                value: "\$128,500",
+                value: "\$${c.apidata[0].totalSales}",
                 growth: "+8.5%",
               ),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Expanded(
               child: StatCard(
                 title: "Total Orders",
-                value: "3,420",
+                value: "${c.apidata[0].totalOrders}",
                 growth: "+12%",
               ),
             ),
@@ -56,15 +59,18 @@ class StatsSection extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Row(
-          children: const [
+          children: [
             Expanded(
-              child: StatCard(title: "Products", value: "450 Active"),
+              child: StatCard(
+                title: "Products",
+                value: "${c.apidata[0].activeProducts} Active",
+              ),
             ),
             SizedBox(width: 10),
             Expanded(
               child: StatCard(
                 title: "Customers",
-                value: "21,800",
+                value: "${c.apidata[0].customers}",
                 growth: "+5%",
               ),
             ),
@@ -122,51 +128,190 @@ class StatCard extends StatelessWidget {
   }
 }
 
-// ================= Chart =================
-
 class SalesChart extends StatelessWidget {
-  const SalesChart({super.key});
-
+  SalesChart({super.key, required this.c});
+  Adminhome c;
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 220,
+      height: 280, // زيادة الارتفاع قليلاً ليناسب الرسم البياني والمسميات
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
+        // color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: Colors.white.withAlpha(50),
-          strokeAlign: BorderSide.strokeAlignCenter,
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          const Text(
-            "Sales Overview",
-            style: TextStyle(fontWeight: FontWeight.bold),
+        border: Border.all(color: Colors.grey.withOpacity(0.1)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
           ),
-          const SizedBox(height: 10),
+        ],
+      ),
+      child: Column(
+        // تم التعديل من Row إلى Column
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // الجزء العلوي: العنوان وأزرار الفلترة
           Row(
-            mainAxisSize: MainAxisSize.min,
-            children: const [
-              Chip(label: Text("Day", style: TextStyle(fontSize: 6))),
-              SizedBox(width: 5),
-              Chip(label: Text("Week", style: TextStyle(fontSize: 6))),
-              SizedBox(width: 5),
-              Chip(label: Text("Month", style: TextStyle(fontSize: 6))),
-              SizedBox(width: 5),
-              Chip(label: Text("Year", style: TextStyle(fontSize: 6))),
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Sales Overview",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+              Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _buildFilterChip("Day", isSelected: true),
+                    _buildFilterChip("Week"),
+                    _buildFilterChip("Month"),
+                    _buildFilterChip("Year"),
+                  ],
+                ),
+              ),
             ],
           ),
-          const Expanded(child: Center(child: Text("Chart Here"))),
+          const SizedBox(height: 30),
+          // الجزء الخاص بالرسم البياني
+          Expanded(child: LineChart(_mainData(c))),
         ],
       ),
     );
   }
-}
 
+  // دالة مساعدة لإنشاء أزرار الفلترة (Day, Week...) بشكل مشابه للصورة
+  Widget _buildFilterChip(String label, {bool isSelected = false}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: isSelected ? Colors.white : Colors.transparent,
+        borderRadius: BorderRadius.circular(6),
+        boxShadow: isSelected
+            ? [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ]
+            : [],
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 11,
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          color: isSelected ? Colors.black : Colors.grey.shade600,
+        ),
+      ),
+    );
+  }
+
+  // دالة إعداد بيانات الرسم البياني وتصميمه
+  LineChartData _mainData(Adminhome c) {
+    // 1. حساب القيم القصوى والدنيا لجعل الرسم متناسباً
+    final spots = c.salesSpots;
+    if (spots.isEmpty)
+      return LineChartData(); // حالة احتياطية لو البيانات فارغة
+
+    double minX = spots.first.x;
+    double maxX = spots.last.x;
+    // جعل الـ Y يرتفع قليلاً فوق أعلى قيمة ليكون الشكل أجمل
+    double maxY = spots.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 2;
+
+    return LineChartData(
+      gridData: FlGridData(show: false),
+      titlesData: FlTitlesData(
+        show: true,
+        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 30,
+            interval: 1, // تأكد من إظهار التواريخ بشكل مناسب
+            getTitlesWidget: (value, meta) {
+              int index = value.toInt();
+              if (index >= 0 && index < c.apidata[0].salesChart!.length) {
+                String date = c.apidata[0].salesChart![index].date!;
+                // اختصار التاريخ مثلاً من "2026-05-23" إلى "23" أو كما تحب
+                return SideTitleWidget(
+                  meta: meta,
+                  child: Text(
+                    date.substring(8),
+                    style: const TextStyle(fontSize: 10, color: Colors.grey),
+                  ),
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
+      ),
+      borderData: FlBorderData(show: false),
+      minX: minX,
+      maxX: maxX,
+      minY: 0,
+      maxY: maxY,
+      lineTouchData: LineTouchData(
+        touchTooltipData: LineTouchTooltipData(
+          getTooltipItems: (touchedSpots) {
+            return touchedSpots.map((spot) {
+              // جلب البيانات الأصلية من الـ API بناءً على الـ index
+              final data = c.apidata[0].salesChart![spot.x.toInt()];
+              return LineTooltipItem(
+                "${data.date}\n\$${spot.y.toStringAsFixed(0)}",
+                const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              );
+            }).toList();
+          },
+        ),
+      ),
+      lineBarsData: [
+        LineChartBarData(
+          spots: spots,
+          isCurved: true,
+          color: Colors.blue.shade700,
+          barWidth: 2.5,
+          dotData: FlDotData(
+            show: true,
+            getDotPainter: (spot, percent, barData, index) {
+              return FlDotCirclePainter(
+                radius: 4,
+                color: Colors.white,
+                strokeWidth: 2,
+                strokeColor: Colors.blue.shade700,
+              );
+            },
+          ),
+          belowBarData: BarAreaData(
+            show: true,
+            gradient: LinearGradient(
+              colors: [
+                Colors.blue.withOpacity(0.2),
+                Colors.blue.withOpacity(0.0),
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
 // ================= Orders =================
 
 class RecentOrders extends StatelessWidget {

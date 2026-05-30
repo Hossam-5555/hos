@@ -33,9 +33,13 @@ class AdminHome extends StatelessWidget {
               const Spacer(),
               InkWell(
                 onTap: () {
-                  Get.to(() => NotificationPage());
+                  Get.to(
+                    () => NotificationPage(),
+                    transition: Transition.cupertino,
+                  );
                 },
-                child: Badge(isLabelVisible: true,
+                child: Badge(
+                  isLabelVisible: true,
                   child: SvgPicture.asset(
                     Imageasset.notification,
                     color: Colors.grey.shade600,
@@ -46,7 +50,7 @@ class AdminHome extends StatelessWidget {
                 onPressed: () {
                   Get.to(
                     () => Settings(),
-                    transition: Transition.fadeIn,
+                    transition: Transition.cupertino,
                     curve: Curves.decelerate,
                     duration: const Duration(milliseconds: 500),
                   );

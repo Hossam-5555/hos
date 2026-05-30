@@ -5,6 +5,7 @@ import 'package:hos/controler/admincontroller/categories/viewcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/functions/showdialoge.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/addcat.dart';
+import 'package:sqflite/sqflite.dart';
 
 class ViewCategories extends StatelessWidget {
   const ViewCategories({super.key});
@@ -18,7 +19,10 @@ class ViewCategories extends StatelessWidget {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.to(() => const Addcategories()),
+        onPressed: () => Get.to(
+          () => const Addcategories(),
+          transition: Transition.cupertino,
+        ),
         backgroundColor: Colors.transparent, // شفاف ليظهر التدرج
         elevation: 0,
         shape: RoundedRectangleBorder(
@@ -73,18 +77,9 @@ class ViewCategories extends StatelessWidget {
                     item: categoryItem,
                     onEdit: () => controller.gotoeditpage(categoryItem),
                     onDelete: () {
-                      AppDialog.show(
-                        title: "حذف القسم",
-
-                        message:
-                            "هل أنت متأكد من حذف قسم '${categoryItem.name}'؟\nسيتم حذف جميع العناصر المرتبطة به نهائياً.",
-
-                        icon: Icons.delete,
-
-                        color: Colors.red,
-
-                        confirmText: "حذف",
-
+                      AppCupertinoDialog.show(
+                        title: "حذف المنتج",
+                        message: "هل أنت متأكد من حذف المنتج؟",
                         onConfirm: () {
                           controller.delete(categoryItem.id!);
                         },

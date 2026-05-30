@@ -145,23 +145,31 @@ class ProductCard extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.grey.withOpacity(0.15), width: 1.2),
+            border: Border.all(
+              color: Colors.grey.withOpacity(0.15),
+              width: 1.2,
+            ),
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Colors.white.withOpacity(0.08), Colors.white.withOpacity(0.02)],
+              colors: [
+                Colors.white.withOpacity(0.08),
+                Colors.white.withOpacity(0.02),
+              ],
             ),
           ),
           // تم إزالة الـ Column الداخلي المعقد والـ Expanded
           child: Column(
-            mainAxisSize: MainAxisSize.min, // 👈 يجعل الكارت يأخذ حجم محتواه فقط
+            mainAxisSize:
+                MainAxisSize.min, // 👈 يجعل الكارت يأخذ حجم محتواه فقط
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               /// 🖼️ أ) صورة المنتج (إعطاؤها طول ثابت ليناسب الـ Masonry)
               Stack(
                 children: [
                   Container(
-                    height: 150, // 👈 طول ثابت ومناسب جداً للصورة لتظهر كالجزء الأكبر
+                    height:
+                        150, // 👈 طول ثابت ومناسب جداً للصورة لتظهر كالجزء الأكبر
                     width: double.infinity,
                     margin: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
@@ -172,15 +180,21 @@ class ProductCard extends StatelessWidget {
                     child: CachedNetworkImage(
                       imageUrl: "${item.itemsImage}",
                       fit: BoxFit.contain,
-                      placeholder: (_, __) => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
-                      errorWidget: (_, __, ___) => const Icon(Icons.image_not_supported, size: 30),
+                      placeholder: (_, __) => const Center(
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                      errorWidget: (_, __, ___) =>
+                          const Icon(Icons.image_not_supported, size: 30),
                     ),
                   ),
                   Positioned(
                     top: 12,
                     right: 12,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
                       decoration: BoxDecoration(
                         color: stockColor.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(8),
@@ -188,7 +202,11 @@ class ProductCard extends StatelessWidget {
                       ),
                       child: Text(
                         inStock ? "In Stock" : "Low Stock",
-                        style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: stockColor),
+                        style: TextStyle(
+                          fontSize: 9,
+                          fontWeight: FontWeight.bold,
+                          color: stockColor,
+                        ),
                       ),
                     ),
                   ),
@@ -206,11 +224,14 @@ class ProductCard extends StatelessWidget {
                       item.itemsName ?? "بدون اسم",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    
+
                     const SizedBox(height: 6),
-                    
+
                     // السعر والتقييم
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -220,20 +241,26 @@ class ProductCard extends StatelessWidget {
                             "${item.itemsPrice} ${"EGP".tr}",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w900),
+                            style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w900,
+                            ),
                           ),
                         ),
                         const Row(
                           children: [
                             Text("4", style: TextStyle(fontSize: 10)),
-                            Icon(Icons.star_rounded, color: Colors.amberAccent, size: 12),
+                            Icon(
+                              Icons.star_rounded,
+                              color: Colors.amberAccent,
+                              size: 12,
+                            ),
                           ],
                         ),
                       ],
                     ),
 
                     const SizedBox(height: 12), // مسافة تفصل السعر عن الأزرار
-
                     // أزرار التحكم للأدمن
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -247,11 +274,9 @@ class ProductCard extends StatelessWidget {
                           icon: Icons.delete_outline_rounded,
                           color: Colors.redAccent,
                           onTap: () {
-                            AppDialog.show(
+                            AppCupertinoDialog.show(
                               title: "حذف المنتج",
                               message: "هل تريد حذف المنتج نهائياً؟",
-                              icon: Icons.delete,
-                              color: Colors.red,
                               confirmText: "حذف",
                               onConfirm: () => controller.delete(item.id),
                             );
@@ -268,7 +293,8 @@ class ProductCard extends StatelessWidget {
       ),
     );
   }
-    Widget _buildAdminButton({
+
+  Widget _buildAdminButton({
     required IconData icon,
     required Color color,
     required VoidCallback onTap,

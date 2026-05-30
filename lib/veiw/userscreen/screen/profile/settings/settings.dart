@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/settingscontroller.dart';
@@ -246,6 +247,77 @@ class Settings extends StatelessWidget {
     );
   }
 
+  // Widget _buildThemeTile(LocalController controller, BuildContext context) {
+  //   return ListTile(
+  //     leading: Container(
+  //       padding: const EdgeInsets.all(8),
+  //       decoration: BoxDecoration(
+  //         gradient: LinearGradient(
+  //           colors: [Colors.purple.shade400, Colors.purple.shade700],
+  //         ),
+  //         shape: BoxShape.circle,
+  //       ),
+  //       child: const Icon(
+  //         Icons.palette_outlined,
+  //         color: Colors.white,
+  //         size: 20,
+  //       ),
+  //     ),
+  //     title: Text(
+  //       'Theme'.tr,
+  //       style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+  //     ),
+
+  //     // 👇 بدل DropdownButton
+  //     trailing: Obx(
+  //       () => CupertinoButton(
+  //         padding: EdgeInsets.zero,
+  //         onPressed: () {
+  //           showCupertinoModalPopup(
+  //             context: context,
+  //             builder: (_) => CupertinoActionSheet(
+  //               title: const Text("Theme"),
+  //               actions: ['Light', 'Dark', 'System'].map((t) {
+  //                 final isSelected = controller.selectedTheme.value == t;
+
+  //                 return CupertinoActionSheetAction(
+  //                   onPressed: () {
+  //                     controller.changeTheme(t);
+  //                     Navigator.pop(context);
+  //                   },
+  //                   child: Row(
+  //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                     children: [
+  //                       Text(t.tr),
+  //                       if (isSelected)
+  //                         const Icon(CupertinoIcons.check_mark, size: 18),
+  //                     ],
+  //                   ),
+  //                 );
+  //               }).toList(),
+  //               cancelButton: CupertinoActionSheetAction(
+  //                 isDestructiveAction: true,
+  //                 onPressed: () => Navigator.pop(context),
+  //                 child: const Text("Cancel"),
+  //               ),
+  //             ),
+  //           );
+  //         },
+  //         child: Row(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             Text(
+  //               controller.selectedTheme.value.tr,
+  //               style: const TextStyle(fontSize: 14),
+  //             ),
+  //             const SizedBox(width: 4),
+  //             const Icon(CupertinoIcons.chevron_down, size: 16),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
   // ويدجت اختيار الثيم بشكل مبسط
   Widget _buildThemeTile(LocalController controller) {
     return ListTile(

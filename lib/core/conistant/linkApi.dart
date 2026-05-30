@@ -49,6 +49,7 @@ class LinkApi {
   static String offer = '$lravelserver/offer';
 
   //Admin //categores
+  static String dashborddata="$lravelserver/dashboadcontroller";
   static String adminaddcat = '$lravelserver/category';
   static String admineditcat = '$lravelserver/category';
   static String adminviewcat = '$lravelserver/category';
