@@ -17,39 +17,13 @@ class Notificationcontroller extends GetxController {
   String? get usertype => myservisec.sharedPreferences.getString("usertype");
   Notificationdata notificationdata = Get.put(Notificationdata(Get.find()));
   int? get userid => myservisec.sharedPreferences.getInt("id");
-  RxList<MassageModel> notificationlist = <MassageModel>[].obs;
+  
+  List<MassageModel> notificationlist = [];
   int notificationcount = 0;
 
   /// ====== MULTI SELECT ======
   bool selectionMode = false;
   List<int> selectedIds = [];
-
-  /// جلب الإشعارات
-  Future<void> getnotifier() async {
-    statusrequest = Statusrequest.loading;
-    update();
-
-    var response = await notificationdata.GetNotification(userid!);
-
-    statusrequest = handling(response);
-    print(statusrequest);
-    if (Statusrequest.success == statusrequest && response['status'] == true) {
-      notificationlist.clear();
-      notificationlist.addAll(
-        (response["data"]["messages"] as List).map(
-          (e) => MassageModel.fromJson(e),
-        ),
-      );
-      notificationcount = response["data"]["total_inactive_count"];
-      if (notificationcount == 0) {
-        statusrequest = Statusrequest.failure;
-      }
-    } else {
-      statusrequest = Statusrequest.failure;
-    }
-
-    update();
-  }
 
   /// ضغط مطوّل
   void onLongPress(int id) {
@@ -61,10 +35,15 @@ class Notificationcontroller extends GetxController {
   }
 
   /// ضغط عادي
+/// ضغط عادي (تعديل لضمان التحديد وإلغائه)
   void onTap(int id) {
-    // markAsRead(id);
-    if (!selectionMode) return;
+    // لو مش في وضع التحديد، اضغط ضغطة عادية (مثلاً تفتح الإشعار أو تخليه مقروء)
+    if (!selectionMode) {
+      // هنا ممكن تحط كود فتح الإشعار مستقبلاً
+      return; 
+    }
 
+    // لو في وضع التحديد، اقلب حالة العنصر (تحديد / إلغاء تحديد)
     if (selectedIds.contains(id)) {
       selectedIds.remove(id);
       if (selectedIds.isEmpty) {
@@ -73,11 +52,17 @@ class Notificationcontroller extends GetxController {
     } else {
       selectedIds.add(id);
     }
-    update();
+    update(); // تحديث الواجهة فوراً
   }
 
   bool isSelected(int id) {
     return selectedIds.contains(id);
+  }
+
+  void closeselected() {
+    selectionMode = false;
+    selectedIds.clear();
+    update();
   }
 
   /// حذف المحدد
@@ -96,15 +81,14 @@ class Notificationcontroller extends GetxController {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        duration: Duration(seconds: 4),
+        duration: const Duration(seconds: 4),
         behavior: SnackBarBehavior.floating, // يخليه طاير مش لازق تحت
-        margin: EdgeInsets.all(12),
+        margin: const EdgeInsets.all(12),
         backgroundColor: Colors.grey.shade900,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15), // 🔥 حواف دائرية
         ),
-
-        content: Row(
+        content: const Row(
           children: [
             Icon(Icons.delete_outline, color: Colors.white),
             SizedBox(width: 10),
@@ -116,7 +100,6 @@ class Notificationcontroller extends GetxController {
             ),
           ],
         ),
-
         action: SnackBarAction(
           label: "UNDO",
           textColor: Colors.orangeAccent,
@@ -130,7 +113,7 @@ class Notificationcontroller extends GetxController {
     );
 
     // ⏳ استنى 4 ثواني
-    await Future.delayed(Duration(seconds: 4));
+    await Future.delayed(const Duration(seconds: 4));
 
     // 🔴 لو المستخدم ما ضغطش Undo
     if (!isUndo) {
@@ -148,21 +131,43 @@ class Notificationcontroller extends GetxController {
     update();
   }
 
+  Future<void> getnotifier() async {
+    statusrequest = Statusrequest.loading;
+    update();
+
+    var response = await notificationdata.GetNotification(userid!);
+    statusrequest = handling(response);
+
+    if (Statusrequest.success == statusrequest && response['status'] == true) {
+      notificationlist.clear();
+      notificationlist.addAll(
+        (response["data"]["messages"] as List).map(
+          (e) => MassageModel.fromJson(e),
+        ),
+      );
+      notificationcount = response["data"]["total_inactive_count"];
+      if (notificationcount == 0) {
+        statusrequest = Statusrequest.failure;
+      }
+    } else {
+      statusrequest = Statusrequest.failure;
+    }
+
+    update();
+  }
+
   // 📥 جلب البيانات الحقيقية المتوافقة مع دالة index() بالباك إند
   Future<void> getNotifications() async {
     notificationlist.clear();
     statusrequest = Statusrequest.loading;
     update();
 
-    // استبدل هذا الجزء بطلب الـ API الحقيقي الخاص بك (GET)
     var response = await notificationdata.getNotificationsData();
-
     statusrequest = handling(response);
 
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true && response['data'] != null) {
         List rawData = [];
-        // فك حزمة الـ Pagination المرتجعة من لارافل كما فعلنا في الطلبات
         if (response['data'] is Map && response['data']['data'] != null) {
           rawData = response['data']['data'];
         } else if (response['data'] is List) {
@@ -181,23 +186,6 @@ class Notificationcontroller extends GetxController {
     update();
   }
 
-  // 🔔 تحديث حالة الرسالة في الواجهة والسيرفر عند الضغط عليها
-  Future<void> markAsRead(int index) async {
-    if (notificationlist[index].isActive == false) {
-      notificationlist[index].isActive == true;
-      update();
-
-      // هنا ترسل طلب للباك إند لتحديث حقل is_read في جدول massages إلى 1
-      // await notificationData.makeNotificationRead(id.toString());
-    }
-  }
-
-  void closeselected() {
-    selectionMode = false;
-    selectedIds.clear();
-    update();
-  }
-
   @override
   void onInit() {
     if (usertype == "admin") {
@@ -205,7 +193,6 @@ class Notificationcontroller extends GetxController {
     } else {
       getnotifier();
     }
-
     super.onInit();
   }
 }

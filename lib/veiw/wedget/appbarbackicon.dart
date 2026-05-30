@@ -5,14 +5,14 @@ class Appbarbackicon extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     required this.title,
     required this.herotag,
-    this.selected = false, // خلي الديفولت false بدل null
+    this.selected = false, // تم تعديل النوع ليكون متوافق تماماً مع bool
     this.onPressed,
     this.iconButton,
   });
 
   final String title;
   final String herotag;
-  final bool? selected;
+  final bool selected; // تغييرها من bool? إلى bool
   final void Function()? onPressed;
   final Widget? iconButton;
 
@@ -23,15 +23,14 @@ class Appbarbackicon extends StatelessWidget implements PreferredSizeWidget {
       actions: [if (selected == true && iconButton != null) iconButton!],
       title: Text(title),
       centerTitle: true,
-      leadingWidth: 70, // زيادة العرض قليلاً عشان الدايرة متتحشرش
+      leadingWidth: 70, 
       leading: Padding(
-        padding: EdgeInsetsDirectional.symmetric(horizontal: 10.0),
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
         child: Center(
           child: Hero(
-            // تأكد أن الـ tag فريد لكل صفحة
             tag: herotag,
             child: Container(
-              width: 45, // حجم متناسق أكتر مع الـ AppBar
+              width: 45, 
               height: 45,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -45,12 +44,14 @@ class Appbarbackicon extends StatelessWidget implements PreferredSizeWidget {
                 ],
               ),
               child: Material(
-                // ضروري جداً داخل Hero عشان الـ Splash يظهر صح
                 color: Colors.transparent,
                 child: IconButton(
                   onPressed: () {
                     if (selected == true) {
-                      onPressed;
+                      // 💚 التعديل السحري: استدعاء الدالة بشكل صحيح بالأقواس ()
+                      if (onPressed != null) {
+                        onPressed!(); 
+                      }
                     } else {
                       Navigator.of(context).pop();
                     }
@@ -69,7 +70,6 @@ class Appbarbackicon extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  // ضروري عشان الـ Scaffold يقبلها كـ AppBar مباشرة
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

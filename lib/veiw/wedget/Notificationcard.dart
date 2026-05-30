@@ -10,11 +10,9 @@ class NotificationCard extends StatelessWidget {
   final bool selectionMode;
   final void Function()? onLongPress;
   final void Function()? onTap;
-  final bool isactive;
 
   const NotificationCard({
     super.key,
-    required this.isactive,
     required this.title,
     required this.body,
     required this.time,
@@ -30,14 +28,14 @@ class NotificationCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: InkWell(
-        onLongPress: isLoading ? null : onLongPress,
-        onTap: isLoading ? null : onTap,
+        onLongPress: onLongPress,
+        // جعل الضغطة العادية تشتغل دايماً، والكنترولر هو اللي يقرر يعمل إيه
+        onTap: onTap, 
         borderRadius: BorderRadius.circular(20),
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 250),
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-           
             color: isSelected
                 ? Colors.blue.withOpacity(0.08)
                 : Colors.transparent,
@@ -47,14 +45,15 @@ class NotificationCard extends StatelessWidget {
                   ? Colors.blue.withOpacity(0.5)
                   : Colors.grey.withAlpha(50),
               width: 1,
-              strokeAlign: BorderSide.strokeAlignCenter,
             ),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // --- قسم الأيقونة ---
-              Badge(isLabelVisible: isactive,
+              Badge(
+                isLabelVisible: isSelected,
+                backgroundColor: Colors.blue,
                 child: Container(
                   height: 50,
                   width: 50,
@@ -94,12 +93,11 @@ class NotificationCard extends StatelessWidget {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 15,
-                              color: Colors
-                                  .blueGrey[900], // يمكن ربطها بالثيم لو أردت
+                              color: Colors.blueGrey[900],
                             ),
                           ),
                         ),
-                        if (!isLoading && !selectionMode)
+                        if (!isLoading && !selectionMode && time.isNotEmpty)
                           Text(
                             Jiffy.parse(
                               pattern: 'yyyy-MM-dd hh:mm a',
@@ -129,7 +127,8 @@ class NotificationCard extends StatelessWidget {
               ),
 
               // --- قسم تحديد الرسالة (Checkbox) ---
-              if (selectionMode && !isLoading)
+              // تعديل: الـ Checkbox يظهر طول ما إحنا في الـ selectionMode عشان الـ User Experience يكون أفضل
+              if (selectionMode)
                 Padding(
                   padding: const EdgeInsets.only(left: 8),
                   child: Checkbox(
@@ -138,6 +137,7 @@ class NotificationCard extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
+                    // عند تغيير حالة الـ Checkbox يستدعي نفس الـ onTap بتاعة الكارت
                     onChanged: (val) {
                       if (onTap != null) onTap!();
                     },

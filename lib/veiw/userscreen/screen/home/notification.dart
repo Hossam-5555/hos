@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/notificationcontroller.dart';
@@ -12,12 +13,17 @@ class NotificationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
-        child: GetBuilder<Notificationcontroller>(
-          builder: (controller) {
-            return Appbarbackicon(
+    // نقوم بإنشاء الكنترولر أو إيجاده هنا لمرة واحدة لضمان استخدام نفس النسخة في الصفحة بأكملها
+    final Notificationcontroller controller = Get.put(Notificationcontroller());
+
+    return GetBuilder<Notificationcontroller>(
+      builder: (s) {
+        bool isLoading = controller.statusrequest == Statusrequest.loading;
+
+        return Scaffold(
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(60),
+            child: Appbarbackicon(
               selected: controller.selectionMode,
               title: controller.selectionMode
                   ? "${controller.selectedIds.length} ${"Selected".tr}"
@@ -34,16 +40,13 @@ class NotificationPage extends StatelessWidget {
                       },
                     )
                   : null,
-              onPressed: controller.closeselected,
-            );
-          },
-        ),
-      ),
-      body: GetBuilder<Notificationcontroller>(
-        builder: (controller) {
-          bool isLoading = controller.statusrequest == Statusrequest.loading;
-
-          return Handlingdataview(
+              // عند الضغط على X سيقوم بالاستدعاء وتحديث الواجهة بالكامل فوراً
+              onPressed: () {
+                controller.closeselected();
+              },
+            ),
+          ),
+          body: Handlingdataview(
             statusrequest: controller.statusrequest,
             widget: Skeletonizer(
               enabled: isLoading,
@@ -62,24 +65,19 @@ class NotificationPage extends StatelessWidget {
                   // تجهيز البيانات
                   if (isLoading) {
                     title = "Loading Notification Title";
-                    body =
-                        "This is a dummy description for skeleton loading effect.";
+                    body = "This is a dummy description for skeleton loading effect.";
+                    time = "2024-01-01 10:00 AM";
                   } else {
                     final item = controller.notificationlist[index];
                     id = item.id!;
                     title = item.title ?? '';
                     body = item.body ?? '';
-                    time = item.createdAt!;
+                    time = item.createdAt ?? '';
                   }
-                  final item = controller.notificationlist[index];
 
-                  bool active = item.isActive!;
+                  bool isSelected = controller.isSelected(id);
 
-                  bool isSelected = !isLoading && controller.isSelected(id);
-               print(active);
-                  // ✳️ استخدام الودجت المجمعة هنا
                   return NotificationCard(
-                    isactive: active,
                     title: title,
                     body: body,
                     time: time,
@@ -87,14 +85,14 @@ class NotificationPage extends StatelessWidget {
                     isLoading: isLoading,
                     selectionMode: controller.selectionMode,
                     onLongPress: () => controller.onLongPress(id),
-                    onTap: () => controller.onTap(index),
+                    onTap: () => controller.onTap(id),
                   );
                 },
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
