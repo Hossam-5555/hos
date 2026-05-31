@@ -27,16 +27,15 @@ class LinkApi {
   //cart
   static String addcart = '$lravelserver/cart';
   static String deletcart = '$lravelserver/decrease';
-  static String viewcart = '$lravelserver/cart/';
+  static String viewcart = '$lravelserver/cart';
   // static String coupone = '$server/coupone/chechcoupone.php';
   // AddresLink
   static String addaddres = '$lravelserver/Address';
   static String deleteAddres = '$lravelserver/delelteaddres';
-  static String viewAddres = '$lravelserver/Address/';
   // static String editAddres = '$server/address/edit.php';
   //orders
   static String checkout = '$lravelserver/order';
-  static String viewmyorder = '$lravelserver/userorders/';
+  static String viewmyorder = '$lravelserver/userorders';
   static String deleteorder = '$lravelserver/order/';
   // static String rating = '$server/rating.php';
 

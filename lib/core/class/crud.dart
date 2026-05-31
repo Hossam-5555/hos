@@ -2,11 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:get/get_instance/get_instance.dart';
+import 'package:get/state_manager.dart';
 import 'package:hos/core/functions/checkinternet.dart';
+import 'package:hos/core/serveces/myservisec.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
 class Crud {
+  Myservisec m = Get.put(Myservisec());
+  String? get token => m.sharedPreferences.getString("token");
   // Future<Either<Statusrequest, Map>> postrequset(
   //   String linkUrl,
   //   Map data,
@@ -36,9 +41,7 @@ class Crud {
   //   }
   // }
 
-
-
-Future<Either<Statusrequest, Map>> postrequset(
+  Future<Either<Statusrequest, Map>> postrequset(
     String linkUrl,
     Map data,
   ) async {
@@ -48,8 +51,9 @@ Future<Either<Statusrequest, Map>> postrequset(
           Uri.parse(linkUrl),
           body: jsonEncode(data),
           headers: {
-            "Content-Type": "application/json", 
+            "Content-Type": "application/json",
             "Accept": "application/json",
+            "Authorization": "Bearer $token",
           },
         );
 
@@ -58,7 +62,7 @@ Future<Either<Statusrequest, Map>> postrequset(
         if (response.body.isNotEmpty) {
           try {
             var responsebody = jsonDecode(response.body);
-            
+
             // إذا كان السيرفر أرسل رد JSON صالح، نمرره فوراً لـ Right لكي تستطيع قراءته في الـ Controller
             // وبذلك سيتعامل الـ Controller مع الـ status: false أو الرسالة القادمة بشكل طبيعي.
             return Right(responsebody);
@@ -73,7 +77,6 @@ Future<Either<Statusrequest, Map>> postrequset(
         } else {
           return Left(Statusrequest.failure);
         }
-
       } else {
         return Left(Statusrequest.checkinterner);
       }
@@ -81,11 +84,18 @@ Future<Either<Statusrequest, Map>> postrequset(
       return Left(Statusrequest.serverfailure);
     }
   }
+
   Future<Either<Statusrequest, Map>> getrequset(String linkUrl) async {
     try {
       if (await checkinterner()) {
-        var response = await http.get(Uri.parse(linkUrl));
-        print(response.body);
+        var response = await http.get(
+          Uri.parse(linkUrl),
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer $token",
+          },
+        );
         if (response.statusCode == 200 || response.statusCode == 201) {
           var responsebody = jsonDecode(response.body);
           return Right(responsebody);
@@ -110,9 +120,9 @@ Future<Either<Statusrequest, Map>> postrequset(
           Uri.parse(linkUrl),
           body: jsonEncode(data),
           headers: {
-            "Content-Type":
-                "application/json", // بتعرف السيرفر إن اللي مبعوث ده JSON مش String عادي
+            "Content-Type": "application/json",
             "Accept": "application/json",
+            "Authorization": "Bearer $token",
           },
         );
         if (response.statusCode == 200 || response.statusCode == 201) {
@@ -179,6 +189,7 @@ Future<Either<Statusrequest, Map>> postrequset(
       return const Left(Statusrequest.serverfailure);
     }
   }
+
   Future<Either<Statusrequest, Map>> deleterequwst(
     String linkUrl,
     Map data,
@@ -189,9 +200,9 @@ Future<Either<Statusrequest, Map>> postrequset(
           Uri.parse(linkUrl),
           body: jsonEncode(data),
           headers: {
-            "Content-Type":
-                "application/json", // بتعرف السيرفر إن اللي مبعوث ده JSON مش String عادي
+            "Content-Type": "application/json",
             "Accept": "application/json",
+            "Authorization": "Bearer $token",
           },
         );
         if (response.statusCode == 200 || response.statusCode == 201) {
@@ -207,7 +218,6 @@ Future<Either<Statusrequest, Map>> postrequset(
       return Left(Statusrequest.serverfailure);
     }
   }
-
 }
 
 enum Statusrequest {

@@ -28,7 +28,6 @@ class Checkoutcontroller extends GetxController {
     ["mobile", Imageasset.googlepay], //2
   ];
 
-
   //============================ المتغيرات
   RxInt addressid = 0.obs;
   //============================ الدوال الخاصة بالاختيار
@@ -41,7 +40,6 @@ class Checkoutcontroller extends GetxController {
   Addresdata addresdata = Addresdata(Get.find());
   Checkoutdata checkoutdata = Checkoutdata(Get.find());
   Myservisec myservisec = Get.find();
-  int? get userid => myservisec.sharedPreferences.getInt("id");
   Statusrequest statusrequest = Statusrequest.none;
   List<AddresModel> listaddresdata = [];
 
@@ -50,7 +48,7 @@ class Checkoutcontroller extends GetxController {
     // statusrequest = Statusrequest.loading;
     // update();
 
-    var response = await addresdata.viewAddresdata(userid!);
+    var response = await addresdata.viewAddresdata();
 
     statusrequest = handling(response);
 
@@ -90,10 +88,8 @@ class Checkoutcontroller extends GetxController {
     try {
       // تجهيز البيانات
       Map<String, dynamic> data = {
-        "user_id":
-            userid, // يفضل جلب الـ id من الـ Auth Service وليس كتابته يدوياً
         "address_id": addressid.value,
-        "payment_method": selectedMethod,
+        "payment_method": "credit",
         "items": cartdata
             .map((e) => {"product_id": e.itemid, "quantity": e.cartCount})
             .toList(),

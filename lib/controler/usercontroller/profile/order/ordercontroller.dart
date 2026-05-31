@@ -71,7 +71,7 @@ class Ordercontroller extends GetxController {
     orders.clear();
     statusrequest = Statusrequest.loading;
     update();
-    var response = await orderdata.order(userid!);
+    var response = await orderdata.order();
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {

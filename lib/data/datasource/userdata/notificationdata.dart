@@ -5,26 +5,21 @@ class Notificationdata {
   Crud crud;
   Notificationdata(this.crud);
 
-  GetNotification(int userid) async {
-    var response = await crud.postrequset(LinkApi.notification, {
-      "user_id": userid,
-    });
-    return response.fold((l) => l, (r) => r);
-  }
-  getNotificationsData()async{
-       var response = await crud.getrequset(LinkApi.adminnotification);
+  GetNotification() async {
+    var response = await crud.postrequset(LinkApi.notification, {});
     return response.fold((l) => l, (r) => r);
   }
 
-  Future removeNotification(List ids,int userid) async {
-  var response = await crud.postrequset(
-    LinkApi.deletnotification,
-    {
-      "user_id": userid, // أو من SharedPreferences
+  getNotificationsData() async {
+    var response = await crud.getrequset(LinkApi.adminnotification);
+    return response.fold((l) => l, (r) => r);
+  }
+
+  Future removeNotification(List ids) async {
+    var response = await crud.postrequset(LinkApi.deletnotification, {
       "massage_id": ids.map((e) => e.toString()).toList(),
-    },
-  );
+    });
 
-  return response.fold((l) => l, (r) => r);
-}
+    return response.fold((l) => l, (r) => r);
+  }
 }

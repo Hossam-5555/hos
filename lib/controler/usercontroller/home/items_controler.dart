@@ -14,22 +14,25 @@ class ItemsControler extends SearchMix {
   int? selectedfilter;
   late String catid;
   List<ItemsModel> data = [];
-  
+
   @override
   Statusrequest statusrequest = Statusrequest.none;
   Myservisec myservisec1 = Get.find();
   Itemsdata itemdata = Itemsdata(Get.find());
 
   // ✳️ المتغيرات الجديدة التي تم إضافتها للـ Pagination:
-  int currentPage = 1;      // الصفحة الحالية
-  bool hasMoreData = true;   // هل توجد صفحات أخرى؟
-  bool isLoadMore = false;   // لتجنب إرسال طلبين في نفس الوقت أثناء التمرير
+  int currentPage = 1; // الصفحة الحالية
+  bool hasMoreData = true; // هل توجد صفحات أخرى؟
+  bool isLoadMore = false; // لتجنب إرسال طلبين في نفس الوقت أثناء التمرير
 
   void changcat(int val, String catigid) {
     selecteditem = val;
     catid = catigid;
     update(); // يحدث الواجهة مباشرة
-    getitems(catid, isNewCategory: true); // ✳️ أضفنا علامة تفيد بتغيير القسم بالكامل
+    getitems(
+      catid,
+      isNewCategory: true,
+    ); // ✳️ أضفنا علامة تفيد بتغيير القسم بالكامل
   }
 
   void filtesortedby(int val) {
@@ -45,7 +48,11 @@ class ItemsControler extends SearchMix {
   }
 
   // ✳️ تم تعديل الدالة لاستقبال اختيارات التحديث والصفحات
-  Future<void> getitems(String catid, {bool isRefresh = false, bool isNewCategory = false}) async {
+  Future<void> getitems(
+    String catid, {
+    bool isRefresh = false,
+    bool isNewCategory = false,
+  }) async {
     // إذا قام المستخدم بالسحب للتحديث أو غير القسم، نعيد العدادات للبداية
     if (isRefresh || isNewCategory) {
       currentPage = 1;
@@ -70,7 +77,6 @@ class ItemsControler extends SearchMix {
     // ⚠️ ملاحظة: يجب أن تعدل دالة 'postdata' داخل كود الـ ItemData لتستقبل الـ currentPage وتمرره للرابط كـ Query Parameter مثل (?page=1)
     var response = await itemdata.postdata(
       catid,
-      myservisec1.sharedPreferences.getInt("id")!,
       page: currentPage, // ✳️ تمرير الصفحة الحالية
     );
 
@@ -78,9 +84,8 @@ class ItemsControler extends SearchMix {
 
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
-        
         // ✳️ استخراج البيانات بحسب الـ JSON المعقد الخاص بـ Laravel Resource
-        List itemlist = response["data"]["data"]; 
+        List itemlist = response["data"]["data"];
         int lastPage = response["data"]["meta"]["last_page"];
 
         // تحويل البيانات وإضافتها للقائمة الحالية (بدون حذف العناصر القديمة)

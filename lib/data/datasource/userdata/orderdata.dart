@@ -5,8 +5,8 @@ class Orderdata {
   Crud crud;
   Orderdata(this.crud);
 
-  order(int userid) async {
-    var response = await crud.getrequset("${LinkApi.viewmyorder}$userid");
+  order() async {
+    var response = await crud.getrequset(LinkApi.viewmyorder);
     return response.fold((l) => l, (r) => r);
   }
 

@@ -117,7 +117,7 @@ class Notificationcontroller extends GetxController {
 
     // 🔴 لو المستخدم ما ضغطش Undo
     if (!isUndo) {
-      await notificationdata.removeNotification(selectedIds, userid!);
+      await notificationdata.removeNotification(selectedIds);
     }
 
     // تنظيف
@@ -135,7 +135,7 @@ class Notificationcontroller extends GetxController {
     statusrequest = Statusrequest.loading;
     update();
 
-    var response = await notificationdata.GetNotification(userid!);
+    var response = await notificationdata.GetNotification();
     statusrequest = handling(response);
 
     if (Statusrequest.success == statusrequest && response['status'] == true) {

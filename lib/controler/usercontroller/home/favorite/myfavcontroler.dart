@@ -22,7 +22,7 @@ class Myfavcontroler extends SearchMix {
     data.clear();
     statusrequest = Statusrequest.loading;
 
-    var response = await favdata.veiwfav(id);
+    var response = await favdata.veiwfav();
 
     statusrequest = handling(response);
     if (statusrequest == Statusrequest.success) {
@@ -40,7 +40,7 @@ class Myfavcontroler extends SearchMix {
 
   //الحذف من صفحه المفضله
   void deletefromfavpage(int itemid) {
-    favdata.favoritemanger(id, itemid);
+    favdata.favoritemanger( itemid);
 
     data.removeWhere((e) => e.item!.id == itemid);
     if (data.isEmpty) {

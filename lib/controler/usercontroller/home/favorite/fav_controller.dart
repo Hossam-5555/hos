@@ -23,9 +23,8 @@ class FavController extends GetxController {
   Future<void> favmanget(int itemid) async {
     statusrequest = Statusrequest.loading;
     update();
-    int id = myservisec.sharedPreferences.getInt("id")!;
 
-    var response = await favdata.favoritemanger(id, itemid);
+    var response = await favdata.favoritemanger(itemid);
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response["status"] == true) {

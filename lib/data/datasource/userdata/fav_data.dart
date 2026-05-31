@@ -6,18 +6,16 @@ class addfavdata {
   addfavdata(this.crud);
 
 
-  favoritemanger(int userid, int itemid) async {
+  favoritemanger( int itemid) async {
     var response = await crud.postrequset(LinkApi.favoritemanger, {
-      "fav_user_id": userid,
       "fav_item_id": itemid,
     });
     return response.fold((l) => l, (r) => r);
   }
 
   // ignore: strict_top_level_inference
-  veiwfav(int userid) async {
+  veiwfav() async {
     var response = await crud.postrequset(LinkApi.view, {
-      "user_id": userid,
     });
     return response.fold((l) => l, (r) => r);
   }

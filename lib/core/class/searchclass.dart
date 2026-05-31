@@ -27,9 +27,8 @@ class SearchMix extends GetxController {
     searchlist.clear();
     statusrequest = Statusrequest.loading;
     update();
-    int id = myservisec.sharedPreferences.getInt("id")!;
 
-    var response = await homedata.searchdata(search!.text, id);
+    var response = await homedata.searchdata(search!.text);
     // print("Response==========================: $response");
 
     statusrequest = handling(response);
@@ -85,7 +84,7 @@ class SearchMix extends GetxController {
       () => Itemsdetailes(),
       binding: ItemDetailsBinding(),
 
-      transition: Transition.fadeIn,
+      transition: Transition.cupertino,
       curve: Curves.fastOutSlowIn,
       duration: Duration(milliseconds: 400),
       arguments: {"itemsmodel": itemsmodel},

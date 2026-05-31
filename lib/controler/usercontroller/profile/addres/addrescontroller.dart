@@ -16,7 +16,6 @@ class AddressController extends GetxController {
   Statusrequest? statusrequest;
   List<AddresModel> listaddresdata = <AddresModel>[].obs;
   GlobalKey<FormState> addadredKey = GlobalKey();
-  int get userid => myservisec.sharedPreferences.getInt("id")!;
   // متغيرات الحقول
   TextEditingController? name;
   TextEditingController? city;
@@ -54,7 +53,6 @@ class AddressController extends GetxController {
     update();
 
     var response = await addresdata.AddAddresdata(
-      userid,
       name!.text,
       city!.text,
       street!.text,
@@ -85,7 +83,7 @@ class AddressController extends GetxController {
     statusrequest = Statusrequest.loading;
     update();
 
-    var response = await addresdata.viewAddresdata(userid);
+    var response = await addresdata.viewAddresdata();
 
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
@@ -197,7 +195,7 @@ class AddressController extends GetxController {
       listaddresdata.removeAt(index);
 
       // 5️⃣ استدعاء الـ API لحذف العنوان من السيرفر
-      addresdata.deleteAddresdata(addresid, userid);
+      addresdata.deleteAddresdata(addresid);
 
       // 7️⃣ تحديث حالة الواجهة إذا أصبحت القائمة فارغة
       if (listaddresdata.isEmpty) {

@@ -7,7 +7,6 @@ class Addresdata {
 
   // ignore: strict_top_level_inference
   AddAddresdata(
-    int userid,
     String name,
     String street,
     String city,
@@ -16,7 +15,7 @@ class Addresdata {
     String phone,
   ) async {
     var response = await crud.postrequset(LinkApi.addaddres, {
-      "user_id": userid,
+      // "user_id": userid,
       "addres_name": name,
       "addres_street": street,
       "addres_city": city,
@@ -47,16 +46,15 @@ class Addresdata {
   // }
 
   // ignore: strict_top_level_inference
-  viewAddresdata(int userid) async {
-    var response = await crud.getrequset("${LinkApi.viewAddres}$userid");
+  viewAddresdata() async {
+    var response = await crud.getrequset(LinkApi.addaddres);
     return response.fold((l) => l, (r) => r);
   }
 
   //deletfrom favorite page
-  deleteAddresdata(int addresid,int userid) async {
+  deleteAddresdata(int addresid) async {
     var response = await crud.postrequset(LinkApi.deleteAddres, {
       "id": addresid,
-      "user_id":userid
     });
     return response.fold((l) => l, (r) => r);
   }
