@@ -17,7 +17,12 @@ class AdminHome extends StatelessWidget {
           title: Row(
             children: [
               InkWell(
-                onTap: () {},
+                onTap: () {
+                   Get.to(
+                    () => Settings(),
+                    transition: Transition.cupertino,
+                  );
+                },
                 child: const CircleAvatar(
                   radius: 20,
                   backgroundImage: NetworkImage(
@@ -31,6 +36,7 @@ class AdminHome extends StatelessWidget {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const Spacer(),
+
               InkWell(
                 onTap: () {
                   Get.to(
@@ -46,17 +52,7 @@ class AdminHome extends StatelessWidget {
                   ),
                 ),
               ),
-              IconButton(
-                onPressed: () {
-                  Get.to(
-                    () => Settings(),
-                    transition: Transition.cupertino,
-                    curve: Curves.decelerate,
-                    duration: const Duration(milliseconds: 500),
-                  );
-                },
-                icon: Icon(Icons.settings, color: Colors.grey.shade600),
-              ),
+             
             ],
           ),
         ),

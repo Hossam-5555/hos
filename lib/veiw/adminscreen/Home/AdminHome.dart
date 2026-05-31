@@ -3,6 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/AdminHome.dart';
+import 'package:hos/core/class/crud.dart';
+import 'package:hos/veiw/wedget/Homepage/titles.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 // ignore: must_be_immutable
 class AdminHome2 extends StatelessWidget {
@@ -20,7 +23,14 @@ class AdminHome2 extends StatelessWidget {
               const SizedBox(height: 20),
               StatsSection(c: c),
               const SizedBox(height: 20),
-              SalesChart(c: c),
+              Container(
+                alignment: AlignmentDirectional.centerStart,
+                child: Titles(title: "Sales Overview"),
+              ),
+              Skeletonizer(
+                enabled: c.statusrequest == Statusrequest.loading,
+                child: SalesChart(c: c),
+              ),
               const SizedBox(height: 20),
               const RecentOrders(),
             ],
@@ -31,6 +41,7 @@ class AdminHome2 extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class StatsSection extends StatelessWidget {
   StatsSection({super.key, required this.c});
   Adminhome c;
@@ -128,8 +139,11 @@ class StatCard extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class SalesChart extends StatelessWidget {
   SalesChart({super.key, required this.c});
+  List x = ["Day", "Week", "Month", "Year"];
+
   Adminhome c;
   @override
   Widget build(BuildContext context) {
@@ -140,13 +154,6 @@ class SalesChart extends StatelessWidget {
         // color: Colors.white,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.grey.withOpacity(0.1)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
       ),
       child: Column(
         // تم التعديل من Row إلى Column
@@ -156,24 +163,37 @@ class SalesChart extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                "Sales Overview",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
               Container(
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _buildFilterChip("Day", isSelected: true),
-                    _buildFilterChip("Week"),
-                    _buildFilterChip("Month"),
-                    _buildFilterChip("Year"),
-                  ],
+
+                  children: List.generate(x.length, (i) {
+                    return GetBuilder<Adminhome>(
+                      builder: (controller) => AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        reverseDuration: const Duration(milliseconds: 200),
+                        switchInCurve: Curves.decelerate,
+                        // التعديل هنا: بنستخدم الـ transitionBuilder الافتراضي أو المخصص بتاعك
+                        transitionBuilder: (child, animation) {
+                          return ScaleTransition(
+                            alignment: Alignment.center,
+                            scale: animation,
+                            child: child, // بنباصي الـ child اللي جاي من بره
+                          );
+                        },
+                        child: _buildFilterChip(
+                          x[i],
+                          c.selectedtime == i,
+                          i,
+                          c,
+                        ), // الكي بيتغير لما الـ state تتغير),
+                      ),
+                    );
+                  }),
                 ),
               ),
             ],
@@ -187,28 +207,41 @@ class SalesChart extends StatelessWidget {
   }
 
   // دالة مساعدة لإنشاء أزرار الفلترة (Day, Week...) بشكل مشابه للصورة
-  Widget _buildFilterChip(String label, {bool isSelected = false}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: isSelected ? Colors.white : Colors.transparent,
-        borderRadius: BorderRadius.circular(6),
-        boxShadow: isSelected
-            ? [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ]
-            : [],
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          fontSize: 11,
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-          color: isSelected ? Colors.black : Colors.grey.shade600,
+  Widget _buildFilterChip(
+    String label,
+    bool isSelected,
+    int i,
+    Adminhome controller,
+  ) {
+    return InkWell(
+      onTap: () {
+        controller.changetime(i); // تغيير الوقت
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250), // أنميشن ناعم للخلفية
+        curve: Curves.easeInOut,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.white : null,
+          borderRadius: BorderRadius.circular(6),
+        
+        ),
+        // الـ AnimatedSwitcher هنا جوه عشان يعمل الـ Scale للـ Text بس لما يتحول لـ Bold
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 200),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return ScaleTransition(scale: animation, child: child);
+          },
+          // الـ Key هنا متوقف على الـ label والـ state دي بس فمش هيأثر على جيرانه
+          child: Text(
+            label,
+            key: ValueKey<String>('${label}_$isSelected'),
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              color: isSelected ? Colors.black : Colors.grey.shade600,
+            ),
+          ),
         ),
       ),
     );
@@ -216,38 +249,84 @@ class SalesChart extends StatelessWidget {
 
   // دالة إعداد بيانات الرسم البياني وتصميمه
   LineChartData _mainData(Adminhome c) {
-    // 1. حساب القيم القصوى والدنيا لجعل الرسم متناسباً
     final spots = c.salesSpots;
-    if (spots.isEmpty)
-      return LineChartData(); // حالة احتياطية لو البيانات فارغة
 
-    double minX = spots.first.x;
-    double maxX = spots.last.x;
-    // جعل الـ Y يرتفع قليلاً فوق أعلى قيمة ليكون الشكل أجمل
-    double maxY = spots.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 2;
+    // 🟢 تحقق إذا كانت البيانات فارغة لتفعيل وضع البيانات الوهمية
+    final bool isEmpty = spots.isEmpty;
+
+    // تجهيز المتغيرات الأساسية للرسم البياني
+    double minX = 0;
+    double maxY = 50; // ديفولت لو البيانات فاضية
+    List<FlSpot> finalSpots = [];
+
+    if (isEmpty) {
+      // 1. صناعة نقاط وهمية منسقة وتصاعدية بشكل جمالي
+      finalSpots = [
+        const FlSpot(0, 20),
+        const FlSpot(1, 35),
+        const FlSpot(2, 25),
+        const FlSpot(3, 45),
+        const FlSpot(4, 30),
+        const FlSpot(5, 40),
+      ];
+      minX = 0;
+      maxY = 60;
+    } else {
+      // 2. استخدام البيانات الحقيقية إذا كانت متوفرة
+      finalSpots = spots;
+      minX = spots.first.x;
+      maxY = spots.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 2;
+    }
 
     return LineChartData(
       gridData: FlGridData(show: false),
       titlesData: FlTitlesData(
         show: true,
-        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-        leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        rightTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
             reservedSize: 30,
-            interval: 1, // تأكد من إظهار التواريخ بشكل مناسب
+            interval: 1,
             getTitlesWidget: (value, meta) {
               int index = value.toInt();
-              if (index >= 0 && index < c.apidata[0].salesChart!.length) {
-                String date = c.apidata[0].salesChart![index].date!;
-                // اختصار التاريخ مثلاً من "2026-05-23" إلى "23" أو كما تحب
+              String showDate = "";
+
+              if (isEmpty) {
+                // تواريخ وهمية عند غياب البيانات
+                List<String> dummyDates = ['01', '02', '03', '04', '05', '06'];
+                if (index >= 0 && index < dummyDates.length) {
+                  showDate = dummyDates[index];
+                }
+              } else {
+                // التواريخ الحقيقية المستخرجة من الـ API
+                if (c.apidata.isNotEmpty &&
+                    c.apidata[0].salesChart != null &&
+                    index >= 0 &&
+                    index < c.apidata[0].salesChart!.length) {
+                  String fullDate =
+                      c.apidata[0].salesChart![index].date ?? "0000-00-00";
+                  showDate = fullDate.length >= 10
+                      ? fullDate.substring(8)
+                      : fullDate;
+                }
+              }
+
+              if (showDate.isNotEmpty) {
                 return SideTitleWidget(
                   meta: meta,
                   child: Text(
-                    date.substring(8),
-                    style: const TextStyle(fontSize: 10, color: Colors.grey),
+                    showDate,
+                    style: TextStyle(
+                      fontSize: 10,
+                      // جعل النص رمادي باهت جداً في الحالة الوهمية
+                      color: isEmpty ? Colors.grey.shade400 : Colors.grey,
+                      fontWeight: isEmpty ? FontWeight.normal : FontWeight.bold,
+                    ),
                   ),
                 );
               }
@@ -258,16 +337,20 @@ class SalesChart extends StatelessWidget {
       ),
       borderData: FlBorderData(show: false),
       minX: minX,
-      maxX: maxX,
+
       minY: 0,
       maxY: maxY,
       lineTouchData: LineTouchData(
+        // 🔴 تعطيل ميزة اللمس والـ Tooltip لو البيانات وهمية عشان المستخدم ميتلخبطش
+        enabled: !isEmpty,
         touchTooltipData: LineTouchTooltipData(
           getTooltipItems: (touchedSpots) {
             return touchedSpots.map((spot) {
-              // جلب البيانات الأصلية من الـ API بناءً على الـ index
+              if (c.apidata.isEmpty || c.apidata[0].salesChart == null) {
+                return null;
+              }
               final data = c.apidata[0].salesChart![spot.x.toInt()];
-              return LineTooltipItem(
+              return LineTooltipItem(textDirection: TextDirection.rtl,
                 "${data.date}\n\$${spot.y.toStringAsFixed(0)}",
                 const TextStyle(
                   color: Colors.white,
@@ -281,12 +364,14 @@ class SalesChart extends StatelessWidget {
       ),
       lineBarsData: [
         LineChartBarData(
-          spots: spots,
+          spots: finalSpots,
           isCurved: true,
-          color: Colors.blue.shade700,
-          barWidth: 2.5,
+          // 🎨 لو وهمي نخليه رمادي هادي، لو حقيقي يظهر باللون الأزرق المعتاد
+          color: isEmpty ? Colors.grey.shade300 : Colors.blue.shade700,
+          barWidth: isEmpty ? 2.0 : 2.5,
           dotData: FlDotData(
-            show: true,
+            show:
+                !isEmpty, // إخفاء النقاط الدائرية تماماً في الحالة الوهمية لشكل أنظف
             getDotPainter: (spot, percent, barData, index) {
               return FlDotCirclePainter(
                 radius: 4,
@@ -299,10 +384,12 @@ class SalesChart extends StatelessWidget {
           belowBarData: BarAreaData(
             show: true,
             gradient: LinearGradient(
-              colors: [
-                Colors.blue.withOpacity(0.2),
-                Colors.blue.withOpacity(0.0),
-              ],
+              colors: isEmpty
+                  ? [Colors.grey.withOpacity(0.1), Colors.grey.withOpacity(0.0)]
+                  : [
+                      Colors.blue.withOpacity(0.2),
+                      Colors.blue.withOpacity(0.0),
+                    ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),

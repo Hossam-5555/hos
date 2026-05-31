@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
 import 'package:hos/data/model/ordersmodel.dart';
 
 Widget card(Widget child) => Container(
@@ -7,7 +8,7 @@ Widget card(Widget child) => Container(
   padding: const EdgeInsets.all(12),
   decoration: BoxDecoration(
     border: Border.all(color: Colors.grey.withAlpha(50)),
-    borderRadius: BorderRadius.circular(12),
+    borderRadius: BorderRadius.circular(20),
     // boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],
   ),
   child: child,
@@ -51,7 +52,7 @@ Widget statusorder(String status, Color currentColor, String text) {
             Row(
               children: const [
                 Icon(Icons.info_outline, size: 18),
-                SizedBox(width: 6),
+                SizedBox(width: 10),
                 Text("Status", style: TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),
@@ -159,33 +160,31 @@ Widget statusorder(String status, Color currentColor, String text) {
   );
 }
 
-// info
-Widget info(order) => Column(
-  children: [
-    row(Icons.person, "Name", order.username),
-    row(Icons.phone, "Phone", order.shippingAddress.phone),
-    row(
-      Icons.location_on,
-      "Address",
-      "${order.shippingAddress.city} - ${order.shippingAddress.street}",
-    ),
-  ],
-);
-
 // items
 Widget items(OrderModel order) => Column(
   crossAxisAlignment: CrossAxisAlignment.start,
   children: [
-    Text("Products", style: TextStyle(fontWeight: FontWeight.bold)),
+    Row(
+      children: [
+        Icon(Icons.shopping_cart, size: 14),
+        const SizedBox(width: 10),
+        const Text(
+          "Products",
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+            // color: Colors.black87,
+          ),
+        ),
+      ],
+    ),
     ...order.items.map<Widget>(
       (e) => ListTile(
         leading: Container(
           alignment: Alignment.center,
           width: 80,
           height: 80,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-          ),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
           child: CachedNetworkImage(
             imageUrl: e.image.toString(),
             imageBuilder: (context, imageProvider) => Container(
@@ -203,7 +202,10 @@ Widget items(OrderModel order) => Column(
         contentPadding: EdgeInsets.zero,
         title: Text(e.productName!),
         subtitle: Text("x${e.quantity}"),
-        trailing: Text("${e.price}\$", style: TextStyle(color: Colors.green)),
+        trailing: Text(
+          "${e.price}\$",
+          style: TextStyle(color: Colors.green, fontSize: 14),
+        ),
       ),
     ),
   ],
@@ -221,12 +223,137 @@ Widget price(order) => Column(
 );
 
 // helpers
-Widget row(IconData i, String t, String? v) => ListTile(
-  contentPadding: EdgeInsets.zero,
-  leading: Icon(i),
-  title: Text(t),
-  subtitle: Text(v ?? "-"),
-);
+// Widget row(IconData i, String t, String? v) => ListTile(
+//   contentPadding: EdgeInsets.zero,
+//   leading: Icon(i),
+//   title: Text(t),
+//   subtitle: Text(v ?? "-"),
+// );
+// info
+// Widget info(order) => Column(
+//   children: [
+//     row(Icons.person, "Name", order.username),
+//     row(Icons.phone, "Phone", order.shippingAddress.phone),
+//     row(
+//       Icons.location_on,
+//       "Address",
+//       "${order.shippingAddress.city} - ${order.shippingAddress.street}",
+//     ),
+//   ],
+// );
+
+// الويدجت الرئيسية لعرض بيانات العميل
+Widget info(order) {
+  return Container(
+    padding: const EdgeInsets.all(10),
+
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // --- عنوان القسم ---
+        Row(
+          children: [
+            Icon(
+              Icons.contact_page_rounded,
+              color: Colors.blue.shade700,
+              size: 24,
+            ),
+            const SizedBox(width: 10),
+            const Text(
+              "Customer Details",
+              style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+                // color: Colors.black87,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+
+        // --- البيانات ---
+        row(
+          icon: Icons.person_outline_rounded,
+          title: "Name",
+          value: order.username ?? "Unknown",
+          iconColor: Colors.purple,
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 12.0),
+          child: Divider(height: 1, thickness: 1, color: Color(0xFFF5F5F5)),
+        ),
+        row(
+          icon: Icons.phone_android_rounded,
+          title: "Phone Number",
+          value: order.shippingAddress.phone ?? "-",
+          iconColor: Colors.green,
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 12.0),
+          child: Divider(height: 1, thickness: 1, color: Color(0xFFF5F5F5)),
+        ),
+        row(
+          icon: Icons.location_on_outlined,
+          title: "Shipping Address",
+          value:
+              "${order.shippingAddress.city ?? ""} - ${order.shippingAddress.street ?? ""}",
+          iconColor: Colors.orange,
+        ),
+      ],
+    ),
+  );
+}
+
+// الويدجت المساعدة (بديل للـ ListTile) بتصميم عصري
+Widget row({
+  required IconData icon,
+  required String title,
+  required String value,
+  required Color iconColor,
+}) {
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      // خلفية الأيقونة (مربع بحواف دائرية ولون شفاف)
+      Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: iconColor.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Icon(icon, color: iconColor, size: 22),
+      ),
+      const SizedBox(width: 16),
+
+      // النصوص
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey.shade500,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              value,
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                // color: Colors.black87,
+                height: 1.3,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
 
 Widget priceRow(String t, dynamic v, {bool big = false}) => Row(
   mainAxisAlignment: MainAxisAlignment.spaceBetween,

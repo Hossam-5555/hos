@@ -5,7 +5,6 @@ import 'package:hos/controler/admincontroller/categories/viewcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/functions/showdialoge.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/addcat.dart';
-import 'package:sqflite/sqflite.dart';
 
 class ViewCategories extends StatelessWidget {
   const ViewCategories({super.key});

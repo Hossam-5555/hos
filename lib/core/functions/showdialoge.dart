@@ -10,7 +10,9 @@ class AppCupertinoDialog {
     String cancelText = "إلغاء",
   }) {
     Get.dialog(
-      CupertinoAlertDialog(
+      transitionCurve: Curves.easeInCirc,
+      transitionDuration: Duration(milliseconds: 300),
+      CupertinoAlertDialog(insetAnimationCurve: Curves.linear,
         title: Text(title),
         content: Padding(
           padding: const EdgeInsets.only(top: 8),
