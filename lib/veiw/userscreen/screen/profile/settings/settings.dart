@@ -243,82 +243,16 @@ class Settings extends StatelessWidget {
         title,
         style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
       ),
-      trailing: Switch.adaptive(value: value, onChanged: onChanged),
+      trailing: Switch.adaptive(
+        thumbIcon: MaterialStateProperty.all(
+          const Icon(Icons.notifications_active, size: 16, color: Colors.white),
+        ),
+        value: value,
+        onChanged: onChanged,
+      ),
     );
   }
 
-  // Widget _buildThemeTile(LocalController controller, BuildContext context) {
-  //   return ListTile(
-  //     leading: Container(
-  //       padding: const EdgeInsets.all(8),
-  //       decoration: BoxDecoration(
-  //         gradient: LinearGradient(
-  //           colors: [Colors.purple.shade400, Colors.purple.shade700],
-  //         ),
-  //         shape: BoxShape.circle,
-  //       ),
-  //       child: const Icon(
-  //         Icons.palette_outlined,
-  //         color: Colors.white,
-  //         size: 20,
-  //       ),
-  //     ),
-  //     title: Text(
-  //       'Theme'.tr,
-  //       style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-  //     ),
-
-  //     // 👇 بدل DropdownButton
-  //     trailing: Obx(
-  //       () => CupertinoButton(
-  //         padding: EdgeInsets.zero,
-  //         onPressed: () {
-  //           showCupertinoModalPopup(
-  //             context: context,
-  //             builder: (_) => CupertinoActionSheet(
-  //               title: const Text("Theme"),
-  //               actions: ['Light', 'Dark', 'System'].map((t) {
-  //                 final isSelected = controller.selectedTheme.value == t;
-
-  //                 return CupertinoActionSheetAction(
-  //                   onPressed: () {
-  //                     controller.changeTheme(t);
-  //                     Navigator.pop(context);
-  //                   },
-  //                   child: Row(
-  //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                     children: [
-  //                       Text(t.tr),
-  //                       if (isSelected)
-  //                         const Icon(CupertinoIcons.check_mark, size: 18),
-  //                     ],
-  //                   ),
-  //                 );
-  //               }).toList(),
-  //               cancelButton: CupertinoActionSheetAction(
-  //                 isDestructiveAction: true,
-  //                 onPressed: () => Navigator.pop(context),
-  //                 child: const Text("Cancel"),
-  //               ),
-  //             ),
-  //           );
-  //         },
-  //         child: Row(
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: [
-  //             Text(
-  //               controller.selectedTheme.value.tr,
-  //               style: const TextStyle(fontSize: 14),
-  //             ),
-  //             const SizedBox(width: 4),
-  //             const Icon(CupertinoIcons.chevron_down, size: 16),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-  // ويدجت اختيار الثيم بشكل مبسط
   Widget _buildThemeTile(LocalController controller) {
     return ListTile(
       leading: Container(
@@ -339,20 +273,36 @@ class Settings extends StatelessWidget {
         'Theme'.tr,
         style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
       ),
-      trailing: Obx(
-        () => DropdownButton<String>(
-          value: controller.selectedTheme.value,
-          underline: const SizedBox(),
-          items: ['Light', 'Dark', 'System']
-              .map(
-                (t) => DropdownMenuItem(
-                  value: t,
-                  child: Text(t.tr, style: const TextStyle(fontSize: 14)),
-                ),
-              )
-              .toList(),
-          onChanged: (val) => controller.changeTheme(val),
-        ),
+      trailing: Switch.adaptive(
+        // 1. تحديد لون المقبض (Thumb) في الوضع النشط والغير نشط
+        activeColor: Colors.black, // لون الـ track لما يكون ON
+        activeThumbColor: Colors.black, // لون الـ thumb لما يكون ON
+        inactiveThumbColor: const Color.fromARGB(255, 230, 189, 8), // لون الشمس (أصفر ذهبي) لما يكون OFF
+        inactiveTrackColor:
+            Colors.white, // لون الـ track خفيف لما يكون OFF
+        // 2. تطبيق تأثير تغيير الأيقونة باستخدام MaterialStateProperty
+        thumbIcon: MaterialStateProperty.resolveWith<Icon?>((
+          Set<MaterialState> states,
+        ) {
+          // إذا كان الـ Switch في حالة اختيار (يعني ON / Dark)
+          if (states.contains(MaterialState.selected)) {
+            return const Icon(
+              Icons.dark_mode, // أيقونة الهلال
+              size: 16,
+              color: Colors.white,
+            );
+          }
+          // إذا كان الـ Switch في حالة عدم اختيار (يعني OFF / Light)
+          return const Icon(
+            Icons.sunny, // أيقونة الشمس
+            size: 16,
+            color: Colors.black,
+          );
+        }),
+
+        // 3. التحكم في الحالة واستدعاء الـ Controller
+        value: controller.selectedTheme.value == 'Dark',
+        onChanged: (value) => controller.changeTheme(value),
       ),
     );
   }

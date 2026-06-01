@@ -20,10 +20,11 @@ class LocalController extends GetxController {
   }
 
   // تغيير الثيم من الـ Dropdown
-  void changeTheme(String? newTheme) {
+ void changeTheme(bool? newTheme) {
     if (newTheme == null) return;
-    selectedTheme.value = newTheme;
-    myservisec.sharedPreferences.setString("theme_mode", newTheme);
+   String theme = newTheme ? 'Dark' : 'Light';
+    selectedTheme.value = theme;
+    myservisec.sharedPreferences.setString("theme_mode", theme);
     _updateThemeLogic();
   }
 

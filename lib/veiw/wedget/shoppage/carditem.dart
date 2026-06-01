@@ -15,130 +15,87 @@ Widget buildCartItemCard(
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       padding: const EdgeInsets.all(12.0),
       decoration: BoxDecoration(
-        // color: Colors.white,
+        color: Colors.white, // أضفنا لون خلفية أبيض
         borderRadius: BorderRadius.circular(16),
-        // استخدام حد خفيف جداً بدل الظل (Shadow) لشكل أنظف
-        border: Border.all(color: Colors.grey.shade500.withAlpha(70)),
+        border: Border.all(color: Colors.grey.shade200), // لون أخف للحدود
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(10),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          )
+        ],
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          /// 1. مربع صورة المنتج (نفس ستايل المينيمال)
+          // 1. صورة المنتج
           Container(
-            width: 85,
-            height: 85,
+            width: 90,
+            height: 90,
             decoration: BoxDecoration(
-              color: const Color(0xFFF4F5F7), // الرمادي الفاتح
-              borderRadius: BorderRadius.circular(12),
+              color: const Color(0xFFF4F5F7),
+              borderRadius: BorderRadius.circular(14),
             ),
-            padding: const EdgeInsets.all(
-              8,
-            ), // مسافة داخلية عشان الصورة متلمسش الحواف
-            child: CachedNetworkImage(
-              imageUrl: cart.itemimage!,
-              imageBuilder: (context, imageProvider) => Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(14),
+              child: CachedNetworkImage(
+                imageUrl: cart.itemimage!,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                errorWidget: (context, url, error) => const Icon(Icons.error_outline),
               ),
-              placeholder: (context, url) => CircularProgressIndicator(),
-              errorWidget: (context, url, error) => Icon(Icons.error),
             ),
           ),
 
-          const SizedBox(width: 16), // مسافة بين الصورة والتفاصيل
-          /// 2. تفاصيل المنتج (الاسم، السعر، التحكم في الكمية)
+          const SizedBox(width: 16),
+
+          // 2. تفاصيل المنتج
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // اسم المنتج
                 Text(
                   cart.itemsname ?? "بدون اسم",
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    // color: Colors.black87,
-                  ),
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-
                 const SizedBox(height: 12),
-
-                // صف يجمع بين السعر والكمية
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // السعر
                     Text(
                       '${double.parse(controller.data[i].subtotal.toString()).toStringAsFixed(2)} \$',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.blueAccent,
-                        fontWeight: FontWeight.w800,
-                      ),
+                      style: const TextStyle(fontSize: 16, color: Colors.blueAccent, fontWeight: FontWeight.w800),
                     ),
-
-                    // أزرار التحكم في الكمية (شكل كبسولة)
+                    
+                    // كبسولة التحكم في الكمية
                     Container(
-                      height: 36,
+                      height: 40, // جعلنا الارتفاع مناسب للزرار (بدل 80)
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey.shade300),
-                        borderRadius: BorderRadius.circular(
-                          20,
-                        ), // شكل بيضاوي أنيق
+                        color: const Color(0xFFF4F5F7), // لون رمادي فاتح للخلفية
+                        borderRadius: BorderRadius.circular(30),
                       ),
                       child: Row(
-                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          // زرار الناقص (-)
                           IconButton(
+                            iconSize: 18,
                             padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(
-                              minWidth: 36,
-                              minHeight: 36,
-                            ),
-                            icon: const Icon(
-                              Icons.remove_rounded,
-                              size: 18,
-                              color: Colors.black,
-                            ),
-                            onPressed: () {
-                              controller.decrement(cart.itemid!);
-                            },
+                            constraints: const BoxConstraints(minWidth: 40),
+                            icon: const Icon(Icons.remove_rounded,color: Colors.redAccent),
+                            onPressed: () => controller.decrement(cart.itemid!),
                           ),
-
-                          // الكمية
                           Text(
                             '${controller.data[i].cartCount}',
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
+                            style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.black87),
                           ),
-
-                          // زرار الزائد (+)
                           IconButton(
+                            iconSize: 18,
                             padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(
-                              minWidth: 36,
-                              minHeight: 36,
-                            ),
-                            icon: const Icon(
-                              Icons.add_rounded,
-                              size: 18,
-                              color: Colors.black,
-                            ),
-                            onPressed: () {
-                              controller.increment(cart.itemid!);
-                            },
+                            constraints: const BoxConstraints(minWidth: 40),
+                            icon: const Icon(Icons.add_rounded,color: Colors.blueAccent),
+                            onPressed: () => controller.increment(cart.itemid!),
                           ),
                         ],
                       ),

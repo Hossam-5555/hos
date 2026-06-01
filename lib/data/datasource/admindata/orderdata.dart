@@ -22,20 +22,4 @@ class AdminDataOrder {
 
   
 
-  // //approveorder
-  // approveorder(String orderid, String userid) async {
-  //   var response = await crud.postrequset(LinkApi.adminaprovedorder, {
-  //     "orderid": orderid,
-  //     "userid": userid,
-  //   });
-  //   return response.fold((l) => l, (r) => r);
-  // }
-
-  // orderhasdone(String orderid, String userid) async {
-  //   var response = await crud.postrequset(LinkApi.prepareorder, {
-  //     "orderid": orderid,
-  //     "userid": userid,
-  //   });
-  //   return response.fold((l) => l, (r) => r);
-  // }
 }

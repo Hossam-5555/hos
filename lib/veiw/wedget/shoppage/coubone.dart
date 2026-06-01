@@ -24,21 +24,29 @@ class Coubone extends GetView<CartController> {
                 ),
               ),
               Switch.adaptive(
+                activeThumbColor: Colors.white,thumbIcon: MaterialStateProperty.all(
+                  Icon(
+                    controller.coupone.value ? Icons.discount : Icons.question_mark,
+                    color: controller.coupone.value ? Colors.green : const Color.fromARGB(255, 2, 2, 2),
+                  ),
+                ),
                 activeColor: Colors.lightBlueAccent,
                 value: controller.coupone.value,
-                onChanged: onChanged, // تأكد انك بتغير controller.coupone.value في الـ onChanged
+                onChanged:
+                    onChanged, // تأكد انك بتغير controller.coupone.value في الـ onChanged
               ),
             ],
           ),
-          
+
           // إظهار الحقول فقط إذا كان السويتش مفعل
-          if (controller.coupone.value) 
+          if (controller.coupone.value)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: controller.couponename == null
-                  ? AnimatedScale(duration: Duration(seconds: 1),
-                  scale: 1,
-                    child: Row(
+                  ? AnimatedScale(
+                      duration: Duration(seconds: 1),
+                      scale: 1,
+                      child: Row(
                         children: [
                           Expanded(
                             child: TextField(
@@ -48,7 +56,9 @@ class Coubone extends GetView<CartController> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                ),
                               ),
                             ),
                           ),
@@ -66,7 +76,7 @@ class Coubone extends GetView<CartController> {
                           ),
                         ],
                       ),
-                  )
+                    )
                   : Container(
                       alignment: Alignment.center,
                       padding: const EdgeInsets.all(10),
