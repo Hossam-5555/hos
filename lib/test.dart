@@ -36,7 +36,7 @@ class MyListController extends GetxController {
             margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             color: Colors.red[100],
             child: ListTile(
-              title: Text("Hossam"),
+              title: Text("Hossam هو الوحش"), // يمكنك عرض removedItem هنا إذا أردت
               trailing: const Icon(
                 Icons.delete,
                 color: Color.fromARGB(255, 0, 0, 0),
