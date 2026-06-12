@@ -15,8 +15,8 @@ class Coubone extends GetView<CartController> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                "Have A Code?",
+               Text(
+                "Have A Code?".tr,
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
@@ -66,10 +66,10 @@ class Coubone extends GetView<CartController> {
                           ElevatedButton(
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
+                              // backgroundColor: Colors.black,
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(40),
                               ),
                             ),
                             child: const Text("Apply"),

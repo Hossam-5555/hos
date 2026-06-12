@@ -19,6 +19,7 @@ class Mytransilation extends Translations {
       "Add new address": "اضافة عنوان جديد",
       "Change address": "اضغط لتغيير العنوان",
       "Sipping": "رسوم التوصيل",
+      "Have A Code?": "هل لديك كود خصم؟",
       //Homepage
       //orderpage
       "Order numper": "طلب رقم ",
@@ -77,6 +78,7 @@ class Mytransilation extends Translations {
       "Add new address": "Add new address",
       "Change address": "Change address",
       "Sipping": "Sipping",
+      "Have A Code?": "Have A Code?",
       //orderpage
       "Order numper": "Order numper: ",
       "Payment": "Payment",

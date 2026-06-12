@@ -34,6 +34,14 @@ class SharedProductCard extends StatelessWidget {
         padding: EdgeInsets.all(5),
         height: height,
         decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.white.withOpacity(0.08),
+              Colors.white.withOpacity(0.02),
+            ],
+          ),
           borderRadius: BorderRadius.all(Radius.circular(25)),
           border: Border.all(
             color: Colors.grey.withAlpha(50),
@@ -91,7 +99,8 @@ class SharedProductCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                           child: BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-                            child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
                                   Icons.star_rounded,

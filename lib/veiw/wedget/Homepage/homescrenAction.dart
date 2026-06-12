@@ -19,14 +19,15 @@ class Homescrenaction extends StatelessWidget {
         height: 52,
         width: 52,
         decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 5,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
+          gradient: const LinearGradient(begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFFFFFFF), // مركز الإضاءة الأبيض المشع
+              Color(0xFFF2F4F7), // البلاتينيوم الناعم
+              Color(0xFFD0D5DD), // الأطراف الفضية الراقية
+            ],
+          ),
+
           shape: BoxShape.circle,
         ),
         child: MaterialButton(

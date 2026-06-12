@@ -143,8 +143,7 @@ class ShoppingCartPage extends StatelessWidget {
 
                         // زر إتمام الشراء
                         SizedBox(
-                          width: double
-                              .infinity, // يضمن أخذ الزر العرض المتاح بشكل مثالي
+                          width:MediaQuery.of(context).size.width * 0.8, // يضمن أخذ الزر العرض المتاح بشكل مثالي
                           child: ElevatedButton(
                             onPressed: () {
                               controller.data.isNotEmpty
@@ -156,12 +155,11 @@ class ShoppingCartPage extends StatelessWidget {
                             },
                             style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.symmetric(
-                                vertical: (height * 0.015).clamp(
-                                  12.0,
+                                vertical: (height * 0.012).clamp(
+                                  10.0,
                                   20.0,
                                 ), // تبطين مرن للزر
                               ),
-                              backgroundColor: Colors.black,
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(80),

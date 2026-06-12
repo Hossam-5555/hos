@@ -65,13 +65,15 @@ class _FilterButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 1,
-              color: const Color.fromARGB(255, 196, 196, 196).withAlpha(60),
-              offset: const Offset(1, 2),
-            ),
-          ],
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFFFFFFF), // مركز الإضاءة الأبيض المشع
+              Color(0xFFF2F4F7), // البلاتينيوم الناعم
+              Color(0xFFD0D5DD), // الأطراف الفضية الراقية
+            ],
+          ),
         ),
         child: MaterialButton(
           onPressed: () => openAdvancedFilter(context),
@@ -94,25 +96,23 @@ class BackButtonCircle extends StatelessWidget {
           width: 50,
           height: 50,
           decoration: BoxDecoration(
-            color: Colors.white,
             shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withAlpha(25),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
+            gradient: const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xFFFFFFFF), // مركز الإضاءة الأبيض المشع
+                Color(0xFFF2F4F7), // البلاتينيوم الناعم
+                Color(0xFFD0D5DD), // الأطراف الفضية الراقية
+              ],
+            ),
           ),
-          child: Material(
-            color: Colors.transparent,
-            child: IconButton(
-              onPressed: () => Navigator.of(context).pop(),
-              icon: const Icon(
-                Icons.arrow_back_ios_sharp,
-                size: 20,
-                color: Colors.black,
-              ),
+          child: IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: const Icon(
+              Icons.arrow_back_ios_sharp,
+              size: 20,
+              color: Colors.black,
             ),
           ),
         ),
@@ -120,6 +120,7 @@ class BackButtonCircle extends StatelessWidget {
     );
   }
 }
+
 void openAdvancedFilter(BuildContext context) {
   // استخدام findOrPut لضمان عدم تكرار إنشاء الكنترولر إذا كان موجوداً بالفعل
   if (!Get.isRegistered<FilterController>()) {
@@ -130,7 +131,7 @@ void openAdvancedFilter(BuildContext context) {
     context: context,
     isScrollControlled: true,
     // إزالة اللون الثابت ليتماشى مع التعديلات التي أجريناها في الـ Sheet
-    backgroundColor: Colors.transparent, 
+    backgroundColor: Colors.transparent,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),

@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/data/datasource/admindata/dashboarddata.dart';
 import 'package:hos/data/model/dashboardmodel.dart';
@@ -91,9 +92,9 @@ late  AnimationController animatedContainer ;
   List time = ["day", "mounth", "year"];
 
   List<List<dynamic>> title = [
-    ["Dashboard", Icons.home],
-    ["Orders", Icons.shopping_bag],
-    ["Categories", Icons.category_outlined],
+    ["Dashboard", Imageasset.homesvg],
+    ["Orders", Imageasset.cart],
+    ["Categories", Imageasset.profile],
   ];
   @override
   void onInit() {

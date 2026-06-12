@@ -32,14 +32,14 @@ Widget buildPaymentMethod({
           children: [
             Icon(
               icon,
-              color: isSelected ? Colors.white : Colors.black87,
+              color: isSelected ? Colors.white : Colors.grey.shade700,
               size: 28,
             ),
             const SizedBox(height: 8),
             Text(
               title,
               style: TextStyle(
-                color: isSelected ? Colors.white : Colors.black87,
+                color: isSelected ? Colors.white : Colors.grey.shade700,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
                 fontSize: 13,
               ),
@@ -247,10 +247,8 @@ Widget buildTextField({
     obscureText: isSecure,
     decoration: InputDecoration(
       labelText: label,
-      // labelStyle: TextStyle(color: Colors.black, fontSize: 14),
       prefixIcon: Icon(icon, color: Colors.black, size: 20),
       filled: true,
-      fillColor: const Color.fromARGB(255, 248, 249, 250), // لون هادي للعين
       contentPadding: const EdgeInsets.symmetric(vertical: 16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),

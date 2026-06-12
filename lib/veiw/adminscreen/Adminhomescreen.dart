@@ -5,6 +5,7 @@ import 'package:hos/controler/admincontroller/AdminHome.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/userscreen/screen/home/notification.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
+import 'package:hos/veiw/wedget/Homepage/homescrenAction.dart';
 
 class AdminHome extends StatelessWidget {
   AdminHome({super.key});
@@ -18,10 +19,7 @@ class AdminHome extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
-                   Get.to(
-                    () => Settings(),
-                    transition: Transition.cupertino,
-                  );
+                  Get.to(() => Settings(), transition: Transition.cupertino);
                 },
                 child: const CircleAvatar(
                   radius: 20,
@@ -37,8 +35,9 @@ class AdminHome extends StatelessWidget {
               ),
               const Spacer(),
 
-              InkWell(
-                onTap: () {
+              Homescrenaction(
+                herotag: "notification",
+                onPressed: () {
                   Get.to(
                     () => NotificationPage(),
                     transition: Transition.cupertino,
@@ -52,7 +51,6 @@ class AdminHome extends StatelessWidget {
                   ),
                 ),
               ),
-             
             ],
           ),
         ),
@@ -76,7 +74,13 @@ class AdminHome extends StatelessWidget {
             items: controller.pages.map((e) {
               int index = controller.pages.indexOf(e);
               return BottomNavigationBarItem(
-                icon: Icon(controller.title[index][1]),
+                icon: SvgPicture.asset(
+                  controller.title[index][1],
+                  height: 24,
+                  color: controller.currentpage == index
+                      ? Colors.blue
+                      : Colors.grey.shade600,
+                ),
                 label: controller.title[index][0],
               );
             }).toList(),

@@ -23,25 +23,26 @@ class Appbarbackicon extends StatelessWidget implements PreferredSizeWidget {
       actions: [if (selected == true && iconButton != null) iconButton!],
       title: Text(title),
       centerTitle: true,
-      leadingWidth: 70, 
+      leadingWidth: 70,
       leading: Padding(
         padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
         child: Center(
           child: Hero(
             tag: herotag,
             child: Container(
-              width: 45, 
+              width: 45,
               height: 45,
               decoration: BoxDecoration(
-                color: Colors.white,
                 shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
+                gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFFFFFFFF), // مركز الإضاءة الأبيض المشع
+                    Color(0xFFF2F4F7), // البلاتينيوم الناعم
+                    Color(0xFFD0D5DD), // الأطراف الفضية الراقية
+                  ],
+                ),
               ),
               child: Material(
                 color: Colors.transparent,
@@ -50,7 +51,7 @@ class Appbarbackicon extends StatelessWidget implements PreferredSizeWidget {
                     if (selected == true) {
                       // 💚 التعديل السحري: استدعاء الدالة بشكل صحيح بالأقواس ()
                       if (onPressed != null) {
-                        onPressed!(); 
+                        onPressed!();
                       }
                     } else {
                       Navigator.of(context).pop();

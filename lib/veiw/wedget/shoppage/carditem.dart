@@ -15,16 +15,9 @@ Widget buildCartItemCard(
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       padding: const EdgeInsets.all(12.0),
       decoration: BoxDecoration(
-        color: Colors.white, // أضفنا لون خلفية أبيض
+        // color: Colors.white, // أضفنا لون خلفية أبيض
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.grey.shade200), // لون أخف للحدود
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(10),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          )
-        ],
       ),
       child: Row(
         children: [
@@ -33,16 +26,27 @@ Widget buildCartItemCard(
             width: 90,
             height: 90,
             decoration: BoxDecoration(
-              color: const Color(0xFFF4F5F7),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFFFFFFFF), // مركز الإضاءة الأبيض المشع
+                  Color(0xFFF2F4F7), // البلاتينيوم الناعم
+                  Color(0xFFD0D5DD), // الأطراف الفضية الراقية
+                ],
+              ),
               borderRadius: BorderRadius.circular(14),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(14),
               child: CachedNetworkImage(
                 imageUrl: cart.itemimage!,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
-                errorWidget: (context, url, error) => const Icon(Icons.error_outline),
+                fit: BoxFit.contain,
+                placeholder: (context, url) => const Center(
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+                errorWidget: (context, url, error) =>
+                    const Icon(Icons.error_outline),
               ),
             ),
           ),
@@ -57,7 +61,10 @@ Widget buildCartItemCard(
               children: [
                 Text(
                   cart.itemsname ?? "بدون اسم",
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -67,14 +74,26 @@ Widget buildCartItemCard(
                   children: [
                     Text(
                       '${double.parse(controller.data[i].subtotal.toString()).toStringAsFixed(2)} \$',
-                      style: const TextStyle(fontSize: 16, color: Colors.blueAccent, fontWeight: FontWeight.w800),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        // color: Colors.black87,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
-                    
+
                     // كبسولة التحكم في الكمية
                     Container(
                       height: 40, // جعلنا الارتفاع مناسب للزرار (بدل 80)
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF4F5F7), // لون رمادي فاتح للخلفية
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color(0xFFFFFFFF), // مركز الإضاءة الأبيض المشع
+                            Color(0xFFF2F4F7), // البلاتينيوم الناعم
+                            Color(0xFFD0D5DD), // الأطراف الفضية الراقية
+                          ],
+                        ),
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Row(
@@ -83,18 +102,27 @@ Widget buildCartItemCard(
                             iconSize: 18,
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(minWidth: 40),
-                            icon: const Icon(Icons.remove_rounded,color: Colors.redAccent),
+                            icon: const Icon(
+                              Icons.remove_rounded,
+                              color: Colors.redAccent,
+                            ),
                             onPressed: () => controller.decrement(cart.itemid!),
                           ),
                           Text(
                             '${controller.data[i].cartCount}',
-                            style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.black87),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
                           ),
                           IconButton(
                             iconSize: 18,
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(minWidth: 40),
-                            icon: const Icon(Icons.add_rounded,color: Colors.blueAccent),
+                            icon: const Icon(
+                              Icons.add_rounded,
+                              color: Colors.blueAccent,
+                            ),
                             onPressed: () => controller.increment(cart.itemid!),
                           ),
                         ],

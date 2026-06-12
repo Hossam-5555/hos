@@ -243,7 +243,7 @@ class Settings extends StatelessWidget {
         title,
         style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
       ),
-      trailing: Switch.adaptive(
+      trailing: Switch.adaptive(activeColor: gradientColors.last,
         thumbIcon: MaterialStateProperty.all(
           const Icon(Icons.notifications_active, size: 16, color: Colors.white),
         ),
@@ -253,7 +253,11 @@ class Settings extends StatelessWidget {
     );
   }
 
-  Widget _buildThemeTile(LocalController controller) {
+Widget _buildThemeTile(LocalController controller) {
+  // بنحط الـ Tile جوه Obx عشان يسمع لتغييرات الـ GetX فوراً
+  return Obx(() {
+    bool isDark = controller.selectedTheme.value == 'Dark';
+
     return ListTile(
       leading: Container(
         padding: const EdgeInsets.all(8),
@@ -273,39 +277,52 @@ class Settings extends StatelessWidget {
         'Theme'.tr,
         style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
       ),
-      trailing: Switch.adaptive(
-        // 1. تحديد لون المقبض (Thumb) في الوضع النشط والغير نشط
-        activeColor: Colors.black, // لون الـ track لما يكون ON
-        activeThumbColor: Colors.black, // لون الـ thumb لما يكون ON
-        inactiveThumbColor: const Color.fromARGB(255, 230, 189, 8), // لون الشمس (أصفر ذهبي) لما يكون OFF
-        inactiveTrackColor:
-            Colors.white, // لون الـ track خفيف لما يكون OFF
-        // 2. تطبيق تأثير تغيير الأيقونة باستخدام MaterialStateProperty
-        thumbIcon: MaterialStateProperty.resolveWith<Icon?>((
-          Set<MaterialState> states,
-        ) {
-          // إذا كان الـ Switch في حالة اختيار (يعني ON / Dark)
-          if (states.contains(MaterialState.selected)) {
-            return const Icon(
-              Icons.dark_mode, // أيقونة الهلال
-              size: 16,
-              color: Colors.white,
-            );
-          }
-          // إذا كان الـ Switch في حالة عدم اختيار (يعني OFF / Light)
-          return const Icon(
-            Icons.sunny, // أيقونة الشمس
-            size: 16,
-            color: Colors.black,
-          );
-        }),
-
-        // 3. التحكم في الحالة واستدعاء الـ Controller
-        value: controller.selectedTheme.value == 'Dark',
-        onChanged: (value) => controller.changeTheme(value),
+      trailing: GestureDetector(
+        onTap: () => controller.changeTheme(!isDark),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          width: 60,
+          height: 32,
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: isDark ? Colors.black : Colors.grey.shade300,
+          ),
+          child: AnimatedAlign(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            alignment: isDark ? Alignment.centerRight : Alignment.centerLeft,
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) {
+                // أنيميشن دوران مع تغيير الحجم للأيقونة
+                return RotationTransition(
+                  turns: animation,
+                  child: ScaleTransition(scale: animation, child: child),
+                );
+              },
+              // مفتاح (Key) مهم جداً هنا عشان الـ AnimatedSwitcher يعرف إن الـ Widget اتغيرت
+              key: ValueKey<bool>(isDark), 
+              child: isDark
+                  ? const Icon(
+                      Icons.dark_mode,
+                      key: ValueKey('dark'),
+                      color: Colors.white,
+                      size: 20,
+                    )
+                  : const Icon(
+                      Icons.sunny,
+                      key: ValueKey('light'),
+                      color: Colors.orange,
+                      size: 20,
+                    ),
+            ),
+          ),
+        ),
       ),
     );
-  }
+  });
+}
 
   Widget _buildDivider() =>
       Divider(height: 1, indent: 60, color: Colors.grey.withOpacity(0.1));

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/searchclass.dart';
@@ -115,13 +116,38 @@ class Searchpage extends StatelessWidget {
                                 height: 80,
                                 width: 80,
                                 decoration: BoxDecoration(
-                                  color: Colors.grey.shade50,
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color(
+                                        0xFFFFFFFF,
+                                      ), // مركز الإضاءة الأبيض المشع
+                                      Color(0xFFF2F4F7), // البلاتينيوم الناعم
+                                      Color(
+                                        0xFFD0D5DD,
+                                      ), // الأطراف الفضية الراقية
+                                    ],
+                                  ),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
-                                    "${item.itemsImage}",
+                                  child: CachedNetworkImage(
+                                    imageUrl: "${item.itemsImage}",
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.contain,
+                                            ),
+                                          ),
+                                        ),
+                                    errorWidget: (context, url, error) => Icon(
+                                      Icons.broken_image,
+                                      color: Colors.grey.shade400,
+                                    ),
                                     fit: BoxFit
                                         .contain, // contain أحسن عشان الصورة متتقصش
                                   ),

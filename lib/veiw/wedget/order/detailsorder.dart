@@ -184,7 +184,18 @@ Widget items(OrderModel order) => Column(
           alignment: Alignment.center,
           width: 80,
           height: 80,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xFFFFFFFF), // مركز الإضاءة الأبيض المشع
+                Color(0xFFF2F4F7), // البلاتينيوم الناعم
+                Color(0xFFD0D5DD), // الأطراف الفضية الراقية
+              ],
+            ),
+            borderRadius: BorderRadius.circular(20),
+          ),
           child: CachedNetworkImage(
             imageUrl: e.image.toString(),
             imageBuilder: (context, imageProvider) => Container(
