@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -70,6 +72,7 @@ class ViewCategories extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final categoryItem = controller.catdata[index];
                   return CategoryCard(
+                    isarabic: controller.isarabic,
                     onTap: () {
                       controller.gotoproducts(categoryItem);
                     },
@@ -100,17 +103,20 @@ class ViewCategories extends StatelessWidget {
 // ==========================================
 // كارت القسم كـ Widget مستقل لتحسين الأداء (Highly Optimized Widget)
 // ==========================================
+// ignore: must_be_immutable
 class CategoryCard extends StatelessWidget {
   final dynamic item;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
   final void Function() onTap;
-  const CategoryCard({
+  bool isarabic;
+  CategoryCard({
     super.key,
     required this.item,
     required this.onEdit,
     required this.onDelete,
     required this.onTap,
+    required this.isarabic,
   });
 
   @override
@@ -120,7 +126,7 @@ class CategoryCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(24), // حواف دائرية ناعمة جداً
+          borderRadius: BorderRadius.circular(20), // حواف دائرية ناعمة جداً
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.04),
@@ -130,18 +136,18 @@ class CategoryCard extends StatelessWidget {
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(20),
           child: Stack(
+            alignment: Alignment.center,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // 1. عرض الصورة بالكامل في النصف العلوي
                   Expanded(
-                    flex: 11,
                     child: CachedNetworkImage(
                       imageUrl: item.image ?? "",
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                       placeholder: (context, url) => Container(
                         color: Colors.grey[100],
                         child: const Center(
@@ -162,67 +168,70 @@ class CategoryCard extends StatelessWidget {
                       ),
                     ),
                   ),
+
                   // 2. تفاصيل النصوص في النصف السفلي
-                  Expanded(
-                    flex: 8,
-                    child: Padding(
+                ],
+              ),
+              Positioned(
+                top: 8,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 8,
+                  ),
+                  child: Text(
+                    isarabic ? item.nameAr ?? "" : item.name ?? "",
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow:
+                        TextOverflow.ellipsis, // حماية الكارت من الـ Overflow
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+              ),
+
+              // 3. أزرار التحكم العائمة بتصميم زجاجي أنيق فوق الصورة
+              Positioned(
+                bottom: 10,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                    child: Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
+                        horizontal: 5,
+                        vertical: 1,
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                      alignment: Alignment.center,
+                      width: 180,
+                      height: 40, // حجم مناسب لأزرار التحكم
+                      decoration: BoxDecoration(
+                        color: Colors.white.withAlpha(50),
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
-                            item.name ?? "",
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                            overflow: TextOverflow
-                                .ellipsis, // حماية الكارت من الـ Overflow
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                              color: Colors.black87,
-                            ),
+                          _buildActionButton(
+                            icon: Icons.edit_rounded,
+                            iconColor: Colors.blueAccent,
+                            onTap: onEdit,
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            item.nameAr ?? "",
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.black45,
-                              fontFamily:
-                                  'Cairo', // يفضل لو تستخدم خط كايرو للعربي
-                            ),
+                          const SizedBox(width: 8),
+                          _buildActionButton(
+                            icon: Icons.delete_rounded,
+                            iconColor: Colors.redAccent,
+                            onTap: onDelete,
                           ),
                         ],
                       ),
                     ),
                   ),
-                ],
-              ),
-
-              // 3. أزرار التحكم العائمة بتصميم زجاجي أنيق فوق الصورة
-              Positioned(
-                top: 8,
-                right: 8,
-                child: _buildActionButton(
-                  icon: Icons.edit_rounded,
-                  iconColor: Colors.blueAccent,
-                  onTap: onEdit,
-                ),
-              ),
-              Positioned(
-                top: 8,
-                left: 8,
-                child: _buildActionButton(
-                  icon: Icons.delete_outline_rounded,
-                  iconColor: Theme.of(context).colorScheme.error,
-                  onTap: onDelete,
                 ),
               ),
             ],

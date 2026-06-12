@@ -84,43 +84,89 @@ class SharedProductCard extends StatelessWidget {
                     ),
                     Positioned(
                       top: 8,
-                      right: 8,
                       child: Container(
-                        // height: 20,
-                        width: 50,
+                        width: 180,
                         alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withAlpha(
-                            76,
-                          ), // ✅ طبقة شفافة فوق الصورة
-                          borderRadius: BorderRadius.circular(20),
-                        ), // ✅ نفس الزوايا
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              title.length> 16
+                                    ? "${title.substring(0, 12)}.."
+                                    : title,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(width: 8),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: BackdropFilter(
+                                filter: ImageFilter.blur(
+                                  sigmaX: 10,
+                                  sigmaY: 10,
+                                ),
+                                child: Container(
+                                  height: 30,
+                                  width: 50,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withAlpha(
+                                      76,
+                                    ), // ✅ طبقة شفافة فوق الصورة
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.star_border_purple500_outlined,
+                                        size: w * 0.030,
+                                        color: const Color.fromARGB(255, 255, 253, 251),
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        rating.toString(),
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: w * 0.03,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 10,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(40),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                          child: Container(
+                            height: 50,
+                            width: 180,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withAlpha(50),
+                              borderRadius: BorderRadius.circular(40),
+                            ),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Icon(
-                                  Icons.star_rounded,
-                                  size: w * 0.030,
-                                  color: const Color.fromARGB(
-                                    255,
-                                    214,
-                                    156,
-                                    79,
-                                  ),
-                                ),
-                                const SizedBox(width: 4),
                                 Text(
-                                  rating.toString(),
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: w * 0.03,
-                                    fontWeight: FontWeight.w500,
+                                  "${"EGP".tr} $price",
+                                  style: const TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 14,
                                   ),
                                 ),
+                                SizedBox(width: 50),
+                                actionButton, // 👈 هنا هيتعرض الزرار اللي هتبعتهوله
                               ],
                             ),
                           ),
@@ -131,33 +177,18 @@ class SharedProductCard extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
 
-            /// 2. تفاصيل المنتج
-            Text(
-              title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 10),
+            // const SizedBox(height: 10),
+
+            // // /// 2. تفاصيل المنتج
+
+            // // const SizedBox(height: 10),
 
             /// 3. التقييم
 
             // const SizedBox(height: 6),
 
             /// 4. السعر + الأكشن (متغير حسب الصفحة)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  "$price${"EGP".tr}",
-                  style: const TextStyle(color: Colors.blue, fontSize: 14),
-                ),
-                SizedBox(width: 4),
-                actionButton, // 👈 هنا هيتعرض الزرار اللي هتبعتهوله
-              ],
-            ),
           ],
         ),
       ),

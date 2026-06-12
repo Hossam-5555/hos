@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
+import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/admindata/categoriesdata.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/veiw/adminscreen/Adminhomescreen.dart';
@@ -12,7 +13,8 @@ class ViewCatController extends GetxController {
   AdmindaTaCaregores admindata = AdmindaTaCaregores(Get.find());
   Statusrequest statusrequest = Statusrequest.none;
   List<CategoriesModel> catdata = [];
-
+  Myservisec myservisec = Get.find();
+  bool get isarabic => myservisec.sharedPreferences.getString("lang") == "ar";
   @override
   void onInit() {
     super.onInit();
@@ -57,6 +59,7 @@ class ViewCatController extends GetxController {
     await Get.to(() => Addcategories());
     viewCat(); // أعد تحميل البيانات بعد العودة
   }
+
   void gotoproducts(CategoriesModel catmodel) {
     Get.to(() => ViewItemScreen(), arguments: {"catid": catmodel});
   }

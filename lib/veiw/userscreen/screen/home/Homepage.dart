@@ -145,7 +145,7 @@ class HomePage extends StatelessWidget {
 
                               return SharedProductCard(
                                 image: "${item.itemsImage}",
-                                title: item.itemsName ?? "بدون اسم",
+                                title: "${item.itemsName}",
                                 price: "${item.itemsPrice}",
                                 rating: 4.8,
                                 onTap: () {
@@ -202,13 +202,12 @@ class AddToCartButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          height: 32,
+          height: 40,
           width: 40,
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
             color: added.value ? Colors.green : Colors.black,
-                    // shape: BoxShape.circle,
-            borderRadius: BorderRadius.circular(10),
+            shape: BoxShape.circle,
           ),
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),

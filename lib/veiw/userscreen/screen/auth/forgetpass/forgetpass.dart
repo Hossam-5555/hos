@@ -9,6 +9,7 @@ import 'package:hos/core/functions/validinput.dart';
 import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
+import 'package:hos/veiw/wedget/items/itemsappbar.dart';
 
 class ForgetPass extends StatelessWidget {
   const ForgetPass({super.key});
@@ -20,6 +21,7 @@ class ForgetPass extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: BackButtonCircle(),
         title: const Text('Forget Password'),
         centerTitle: true,
         elevation: 0,
@@ -51,11 +53,7 @@ class ForgetPass extends StatelessWidget {
                     Text(
                       'Check Email',
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineSmall!
-                          .copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Appcolor.black,
-                          ),
+                      style: Theme.of(context).textTheme.headlineSmall!,
                     ),
 
                     const SizedBox(height: 10),
