@@ -148,7 +148,7 @@ class AppTheme {
   static ElevatedButtonThemeData _elevatedButtonTheme() {
     return ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Appcolor.blackblue, // لون أزرق داكن أنيق للأزرار
+        backgroundColor: Appcolor.glass, // لون أزرق داكن أنيق للأزرار
         foregroundColor: Colors.white, // نص الزر أبيض ليكون واضحاً
         elevation: 0,
         padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),

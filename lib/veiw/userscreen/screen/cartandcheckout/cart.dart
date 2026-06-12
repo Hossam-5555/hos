@@ -55,6 +55,7 @@ class ShoppingCartPage extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: (width * 0.045).clamp(16.0, 22.0),
                                 fontWeight: FontWeight.bold,
+                                color: Colors.green, // تمييز السعر بلون مختلف لزيادة الوضوح
                               ),
                             ),
                           ],
@@ -77,6 +78,7 @@ class ShoppingCartPage extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: (width * 0.045).clamp(16.0, 22.0),
                                 fontWeight: FontWeight.bold,
+                                color: Colors.red,
                               ),
                             ),
                           ],
@@ -130,6 +132,7 @@ class ShoppingCartPage extends StatelessWidget {
                                           26.0,
                                         ),
                                         fontWeight: FontWeight.bold,
+                                        color: Colors.green,
                                       ),
                                     );
                                   },

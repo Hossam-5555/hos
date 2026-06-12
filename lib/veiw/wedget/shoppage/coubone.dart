@@ -24,13 +24,14 @@ class Coubone extends GetView<CartController> {
                 ),
               ),
               Switch.adaptive(
+                inactiveTrackColor: Colors.grey.shade300,inactiveThumbColor: Colors.white,
                 activeThumbColor: Colors.white,thumbIcon: MaterialStateProperty.all(
+
                   Icon(
                     controller.coupone.value ? Icons.discount : Icons.question_mark,
                     color: controller.coupone.value ? Colors.green : const Color.fromARGB(255, 2, 2, 2),
                   ),
-                ),
-                activeColor: Colors.lightBlueAccent,
+                ),trackColor: MaterialStateProperty.all(Colors.grey.shade300),
                 value: controller.coupone.value,
                 onChanged:
                     onChanged, // تأكد انك بتغير controller.coupone.value في الـ onChanged
