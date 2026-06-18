@@ -129,10 +129,10 @@ class Searchpage extends StatelessWidget {
                                       ), // الأطراف الفضية الراقية
                                     ],
                                   ),
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(25),
                                 ),
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(25),
                                   child: CachedNetworkImage(
                                     imageUrl: "${item.itemsImage}",
                                     imageBuilder: (context, imageProvider) =>
@@ -162,21 +162,38 @@ class Searchpage extends StatelessWidget {
                                     Text(
                                       item.itemsName ?? "",
                                       style: const TextStyle(
-                                        // fontSize: 16,
-                                        // fontWeight: FontWeight.bold,
-                                        // color: Colors.black87,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     const SizedBox(height: 8),
-                                    Text(
-                                      '${item.itemsPrice} ${"EGP".tr}',
-                                      style: TextStyle(
-                                        // fontSize: 15,
-                                        color: Colors.blue,
-                                        // fontWeight: FontWeight.w700,
-                                      ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          '${item.itemsPrice} ${"EGP".tr}',
+                                          style: TextStyle(
+                                            // fontSize: 15,
+                                            color: Colors.blue,
+                                            // fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Icon(
+                                          Icons.star,
+                                          size: 16,
+                                          color: Colors.amber,
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          "4.5",
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.grey.shade600,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),

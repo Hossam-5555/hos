@@ -56,19 +56,19 @@ class Settings extends StatelessWidget {
                       context,
                       title: 'General'.tr,
                       children: [
-                        Obx(
-                          () => _buildSwitchTile(
-                            icon: Icons.notifications_none_outlined,
-                            title: 'Notifications'.tr,
-                            value: controller.notificationsEnabled.value,
-                            onChanged: controller.toggleNotifications,
-                            gradientColors: [
-                              Colors.blue.shade400,
-                              Colors.blue.shade700,
-                            ],
-                          ),
-                        ),
-                        _buildDivider(),
+                        // Obx(
+                        //   () => _buildSwitchTile(
+                        //     icon: Icons.notifications_none_outlined,
+                        //     title: 'Notifications'.tr,
+                        //     value: controller.notificationsEnabled.value,
+                        //     onChanged: controller.toggleNotifications,
+                        //     gradientColors: [
+                        //       Colors.blue.shade400,
+                        //       Colors.blue.shade700,
+                        //     ],
+                        //   ),
+                        // ),
+                        // _buildDivider(),
                         _buildThemeTile(local),
                       ],
                     ),

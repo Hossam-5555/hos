@@ -112,7 +112,7 @@ class AppTheme {
   static const Color _lightTextSec = Color(0xFF6B7280); // رمادي للنصوص الثانوية والأسعار القديمة
 
   // 2. ألوان احترافية للثيم الداكن (Dark Palette)
-  static const Color _darkBg = Color(0xFF0A0A0A); // أسود فخم وعميق للخلفية
+  static const Color _darkBg = Color(0xFF1F1F1F); // أسود فخم وعميق للخلفية
   static const Color _darkSurface = Color(0xFF161616); // درجة أفتح للبطاقات لخلق عمق
   static const Color _darkTextMain = Color(0xFFF5F5F7); // أبيض عاجي يمنع التشتت
   static const Color _darkTextSec = Color(0xFF8E8E93); // رمادي فاتح للنصوص الثانوية
@@ -148,7 +148,7 @@ class AppTheme {
   static ElevatedButtonThemeData _elevatedButtonTheme() {
     return ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Appcolor.glass, // لون أزرق داكن أنيق للأزرار
+        backgroundColor: Appcolor.black, // لون أزرق داكن أنيق للأزرار
         foregroundColor: Colors.white, // نص الزر أبيض ليكون واضحاً
         elevation: 0,
         padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
