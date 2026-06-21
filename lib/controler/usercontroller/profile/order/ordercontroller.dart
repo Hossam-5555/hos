@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/serveces/myservisec.dart';
@@ -9,6 +10,16 @@ import 'package:hos/data/model/ordersmodel.dart';
 
 class Ordercontroller extends GetxController {
   List<OrderModel> orders = [];
+
+
+Map<String, dynamic> orderimage = {
+  "pending": Imageasset.pending,
+  "processing": Imageasset.processing,
+  "shipped": Imageasset.shipped,
+  "delivered": Imageasset.delivered,
+  "cancelled": Imageasset.cancelled,
+};
+
   RxInt get orderscount => orders.length.obs;
   Statusrequest statusrequest = Statusrequest.none;
   Myservisec myservisec = Get.find();

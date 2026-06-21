@@ -51,7 +51,7 @@ Widget statusorder(String status, Color currentColor, String text) {
           children: [
             Row(
               children: const [
-                Icon(Icons.info_outline, size: 18),
+                Icon(Icons.info_outline),
                 SizedBox(width: 10),
                 Text("Status", style: TextStyle(fontWeight: FontWeight.bold)),
               ],
@@ -166,7 +166,7 @@ Widget items(OrderModel order) => Column(
   children: [
     Row(
       children: [
-        Icon(Icons.shopping_cart, size: 14),
+        Icon(Icons.shopping_cart, ),
         const SizedBox(width: 10),
         const Text(
           "Products",
@@ -266,8 +266,6 @@ Widget info(order) {
           children: [
             Icon(
               Icons.contact_page_rounded,
-              color: Colors.blue.shade700,
-              size: 24,
             ),
             const SizedBox(width: 10),
             const Text(

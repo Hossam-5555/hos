@@ -11,7 +11,13 @@ class AdminPindingController extends GetxController {
   Myservisec myservisec = Get.find();
   AdminDataOrder orderdata = Get.put(AdminDataOrder(Get.find()));
   Statusrequest statusrequest = Statusrequest.none;
-
+Map<String, dynamic> orderimage ={
+  "pending": "assets/images/pending.png",
+  "processing": "assets/images/processing.png",
+  "shipped": "assets/images/shipped.png",
+  "delivered": "assets/images/delivered.png",
+  "cancelled": "assets/images/cancelled.png",
+};
   List<OrderModel> orderspending = [];
   int selectedStatus = 0;
 

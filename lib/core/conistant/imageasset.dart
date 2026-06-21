@@ -30,4 +30,11 @@ class Imageasset {
   static String settings = "$routeImage/setting.png";
   static String goold = "$routeImage/sc.png";
   static String order = "$routeImage/order.png";
+
+  //order status
+  static String pending = "$routeImage/Hourglass illustration.jpg";
+  static String processing = "$routeImage/Man fixing issue with gear.png";
+  static String shipped = "$routeImage/shipped.png";
+  static String delivered = "$routeImage/delivered.png";
+  static String cancelled = "$routeImage/cancelled.png";
 }

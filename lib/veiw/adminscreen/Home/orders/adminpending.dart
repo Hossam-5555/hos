@@ -86,6 +86,7 @@ class Adminpending extends StatelessWidget {
                     final statuscolor = controller.statusColor ?? Colors.grey;
 
                     return OrderCard(
+                      orderimage: controller.orderimage[order.status] ?? "assets/images/unknown.png",
                       order: order,
                       status: statustext,
                       color: statuscolor,

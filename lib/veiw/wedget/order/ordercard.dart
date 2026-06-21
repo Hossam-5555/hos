@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:hos/core/conistant/appcolor.dart';
 import 'package:jiffy/jiffy.dart';
 
 // ignore: must_be_immutable
@@ -13,6 +12,7 @@ class OrderCard extends StatelessWidget {
     required this.order,
     required this.status,
     required this.color,
+    required this.orderimage,
   });
   void Function()? onTap;
   double w;
@@ -20,6 +20,7 @@ class OrderCard extends StatelessWidget {
   final order;
   final String status;
   final Color color;
+  Map<String, dynamic> orderimage ;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -27,6 +28,12 @@ class OrderCard extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: h * 0.01),
         decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+              orderimage[status]!,
+            ),
+            fit: BoxFit.cover,
+          ),
           gradient: LinearGradient(
             begin: AlignmentGeometry.topCenter,
             end: AlignmentGeometry.topCenter,
@@ -45,47 +52,28 @@ class OrderCard extends StatelessWidget {
             vertical: h * 0.008,
             horizontal: w * 0.04,
           ),
-
-          title: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CircleAvatar(
-                    radius: w * 0.05,
-                    backgroundColor: Appcolor.primaryColor.withAlpha(35),
-                    child: Icon(
-                      Icons.shopping_bag,
-                      size: w * 0.05,
-                      color: Appcolor.primaryColor,
-                    ),
-                  ),
-                  Text(
-                    Jiffy.parse(
-                      isUtc: true,
-                      order.createdAt,
-                      pattern: 'yyyy-MM-dd hh:mm a',
-                    ).fromNow(),
-                    style: TextStyle(
-                      fontSize: w * 0.035,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-
+        
           subtitle: Padding(
             padding: EdgeInsets.only(top: h * 0.01),
-
+        
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-
+        
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text(
+                      Jiffy.parse(
+                        isUtc: true,
+                        order.createdAt,
+                        pattern: 'yyyy-MM-dd hh:mm a',
+                      ).fromNow(),
+                      style: TextStyle(
+                        fontSize: w * 0.035,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     Text(
                       "${'Order numper'.tr}#${order.orderNumber}",
                       style: TextStyle(
@@ -114,7 +102,12 @@ class OrderCard extends StatelessWidget {
                               TextSpan(
                                 text: ":${order.paymentMethod}",
                                 style: TextStyle(
-                                  color: const Color.fromARGB(255, 74, 158, 25),
+                                  color: const Color.fromARGB(
+                                    255,
+                                    74,
+                                    158,
+                                    25,
+                                  ),
                                 ),
                               ),
                             ],
@@ -128,7 +121,12 @@ class OrderCard extends StatelessWidget {
                               TextSpan(
                                 text: ":${order.paymentStatus}",
                                 style: TextStyle(
-                                  color: const Color.fromARGB(255, 74, 158, 25),
+                                  color: const Color.fromARGB(
+                                    255,
+                                    74,
+                                    158,
+                                    25,
+                                  ),
                                 ),
                               ),
                             ],
@@ -136,7 +134,7 @@ class OrderCard extends StatelessWidget {
                         ),
                       ],
                     ),
-
+        
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -149,15 +147,16 @@ class OrderCard extends StatelessWidget {
                         ),
                         SizedBox(width: w / 4),
                         Text(
-                          order.status == "delivered" ? "4 ⭐(1k) reviews" : "",
+                          order.status == "delivered"
+                              ? "4 ⭐(1k) reviews"
+                              : "",
                         ),
                       ],
                     ),
                   ],
                 ),
-
-                // زر الحذف
-
+              
+        
                 // زر التقييم
                 // : order.status == "4" &&
                 //       order == '0'

@@ -45,6 +45,7 @@ class Orders extends StatelessWidget {
                   order: order,
                   status: status,
                   color: color!,
+                  orderimage: controller.orderimage,
                   onTap: () {
                     Get.to(Orderdetailes(), arguments: {"order": order});
                   },
