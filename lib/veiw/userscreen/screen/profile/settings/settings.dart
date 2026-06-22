@@ -163,7 +163,7 @@ class Settings extends StatelessWidget {
             title,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.blueGrey,
+              color: Colors.black54,
               fontSize: 14,
             ),
           ),
@@ -281,7 +281,7 @@ Widget _buildThemeTile(LocalController controller) {
         onTap: () => controller.changeTheme(!isDark),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          width: 60,
+          width: 55,
           height: 32,
           padding: const EdgeInsets.symmetric(horizontal: 4),
           decoration: BoxDecoration(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
-import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/serveces/myservisec.dart';
@@ -10,15 +9,6 @@ import 'package:hos/data/model/ordersmodel.dart';
 
 class Ordercontroller extends GetxController {
   List<OrderModel> orders = [];
-
-
-Map<String, dynamic> orderimage = {
-  "pending": Imageasset.pending,
-  "processing": Imageasset.processing,
-  "shipped": Imageasset.shipped,
-  "delivered": Imageasset.delivered,
-  "cancelled": Imageasset.cancelled,
-};
 
   RxInt get orderscount => orders.length.obs;
   Statusrequest statusrequest = Statusrequest.none;
@@ -58,8 +48,6 @@ Map<String, dynamic> orderimage = {
       statusText = lang ? "غير معروف" : "Unknown";
     }
   }
-
- 
 
   // Future<void> viewrating(String id, String rating) async {
   //   orders.clear();
@@ -108,7 +96,11 @@ Map<String, dynamic> orderimage = {
         if (response['status'] == true) {
           orders.removeWhere((e) => e.orderId == orderid);
           // 2. إظهار الرسالة
-          showSnackBar(Get.context!, "تم إلغاء الطلب بنجاح",Icon(Icons.check_circle));
+          showSnackBar(
+            Get.context!,
+            "تم إلغاء الطلب بنجاح",
+            Icon(Icons.check_circle),
+          );
           viewmyorders();
           Get.back();
           // 3. العودة للخلف أولاً

@@ -11,13 +11,7 @@ class AdminPindingController extends GetxController {
   Myservisec myservisec = Get.find();
   AdminDataOrder orderdata = Get.put(AdminDataOrder(Get.find()));
   Statusrequest statusrequest = Statusrequest.none;
-Map<String, dynamic> orderimage ={
-  "pending": "assets/images/pending.png",
-  "processing": "assets/images/processing.png",
-  "shipped": "assets/images/shipped.png",
-  "delivered": "assets/images/delivered.png",
-  "cancelled": "assets/images/cancelled.png",
-};
+
   List<OrderModel> orderspending = [];
   int selectedStatus = 0;
 
@@ -50,7 +44,7 @@ Map<String, dynamic> orderimage ={
 
     var response = await orderdata.pendingdata(status);
     statusrequest = handling(response);
-
+ print("Response from viewOrders: $response");
     if (Statusrequest.success == statusrequest) {
       // ✳️ التحقق من نجاح حالة الرد من السيرفر
       if (response['status'] == true && response['data'] != null) {

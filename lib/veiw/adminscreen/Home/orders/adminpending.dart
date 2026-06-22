@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/order/pindingcontroller.dart';
-import 'package:hos/core/class/handlingdataview.dart'; 
+import 'package:hos/core/class/handlingdataview.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/wedget/order/ordercard.dart';
 
 class Adminpending extends StatelessWidget {
-  const Adminpending({super.key}); 
+  const Adminpending({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +19,16 @@ class Adminpending extends StatelessWidget {
         // جلب وتحديث بيانات القسم الحالي المفتوح بدقة عند سحب الشاشة للأسفل
         onRefresh: () async => await controller.viewOrders(
           controller.statusKeys[controller.selectedStatus],
-        ), 
+        ),
         child: Column(
           children: [
             /// 🗂️ 1. أقسام حالات الطلبات (Status Tabs)
             Container(
-              height: 40, 
+              height: 40,
               margin: const EdgeInsets.symmetric(vertical: 2),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: controller.orderstatus.length, 
+                itemCount: controller.orderstatus.length,
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
@@ -42,23 +43,30 @@ class Adminpending extends StatelessWidget {
                       decoration: BoxDecoration(
                         gradient: controller.selectedStatus == index
                             ? const LinearGradient(
-                                colors: [Colors.blueAccent, Colors.lightBlueAccent],
+                                colors: [
+                                  Colors.blueAccent,
+                                  Colors.lightBlueAccent,
+                                ],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               )
                             : null,
-                        color: controller.selectedStatus == index 
-                            ? null 
-                            : (Get.isDarkMode ? Colors.grey[800] : Colors.grey[200]),
+                        color: controller.selectedStatus == index
+                            ? null
+                            : (Get.isDarkMode
+                                  ? Colors.grey[800]
+                                  : Colors.grey[200]),
                         borderRadius: BorderRadius.circular(40),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         controller.orderstatus[index],
                         style: TextStyle(
-                          color: controller.selectedStatus == index 
-                              ? Colors.white 
-                              : (Get.isDarkMode ? Colors.white70 : Colors.black54),
+                          color: controller.selectedStatus == index
+                              ? Colors.white
+                              : (Get.isDarkMode
+                                    ? Colors.white70
+                                    : Colors.black54),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -71,24 +79,26 @@ class Adminpending extends StatelessWidget {
             /// 📦 2. قائمة عرض الطلبات المستلمة
             Expanded(
               child: Handlingdataview(
-                statusrequest: controller.statusrequest, // يتكفل تلقائياً بالـ Loading، والـ No Data بناءً على استجابة السيرفر
+                statusrequest: controller
+                    .statusrequest, // يتكفل تلقائياً بالـ Loading، والـ No Data بناءً على استجابة السيرفر
                 widget: ListView.separated(
-                  physics: const AlwaysScrollableScrollPhysics(), // لضمان بقاء الـ RefreshIndicator يعمل بكفاءة
+                  physics:
+                      const AlwaysScrollableScrollPhysics(), // لضمان بقاء الـ RefreshIndicator يعمل بكفاءة
                   padding: const EdgeInsets.all(12),
-                  itemCount: controller.orderspending.length, 
+                  itemCount: controller.orderspending.length,
                   separatorBuilder: (_, _) => const SizedBox(height: 10),
                   itemBuilder: (context, index) {
                     final order = controller.orderspending[index];
 
                     // استخراج حالة التصميم والترجمة الخاصة بهذا الكارت بأسلوب آمن
-                    controller.getcolorandstause(order.status );
-                    final statustext = controller.statusText ?? "غير معروف";
+                    controller.getcolorandstause(order.status);
+                    // final statustext = controller.statusText ?? "غير معروف";
                     final statuscolor = controller.statusColor ?? Colors.grey;
 
                     return OrderCard(
-                      orderimage: controller.orderimage[order.status] ?? "assets/images/unknown.png",
+                      orderimage: orderimage,
                       order: order,
-                      status: statustext,
+                      status: order.status,
                       color: statuscolor,
                       w: size.width,
                       h: size.height,

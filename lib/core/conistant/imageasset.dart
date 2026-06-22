@@ -41,3 +41,13 @@ class Imageasset {
       "$routeImage/lucid-origin_Adorable_3D_cartoon_delivery_hero_smiling_brightly_holding_a_fully_loaded_premiu-0.jpg";
   static String cancelled = "$routeImage/lucid-origin_Cute_3D_cartoon_character_looking_disappointed_leaning_against_a_parked_delivery-0.jpg";
 }
+
+
+
+Map<String, dynamic> orderimage = {
+  "pending": Imageasset.pending,
+  "processing": Imageasset.processing,
+  "shipped": Imageasset.shipped,
+  "delivered": Imageasset.delivered,
+  "cancelled": Imageasset.cancelled,
+};

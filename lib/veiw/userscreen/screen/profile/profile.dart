@@ -13,12 +13,7 @@ class ProfilePage extends StatelessWidget {
   final Myservisec myservisec = Get.find();
 
   // لون أساسي مريح للتطبيق يمكن تغييره حسب الهوية البصرية لمشروعك
-  final Color primaryColor = const Color.fromARGB(
-    255,
-    4,
-    134,
-    173,
-  ); // لون نيلي عصري
+  final Color primaryColor = const Color.fromARGB(255, 44, 46, 46); // لون نيلي عصري
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +25,7 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildProfileHeader(Colors.lightBlue),
+            _buildProfileHeader(Colors.black),
 
             Container(
               decoration: BoxDecoration(
@@ -67,7 +62,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ],
                   ),
-                 SizedBox(height: 20),
+                  SizedBox(height: 20),
                   Container(
                     padding: EdgeInsets.all(5),
                     margin: EdgeInsets.all(5),
@@ -257,7 +252,7 @@ Widget orderCard(String title, String image, Function()? onTap, context) {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
-          height: 250,
+          height: 240,
           width: 120,
           alignment: Alignment.center,
           decoration: BoxDecoration(
@@ -345,9 +340,10 @@ class AppGradients {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [
-      Color(0xFFFFFFFF), // مركز الإضاءة الأبيض المشع
-      Color(0xFFF2F4F7), // البلاتينيوم الناعم
+      Color(0xFFFFFFFF),
       Color(0xFFD0D5DD), // الأطراف الفضية الراقية
+      // مركز الإضاءة الأبيض المشع
+      Color(0xFFF2F4F7), // البلاتينيوم الناعم
     ],
   );
 }
