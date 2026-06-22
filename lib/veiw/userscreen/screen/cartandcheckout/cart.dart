@@ -220,7 +220,7 @@ class ShoppingCartPage extends StatelessWidget {
                           return Padding(
                             // ✅ تم إضافة مسافة جانبية لكي لا تلتصق الكروت بحافة الشاشة
                             padding: EdgeInsets.only(
-                              bottom: 10,
+                              bottom: 8,
                               left: width * 0.04,
                               right: width * 0.04,
                             ),

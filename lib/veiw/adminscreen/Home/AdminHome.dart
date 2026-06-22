@@ -15,25 +15,30 @@ class AdminHome2 extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = Get.put(Adminhome());
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: ListView(
-            children: [
-              const SizedBox(height: 20),
-              StatsSection(c: c),
-              const SizedBox(height: 20),
-              Container(
-                alignment: AlignmentDirectional.centerStart,
-                child: Titles(title: "Sales Overview"),
-              ),
-              Skeletonizer(
-                enabled: c.statusrequest == Statusrequest.loading,
-                child: SalesChart(c: c),
-              ),
-              const SizedBox(height: 20),
-              const RecentOrders(),
-            ],
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await c.getdashboardapi();
+        },
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: ListView(
+              children: [
+                const SizedBox(height: 20),
+                StatsSection(c: c),
+                const SizedBox(height: 20),
+                Container(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Titles(title: "Sales Overview"),
+                ),
+                Skeletonizer(
+                  enabled: c.statusrequest == Statusrequest.loading,
+                  child: SalesChart(c: c),
+                ),
+                const SizedBox(height: 20),
+                const RecentOrders(),
+              ],
+            ),
           ),
         ),
       ),

@@ -15,7 +15,7 @@ class Coubone extends GetView<CartController> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-               Text(
+              Text(
                 "Have A Code?".tr,
                 style: TextStyle(
                   fontSize: 15,
@@ -24,14 +24,19 @@ class Coubone extends GetView<CartController> {
                 ),
               ),
               Switch.adaptive(
-                inactiveTrackColor: Colors.grey.shade300,inactiveThumbColor: Colors.white,
-                activeThumbColor: Colors.white,thumbIcon: MaterialStateProperty.all(
-
+                // inactiveTrackColor: Colors.grey.shade300,inactiveThumbColor: Colors.white,
+                activeThumbColor: Colors.white,
+                thumbIcon: MaterialStateProperty.all(
                   Icon(
-                    controller.coupone.value ? Icons.discount : Icons.question_mark,
-                    color: controller.coupone.value ? Colors.green : const Color.fromARGB(255, 2, 2, 2),
+                    controller.coupone.value
+                        ? Icons.discount
+                        : Icons.question_mark,
+                    color: controller.coupone.value
+                        ? Colors.green
+                        : const Color.fromARGB(255, 2, 2, 2),
                   ),
-                ),trackColor: MaterialStateProperty.all(Colors.grey.shade300),
+                ),
+                trackColor: MaterialStateProperty.all(Colors.grey.shade100),
                 value: controller.coupone.value,
                 onChanged:
                     onChanged, // تأكد انك بتغير controller.coupone.value في الـ onChanged

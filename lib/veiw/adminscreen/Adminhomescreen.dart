@@ -47,7 +47,6 @@ class AdminHome extends StatelessWidget {
                   isLabelVisible: true,
                   child: SvgPicture.asset(
                     Imageasset.notification,
-                    color: Colors.grey.shade600,
                   ),
                 ),
               ),

@@ -5,6 +5,7 @@ import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/data/model/Addresmodel.dart';
+import 'package:hos/veiw/userscreen/screen/profile/profile.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -59,7 +60,7 @@ class ViewMyAddres extends StatelessWidget {
                     if (address.id != null) {
                       controller.deleteAddres(address.id!);
                     }
-                  }),
+                  }, context),
                 );
               },
             ),
@@ -71,12 +72,14 @@ class ViewMyAddres extends StatelessWidget {
 }
 
 /// 📦 UI Card محسّن
-Widget _card(AddresModel address, VoidCallback onDelete) {
+Widget _card(AddresModel address, VoidCallback onDelete, BuildContext context) {
   return Container(
     margin: const EdgeInsets.only(bottom: 16),
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
-      color: Colors.white, // إضافة لون أبيض صريح لبروز الظل
+      gradient: context.isDarkMode
+          ? AppGradients.darkTitanium
+          : AppGradients.lightPlatinum,
       borderRadius: BorderRadius.circular(16),
       border: Border.all(
         color: Colors.grey.shade100,
@@ -243,7 +246,6 @@ Widget _card(AddresModel address, VoidCallback onDelete) {
                 ],
               ),
             ),
-
           ],
         ),
       ],
@@ -254,7 +256,8 @@ Widget _card(AddresModel address, VoidCallback onDelete) {
 // ---------------- ويدجت مساعدة لتنسيق النصوص بشكل احترافي ----------------
 // ضع هذه الويدجت خارج أو داخل الكلاس (يفضل خارجها أو كـ Method مستقلة)
 Widget _addressDetailRow(String label, String value, IconData icon) {
-  return Row(mainAxisAlignment: MainAxisAlignment.start,
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
     children: [
       Padding(
         padding: const EdgeInsets.only(top: 2),

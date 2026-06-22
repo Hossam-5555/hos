@@ -30,9 +30,9 @@ class Orders extends StatelessWidget {
             onRefresh: () async => await controller.viewmyorders(),
 
             child: ListView.separated(
-              padding: EdgeInsets.all(w * 0.04),
+              padding: EdgeInsets.all(w * 0.03),
               itemCount: controller.orders.length,
-              separatorBuilder: (_, _) => SizedBox(height: h * 0.015),
+              separatorBuilder: (_, _) => SizedBox(height: h * 0.010),
 
               itemBuilder: (context, index) {
                 final order = controller.orders[index];

@@ -12,12 +12,12 @@ Widget buildCartItemCard(
 ) {
   return GetBuilder<CartController>(
     builder: (controller) => Container(
-      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      margin: const EdgeInsets.all(8.0),
       padding: const EdgeInsets.all(12.0),
       decoration: BoxDecoration(
         // color: Colors.white, // أضفنا لون خلفية أبيض
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200), // لون أخف للحدود
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.grey.shade300), // لون أخف للحدود
       ),
       child: Row(
         children: [

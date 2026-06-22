@@ -24,7 +24,18 @@ class Buttomappbar extends GetView<Homescreencontroller> {
             height: 75, // ← ارتفاع ثابت ومناسب
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.grey[150],
+                gradient: LinearGradient(
+                  colors: context.isDarkMode
+                      ? [Colors.grey.shade900, Colors.grey.shade800]
+                      : [
+                          Color(0xFFFFFFFF),
+                          Color(0xFFD0D5DD), // الأطراف الفضية الراقية
+                          // مركز الإضاءة الأبيض المشع
+                          Color(0xFFF2F4F7), // البلاتينيوم الناعم
+                        ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 borderRadius: BorderRadius.circular(40),
                 border: Border.all(color: Colors.grey.withAlpha(50)),
               ),
@@ -41,7 +52,9 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                         width: isSelected ? 65 : 48,
                         height: isSelected ? 65 : 48,
                         decoration: BoxDecoration(
-                          color: isSelected ?  Colors.blueAccent.withAlpha(50) : null,
+                          color: isSelected
+                              ? Colors.blueAccent.withAlpha(50)
+                              : null,
                           borderRadius: BorderRadius.circular(40),
                         ),
                         child: Column(
@@ -58,9 +71,10 @@ class Buttomappbar extends GetView<Homescreencontroller> {
                                       ),
                                     ),
                                   )
-                                : SvgPicture.asset(color:  isSelected
-                                            ? Colors.blue
-                                            : Colors.grey,
+                                : SvgPicture.asset(
+                                    color: isSelected
+                                        ? Colors.blue
+                                        : Colors.grey,
                                     controller.appbartitle[index][1],
                                     height: isSelected ? 25 : 22,
                                     width: isSelected ? 25 : 22,

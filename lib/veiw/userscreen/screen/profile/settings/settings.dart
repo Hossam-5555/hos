@@ -163,7 +163,6 @@ class Settings extends StatelessWidget {
             title,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.black54,
               fontSize: 14,
             ),
           ),

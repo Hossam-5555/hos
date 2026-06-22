@@ -34,6 +34,13 @@ class SharedProductCard extends StatelessWidget {
         padding: EdgeInsets.all(5),
         height: height,
         decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.01),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -42,9 +49,10 @@ class SharedProductCard extends StatelessWidget {
               Colors.white.withOpacity(0.02),
             ],
           ),
+
           borderRadius: BorderRadius.all(Radius.circular(25)),
           border: Border.all(
-            color: Colors.grey.withAlpha(50),
+            color: Colors.grey.withOpacity(0.2),
             strokeAlign: BorderSide.strokeAlignCenter,
           ),
         ),
@@ -54,14 +62,9 @@ class SharedProductCard extends StatelessWidget {
           children: [
             /// 1. الصورة
             Expanded(
-              child: Container(
+              child: SizedBox(
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  // color: Colors.grey[100], // ✅ لون رمادي فاتح لخلفية الصورة
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(25),
-                  ), // ✅ زوايا دائرية لحامل الصورة
-                ),
+
                 child: Stack(
                   alignment: AlignmentGeometry.center,
                   children: [
@@ -113,11 +116,11 @@ class SharedProductCard extends StatelessWidget {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     color: Colors.white.withOpacity(
-                                      0.5,
+                                      0.3,
                                     ), // زيادة العتامة قليلاً في النهار
                                     border: Border.all(
                                       color: Colors.white.withOpacity(
-                                        0.8,
+                                        0.5,
                                       ), // حدود قوية قليلاً
                                       width: 1.5,
                                     ),
@@ -128,12 +131,6 @@ class SharedProductCard extends StatelessWidget {
                                       Icon(
                                         Icons.star_border_purple500_outlined,
                                         size: w * 0.030,
-                                        color: const Color.fromARGB(
-                                          255,
-                                          255,
-                                          253,
-                                          251,
-                                        ),
                                       ),
                                       const SizedBox(width: 4),
                                       Text(
@@ -160,8 +157,9 @@ class SharedProductCard extends StatelessWidget {
                         child: BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                           child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 20),
                             height: 50,
-                            width: 180,
+                            width: 170,
                             decoration: BoxDecoration(
                               color: Colors.white.withOpacity(0.2),
                               borderRadius: BorderRadius.circular(40),

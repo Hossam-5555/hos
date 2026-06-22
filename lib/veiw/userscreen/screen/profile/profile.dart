@@ -67,6 +67,9 @@ class ProfilePage extends StatelessWidget {
                     padding: EdgeInsets.all(5),
                     margin: EdgeInsets.all(5),
                     decoration: BoxDecoration(
+                      gradient: context.isDarkMode
+                          ? AppGradients.darkTitanium
+                          : AppGradients.lightPlatinum,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(color: Colors.grey.withAlpha(50)),
                     ),

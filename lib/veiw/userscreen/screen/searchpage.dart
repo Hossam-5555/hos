@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/searchclass.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/wedget/items/itemsappbar.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';
 
@@ -39,7 +40,17 @@ class Searchpage extends StatelessWidget {
               children: [
                 controller.recentSearches.isEmpty &&
                         controller.search!.text.isEmpty
-                    ? Center(child: Text("Type to search...".tr))
+                    ? Center(
+                        child: Column(
+                          children: [
+                            SizedBox(height: 20),
+                            Image.asset(
+                              Imageasset.searchhistory,
+                            ),
+                            Text("Type to search...".tr),
+                          ],
+                        ),
+                      )
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -47,6 +58,7 @@ class Searchpage extends StatelessWidget {
                             "Recent Searches".tr,
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
+
                           InkWell(
                             onTap: () {
                               controller.clearRecentSearches();
