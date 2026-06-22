@@ -34,8 +34,8 @@ class OrderCard extends StatelessWidget {
     final secondaryTextColor = isDark ? Colors.white70 : Colors.black54;
     final overlayColor = isDark
         ? Colors.black.withOpacity(0.75) // تعتيم قوي للوضع المظلم
-        : Colors.white.withOpacity(0.75); // تفتيح قوي للوضع الفاتح
-    final shadowColor = isDark ? Colors.black54 : const Color.fromARGB(255, 223, 220, 220).withOpacity(0.2);
+        : Colors.grey.withOpacity(0.50); // تفتيح قوي للوضع الفاتح
+    final shadowColor = Colors.black54 ;
 
     return GestureDetector(
       onTap: onTap,
@@ -64,7 +64,7 @@ class OrderCard extends StatelessWidget {
               // التدرج اللوني فوق الصورة
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.topCenter,
+                  begin: Alignment.topLeft,
                   end: Alignment.bottomLeft,
                   colors: [
                     overlayColor.withOpacity(
@@ -113,7 +113,7 @@ class OrderCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: color.withOpacity(0.15),
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: color.withOpacity(0.5)),
+                          border: Border.all(color: color.withOpacity(0.2)),
                         ),
                         child: Text(
                           "${'Status'.tr}: $status",
@@ -193,7 +193,7 @@ class OrderCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          "4 ⭐ (1k) ${'reviews'.tr ?? 'reviews'}",
+                          "4 ⭐ (1k) ${'reviews'.tr}",
                           style: TextStyle(
                             color: secondaryTextColor,
                             fontWeight: FontWeight.w500,

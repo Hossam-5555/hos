@@ -96,7 +96,7 @@ class AdminPindingController extends GetxController {
       statusColor = Colors.blue;
       statusText = lang ? "قيد التجهيز" : "Processing";
     } else if (status == "shipped") {
-      statusColor = const Color.fromARGB(255, 179, 123, 39);
+      statusColor = const Color.fromARGB(255, 148, 21, 173);
       statusText = lang ? "في الطريق" : "Shipped";
     } else if (status == "delivered") {
       statusColor = const Color.fromARGB(255, 33, 201, 10);

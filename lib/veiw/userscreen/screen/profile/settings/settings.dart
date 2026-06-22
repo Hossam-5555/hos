@@ -223,35 +223,35 @@ class Settings extends StatelessWidget {
   }
 
   // ويدجت الـ Switch الخاص بالتنبيهات
-  Widget _buildSwitchTile({
-    required IconData icon,
-    required String title,
-    required bool value,
-    required Function(bool) onChanged,
-    required List<Color> gradientColors,
-  }) {
-    return ListTile(
-      leading: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(colors: gradientColors),
-          shape: BoxShape.circle,
-        ),
-        child: Icon(icon, color: Colors.white, size: 20),
-      ),
-      title: Text(
-        title,
-        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-      ),
-      trailing: Switch.adaptive(activeColor: gradientColors.last,
-        thumbIcon: MaterialStateProperty.all(
-          const Icon(Icons.notifications_active, size: 16, color: Colors.white),
-        ),
-        value: value,
-        onChanged: onChanged,
-      ),
-    );
-  }
+  // Widget _buildSwitchTile({
+  //   required IconData icon,
+  //   required String title,
+  //   required bool value,
+  //   required Function(bool) onChanged,
+  //   required List<Color> gradientColors,
+  // }) {
+  //   return ListTile(
+  //     leading: Container(
+  //       padding: const EdgeInsets.all(8),
+  //       decoration: BoxDecoration(
+  //         gradient: LinearGradient(colors: gradientColors),
+  //         shape: BoxShape.circle,
+  //       ),
+  //       child: Icon(icon, color: Colors.white, size: 20),
+  //     ),
+  //     title: Text(
+  //       title,
+  //       style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+  //     ),
+  //     trailing: Switch.adaptive(activeColor: gradientColors.last,
+  //       thumbIcon: MaterialStateProperty.all(
+  //         const Icon(Icons.notifications_active, size: 16, color: Colors.white),
+  //       ),
+  //       value: value,
+  //       onChanged: onChanged,
+  //     ),
+  //   );
+  // }
 
 Widget _buildThemeTile(LocalController controller) {
   // بنحط الـ Tile جوه Obx عشان يسمع لتغييرات الـ GetX فوراً
