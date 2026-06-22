@@ -32,9 +32,12 @@ class Imageasset {
   static String order = "$routeImage/order.png";
 
   //order status
-  static String pending = "$routeImage/Hourglass illustration.jpg";
-  static String processing = "$routeImage/Man fixing issue with gear.png";
-  static String shipped = "$routeImage/shipped.png";
-  static String delivered = "$routeImage/delivered.png";
-  static String cancelled = "$routeImage/cancelled.png";
+  static String pending =
+      "$routeImage/lucid-origin_Cute_3D_cartoon_character_Pixar_style_a_young_man_sitting_impatiently_on_a_couch-0.jpg";
+  static String processing = "$routeImage/lucid-origin_Charming_3D_cartoon_character_Disney_style_a_focused_worker_sorting_and_putting_-0.jpg";
+  static String shipped =
+      "$routeImage/lucid-origin_Cute_3D_cartoon_delivery_man_driving_a_small_futuristic_delivery_car_holding_the-0.jpg";
+  static String delivered =
+      "$routeImage/lucid-origin_Adorable_3D_cartoon_delivery_hero_smiling_brightly_holding_a_fully_loaded_premiu-0.jpg";
+  static String cancelled = "$routeImage/lucid-origin_Cute_3D_cartoon_character_looking_disappointed_leaning_against_a_parked_delivery-0.jpg";
 }

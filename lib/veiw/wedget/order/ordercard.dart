@@ -1,5 +1,6 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
 
 // ignore: must_be_immutable
@@ -14,232 +15,196 @@ class OrderCard extends StatelessWidget {
     required this.color,
     required this.orderimage,
   });
-  void Function()? onTap;
-  double w;
-  double h;
-  final order;
+
+  final void Function()? onTap;
+  final double w;
+  final double h;
+  final dynamic order;
   final String status;
   final Color color;
-  Map<String, dynamic> orderimage ;
+  final Map<String, dynamic> orderimage;
+
   @override
   Widget build(BuildContext context) {
+    // 1. اكتشاف وضع الثيم الحالي (مظلم أو فاتح)
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // 2. تحديد الألوان بناءً على الثيم
+    final primaryTextColor = isDark ? Colors.white : Colors.black87;
+    final secondaryTextColor = isDark ? Colors.white70 : Colors.black54;
+    final overlayColor = isDark
+        ? Colors.black.withOpacity(0.75) // تعتيم قوي للوضع المظلم
+        : Colors.white.withOpacity(0.75); // تفتيح قوي للوضع الفاتح
+    final shadowColor = isDark ? Colors.black54 : const Color.fromARGB(255, 223, 220, 220).withOpacity(0.2);
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: h * 0.01),
+        margin: EdgeInsets.symmetric(vertical: h * 0.01, horizontal: w * 0.01),
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(
-              orderimage[status]!,
+          borderRadius: BorderRadius.circular(25),
+          boxShadow: [
+            BoxShadow(
+              color: shadowColor,
+              offset: const Offset(0, 0.2), // ظل سينمائي ناعم يعطي عمق
             ),
+          ],
+          // الصورة الخلفية
+          image: DecorationImage(
+            image: AssetImage(orderimage[status]!),
             fit: BoxFit.cover,
           ),
-          gradient: LinearGradient(
-            begin: AlignmentGeometry.topCenter,
-            end: AlignmentGeometry.topCenter,
-            transform: GradientRotation(-0.5),
-            colors: [color.withAlpha(20), Colors.white.withAlpha(200)],
-          ),
-          borderRadius: BorderRadius.all(Radius.circular(25)),
-          border: Border.all(
-            color: Colors.grey.withAlpha(50),
-            strokeAlign: BorderSide.strokeAlignCenter,
-          ),
         ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(25),
+          child: BackdropFilter(
+            // تأثير البلور (Glassmorphism)
+            filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+            child: Container(
+              // التدرج اللوني فوق الصورة
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomLeft,
+                  colors: [
+                    overlayColor.withOpacity(
+                      isDark ? 0.3 : 0.2,
+                    ), // شفاف من الأعلى
+                    overlayColor, // مركز من الأسفل لضمان وضوح النص
+                  ],
+                  stops: const [0.0, 0.9],
+                ),
+                // border: Border.all(
+                //   color: isDark
+                //       ? Colors.white54
+                //       : Colors.black12, // إطار خفيف جداً
+                //   width: 1,
+                // ),
+              ),
+              padding: EdgeInsets.symmetric(
+                vertical: h * 0.02,
+                horizontal: w * 0.04,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // --- القسم الأول: الوقت وحالة الطلب بأسلوب Badge ---
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        Jiffy.parse(
+                          isUtc: true,
+                          order.createdAt,
+                          pattern: 'yyyy-MM-dd hh:mm a',
+                        ).fromNow(),
+                        style: TextStyle(
+                          fontSize: w * 0.035,
+                          fontWeight: FontWeight.w600,
+                          color: secondaryTextColor,
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: color.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: color.withOpacity(0.5)),
+                        ),
+                        child: Text(
+                          "${'Status'.tr}: $status",
+                          style: TextStyle(
+                            color: color, // لون الحالة المرسل في المتغيرات
+                            fontWeight: FontWeight.bold,
+                            fontSize: w * 0.035,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: h * 0.015),
 
-        child: ListTile(
-          contentPadding: EdgeInsets.symmetric(
-            vertical: h * 0.008,
-            horizontal: w * 0.04,
-          ),
-        
-          subtitle: Padding(
-            padding: EdgeInsets.only(top: h * 0.01),
-        
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-        
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      Jiffy.parse(
-                        isUtc: true,
-                        order.createdAt,
-                        pattern: 'yyyy-MM-dd hh:mm a',
-                      ).fromNow(),
-                      style: TextStyle(
-                        fontSize: w * 0.035,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  // --- القسم الثاني: رقم الطلب (بارز وسينمائي) ---
+                  Text(
+                    "${'Order numper'.tr} #${order.orderNumber}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: w * 0.05,
+                      color: primaryTextColor,
+                      letterSpacing: 1.0,
                     ),
-                    Text(
-                      "${'Order numper'.tr}#${order.orderNumber}",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: w * 0.04,
-                      ),
-                    ),
-                    Text.rich(
-                      TextSpan(
+                  ),
+                  SizedBox(height: h * 0.015),
+
+                  // --- القسم الثالث: تفاصيل الدفع والسعر الإجمالي ---
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TextSpan(text: 'Total price'.tr),
-                          TextSpan(
-                            text: ":${order.totalAmount}\$",
-                            style: TextStyle(color: Colors.green),
+                          Text(
+                            "${'paymentMethod'.tr}: ${order.paymentMethod}",
+                            style: TextStyle(
+                              color: secondaryTextColor,
+                              fontSize: w * 0.035,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            "${'Payment'.tr}: ${order.paymentStatus}",
+                            style: TextStyle(
+                              color: isDark
+                                  ? Colors.blue[300]
+                                  : const Color.fromARGB(255, 74, 158, 25),
+                              fontWeight: FontWeight.w600,
+                              fontSize: w * 0.035,
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(text: 'paymentMethod'),
-                              TextSpan(
-                                text: ":${order.paymentMethod}",
-                                style: TextStyle(
-                                  color: const Color.fromARGB(
-                                    255,
-                                    74,
-                                    158,
-                                    25,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                      Text(
+                        "\$${order.totalAmount}",
+                        style: TextStyle(
+                          color: isDark
+                              ? Colors.greenAccent
+                              : Colors.black87,
+                          fontSize: w * 0.06,
+                          fontWeight: FontWeight.bold,
                         ),
-                        SizedBox(width: w / 6),
-                        Text.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(text: 'Payment'.tr),
-                              TextSpan(
-                                text: ":${order.paymentStatus}",
-                                style: TextStyle(
-                                  color: const Color.fromARGB(
-                                    255,
-                                    74,
-                                    158,
-                                    25,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-        
+                      ),
+                    ],
+                  ),
+
+                  // --- القسم الرابع: التقييم (يظهر فقط إذا كان الطلب مستلماً) ---
+                  if (order.status == "delivered") ...[
+                    SizedBox(height: h * 0.015),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        Icon(
+                          Icons.star_rounded,
+                          color: Colors.amber,
+                          size: w * 0.05,
+                        ),
+                        const SizedBox(width: 4),
                         Text(
-                          "${'Status'.tr}: $status",
+                          "4 ⭐ (1k) ${'reviews'.tr ?? 'reviews'}",
                           style: TextStyle(
-                            color: color,
-                            fontWeight: FontWeight.w600,
+                            color: secondaryTextColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: w * 0.035,
                           ),
-                        ),
-                        SizedBox(width: w / 4),
-                        Text(
-                          order.status == "delivered"
-                              ? "4 ⭐(1k) reviews"
-                              : "",
                         ),
                       ],
                     ),
                   ],
-                ),
-              
-        
-                // زر التقييم
-                // : order.status == "4" &&
-                //       order == '0'
-                // ? TextButton(
-                //     child: Text(
-                //       "rating",
-                //       style: TextStyle(fontSize: w * 0.030),
-                //     ),
-                //     onPressed: () {
-                //       showDialog(
-                //         context: context,
-                //         builder: (context) {
-                //           return AlertDialog(
-                //             title: Text("Rating"),
-                //             content: Column(
-                //               mainAxisSize: MainAxisSize.min,
-                //               children: [
-                //                 GetBuilder<Ordercontroller>(
-                //                   builder: (controller) {
-                //                     return Row(
-                //                       mainAxisAlignment:
-                //                           MainAxisAlignment
-                //                               .center,
-                //                       children: List.generate(5, (
-                //                         i,
-                //                       ) {
-                //                         int s = i + 1;
-                //                         return IconButton(
-                //                           onPressed: () =>
-                //                               controller
-                //                                   .changeRatingColor(
-                //                                     i,
-                //                                   ),
-                //                           icon: Icon(
-                //                             Icons.star,
-                //                             size: w * 0.08,
-                //                             color:
-                //                                 s <=
-                //                                     controller
-                //                                         .selectedRating
-                //                                 ? Colors.amber
-                //                                 : Colors.grey,
-                //                           ),
-                //                         );
-                //                       }),
-                //                     );
-                //                   },
-                //                 ),
-                //                 SizedBox(height: 20),
-                //                 SizedBox(
-                //                   height: h * 0.12,
-                //                   width: w * 0.6,
-                //                   child: Textfealdauth(
-                //                     suffixIcon: Icons.comment,
-                //                     hint: "comment",
-                //                     textEditingController:
-                //                         controller.comment!,
-                //                     valid: (x) => null,
-                //                   ),
-                //                 ),
-                //               ],
-                //             ),
-                //             actions: [
-                //               TextButton(
-                //                 onPressed: () =>
-                //                     controller.viewrating(
-                //                       order.ordersId!,
-                //                       controller.selectedRating
-                //                           .toString(),
-                //                     ),
-                //                 child: Text("Submit"),
-                //               ),
-                //               TextButton(
-                //                 onPressed: () => Get.back(),
-                //                 child: Text("Cancel"),
-                //               ),
-                //             ],
-                //           );
-                //         },
-                //       );
-                //     },
-                //   )
-              ],
+                ],
+              ),
             ),
           ),
         ),
