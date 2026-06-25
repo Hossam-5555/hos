@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 import 'package:hos/controler/usercontroller/profile/paymentcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
+import 'package:hos/data/model/Addresmodel.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/add.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
@@ -228,10 +229,18 @@ class Checkout extends StatelessWidget {
 
   Widget _buildAddressSelector(Checkoutcontroller c) {
     return Obx(() {
-      final addr = c.listaddresdata.firstWhere(
-        (e) => e.id == c.addressid.value,
-        orElse: () => c.listaddresdata.first,
-      );
+      // 1️⃣ حماية: لو لسه البيانات مفيش فيها عنوان مختار (الـ API بيحمل)
+      if (c.selectedAddress.value == null) {
+        return const ListTile(
+          contentPadding: EdgeInsets.zero,
+          leading: CircularProgressIndicator(),
+          title: Text("جاري تحميل العنوان الافتراضي..."),
+        );
+      }
+
+      // 2️⃣ الـ UI بياخد البيانات الجاهزة من الكنترولر فوراً وبدون أي لفة!
+      final addr = c.selectedAddress.value!;
+
       return ListTile(
         contentPadding: EdgeInsets.zero,
         leading: const CircleAvatar(
@@ -270,21 +279,25 @@ class Checkout extends StatelessWidget {
             const SizedBox(height: 16),
             ...c.listaddresdata.map(
               (addr) => Obx(
-                () => RadioListTile(
-                  value: addr.id,
-                  groupValue: c.addressid.value,
-                  activeColor: Colors.blueAccent,
+                () => RadioListTile<int>( // 💡 تحديد الـ Type هنا كـ int أفضل لـ Radio
+                  value: addr.id ?? 0, // الـ ID الخاص بهذا العنوان في اللفة الحالية
+                  groupValue: c.selectedAddress.value?.id, // مقارنته بـ ID العنوان المختار بالكنترولر
+                  activeColor: Colors.green,
                   title: Text(
                     addr.name ?? "",
                     style: const TextStyle(color: Colors.black),
                   ),
                   onChanged: (val) {
-                    c.chooseAddres(val!);
-                    Get.back();
+                    if (val != null) {
+                      // 💡 التعديل الجوهري: بنباصي الـ addr بالكامل (الـ Object) مش الـ ID
+                      c.chooseAddres(addr); 
+                      Get.back(); // إغلاق الـ BottomSheet بعد الاختيار
+                    }
                   },
                 ),
               ),
             ),
+            const SizedBox(height: 10), // مسافة بسيطة قبل الزرار
             TextButton.icon(
               onPressed: () {
                 Get.back();

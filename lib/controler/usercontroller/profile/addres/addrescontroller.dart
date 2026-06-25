@@ -60,7 +60,7 @@ class AddressController extends GetxController {
       long.toString(),
       "+201034567820",
     );
-
+// print("response addres : $response");
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {

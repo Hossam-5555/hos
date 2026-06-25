@@ -13,7 +13,7 @@ class AppTheme {
   static const Color _darkBg = Color(0xFF1F1F1F); // أسود فخم وعميق للخلفية
   static const Color _darkSurface = Color(0xFF161616); // درجة أفتح للبطاقات لخلق عمق
   static const Color _darkTextMain = Color(0xFFF5F5F7); // أبيض عاجي يمنع التشتت
-  static const Color _darkTextSec = Color(0xFF8E8E93); // رمادي فاتح للنصوص الثانوية
+  static const Color _darkTextSec = Color.fromARGB(255, 247, 247, 247); // رمادي فاتح للنصوص الثانوية
 
   // دالة مساعدة لإنشاء مقاسات النصوص الموحدة
   static TextTheme _getTextTheme(String fontFamily, bool isDark) {

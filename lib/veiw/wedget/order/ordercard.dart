@@ -161,7 +161,7 @@ class OrderCard extends StatelessWidget {
                             style: TextStyle(
                               color: isDark
                                   ? Colors.blue[300]
-                                  : const Color.fromARGB(255, 74, 158, 25),
+                                  : const Color.fromARGB(255, 95, 255, 3),
                               fontWeight: FontWeight.w600,
                               fontSize: w * 0.035,
                             ),

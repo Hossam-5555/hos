@@ -28,20 +28,22 @@ class Checkoutcontroller extends GetxController {
     ["mobile", Imageasset.googlepay], //2
   ];
 
-  //============================ المتغيرات
-  RxInt addressid = 0.obs;
-  //============================ الدوال الخاصة بالاختيار
-
-  void chooseAddres(int val) {
-    addressid.value = val;
-  }
-
   //============================ البيانات من السيرفر
   Addresdata addresdata = Addresdata(Get.find());
   Checkoutdata checkoutdata = Checkoutdata(Get.find());
   Myservisec myservisec = Get.find();
   Statusrequest statusrequest = Statusrequest.none;
   List<AddresModel> listaddresdata = [];
+
+  // ✨ المتغير السحري: شايل الـ Object بتاع العنوان المختار حالياً للشحن
+  var selectedAddress = Rxn<AddresModel>();
+
+  // دالة بتهيا العنوان الابتدائي أول ما البيانات تيجي من الـ API
+
+  // دالة الاختيار لما المستخدم يغير العنوان من الـ Sheet
+  void chooseAddres(AddresModel address) {
+    selectedAddress.value = address; // تحديث الـ Object بالكامل
+  }
 
   //============================ جلب العناوين من السيرفر
   Future<void> getaddress() async {
@@ -59,6 +61,13 @@ class Checkoutcontroller extends GetxController {
         // تنظيف القائمة قبل الإضافة
         listaddresdata.clear();
         listaddresdata.addAll(data.map((e) => AddresModel.fromJson(e)));
+        if (listaddresdata.isNotEmpty) {
+          // بيبحث عن الافتراضي أو ياخد أول واحد ويخزنه كـ Object كامل
+          selectedAddress.value = listaddresdata.firstWhere(
+            (e) => e.isDefault == true,
+            orElse: () => listaddresdata.first,
+          );
+        }
       }
     } else {
       statusrequest = Statusrequest.failure;
@@ -70,7 +79,7 @@ class Checkoutcontroller extends GetxController {
   //============================ تنفيذ عملية الطلب
   Future<void> checkoutoder() async {
     // 1. التحقق من وجود عنوان
-    if (addressid.value == 0) {
+    if (selectedAddress.value == null) {
       Get.snackbar("تنبيه", "الرجاء إضافة عنوان أولاً");
       return; // ضروري جداً لمنع إكمال الدالة
     }
@@ -88,7 +97,7 @@ class Checkoutcontroller extends GetxController {
     try {
       // تجهيز البيانات
       Map<String, dynamic> data = {
-        "address_id": addressid.value,
+        "address_id": selectedAddress.value?.id,
         "payment_method": "credit",
         "items": cartdata
             .map((e) => {"product_id": e.itemid, "quantity": e.cartCount})

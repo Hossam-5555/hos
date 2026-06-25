@@ -7,7 +7,6 @@ import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/data/model/Addresmodel.dart';
 import 'package:hos/veiw/userscreen/screen/profile/profile.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class ViewMyAddres extends StatelessWidget {
   ViewMyAddres({super.key});
@@ -15,7 +14,6 @@ class ViewMyAddres extends StatelessWidget {
   // من الأفضل استخدام Get.find() إذا كان الكنترولر قد تم حقنه مسبقاً،
   // ولكن سنترك Get.put() كما هي لضمان عدم حدوث تغيير في الهيكل الحالي لديك.
   final AddressController controller = Get.put(AddressController());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,11 +120,13 @@ Widget _card(AddresModel address, VoidCallback onDelete, BuildContext context) {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  "${address.name}",
-                  style: const TextStyle(
+                  "${address.name} \n ${address.city}, ${address.street}",
+                  style: TextStyle(
                     fontWeight: FontWeight.w800, // خط أسمك قليلاً للعنوان
                     fontSize: 16,
-                    color: Colors.black87,
+                    color: context.isDarkMode
+                        ? Colors.white
+                        : Colors.black, // لون داكن للعنوا
                   ),
                 ),
               ],
@@ -209,14 +209,6 @@ Widget _card(AddresModel address, VoidCallback onDelete, BuildContext context) {
         ),
 
         // ---------------- خط فاصل ----------------
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 14),
-          child: Divider(
-            color: Colors.grey.shade100,
-            thickness: 1.5,
-            height: 1,
-          ),
-        ),
 
         // ---------------- الجزء السفلي: تفاصيل العنوان ----------------
         Row(
@@ -226,22 +218,23 @@ Widget _card(AddresModel address, VoidCallback onDelete, BuildContext context) {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _addressDetailRow(
-                    "Street",
-                    address.street ?? 'No Street',
-                    Icons.streetview,
-                  ),
                   const SizedBox(height: 6),
                   _addressDetailRow(
                     "City",
-                    address.city ?? 'No City',
-                    Icons.location_city,
+                    address.phone ??
+                        'No phone provided', // استبدل هذا بالمتغير المناسب إذا كان لديك رقم الهاتف
+                    Icons.phone,
                   ),
                   const SizedBox(height: 6),
                   _addressDetailRow(
-                    "Phone",
-                    "01023426561",
-                    Icons.phone,
+                    "",
+                    'set Default',
+                    Icons.location_on,
+                    widget: Switch.adaptive(
+                      activeColor: Colors.green,
+                      value: address.isDefault ?? false,
+                      onChanged: (bool value) {},
+                    ),
                   ), // استبدله بمتغير الهاتف إذا وجد
                 ],
               ),
@@ -255,36 +248,41 @@ Widget _card(AddresModel address, VoidCallback onDelete, BuildContext context) {
 
 // ---------------- ويدجت مساعدة لتنسيق النصوص بشكل احترافي ----------------
 // ضع هذه الويدجت خارج أو داخل الكلاس (يفضل خارجها أو كـ Method مستقلة)
-Widget _addressDetailRow(String label, String value, IconData icon) {
+Widget _addressDetailRow(
+  String label,
+  String value,
+  IconData icon, {
+  Widget? widget,
+}) {
   return Row(
-    mainAxisAlignment: MainAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Padding(
-        padding: const EdgeInsets.only(top: 2),
-        child: Icon(icon, color: Colors.grey.shade400, size: 22),
-      ),
-      RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: "$label: ",
-              style: TextStyle(
-                color: Colors.grey.shade500,
-                fontSize: 14,
-                fontWeight: FontWeight.w500, // الـ Label يكون بلون فاتح
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: Appcolor.primaryColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
               ),
+              child: Icon(icon, color: Colors.grey, size: 22),
             ),
-            TextSpan(
-              text: value,
-              style: TextStyle(
-                color: Colors.grey.shade800,
-                fontSize: 14,
-                fontWeight: FontWeight.w700, // القيمة تكون بلون داكن وبارز
-              ),
+          ),
+          SizedBox(width: 8),
+          Text(
+            "$value",
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey.shade700,
+              fontWeight: FontWeight.w500,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
+      widget ?? const SizedBox.shrink(),
     ],
   );
 }
