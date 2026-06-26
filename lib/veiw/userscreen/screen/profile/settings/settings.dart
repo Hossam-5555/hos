@@ -46,33 +46,13 @@ class Settings extends StatelessWidget {
                             Colors.indigo.shade700,
                           ],
                         ),
+                        _buildThemeTile(local),
                       ],
                     ),
 
                     const SizedBox(height: 16),
 
                     // المجموعة الثانية: الإعدادات العامة
-                    _buildSettingsGroup(
-                      context,
-                      title: 'General'.tr,
-                      children: [
-                        // Obx(
-                        //   () => _buildSwitchTile(
-                        //     icon: Icons.notifications_none_outlined,
-                        //     title: 'Notifications'.tr,
-                        //     value: controller.notificationsEnabled.value,
-                        //     onChanged: controller.toggleNotifications,
-                        //     gradientColors: [
-                        //       Colors.blue.shade400,
-                        //       Colors.blue.shade700,
-                        //     ],
-                        //   ),
-                        // ),
-                        // _buildDivider(),
-                        _buildThemeTile(local),
-                      ],
-                    ),
-
                     const SizedBox(height: 16),
 
                     // المجموعة الثالثة: الدعم
@@ -161,10 +141,7 @@ class Settings extends StatelessWidget {
           padding: const EdgeInsets.only(left: 8, bottom: 8),
           child: Text(
             title,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-            ),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           ),
         ),
         Container(
@@ -222,78 +199,77 @@ class Settings extends StatelessWidget {
   }
 
   // ويدجت الـ Switch الخاص بالتنبيهات
-  
 
-Widget _buildThemeTile(LocalController controller) {
-  // بنحط الـ Tile جوه Obx عشان يسمع لتغييرات الـ GetX فوراً
-  return Obx(() {
-    bool isDark = controller.selectedTheme.value == 'Dark';
+  Widget _buildThemeTile(LocalController controller) {
+    // بنحط الـ Tile جوه Obx عشان يسمع لتغييرات الـ GetX فوراً
+    return Obx(() {
+      bool isDark = controller.selectedTheme.value == 'Dark';
 
-    return ListTile(
-      leading: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.purple.shade400, Colors.purple.shade700],
-          ),
-          shape: BoxShape.circle,
-        ),
-        child: const Icon(
-          Icons.palette_outlined,
-          color: Colors.white,
-          size: 20,
-        ),
-      ),
-      title: Text(
-        'Theme'.tr,
-        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-      ),
-      trailing: GestureDetector(
-        onTap: () => controller.changeTheme(!isDark),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          width: 55,
-          height: 32,
-          padding: const EdgeInsets.symmetric(horizontal: 4),
+      return ListTile(
+        leading: Container(
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: isDark ? Colors.black : Colors.grey.shade300,
+            gradient: LinearGradient(
+              colors: [Colors.purple.shade400, Colors.purple.shade700],
+            ),
+            shape: BoxShape.circle,
           ),
-          child: AnimatedAlign(
+          child: const Icon(
+            Icons.palette_outlined,
+            color: Colors.white,
+            size: 20,
+          ),
+        ),
+        title: Text(
+          'Theme'.tr,
+          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+        ),
+        trailing: GestureDetector(
+          onTap: () => controller.changeTheme(!isDark),
+          child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            alignment: isDark ? Alignment.centerRight : Alignment.centerLeft,
-            child: AnimatedSwitcher(
+            width: 55,
+            height: 32,
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: isDark ? Colors.black : Colors.grey.shade300,
+            ),
+            child: AnimatedAlign(
               duration: const Duration(milliseconds: 300),
-              transitionBuilder: (child, animation) {
-                // أنيميشن دوران مع تغيير الحجم للأيقونة
-                return RotationTransition(
-                  turns: animation,
-                  child: ScaleTransition(scale: animation, child: child),
-                );
-              },
-              // مفتاح (Key) مهم جداً هنا عشان الـ AnimatedSwitcher يعرف إن الـ Widget اتغيرت
-              key: ValueKey<bool>(isDark), 
-              child: isDark
-                  ? const Icon(
-                      Icons.dark_mode,
-                      key: ValueKey('dark'),
-                      color: Colors.white,
-                      size: 20,
-                    )
-                  : const Icon(
-                      Icons.sunny,
-                      key: ValueKey('light'),
-                      color: Colors.orange,
-                      size: 20,
-                    ),
+              curve: Curves.easeInOut,
+              alignment: isDark ? Alignment.centerRight : Alignment.centerLeft,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (child, animation) {
+                  // أنيميشن دوران مع تغيير الحجم للأيقونة
+                  return RotationTransition(
+                    turns: animation,
+                    child: ScaleTransition(scale: animation, child: child),
+                  );
+                },
+                // مفتاح (Key) مهم جداً هنا عشان الـ AnimatedSwitcher يعرف إن الـ Widget اتغيرت
+                key: ValueKey<bool>(isDark),
+                child: isDark
+                    ? const Icon(
+                        Icons.dark_mode,
+                        key: ValueKey('dark'),
+                        color: Colors.white,
+                        size: 20,
+                      )
+                    : const Icon(
+                        Icons.sunny,
+                        key: ValueKey('light'),
+                        color: Colors.orange,
+                        size: 20,
+                      ),
+              ),
             ),
           ),
         ),
-      ),
-    );
-  });
-}
+      );
+    });
+  }
 
   Widget _buildDivider() =>
       Divider(height: 1, indent: 60, color: Colors.grey.withOpacity(0.1));

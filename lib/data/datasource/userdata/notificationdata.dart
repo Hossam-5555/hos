@@ -5,8 +5,8 @@ class Notificationdata {
   Crud crud;
   Notificationdata(this.crud);
 
-  GetNotification() async {
-    var response = await crud.postrequset(LinkApi.notification, {});
+  getnotification() async {
+    var response = await crud.getrequset(LinkApi.notification);
     return response.fold((l) => l, (r) => r);
   }
 

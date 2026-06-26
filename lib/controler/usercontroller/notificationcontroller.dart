@@ -135,7 +135,7 @@ class Notificationcontroller extends GetxController {
     statusrequest = Statusrequest.loading;
     update();
 
-    var response = await notificationdata.GetNotification();
+    var response = await notificationdata.getnotification();
     statusrequest = handling(response);
 
     if (Statusrequest.success == statusrequest && response['status'] == true) {
