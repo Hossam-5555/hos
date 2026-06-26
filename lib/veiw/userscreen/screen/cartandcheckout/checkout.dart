@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 import 'package:hos/controler/usercontroller/profile/paymentcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
-import 'package:hos/data/model/Addresmodel.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/add.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';

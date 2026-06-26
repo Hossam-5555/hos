@@ -1,6 +1,6 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hos/controler/usercontroller/profile/addres/addrescontroller.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
@@ -12,139 +12,130 @@ class AddNewAddres extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AddressController controller = Get.put(AddressController());
-
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-
+      resizeToAvoidBottomInset: true, // يضمن رفع العناصر عند ظهور الكيبورد
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: Appbarbackicon(herotag: '', title: "Add Address"),
       ),
+      body: Stack(
+        children: [
+          // 1. الجزء العلوي: الخريطة تملأ الجزء المتاح خلف الكارت
+          SizedBox(
+            height: size.height * 0.55,
+            child: const Center(child: Text('Google Map Here')),
+          ),
 
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
+          // 2. زر تعديل الموقع (مع حماية خاصة من الأعلى)
+          Positioned(
+            top: 16,
+            right: 16,
+            child: SafeArea(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blueAccent,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 4,
+                ),
+                onPressed: () => Get.snackbar(
+                  'تعديل الموقع',
+                  'اضغط على الخريطة لتغيير الموقع',
+                ),
+                child: const Text('تعديل الموقع على الخريطة'),
               ),
+            ),
+          ),
 
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraints.maxHeight),
-
-                child: IntrinsicHeight(
-                  child: Column(
-                    children: [
-                      /// الجزء العلوي (الخريطة أو Placeholder)
-                      Container(
-                        height: size.height * 0.40,
-                        margin: const EdgeInsets.all(16),
-
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-
-                        child: Center(child: Text("هنا القاهره")),
-
-                        //  Container(
-                        //   color: Colors.grey[300],
-                        //   child: Center(
-                        //     child: GoogleMap(
-                        //       mapType: MapType.normal,
-                        //       initialCameraPosition: CameraPosition(
-                        //         target: LatLng(
-                        //           controller.selectedLat.value,
-                        //           controller.selectedLng.value,
-                        //         ),
-                        //         zoom: 14,
-                        //       ),
-                        //       onTap: (position) {
-                        //         controller.addmarker(position);
-                        //       },
-                        //       markers: controller.marker.toSet(),
-                        //     ),
-                        //   ),
-                        // ),
-                      ),
-
-                      /// الفورم
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 10,
-                          ),
-
-                          child: Form(
-                            child: Column(
-                              children: [
-                                Textfealdauth(
-                                  obscureText: false,
-                                  suffixIcon: Icons.send,
-                                  hint: 'Enter name of location',
-                                  textEditingController: controller.name!,
-                                  valid: (String? val) {
-                                    return null;
-                                  },
-                                ),
-
-                                const SizedBox(height: 16),
-
-                                Textfealdauth(
-                                  obscureText: false,
-                                  suffixIcon: Icons.location_city,
-                                  hint: 'Enter city name',
-                                  textEditingController: controller.city!,
-                                  valid: (String? val) {
-                                    return null;
-                                  },
-                                ),
-
-                                const SizedBox(height: 16),
-
-                                Textfealdauth(
-                                  obscureText: false,
-                                  suffixIcon: Icons.streetview,
-                                  hint: 'Enter street name',
-                                  textEditingController: controller.street!,
-                                  valid: (String? val) {
-                                    return null;
-                                  },
-                                ),
-
-                                const Spacer(),
-
-                                GetBuilder<AddressController>(
-                                  builder: (controller) {
-                                    return Checkbutton(statusrequest: controller.statusrequest,
-                                      buttonColor: Colors.black,
-                                      width: size.width,
-                                      onTap: () {
-                                        controller.addaddres();
-                                      },
-                                      buttonName: "Save location",
-                                    );
-                                  },
-                                ),
-
-                                const SizedBox(height: 20),
-                              ],
-                            ),
-                          ),
-                        ),
+          // 3. الجزء السفلي: الكارت الشفاف المطاطي الذكي
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(24),
+              ),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                child: Container(
+                  // يضمن ألا يتعدى الكارت 45% من الشاشة لترك مساحة كافية للخريطة
+                  constraints: BoxConstraints(maxHeight: size.height * 0.45),
+                  decoration: BoxDecoration(
+                    color: context.isDarkMode
+                        ? const Color(0xFF232429).withValues(alpha: 0.9)
+                        : Colors.white.withValues(alpha: 0.9),
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(24),
+                    ),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 10,
+                        spreadRadius: 2,
                       ),
                     ],
                   ),
+                  child: SafeArea(
+                    top: false, // يحمي المحتوى من شريط السحب السفلي للهاتف
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildTextField(
+                            controller.name!,
+                            'Enter name of location',
+                            Icons.send,
+                          ),
+                          _buildTextField(
+                            controller.city!,
+                            'Enter city name',
+                            Icons.location_city,
+                          ),
+                          _buildTextField(
+                            controller.street!,
+                            'Enter street name',
+                            Icons.streetview,
+                          ),
+                          const SizedBox(height: 16),
+                          Checkbutton(
+                            statusrequest: controller.statusrequest,
+                            buttonColor: Colors.black,
+                            width: size.width,
+                            onTap: () {},
+                            buttonName: "Save location",
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ميثود مختصرة لإنشاء الحقول لتقليل تكرار الكود (Clean Code)
+  Widget _buildTextField(
+    TextEditingController controller,
+    String hint,
+    IconData icon,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Textfealdauth(
+        obscureText: false,
+        suffixIcon: icon,
+        hint: hint,
+        textEditingController: controller,
+        valid: (val) => null,
       ),
     );
   }

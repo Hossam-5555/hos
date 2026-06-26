@@ -13,7 +13,12 @@ class ProfilePage extends StatelessWidget {
   final Myservisec myservisec = Get.find();
 
   // لون أساسي مريح للتطبيق يمكن تغييره حسب الهوية البصرية لمشروعك
-  final Color primaryColor = const Color.fromARGB(255, 44, 46, 46); // لون نيلي عصري
+  final Color primaryColor = const Color.fromARGB(
+    255,
+    44,
+    46,
+    46,
+  ); // لون نيلي عصري
 
   @override
   Widget build(BuildContext context) {
@@ -137,29 +142,6 @@ class ProfilePage extends StatelessWidget {
                 // backgroundColor: Colors.blue,
                 backgroundImage: AssetImage(Imageasset.twetter),
                 onBackgroundImageError: (_, _) {},
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: ClipPath(
-                clipper: ShapeBorderClipper(shape: CircleBorder()),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: Container(
-                    margin: EdgeInsetsDirectional.symmetric(horizontal: 5),
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withAlpha(75),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.camera_alt_outlined,
-                      color: color.withBlue(150),
-                      size: 20,
-                    ),
-                  ),
-                ),
               ),
             ),
           ],

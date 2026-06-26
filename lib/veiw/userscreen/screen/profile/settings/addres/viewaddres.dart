@@ -6,6 +6,7 @@ import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/data/model/Addresmodel.dart';
 import 'package:hos/veiw/userscreen/screen/profile/profile.dart';
+import 'package:hos/veiw/userscreen/screen/profile/settings/addres/editaddress.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
 class ViewMyAddres extends StatelessWidget {
@@ -53,12 +54,17 @@ class ViewMyAddres extends StatelessWidget {
 
                 return ScaleTransition(
                   scale: animation,
-                  child: _card(address, () {
-                    // تأكيد تمرير الـ id بشكل آمن من الموديل
-                    if (address.id != null) {
-                      controller.deleteAddres(address.id!);
-                    }
-                  }, context),
+                  child: _card(
+                    address,
+                    () {
+                      // تأكيد تمرير الـ id بشكل آمن من الموديل
+                      if (address.id != null) {
+                        controller.deleteAddres(address.id!);
+                      }
+                    },
+                    context,
+                    controller,
+                  ),
                 );
               },
             ),
@@ -70,7 +76,12 @@ class ViewMyAddres extends StatelessWidget {
 }
 
 /// 📦 UI Card محسّن
-Widget _card(AddresModel address, VoidCallback onDelete, BuildContext context) {
+Widget _card(
+  AddresModel address,
+  VoidCallback onDelete,
+  BuildContext context,
+  AddressController c,
+) {
   return Container(
     margin: const EdgeInsets.only(bottom: 16),
     padding: const EdgeInsets.all(16),
@@ -80,7 +91,7 @@ Widget _card(AddresModel address, VoidCallback onDelete, BuildContext context) {
           : AppGradients.lightPlatinum,
       borderRadius: BorderRadius.circular(16),
       border: Border.all(
-        color: Colors.grey.shade100,
+        color: Colors.grey.shade300,
         width: 1.5,
       ), // تخفيف لون الإطار
       boxShadow: [
@@ -161,6 +172,12 @@ Widget _card(AddresModel address, VoidCallback onDelete, BuildContext context) {
               itemBuilder: (BuildContext context) => [
                 // خيار التعديل
                 PopupMenuItem(
+                  onTap: () {
+                    // تأكد من أن الـ id موجود قبل التمرير
+                    if (address.id != null) {
+                      Get.to(EditAddressPage(), arguments: address.id);
+                    }
+                  },
                   value: 'edit',
                   child: Row(
                     children: [
@@ -232,7 +249,7 @@ Widget _card(AddresModel address, VoidCallback onDelete, BuildContext context) {
                     Icons.location_on,
                     widget: Switch.adaptive(
                       activeColor: Colors.green,
-                      value: address.isDefault ?? false,
+                      value: c.isdefault == address.id ? true : false,
                       onChanged: (bool value) {},
                     ),
                   ), // استبدله بمتغير الهاتف إذا وجد

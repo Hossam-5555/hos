@@ -37,25 +37,24 @@ class Textfealdauth extends StatelessWidget {
         validator: valid,
         controller: textEditingController,
         decoration: InputDecoration(
+          filled: true,
           contentPadding: EdgeInsets.symmetric(
             horizontal: width * 0.04,
             vertical: height * 0.018,
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(30),
             borderSide: const BorderSide(
               color: Color.fromARGB(255, 22, 186, 49),
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(40),
+            borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide(color: Colors.grey),
           ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-            borderSide: const BorderSide(
-              color: Color.fromARGB(255, 65, 221, 229),
-            ),
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide.none,
           ),
           suffixIcon: InkWell(
             onTap: onTapIcon,

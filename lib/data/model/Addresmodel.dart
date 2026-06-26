@@ -8,7 +8,6 @@ class AddresModel {
   double? lat;
   double? lng;
   String? phone;
-  bool? isDefault;
   String? createdAt;
   String? updatedAt;
 
@@ -33,7 +32,6 @@ class AddresModel {
     lat = json['lat'];
     lng = json['lng'];
     phone = json['phone'];
-    isDefault = json['is_default'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -48,7 +46,6 @@ class AddresModel {
     data['lat'] = this.lat;
     data['lng'] = this.lng;
     data['phone'] = this.phone;
-    data['is_default'] = this.isDefault;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;

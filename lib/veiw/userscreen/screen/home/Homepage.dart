@@ -54,52 +54,44 @@ class HomePage extends StatelessWidget {
                         //Hossam iss================================
                         SizedBox(height: height * 0.02),
                         Titles(title: "Categories".tr),
+                        SizedBox(height: height * 0.02),
 
                         /// Categories List
-                        Handlingdataview(
-                          isFullScreen: false,
-                          statusrequest: controller.statusrequest,
-                          widget: SizedBox(
-                            height: height * 0.16,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: controller.categories.length,
-                              itemBuilder: (context, index) {
-                                final cat = controller.categories[index];
-                                return CategoryItem(
-                                  index: index,
-                                  name: cat.name ?? "",
-                                  imageUrl: cat.image.toString(),
-                                );
-                              },
-                            ),
+                        SizedBox(
+                          height: height * 0.15,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: controller.categories.length,
+                            itemBuilder: (context, index) {
+                              final cat = controller.categories[index];
+                              return CategoryItem(
+                                index: index,
+                                name: cat.name ?? "",
+                                imageUrl: cat.image.toString(),
+                              );
+                            },
                           ),
                         ),
 
                         /// Curved Items
-                        SizedBox(height: height * 0.025),
 
                         /// New Offers Header
-                        Handlingdataview(
-                          isFullScreen: false,
-                          statusrequest: controller.statusrequest,
-                          widget: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Titles(title: "New Items".tr),
-                              TextButton.icon(
-                                onPressed: () {},
-                                icon: const Text("See All"),
-                                label: const Icon(
-                                  Icons.arrow_forward_ios,
-                                  size: 16,
-                                ),
-                                style: TextButton.styleFrom(
-                                  foregroundColor: Appcolor.primaryColor,
-                                ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Titles(title: "New Items".tr),
+                            TextButton.icon(
+                              onPressed: () {},
+                              icon: const Text("See All"),
+                              label: const Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
                               ),
-                            ],
-                          ),
+                              style: TextButton.styleFrom(
+                                foregroundColor: Appcolor.primaryColor,
+                              ),
+                            ),
+                          ],
                         ),
                         CurvedItemsView(),
 
@@ -124,43 +116,39 @@ class HomePage extends StatelessWidget {
                         ),
                         SizedBox(height: height * 0.02),
 
-                        Handlingdataview(
-                          isFullScreen: false,
-                          statusrequest: controller.statusrequest,
-                          widget: MasonryGridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.symmetric(
-                              vertical: height * 0.01,
-                            ),
-                            gridDelegate:
-                                const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                ),
-                            mainAxisSpacing: 16,
-                            crossAxisSpacing: 12,
-                            itemCount: controller.mostsaleitem.length,
-                            itemBuilder: (context, index) {
-                              final item = controller.mostsaleitem[index];
-
-                              return SharedProductCard(
-                                image: "${item.itemsImage}",
-                                title: "${item.itemsName}",
-                                price: "${item.itemsPrice}",
-                                rating: 4.8,
-                                onTap: () {
-                                  controller.gotoitemsdetails(item);
-                                },
-
-                                actionButton: AddToCartButton(itemId: item.id!),
-
-                                /// 🔥 أهم سطر
-                                height: index.isEven
-                                    ? 260
-                                    : 320, // 👈 خلي الكارت يقبل height
-                              );
-                            },
+                        MasonryGridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.symmetric(
+                            vertical: height * 0.01,
                           ),
+                          gridDelegate:
+                              const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                              ),
+                          mainAxisSpacing: 16,
+                          crossAxisSpacing: 12,
+                          itemCount: controller.mostsaleitem.length,
+                          itemBuilder: (context, index) {
+                            final item = controller.mostsaleitem[index];
+
+                            return SharedProductCard(
+                              image: "${item.itemsImage}",
+                              title: "${item.itemsName}",
+                              price: "${item.itemsPrice}",
+                              rating: 4.8,
+                              onTap: () {
+                                controller.gotoitemsdetails(item);
+                              },
+
+                              actionButton: AddToCartButton(itemId: item.id!),
+
+                              /// 🔥 أهم سطر
+                              height: index.isEven
+                                  ? 260
+                                  : 320, // 👈 خلي الكارت يقبل height
+                            );
+                          },
                         ),
                       ],
                     ),

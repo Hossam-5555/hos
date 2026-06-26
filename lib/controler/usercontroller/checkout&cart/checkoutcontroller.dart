@@ -44,7 +44,7 @@ class Checkoutcontroller extends GetxController {
   void chooseAddres(AddresModel address) {
     selectedAddress.value = address; // تحديث الـ Object بالكامل
   }
-
+int isdafault=0;
   //============================ جلب العناوين من السيرفر
   Future<void> getaddress() async {
     // statusrequest = Statusrequest.loading;
@@ -56,15 +56,15 @@ class Checkoutcontroller extends GetxController {
 
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
-        List data = response['data'];
-
+        List data = response['data']['data'];
+         isdafault=response['data']["is_default"];
         // تنظيف القائمة قبل الإضافة
         listaddresdata.clear();
         listaddresdata.addAll(data.map((e) => AddresModel.fromJson(e)));
         if (listaddresdata.isNotEmpty) {
           // بيبحث عن الافتراضي أو ياخد أول واحد ويخزنه كـ Object كامل
           selectedAddress.value = listaddresdata.firstWhere(
-            (e) => e.isDefault == true,
+            (e) => e.id == isdafault,
             orElse: () => listaddresdata.first,
           );
         }
