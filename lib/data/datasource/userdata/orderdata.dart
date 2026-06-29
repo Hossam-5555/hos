@@ -13,7 +13,7 @@ class Orderdata {
 
 
   deletedata(int orderid) async {
-    var response = await crud.putandpacth("${LinkApi.deleteorder}$orderid", {
+    var response = await crud.putandpacth("${LinkApi.order}/$orderid", {
       "status": "cancelled",
     });
     return response.fold((l) => l, (r) => r);

@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
 import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
-import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/wedget/Homepage/CurvedItemsView.dart';

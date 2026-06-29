@@ -31,10 +31,11 @@ class LinkApi {
   // AddresLink
   static String addaddres = '$lravelserver/Address';
   static String deleteAddres = '$lravelserver/delelteaddres';
+    static String setdafault = '$lravelserver/defaultaddress';
+
   //orders
-  static String checkout = '$lravelserver/order';
+  static String order = '$lravelserver/order';
   static String viewmyorder = '$lravelserver/userorders';
-  static String deleteorder = '$lravelserver/order/';
   // static String rating = '$server/rating.php';
 
   //notification
@@ -52,8 +53,5 @@ class LinkApi {
   static String cruditemsadmin = '$lravelserver/items';
   static String adminviewitem = '$lravelserver/category';
 
-  //Admin//orders
-  static String adminorderpending = '$lravelserver/order';
-  // static String adminaprovedorder = '$server/admin/orders/approve.php';
-  // static String prepareorder = '$server/admin/orders/prepare.php';
+ 
 }

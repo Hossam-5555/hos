@@ -5,7 +5,7 @@ class Checkoutdata {
   Crud crud;
   Checkoutdata(this.crud);
   Checkout(Map<String,dynamic> data) async {
-    var response = await crud.postrequset(LinkApi.checkout, data);
+    var response = await crud.postrequset(LinkApi.order, data);
     return response.fold((l) => l, (r) => r);
   }
 }
