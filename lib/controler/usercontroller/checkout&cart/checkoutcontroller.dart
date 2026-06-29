@@ -19,6 +19,7 @@ class Checkoutcontroller extends GetxController {
   // دالة لتغيير طريقة الدفع
   void changePaymentMethod(String method) {
     selectedMethod = method;
+    update();
   }
 
   List<List> paymentMethodEnum = [

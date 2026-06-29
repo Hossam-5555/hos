@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/items_controler.dart';
@@ -97,13 +98,16 @@ class BuildCategoryItems extends StatelessWidget {
               ],
       ),
       child: ClipOval(
-        child: Image.network(
-          url,
-          width: 50,
-          height: 50,
-          fit: BoxFit.contain,
-          errorBuilder: (context, error, stackTrace) =>
-              const Icon(Icons.error, size: 24),
+        child: CachedNetworkImage(
+          height: 50,width: 50,
+          imageUrl: url,
+          imageBuilder: (context, imageProvider) => Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+            ),
+          ),
+          placeholder: (context, url) => CircularProgressIndicator(),
+          errorWidget: (context, url, error) => Icon(Icons.error),
         ),
       ),
     );

@@ -58,4 +58,10 @@ class Addresdata {
     });
     return response.fold((l) => l, (r) => r);
   }
+  setdefault(int id) async {
+    var response = await crud.postrequset(LinkApi.setdafault,{
+      "id":id
+    });
+    return response.fold((l) => l, (r) => r);
+  }
 }

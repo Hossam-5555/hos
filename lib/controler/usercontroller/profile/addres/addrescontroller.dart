@@ -79,6 +79,7 @@ class AddressController extends GetxController {
   }
 
   int isdefault = 0;
+
   // viewaddress
   Future<void> viewaddres() async {
     statusrequest = Statusrequest.loading;
@@ -97,6 +98,20 @@ class AddressController extends GetxController {
         listaddresdata.addAll(data.map((e) => AddresModel.fromJson(e)));
       } else {
         statusrequest = Statusrequest.failure;
+      }
+    }
+    update();
+  }
+
+  updatedefault(int id) async {
+    isdefault = id;
+    update();
+    var response = await addresdata.setdefault(id);
+    print(response);
+    statusrequest = handling(response);
+    if (Statusrequest.success == statusrequest) {
+      if (response['status'] == true) {
+        viewaddres();
       }
     }
     update();
@@ -210,8 +225,6 @@ class AddressController extends GetxController {
       print("خطأ: العنصر غير موجود في القائمة المحلية أساساً!");
     }
   }
-
-  
 
   // دالة الحفظ
   List<Marker> marker = [];

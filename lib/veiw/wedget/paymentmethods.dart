@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
-import 'package:hos/controler/usercontroller/profile/paymentcontroller.dart';
 
 // ==========================================
 // دوال بناء الواجهة
@@ -10,7 +9,7 @@ import 'package:hos/controler/usercontroller/profile/paymentcontroller.dart';
 Widget buildPaymentMethod({
   required String title,
   required IconData icon,
-  required PaymentMethod method,
+  required String method,
   controller,
 }) {
   final isSelected = controller.selectedMethod == method;
@@ -51,13 +50,13 @@ Widget buildPaymentMethod({
   );
 }
 
- buildFormContent(Checkoutcontroller controller) {
+buildFormContent(Checkoutcontroller controller) {
   switch (controller.selectedMethod) {
-    case "cash":
-      return buildCreditCardForm();
     case "credit":
-      return buildMobileWalletForm();
+      return buildCreditCardForm();
     case "mobile":
+      return buildCreditCardForm();
+    case "cash":
       return buildCODForm();
   }
 }
@@ -141,22 +140,6 @@ Widget buildCreditCardForm() {
             ),
           ],
         ),
-      ),
-    ],
-  );
-}
-
-Widget buildMobileWalletForm() {
-  return Column(
-    key: const ValueKey('Wallet'),
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      buildInfoBox('يرجى التأكد من أن المحفظة مفعلة وبها رصيد كافٍ.'),
-      const SizedBox(height: 16),
-      buildTextField(
-        label: 'رقم الهاتف المرتبط بالمحفظة',
-        icon: Icons.phone_iphone_rounded,
-        type: TextInputType.phone,
       ),
     ],
   );

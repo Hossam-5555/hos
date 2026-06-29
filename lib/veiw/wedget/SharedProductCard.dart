@@ -129,14 +129,14 @@ class SharedProductCard extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(
-                                        Icons.star_border_purple500_outlined,
+                                        Icons.star_purple500_outlined,
                                         size: w * 0.030,
+                                        color:  Colors.amber,
                                       ),
                                       const SizedBox(width: 4),
                                       Text(
                                         rating.toString(),
                                         style: TextStyle(
-                                          color: Colors.black,
                                           fontSize: w * 0.03,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -153,7 +153,7 @@ class SharedProductCard extends StatelessWidget {
                     Positioned(
                       bottom: 10,
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(40),
+                        borderRadius: BorderRadius.circular(16),
                         child: BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                           child: Container(
@@ -162,7 +162,7 @@ class SharedProductCard extends StatelessWidget {
                             width: 170,
                             decoration: BoxDecoration(
                               color: Colors.white.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(40),
+                              borderRadius: BorderRadius.circular(16),
                               border: Border.all(
                                 color: Colors.white.withOpacity(
                                   0.3,
@@ -172,19 +172,11 @@ class SharedProductCard extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: price,
-                                        style: TextStyle(fontSize: 20,color: Colors.green,fontWeight: FontWeight.bold),
-                                      ),
-                                      TextSpan(text: " "),
-                                      TextSpan(
-                                        text: "EGP".tr,
-                                        style: TextStyle(fontSize: 15,color: Colors.green,),
-                                      ),
-                                    ],
+                                Text(
+                                  "$price.${"EGP".tr}",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.green,
                                   ),
                                 ),
                                 SizedBox(width: 50),

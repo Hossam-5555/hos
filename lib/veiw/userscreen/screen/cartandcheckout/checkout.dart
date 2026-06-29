@@ -73,29 +73,29 @@ class Checkout extends StatelessWidget {
                   const SizedBox(height: 16),
 
                   // 1. اختيارات الدفع (بطاقة، محفظة، كاش)
-                  Obx(
-                    () => Row(
+                  GetBuilder<Checkoutcontroller>(
+                    builder: (c) => Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         buildPaymentMethod(
-                          controller: controller1,
+                          controller: c,
                           title: 'بطاقة ائتمان',
                           icon: Icons.credit_card_rounded,
-                          method: PaymentMethod.creditCard,
+                          method: "credit",
                         ),
                         const SizedBox(width: 8),
                         buildPaymentMethod(
-                          controller: controller1,
+                          controller: c,
                           title: 'محفظة',
                           icon: Icons.account_balance_wallet_rounded,
-                          method: PaymentMethod.mobileWallet,
+                          method: "mobile",
                         ),
                         const SizedBox(width: 8),
                         buildPaymentMethod(
-                          controller: controller1,
+                          controller: c,
                           title: 'كاش',
                           icon: Icons.money_rounded,
-                          method: PaymentMethod.cod,
+                          method: "cash",
                         ),
                       ],
                     ),
@@ -107,8 +107,8 @@ class Checkout extends StatelessWidget {
                   ),
 
                   // 2. نموذج الدفع الديناميكي (بيظهر حسب الاختيار)
-                  Obx(
-                    () => AnimatedSwitcher(
+                  GetBuilder<Checkoutcontroller>(
+                    builder: (c) => AnimatedSwitcher(
                       duration: const Duration(milliseconds: 300),
                       switchInCurve: Curves.easeOutCubic,
                       transitionBuilder: (child, animation) => FadeTransition(
@@ -274,7 +274,10 @@ class Checkout extends StatelessWidget {
             children: [
               Text(
                 "shipping address".tr,
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 16),
               ...c.listaddresdata.map(

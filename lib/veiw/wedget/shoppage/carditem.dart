@@ -16,8 +16,8 @@ Widget buildCartItemCard(
       padding: const EdgeInsets.all(12.0),
       decoration: BoxDecoration(
         // color: Colors.white, // أضفنا لون خلفية أبيض
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.grey.shade300), // لون أخف للحدود
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Colors.grey), // لون أخف للحدود
       ),
       child: Row(
         children: [

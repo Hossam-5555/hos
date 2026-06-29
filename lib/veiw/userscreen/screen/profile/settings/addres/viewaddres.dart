@@ -169,60 +169,89 @@ Widget _card(
                 // يمكنك تنفيذ المنطق هنا أيضاً إذا أردت
               },
 
-              itemBuilder: (BuildContext context) => [
-                // خيار التعديل
-                PopupMenuItem(
-                  onTap: () {
-                    // تأكد من أن الـ id موجود قبل التمرير
-                    if (address.id != null) {
-                      Get.to(()=>EditAddressPage(),arguments:{
-                        "AddresModel":address
-                      } );
-                    }
-                  },
-                  value: 'edit',
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.edit_rounded,
-                        color: Colors.blue.shade600,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 12),
-                      const Text(
-                        "تعديل",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
+              itemBuilder: (BuildContext context) {
+                bool isdefalt = c.isdefault == address.id;
+                return [
+                  // خيار التعديل
+                  PopupMenuItem(
+                    onTap: () {
+                      // تأكد من أن الـ id موجود قبل التمرير
+                      if (address.id != null) {
+                        Get.to(
+                          () => EditAddressPage(),
+                          arguments: {"AddresModel": address},
+                        );
+                      }
+                    },
+                    value: 'edit',
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.edit_rounded,
+                          color: Colors.blue.shade600,
+                          size: 20,
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 12),
+                        const Text(
+                          "تعديل",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
 
-                // خيار الحذف
-                PopupMenuItem(
-                  onTap: onDelete,
-                  value: 'delete',
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.delete_outline_rounded,
-                        color: Colors.red.shade600,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 12),
-                      Text(
-                        "حذف",
-                        style: TextStyle(
+                  // خيار الحذف
+                  PopupMenuItem(
+                    onTap: onDelete,
+                    value: 'delete',
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.delete_outline_rounded,
                           color: Colors.red.shade600,
-                          fontWeight: FontWeight.w500,
+                          size: 20,
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 12),
+                        Text(
+                          "حذف",
+                          style: TextStyle(
+                            color: Colors.red.shade600,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  PopupMenuItem(
+                    onTap: () {
+                      c.updatedefault(address.id!);
+                    },
+                    value: 'Set default',
+                    child: Row(
+                      children: [
+                        Icon(
+                          isdefalt
+                              ? Icons.turned_in
+                              : Icons.turned_in_not_sharp,
+                          color: Colors.black,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          "Set default",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ];
+              },
             ),
           ],
         ),
@@ -245,16 +274,6 @@ Widget _card(
                     Icons.phone,
                   ),
                   const SizedBox(height: 6),
-                  _addressDetailRow(
-                    "",
-                    'set Default',
-                    Icons.location_on,
-                    widget: Switch.adaptive(
-                      activeColor: Colors.green,
-                      value: c.isdefault == address.id ? true : false,
-                      onChanged: (bool value) {},
-                    ),
-                  ), // استبدله بمتغير الهاتف إذا وجد
                 ],
               ),
             ),
