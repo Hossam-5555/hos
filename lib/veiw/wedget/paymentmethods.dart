@@ -13,7 +13,7 @@ Widget buildPaymentMethod({
   required PaymentMethod method,
   controller,
 }) {
-  final isSelected = controller.selectedMethod.value == method;
+  final isSelected = controller.selectedMethod == method;
   return Expanded(
     child: GestureDetector(
       onTap: () => controller.changePaymentMethod(method),
@@ -51,16 +51,14 @@ Widget buildPaymentMethod({
   );
 }
 
-Widget buildFormContent(Checkoutcontroller controller) {
-  switch (controller.selectedMethod.value) {
-    case PaymentMethod.creditCard:
+ buildFormContent(Checkoutcontroller controller) {
+  switch (controller.selectedMethod) {
+    case "cash":
       return buildCreditCardForm();
-    case PaymentMethod.mobileWallet:
+    case "credit":
       return buildMobileWalletForm();
-    case PaymentMethod.cod:
+    case "mobile":
       return buildCODForm();
-    case PaymentMethod.none:
-      return const SizedBox.shrink(); // لو مفيش حاجة مختارة
   }
 }
 
@@ -143,38 +141,6 @@ Widget buildCreditCardForm() {
             ),
           ],
         ),
-      ),
-      const SizedBox(height: 24),
-      const Text(
-        'بيانات البطاقة الجديدة',
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      ),
-      const SizedBox(height: 16),
-      buildTextField(
-        label: 'رقم البطاقة',
-        icon: Icons.credit_card,
-        type: TextInputType.number,
-      ),
-      const SizedBox(height: 16),
-      Row(
-        children: [
-          Expanded(
-            child: buildTextField(
-              label: 'MM/YY',
-              icon: Icons.calendar_month,
-              type: TextInputType.datetime,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: buildTextField(
-              label: 'CVV',
-              icon: Icons.lock,
-              type: TextInputType.number,
-              isSecure: true,
-            ),
-          ),
-        ],
       ),
     ],
   );

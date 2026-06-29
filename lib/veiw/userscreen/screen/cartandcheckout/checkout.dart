@@ -53,7 +53,7 @@ class Checkout extends StatelessWidget {
                           color: Colors.black,
                         ),
                       )
-                    : _buildAddressSelector(c),
+                    : _buildAddressSelector(c, context),
               ),
             ),
             const SizedBox(height: 16),
@@ -226,7 +226,7 @@ class Checkout extends StatelessWidget {
     );
   }
 
-  Widget _buildAddressSelector(Checkoutcontroller c) {
+  Widget _buildAddressSelector(Checkoutcontroller c, BuildContext con) {
     return Obx(() {
       // 1️⃣ حماية: لو لسه البيانات مفيش فيها عنوان مختار (الـ API بيحمل)
       if (c.selectedAddress.value == null) {
@@ -255,57 +255,65 @@ class Checkout extends StatelessWidget {
           style: const TextStyle(fontSize: 12, color: Colors.grey),
         ),
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-        onTap: () => _showAddressesSheet(c),
+        onTap: () => _showAddressesSheet(c, con),
       );
     });
   }
 
-  void _showAddressesSheet(Checkoutcontroller c) {
+  void _showAddressesSheet(Checkoutcontroller c, BuildContext context) {
     Get.bottomSheet(
       Container(
         padding: const EdgeInsets.all(20),
-        decoration: const BoxDecoration(
-          color: Colors.white,
+        decoration: BoxDecoration(
+          color: context.isDarkMode ? Color(0xff323538) : Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              "shipping address".tr,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            ...c.listaddresdata.map(
-              (addr) => Obx(
-                () => RadioListTile<int>( // 💡 تحديد الـ Type هنا كـ int أفضل لـ Radio
-                  value: addr.id ?? 0, // الـ ID الخاص بهذا العنوان في اللفة الحالية
-                  groupValue: c.selectedAddress.value?.id, // مقارنته بـ ID العنوان المختار بالكنترولر
-                  activeColor: Colors.green,
-                  title: Text(
-                    addr.name ?? "",
-                    style: const TextStyle(color: Colors.black),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "shipping address".tr,
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+              ...c.listaddresdata.map(
+                (addr) => Obx(
+                  () => RadioListTile<int>(
+                    // 💡 تحديد الـ Type هنا كـ int أفضل لـ Radio
+                    value:
+                        addr.id ??
+                        0, // الـ ID الخاص بهذا العنوان في اللفة الحالية
+                    groupValue: c
+                        .selectedAddress
+                        .value
+                        ?.id, // مقارنته بـ ID العنوان المختار بالكنترولر
+                    activeColor: Colors.green,
+                    title: Text(
+                      addr.name ?? "",
+                      style: const TextStyle(color: Colors.black),
+                    ),
+                    onChanged: (val) {
+                      if (val != null) {
+                        // 💡 التعديل الجوهري: بنباصي الـ addr بالكامل (الـ Object) مش الـ ID
+                        c.chooseAddres(addr);
+                        Get.back(); // إغلاق الـ BottomSheet بعد الاختيار
+                      }
+                    },
                   ),
-                  onChanged: (val) {
-                    if (val != null) {
-                      // 💡 التعديل الجوهري: بنباصي الـ addr بالكامل (الـ Object) مش الـ ID
-                      c.chooseAddres(addr); 
-                      Get.back(); // إغلاق الـ BottomSheet بعد الاختيار
-                    }
-                  },
                 ),
               ),
-            ),
-            const SizedBox(height: 10), // مسافة بسيطة قبل الزرار
-            TextButton.icon(
-              onPressed: () {
-                Get.back();
-                Get.to(() => AddNewAddres());
-              },
-              icon: const Icon(Icons.add),
-              label: Text("Add new address".tr),
-            ),
-          ],
+              const SizedBox(height: 10), // مسافة بسيطة قبل الزرار
+              TextButton.icon(
+                onPressed: () {
+                  Get.back();
+                  Get.to(() => AddNewAddres());
+                },
+                icon: const Icon(Icons.add),
+                label: Text("Add new address".tr),
+              ),
+            ],
+          ),
         ),
       ),
     );

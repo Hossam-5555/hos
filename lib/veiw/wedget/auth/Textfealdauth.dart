@@ -42,16 +42,6 @@ class Textfealdauth extends StatelessWidget {
             horizontal: width * 0.04,
             vertical: height * 0.018,
           ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-            borderSide: const BorderSide(
-              color: Color.fromARGB(255, 22, 186, 49),
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide(color: Colors.grey),
-          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide.none,

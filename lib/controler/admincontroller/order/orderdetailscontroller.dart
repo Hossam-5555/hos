@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -76,8 +75,17 @@ class AdminOrderDetailesController extends GetxController {
 
         showSnackBar(
           Get.context!,
-          lang ? "تم تحديث حالة الطلب بنجاح" : "Status updated",
+          lang
+              ? "تم تحديث حالة الطلب بنجاح"
+              : "Order Status updated successfully",
           Icon(Icons.check_circle_outline, color: statusColor),
+          s: SnackBarAction(
+            label: "UNDO",
+            textColor: Colors.green,
+            onPressed: () {
+              
+            },
+          ),
         );
 
         try {

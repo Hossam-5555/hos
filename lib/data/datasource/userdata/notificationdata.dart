@@ -11,7 +11,7 @@ class Notificationdata {
   }
 
   getNotificationsData() async {
-    var response = await crud.getrequset(LinkApi.adminnotification);
+    var response = await crud.getrequset("${LinkApi.notification}/${22}");
     return response.fold((l) => l, (r) => r);
   }
 

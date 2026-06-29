@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
-import 'package:hos/controler/usercontroller/profile/paymentcontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/handlingdata.dart';
@@ -14,12 +13,12 @@ import 'package:hos/data/model/cartmodel.dart';
 
 class Checkoutcontroller extends GetxController {
   final formKey = GlobalKey<FormState>();
-  var selectedMethod = PaymentMethod.creditCard.obs;
+  String selectedMethod = "cash";
 
   // مفتاح الفورم للتحقق من صحة البيانات
   // دالة لتغيير طريقة الدفع
-  void changePaymentMethod(PaymentMethod method) {
-    selectedMethod.value = method;
+  void changePaymentMethod(String method) {
+    selectedMethod = method;
   }
 
   List<List> paymentMethodEnum = [
@@ -44,7 +43,8 @@ class Checkoutcontroller extends GetxController {
   void chooseAddres(AddresModel address) {
     selectedAddress.value = address; // تحديث الـ Object بالكامل
   }
-int isdafault=0;
+
+  int isdafault = 0;
   //============================ جلب العناوين من السيرفر
   Future<void> getaddress() async {
     // statusrequest = Statusrequest.loading;
@@ -57,7 +57,7 @@ int isdafault=0;
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
         List data = response['data']['data'];
-         isdafault=response['data']["is_default"];
+        isdafault = response['data']["is_default"];
         // تنظيف القائمة قبل الإضافة
         listaddresdata.clear();
         listaddresdata.addAll(data.map((e) => AddresModel.fromJson(e)));

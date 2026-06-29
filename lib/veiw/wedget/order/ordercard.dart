@@ -34,8 +34,8 @@ class OrderCard extends StatelessWidget {
     final secondaryTextColor = isDark ? Colors.white70 : Colors.black54;
     final overlayColor = isDark
         ? Colors.black.withOpacity(0.65) // تعتيم قوي للوضع المظلم
-        : Colors.grey.withOpacity(0.50); // تفتيح قوي للوضع الفاتح
-    final shadowColor = Colors.black87 ;
+        : Colors.white.withOpacity(0.50); // تفتيح قوي للوضع الفاتح
+    final shadowColor = Colors.white70 ;
 
     return GestureDetector(
       onTap: onTap,
@@ -68,11 +68,11 @@ class OrderCard extends StatelessWidget {
                   end: Alignment.bottomLeft,
                   colors: [
                     overlayColor.withOpacity(
-                      isDark ? 0.3 : 0.2,
+                      isDark ? 0.2 : 0,
                     ), // شفاف من الأعلى
                     overlayColor, // مركز من الأسفل لضمان وضوح النص
                   ],
-                  stops: const [0.0, 0.9],
+                  stops: const [0.0, 1],
                 ),
                 // border: Border.all(
                 //   color: isDark

@@ -175,7 +175,9 @@ Widget _card(
                   onTap: () {
                     // تأكد من أن الـ id موجود قبل التمرير
                     if (address.id != null) {
-                      Get.to(EditAddressPage(), arguments: address.id);
+                      Get.to(()=>EditAddressPage(),arguments:{
+                        "AddresModel":address
+                      } );
                     }
                   },
                   value: 'edit',

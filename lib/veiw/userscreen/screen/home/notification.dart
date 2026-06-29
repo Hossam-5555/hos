@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/notificationcontroller.dart';
@@ -14,7 +13,7 @@ class NotificationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // نقوم بإنشاء الكنترولر أو إيجاده هنا لمرة واحدة لضمان استخدام نفس النسخة في الصفحة بأكملها
-    final Notificationcontroller controller = Get.put(Notificationcontroller());
+     Notificationcontroller controller = Get.put(Notificationcontroller());
 
     return GetBuilder<Notificationcontroller>(
       builder: (s) {
@@ -47,6 +46,7 @@ class NotificationPage extends StatelessWidget {
             ),
           ),
           body: Handlingdataview(
+            isFullScreen: true,
             statusrequest: controller.statusrequest,
             widget: Skeletonizer(
               enabled: isLoading,

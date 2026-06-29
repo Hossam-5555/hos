@@ -93,8 +93,8 @@ class OfferCard extends StatelessWidget {
             BoxShadow(
               color: (colors.isNotEmpty ? colors.last : Colors.black)
                   .withOpacity(0.2),
-              blurRadius: 15,
-              offset: const Offset(0, 8),
+              blurRadius: 5,
+              offset: const Offset(0, 3),
             ),
           ],
         ),

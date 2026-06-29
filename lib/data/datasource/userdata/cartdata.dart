@@ -15,7 +15,7 @@ class Cartdata {
 
   // ignore: strict_top_level_inference
   addcartdata(int itemid, int count) async {
-    var response = await crud.postrequset(LinkApi.addcart, {
+    var response = await crud.postrequset(LinkApi.cart, {
       "cart_item_id": itemid,
       "cart_count": count,
     });
@@ -24,7 +24,7 @@ class Cartdata {
 
   // ignore: strict_top_level_inference
   viewcart() async {
-    var response = await crud.getrequset("${LinkApi.viewcart}");
+    var response = await crud.getrequset(LinkApi.cart);
     return response.fold((l) => l, (r) => r);
   }
 

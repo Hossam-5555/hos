@@ -25,14 +25,12 @@ class LinkApi {
   static String view = '$lravelserver/getfavorite';
   static String favoritemanger = '$lravelserver/favoritemanger';
   //cart
-  static String addcart = '$lravelserver/cart';
+  static String cart = '$lravelserver/cart';
   static String deletcart = '$lravelserver/decrease';
-  static String viewcart = '$lravelserver/cart';
   // static String coupone = '$server/coupone/chechcoupone.php';
   // AddresLink
   static String addaddres = '$lravelserver/Address';
   static String deleteAddres = '$lravelserver/delelteaddres';
-  // static String editAddres = '$server/address/edit.php';
   //orders
   static String checkout = '$lravelserver/order';
   static String viewmyorder = '$lravelserver/userorders';
@@ -40,8 +38,7 @@ class LinkApi {
   // static String rating = '$server/rating.php';
 
   //notification
-  static String notification = '$lravelserver/getmassage';
-  static String adminnotification="$lravelserver/massage";
+  static String notification = '$lravelserver/massage';
   static String deletnotification = '$lravelserver/deleltemassage';
 
   //offer
@@ -49,9 +46,7 @@ class LinkApi {
 
   //Admin //categores
   static String dashborddata="$lravelserver/dashboadcontroller";
-  static String adminaddcat = '$lravelserver/category';
-  static String admineditcat = '$lravelserver/category';
-  static String adminviewcat = '$lravelserver/category';
+  static String admincategrory = '$lravelserver/category';
   static String admindeletecat = '$lravelserver/deletecategory';
   //Admin //items
   static String cruditemsadmin = '$lravelserver/items';

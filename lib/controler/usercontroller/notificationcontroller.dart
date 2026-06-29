@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
+import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/notificationdata.dart';
 import 'package:hos/data/model/notificationmodel.dart';
@@ -17,7 +18,7 @@ class Notificationcontroller extends GetxController {
   String? get usertype => myservisec.sharedPreferences.getString("usertype");
   Notificationdata notificationdata = Get.put(Notificationdata(Get.find()));
   int? get userid => myservisec.sharedPreferences.getInt("id");
-  
+
   List<MassageModel> notificationlist = [];
   int notificationcount = 0;
 
@@ -35,12 +36,12 @@ class Notificationcontroller extends GetxController {
   }
 
   /// ضغط عادي
-/// ضغط عادي (تعديل لضمان التحديد وإلغائه)
+  /// ضغط عادي (تعديل لضمان التحديد وإلغائه)
   void onTap(int id) {
     // لو مش في وضع التحديد، اضغط ضغطة عادية (مثلاً تفتح الإشعار أو تخليه مقروء)
     if (!selectionMode) {
       // هنا ممكن تحط كود فتح الإشعار مستقبلاً
-      return; 
+      return;
     }
 
     // لو في وضع التحديد، اقلب حالة العنصر (تحديد / إلغاء تحديد)
@@ -79,36 +80,18 @@ class Notificationcontroller extends GetxController {
 
     bool isUndo = false;
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 4),
-        behavior: SnackBarBehavior.floating, // يخليه طاير مش لازق تحت
-        margin: const EdgeInsets.all(12),
-        backgroundColor: Colors.grey.shade900,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15), // 🔥 حواف دائرية
-        ),
-        content: const Row(
-          children: [
-            Icon(Icons.delete_outline, color: Colors.white),
-            SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                "Notifications deleted",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ],
-        ),
-        action: SnackBarAction(
-          label: "UNDO",
-          textColor: Colors.orangeAccent,
-          onPressed: () {
-            isUndo = true;
-            notificationlist.insertAll(0, removedItems);
-            update();
-          },
-        ),
+    showSnackBar(
+      context,
+      "Deleted Successfully",
+      Icon(Icons.delete),
+      s: SnackBarAction(
+        label: "UNDO",
+        textColor: Colors.orangeAccent,
+        onPressed: () {
+          isUndo = true;
+          notificationlist.insertAll(0, removedItems);
+          update();
+        },
       ),
     );
 
@@ -135,19 +118,15 @@ class Notificationcontroller extends GetxController {
     statusrequest = Statusrequest.loading;
     update();
 
-    var response = await notificationdata.getnotification();
+    var response = await notificationdata.getNotificationsData();
     statusrequest = handling(response);
-
     if (Statusrequest.success == statusrequest && response['status'] == true) {
       notificationlist.clear();
-      notificationlist.addAll(
-        (response["data"]["messages"] as List).map(
-          (e) => MassageModel.fromJson(e),
-        ),
-      );
+      List data = response["data"]["messages"];
+      notificationlist.addAll((data).map((e) => MassageModel.fromJson(e)));
       notificationcount = response["data"]["total_inactive_count"];
       if (notificationcount == 0) {
-        statusrequest = Statusrequest.failure;
+        statusrequest = Statusrequest.nodata;
       }
     } else {
       statusrequest = Statusrequest.failure;
@@ -158,13 +137,13 @@ class Notificationcontroller extends GetxController {
 
   // 📥 جلب البيانات الحقيقية المتوافقة مع دالة index() بالباك إند
   Future<void> getNotifications() async {
+    print("===================================");
     notificationlist.clear();
     statusrequest = Statusrequest.loading;
     update();
 
-    var response = await notificationdata.getNotificationsData();
+    var response = await notificationdata.getnotification();
     statusrequest = handling(response);
-
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true && response['data'] != null) {
         List rawData = [];

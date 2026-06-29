@@ -15,7 +15,6 @@ class Addresdata {
     String phone,
   ) async {
     var response = await crud.postrequset(LinkApi.addaddres, {
-      // "user_id": userid,
       "addres_name": name,
       "addres_street": street,
       "addres_city": city,
@@ -26,24 +25,25 @@ class Addresdata {
     return response.fold((l) => l, (r) => r);
   }
 
-  // editeAddresdata(
-  //   String addresid,
-  //   String name,
-  //   String street,
-  //   String city,
-  //   double lat,
-  //   double lang,
-  // ) async {
-  //   var response = await crud.postrequset(LinkApi.editAddres, {
-  //     "addresid": addresid,
-  //     "name": name,
-  //     "street": street,
-  //     "city": city,
-  //     "lat": lat,
-  //     "lang": lang,
-  //   });
-  //   return response.fold((l) => l, (r) => r);
-  // }
+  updateAddresdata(
+    String name,
+    String street,
+    String city,
+    String lat,
+    String long,
+    String phone,
+    String id,
+  ) async {
+    var response = await crud.putandpacth("${LinkApi.addaddres}/$id", {
+      "addres_name": name,
+      "addres_street": street,
+      "addres_city": city,
+      "addres_lat": lat,
+      "addres_long": long,
+      "phone": phone,
+    });
+    return response.fold((l) => l, (r) => r);
+  }
 
   // ignore: strict_top_level_inference
   viewAddresdata() async {

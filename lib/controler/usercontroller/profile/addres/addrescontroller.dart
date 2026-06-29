@@ -90,7 +90,7 @@ class AddressController extends GetxController {
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
         List data = response['data']['data'];
-        isdefault =response['data']['is_default'];
+        isdefault = response['data']['is_default'];
         // تنظيف القائمة قبل الإضافة
         listaddresdata.clear();
 
@@ -134,7 +134,7 @@ class AddressController extends GetxController {
                 ),
               ),
               color: Colors
-                  .red
+                  .green
                   .shade50, // خلفية حمراء باهتة ومريحة جداً للعين (Soft Red)
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -210,37 +210,8 @@ class AddressController extends GetxController {
       print("خطأ: العنصر غير موجود في القائمة المحلية أساساً!");
     }
   }
-  //update address
-  // Future<void> updateaddres(int addresid) async {
-  //   statusrequest = Statusrequest.loading;
-  //   update();
 
-  //   var response = await addresdata.updateAddresdata(
-  //     addresid,
-  //     name!.text,
-  //     city!.text,
-  //     street!.text,
-  //     lat.toString(),
-  //     long.toString(),
-  //     "+201034567820",
-  //   );
-  //   print("response update addres : $response");
-  //   statusrequest = handling(response);
-  //   if (Statusrequest.success == statusrequest) {
-  //     if (response['status'] == true) {
-  //       // تحديث القائمة بعد التحديث
-  //       await viewaddres();
-  //       if (Get.isRegistered<Checkoutcontroller>()) {
-  //         Checkoutcontroller controller = Get.find<Checkoutcontroller>();
-  //         await controller.getaddress();
-  //       }
-  //       Get.back();
-  //     } else {
-  //       statusrequest = Statusrequest.failure;
-  //     }
-  //   }
-  //   update();
-  // }
+  
 
   // دالة الحفظ
   List<Marker> marker = [];

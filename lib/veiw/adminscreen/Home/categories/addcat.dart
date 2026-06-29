@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/categories/addcatcontroller.dart';
+import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
@@ -13,20 +14,7 @@ class Addcategories extends StatelessWidget {
     final controller = Get.put(Addcatcontroller());
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F8FB),
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        title: const Text(
-          "إضافة فئة جديدة",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
-        ),
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87),
-          onPressed: () => Get.back(),
-        ),
-      ),
+      appBar: Appbarbackicon(title: "New Category", herotag: "xx"),
       body: GetBuilder<Addcatcontroller>(
         builder: (controller) => SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
@@ -35,15 +23,7 @@ class Addcategories extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "معلومات الفئة",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-                const SizedBox(height: 20),
+              
 
                 Center(
                   child: Column(

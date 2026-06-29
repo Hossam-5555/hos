@@ -16,17 +16,19 @@ class Searchpage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Searchbar(
-          focusNode: controller.focusNode,
-          textInputAction: controller.textInputAction,
-          onPressedIcon: () {
-            // 👈 لما يدوس بحث، بنضيف الكلمة للسجل وننفذ البحث
-            controller.addToRecentSearches(controller.search!.text);
-            controller.onsearch();
-          },
-          onChanged: controller.checksearch,
-          title: "Search products...".tr,
-          mycontroller: controller.search!,
+        title: SafeArea(
+          child: Searchbar(
+            focusNode: controller.focusNode,
+            textInputAction: controller.textInputAction,
+            onPressedIcon: () {
+              // 👈 لما يدوس بحث، بنضيف الكلمة للسجل وننفذ البحث
+              controller.addToRecentSearches(controller.search!.text);
+              controller.onsearch();
+            },
+            onChanged: controller.checksearch,
+            title: "Search products...".tr,
+            mycontroller: controller.search!,
+          ),
         ),
         elevation: 0,
         leading: Hero(tag: "Search", child: BackButtonCircle()),
