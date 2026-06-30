@@ -1,8 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/addres/addrescontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
-import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/data/model/Addresmodel.dart';
 import 'package:hos/veiw/userscreen/screen/profile/profile.dart';
@@ -76,251 +76,253 @@ class ViewMyAddres extends StatelessWidget {
 }
 
 /// 📦 UI Card محسّن
+/// 📦 UI Card محسّن بالتصميم الجديد
 Widget _card(
   AddresModel address,
   VoidCallback onDelete,
   BuildContext context,
   AddressController c,
 ) {
+  bool isdefalt = c.isdefault == address.id;
+
   return Container(
     margin: const EdgeInsets.only(bottom: 16),
-    padding: const EdgeInsets.all(16),
+    padding: const EdgeInsets.all(12),
     decoration: BoxDecoration(
       gradient: context.isDarkMode
           ? AppGradients.darkTitanium
           : AppGradients.lightPlatinum,
-      borderRadius: BorderRadius.circular(16),
-      border: Border.all(
-        color: Colors.grey.shade300,
-        width: 1.5,
-      ), // تخفيف لون الإطار
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: Colors.grey.shade300, width: 1.5),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(
-            0.03,
-          ), // ظل ناعم جداً يعطي عمق 3D بسيط
-          blurRadius: 12,
-          spreadRadius: 2,
+          color: Colors.black.withOpacity(0.05),
+          blurRadius: 10,
+          spreadRadius: 1,
           offset: const Offset(0, 4),
         ),
       ],
     ),
-    child: Column(
+    child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // ---------------- الجزء العلوي: العنوان وزرار الحذف ----------------
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Appcolor.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(
-                      12,
-                    ), // جعل زوايا الأيقونة متناسقة مع الكارد
-                  ),
-                  child: Icon(
-                    Icons.location_on_rounded,
-                    color: Appcolor
-                        .primaryColor, // يفضل توحيد لون الأيقونة مع لون التطبيق الأساسي
-                    size: 24,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  "${address.name} \n ${address.city}, ${address.street}",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800, // خط أسمك قليلاً للعنوان
-                    fontSize: 16,
-                    color: context.isDarkMode
-                        ? Colors.white
-                        : Colors.black, // لون داكن للعنوا
-                  ),
-                ),
-              ],
-            ),
-            // تصميم جديد لزر الحذف: أكثر أناقة وأقل إزعاجاً للعين
-            PopupMenuButton<String>(
-              // 1️⃣ تحسين شكل الزر نفسه
-              icon: Container(
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Icon(Icons.more_vert, color: Colors.black87),
-              ),
-
-              // 2️⃣ تحسين شكل القائمة المنسدلة
-              color: Colors.white,
-              elevation: 8,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              offset: const Offset(
-                0,
-                45,
-              ), // إزاحة القائمة للأسفل قليلاً لتبدو منفصلة
-
-              onSelected: (value) {
-                // يمكنك تنفيذ المنطق هنا أيضاً إذا أردت
-              },
-
-              itemBuilder: (BuildContext context) {
-                bool isdefalt = c.isdefault == address.id;
-                return [
-                  // خيار التعديل
-                  PopupMenuItem(
-                    onTap: () {
-                      // تأكد من أن الـ id موجود قبل التمرير
-                      if (address.id != null) {
-                        Get.to(
-                          () => EditAddressPage(),
-                          arguments: {"AddresModel": address},
-                        );
-                      }
-                    },
-                    value: 'edit',
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.edit_rounded,
-                          color: Colors.blue.shade600,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 12),
-                        const Text(
-                          "تعديل",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // خيار الحذف
-                  PopupMenuItem(
-                    onTap: onDelete,
-                    value: 'delete',
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.delete_outline_rounded,
-                          color: Colors.red.shade600,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          "حذف",
-                          style: TextStyle(
-                            color: Colors.red.shade600,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem(
-                    onTap: () {
-                      c.updatedefault(address.id!);
-                    },
-                    value: 'Set default',
-                    child: Row(
-                      children: [
-                        Icon(
-                          isdefalt
-                              ? Icons.turned_in
-                              : Icons.turned_in_not_sharp,
-                          color: Colors.black,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          "Set default",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ];
-              },
-            ),
-          ],
-        ),
-
-        // ---------------- خط فاصل ----------------
-
-        // ---------------- الجزء السفلي: تفاصيل العنوان ----------------
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        // ---------------- القسم الأيسر: النصوص والأيقونات ----------------
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 1️⃣ الشارات (Tags) - يمكنك استخدامها لإظهار ما إذا كان العنوان هو الأساسي
+              Wrap(
+                spacing: 8,
+                runSpacing: 4,
                 children: [
-                  const SizedBox(height: 6),
-                  _addressDetailRow(
-                    "City",
-                    address.phone ??
-                        'No phone provided', // استبدل هذا بالمتغير المناسب إذا كان لديك رقم الهاتف
-                    Icons.phone,
-                  ),
-                  const SizedBox(height: 6),
+                  if (isdefalt)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.teal.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: const Text(
+                        'DEFAULT ADDRESS',
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.teal,
+                        ),
+                      ),
+                    ),
                 ],
               ),
-            ),
-          ],
+              const SizedBox(height: 8),
+
+              // 2️⃣ العنوان (Title) مع زر القائمة (Menu)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Text(
+                      "${address.name}",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 18,
+                        color: context.isDarkMode
+                            ? Colors.white
+                            : Colors.black87,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+
+                  // زر الـ Menu القديم الخاص بك مدمج هنا بشكل أنيق
+                  SizedBox(
+                    height: 24,
+                    width: 24,
+                    child: PopupMenuButton<String>(
+                      padding: EdgeInsets.zero,
+                      icon: const Icon(
+                        Icons.more_vert,
+                        color: Colors.grey,
+                        size: 20,
+                      ),
+                      color: Colors.white,
+                      elevation: 8,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      itemBuilder: (BuildContext context) {
+                        return [
+                          PopupMenuItem(
+                            onTap: () {
+                              if (address.id != null) {
+                                Get.to(
+                                  () => EditAddressPage(),
+                                  arguments: {"AddresModel": address},
+                                );
+                              }
+                            },
+                            value: 'edit',
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.edit_rounded,
+                                  color: Colors.blue.shade600,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 12),
+                                const Text(
+                                  "تعديل",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            onTap: onDelete,
+                            value: 'delete',
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.delete_outline_rounded,
+                                  color: Colors.red.shade600,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 12),
+                                Text(
+                                  "حذف",
+                                  style: TextStyle(
+                                    color: Colors.red.shade600,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            onTap: () {
+                              if (address.id != null)
+                                c.updatedefault(address.id!);
+                            },
+                            value: 'Set default',
+                            child: Row(
+                              children: [
+                                Icon(
+                                  isdefalt
+                                      ? Icons.turned_in
+                                      : Icons.turned_in_not_sharp,
+                                  color: Colors.black,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 12),
+                                const Text(
+                                  "Set default",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ];
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 6),
+
+              // 3️⃣ تفاصيل العنوان
+              Text(
+                "${address.city}, ${address.street}",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey.shade600,
+                  height: 1.3,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 4),
+
+              // 4️⃣ رقم الهاتف
+              Text(
+                address.phone ?? 'No phone provided',
+                style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+              ),
+              const SizedBox(height: 16),
+
+              // 5️⃣ الأيقونات السفلية (كما في التصميم)
+              Row(
+                children: [
+                  _buildBottomIcon(Icons.location_on_outlined),
+                  _buildBottomIcon(Icons.phone_outlined),
+                  _buildBottomIcon(Icons.language),
+                ],
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(width: 12),
+
+        // ---------------- القسم الأيمن: الصورة ----------------
+        ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: CachedNetworkImage(
+            height: 140,
+            width: 110,
+            imageUrl:
+                "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2053&auto=format&fit=crop",
+            fit: BoxFit.cover,
+            placeholder: (context, url) =>
+                const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+            errorWidget: (context, url, error) =>
+                const Icon(Icons.error_outline),
+          ),
         ),
       ],
     ),
   );
 }
 
-// ---------------- ويدجت مساعدة لتنسيق النصوص بشكل احترافي ----------------
-// ضع هذه الويدجت خارج أو داخل الكلاس (يفضل خارجها أو كـ Method مستقلة)
-Widget _addressDetailRow(
-  String label,
-  String value,
-  IconData icon, {
-  Widget? widget,
-}) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 2),
-            child: Container(
-              padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                color: Appcolor.primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(icon, color: Colors.grey, size: 22),
-            ),
-          ),
-          SizedBox(width: 8),
-          Text(
-            "$value",
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey.shade700,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      ),
-      widget ?? const SizedBox.shrink(),
-    ],
+// ---------------- ويدجت مساعدة للأيقونات السفلية ----------------
+Widget _buildBottomIcon(IconData icon, {Color color = Colors.black54}) {
+  return Container(
+    margin: const EdgeInsets.only(right: 8),
+    padding: const EdgeInsets.all(6),
+    decoration: BoxDecoration(
+      color: Colors.grey.shade200, // لون خلفية الأيقونة
+      shape: BoxShape.circle,
+    ),
+    child: Icon(icon, size: 18, color: color),
   );
 }

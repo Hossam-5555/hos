@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/settingscontroller.dart';
 import 'package:hos/core/localization/changlocal.dart';
+import 'package:hos/veiw/userscreen/screen/profile/settings/Editprofile.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/about_us_page.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
@@ -40,7 +41,9 @@ class Settings extends StatelessWidget {
                           icon: Icons.person_outline,
                           title: "Profile".tr,
                           subtitle: 'Edit Account'.tr,
-                          onTap: () {},
+                          onTap: () {
+                            Get.to(()=>EditProfileView(),);
+                          },
                           gradientColors: [
                             Colors.indigo.shade400,
                             Colors.indigo.shade700,
