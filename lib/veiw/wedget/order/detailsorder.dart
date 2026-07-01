@@ -215,7 +215,7 @@ Widget items(OrderModel order) => Column(
         subtitle: Text("x${e.quantity}"),
         trailing: Text(
           "${e.price}\$",
-          style: TextStyle(color: Colors.green, fontSize: 14),
+          style: TextStyle(color: Colors.green, fontSize: 16),
         ),
       ),
     ),
@@ -256,7 +256,7 @@ Widget price(order) => Column(
 // الويدجت الرئيسية لعرض بيانات العميل
 Widget info(order) {
   return Container(
-    padding: const EdgeInsets.all(10),
+    // padding: const EdgeInsets.all(10),
 
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -288,8 +288,8 @@ Widget info(order) {
           iconColor: Colors.purple,
         ),
         const Padding(
-          padding: EdgeInsets.symmetric(vertical: 12.0),
-          child: Divider(height: 1, thickness: 1, color: Color(0xFFF5F5F5)),
+          padding: EdgeInsets.symmetric(vertical: 5.0),
+          child: Divider(height: 1, thickness: 1),
         ),
         row(
           icon: Icons.phone_android_rounded,
@@ -298,8 +298,8 @@ Widget info(order) {
           iconColor: Colors.green,
         ),
         const Padding(
-          padding: EdgeInsets.symmetric(vertical: 12.0),
-          child: Divider(height: 1, thickness: 1, color: Color(0xFFF5F5F5)),
+          padding: EdgeInsets.symmetric(vertical: 5.0),
+          child: Divider(height: 1, thickness: 1, ),
         ),
         row(
           icon: Icons.location_on_outlined,
@@ -371,7 +371,7 @@ Widget priceRow(String t, dynamic v, {bool big = false}) => Row(
     Text(
       "$v\$",
       style: TextStyle(
-        fontSize: big ? 18 : 14,
+        fontSize: big ? 18 : 16,
         fontWeight: FontWeight.bold,
         color: Colors.green,
       ),

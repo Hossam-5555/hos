@@ -72,7 +72,10 @@ class AddressController extends GetxController {
         }
         Get.back();
       } else {
-        statusrequest = Statusrequest.failure;
+        response['message'] != null
+            ? Get.snackbar("Error", response['message'])
+            : Get.snackbar("Error", "Failed to add address");
+        // Get.back();
       }
     }
     update();

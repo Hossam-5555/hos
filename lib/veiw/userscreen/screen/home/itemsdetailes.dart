@@ -288,7 +288,7 @@ class Itemsdetailes extends StatelessWidget {
           style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Colors.blue,
+            color: Colors.green,
           ),
         ),
         const SizedBox(width: 12),

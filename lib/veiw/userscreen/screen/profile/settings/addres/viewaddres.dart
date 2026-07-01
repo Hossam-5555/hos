@@ -5,7 +5,6 @@ import 'package:hos/controler/usercontroller/profile/addres/addrescontroller.dar
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/data/model/Addresmodel.dart';
-import 'package:hos/veiw/userscreen/screen/profile/profile.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/editaddress.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
@@ -89,9 +88,7 @@ Widget _card(
     margin: const EdgeInsets.only(bottom: 16),
     padding: const EdgeInsets.all(12),
     decoration: BoxDecoration(
-      gradient: context.isDarkMode
-          ? AppGradients.darkTitanium
-          : AppGradients.lightPlatinum,
+      color: Theme.of(context).cardColor,
       borderRadius: BorderRadius.circular(20),
       border: Border.all(color: Colors.grey.shade300, width: 1.5),
       boxShadow: [
