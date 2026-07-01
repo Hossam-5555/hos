@@ -1,5 +1,5 @@
 
-class AddresModel {
+class AddressModel {
   int? id;
   int? userId;
   String? name;
@@ -11,7 +11,7 @@ class AddresModel {
   String? createdAt;
   String? updatedAt;
 
-  AddresModel(
+  AddressModel(
       {this.id,
       this.userId,
       this.name,
@@ -23,7 +23,7 @@ class AddresModel {
       this.createdAt,
       this.updatedAt});
 
-  AddresModel.fromJson(Map<String, dynamic> json) {
+  AddressModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
     name = json['name'];

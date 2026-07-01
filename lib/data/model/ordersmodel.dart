@@ -14,7 +14,7 @@ class OrderModel {
   final String paymentMethod;
   final String createdAt;
   final List<OrderItemmodel> items;
-  final AddresModel shippingAddress;
+  final AddressModel shippingAddress;
 
   OrderModel({
     required this.orderId,
@@ -54,7 +54,7 @@ class OrderModel {
       ),
 
       // 🔥 تحويل العنوان
-      shippingAddress: AddresModel.fromJson(json['shipping_address']),
+      shippingAddress: AddressModel.fromJson(json['shipping_address']),
     );
   }
 }

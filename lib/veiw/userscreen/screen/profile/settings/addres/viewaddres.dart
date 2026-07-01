@@ -78,7 +78,7 @@ class ViewMyAddres extends StatelessWidget {
 /// 📦 UI Card محسّن
 /// 📦 UI Card محسّن بالتصميم الجديد
 Widget _card(
-  AddresModel address,
+  AddressModel address,
   VoidCallback onDelete,
   BuildContext context,
   AddressController c,

@@ -70,7 +70,6 @@ class Crud {
             // إذا لم يكن الرد JSON (مثلاً صفحة خطأ HTML من السيرفر 500) سيذهب للخطوة التالية
           }
         }
-
         // 2. في حال لم يكن هناك Body وكان الكود يمثل نجاحاً
         if (response.statusCode == 200 || response.statusCode == 201) {
           return Right({});

@@ -43,7 +43,7 @@ class Editaddress extends GetxController {
   TextEditingController? street;
   double lat = 23.3344;
   double long = 23.3344;
-  AddresModel? model;
+  AddressModel? model;
   @override
   void onInit() {
     model = Get.arguments["AddresModel"];

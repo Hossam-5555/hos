@@ -14,7 +14,7 @@ class AddressController extends GetxController {
   Addresdata addresdata = Addresdata(Get.find());
   Myservisec myservisec = Get.find();
   Statusrequest? statusrequest;
-  List<AddresModel> listaddresdata = <AddresModel>[].obs;
+  List<AddressModel> listaddresdata = <AddressModel>[].obs;
   GlobalKey<FormState> addadredKey = GlobalKey();
   // متغيرات الحقول
   TextEditingController? name;
@@ -95,7 +95,7 @@ class AddressController extends GetxController {
         // تنظيف القائمة قبل الإضافة
         listaddresdata.clear();
 
-        listaddresdata.addAll(data.map((e) => AddresModel.fromJson(e)));
+        listaddresdata.addAll(data.map((e) => AddressModel.fromJson(e)));
       } else {
         statusrequest = Statusrequest.failure;
       }

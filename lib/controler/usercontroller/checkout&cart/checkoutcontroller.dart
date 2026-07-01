@@ -33,15 +33,15 @@ class Checkoutcontroller extends GetxController {
   Checkoutdata checkoutdata = Checkoutdata(Get.find());
   Myservisec myservisec = Get.find();
   Statusrequest statusrequest = Statusrequest.none;
-  List<AddresModel> listaddresdata = [];
+  List<AddressModel> listaddresdata = [];
 
   // ✨ المتغير السحري: شايل الـ Object بتاع العنوان المختار حالياً للشحن
-  var selectedAddress = Rxn<AddresModel>();
+  var selectedAddress = Rxn<AddressModel>();
 
   // دالة بتهيا العنوان الابتدائي أول ما البيانات تيجي من الـ API
 
   // دالة الاختيار لما المستخدم يغير العنوان من الـ Sheet
-  void chooseAddres(AddresModel address) {
+  void chooseAddres(AddressModel address) {
     selectedAddress.value = address; // تحديث الـ Object بالكامل
   }
 
@@ -61,7 +61,7 @@ class Checkoutcontroller extends GetxController {
         isdafault = response['data']["is_default"];
         // تنظيف القائمة قبل الإضافة
         listaddresdata.clear();
-        listaddresdata.addAll(data.map((e) => AddresModel.fromJson(e)));
+        listaddresdata.addAll(data.map((e) => AddressModel.fromJson(e)));
         if (listaddresdata.isNotEmpty) {
           // بيبحث عن الافتراضي أو ياخد أول واحد ويخزنه كـ Object كامل
           selectedAddress.value = listaddresdata.firstWhere(
@@ -107,6 +107,7 @@ class Checkoutcontroller extends GetxController {
 
       // تنفيذ الطلب
       var response = await checkoutdata.Checkout(data);
+      print("Response from checkout: $response");
       statusrequest = handling(response);
 
       if (statusrequest == Statusrequest.success) {
