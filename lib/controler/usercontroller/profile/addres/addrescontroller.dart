@@ -24,6 +24,29 @@ class AddressController extends GetxController {
   double long = 23.3344;
 
   /////////////////////////
+  String? selectedGovernorate;
+  String? selectedCity;
+  String? selectedLocationType; // (منزل، كافيه، إلخ)
+
+  final List<String> locationTypes = [
+    'منزل',
+    'عمل',
+    'كافيه',
+    'فندق',
+    'مستشفى',
+    'مدرسة',
+    'مصنع',
+  ];
+  void onGovernorateChanged(String? val) {
+    selectedGovernorate = val;
+    selectedCity = null; // إعادة تعيين المركز عند تغيير المحافظة
+    update();
+  }
+
+  void onCityChanged(String? val) {
+    selectedCity = val;
+    update();
+  }
 
   Completer<GoogleMapController>? completercontroller;
 
@@ -49,6 +72,7 @@ class AddressController extends GetxController {
   /////////////////////
 
   Future<void> addaddres() async {
+    city!.text = "$selectedGovernorate - $selectedCity";
     statusrequest = Statusrequest.loading;
     update();
 

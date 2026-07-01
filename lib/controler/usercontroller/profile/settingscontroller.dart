@@ -11,9 +11,12 @@ class SettingsController extends GetxController {
   var notificationsEnabled = true.obs;
   var selectedTheme = 'Light'.obs;
   String? get usrtype => myservisec.sharedPreferences.getString("usertype");
+    String? get username => myservisec.sharedPreferences.getString("usersname");
+
   @override
   void onInit() {
     super.onInit();
+
     loadSettings(); // تحميل الإعدادات عند بدء تشغيل الـ controller
   }
 

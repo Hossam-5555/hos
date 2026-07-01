@@ -21,13 +21,12 @@ class EditAddressPage extends StatelessWidget {
         child: Appbarbackicon(herotag: '', title: "Edit Address"),
       ),
       body: Addresspage<Editaddress>(
-        city: controller.city,
         name: controller.name,
+        details: controller.name,
         statusrequest: controller.statusrequest,
         onTap: () {
           controller.updateaddres(controller.model!.id!.toString());
         },
-        street: controller.street,
         controller: controller,
         size: size,
       ),

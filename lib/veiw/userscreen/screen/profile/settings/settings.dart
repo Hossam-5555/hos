@@ -44,7 +44,7 @@ class Settings extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     // ------- بطاقة الترويسة (الملف الشخصي) -------
-                    _buildProfileHeader(isDarkMode),
+                    _buildProfileHeader(isDarkMode, controller.username??"User"),
 
                     const SizedBox(height: 24),
 
@@ -161,7 +161,7 @@ class Settings extends StatelessWidget {
   }
 
   // ---------------- بطاقة الملف الشخصي أعلى الصفحة ----------------
-  Widget _buildProfileHeader(bool isDarkMode) {
+  Widget _buildProfileHeader(bool isDarkMode,String username) {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -194,8 +194,8 @@ class Settings extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "حسام ياسر",
+                   Text(
+                    "$username",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   const SizedBox(height: 3),

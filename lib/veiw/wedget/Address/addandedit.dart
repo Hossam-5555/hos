@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:hos/core/conistant/locationdata.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
@@ -10,8 +12,9 @@ import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 class Addresspage<T extends GetxController> extends StatelessWidget {
   final T controller;
   TextEditingController? name;
-  TextEditingController? city;
-  TextEditingController? street;
+  TextEditingController? details;
+  String? selectedGovernorate;
+  String? selectedCity;
   Statusrequest statusrequest;
   void Function() onTap;
   Size size;
@@ -19,8 +22,9 @@ class Addresspage<T extends GetxController> extends StatelessWidget {
     super.key,
     required this.controller,
     required this.name,
-    required this.city,
-    required this.street,
+    required this.details,
+    this.selectedGovernorate,
+    this.selectedCity,
     required this.statusrequest,
     required this.onTap,
     required this.size,
@@ -29,6 +33,7 @@ class Addresspage<T extends GetxController> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // var size = MediaQuery.of(context).size;
+    final dynamic ctrl = controller;
     return Stack(
       children: [
         // 1. الجزء العلوي: الخريطة تملأ الجزء المتاح خلف الكارت
@@ -93,16 +98,74 @@ class Addresspage<T extends GetxController> extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildTextField(name!, 'name of location', Icons.send),
-                        _buildTextField(
-                          city!,
-                          ' city name',
-                          Icons.location_city,
+                        DropdownButtonFormField<String>(
+                          decoration: const InputDecoration(
+                            labelText: 'نوع المكان',
+                            prefixIcon: Icon(Icons.place),
+                          ),
+                          value: ctrl.selectedLocationType, // القيمة المختارة
+                          items:
+                              (ctrl.locationTypes
+                                      as List<
+                                        String
+                                      >) // تأكد من تحويلها لقائمة نصوص
+                                  .map(
+                                    (String type) => DropdownMenuItem<String>(
+                                      value: type,
+                                      child: Text(type),
+                                    ),
+                                  )
+                                  .toList(), // **هذا هو الجزء الأهم: يجب أن ينتهي بـ .toList()**
+                          onChanged: (val) {
+                            ctrl.selectedLocationType = val;
+                            ctrl.update();
+                          },
                         ),
+
+                        const SizedBox(height: 12),
+
+                        // 2. المحافظة والمركز في Row
+                        Row(
+                          children: [
+                            Expanded(
+                              child: DropdownSearch<String>(
+                                items: (f, cs) =>
+                                    EgyptLocations.governorates.keys.toList(),
+                                selectedItem: ctrl.selectedGovernorate,
+                                onChanged: ctrl.onGovernorateChanged,
+                                decoratorProps: const DropDownDecoratorProps(
+                                  decoration: InputDecoration(
+                                    labelText: 'المحافظة',
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: DropdownSearch<String>(
+                                items: (f, cs) =>
+                                    ctrl.selectedGovernorate == null
+                                    ? []
+                                    : (EgyptLocations.governorates[ctrl
+                                              .selectedGovernorate] ??
+                                          []),
+                                selectedItem: ctrl.selectedCity,
+                                onChanged: ctrl.onCityChanged,
+                                decoratorProps: const DropDownDecoratorProps(
+                                  decoration: InputDecoration(
+                                    labelText: 'المركز',
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 12),
                         _buildTextField(
-                          street!,
-                          'street name',
-                          Icons.streetview,
+                          ctrl.street,
+                          'تفاصيل المكان',
+                          Icons.location_on,
                         ),
                         const SizedBox(height: 16),
                         GetBuilder<T>(

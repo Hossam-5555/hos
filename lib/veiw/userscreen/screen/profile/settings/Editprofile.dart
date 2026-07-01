@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:hos/core/serveces/myservisec.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
@@ -10,8 +11,11 @@ import 'package:hos/veiw/wedget/appbarbackicon.dart';
 ///                 PROFILE CONTROLLER
 /// ==================================================
 class ProfileController extends GetxController {
-  // ----- الحقول القابلة للمراقبة (Observables) -----
-  var username = "حسام ياسر".obs;
+  // ----- الحقول القابلة للمراقبة (Observables) ----
+  Myservisec myservisec = Get.find<Myservisec>();
+
+  String get username =>
+      myservisec.sharedPreferences.getString("usersname") ?? "";
   var email = "hossam.yasser@example.com".obs;
   var phone = "01012345678".obs;
   var address = "المنصورة، الدقهلية".obs;
@@ -74,10 +78,10 @@ class ProfileController extends GetxController {
       // محاكاة زمن استجابة API — استبدلها بالنداء الفعلي للـ backend
       await Future.delayed(const Duration(milliseconds: 900));
 
-      username.value = newName.trim();
-      email.value = newEmail.trim();
-      phone.value = newPhone.trim();
-      address.value = newAddress.trim();
+      // username.value = newName.trim();
+      // email.value = newEmail.trim();
+      // phone.value = newPhone.trim();
+      // address.value = newAddress.trim();
 
       Get.back();
       Get.snackbar(
@@ -103,7 +107,6 @@ class _EPColors {
   static const primary = Color(0xFF2962FF);
   static const primaryDark = Color(0xFF0039CB);
   static const bg = Color(0xFFF6F7FB);
-  static const card = Colors.white;
   static const label = Color(0xFF6B7280);
   static const danger = Color(0xFFE53935);
 }
@@ -130,7 +133,7 @@ class _EditProfileViewState extends State<EditProfileView> {
   @override
   void initState() {
     super.initState();
-    _nameCtrl = TextEditingController(text: controller.username.value);
+    _nameCtrl = TextEditingController(text: controller.username);
     _emailCtrl = TextEditingController(text: controller.email.value);
     _phoneCtrl = TextEditingController(text: controller.phone.value);
     _addressCtrl = TextEditingController(text: controller.address.value);
@@ -359,7 +362,9 @@ class _EditProfileViewState extends State<EditProfileView> {
                 child: Obx(() {
                   final path = controller.imagePath.value;
                   ImageProvider provider;
-                  if (path.isNotEmpty && !path.startsWith('http') && File(path).existsSync()) {
+                  if (path.isNotEmpty &&
+                      !path.startsWith('http') &&
+                      File(path).existsSync()) {
                     provider = FileImage(File(path));
                   } else if (path.startsWith('http')) {
                     provider = NetworkImage(path);
@@ -421,16 +426,13 @@ class _EditProfileViewState extends State<EditProfileView> {
             ],
           ),
           const SizedBox(height: 14),
-          Obx(
-            () => Text(
-              controller.username.value,
+          Text(
+              controller.username,
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.black87,
               ),
             ),
-          ),
           const SizedBox(height: 4),
           Text(
             "عضو في المتجر منذ ٢٠٢٤",
@@ -450,7 +452,7 @@ class _EditProfileViewState extends State<EditProfileView> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -472,7 +474,6 @@ class _EditProfileViewState extends State<EditProfileView> {
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
                 ),
               ),
             ],
@@ -533,7 +534,10 @@ class _EditProfileViewState extends State<EditProfileView> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(color: _EPColors.primary, width: 1.4),
+              borderSide: const BorderSide(
+                color: _EPColors.primary,
+                width: 1.4,
+              ),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),

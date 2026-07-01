@@ -83,7 +83,7 @@ class ProfilePage extends StatelessWidget {
                         _buildListTile(
                           gradientColors: [
                             const Color.fromARGB(255, 95, 182, 8),
-                            const Color.fromARGB(255, 97, 97, 97),
+                            const Color.fromARGB(255, 96, 192, 17),
                           ],
                           icon: Icons.location_on_outlined,
                           title: "Saved Addresses".tr,
