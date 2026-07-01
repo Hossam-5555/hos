@@ -12,7 +12,7 @@ import 'package:hos/veiw/wedget/appbarbackicon.dart';
 /// ==================================================
 class _STColors {
   static const primary = Color(0xFF2962FF);
-  static const primaryDark = Color(0xFF0039CB);
+  // static const primaryDark = Color(0xFF0039CB);
 }
 
 class Settings extends StatelessWidget {
@@ -165,35 +165,28 @@ class Settings extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [_STColors.primary, _STColors.primaryDark],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: _STColors.primary.withOpacity(0.28),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
-          ),
-        ],
+        color: Theme.of(Get.context!).cardColor,
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
-        onTap: () => Get.to(() => EditProfileView()),
+        onTap: () =>
+            Get.to(() => EditProfileView(), transition: Transition.cupertino),
         child: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(3),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: Colors.white.withOpacity(0.6), width: 1.5),
+                border: Border.all(
+                  color: Colors.grey.withOpacity(0.6),
+                  width: 1.5,
+                ),
               ),
               child: const CircleAvatar(
                 radius: 28,
                 backgroundColor: Colors.white24,
-                child: Icon(Icons.person, color: Colors.white, size: 28),
+                child: Icon(Icons.person, size: 28),
               ),
             ),
             const SizedBox(width: 14),
@@ -203,34 +196,20 @@ class Settings extends StatelessWidget {
                 children: [
                   const Text(
                     "حسام ياسر",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   const SizedBox(height: 3),
                   Text(
                     "Manage your account".tr,
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.85),
-                      fontSize: 12,
-                    ),
+                    style: TextStyle(fontSize: 12),
                   ),
                 ],
               ),
             ),
             Container(
               padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.16),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.white,
-                size: 13,
-              ),
+              decoration: BoxDecoration(shape: BoxShape.circle),
+              child: const Icon(Icons.arrow_forward_ios, size: 13),
             ),
           ],
         ),
@@ -332,7 +311,11 @@ class Settings extends StatelessWidget {
             trailing:
                 trailing ??
                 (showArrow
-                    ? Icon(Icons.arrow_forward_ios, size: 13, color: Colors.grey.shade400)
+                    ? Icon(
+                        Icons.arrow_forward_ios,
+                        size: 13,
+                        color: Colors.grey.shade400,
+                      )
                     : null),
           ),
         ),
@@ -393,8 +376,9 @@ class Settings extends StatelessWidget {
               child: AnimatedAlign(
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.easeInOut,
-                alignment:
-                    isDark ? Alignment.centerRight : Alignment.centerLeft,
+                alignment: isDark
+                    ? Alignment.centerRight
+                    : Alignment.centerLeft,
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
                   transitionBuilder: (child, animation) {
@@ -426,8 +410,12 @@ class Settings extends StatelessWidget {
     });
   }
 
-  Widget _buildDivider() =>
-      Divider(height: 1, indent: 62, endIndent: 12, color: Colors.grey.withOpacity(0.1));
+  Widget _buildDivider() => Divider(
+    height: 1,
+    indent: 62,
+    endIndent: 12,
+    color: Colors.grey.withOpacity(0.1),
+  );
 
   Widget _buildFooter() {
     return Padding(
@@ -542,7 +530,10 @@ class Settings extends StatelessWidget {
           ),
           tileColor: color.withOpacity(0.06),
           leading: Icon(icon, color: color),
-          title: Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
+          title: Text(
+            label,
+            style: const TextStyle(fontWeight: FontWeight.w600),
+          ),
         ),
       ),
     );

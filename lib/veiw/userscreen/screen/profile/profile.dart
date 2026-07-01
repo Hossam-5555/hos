@@ -23,6 +23,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final h = Get.height;
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       body: Padding(
@@ -34,7 +35,6 @@ class ProfilePage extends StatelessWidget {
 
             Container(
               decoration: BoxDecoration(
-                color: ThemeMode == ThemeMode.light ? Colors.white : null,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
@@ -72,7 +72,9 @@ class ProfilePage extends StatelessWidget {
                     padding: EdgeInsets.all(5),
                     margin: EdgeInsets.all(5),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
+                      gradient: isDarkMode
+                          ? AppGradients.darkTitanium
+                          : AppGradients.lightPlatinum,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(color: Colors.grey.withAlpha(50)),
                     ),
@@ -226,6 +228,7 @@ class ProfilePage extends StatelessWidget {
 }
 
 Widget orderCard(String title, String image, Function()? onTap, context) {
+  bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
   return GestureDetector(
     onTap: onTap,
     child: ClipRRect(
@@ -242,8 +245,9 @@ Widget orderCard(String title, String image, Function()? onTap, context) {
             // الحواف المضيئة الخفيفة (نفس الـ Stroke اللي في الصورة)
             border: Border.all(color: Colors.white.withOpacity(0.18), width: 1),
 
-            color: Theme.of(context).cardColor,
-
+            gradient: isDarkMode
+                ? AppGradients.darkTitanium
+                : AppGradients.lightPlatinum,
             // ظل خفيف جداً وناعم يتناسب مع الخلفية الغامقة
             boxShadow: [
               BoxShadow(
@@ -296,27 +300,27 @@ Widget orderCard(String title, String image, Function()? onTap, context) {
   );
 }
 
-// class AppGradients {
-//   // 1. التدرج الداكن الفخم (ألوانك الأصلية) - ممتاز لخلفيات أو كروت الثيم الأسود
-//   static const LinearGradient darkTitanium = LinearGradient(
-//     begin: Alignment.topCenter,
-//     end: Alignment.bottomCenter,
-//     colors: [
-//       Color(0xFF4A4B4D), // مركز الإضاءة الفضي الداكن
-//       Color(0xFF232526), // الدرجة الوسطى الرمادية
-//       Color(0xFF111314), // الأطراف الداكنة
-//     ],
-//   );
+class AppGradients {
+  // 1. التدرج الداكن الفخم (ألوانك الأصلية) - ممتاز لخلفيات أو كروت الثيم الأسود
+  static const LinearGradient darkTitanium = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      Color(0xFF4A4B4D), // مركز الإضاءة الفضي الداكن
+      Color(0xFF232526), // الدرجة الوسطى الرمادية
+      Color(0xFF111314), // الأطراف الداكنة
+    ],
+  );
 
-//   // 2. التدرج الفاتح المقابل (Silver/Platinum) - ممتاز لخلفيات أو كروت الثيم الأبيض
-//   static const LinearGradient lightPlatinum = LinearGradient(
-//     begin: Alignment.topCenter,
-//     end: Alignment.bottomCenter,
-//     colors: [
-//       Color(0xFFFFFFFF),
-//       Color(0xFFD0D5DD), // الأطراف الفضية الراقية
-//       // مركز الإضاءة الأبيض المشع
-//       Color(0xFFF2F4F7), // البلاتينيوم الناعم
-//     ],
-//   );
-// }
+  // 2. التدرج الفاتح المقابل (Silver/Platinum) - ممتاز لخلفيات أو كروت الثيم الأبيض
+  static const LinearGradient lightPlatinum = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      Color(0xFFFFFFFF),
+      Color(0xFFD0D5DD), // الأطراف الفضية الراقية
+      // مركز الإضاءة الأبيض المشع
+      Color(0xFFF2F4F7), // البلاتينيوم الناعم
+    ],
+  );
+}
