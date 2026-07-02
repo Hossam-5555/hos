@@ -52,7 +52,7 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
     if (apidata.isEmpty) return [];
 
     final chartData = apidata[0].salesChart;
-    if (chartData == null || chartData.isEmpty) return [];
+    if ( chartData.isEmpty) return [];
 
     final List<FlSpot> spots = [];
     for (int i = 0; i < chartData.length; i++) {

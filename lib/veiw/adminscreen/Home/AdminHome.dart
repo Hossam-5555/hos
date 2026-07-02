@@ -1,5 +1,4 @@
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/AdminHome.dart';
@@ -59,7 +58,10 @@ class AdminHome2 extends StatelessWidget {
                       child: Titles(title: "Analytics"),
                     ),
                     SizedBox(height: sectionSpacing * 0.4),
-                    AnalyticsSection(width: width, isWide: isWide),
+                    Skeletonizer(
+                      enabled: c.statusrequest == Statusrequest.loading,
+                      child: AnalyticsSection(c: c, width: width, isWide: isWide),
+                    ),
                     SizedBox(height: sectionSpacing),
                   ],
                 ),
@@ -198,12 +200,12 @@ class StatCard extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     final Color cardColor = isDark
-        ? Colors.white.withOpacity(0.06)
-        : Colors.white.withOpacity(0.55);
+        ? Colors.white.withAlpha(15)
+        : Colors.white.withAlpha(140);
     final Color borderColor = isDark
-        ? Colors.white.withOpacity(0.12)
-        : Colors.grey.withOpacity(0.25);
-    final Color titleColor = theme.colorScheme.onSurface.withOpacity(0.65);
+        ? Colors.white.withAlpha(30)
+        : Colors.grey.withAlpha(64);
+    final Color titleColor = theme.colorScheme.onSurface.withAlpha(166);
     final Color valueColor = theme.colorScheme.onSurface;
 
     // كل الأحجام بتتحسب نسبة لعرض الشاشة عشان تفضل مظبوطة على أي هاتف
@@ -305,8 +307,8 @@ class _SalesChartState extends State<SalesChart> {
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: isDark
-              ? Colors.white.withOpacity(0.1)
-              : Colors.grey.withOpacity(0.15),
+              ? Colors.white.withAlpha(26)
+              : Colors.grey.withAlpha(38),
         ),
       ),
       child: Column(
@@ -320,8 +322,8 @@ class _SalesChartState extends State<SalesChart> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   color: isDark
-                      ? Colors.white.withOpacity(0.05)
-                      : Colors.grey.withOpacity(0.08),
+                      ? Colors.white.withAlpha(13)
+                      : Colors.grey.withAlpha(20),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -384,7 +386,7 @@ class _SalesChartState extends State<SalesChart> {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
           color: isSelected
-              ? (isDark ? Colors.white.withOpacity(0.9) : Colors.white)
+              ? (isDark ? Colors.white.withAlpha(230) : Colors.white)
               : null,
           borderRadius: BorderRadius.circular(6),
         ),
@@ -466,11 +468,10 @@ class _SalesChartState extends State<SalesChart> {
                 }
               } else {
                 if (c.apidata.isNotEmpty &&
-                    c.apidata[0].salesChart != null &&
                     index >= 0 &&
-                    index < c.apidata[0].salesChart!.length) {
+                    index < c.apidata[0].salesChart.length) {
                   String fullDate =
-                      c.apidata[0].salesChart![index].date ?? "0000-00-00";
+                      c.apidata[0].salesChart[index].date ?? "0000-00-00";
                   showDate = fullDate.length >= 10
                       ? fullDate.substring(8)
                       : fullDate;
@@ -504,10 +505,10 @@ class _SalesChartState extends State<SalesChart> {
         touchTooltipData: LineTouchTooltipData(
           getTooltipItems: (touchedSpots) {
             return touchedSpots.map((spot) {
-              if (c.apidata.isEmpty || c.apidata[0].salesChart == null) {
+              if (c.apidata.isEmpty) {
                 return null;
               }
-              final data = c.apidata[0].salesChart![spot.x.toInt()];
+              final data = c.apidata[0].salesChart[spot.x.toInt()];
               return LineTooltipItem(
                 textDirection: TextDirection.rtl,
                 "${data.date}\n\$${spot.y.toStringAsFixed(0)}",
@@ -542,10 +543,10 @@ class _SalesChartState extends State<SalesChart> {
             show: true,
             gradient: LinearGradient(
               colors: isEmpty
-                  ? [Colors.grey.withOpacity(0.1), Colors.grey.withOpacity(0.0)]
+                  ? [Colors.grey.withAlpha(26), Colors.grey.withAlpha(0)]
                   : [
-                      Colors.blue.withOpacity(0.2),
-                      Colors.blue.withOpacity(0.0),
+                      Colors.blue.withAlpha(51),
+                      Colors.blue.withAlpha(0),
                     ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -559,9 +560,7 @@ class _SalesChartState extends State<SalesChart> {
 
 // ================= Analytics (replaces Recent Orders) =================
 
-/// بيانات وهمية مؤقتة لحد ما يتم ربطها بالـ API الحقيقي.
-/// عشان تستبدلها بسهولة لاحقاً، كفاية إنك تجيب القيم دي من الكنترولر
-/// بدل الأرقام الثابتة تحت.
+/// شريحة واحدة في الـ Pie chart (Fulfilled / Pending / Cancelled)
 class _AnalyticsSlice {
   final String label;
   final double value; // نسبة مئوية
@@ -570,23 +569,16 @@ class _AnalyticsSlice {
 }
 
 class AnalyticsSection extends StatelessWidget {
-  const AnalyticsSection({super.key, required this.width, required this.isWide});
+  const AnalyticsSection({
+    super.key,
+    required this.c,
+    required this.width,
+    required this.isWide,
+  });
 
+  final Adminhome c;
   final double width;
   final bool isWide;
-
-  // TODO: استبدل القيم دي ببيانات حقيقية من الكنترولر لما تكون جاهزة
-  static const List<_AnalyticsSlice> _orderStatusData = [
-    _AnalyticsSlice("Fulfilled", 62, Colors.green),
-    _AnalyticsSlice("Pending", 24, Colors.orange),
-    _AnalyticsSlice("Cancelled", 14, Colors.red),
-  ];
-
-  static const List<Map<String, String>> _kpis = [
-    {"label": "Conversion Rate", "value": "3.4%"},
-    {"label": "Avg. Order Value", "value": "\$52"},
-    {"label": "Refund Rate", "value": "1.2%"},
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -594,14 +586,65 @@ class AnalyticsSection extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     final Color cardColor = isDark
-        ? Colors.white.withOpacity(0.06)
-        : Colors.white.withOpacity(0.55);
+        ? Colors.white.withAlpha(15)
+        : Colors.white.withAlpha(140);
     final Color borderColor = isDark
-        ? Colors.white.withOpacity(0.12)
-        : Colors.grey.withOpacity(0.25);
+        ? Colors.white.withAlpha(30)
+        : Colors.grey.withAlpha(64);
 
     final double cardPadding = (width * 0.045).clamp(14.0, 20.0);
     final double pieSize = (width * 0.34).clamp(110.0, 170.0);
+
+    // Guard: نفس منطق StatsSection — لو apidata لسه فاضية، منعرضش
+    // بيانات وهمية بأرقام مضروبة، بس placeholder صفري آمن للـ Skeletonizer
+    final bool hasData = c.apidata.isNotEmpty;
+    final orderStats = hasData ? c.apidata[0].orderStats : null;
+    final analytics = c.apidata.isNotEmpty ? c.apidata[0].analytics : null;
+
+    final List<_AnalyticsSlice> orderStatusData = orderStats == null
+        ? const [
+            _AnalyticsSlice("Fulfilled", 0, Colors.green),
+            _AnalyticsSlice("Pending", 0, Colors.orange),
+            _AnalyticsSlice("Cancelled", 0, Colors.red),
+          ]
+        : [
+            _AnalyticsSlice(
+              "Fulfilled",
+              orderStats.fulfilled.percentage,
+              Colors.green,
+            ),
+            _AnalyticsSlice(
+              "Pending",
+              orderStats.pending.percentage,
+              Colors.orange,
+            ),
+            _AnalyticsSlice(
+              "Cancelled",
+              orderStats.cancelled.percentage ,
+              Colors.red,
+            ),
+          ];
+
+    final List<Map<String, String>> kpis = [
+      {
+        "label": "Conversion Rate",
+        "value": analytics == null
+            ? "--%"
+            : "${analytics.conversionRate}%",
+      },
+      {
+        "label": "Avg. Order Value",
+        "value": analytics == null
+            ? "\$--"
+            : "\$${analytics.avgOrderValue}",
+      },
+      {
+        "label": "Refund Rate",
+        "value": analytics == null
+            ? "--%"
+            : "${analytics.refundRate}%",
+      },
+    ];
 
     return Container(
       padding: EdgeInsets.all(cardPadding),
@@ -620,7 +663,7 @@ class AnalyticsSection extends StatelessWidget {
           Wrap(
             spacing: (width * 0.03).clamp(10.0, 18.0),
             runSpacing: 10,
-            children: _kpis.map((kpi) {
+            children: kpis.map((kpi) {
               return _KpiChip(
                 label: kpi["label"]!,
                 value: kpi["value"]!,
@@ -635,11 +678,11 @@ class AnalyticsSection extends StatelessWidget {
               ? Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    _OrdersPieChart(size: pieSize, data: _orderStatusData),
+                    _OrdersPieChart(size: pieSize, data: orderStatusData),
                     SizedBox(width: (width * 0.04).clamp(14.0, 24.0)),
                     Expanded(
                       child: _OrdersLegend(
-                        data: _orderStatusData,
+                        data: orderStatusData,
                         width: width,
                       ),
                     ),
@@ -647,9 +690,9 @@ class AnalyticsSection extends StatelessWidget {
                 )
               : Column(
                   children: [
-                    _OrdersPieChart(size: pieSize, data: _orderStatusData),
+                    _OrdersPieChart(size: pieSize, data: orderStatusData),
                     SizedBox(height: (width * 0.04).clamp(14.0, 20.0)),
-                    _OrdersLegend(data: _orderStatusData, width: width),
+                    _OrdersLegend(data: orderStatusData, width: width),
                   ],
                 ),
         ],
@@ -677,8 +720,8 @@ class _KpiChip extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: isDark
-            ? Colors.white.withOpacity(0.06)
-            : Colors.grey.withOpacity(0.08),
+            ? Colors.white.withAlpha(15)
+            : Colors.grey.withAlpha(20),
         borderRadius: BorderRadius.circular(14),
       ),
       child: Column(
@@ -689,7 +732,7 @@ class _KpiChip extends StatelessWidget {
             label,
             style: TextStyle(
               fontSize: (width * 0.03).clamp(10.0, 12.0),
-              color: theme.colorScheme.onSurface.withOpacity(0.6),
+              color: theme.colorScheme.onSurface.withAlpha(153), // 0.6 * 255
             ),
           ),
           const SizedBox(height: 3),
@@ -715,6 +758,30 @@ class _OrdersPieChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // لو كل القيم صفر (زي وقت الـ loading قبل وصول الـ API) بنعرض
+    // دائرة رمادية محايدة بدل ما نسيب fl_chart يتعامل مع مجموع = 0
+    final bool allZero = data.every((s) => s.value <= 0);
+    final sections = allZero
+        ? [
+            PieChartSectionData(
+              value: 1,
+              color: Colors.grey.withAlpha(64),
+              radius: size * 0.22,
+              showTitle: false,
+            ),
+          ]
+        : data
+            .where((s) => s.value > 0)
+            .map((slice) {
+              return PieChartSectionData(
+                value: slice.value,
+                color: slice.color,
+                radius: size * 0.22,
+                showTitle: false,
+              );
+            })
+            .toList();
+
     return SizedBox(
       width: size,
       height: size,
@@ -723,14 +790,7 @@ class _OrdersPieChart extends StatelessWidget {
           sectionsSpace: 3,
           centerSpaceRadius: size * 0.28,
           startDegreeOffset: -90,
-          sections: data.map((slice) {
-            return PieChartSectionData(
-              value: slice.value,
-              color: slice.color,
-              radius: size * 0.22,
-              showTitle: false,
-            );
-          }).toList(),
+          sections: sections,
         ),
         swapAnimationDuration: const Duration(milliseconds: 700),
         swapAnimationCurve: Curves.easeOutCubic,
