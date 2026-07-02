@@ -203,15 +203,15 @@ class CategoryCard extends StatelessWidget {
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 5,
-                        vertical: 1,
-                      ),
                       alignment: Alignment.center,
-                      width: 180,
+                      width: 170,
                       height: 40, // حجم مناسب لأزرار التحكم
                       decoration: BoxDecoration(
-                        color: Colors.white.withAlpha(50),
+                        color:
+                            Theme.of(
+                              context,
+                            ).cardTheme.color?.withOpacity(0.5) ??
+                            Colors.white.withOpacity(0.5),
                         borderRadius: BorderRadius.circular(40),
                       ),
                       child: Row(

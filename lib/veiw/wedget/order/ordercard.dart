@@ -5,7 +5,7 @@ import 'package:jiffy/jiffy.dart';
 
 // ignore: must_be_immutable
 class OrderCard extends StatelessWidget {
-  OrderCard({
+  const OrderCard({
     super.key,
     this.onTap,
     required this.h,
@@ -32,10 +32,7 @@ class OrderCard extends StatelessWidget {
     // 2. تحديد الألوان بناءً على الثيم
     final primaryTextColor = isDark ? Colors.white : Colors.black87;
     final secondaryTextColor = isDark ? Colors.white70 : Colors.black54;
-    final overlayColor = isDark
-        ? Colors.black.withOpacity(0.65) // تعتيم قوي للوضع المظلم
-        : Colors.white.withOpacity(0.50); // تفتيح قوي للوضع الفاتح
-    final shadowColor = Colors.white70 ;
+    final shadowColor = Colors.white70;
 
     return GestureDetector(
       onTap: onTap,
@@ -62,25 +59,7 @@ class OrderCard extends StatelessWidget {
             filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
             child: Container(
               // التدرج اللوني فوق الصورة
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomLeft,
-                  colors: [
-                    overlayColor.withOpacity(
-                      isDark ? 0.2 : 0,
-                    ), // شفاف من الأعلى
-                    overlayColor, // مركز من الأسفل لضمان وضوح النص
-                  ],
-                  stops: const [0.0, 1],
-                ),
-                // border: Border.all(
-                //   color: isDark
-                //       ? Colors.white54
-                //       : Colors.black12, // إطار خفيف جداً
-                //   width: 1,
-                // ),
-              ),
+              decoration: BoxDecoration(),
               padding: EdgeInsets.symmetric(
                 vertical: h * 0.02,
                 horizontal: w * 0.04,
@@ -171,9 +150,7 @@ class OrderCard extends StatelessWidget {
                       Text(
                         "\$${order.totalAmount}",
                         style: TextStyle(
-                          color: isDark
-                              ? Colors.greenAccent
-                              : Colors.black87,
+                          color: isDark ? Colors.greenAccent : Colors.black87,
                           fontSize: w * 0.06,
                           fontWeight: FontWeight.bold,
                         ),

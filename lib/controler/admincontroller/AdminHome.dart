@@ -11,103 +11,146 @@ import 'package:hos/veiw/adminscreen/Home/categories/viewcat.dart';
 import 'package:hos/veiw/adminscreen/Home/orders/adminpending.dart';
 
 class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
-
-int selectedtime=0;
-changetime(int i){
-  selectedtime=i;
-  update();
-}
-
-
-
-late  AnimationController animatedContainer ;
-  Dashboarddata data = Get.put(Dashboarddata(Get.find()));
-  TextEditingController searchcontroller = TextEditingController();
-  List<DashboardModel> apidata = [];
+  // ─────────────────────────── State ───────────────────────────
   Statusrequest statusrequest = Statusrequest.none;
-  int currentpage = 0;
-  List<FlSpot> get salesSpots {
-    List<FlSpot> spots = [];
-    // نفترض أن apidata[0] هو الكائن الذي يحتوي على sales_chart
-    var chartData = apidata[0].salesChart;
+  List<DashboardResponse> apidata = [];
+  String? errorMessage;
 
-    for (int i = 0; i < chartData!.length; i++) {
-      // X هو ترتيب اليوم، Y هو قيمة المبيعات
-      spots.add(FlSpot(i.toDouble(), double.parse(chartData[i].total!)));
+  // ─────────────────── Navigation / Pages ──────────────────────
+  int currentpage = 0;
+  late PageController controller;
+
+  // ───────────────────── Chart Filter ──────────────────────────
+  int selectedtime = 0;
+
+  // ─────────────────── Animation (BottomBar) ───────────────────
+  late AnimationController animatedContainer;
+
+  // ─────────────────────── Services ────────────────────────────
+  final Dashboarddata _data = Get.put(Dashboarddata(Get.find()));
+  final TextEditingController searchcontroller = TextEditingController();
+
+  // ─────────────────── Static Data ─────────────────────────────
+  final List<Widget> pages = [
+    AdminHome2(),
+    Adminpending(),
+    ViewCategories(),
+  ];
+
+  final List<List<dynamic>> title = [
+    ["Dashboard", Imageasset.homesvg],
+    ["Orders",    Imageasset.cart],
+    ["Categories",Imageasset.category],
+  ];
+
+  // ─────────────────────── Getters ─────────────────────────────
+
+  /// بيرجع نقاط الـ LineChart من بيانات الـ API.
+  /// لو الـ apidata فاضية أو مفيش chart data يرجع قائمة فاضية بأمان
+  /// بدل ما يكرش بـ RangeError.
+  List<FlSpot> get salesSpots {
+    if (apidata.isEmpty) return [];
+
+    final chartData = apidata[0].salesChart;
+    if (chartData == null || chartData.isEmpty) return [];
+
+    final List<FlSpot> spots = [];
+    for (int i = 0; i < chartData.length; i++) {
+      final rawTotal = chartData[i].total;
+      // تجاهل أي نقطة فيها قيمة null أو مش رقم صالح
+      final double? y = double.tryParse(rawTotal ?? '');
+      if (y != null) {
+        spots.add(FlSpot(i.toDouble(), y));
+      }
     }
     return spots;
   }
 
-  PageController controller = PageController();
+  /// true لما الصفحة في حالة loading أو لما الـ apidata لسه فاضية
+  bool get isLoading =>
+      statusrequest == Statusrequest.loading || apidata.isEmpty;
+
+  // ────────────────────── API Call ─────────────────────────────
   Future<void> getdashboardapi() async {
     statusrequest = Statusrequest.loading;
+    errorMessage = null;
     update();
 
-    var response = await data.getdata();
-    statusrequest = handling(response);
+    try {
+      final response = await _data.getdata();
+      final handledStatus = handling(response);
 
-    if (Statusrequest.success == statusrequest) {
-      // التحقق من نجاح حالة الرد من السيرفر
-      if (response['status'] == true && response['data'] != null) {
-        // هنا نقوم بتنظيف القائمة القديمة إن وجدت
-        apidata.clear();
-
-        // بما أن الـ data تأتي كـ Map وليست List،
-        // يجب تحويلها إلى موديل مباشرة وتخزينها
-        DashboardModel model = DashboardModel.fromJson(response['data']);
-        apidata.add(model);
-      } else {
-        statusrequest = Statusrequest.failure;
+      // فشل شبكة أو سيرفر
+      if (handledStatus != Statusrequest.success) {
+        statusrequest = handledStatus;
+        update();
+        return;
       }
+
+      // فشل من جهة الـ API نفسه
+      if (response['status'] != true || response['data'] == null) {
+        statusrequest = Statusrequest.failure;
+        errorMessage = response['message'] ?? 'Something went wrong';
+        update();
+        return;
+      }
+
+      // نجح — نمسح القديم ونحط الجديد
+      apidata
+        ..clear()
+        ..add(DashboardResponse.fromJson(response['data']));
+
+      statusrequest = Statusrequest.success;
+    } catch (e, stack) {
+      debugPrint('getdashboardapi error: $e\n$stack');
+      statusrequest = Statusrequest.serverfailure;
     }
+
     update();
   }
 
-  // 👇 عند الضغط على BottomNavigationBar
+  // ───────────────────── Navigation ────────────────────────────
   void changePage(int index) {
+    if (currentpage == index) return; // تجنب إعادة البناء لو نفس الصفحة
     currentpage = index;
-
     controller.animateToPage(
       index,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
-
     update();
   }
 
-  // 👇 لما الصفحة تتغير
   void onpagechanged(int index) {
+    if (currentpage == index) return;
     currentpage = index;
-
     update();
   }
 
-  List<Widget> pages = [
-    AdminHome2(),
-    Adminpending(),
-    // ViewItemScreen(),
-    ViewCategories(),
-  ];
-  List time = ["day", "mounth", "year"];
+  // ─────────────────── Chart Filter ────────────────────────────
+  void changetime(int i) {
+    if (selectedtime == i) return; // تجنب إعادة البناء لو نفس الفلتر
+    selectedtime = i;
+    update();
+  }
 
-  List<List<dynamic>> title = [
-    ["Dashboard", Imageasset.homesvg],
-    ["Orders", Imageasset.cart],
-    ["Categories", Imageasset.profile],
-  ];
+  // ──────────────────── Lifecycle ──────────────────────────────
   @override
   void onInit() {
-   animatedContainer = AnimationController(vsync: this,
-    duration: Duration(milliseconds: 300),
-  );
-    getdashboardapi();
     super.onInit();
+    controller = PageController(initialPage: currentpage);
+    animatedContainer = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    getdashboardapi();
   }
 
   @override
   void onClose() {
+    controller.dispose();
     animatedContainer.dispose();
+    searchcontroller.dispose();
     super.onClose();
   }
 }

@@ -11,29 +11,37 @@ import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 // ignore: must_be_immutable
 class Addresspage<T extends GetxController> extends StatelessWidget {
   final T controller;
-  TextEditingController? name;
   TextEditingController? details;
   String? selectedGovernorate;
   String? selectedCity;
+  String? selectedLocationType; // (منزل، كافيه، إلخ)
   Statusrequest statusrequest;
   void Function() onTap;
+  ValueChanged<String?>? onChanged;
+  ValueChanged<String?>? onChangedcity;
+  ValueChanged<String?>? onChangedtype;
+
+  List<String> locationTypes;
   Size size;
   Addresspage({
     super.key,
     required this.controller,
-    required this.name,
     required this.details,
     this.selectedGovernorate,
     this.selectedCity,
     required this.statusrequest,
     required this.onTap,
     required this.size,
+    this.onChanged,
+    this.onChangedcity,
+    required this.selectedLocationType,
+    required this.locationTypes,
+    this.onChangedtype,
   });
 
   @override
   Widget build(BuildContext context) {
     // var size = MediaQuery.of(context).size;
-    final dynamic ctrl = controller;
     return Stack(
       children: [
         // 1. الجزء العلوي: الخريطة تملأ الجزء المتاح خلف الكارت
@@ -103,12 +111,9 @@ class Addresspage<T extends GetxController> extends StatelessWidget {
                             labelText: 'نوع المكان',
                             prefixIcon: Icon(Icons.place),
                           ),
-                          value: ctrl.selectedLocationType, // القيمة المختارة
+                          value: selectedLocationType, // القيمة المختارة
                           items:
-                              (ctrl.locationTypes
-                                      as List<
-                                        String
-                                      >) // تأكد من تحويلها لقائمة نصوص
+                              (locationTypes) // تأكد من تحويلها لقائمة نصوص
                                   .map(
                                     (String type) => DropdownMenuItem<String>(
                                       value: type,
@@ -116,10 +121,7 @@ class Addresspage<T extends GetxController> extends StatelessWidget {
                                     ),
                                   )
                                   .toList(), // **هذا هو الجزء الأهم: يجب أن ينتهي بـ .toList()**
-                          onChanged: (val) {
-                            ctrl.selectedLocationType = val;
-                            ctrl.update();
-                          },
+                          onChanged: onChangedtype,
                         ),
 
                         const SizedBox(height: 12),
@@ -131,8 +133,8 @@ class Addresspage<T extends GetxController> extends StatelessWidget {
                               child: DropdownSearch<String>(
                                 items: (f, cs) =>
                                     EgyptLocations.governorates.keys.toList(),
-                                selectedItem: ctrl.selectedGovernorate,
-                                onChanged: ctrl.onGovernorateChanged,
+                                selectedItem: selectedGovernorate,
+                                onChanged: onChanged,
                                 decoratorProps: const DropDownDecoratorProps(
                                   decoration: InputDecoration(
                                     labelText: 'المحافظة',
@@ -143,14 +145,13 @@ class Addresspage<T extends GetxController> extends StatelessWidget {
                             const SizedBox(width: 10),
                             Expanded(
                               child: DropdownSearch<String>(
-                                items: (f, cs) =>
-                                    ctrl.selectedGovernorate == null
+                                items: (f, cs) => selectedGovernorate == null
                                     ? []
-                                    : (EgyptLocations.governorates[ctrl
-                                              .selectedGovernorate] ??
+                                    : (EgyptLocations
+                                              .governorates[selectedGovernorate] ??
                                           []),
-                                selectedItem: ctrl.selectedCity,
-                                onChanged: ctrl.onCityChanged,
+                                selectedItem: selectedCity,
+                                onChanged: onChangedcity,
                                 decoratorProps: const DropDownDecoratorProps(
                                   decoration: InputDecoration(
                                     labelText: 'المركز',
@@ -163,7 +164,7 @@ class Addresspage<T extends GetxController> extends StatelessWidget {
 
                         const SizedBox(height: 12),
                         _buildTextField(
-                          ctrl.street,
+                          details!,
                           'تفاصيل المكان',
                           Icons.location_on,
                         ),

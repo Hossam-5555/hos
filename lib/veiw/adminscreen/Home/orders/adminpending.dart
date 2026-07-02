@@ -84,9 +84,9 @@ class Adminpending extends StatelessWidget {
                 widget: ListView.separated(
                   physics:
                       const AlwaysScrollableScrollPhysics(), // لضمان بقاء الـ RefreshIndicator يعمل بكفاءة
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(10),
                   itemCount: controller.orderspending.length,
-                  separatorBuilder: (_, _) => const SizedBox(height: 10),
+                  separatorBuilder: (_, _) => const SizedBox(height: 5),
                   itemBuilder: (context, index) {
                     final order = controller.orderspending[index];
 

@@ -48,6 +48,11 @@ class AddressController extends GetxController {
     update();
   }
 
+  void onLocationTypeChanged(String? val) {
+    selectedLocationType = val;
+    update();
+  }
+
   Completer<GoogleMapController>? completercontroller;
 
   List<Marker> markers = [];
@@ -72,13 +77,16 @@ class AddressController extends GetxController {
   /////////////////////
 
   Future<void> addaddres() async {
-    city!.text = "$selectedGovernorate - $selectedCity";
+    String cityText = city!.text = "$selectedGovernorate - $selectedCity";
+    String nameText = name!.text =
+        selectedLocationType ?? "منزل"; // تعيين نوع المكان
+
     statusrequest = Statusrequest.loading;
     update();
 
     var response = await addresdata.AddAddresdata(
-      name!.text,
-      city!.text,
+      nameText,
+      cityText,
       street!.text,
       lat.toString(),
       long.toString(),

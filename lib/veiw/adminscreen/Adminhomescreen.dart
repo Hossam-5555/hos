@@ -21,11 +21,9 @@ class AdminHome extends StatelessWidget {
                 onTap: () {
                   Get.to(() => Settings(), transition: Transition.cupertino);
                 },
-                child: const CircleAvatar(
+                child: CircleAvatar(
                   radius: 20,
-                  backgroundImage: NetworkImage(
-                    "https://i.pravatar.cc/150?img=3",
-                  ),
+                  backgroundImage: AssetImage(Imageasset.twetter),
                 ),
               ),
               const SizedBox(width: 10),
@@ -45,9 +43,7 @@ class AdminHome extends StatelessWidget {
                 },
                 child: Badge(
                   isLabelVisible: true,
-                  child: SvgPicture.asset(
-                    Imageasset.notification,
-                  ),
+                  child: SvgPicture.asset(Imageasset.notification),
                 ),
               ),
             ],

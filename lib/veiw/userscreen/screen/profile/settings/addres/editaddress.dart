@@ -9,7 +9,7 @@ class EditAddressPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // ربط أو استدعاء الكنترولر الخاص بالتعديل
-    Editaddress controller = Get.put(Editaddress());
+    Get.put(Editaddress());
 
     final size = MediaQuery.of(context).size;
 
@@ -20,15 +20,24 @@ class EditAddressPage extends StatelessWidget {
         preferredSize: const Size.fromHeight(60),
         child: Appbarbackicon(herotag: '', title: "Edit Address"),
       ),
-      body: Addresspage<Editaddress>(
-        name: controller.name,
-        details: controller.name,
-        statusrequest: controller.statusrequest,
-        onTap: () {
-          controller.updateaddres(controller.model!.id!.toString());
-        },
-        controller: controller,
-        size: size,
+      body: GetBuilder<Editaddress>(
+        builder: (controller) => Addresspage<Editaddress>(
+          onChangedtype: controller.onLocationTypeChanged,
+          locationTypes: controller.locationTypes,
+          selectedLocationType: controller.selectedLocationType,
+          controller: controller,
+          details: controller.street, // تم تمرير حقل الشارع الصحيح
+          statusrequest: controller.statusrequest,
+          onTap: () {
+            controller.updateaddres(controller.model!.id!.toString());
+          },
+          size: size,
+          selectedGovernorate: controller.selectedGovernorate,
+          selectedCity: controller.selectedCity,
+          onChanged: controller.onGovernorateChanged,
+          onChangedcity:
+              controller.onCityChanged, // إضافة هذا السطر لتمرير onChangedcity
+        ),
       ),
     );
   }

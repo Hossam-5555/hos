@@ -179,6 +179,9 @@ Widget _card(
                               if (address.id != null) {
                                 Get.to(
                                   () => EditAddressPage(),
+                                  transition: context.isPhone
+                                      ? Transition.cupertino
+                                      : Transition.fadeIn,
                                   arguments: {"AddresModel": address},
                                 );
                               }

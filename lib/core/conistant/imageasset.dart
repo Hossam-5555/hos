@@ -14,6 +14,7 @@ class Imageasset {
   static String email = "$routeImage/email.json";
 
   //Animation
+  static String category = "$routeImage/category-alt-svgrepo-com.svg";
   static String visa = "$routeImage/visa.png";
   static String cash = "$routeImage/cash.jpg";
   static String googlepay = "$routeImage/googlepaypal.png";

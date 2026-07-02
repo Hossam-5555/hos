@@ -251,7 +251,7 @@ class Checkout extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         subtitle: Text(
-          "Change address".tr,
+          "ؤ${addr.city ?? "غير معروف"} - ${addr.street ?? "غير معروف"}",
           style: const TextStyle(fontSize: 12, color: Colors.grey),
         ),
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
@@ -293,8 +293,11 @@ class Checkout extends StatelessWidget {
                         ?.id, // مقارنته بـ ID العنوان المختار بالكنترولر
                     activeColor: Colors.green,
                     title: Text(
-                      addr.name ?? "",
-                      style: const TextStyle(color: Colors.black),
+                      addr.city ?? "",
+                    ),
+                    subtitle: Text(
+                      addr.street ?? "",
+                      style: const TextStyle(color: Colors.grey),
                     ),
                     onChanged: (val) {
                       if (val != null) {

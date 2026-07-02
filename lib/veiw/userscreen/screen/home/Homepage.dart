@@ -32,7 +32,40 @@ class HomePage extends StatelessWidget {
             child: LayoutBuilder(
               builder: (context, constraints) {
                 final width = constraints.maxWidth;
-                final height = constraints.maxHeight;
+
+                // نقاط توقف بسيطة: هاتف صغير / هاتف عادي / تابلت
+                final bool isSmallPhone = width < 360;
+                final bool isTablet = width >= 600;
+
+                // مسافات متجاوبة اعتماداً على العرض (أثبت من الطول بين الأجهزة)
+                // مع حدود دنيا وقصوى عشان ماتبقاش صغيرة أوي أو كبيرة أوي
+                final double horizontalPadding = (width * 0.045).clamp(
+                  12.0,
+                  32.0,
+                );
+                final double sectionSpacing = (width * 0.05).clamp(
+                  14.0,
+                  26.0,
+                );
+
+                // ارتفاع قائمة التصنيفات الأفقية: نسبة من العرض مش من الطول
+                final double categoryHeight = (width * 0.32).clamp(
+                  92.0,
+                  132.0,
+                );
+
+                // عدد أعمدة الجريد: 2 للهاتف، 3 للتابلت الصغير، 4 للتابلت الكبير
+                final int gridCrossAxisCount = isTablet
+                    ? (width >= 900 ? 4 : 3)
+                    : 2;
+                final double gridSpacing = isSmallPhone ? 10.0 : 12.0;
+
+                // عرض الكارت الفعلي بعد خصم الـ padding والمسافات بين الأعمدة
+                final double cardWidth =
+                    (width -
+                        (horizontalPadding * 2) -
+                        (gridSpacing * (gridCrossAxisCount - 1))) /
+                    gridCrossAxisCount;
 
                 return SingleChildScrollView(
                   controller: homescreencontroller.scrollController,
@@ -40,24 +73,22 @@ class HomePage extends StatelessWidget {
                       ScrollViewKeyboardDismissBehavior.onDrag,
                   child: Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: width * 0.04,
-                      vertical: height * 0.015,
+                      horizontal: horizontalPadding,
+                      vertical: sectionSpacing * 0.6,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        /// Categories Title
-
                         /// Main Offer
                         AutoRotatingOffers(),
-                        //Hossam iss================================
-                        SizedBox(height: height * 0.02),
+
+                        SizedBox(height: sectionSpacing),
                         Titles(title: "Categories".tr),
-                        SizedBox(height: height * 0.02),
+                        SizedBox(height: sectionSpacing * 0.6),
 
                         /// Categories List
                         SizedBox(
-                          height: height * 0.15,
+                          height: categoryHeight,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: controller.categories.length,
@@ -72,15 +103,20 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
 
-                        /// Curved Items
+                        SizedBox(height: sectionSpacing),
 
-                        /// New Offers Header
+                        /// New Items Header
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Titles(title: "New Items".tr),
                             TextButton.icon(
-                              onPressed: () {},
+                              onPressed: controller.newArival.isEmpty
+                                  ? null
+                                  : () => controller.gotoAllItems(
+                                      controller.newArival,
+                                      "New Items".tr,
+                                    ),
                               icon: const Text("See All"),
                               label: const Icon(
                                 Icons.arrow_forward_ios,
@@ -94,14 +130,20 @@ class HomePage extends StatelessWidget {
                         ),
                         CurvedItemsView(),
 
-                        /// 🔥 Products List (FIXED)
-                        ///
+                        SizedBox(height: sectionSpacing * 0.5),
+
+                        /// Most Sale Header
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Titles(title: "Most Sale".tr),
                             TextButton.icon(
-                              onPressed: () {},
+                              onPressed: controller.mostsaleitem.isEmpty
+                                  ? null
+                                  : () => controller.gotoAllItems(
+                                      controller.mostsaleitem,
+                                      "Most Sale".tr,
+                                    ),
                               icon: const Text("See All"),
                               label: const Icon(
                                 Icons.arrow_forward_ios,
@@ -113,23 +155,30 @@ class HomePage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(height: height * 0.02),
+                        SizedBox(height: sectionSpacing * 0.6),
 
                         MasonryGridView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.symmetric(
-                            vertical: height * 0.01,
+                            vertical: sectionSpacing * 0.3,
                           ),
                           gridDelegate:
-                              const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
+                              SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: gridCrossAxisCount,
                               ),
-                          mainAxisSpacing: 16,
-                          crossAxisSpacing: 12,
+                          mainAxisSpacing: gridSpacing + 4,
+                          crossAxisSpacing: gridSpacing,
                           itemCount: controller.mostsaleitem.length,
                           itemBuilder: (context, index) {
                             final item = controller.mostsaleitem[index];
+
+                            // ارتفاع الكارت نسبي لعرضه الفعلي، مش رقم ثابت،
+                            // فبكده بيتصرف صح على أي مقاس شاشة
+                            final double baseHeight = cardWidth * 1.55;
+                            final double cardHeight = index.isEven
+                                ? baseHeight
+                                : baseHeight * 1.2;
 
                             return SharedProductCard(
                               image: "${item.itemsImage}",
@@ -143,9 +192,7 @@ class HomePage extends StatelessWidget {
                               actionButton: AddToCartButton(itemId: item.id!),
 
                               /// 🔥 أهم سطر
-                              height: index.isEven
-                                  ? 260
-                                  : 320, // 👈 خلي الكارت يقبل height
+                              height: cardHeight,
                             );
                           },
                         ),

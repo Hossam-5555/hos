@@ -119,7 +119,7 @@ class AdminOrderdetails extends StatelessWidget {
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
         decoration:  BoxDecoration(
-          color:  const Color.fromARGB(255, 0, 0, 0),
+          color:  Theme.of(context).scaffoldBackgroundColor,
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: Column(

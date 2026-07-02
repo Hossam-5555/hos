@@ -9,15 +9,44 @@ import 'package:hos/data/model/Addresmodel.dart';
 class Editaddress extends GetxController {
   Statusrequest statusrequest = Statusrequest.none;
   Addresdata addresdata = Addresdata(Get.find());
+  String? selectedGovernorate;
+  String? selectedCity;
+  String? selectedLocationType; // (منزل، كافيه، إلخ)
 
+  final List<String> locationTypes = [
+    'منزل',
+    'عمل',
+    'كافيه',
+    'فندق',
+    'مستشفى',
+    'مدرسة',
+    'مصنع',
+  ];
+  void onGovernorateChanged(String? val) {
+    selectedGovernorate = val;
+    selectedCity = null; // إعادة تعيين المركز عند تغيير المحافظة
+    update();
+  }
+ void onLocationTypeChanged(String? val) {
+    selectedLocationType = val;
+    update();
+  }
+  void onCityChanged(String? val) {
+    selectedCity = val;
+    update();
+  }
   //update address
   Future<void> updateaddres(String addresid) async {
+       String cityText = city!.text = "$selectedGovernorate - $selectedCity";
+    String nameText = name!.text =
+        selectedLocationType ?? "منزل"; // تعيين نوع المكان
+
     statusrequest = Statusrequest.loading;
     update();
 
     var response = await addresdata.updateAddresdata(
-      name!.text,
-      city!.text,
+      nameText,
+      cityText,
       street!.text,
       lat.toString(),
       long.toString(),

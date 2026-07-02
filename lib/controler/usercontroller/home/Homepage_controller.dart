@@ -82,6 +82,20 @@ Future<void> getdata() async {
     update();
   }
 
+  /// يفتح صفحة "Items" وتعرض كل عناصر قسم معيّن (مثلاً "New Items" أو "Most Sale")
+  /// لما يضغط المستخدم على زرار "See All"
+  void gotoAllItems(List<ItemsModel> items, String sectionTitle) {
+    Get.to(
+      () => Items(),
+      transition: Transition.fadeIn,
+      duration: Duration(milliseconds: 400),
+      arguments: {
+        'items': items,
+        'title': sectionTitle,
+      },
+    );
+  }
+
   void gotoitemsdetails(ItemsModel itemsmodel) {
     Get.to(
       () => Itemsdetailes(),
