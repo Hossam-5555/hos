@@ -12,34 +12,6 @@ import 'package:path/path.dart';
 class Crud {
   Myservisec m = Get.put(Myservisec());
   String? get token => m.sharedPreferences.getString("token");
-  // Future<Either<Statusrequest, Map>> postrequset(
-  //   String linkUrl,
-  //   Map data,
-  // ) async {
-  //   try {
-  //     if (await checkinterner()) {
-  //       var response = await http.post(
-  //         Uri.parse(linkUrl),
-  //         body: jsonEncode(data),
-  //         headers: {
-  //           "Content-Type":
-  //               "application/json", // بتعرف السيرفر إن اللي مبعوث ده JSON مش String عادي
-  //           "Accept": "application/json",
-  //         },
-  //       );
-  //       if (response.statusCode == 200 || response.statusCode == 201) {
-  //         var responsebody = jsonDecode(response.body);
-  //         return Right(responsebody);
-  //       } else {
-  //         return Left(Statusrequest.failure);
-  //       }
-  //     } else {
-  //       return Left(Statusrequest.checkinterner);
-  //     }
-  //   } catch (e) {
-  //     return Left(Statusrequest.serverfailure);
-  //   }
-  // }
 
   Future<Either<Statusrequest, Map>> postrequset(
     String linkUrl,
@@ -47,6 +19,7 @@ class Crud {
   ) async {
     try {
       if (await checkinterner()) {
+        print("Token: beefooore request"); // طباعة التوكن للتأكد من أنه موجود
         var response = await http.post(
           Uri.parse(linkUrl),
           body: jsonEncode(data),
@@ -56,13 +29,12 @@ class Crud {
             "Authorization": "Bearer $token",
           },
         );
-
+        print("Response Status Code: ${response.statusCode}"); // طباعة كود الاستجابة للتأكد من نجاح الطلب
         // 1. تحقق أولاً إذا كان السيرفر أرسل داتا بصيغة JSON (سواء نجح الطلب أو فشل مثل 429 أو 422)
         // أخطاء لاراول وعمليات الـ Rate Limit تعود دائماً بـ JSON يحتوي على حقول مثل "message" أو "status"
         if (response.body.isNotEmpty) {
           try {
             var responsebody = jsonDecode(response.body);
-
             // إذا كان السيرفر أرسل رد JSON صالح، نمرره فوراً لـ Right لكي تستطيع قراءته في الـ Controller
             // وبذلك سيتعامل الـ Controller مع الـ status: false أو الرسالة القادمة بشكل طبيعي.
             return Right(responsebody);

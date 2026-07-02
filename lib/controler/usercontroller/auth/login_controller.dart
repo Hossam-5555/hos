@@ -56,10 +56,7 @@ class LoginController extends GetxController {
 
     var response = await logindata.postdata(email.text, passward.text);
     statusrequest = handling(response);
-
     if (statusrequest == Statusrequest.success && response['status'] == true) {
-      print(response);
-
       var data = response['data'];
       var userJson = data['user'];
       var token = data['token'];
