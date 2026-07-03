@@ -1,13 +1,13 @@
 import 'dart:io';
 
- Future<dynamic> checkinterner() async {
-  var result = await InternetAddress.lookup("google.com");
+ Future<bool> checkinterner() async {
   try {
-    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-      return true;
-    }
-  } on SocketException catch (_) {
+    final result = await InternetAddress.lookup('google.com')
+        .timeout(const Duration(seconds: 3));
+
+    return result.isNotEmpty &&
+        result.first.rawAddress.isNotEmpty;
+  } catch (_) {
     return false;
   }
-  return true;
 }

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/favorite/fav_controller.dart';
 import 'package:hos/controler/usercontroller/offercontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
+import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/items/productcard.dart';
 
 class Offer extends StatelessWidget {
@@ -15,6 +16,7 @@ class Offer extends StatelessWidget {
     Get.put(FavController());
 
     return Scaffold(
+      appBar: Appbarbackicon(title: "offer", herotag: "offer"),
       body: GetBuilder<Offercontroller>(
         builder: (controller) {
           return RefreshIndicator(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
+import 'package:hos/veiw/userscreen/screen/offer.dart';
 
 // 1. نموذج (Model) لبيانات العرض
 class OfferModel {
@@ -43,7 +44,12 @@ class AutoRotatingOffers extends StatelessWidget {
             image: controller
                 .offers[controller.currentIndex]
                 .image, // تمرير الرابط
-            onTap: () => print("Clicked"),
+            onTap: () {
+              Get.to(
+                () => Offer(), // الانتقال إلى صفحة العروض
+                transition: Transition.rightToLeft,
+              );
+            },
           ),
         );
       },

@@ -79,7 +79,7 @@ class _Animationforstatus extends State<Animationforstatus>
     return SizedBox(
       height: 200,
       width: 200,
-      child: Lottie.asset(widget.animationPath),
+      child: Lottie.asset(widget.animationPath,height: 100,width: 100,fit: BoxFit.cover),
     );
   }
 }

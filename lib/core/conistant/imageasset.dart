@@ -12,6 +12,7 @@ class Imageasset {
   static String mail = "$routeImage/mail.json";
   static String celebiration = "$routeImage/Confetti.json";
   static String email = "$routeImage/email.json";
+  static String offline = "$routeImage/offline.json";
 
   //Animation
   static String category = "$routeImage/category-alt-svgrepo-com.svg";

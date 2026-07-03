@@ -3,58 +3,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/filtercontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
-import 'package:hos/veiw/userscreen/screen/searchpage.dart';
-import 'package:hos/veiw/wedget/Homepage/homescrenAction.dart';
-
 import 'package:hos/veiw/wedget/items/filteritems.dart';
 
-class CustomItemsAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final dynamic controller;
-  final double width;
 
-  const CustomItemsAppBar({
-    super.key,
-    required this.controller,
-    required this.width,
-  });
-
-  @override
-  Size get preferredSize => const Size.fromHeight(60);
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      elevation: 0,
-      centerTitle: true,
-      leading: const BackButtonCircle(),
-      actions: [
-        Padding(
-          padding: EdgeInsetsDirectional.symmetric(horizontal: 5),
-          child: Homescrenaction(
-            onPressed: () {
-              Get.to(
-                () => Searchpage(),
-                transition: Transition.fadeIn,
-                duration: const Duration(milliseconds: 400),
-              );
-            },
-            herotag: "Search",
-            child: SvgPicture.asset(Imageasset.search),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
-          child: _FilterButton(controller: controller),
-        ),
-      ],
-    );
-  }
-}
-
-class _FilterButton extends StatelessWidget {
+class FilterButton extends StatelessWidget {
   final dynamic controller;
 
-  const _FilterButton({required this.controller});
+  const FilterButton({required this.controller});
 
   @override
   Widget build(BuildContext context) {

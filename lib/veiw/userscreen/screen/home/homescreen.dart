@@ -7,7 +7,6 @@ import 'package:hos/controler/usercontroller/notificationcontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/appexitalert.dart';
 import 'package:hos/veiw/userscreen/screen/home/notification.dart';
-import 'package:hos/veiw/userscreen/screen/searchpage.dart';
 import 'package:hos/veiw/wedget/Homepage/buttomAppbar.dart';
 import 'package:hos/veiw/wedget/Homepage/homescrenAction.dart';
 
@@ -16,9 +15,10 @@ class Homescreen extends StatelessWidget {
   final controller = Get.put(Homescreencontroller());
   @override
   Widget build(BuildContext context) {
-    // final size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
     // final h = size.height;
-    // final w = size.width;
+    final w = size.width;
+
     return GetBuilder<Homescreencontroller>(
       builder: (controller) => PopScope(
         canPop: false,
@@ -42,34 +42,18 @@ class Homescreen extends StatelessWidget {
                 children: [
                   SizedBox(width: 10),
                   Text(
-                    "Hi,${controller.myservisec.sharedPreferences.getString("usersname")}👋",
+                    "LUXE",
+                    style: TextStyle(
+                      fontSize: (w * 0.065).clamp(20.0, 26.0),
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 1.2,
+                      color: Color(0xFF3E5FFF),
+                    ),
                   ),
                 ],
               ),
               actions: [
                 // زر البحث
-                controller.Currentpage == 3
-                    ? SizedBox.shrink()
-                    : Padding(
-                        padding: const EdgeInsetsDirectional.symmetric(
-                          horizontal: 5,
-                        ),
-                        child: Homescrenaction(
-                          herotag: "Search",
-                          onPressed: () {
-                            Get.to(
-                              () => Searchpage(),
-                              transition: Transition.fadeIn,
-                              duration: const Duration(milliseconds: 400),
-                            );
-                          },
-                          child: SvgPicture.asset(
-                            Imageasset.search,
-                            height: 24, // توحيد الحجم
-                            width: 24,
-                          ),
-                        ),
-                      ),
 
                 // زر الإشعارات
                 Padding(

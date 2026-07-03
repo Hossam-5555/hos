@@ -54,7 +54,7 @@ class Handlingdataview extends StatelessWidget {
             if (message != null)
               Text(
                 message,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Colors.grey.shade600,
                   fontSize: 16,
                 ),
@@ -72,7 +72,7 @@ class Handlingdataview extends StatelessWidget {
     if (statusrequest == Statusrequest.checkinterner) {
       return buildState(
         context: context,
-        animation: Imageasset.loading,
+        animation: Imageasset.offline,
         message: "Check your internet connection",
       );
     }

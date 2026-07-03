@@ -17,67 +17,55 @@ class Crud {
     String linkUrl,
     Map data,
   ) async {
-    try {
-      if (await checkinterner()) {
-        print("Token: beefooore request"); // طباعة التوكن للتأكد من أنه موجود
-        var response = await http.post(
-          Uri.parse(linkUrl),
-          body: jsonEncode(data),
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer $token",
-          },
-        );
-        print("Response Status Code: ${response.statusCode}"); // طباعة كود الاستجابة للتأكد من نجاح الطلب
-        // 1. تحقق أولاً إذا كان السيرفر أرسل داتا بصيغة JSON (سواء نجح الطلب أو فشل مثل 429 أو 422)
-        // أخطاء لاراول وعمليات الـ Rate Limit تعود دائماً بـ JSON يحتوي على حقول مثل "message" أو "status"
-        if (response.body.isNotEmpty) {
-          try {
-            var responsebody = jsonDecode(response.body);
-            // إذا كان السيرفر أرسل رد JSON صالح، نمرره فوراً لـ Right لكي تستطيع قراءته في الـ Controller
-            // وبذلك سيتعامل الـ Controller مع الـ status: false أو الرسالة القادمة بشكل طبيعي.
-            return Right(responsebody);
-          } catch (jsonError) {
-            // إذا لم يكن الرد JSON (مثلاً صفحة خطأ HTML من السيرفر 500) سيذهب للخطوة التالية
-          }
+    if (await checkinterner()) {
+      var response = await http.post(
+        Uri.parse(linkUrl),
+        body: jsonEncode(data),
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      );
+      if (response.body.isNotEmpty) {
+        try {
+          var responsebody = jsonDecode(response.body);
+          // إذا كان السيرفر أرسل رد JSON صالح، نمرره فوراً لـ Right لكي تستطيع قراءته في الـ Controller
+          // وبذلك سيتعامل الـ Controller مع الـ status: false أو الرسالة القادمة بشكل طبيعي.
+          return Right(responsebody);
+        } catch (jsonError) {
+          // إذا لم يكن الرد JSON (مثلاً صفحة خطأ HTML من السيرفر 500) سيذهب للخطوة التالية
         }
-        // 2. في حال لم يكن هناك Body وكان الكود يمثل نجاحاً
-        if (response.statusCode == 200 || response.statusCode == 201) {
-          return Right({});
-        } else {
-          return Left(Statusrequest.failure);
-        }
-      } else {
-        return Left(Statusrequest.checkinterner);
       }
-    } catch (e) {
-      return Left(Statusrequest.serverfailure);
+      // 2. في حال لم يكن هناك Body وكان الكود يمثل نجاحاً
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return Right({});
+      } else {
+        return Left(Statusrequest.failure);
+      }
+    } else {
+      return Left(Statusrequest.checkinterner);
     }
   }
 
   Future<Either<Statusrequest, Map>> getrequset(String linkUrl) async {
-    try {
-      if (await checkinterner()) {
-        var response = await http.get(
-          Uri.parse(linkUrl),
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer $token",
-          },
-        );
-        if (response.statusCode == 200 || response.statusCode == 201) {
-          var responsebody = jsonDecode(response.body);
-          return Right(responsebody);
-        } else {
-          return Left(Statusrequest.failure);
-        }
+    if (await checkinterner()) {
+      var response = await http.get(
+        Uri.parse(linkUrl),
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var responsebody = jsonDecode(response.body);
+        return Right(responsebody);
       } else {
-        return Left(Statusrequest.checkinterner);
+        return Left(Statusrequest.failure);
       }
-    } catch (e) {
-      return Left(Statusrequest.serverfailure);
+    } else {
+      return Left(Statusrequest.checkinterner);
     }
   }
 

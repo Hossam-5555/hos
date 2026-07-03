@@ -7,8 +7,8 @@ import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/cart.dart';
 import 'package:hos/veiw/userscreen/screen/home/Homepage.dart';
-import 'package:hos/veiw/userscreen/screen/offer.dart';
 import 'package:hos/veiw/userscreen/screen/profile/profile.dart';
+import 'package:hos/veiw/userscreen/screen/searchpage.dart';
 
 class Homescreencontroller extends SearchMix {
   // ignore: non_constant_identifier_names
@@ -20,7 +20,6 @@ class Homescreencontroller extends SearchMix {
   }
 
   void changpage(int i) {
-  
     pageControllers.jumpToPage(i);
     Currentpage = i;
 
@@ -69,15 +68,15 @@ class Homescreencontroller extends SearchMix {
   }
 
   List<List<dynamic>> appbartitle = [
-    ['Fashon', Imageasset.homesvg],
+    ['Home', Imageasset.homesvg],
+    ['Search', Imageasset.search],
     ['Cart', Imageasset.cart],
-    ['Offer', Imageasset.offer],
     ['Profile', Imageasset.profile],
   ];
   final List<Widget> pages = [
     HomePage(),
+    Searchpage(),
     ShoppingCartPage(),
-    Offer(),
     ProfilePage(),
   ];
 }
