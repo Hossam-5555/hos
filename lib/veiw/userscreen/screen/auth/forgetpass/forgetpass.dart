@@ -7,9 +7,9 @@ import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/validinput.dart';
 import 'package:hos/veiw/wedget/animation.dart';
+import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
-import 'package:hos/veiw/wedget/items/itemsappbar.dart';
 
 class ForgetPass extends StatelessWidget {
   const ForgetPass({super.key});
@@ -20,13 +20,10 @@ class ForgetPass extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(
-        leading: BackButtonCircle(),
-        title: const Text('Forget Password'),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        foregroundColor: Appcolor.black,
+      appBar:Appbarbackicon(
+        herotag: "forgetpass",
+        title: "Forget Password",
+        selected: false,
       ),
       body: SafeArea(
         child: GetBuilder<CheckemailController>(

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/filtercontroller.dart';
 
-
-
 class AdvancedFilterSheet extends StatelessWidget {
   const AdvancedFilterSheet({super.key});
 
@@ -34,10 +32,6 @@ class AdvancedFilterSheet extends StatelessWidget {
                   _buildHeader(context, c),
                   const SizedBox(height: 24),
 
-                  _buildSectionTitle(context, "Categories"),
-                  _buildCategories(c),
-
-                  const SizedBox(height: 28),
                   _buildSectionTitle(context, "Sort By"),
                   _buildSortOptions(c),
 
@@ -98,130 +92,88 @@ class AdvancedFilterSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildCategories(FilterController c) {
-    return SizedBox(
-      height: 45,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: c.categories.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 10),
-        itemBuilder: (context, index) {
-          final cat = c.categories[index];
-          return Obx(() {
-            final isSelected = c.selectedCategory.value == cat.id;
-            return GestureDetector(
-              onTap: () => c.selectCategory(cat.id),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 250),
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? Theme.of(context).primaryColor
-                      : Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: isSelected
-                        ? Theme.of(context).primaryColor
-                        : Theme.of(context).dividerColor,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      cat.icon,
-                      size: 18,
-                      color: isSelected ? Colors.white : null,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      cat.name,
-                      style: TextStyle(
-                        color: isSelected ? Colors.white : null,
-                        fontWeight: isSelected
-                            ? FontWeight.bold
-                            : FontWeight.normal,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          });
-        },
-      ),
-    );
-  }
-
-Widget _buildSortOptions(FilterController c) {
-  final sortOptions = {
-    "newest": {"label": "Newest", "icon": Icons.access_time_rounded},
-    "oldest": {"label": "Oldest", "icon": Icons.history_rounded},
-    "price_low": {"label": "Lowest Price", "icon": Icons.trending_down_rounded},
-    "price_high": {"label": "Highest Price", "icon": Icons.trending_up_rounded},
-  };
-
-  // الحل الأضمن: استدعاء القيمة مباشرة في بداية الـ Obx لضمان التسجيل
-  return Obx(() {
-    // هذه السطر يضمن أن GetX سيراقب التغيير في هذا الجزء من الشاشة
-    final currentSort = c.selectedSort.value; 
-
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-        childAspectRatio: 2.7,
-      ),
-      itemCount: sortOptions.length,
-      itemBuilder: (context, index) {
-        String key = sortOptions.keys.elementAt(index);
-        var option = sortOptions[key]!;
-        
-        // نستخدم currentSort الذي استخرجناه في الأعلى
-        bool isSelected = currentSort == key; 
-        final theme = Theme.of(context);
-
-        return GestureDetector(
-          onTap: () => c.selectedSort.value = key,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            decoration: BoxDecoration(
-              color: isSelected 
-                  ? theme.primaryColor.withOpacity(0.1) 
-                  : theme.cardColor,
-              borderRadius: BorderRadius.circular(15),
-              border: Border.all(
-                color: isSelected ? theme.primaryColor : theme.dividerColor.withOpacity(0.5),
-                width: isSelected ? 2 : 1,
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  option["icon"] as IconData,
-                  size: 18,
-                  color: isSelected ? theme.primaryColor : theme.hintColor,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  option["label"] as String,
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                    color: isSelected ? theme.primaryColor : theme.textTheme.bodyMedium?.color,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
+  Widget _buildSortOptions(FilterController c) {
+    final sortOptions = {
+      "newest": {"label": "Newest", "icon": Icons.access_time_rounded},
+      "oldest": {"label": "Oldest", "icon": Icons.history_rounded},
+      "price_low": {
+        "label": "Lowest Price",
+        "icon": Icons.trending_down_rounded,
       },
-    );
-  });
-}
+      "price_high": {
+        "label": "Highest Price",
+        "icon": Icons.trending_up_rounded,
+      },
+    };
+
+    // الحل الأضمن: استدعاء القيمة مباشرة في بداية الـ Obx لضمان التسجيل
+    return Obx(() {
+      // هذه السطر يضمن أن GetX سيراقب التغيير في هذا الجزء من الشاشة
+      final currentSort = c.selectedSort.value;
+
+      return GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+          childAspectRatio: 2.7,
+        ),
+        itemCount: sortOptions.length,
+        itemBuilder: (context, index) {
+          String key = sortOptions.keys.elementAt(index);
+          var option = sortOptions[key]!;
+
+          // نستخدم currentSort الذي استخرجناه في الأعلى
+          bool isSelected = currentSort == key;
+          final theme = Theme.of(context);
+
+          return GestureDetector(
+            onTap: () => c.selectedSort.value = key,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? theme.primaryColor.withOpacity(0.1)
+                    : theme.cardColor,
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(
+                  color: isSelected
+                      ? Colors.blue
+                      : theme.dividerColor.withOpacity(0.5),
+                  width: isSelected ? 2 : 1,
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    option["icon"] as IconData,
+                    size: 18,
+                    color: isSelected ? theme.primaryColor : theme.hintColor,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    option["label"] as String,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: isSelected
+                          ? FontWeight.bold
+                          : FontWeight.w500,
+                      color: isSelected
+                          ? Colors.blue
+                          : theme.textTheme.bodyMedium?.color,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    });
+  }
 
   Widget _buildPriceSlider(BuildContext context, FilterController c) {
     return Obx(
@@ -303,7 +255,7 @@ Widget _buildSortOptions(FilterController c) {
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: isSelected
-                          ? Theme.of(context).primaryColor
+                          ? Colors.blue
                           : Colors.grey.shade300,
                       width: isSelected ? 3 : 1,
                     ),

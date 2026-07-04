@@ -144,18 +144,19 @@ class Itemsdetailes extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             _buildPriceSection(item),
-                            SizedBox(
-                              height: 50,
-                              child: Transform.rotate(
-                                angle: 0.20,
-                                child: Lottie.asset(
-                                  Imageasset.sale,
-                                  width: 50,
-                                  height: 50,
-                                  fit: BoxFit.fill,
+                            if (item.itemsDiscount != 0)
+                              SizedBox(
+                                height: 50,
+                                child: Transform.rotate(
+                                  angle: 0.20,
+                                  child: Lottie.asset(
+                                    Imageasset.sale,
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
                               ),
-                            ),
                           ],
                         ),
 
@@ -305,23 +306,6 @@ class Itemsdetailes extends StatelessWidget {
                   ),
                 ),
               ),
-              // if (item.itemsDiscount.toString() != "0.00")
-              //   PositionedDirectional(
-              //     bottom: h * 0.33, // متناسق ديناميكياً مع ارتفاع الشاشة
-              //     end: 10,
-              //     child: SizedBox(
-              //       height: 50,
-              //       child: Transform.rotate(
-              //         angle: 0.20,
-              //         child: Lottie.asset(
-              //           Imageasset.sale,
-              //           width: 50,
-              //           height: 50,
-              //           fit: BoxFit.fill,
-              //         ),
-              //       ),
-              //     ),
-              //   ),
             ],
           ),
         );

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/favorite/myfavcontroler.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
-import 'package:hos/veiw/wedget/items/itemsappbar.dart';
+import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/SharedProductCard.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -17,7 +17,11 @@ class Myfavorite extends StatelessWidget {
 
     Get.put(Myfavcontroler());
     return Scaffold(
-      appBar: AppBar(leading: BackButtonCircle(), title: Text("Favorite".tr)),
+     appBar: Appbarbackicon(
+        herotag: "Favorite".tr,
+        title: "My Favorite",
+        selected: false,
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

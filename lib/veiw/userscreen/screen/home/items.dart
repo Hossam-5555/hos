@@ -26,9 +26,6 @@ class Items extends StatelessWidget {
     Get.put(FavController());
 
     return Scaffold(
-      backgroundColor: const Color(
-        0xFFF9F9F9,
-      ), // لون خلفية أفتح قليلاً بناءً على الصورة
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: Appbarbackicon(
@@ -65,38 +62,8 @@ class Items extends StatelessWidget {
 
             /// 🎛️ شريط الفلاتر الأول (Sort, Price, Brand, Rating) - بناءً على الصورة
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.04),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          _buildFilterButton("Sort"),
-                          const SizedBox(width: 8),
-                          _buildFilterButton("Price"),
-                          const SizedBox(width: 8),
-                          _buildFilterButton("Brand"),
-                          const SizedBox(width: 8),
-                          _buildFilterButton("Rating"),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  // أيقونة تغيير العرض (Grid/List) الموجودة في الصورة
-                  FilterButton(controller: controller),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 12),
-
-            /// ✅ شريط الفلاتر المحددة (Active Filters & Clear All) - بناءً على الصورة
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.04),
-              child: Row(
+              padding: EdgeInsets.symmetric(horizontal: width * 0.01),
+              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: SingleChildScrollView(
@@ -112,21 +79,13 @@ class Items extends StatelessWidget {
                       ),
                     ),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      // مسح جميع الفلاتر
-                    },
-                    child: const Text(
-                      "Clear All",
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+
+                  FilterButton(controller: controller),
                 ],
               ),
             ),
+
+            const SizedBox(height: 12),
 
             const SizedBox(height: 10),
 
@@ -195,26 +154,6 @@ class Items extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  /// 🔹 دالة مساعدة لبناء أزرار الفلاتر (Sort, Price...)
-  Widget _buildFilterButton(String title) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.grey.withAlpha(60)),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        title,
-        style: const TextStyle(
-          color: Colors.black87,
-          fontWeight: FontWeight.w500,
-          fontSize: 14,
         ),
       ),
     );

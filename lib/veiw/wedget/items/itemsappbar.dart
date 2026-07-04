@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
-import 'package:hos/controler/usercontroller/home/filtercontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/wedget/items/filteritems.dart';
-
 
 class FilterButton extends StatelessWidget {
   final dynamic controller;
@@ -13,27 +10,21 @@ class FilterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        height: 52,
-        width: 52,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          shape: BoxShape.circle,
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFFFFFFFF), // مركز الإضاءة الأبيض المشع
-              Color(0xFFF2F4F7), // البلاتينيوم الناعم
-              Color(0xFFD0D5DD), // الأطراف الفضية الراقية
-            ],
-          ),
-        ),
-        child: MaterialButton(
-          onPressed: () => openAdvancedFilter(context),
-          child: SvgPicture.asset(Imageasset.filter, height: 25, width: 25),
-        ),
+    return SizedBox(
+      child: MaterialButton(padding: EdgeInsets.all(5),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            // إزالة اللون الثابت ليتماشى مع التعديلات التي أجريناها في الـ Sheet
+            backgroundColor: Colors.transparent,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            ),
+            builder: (_) => const AdvancedFilterSheet(),
+          );
+        },
+        child: SvgPicture.asset(Imageasset.category, height: 25, width: 25),
       ),
     );
   }
@@ -74,22 +65,4 @@ class BackButtonCircle extends StatelessWidget {
       ),
     );
   }
-}
-
-void openAdvancedFilter(BuildContext context) {
-  // استخدام findOrPut لضمان عدم تكرار إنشاء الكنترولر إذا كان موجوداً بالفعل
-  if (!Get.isRegistered<FilterController>()) {
-    Get.put(FilterController());
-  }
-
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    // إزالة اللون الثابت ليتماشى مع التعديلات التي أجريناها في الـ Sheet
-    backgroundColor: Colors.transparent,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-    ),
-    builder: (_) => const AdvancedFilterSheet(),
-  );
 }
