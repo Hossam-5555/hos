@@ -22,7 +22,7 @@ class Items extends StatelessWidget {
     final height = size.height;
     final width = size.width;
 
-    ItemsControler controller = Get.put(ItemsControler());
+    ItemsController controller = Get.put(ItemsController());
     Get.put(FavController());
 
     return Scaffold(
@@ -91,7 +91,7 @@ class Items extends StatelessWidget {
 
             /// 🛍 شبكة العناصر (المنتجات) بالشكل المتدرج (Masonry)
             Expanded(
-              child: GetBuilder<ItemsControler>(
+              child: GetBuilder<ItemsController>(
                 builder: (controller) => Handlingdataview(
                   statusrequest: controller.statusrequest,
                   widget: NotificationListener<ScrollNotification>(

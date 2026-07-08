@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/core/class/crud.dart';
@@ -55,7 +56,8 @@ class ShoppingCartPage extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: (width * 0.045).clamp(16.0, 22.0),
                                 fontWeight: FontWeight.bold,
-                                color: Colors.green, // تمييز السعر بلون مختلف لزيادة الوضوح
+                                color: Colors
+                                    .green, // تمييز السعر بلون مختلف لزيادة الوضوح
                               ),
                             ),
                           ],
@@ -146,7 +148,9 @@ class ShoppingCartPage extends StatelessWidget {
 
                         // زر إتمام الشراء
                         SizedBox(
-                          width:MediaQuery.of(context).size.width * 0.8, // يضمن أخذ الزر العرض المتاح بشكل مثالي
+                          width:
+                              MediaQuery.of(context).size.width *
+                              0.8, // يضمن أخذ الزر العرض المتاح بشكل مثالي
                           child: ElevatedButton(
                             onPressed: () {
                               controller.data.isNotEmpty
@@ -204,13 +208,33 @@ class ShoppingCartPage extends StatelessWidget {
                 ),
                 controller.data.isEmpty &&
                         controller.statusrequest != Statusrequest.loading
-                    ? SliverToBoxAdapter(
+                    ? SliverFillRemaining(
+                        // استخدمنا SliverFillRemaining لملء الفراغ وجعل المحتوى في المنتصف
+                        hasScrollBody:
+                            false, // نجعل المحتوى يملأ المساحة المتاحة فقط
                         child: Column(
+                          mainAxisAlignment:
+                              MainAxisAlignment.center, // توسيط عمودي
                           children: [
-                            Animationforstatus(
-                              animationPath: Imageasset.nodata,
+                            Container(
+                              padding: const EdgeInsets.all(20),
+                              // تحديد أبعاد ثابتة أو نسبة من الشاشة
+                              width: MediaQuery.of(context).size.width * 0.6,
+                              height: MediaQuery.of(context).size.width * 0.6,
+                              child: SvgPicture.asset(
+                                "${Imageasset.emptycart}",
+                                fit: BoxFit
+                                    .contain, // لضمان احتواء الصورة داخل الحاوية دون قص
+                              ),
                             ),
-                            Text("go to shop "),
+                            const SizedBox(height: 20),
+                            const Text(
+                              "السلة فارغة",
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.grey,
+                              ),
+                            ),
                           ],
                         ),
                       )

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/searchclass.dart';
 import 'package:hos/core/conistant/imageasset.dart';
@@ -432,7 +433,7 @@ class _TrendingTile extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   item.subtitle,
-                  style: TextStyle(fontSize: 12, color:Colors.grey.shade200),
+                  style: TextStyle(fontSize: 12, color: Colors.grey.shade200),
                 ),
               ],
             ),
@@ -470,20 +471,32 @@ class _SearchResults extends StatelessWidget {
             style: TextStyle(fontSize: 14, color: textSecondary),
           ),
           const SizedBox(height: 10),
-          Expanded(
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.only(top: 4, bottom: 20),
-              itemCount: controller.searchlist.length,
-              itemBuilder: (context, i) {
-                final item = controller.searchlist[i];
-                return SearchProductCard(
-                  item: item,
-                  onTap: () => controller.gotoitemsdatails(item),
-                );
-              },
-            ),
-          ),
+          controller.searchlist.isEmpty
+              ?  Container(
+                      padding: const EdgeInsets.all(20),
+                      // تحديد أبعاد ثابتة أو نسبة من الشاشة
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      height: MediaQuery.of(context).size.width * 0.6,
+                      child: SvgPicture.asset(
+                        Imageasset.noresult,
+                        fit: BoxFit
+                            .contain, // لضمان احتواء الصورة داخل الحاوية دون قص
+                      ),
+                    )
+              : Expanded(
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.only(top: 4, bottom: 20),
+                    itemCount: controller.searchlist.length,
+                    itemBuilder: (context, i) {
+                      final item = controller.searchlist[i];
+                      return SearchProductCard(
+                        item: item,
+                        onTap: () => controller.gotoitemsdatails(item),
+                      );
+                    },
+                  ),
+                ),
         ],
       ),
     );

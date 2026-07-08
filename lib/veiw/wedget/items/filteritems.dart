@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/usercontroller/home/filtercontroller.dart';
+import 'package:hos/controler/usercontroller/home/items_controler.dart';
 
 class AdvancedFilterSheet extends StatelessWidget {
   const AdvancedFilterSheet({super.key});
@@ -9,7 +9,7 @@ class AdvancedFilterSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // نستخدم Get.put لضمان وجود الكنترولر في الذاكرة
-    final c = Get.put(FilterController());
+    final c = Get.put(ItemsController());
     final theme = Theme.of(context);
 
     return DraggableScrollableSheet(
@@ -67,7 +67,7 @@ class AdvancedFilterSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context, FilterController c) {
+  Widget _buildHeader(BuildContext context, ItemsController c) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -92,7 +92,7 @@ class AdvancedFilterSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildSortOptions(FilterController c) {
+  Widget _buildSortOptions(ItemsController c) {
     final sortOptions = {
       "newest": {"label": "Newest", "icon": Icons.access_time_rounded},
       "oldest": {"label": "Oldest", "icon": Icons.history_rounded},
@@ -151,7 +151,7 @@ class AdvancedFilterSheet extends StatelessWidget {
                   Icon(
                     option["icon"] as IconData,
                     size: 18,
-                    color: isSelected ? theme.primaryColor : theme.hintColor,
+                    color: isSelected ? Colors.blue : theme.hintColor,
                   ),
                   const SizedBox(width: 8),
                   Text(
@@ -175,7 +175,7 @@ class AdvancedFilterSheet extends StatelessWidget {
     });
   }
 
-  Widget _buildPriceSlider(BuildContext context, FilterController c) {
+  Widget _buildPriceSlider(BuildContext context, ItemsController c) {
     return Obx(
       () => Column(
         children: [
@@ -217,7 +217,7 @@ class AdvancedFilterSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildBrandImages(BuildContext context, FilterController c) {
+  Widget _buildBrandImages(BuildContext context, ItemsController c) {
     return Obx(() {
       // استدعاء filteredBrands (التي تستهلك selectedCategory.value)
       final brands = c.filteredBrands;
@@ -254,9 +254,7 @@ class AdvancedFilterSheet extends StatelessWidget {
                     // color: Colors.white, // يفضل الأبيض لصور اللوجوهات
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: isSelected
-                          ? Colors.blue
-                          : Colors.grey.shade300,
+                      color: isSelected ? Colors.blue : Colors.grey.shade300,
                       width: isSelected ? 3 : 1,
                     ),
                     boxShadow: isSelected
@@ -307,7 +305,7 @@ class AdvancedFilterSheet extends StatelessWidget {
     });
   }
 
-  Widget _buildBottomButtons(BuildContext context, FilterController c) {
+  Widget _buildBottomButtons(BuildContext context, ItemsController c) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(

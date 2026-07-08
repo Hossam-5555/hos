@@ -23,7 +23,7 @@ class BuildCategoryItems extends StatelessWidget {
     const primaryDark = Color(0xff0F1729);
     const secondaryDark = Color(0xff1F2937);
 
-    return GetBuilder<ItemsControler>(
+    return GetBuilder<ItemsController>(
       builder: (controller) {
         final bool isSelected = controller.selecteditem == i;
 
