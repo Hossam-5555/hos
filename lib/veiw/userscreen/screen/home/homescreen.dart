@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
 import 'package:hos/controler/usercontroller/notificationcontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/appexitalert.dart';
-import 'package:hos/veiw/userscreen/screen/home/notification.dart';
 import 'package:hos/veiw/wedget/Homepage/buttomAppbar.dart';
 import 'package:hos/veiw/wedget/Homepage/homescrenAction.dart';
 
@@ -63,11 +63,7 @@ class Homescreen extends StatelessWidget {
                   child: Homescrenaction(
                     herotag: "notification",
                     onPressed: () {
-                      Get.to(
-                        () => NotificationPage(),
-                        transition: Transition.fadeIn,
-                        duration: const Duration(milliseconds: 400),
-                      );
+                      Get.toNamed(Approute.notificationPage);
                     },
                     child: GetBuilder<Notificationcontroller>(
                       builder: (controller) {

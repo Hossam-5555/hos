@@ -36,7 +36,6 @@ class Imageasset {
   static String settings = "$routeImage/setting.png";
   static String goold = "$routeImage/sc.png";
   static String order = "$routeImage/order.png";
-  static String searchhistory = "$routeImage/searchproduct.png";
   //order status
   static String pending =
       "$routeImage/lucid-origin_Cute_3D_cartoon_character_Pixar_style_a_young_man_sitting_impatiently_on_a_couch-0.jpg";

@@ -28,6 +28,8 @@ class Checkout extends StatelessWidget {
           children: [
             // قسم عنوان التوصيل
             HandlingDataView(
+              mediaType: HandlingMediaType.animation,
+              mode: HandlingMode.skeleton,
               statusrequest: c.statusrequest,
               widget: _buildSectionCard(
                 title: "shipping address".tr,
@@ -35,13 +37,11 @@ class Checkout extends StatelessWidget {
                 child: c.listaddresdata.isEmpty
                     ? ListTile(
                         onTap: () => Get.to(() => AddNewAddres()),
-                        tileColor: const Color(0xFFF8F9FA),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                         leading: const Icon(
                           Icons.add_location_alt,
-                          color: Colors.black87,
                         ),
                         title: Text(
                           "Add new address".tr,
@@ -49,7 +49,6 @@ class Checkout extends StatelessWidget {
                         ),
                         trailing: const Icon(
                           Icons.add_circle,
-                          color: Colors.black,
                         ),
                       )
                     : _buildAddressSelector(c, context),

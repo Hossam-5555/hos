@@ -81,7 +81,7 @@ class NotificationPage extends StatelessWidget {
 
                   return HandlingDataView(
                     statusrequest: s.statusrequest,
-                    mediaType: HandlingMediaType.animation,
+                    mediaType: HandlingMediaType.svgImage,
                     mode: HandlingMode.skeleton,
                     widget: NotificationCard(
                       title: title,

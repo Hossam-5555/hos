@@ -15,14 +15,7 @@ class Coubone extends GetView<CartController> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "Have A Code?".tr,
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
+              Text("Have A Code?".tr, style: TextStyle()),
               Switch.adaptive(
                 // inactiveTrackColor: Colors.grey.shade300,inactiveThumbColor: Colors.white,
                 activeThumbColor: Colors.white,
@@ -78,7 +71,10 @@ class Coubone extends GetView<CartController> {
                                 borderRadius: BorderRadius.circular(40),
                               ),
                             ),
-                            child: const Text("Apply"),
+                            child: const Text(
+                              "Apply",
+                              style: TextStyle(color: Colors.blue),
+                            ),
                           ),
                         ],
                       ),

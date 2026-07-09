@@ -163,7 +163,7 @@ class _IdleState extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(hPad, 20, hPad, 24),
       physics: const BouncingScrollPhysics(),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // ───────────── Recent Searches ─────────────
           if (hasRecent) ...[
@@ -215,21 +215,7 @@ class _IdleState extends StatelessWidget {
               }),
             ),
             const SizedBox(height: 28),
-          ] else ...[
-            // ما فيش recent searches — دعوة بسيطة للبحث
-            Column(
-              children: [
-                const SizedBox(height: 10),
-                Image.asset(Imageasset.searchhistory, height: 90),
-                const SizedBox(height: 8),
-                Text(
-                  "Type to search...".tr,
-                  style: TextStyle(color: textSecondary),
-                ),
-              ],
-            ),
-            const SizedBox(height: 28),
-          ],
+          ] ,
 
           // ───────────── Trending Now ─────────────
           Row(
