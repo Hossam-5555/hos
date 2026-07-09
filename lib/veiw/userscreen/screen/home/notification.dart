@@ -13,7 +13,7 @@ class NotificationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // نقوم بإنشاء الكنترولر أو إيجاده هنا لمرة واحدة لضمان استخدام نفس النسخة في الصفحة بأكملها
-     Notificationcontroller controller = Get.put(Notificationcontroller());
+    Notificationcontroller controller = Get.put(Notificationcontroller());
 
     return GetBuilder<Notificationcontroller>(
       builder: (s) {
@@ -45,9 +45,10 @@ class NotificationPage extends StatelessWidget {
               },
             ),
           ),
-          body: Handlingdataview(
-            isFullScreen: true,
+          body: HandlingDataView(
             statusrequest: controller.statusrequest,
+            mediaType: HandlingMediaType.svgImage,
+            mode: HandlingMode.fullScreen,
             widget: Skeletonizer(
               enabled: isLoading,
               child: ListView.builder(
@@ -65,7 +66,8 @@ class NotificationPage extends StatelessWidget {
                   // تجهيز البيانات
                   if (isLoading) {
                     title = "Loading Notification Title";
-                    body = "This is a dummy description for skeleton loading effect.";
+                    body =
+                        "This is a dummy description for skeleton loading effect.";
                     time = "2024-01-01 10:00 AM";
                   } else {
                     final item = controller.notificationlist[index];
@@ -77,15 +79,20 @@ class NotificationPage extends StatelessWidget {
 
                   bool isSelected = controller.isSelected(id);
 
-                  return NotificationCard(
-                    title: title,
-                    body: body,
-                    time: time,
-                    isSelected: isSelected,
-                    isLoading: isLoading,
-                    selectionMode: controller.selectionMode,
-                    onLongPress: () => controller.onLongPress(id),
-                    onTap: () => controller.onTap(id),
+                  return HandlingDataView(
+                    statusrequest: s.statusrequest,
+                    mediaType: HandlingMediaType.animation,
+                    mode: HandlingMode.skeleton,
+                    widget: NotificationCard(
+                      title: title,
+                      body: body,
+                      time: time,
+                      isSelected: isSelected,
+                      isLoading: isLoading,
+                      selectionMode: controller.selectionMode,
+                      onLongPress: () => controller.onLongPress(id),
+                      onTap: () => controller.onTap(id),
+                    ),
                   );
                 },
               ),

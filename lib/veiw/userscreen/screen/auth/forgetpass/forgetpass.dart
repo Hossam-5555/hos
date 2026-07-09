@@ -27,7 +27,7 @@ class ForgetPass extends StatelessWidget {
       ),
       body: SafeArea(
         child: GetBuilder<CheckemailController>(
-          builder: (_) => Handlingdatrequest(
+          builder: (_) => HandlingDataView(
             onTapError: () {
               controller.statusrequest =
                   Statusrequest.none; // أو الحالة الافتراضية عندك

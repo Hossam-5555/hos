@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <!-- map card -->
+  <rect x="35" y="45" width="170" height="140" rx="14" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="4"/>
+  <path d="M35 90 L85 75 L135 95 L205 78" fill="none" stroke="#E2E8F0" stroke-width="3"/>
+  <path d="M35 140 L95 122 L160 145 L205 130" fill="none" stroke="#E2E8F0" stroke-width="3"/>
+  <circle cx="65" cy="65" r="4" fill="#CBD5E1"/>
+  <circle cx="175" cy="160" r="4" fill="#CBD5E1"/>
+  <circle cx="60" cy="160" r="3" fill="#CBD5E1"/>
+  <!-- ground shadow -->
+  <ellipse cx="120" cy="208" rx="34" ry="7" fill="#CBD5E1" opacity="0.5"/>
+  <!-- pin body -->
+  <path d="M120 55 C92 55 70 77 70 105 C70 137 120 195 120 195 C120 195 170 137 170 105 C170 77 148 55 120 55 Z"
+        fill="#94A3B8" stroke="#475569" stroke-width="6" stroke-linejoin="round"/>
+  <!-- pin inner circle -->
+  <circle cx="120" cy="107" r="27" fill="#F8FAFC" stroke="#475569" stroke-width="5"/>
+  <!-- question mark built from shapes: vertical bar + dot -->
+  <path d="M113 90 C113 83 127 83 127 90 C127 96 120 97 120 104" fill="none" stroke="#475569" stroke-width="5.5" stroke-linecap="round"/>
+  <circle cx="120" cy="116" r="3.5" fill="#475569"/>
+  <!-- dashed radius ring -->
+  <circle cx="120" cy="107" r="55" fill="none" stroke="#94A3B8" stroke-width="2" stroke-dasharray="6 6" opacity="0.6"/>
+</svg>

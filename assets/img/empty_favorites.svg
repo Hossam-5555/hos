@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <!-- soft dashed ring behind -->
+  <circle cx="120" cy="110" r="80" fill="none" stroke="#E2E8F0" stroke-width="2" stroke-dasharray="7 7"/>
+
+  <!-- outer heart outline (dashed = empty state), centered -->
+  <path d="M120 175
+           C120 175 45 128 45 82
+           C45 55 66 38 90 38
+           C104 38 116 46 120 58
+           C124 46 136 38 150 38
+           C174 38 195 55 195 82
+           C195 128 120 175 120 175 Z"
+        fill="#F1F5F9" stroke="#64748B" stroke-width="6" stroke-linejoin="round" stroke-dasharray="10 8"/>
+
+  <!-- crack detail -->
+  <path d="M120 65 L108 95 L128 100 L112 140" fill="none" stroke="#94A3B8" stroke-width="5"
+        stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+
+  <!-- floating mini heart, star and dots for detail -->
+  <path d="M40 60 c0 -5 4 -9 9 -9 c3 0 5 1.5 6 4 c1 -2.5 3 -4 6 -4 c5 0 9 4 9 9 c0 7 -15 15 -15 15 c0 0 -15 -8 -15 -15 Z"
+        fill="#CBD5E1"/>
+  <path d="M200 55 l3 8 8 1 -6 6 1.5 8 -6.5 -4 -6.5 4 1.5 -8 -6 -6 8 -1 z" fill="#CBD5E1"/>
+  <circle cx="205" cy="150" r="5" fill="#CBD5E1"/>
+  <circle cx="35" cy="150" r="3.5" fill="#94A3B8"/>
+
+  <!-- baseline shadow -->
+  <ellipse cx="120" cy="195" rx="30" ry="6" fill="#CBD5E1" opacity="0.5"/>
+</svg>

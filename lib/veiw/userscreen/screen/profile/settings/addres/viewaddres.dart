@@ -36,8 +36,11 @@ class ViewMyAddres extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
 
-          return Handlingdataview(
+          return HandlingDataView(
             statusrequest: controller.statusrequest!,
+            mediaType: HandlingMediaType.svgImage,
+            mode: HandlingMode.fullScreen,
+            showRetryButton: true,
             widget: AnimatedList(
               // 1️⃣ هذا هو الرابط السحري الذي كان ينقص الكود ليربط الواجهة بالـ Controller
               key: controller.Addressket,

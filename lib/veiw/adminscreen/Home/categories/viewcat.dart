@@ -53,7 +53,7 @@ class ViewCategories extends StatelessWidget {
       ),
       body: GetBuilder<ViewCatController>(
         builder: (controller) {
-          return Handlingdataview(
+          return HandlingDataView(
             statusrequest: controller.statusrequest,
             widget: SafeArea(
               child: GridView.builder(

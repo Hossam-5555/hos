@@ -51,7 +51,7 @@ class ViewItemScreen extends StatelessWidget {
             Expanded(
               child: GetBuilder<ViewItemController>(
                 builder: (controller) {
-                  return Handlingdataview(
+                  return HandlingDataView(
                     statusrequest: controller.statusrequest,
                     widget: MasonryGridView.builder(
                       gridDelegate:

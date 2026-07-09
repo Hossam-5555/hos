@@ -14,7 +14,10 @@ class Imageasset {
   static String email = "$routeImage/email.json";
   static String offline = "$routeImage/offline.json";
   static String emptycart = "$routeImage/Add to Cart-cuate.svg";
-  static String noresult="$routeImage/Gemini_Generated_Image_xci0onxci0onxci0.svg";
+  static String noresult = "$routeImage/empty_search.svg";
+  static String emptyNotification = "$routeImage/Push notifications-cuate.svg";
+  static String emptyAddress = "$routeImage/empty_addresses.svg";
+  static String emptyfavorite = "$routeImage/empty_favorites.svg";
   //Animation
   static String category = "$routeImage/category-alt-svgrepo-com.svg";
   static String visa = "$routeImage/visa.png";

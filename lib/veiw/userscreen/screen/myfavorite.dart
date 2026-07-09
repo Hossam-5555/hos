@@ -17,7 +17,7 @@ class Myfavorite extends StatelessWidget {
 
     Get.put(Myfavcontroler());
     return Scaffold(
-     appBar: Appbarbackicon(
+      appBar: Appbarbackicon(
         herotag: "Favorite".tr,
         title: "My Favorite",
         selected: false,
@@ -28,9 +28,10 @@ class Myfavorite extends StatelessWidget {
           children: [
             Expanded(
               child: GetBuilder<Myfavcontroler>(
-                builder: (controller) => Handlingdataview(
+                builder: (controller) => HandlingDataView(
                   statusrequest: controller.statusrequest,
-
+                  mediaType: HandlingMediaType.svgImage,
+                  mode: HandlingMode.fullScreen,
                   widget: Skeletonizer(
                     containersColor: Colors.grey.withAlpha(90),
                     enabled: controller.statusrequest == Statusrequest.loading,
@@ -58,7 +59,6 @@ class Myfavorite extends StatelessWidget {
                           price: "${items.item?.itemsPrice ?? "0"}",
                           rating: 4.5, // لو الموديل فيه تقييم حطه هنا
                           onTap: () {
-                          
                             // controller.gotoitemsdatails(items);
                           },
                           // 👈 هنا بنصمم الزرار الخاص بصفحة المفضلة (زرار الحذف)

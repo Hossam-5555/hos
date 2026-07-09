@@ -23,7 +23,7 @@ class Orders extends StatelessWidget {
       ),
 
       body: GetBuilder<Ordercontroller>(
-        builder: (controller) => Handlingdataview(
+        builder: (controller) => HandlingDataView(
           statusrequest: controller.statusrequest,
 
           widget: RefreshIndicator(

@@ -26,7 +26,7 @@ class Resetpass extends StatelessWidget {
       ),
       body: SafeArea(
         child: GetBuilder<Resetpasscontroller>(
-          builder: (_) => Handlingdatrequest(
+          builder: (_) => HandlingDataView(
             onTapError: () {
               controller.statusrequest =
                   Statusrequest.none; // أو الحالة الافتراضية عندك

@@ -463,26 +463,20 @@ class _SearchResults extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: hPad),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(height: 14),
-          Text(
-            "Total results: ${controller.searchlist.length}",
-            style: TextStyle(fontSize: 14, color: textSecondary),
-          ),
           const SizedBox(height: 10),
           controller.searchlist.isEmpty
-              ?  Container(
-                      padding: const EdgeInsets.all(20),
-                      // تحديد أبعاد ثابتة أو نسبة من الشاشة
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      height: MediaQuery.of(context).size.width * 0.6,
-                      child: SvgPicture.asset(
-                        Imageasset.noresult,
-                        fit: BoxFit
-                            .contain, // لضمان احتواء الصورة داخل الحاوية دون قص
-                      ),
-                    )
+              ? Container(
+                  alignment: Alignment.center,
+
+                  child: SvgPicture.asset(
+                    Imageasset.noresult,
+                    fit: BoxFit
+                        .contain, // لضمان احتواء الصورة داخل الحاوية دون قص
+                  ),
+                )
               : Expanded(
                   child: ListView.builder(
                     physics: const BouncingScrollPhysics(),

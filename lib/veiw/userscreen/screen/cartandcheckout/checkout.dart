@@ -27,8 +27,7 @@ class Checkout extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           children: [
             // قسم عنوان التوصيل
-            Handlingdataview(
-              isFullScreen: false,
+            HandlingDataView(
               statusrequest: c.statusrequest,
               widget: _buildSectionCard(
                 title: "shipping address".tr,

@@ -24,7 +24,7 @@ class Veryficode extends StatelessWidget {
       ),
       body: SafeArea(
         child: GetBuilder<VeryFiControler>(
-          builder: (_) => Handlingdatrequest(
+          builder: (_) => HandlingDataView(
             onTapError: () {
               controller.statusrequest =
                   Statusrequest.none; // أو الحالة الافتراضية عندك

@@ -5,7 +5,7 @@ import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/imageasset.dart';
-import 'package:hos/veiw/wedget/animation.dart';
+// import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/shoppage/carditem.dart'; // تأكد من المسار
 import 'package:hos/veiw/wedget/shoppage/coubone.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -23,7 +23,7 @@ class ShoppingCartPage extends StatelessWidget {
     return Scaffold(
       body: GetBuilder<CartController>(
         builder: (controller) {
-          return Handlingdataview(
+          return HandlingDataView(
             statusrequest: Statusrequest.none,
             widget: CustomScrollView(
               physics: const BouncingScrollPhysics(),

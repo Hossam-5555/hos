@@ -63,7 +63,8 @@ class Items extends StatelessWidget {
             /// 🎛️ شريط الفلاتر الأول (Sort, Price, Brand, Rating) - بناءً على الصورة
             Padding(
               padding: EdgeInsets.symmetric(horizontal: width * 0.01),
-              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: SingleChildScrollView(
@@ -92,7 +93,10 @@ class Items extends StatelessWidget {
             /// 🛍 شبكة العناصر (المنتجات) بالشكل المتدرج (Masonry)
             Expanded(
               child: GetBuilder<ItemsController>(
-                builder: (controller) => Handlingdataview(
+                builder: (controller) => HandlingDataView(
+                  mediaType: HandlingMediaType.animation,
+                  mode: HandlingMode.fullScreen,
+                  showRetryButton: true,
                   statusrequest: controller.statusrequest,
                   widget: NotificationListener<ScrollNotification>(
                     onNotification: (ScrollNotification scrollInfo) {

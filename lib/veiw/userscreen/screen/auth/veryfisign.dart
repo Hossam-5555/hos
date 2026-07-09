@@ -23,7 +23,7 @@ class Veryfisign extends StatelessWidget {
       ),
       body: SafeArea(
         child: GetBuilder<VeryfiSignControler>(
-          builder: (_) => Handlingdatrequest(
+          builder: (_) => HandlingDataView(
             statusrequest: controller.statusrequest,
             widget: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),

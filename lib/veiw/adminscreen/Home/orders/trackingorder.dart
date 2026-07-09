@@ -14,7 +14,7 @@ class Trackinscreenadmin extends StatelessWidget {
     Get.put(Trackingorderadmin());
     return Scaffold(
       body: GetBuilder<Trackingorderadmin>(
-        builder: (controller) => Handlingdataview(
+        builder: (controller) => HandlingDataView(
           statusrequest: controller.statusrequest,
           widget: Stack(
             alignment: AlignmentDirectional.center,
