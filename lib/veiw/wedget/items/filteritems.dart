@@ -245,47 +245,6 @@ class AdvancedFilterSheet extends StatelessWidget {
             onTap: () => c.toggleBrand(brand.id),
             child: Column(
               children: [
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  width: 75,
-                  height: 75,
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    // color: Colors.white, // يفضل الأبيض لصور اللوجوهات
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: isSelected ? Colors.blue : Colors.grey.shade300,
-                      width: isSelected ? 3 : 1,
-                    ),
-                    boxShadow: isSelected
-                        ? [
-                            BoxShadow(
-                              color: Theme.of(
-                                context,
-                              ).primaryColor.withOpacity(0.2),
-                              blurRadius: 10,
-                            ),
-                          ]
-                        : null,
-                  ),
-                  child: Center(
-                    child: CachedNetworkImage(
-                      imageUrl: brand.imageUrl,
-                      imageBuilder: (context, imageProvider) => Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-                      placeholder: (context, url) =>
-                          CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
-                    ),
-                  ),
-                ),
-
                 const SizedBox(height: 8),
                 Text(
                   brand.name,

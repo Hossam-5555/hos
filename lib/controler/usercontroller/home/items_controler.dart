@@ -5,7 +5,6 @@ import 'package:hos/core/class/searchclass.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/items.dart';
-import 'package:hos/data/model/brandmodel.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 
@@ -15,7 +14,7 @@ class ItemsController extends SearchMix {
   int? selectedfilter;
   late String catid;
   List<ItemsModel> data = [];
-
+  List<Brandmodel> brands = [];
   @override
   Statusrequest statusrequest = Statusrequest.none;
   Myservisec myservisec1 = Get.find();
@@ -88,6 +87,8 @@ class ItemsController extends SearchMix {
         // ✳️ استخراج البيانات بحسب الـ JSON المعقد الخاص بـ Laravel Resource
         List itemlist = response["data"]["data"];
         int lastPage = response["data"]["meta"]["last_page"];
+        List brand = response["data"]["brands"];
+        brands.addAll(brand.map((e) => Brandmodel.fromjson(e)));
 
         // تحويل البيانات وإضافتها للقائمة الحالية (بدون حذف العناصر القديمة)
         data.addAll(itemlist.map((e) => ItemsModel.fromJson(e)));
@@ -112,7 +113,6 @@ class ItemsController extends SearchMix {
     update();
   }
 
-
   RxInt price = 50.obs;
 
   @override
@@ -121,6 +121,7 @@ class ItemsController extends SearchMix {
     initdata();
     super.onInit();
   }
+
   final double defaultMin = 0.0;
   final double defaultMax = 5000.0;
 
@@ -130,65 +131,11 @@ class ItemsController extends SearchMix {
   var selectedBrands = <int>[].obs;
   Rx<int?> get selectedCategory => data[0].categoryId.obs;
 
-  final allBrands = [
-    // Electronics
-    BrandItem(
-      id: 1,
-      name: "Apple",
-      categoryId: 2,
-      imageUrl:
-          "https://www.freepnglogos.com/uploads/apple-logo-png/apple-logo-png-drip-field-7.png",
-    ),
-    BrandItem(
-      id: 2,
-      name: "Samsung",
-      categoryId: 2,
-      imageUrl:
-          "https://www.freepnglogos.com/uploads/samsung-logo-text-png-1.png",
-    ),
-    BrandItem(
-      id: 3,
-      name: "Sony",
-      categoryId: 2,
-      imageUrl: "https://www.freepnglogos.com/uploads/sony-logo-png-0.png",
-    ),
-
-    // Fashion
-    BrandItem(
-      id: 4,
-      name: "Huwei",
-      categoryId: 2,
-      imageUrl:
-          "https://www.freepnglogos.com/uploads/nike-logo-png/nike-logo-black-transparent-svg-png-24.png",
-    ),
-    BrandItem(
-      id: 5,
-      name: "reelme",
-      categoryId: 2,
-      imageUrl: "https://www.freepnglogos.com/uploads/adidas-logo-png-hd-2.png",
-    ),
-    BrandItem(
-      id: 6,
-      name: "xiaomi",
-      categoryId: 2,
-      imageUrl:
-          "https://brandlogos.net/wp-content/uploads/2021/11/zara-logo.png",
-    ),
-
-    // Home
-    BrandItem(
-      id: 7,
-      name: "Hp",
-      categoryId: 1,
-      imageUrl:
-          "https://brandlogos.net/wp-content/uploads/2012/10/ikea-logo-vector.png",
-    ),
-  ];
 
   // دالة الفلترة تعتمد على selectedCategory.value مما يجعلها مراقبة
-  List<BrandItem> get filteredBrands {
-    return allBrands
-        .where((brand) => brand.categoryId == selectedCategory.value)
+  List get filteredBrands {
+    return brands
+        .where((brand) => brand.id == selectedCategory.value)
         .toList();
   }
 

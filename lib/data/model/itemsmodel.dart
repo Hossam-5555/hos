@@ -1,4 +1,3 @@
-
 class ItemsModel {
   int? id;
   String? itemsName;
@@ -17,23 +16,24 @@ class ItemsModel {
   var priceAfterDiscount;
   bool? isFavorite;
 
-  ItemsModel(
-      {this.id,
-      this.itemsName,
-      this.itemsNameAr,
-      this.itemsDesc,
-      this.itemsDescAr,
-      this.itemsImage,
-      this.images,
-      this.itemsDiscount,
-      this.stock,
-      this.itemsActive,
-      this.itemsPrice,
-      this.categoryId,
-      this.categoryName,
-      this.categoryNameAr,
-      this.priceAfterDiscount,
-      this.isFavorite});
+  ItemsModel({
+    this.id,
+    this.itemsName,
+    this.itemsNameAr,
+    this.itemsDesc,
+    this.itemsDescAr,
+    this.itemsImage,
+    this.images,
+    this.itemsDiscount,
+    this.stock,
+    this.itemsActive,
+    this.itemsPrice,
+    this.categoryId,
+    this.categoryName,
+    this.categoryNameAr,
+    this.priceAfterDiscount,
+    this.isFavorite,
+  });
 
   ItemsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -72,6 +72,23 @@ class ItemsModel {
     data['category_name_ar'] = this.categoryNameAr;
     data['price_after_discount'] = this.priceAfterDiscount;
     data['is_favorite'] = this.isFavorite;
+    return data;
+  }
+}
+
+class Brandmodel {
+  int? id;
+  String? name;
+  Brandmodel({this.id, this.name});
+  Brandmodel.fromjson(Map<String, dynamic> json) {
+    id = json["id"];
+    name = json["name"];
+  }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+
     return data;
   }
 }
