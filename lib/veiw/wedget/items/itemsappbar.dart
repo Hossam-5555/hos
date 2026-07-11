@@ -1,34 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:hos/core/conistant/imageasset.dart';
-import 'package:hos/veiw/wedget/items/filteritems.dart';
-
-class FilterButton extends StatelessWidget {
-  final dynamic controller;
-
-  const FilterButton({required this.controller});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      child: MaterialButton(padding: EdgeInsets.all(5),
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            // إزالة اللون الثابت ليتماشى مع التعديلات التي أجريناها في الـ Sheet
-            backgroundColor: Colors.transparent,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-            ),
-            builder: (_) => const AdvancedFilterSheet(),
-          );
-        },
-        child: SvgPicture.asset(Imageasset.category, height: 25, width: 25),
-      ),
-    );
-  }
-}
 
 class BackButtonCircle extends StatelessWidget {
   const BackButtonCircle({super.key});

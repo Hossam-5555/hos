@@ -42,7 +42,7 @@ class Searchbar extends StatelessWidget {
               Imageasset.search,
               height: 20,
               width: 20,
-              color: Colors.grey.shade700,
+              color: Theme.of(context).iconTheme.color,
             ),
           ),
 

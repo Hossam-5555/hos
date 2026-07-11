@@ -1,16 +1,18 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart'; // 📌 تمت إضافته لعمل شكل الشلال الموجود بالصورة
 import 'package:hos/controler/usercontroller/home/favorite/fav_controller.dart';
 import 'package:hos/controler/usercontroller/home/items_controler.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/userscreen/screen/home/Homepage.dart';
 import 'package:hos/veiw/wedget/SharedProductCard.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
-import 'package:hos/veiw/wedget/items/itemsappbar.dart';
+import 'package:hos/veiw/wedget/items/filteritems.dart';
 import 'package:hos/veiw/wedget/items/itemslist.dart';
 
 class Items extends StatelessWidget {
@@ -81,7 +83,19 @@ class Items extends StatelessWidget {
                     ),
                   ),
 
-                  FilterButton(controller: controller),
+                  SizedBox(
+                    child: MaterialButton(
+                      padding: EdgeInsets.all(5),
+                      onPressed: () {
+                        showFilterDialog(context, controller);
+                      },
+                      child: SvgPicture.asset(
+                        Imageasset.category,
+                        height: 25,
+                        width: 25,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
