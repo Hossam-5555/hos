@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/searchclass.dart';
 import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/saerch/productcard.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';
 
@@ -215,7 +216,7 @@ class _IdleState extends StatelessWidget {
               }),
             ),
             const SizedBox(height: 28),
-          ] ,
+          ],
 
           // ───────────── Trending Now ─────────────
           Row(
@@ -457,10 +458,10 @@ class _SearchResults extends StatelessWidget {
               ? Container(
                   alignment: Alignment.center,
 
-                  child: SvgPicture.asset(
-                    Imageasset.noresult,
-                    fit: BoxFit
-                        .contain, // لضمان احتواء الصورة داخل الحاوية دون قص
+                  child: Animationlottie(
+                    animationPath: Imageasset.emptystate,
+                    h: 200,
+                    w: 200,
                   ),
                 )
               : Expanded(

@@ -18,6 +18,7 @@ class Imageasset {
   static String emptyNotification = "$routeImage/Push notifications-cuate.svg";
   static String emptyAddress = "$routeImage/empty_addresses.svg";
   static String emptyfavorite = "$routeImage/empty_favorites.svg";
+  static String emptystate="$routeImage/Empty State.json";
   //Animation
   static String category = "$routeImage/category-alt-svgrepo-com.svg";
   static String visa = "$routeImage/visa.png";
