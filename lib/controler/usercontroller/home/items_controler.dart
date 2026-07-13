@@ -7,7 +7,7 @@ import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/items.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/data/model/itemsmodel.dart';
-// تأكد من استدعاء مسار موديل البراند الصحيح 
+// تأكد من استدعاء مسار موديل البراند الصحيح
 // import 'package:hos/data/model/brandmodel.dart';
 
 class ItemsController extends SearchMix {
@@ -17,15 +17,15 @@ class ItemsController extends SearchMix {
   late String catid;
   List<ItemsModel> data = [];
   List<Brandmodel> brands = []; // تأكد أن Brandmodel معرف بشكل صحيح
-
+  int indexofcategrry = 0;
   @override
   Statusrequest statusrequest = Statusrequest.none;
   Myservisec myservisec1 = Get.find();
   Itemsdata itemdata = Itemsdata(Get.find());
 
-  int currentPage = 1; 
-  bool hasMoreData = true; 
-  bool isLoadMore = false; 
+  int currentPage = 1;
+  bool hasMoreData = true;
+  bool isLoadMore = false;
 
   // ---------------- متغيرات الفلترة ---------------- //
   final double defaultMin = 0.0;
@@ -42,23 +42,30 @@ class ItemsController extends SearchMix {
   void changcat(int val, String catigid) {
     selecteditem = val;
     catid = catigid;
-    selectedCategory.value = int.tryParse(catigid) ?? 0; // نحدث الـ Category الخاص بالفلتر
-    update(); 
-    getitems(catid, isNewCategory: true); 
+    selectedCategory.value =
+        int.tryParse(catigid) ?? 0; // نحدث الـ Category الخاص بالفلتر
+    update();
+    getitems(catid, isNewCategory: true);
   }
 
   void filtesortedby(int val) {
     selectedfilter = val;
-    update(); 
+    update();
   }
 
   void initdata() {
     catid = Get.arguments['catid'];
     categories = Get.arguments["categories"] ?? [];
-    selecteditem = Get.arguments['selecteditem'] ?? 0; 
+    selecteditem = Get.arguments['selecteditem'] ?? 0;
     selectedCategory.value = int.tryParse(catid) ?? 0; // إعطاء قيمة مبدئية
 
     getitems(catid);
+  }
+
+  // دالة لتطبيق الفلاتر والبحث من جديد
+  void applyFilters() {
+    getitems(catid, isRefresh: true);
+    Get.back();
   }
 
   Future<void> getitems(
@@ -75,8 +82,11 @@ class ItemsController extends SearchMix {
     if (!hasMoreData || isLoadMore) return;
 
     if (currentPage == 1) {
-      data.clear(); 
-      brands.clear(); // 🔴 يجب مسح البراندات القديمة حتى لا تتكرر
+      data.clear();
+      // نمسح البراندات فقط لو دخلنا قسم جديد، عشان متختفيش وقت الفلترة
+      if (isNewCategory) {
+        brands.clear();
+      }
       statusrequest = Statusrequest.loading;
       update();
     } else {
@@ -84,26 +94,31 @@ class ItemsController extends SearchMix {
       update();
     }
 
-    var response = await itemdata.postdata(catid, page: currentPage);
-
+    var response = await itemdata.postdata({
+      "category_id": catid,
+      "brands": selectedBrands.toList(),
+      "min_price": minPrice.value.round(),
+      "max_price": maxPrice.value.round(),
+      "sort_by": selectedSort.value,
+    }, page: currentPage);
     statusrequest = handling(response);
 
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
         List itemlist = response["data"]["data"];
         int lastPage = response["data"]["meta"]["last_page"];
-        
+
         // التحقق من وجود البراندات لتفادي أخطاء الـ Null
-        if(response["data"]["brands"] != null) {
+        if (response["data"]["brands"] != null) {
           List brandList = response["data"]["brands"];
           brands.addAll(brandList.map((e) => Brandmodel.fromjson(e)));
         }
         data.addAll(itemlist.map((e) => ItemsModel.fromJson(e)));
-       
+
         if (currentPage >= lastPage) {
-          hasMoreData = false; 
+          hasMoreData = false;
         } else {
-          currentPage++; 
+          currentPage++;
         }
 
         if (data.isEmpty) {
@@ -124,12 +139,14 @@ class ItemsController extends SearchMix {
   void onInit() {
     search = TextEditingController();
     initdata();
+    print(Get.currentRoute);
+
     super.onInit();
   }
 
   // إرجاع قائمة البراندات كما جلبها الـ API للقسم الحالي
   List<Brandmodel> get filteredBrands {
-    return brands; 
+    return brands;
   }
 
   int get activeFiltersCount {
@@ -140,20 +157,13 @@ class ItemsController extends SearchMix {
     return count;
   }
 
-  Map<String, dynamic> get filterParams => {
-    "category_id": selectedCategory.value == 0 ? null : selectedCategory.value,
-    "min_price": minPrice.value.round(),
-    "max_price": maxPrice.value.round(),
-    "sort_by": selectedSort.value,
-    "brands": selectedBrands.toList(),
-  };
-
   void toggleBrand(int brandId) {
     if (selectedBrands.contains(brandId)) {
       selectedBrands.remove(brandId);
     } else {
       selectedBrands.add(brandId);
     }
+    update();
   }
 
   void selectCategory(int categoryId) {
@@ -161,10 +171,12 @@ class ItemsController extends SearchMix {
     selectedBrands.clear();
   }
 
-  void reset() {
+  void resetFilters() {
     minPrice.value = defaultMin;
     maxPrice.value = defaultMax;
     selectedSort.value = "newest";
     selectedBrands.clear();
+    // بعد ما صفرنا القيم، نحدث البيانات
+    applyFilters();
   }
 }

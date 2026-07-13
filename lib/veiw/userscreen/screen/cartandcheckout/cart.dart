@@ -228,7 +228,7 @@ class ShoppingCartPage extends StatelessWidget {
                             ),
                             const SizedBox(height: 20),
                             const Text(
-                              "السلة فارغة",
+                              "السلة فارغة تسوق الان ",
                               style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.grey,

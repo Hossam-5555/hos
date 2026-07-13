@@ -66,15 +66,15 @@ Widget _buildHeader(BuildContext context, ItemsController c) {
     children: [
       Text(
         "Advanced Filter",
-        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-          fontWeight: FontWeight.bold,
-        ),
+        style: Theme.of(
+          context,
+        ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
       ),
       Obx(() {
         // استدعاء القيمة داخل الـ Obx لضمان التحديث
         if (c.activeFiltersCount > 0) {
           return TextButton(
-            onPressed: c.reset,
+            onPressed: c.resetFilters,
             style: TextButton.styleFrom(foregroundColor: Colors.redAccent),
             child: const Text("Reset All"),
           );
@@ -202,29 +202,40 @@ Widget _priceContainer(BuildContext context, String label, double value) {
 }
 
 Widget _buildBrandImages(BuildContext context, ItemsController c) {
-  return Obx(() {
-    // 🔴 الآن Obx يراقب selectedCategory.value مباشرة، ولن يظهر الخطأ
-    final categoryId = c.selectedCategory.value;
-    final brands = c.brands.where((b) => b.id == categoryId).toList();
+  // شيل Obx وحط GetBuilder (لازم تدي له الـ controller كـ generic)
+  return GetBuilder<ItemsController>(
+    builder: (controller) {
+      final brands = controller.brands;
 
-    if (brands.isEmpty) {
-      return Center(child: const Text("No brands found"));
-    }
+      if (brands.isEmpty) {
+        return Center(child: const Text("No brands found"));
+      }
 
-    return Wrap(
-      children: brands.map((brand) {
-        // نستخدم c.selectedBrands.contains لمراقبة قائمة التحديد
-        final isSelected = c.selectedBrands.contains(brand.id);
-        return GestureDetector(
-          onTap: () => c.toggleBrand(brand.id!),
-          child: Text(
-            brand.name!,
-            style: TextStyle(color: isSelected ? Colors.blue : Colors.white),
-          ),
-        );
-      }).toList(),
-    );
-  });
+      return Wrap(
+        children: brands.map((brand) {
+          // هنا بتستخدم controller بدل c
+          final isSelected = controller.selectedBrands.contains(brand.id);
+          return GestureDetector(
+            onTap: () => controller.toggleBrand(brand.id!),
+            child: Container(
+              alignment: AlignmentDirectional.center,
+              margin: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(colors: [const Color.fromARGB(255, 56, 61, 61), Colors.grey]),
+              ),
+              width: 100,
+              height: 40,
+              child: Text(
+                brand.name!,
+                style: TextStyle(color: isSelected ? Colors.blue : Colors.white),
+              ),
+            ),
+          );
+        }).toList(),
+      );
+    },
+  );
 }
 
 Widget _buildBottomButtons(BuildContext context, ItemsController c) {
@@ -239,15 +250,13 @@ Widget _buildBottomButtons(BuildContext context, ItemsController c) {
         height: 55,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(40),
             ),
             elevation: 0,
           ),
           onPressed: () {
-            // c.applyFilters(); // يفضل وضع دالة التطبيق هنا
-            Get.back();
+            c.applyFilters(); // يفضل وضع دالة التطبيق هنا
           },
           child: Obx(() {
             return Text(

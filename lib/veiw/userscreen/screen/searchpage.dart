@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/searchclass.dart';
 import 'package:hos/core/conistant/imageasset.dart';
@@ -102,6 +101,7 @@ class Searchpage extends StatelessWidget {
                         mycontroller: controller.search!,
                       ),
                     ),
+                    SizedBox(height: 15),
 
                     Expanded(
                       child: isSearching

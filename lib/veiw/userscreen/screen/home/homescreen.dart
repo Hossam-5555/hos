@@ -82,11 +82,12 @@ class Homescreen extends StatelessWidget {
                           //   ),
                           // ), // تظبيط مكان النقطة على الأيقونة
                           // smallSize: 9, // حجم النقطة مناسب للعين
-                          // backgroundColor: Colors.redAccent,
+                          backgroundColor: Colors.redAccent,
                           child: SvgPicture.asset(
                             Imageasset.notification,
                             height: 24, // توحيد الحجم
                             width: 24,
+                            color: Colors.black,
                           ),
                         );
                       },

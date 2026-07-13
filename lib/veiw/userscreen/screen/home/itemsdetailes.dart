@@ -220,7 +220,7 @@ class Itemsdetailes extends StatelessWidget {
                 ],
               ),
               PositionedDirectional(
-                top: 40,
+                top: 30,
                 child: SizedBox(
                   width: w,
                   child: Row(

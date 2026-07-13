@@ -30,8 +30,8 @@ class Appbarbackicon extends StatelessWidget implements PreferredSizeWidget {
           child: Hero(
             tag: herotag,
             child: Container(
-              width: 45,
-              height: 45,
+              width: 50,
+              height: 50,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: const LinearGradient(

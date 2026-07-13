@@ -164,7 +164,7 @@ class SharedProductCard extends StatelessWidget {
                                 ),
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
+                                    horizontal: 5,
                                     vertical: 5,
                                   ),
                                   decoration: BoxDecoration(

@@ -30,15 +30,65 @@ class Items extends StatelessWidget {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
-        child: Appbarbackicon(
-          herotag: "items",
-          title: "Items",
-          selected: false,
+        child: GetBuilder<ItemsController>(
+          builder: (controller) =>
+              Appbarbackicon(herotag: "items", title: "LUXE"),
         ),
       ),
       body: SafeArea(
         child: Column(
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(width: 5),
+                GestureDetector(
+                  onTap: () => showFilterDialog(context, controller),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withOpacity(0.08),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.primary.withOpacity(0.15),
+                        width: 1,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SvgPicture.asset(
+                          Imageasset.category,
+                          height: 18,
+                          width: 18,
+                          colorFilter: ColorFilter.mode(
+                            Theme.of(context).colorScheme.primary,
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          "Filter",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
             /// 📂 القائمة الأفقية للأقسام (كما طلبت تركناها كما هي)
             Container(
               margin: EdgeInsets.only(
@@ -53,6 +103,7 @@ class Items extends StatelessWidget {
                 itemBuilder: (_, i) {
                   final catmodel = controller.categories[i];
                   final icon = "${catmodel.image}";
+                  controller.indexofcategrry = i;
                   return BuildCategoryItems(
                     catmodel: catmodel,
                     urlIcon: icon,
@@ -62,54 +113,14 @@ class Items extends StatelessWidget {
               ),
             ),
 
-            /// 🎛️ شريط الفلاتر الأول (Sort, Price, Brand, Rating) - بناءً على الصورة
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.01),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          _buildActiveFilterChip("Samsung"),
-                          const SizedBox(width: 8),
-                          _buildActiveFilterChip("Under \$500"),
-                          const SizedBox(width: 8),
-                          _buildActiveFilterChip("4★ & Up"),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(
-                    child: MaterialButton(
-                      padding: EdgeInsets.all(5),
-                      onPressed: () {
-                        showFilterDialog(context, controller);
-                      },
-                      child: SvgPicture.asset(
-                        Imageasset.category,
-                        height: 25,
-                        width: 25,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
             const SizedBox(height: 12),
-
-            const SizedBox(height: 10),
 
             /// 🛍 شبكة العناصر (المنتجات) بالشكل المتدرج (Masonry)
             Expanded(
               child: GetBuilder<ItemsController>(
                 builder: (controller) => HandlingDataView(
-                  mediaType: HandlingMediaType.animation,
                   mode: HandlingMode.fullScreen,
+                  mediaType: HandlingMediaType.svgImage,
                   showRetryButton: true,
                   statusrequest: controller.statusrequest,
                   widget: NotificationListener<ScrollNotification>(
@@ -173,32 +184,6 @@ class Items extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  /// 🔹 دالة مساعدة لبناء الفلاتر المحددة (Samsung, Under $500...)
-  Widget _buildActiveFilterChip(String title) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: const Color(0xFFE8EAF6), // لون أزرق فاتح جداً
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              color: Color(0xFF3F51B5), // لون النص أزرق
-              fontWeight: FontWeight.w600,
-              fontSize: 13,
-            ),
-          ),
-          const SizedBox(width: 4),
-          const Icon(Icons.close, size: 16, color: Color(0xFF3F51B5)),
-        ],
       ),
     );
   }

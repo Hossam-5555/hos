@@ -131,6 +131,10 @@ class HandlingDataView extends StatelessWidget {
       "You have no orders yet".tr,
       "assets/images/empty_orders.svg",
     ],
+    Approute.Items: [
+      "No items in this Category yet",
+      Imageasset.emptycart,
+    ],
   };
 
   List<String> _defaultForRoute() {

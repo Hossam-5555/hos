@@ -16,11 +16,12 @@ class Homescrenaction extends StatelessWidget {
     return Hero(
       tag: herotag,
       child: Container(
-        height: 52,
-        width: 52,
+        width: 50,
+        height: 50,
         decoration: BoxDecoration(
-          gradient: const LinearGradient(begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
+          gradient: const LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
             colors: [
               Color(0xFFFFFFFF), // مركز الإضاءة الأبيض المشع
               Color(0xFFF2F4F7), // البلاتينيوم الناعم
