@@ -32,9 +32,6 @@ class SharedProductCard extends StatelessWidget {
     final Color cardBorderColor = isDark
         ? Colors.white.withOpacity(0.14)
         : Colors.black.withOpacity(0.08);
-    final List<Color> cardGradient = isDark
-        ? [Colors.white.withOpacity(0.08), Colors.white.withOpacity(0.02)]
-        : [Colors.black.withOpacity(0.045), Colors.black.withOpacity(0.015)];
     final Color cardShadow = isDark
         ? Colors.black.withOpacity(0.35)
         : Colors.black.withOpacity(0.08);
@@ -50,6 +47,8 @@ class SharedProductCard extends StatelessWidget {
       onTap: onTap,
       child: LayoutBuilder(
         builder: (context, constraints) {
+              final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
           // نستخدم عرض الكارت الفعلي (مش عرض الشاشة كله) عشان الأبعاد
           // تتظبط صح مهما كان عدد أعمدة الجريد (2 هاتف / 3-4 تابلت)
           final double cardWidth = constraints.maxWidth.isFinite
@@ -96,7 +95,19 @@ class SharedProductCard extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: cardGradient,
+                colors: (isDarkMode
+                    ? [
+                        const Color(
+                          0xFFEAAFC8,
+                        ).withOpacity(0.8), // لمعة بينك/بيضاء (وضع ليلي)
+                        Colors.transparent,
+                        Colors.white.withOpacity(0.3),
+                      ]
+                    : [
+                        Colors.blue.withOpacity(0.5), // لمعة زرقاء (وضع فاتح)
+                        Colors.transparent,
+                        Colors.blueAccent.withOpacity(0.2),
+                      ]),
               ),
               color: theme.cardColor,
               borderRadius: const BorderRadius.all(Radius.circular(25)),

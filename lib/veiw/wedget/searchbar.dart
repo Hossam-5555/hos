@@ -24,8 +24,27 @@ class Searchbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(40)),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: (isDarkMode
+              ? [
+                  const Color(
+                    0xFFEAAFC8,
+                  ).withOpacity(0.8), // لمعة بينك/بيضاء (وضع ليلي)
+                  Colors.transparent,
+                  Colors.white.withOpacity(0.3),
+                ]
+              : [
+                  Colors.blue.withOpacity(0.5), // لمعة زرقاء (وضع فاتح)
+                  Colors.transparent,
+                  Colors.blueAccent.withOpacity(0.2),
+                ]),
+        ),
+        borderRadius: BorderRadius.circular(40),
+      ),
       child: TextFormField(
         focusNode: focusNode,
         textInputAction: textInputAction,
@@ -58,7 +77,7 @@ class Searchbar extends StatelessWidget {
           ),
 
           // خلفية الحقل
-          filled: true,
+          // filled: true,
 
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 20,
@@ -73,7 +92,6 @@ class Searchbar extends StatelessWidget {
 
           // عند الضغط عليه
           focusedBorder: OutlineInputBorder(
-            
             borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide(color: Colors.grey.shade400, width: 1),
           ),

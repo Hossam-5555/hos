@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/items_controler.dart';
@@ -19,57 +18,109 @@ class BuildCategoryItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String name = catmodel.name ?? "";
-    // تعريف الألوان كمتغيرات لسهولة التعديل لاحقاً
-    const primaryDark = Color(0xff0F1729);
-    const secondaryDark = Color(0xff1F2937);
+
+    // 1. معرفة وضع التطبيق الحالي (ليلي أم فاتح)
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return GetBuilder<ItemsController>(
       builder: (controller) {
         final bool isSelected = controller.selecteditem == i;
 
+        // 2. ألوان البوردر المتدرج (الخارجي)
+        final borderGradient = LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          stops: const [0.0, 0.5, 1.0], // لمعة في الأطراف وتختفي في المنتصف
+          colors: isSelected
+              ? (isDarkMode
+                    ? [
+                        const Color(
+                          0xFFEAAFC8,
+                        ).withOpacity(0.8), // لمعة بينك/بيضاء (وضع ليلي)
+                        Colors.transparent,
+                        Colors.white.withOpacity(0.3),
+                      ]
+                    : [
+                        Colors.blue.withOpacity(0.5), // لمعة زرقاء (وضع فاتح)
+                        Colors.transparent,
+                        Colors.blueAccent.withOpacity(0.2),
+                      ])
+              : (isDarkMode
+                    ? [
+                        Colors.white.withOpacity(
+                          0.1,
+                        ), // بوردر خفيف جداً لغير المحدد
+                        Colors.transparent,
+                        Colors.white.withOpacity(0.02),
+                      ]
+                    : [
+                        Colors.grey.shade300,
+                        Colors.transparent,
+                        Colors.grey.shade100,
+                      ]),
+        );
+
+        // 3. لون الخلفية الداخلية
+        final innerColor = isSelected
+            ? (isDarkMode ? const Color(0xFF120F11) : Colors.white)
+            : (isDarkMode
+                  ? Colors.white.withOpacity(0.03)
+                  : Colors.grey.shade50);
+
+        // 4. الظل للزرار المحدد فقط
+        final boxShadow = isSelected
+            ? [
+                BoxShadow(
+                  color: isDarkMode
+                      ? Colors.black.withOpacity(0.3)
+                      : Colors.black.withOpacity(0.05),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ]
+            : <BoxShadow>[];
+
         return Padding(
-          padding: const EdgeInsets.only(
-            right: 10,
-            bottom: 5,
-            top: 5,
-          ), // إضافة مساحة بسيطة للظل
+          padding: const EdgeInsets.only(right: 10, bottom: 5, top: 5),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             curve: Curves.fastLinearToSlowEaseIn,
+            // الـ Container الخارجي (البوردر)
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
-              gradient: isSelected
-                  ? const LinearGradient(
-                      colors: [primaryDark, secondaryDark],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    )
-                  : null,
-              color: isSelected ? null : Colors.grey.withOpacity(0.08),
-              border: Border.all(
-                color: isSelected
-                    ? Colors.transparent
-                    : Colors.grey.withOpacity(0.1),
-              ),
+              gradient: borderGradient,
+              boxShadow: boxShadow,
             ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(30),
-                onTap: () => controller.changcat(i, catmodel.id.toString()),
-                splashColor: isSelected ? Colors.white10 : Colors.black12,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 2,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _buildIconSection(isSelected, urlIcon, primaryDark),
-                      const SizedBox(width: 10),
-                      _buildTextSection(isSelected, name),
-                    ],
+            // سُمك البوردر هو الـ Padding ده (1.5 بكسل)
+            padding: const EdgeInsets.all(1.5),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.fastLinearToSlowEaseIn,
+              // الـ Container الداخلي (الخلفية)
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(
+                  28.5,
+                ), // الراديوس أقل قليلاً من الخارجي
+                color: innerColor,
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(28.5),
+                  onTap: () => controller.changcat(i, catmodel.id.toString()),
+                  splashColor: isDarkMode ? Colors.white10 : Colors.black12,
+                  highlightColor: Colors.transparent,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16, // كبرت المسافة شوية عشان الفخامة
+                      vertical: 8,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildTextSection(isSelected, name, isDarkMode),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -80,45 +131,20 @@ class BuildCategoryItems extends StatelessWidget {
     );
   }
 
-  // فصل الأيقونة في Widget خاص لتسهيل القراءة
-  Widget _buildIconSection(bool isSelected, String url, Color activeColor) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      decoration: BoxDecoration(
-        color: isSelected ? Colors.white.withOpacity(0.15) : Colors.white,
-        shape: BoxShape.circle,
-        boxShadow: isSelected
-            ? []
-            : [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-      ),
-      child: ClipOval(
-        child: CachedNetworkImage(
-          height: 50,width: 50,
-          imageUrl: url,
-          imageBuilder: (context, imageProvider) => Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
-            ),
-          ),
-          placeholder: (context, url) => CircularProgressIndicator(),
-          errorWidget: (context, url, error) => Icon(Icons.error),
-        ),
-      ),
-    );
-  }
+  // ... (كود الأيقونة الخاص بك إذا أردت استخدامه)
 
-  // فصل النص في Widget خاص
-  Widget _buildTextSection(bool isSelected, String title) {
+  // تعديل بسيط على النص ليتناسب مع الوضعين
+  Widget _buildTextSection(bool isSelected, String title, bool isDarkMode) {
+    // الألوان بناءً على الوضع والاختيار
+    final activeColor = isDarkMode ? Colors.white : Colors.blue;
+    final inactiveColor = isDarkMode
+        ? Colors.grey.shade400
+        : Colors.grey.shade600;
+
     return AnimatedDefaultTextStyle(
       duration: const Duration(milliseconds: 300),
       style: TextStyle(
-        color: isSelected ? Colors.blue : Colors.grey,
+        color: isSelected ? activeColor : inactiveColor,
         fontSize: 14,
         fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
         letterSpacing: 0.3,
