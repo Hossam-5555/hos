@@ -2,9 +2,11 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/categories/viewcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/showdialoge.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/addcat.dart';
 
@@ -54,42 +56,68 @@ class ViewCategories extends StatelessWidget {
       body: GetBuilder<ViewCatController>(
         builder: (controller) {
           return HandlingDataView(
+            mode: HandlingMode.fullScreen,
+            mediaType: HandlingMediaType.animation,
             statusrequest: controller.statusrequest,
             widget: SafeArea(
-              child: GridView.builder(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 20,
-                ),
-                itemCount: controller.catdata.length,
-                // تجاوب تلقائي مع جميع مقاسات الشاشات (Responsive)
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200,
-                  childAspectRatio: 0.78,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                ),
-                itemBuilder: (context, index) {
-                  final categoryItem = controller.catdata[index];
-                  return CategoryCard(
-                    isarabic: controller.isarabic,
-                    onTap: () {
-                      controller.gotoproducts(categoryItem);
-                    },
-                    item: categoryItem,
-                    onEdit: () => controller.gotoeditpage(categoryItem),
-                    onDelete: () {
-                      AppCupertinoDialog.show(
-                        title: "حذف المنتج",
-                        message: "هل أنت متأكد من حذف المنتج؟",
-                        onConfirm: () {
-                          controller.delete(categoryItem.id!);
-                        },
-                      );
-                    },
-                  );
-                },
-              ),
+              child: controller.catdata.isEmpty
+                  ? Column(
+                      mainAxisAlignment:
+                          MainAxisAlignment.center, // توسيط عمودي
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(20),
+                          // تحديد أبعاد ثابتة أو نسبة من الشاشة
+                          width: MediaQuery.of(context).size.width * 0.6,
+                          height: MediaQuery.of(context).size.width * 0.6,
+                          child: SvgPicture.asset(
+                            "${Imageasset.emptycart}",
+                            fit: BoxFit
+                                .contain, // لضمان احتواء الصورة داخل الحاوية دون قص
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        const Text(
+                          "السلة فارغة تسوق الان ",
+                          style: TextStyle(fontSize: 18, color: Colors.grey),
+                        ),
+                      ],
+                    )
+                  : GridView.builder(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 20,
+                      ),
+                      itemCount: controller.catdata.length,
+                      // تجاوب تلقائي مع جميع مقاسات الشاشات (Responsive)
+                      gridDelegate:
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 200,
+                            childAspectRatio: 0.78,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
+                          ),
+                      itemBuilder: (context, index) {
+                        final categoryItem = controller.catdata[index];
+                        return CategoryCard(
+                          isarabic: controller.isarabic,
+                          onTap: () {
+                            controller.gotoproducts(categoryItem);
+                          },
+                          item: categoryItem,
+                          onEdit: () => controller.gotoeditpage(categoryItem),
+                          onDelete: () {
+                            AppCupertinoDialog.show(
+                              title: "حذف المنتج",
+                              message: "هل أنت متأكد من حذف المنتج؟",
+                              onConfirm: () {
+                                controller.delete(categoryItem.id!);
+                              },
+                            );
+                          },
+                        );
+                      },
+                    ),
             ),
           );
         },

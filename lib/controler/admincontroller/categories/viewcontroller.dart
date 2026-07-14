@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
+import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/admindata/categoriesdata.dart';
@@ -61,7 +62,7 @@ class ViewCatController extends GetxController {
   }
 
   void gotoproducts(CategoriesModel catmodel) {
-    Get.to(() => ViewItemScreen(), arguments: {"catid": catmodel});
+    Get.toNamed(AdminApproate.ViewItemScreen, arguments: {"catid": catmodel});
   }
 
   void backtohomebage() {

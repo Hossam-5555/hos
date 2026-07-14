@@ -2,6 +2,7 @@
 
 import 'package:get/get.dart';
 import 'package:hos/veiw/adminscreen/Adminhomescreen.dart';
+import 'package:hos/veiw/adminscreen/Home/itemsview/viewitem.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/cart.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/checkout.dart';
 import 'package:hos/veiw/userscreen/screen/home/Homepage.dart';
@@ -28,15 +29,16 @@ List<GetPage<dynamic>>? routes = [
 
   //Admin=================================================================
   GetPage(name: AdminApproate.adminHome, page: () => AdminHome()),
+  GetPage(name: AdminApproate.ViewItemScreen, page: () => ViewItemScreen()),
+
   //====================================================================
-  
 
   //=========================================================
   //onBording
 
   //Homepage
   GetPage(name: Approute.Homescreen, page: () => Homescreen()),
-    GetPage(name: Approute.Homepage, page: () => HomePage()),
+  GetPage(name: Approute.Homepage, page: () => HomePage()),
 
   GetPage(name: Approute.Items, page: () => Items()),
   GetPage(name: Approute.Itemsdetailes, page: () => Itemsdetailes()),
@@ -67,7 +69,7 @@ List<GetPage<dynamic>>? routes = [
 class Approute {
   //Homepage
   static String Homescreen = "/Homescreen";
-    static String Homepage = "/Homepage";
+  static String Homepage = "/Homepage";
 
   static String Items = "/Items";
   static String Itemsdetailes = "/Itemsdetailes";
@@ -101,5 +103,5 @@ class Approute {
 class AdminApproate {
   //Admin Home
   static const String adminHome = "/adminHome";
- 
+  static const String ViewItemScreen = "/ViewItemScreen";
 }

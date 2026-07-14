@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/auth/veryficodesignup.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
+import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
 class Veryfisign extends StatelessWidget {
   const Veryfisign({super.key});
@@ -11,114 +12,139 @@ class Veryfisign extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(VeryfiSignControler());
-    final size = MediaQuery.of(context).size;
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Verification Code'),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        foregroundColor: Appcolor.black,
-      ),
+      backgroundColor: colors.surface,
+      appBar: Appbarbackicon(title: "Verification Code", herotag: "code"),
       body: SafeArea(
         child: GetBuilder<VeryfiSignControler>(
           builder: (_) => HandlingDataView(
             statusrequest: controller.statusrequest,
             widget: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
-              child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.07,
-                  vertical: 20,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(height: size.height * 0.03),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final maxWidth = constraints.maxWidth > 480
+                      ? 480.0
+                      : constraints.maxWidth;
+                  final fieldSize = (maxWidth * 0.14).clamp(48.0, 64.0);
 
-                    /// 🟢 عنوان
-                    Text(
-                      'Verify Your Email',
-                      textAlign: TextAlign.center,
-                      style:
-                          Theme.of(context).textTheme.headlineSmall!.copyWith(
+                  return SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 20,
+                    ),
+                    child: Center(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: maxWidth),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 24),
+                            _VerifyIcon(colors: colors),
+                            const SizedBox(height: 24),
+                            Text(
+                              'Verify Your Email',
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.titleLarge?.copyWith(
                                 fontWeight: FontWeight.bold,
-                                color: Appcolor.black,
+                                color: colors.onSurface,
                               ),
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    /// 🟢 وصف + ايميل
-                    Text(
-                      'Enter the 5-digit code sent to',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.grey),
-                    ),
-
-                    const SizedBox(height: 5),
-
-                    Text(
-                      controller.email ?? '',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Appcolor.black,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Enter the 5-digit code sent to',
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: colors.onSurfaceVariant,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              controller.email ?? '',
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: colors.onSurface,
+                              ),
+                            ),
+                            const SizedBox(height: 40),
+                            OtpTextField(
+                              numberOfFields: 5,
+                              fillColor: colors.surfaceContainerHighest,
+                              filled: true,
+                              fieldWidth: fieldSize,
+                              borderRadius: BorderRadius.circular(14),
+                              enabledBorderColor: colors.outlineVariant,
+                              focusedBorderColor: Appcolor.deepPurple,
+                              showFieldAsBox: true,
+                              cursorColor: Appcolor.deepPurple,
+                              textStyle: theme.textTheme.titleMedium?.copyWith(
+                                color: colors.onSurface,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              onCodeChanged: (String code) {},
+                              onSubmit: (String verificationCode) {
+                                controller.gotosuccessignup(verificationCode);
+                              },
+                            ),
+                            const SizedBox(height: 32),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Didn't receive code?",
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    color: colors.onSurfaceVariant,
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: controller.resendcode,
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: Appcolor.deepPurple,
+                                  ),
+                                  child: const Text(
+                                    "Resend",
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                          ],
+                        ),
                       ),
                     ),
-
-                    SizedBox(height: size.height * 0.06),
-
-                    /// 🟢 OTP
-                    OtpTextField(
-                      numberOfFields: 5,
-                      fieldWidth: size.width * 0.13,
-                      borderRadius: BorderRadius.circular(12),
-                      borderColor: Appcolor.black,
-                      enabledBorderColor: Colors.grey.shade400,
-                      focusedBorderColor: Appcolor.black,
-                      showFieldAsBox: true,
-                      cursorColor: Appcolor.black,
-
-                      onCodeChanged: (String code) {},
-
-                      onSubmit: (String verificationCode) {
-                        controller.gotosuccessignup(verificationCode);
-                      },
-                    ),
-
-                    SizedBox(height: size.height * 0.05),
-
-                    /// 🟢 إعادة إرسال
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Didn't receive code?",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            controller.resendcode();
-                          },
-                          child: Text(
-                            "Resend",
-                            style: TextStyle(
-                              color: Appcolor.blackblue,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(height: size.height * 0.02),
-                  ],
-                ),
+                  );
+                },
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _VerifyIcon extends StatelessWidget {
+  const _VerifyIcon({required this.colors});
+
+  final ColorScheme colors;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 72,
+      height: 72,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Appcolor.deepPurple.withOpacity(0.12),
+      ),
+      child: Icon(
+        Icons.mark_email_read_outlined,
+        color: Appcolor.deepPurple,
+        size: 34,
       ),
     );
   }

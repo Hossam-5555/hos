@@ -112,7 +112,10 @@ class Crud {
     var uri = Uri.parse(url);
     var request = http.MultipartRequest("POST", uri);
     request.fields['_method'] = method;
-
+     request.headers.addAll({
+    'Accept': 'application/json',
+    'Authorization': 'Bearer $token',
+  });
     // 📁 لف على قائمة الصور وأضف الصور الصالحة (المش null) فقط
     for (var image in images) {
       if (image != null) {
@@ -141,10 +144,9 @@ class Crud {
     var response = await http.Response.fromStream(myrequest);
     if (response.statusCode == 200 || response.statusCode == 201) {
       Map responsebody = jsonDecode(response.body);
-      print(responsebody); // طباعة الرد الكامل للتأكد من البيانات المستلمة
-
       return Right(responsebody);
     } else {
+      print(response.body);
       return const Left(Statusrequest.serverfailure);
     }
   }

@@ -87,7 +87,7 @@ class Searchbar extends StatelessWidget {
           // الشكل الطبيعي
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
+            borderSide: BorderSide(color: Colors.grey.shade300, width: 0.1),
           ),
 
           // عند الضغط عليه

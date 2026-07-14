@@ -135,6 +135,11 @@ class HandlingDataView extends StatelessWidget {
       "No items in this Category yet",
       Imageasset.emptycart,
     ],
+      AdminApproate.ViewItemScreen: [
+      "No items in this Category yet",
+      Imageasset.emptycart,
+    ],
+    
   };
 
   List<String> _defaultForRoute() {

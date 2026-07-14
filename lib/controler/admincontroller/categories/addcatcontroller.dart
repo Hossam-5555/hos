@@ -42,7 +42,7 @@ class Addcatcontroller extends GetxController {
         namear.text,
         file!, // دلوقتي آمن نستخدمها
       );
-
+      print(response);
       statusrequest = handling(response);
       if (statusrequest == Statusrequest.success) {
         if (response['status'] == true) {

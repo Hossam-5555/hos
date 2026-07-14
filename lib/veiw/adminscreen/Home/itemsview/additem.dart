@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/items/additemcontroller.dart';
+import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 class Additem extends StatelessWidget {
@@ -13,14 +14,7 @@ class Additem extends StatelessWidget {
     Get.put(Additemcontroller());
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "إضافة منتج جديد",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        elevation: 0,
-      ),
+      appBar: Appbarbackicon(title: "Add New Items", herotag: "AddNewitems"),
       body: GetBuilder<Additemcontroller>(
         builder: (controller) {
           return Form(
@@ -343,57 +337,56 @@ class Additem extends StatelessWidget {
   }
 
   // --- دالة مساعدة لإنشاء الحقول بشكل احترافي ومتناسق ---
-
 }
 
-  Widget buildCustomTextField({
-    enabled = true,
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
-    int maxLines = 1,
-    bool isNumber = false,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 15.0),
-      child: TextFormField(
-        enabled: enabled,
-        // style: TextStyle(color: Colors.white),
-        controller: controller,
-        maxLines: maxLines,
-        keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return "هذا الحقل مطلوب";
-          }
-          return null;
-        },
-        decoration: InputDecoration(
-          hintText: label,
-          // labelStyle: TextStyle(color: Colors.grey[700]),
-          prefixIcon: Icon(icon, color: Colors.blue),
-          filled: true,
-          contentPadding: const EdgeInsets.symmetric(
-            vertical: 15,
-            horizontal: 20,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide(color: Colors.grey.shade300, width: 1.5),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: Colors.blue, width: 2),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: Colors.red, width: 1.5),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: Colors.red, width: 2),
-          ),
+Widget buildCustomTextField({
+  enabled = true,
+  required TextEditingController controller,
+  required String label,
+  required IconData icon,
+  int maxLines = 1,
+  bool isNumber = false,
+}) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 15.0),
+    child: TextFormField(
+      enabled: enabled,
+      // style: TextStyle(color: Colors.white),
+      controller: controller,
+      maxLines: maxLines,
+      keyboardType: isNumber ? TextInputType.number : TextInputType.text,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "هذا الحقل مطلوب";
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        hintText: label,
+        // labelStyle: TextStyle(color: Colors.grey[700]),
+        prefixIcon: Icon(icon, color: Colors.blue),
+        filled: true,
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 15,
+          horizontal: 20,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: Colors.grey.shade300, width: 1.5),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: Colors.blue, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: Colors.red, width: 1.5),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(color: Colors.red, width: 2),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
