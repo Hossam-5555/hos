@@ -11,7 +11,7 @@ class MyReviewsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(MyReviewsController());
+     Get.put(MyReviewsController());
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(

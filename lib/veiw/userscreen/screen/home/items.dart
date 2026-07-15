@@ -169,7 +169,7 @@ class _FilterButton extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
           child: Material(
-            color: const Color.fromARGB(255, 209, 209, 209).withOpacity(0.15),
+            color: const Color.fromARGB(255, 161, 156, 156).withOpacity(0.15),
             borderRadius: BorderRadius.circular(30),
             child: InkWell(
               borderRadius: BorderRadius.circular(30),
@@ -191,11 +191,7 @@ class _FilterButton extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SvgPicture.asset(
-                      Imageasset.filter,
-                      width: 18,
-                      height: 18,
-                    ),
+                    SvgPicture.asset(Imageasset.filter, width: 18, height: 18),
                     const SizedBox(width: 8),
                     Text(
                       "Filter",

@@ -166,7 +166,7 @@ Widget items(OrderModel order) => Column(
   children: [
     Row(
       children: [
-        Icon(Icons.shopping_cart, ),
+        Icon(Icons.shopping_cart),
         const SizedBox(width: 10),
         const Text(
           "Products",
@@ -212,11 +212,21 @@ Widget items(OrderModel order) => Column(
         ),
         contentPadding: EdgeInsets.zero,
         title: Text(e.productName!),
-        subtitle: Text("x${e.quantity}"),
-        trailing: Text(
-          "${e.price}\$",
-          style: TextStyle(color: Colors.green, fontSize: 16),
+        subtitle: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text("x${e.quantity}"),
+            Text(
+              "${e.price}\$",
+              style: TextStyle(color: Colors.green),
+            ),
+          ],
         ),
+        // trailing: Text(
+        //   "${e.price}\$",
+        //   style: TextStyle(color: Colors.green, fontSize: 16),
+        // ),
       ),
     ),
   ],
@@ -257,16 +267,13 @@ Widget price(order) => Column(
 Widget info(order) {
   return Container(
     // padding: const EdgeInsets.all(10),
-
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // --- عنوان القسم ---
         Row(
           children: [
-            Icon(
-              Icons.contact_page_rounded,
-            ),
+            Icon(Icons.contact_page_rounded),
             const SizedBox(width: 10),
             const Text(
               "Customer Details",
@@ -299,7 +306,7 @@ Widget info(order) {
         ),
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 5.0),
-          child: Divider(height: 1, thickness: 1, ),
+          child: Divider(height: 1, thickness: 1),
         ),
         row(
           icon: Icons.location_on_outlined,
