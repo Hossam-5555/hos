@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/serveces/myservisec.dart';
+import 'package:hos/veiw/userscreen/screen/profile/review.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -105,8 +106,8 @@ class ProfilePage extends StatelessWidget {
                           title: "مراجعاتي",
                           isLast: true, // لإزالة الفاصل في العنصر الأخير
                           onTap: () => Get.to(
-                            () => Settings(),
-                            transition: Transition.leftToRightWithFade,
+                            () => MyReviewsPage(),
+                            transition: Transition.cupertino,
                             duration: Duration(milliseconds: 500),
                             curve: Curves.fastOutSlowIn,
                           ),

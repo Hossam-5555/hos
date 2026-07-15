@@ -255,14 +255,12 @@ class _IdleState extends StatelessWidget {
                 item: _trendingGrid[index],
                 cardBg: cardBg,
                 textPrimary: textPrimary,
-                textSecondary: textSecondary,
               );
             },
           ),
           const SizedBox(height: 28),
           PopularCategoriesSection(
             textPrimary: textPrimary,
-            textSecondary: textSecondary,
             accent: accent,
             cardBg: cardBg,
             borderColor: context.isDarkMode
@@ -376,13 +374,11 @@ class _TrendingTile extends StatelessWidget {
     required this.item,
     required this.cardBg,
     required this.textPrimary,
-    required this.textSecondary,
   });
 
   final _TrendingItem item;
   final Color cardBg;
   final Color textPrimary;
-  final Color textSecondary;
 
   @override
   Widget build(BuildContext context) {
@@ -454,7 +450,7 @@ class _SearchResults extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 10),
-          controller.searchlist.isEmpty
+          controller.searchlist.isEmpty && controller.issearch == true
               ? Container(
                   alignment: Alignment.center,
 
@@ -491,27 +487,16 @@ class _SearchResults extends StatelessWidget {
 // ==========================================================
 class PopularCategoryItem {
   final String title;
-  final IconData icon;
   final VoidCallback? onTap;
 
-  const PopularCategoryItem({
-    required this.title,
-    required this.icon,
-    this.onTap,
-  });
+  const PopularCategoryItem({required this.title, this.onTap});
 }
 
 const List<PopularCategoryItem> popularCategories = [
-  PopularCategoryItem(title: "Smartphones", icon: Icons.smartphone_rounded),
-  PopularCategoryItem(
-    title: "Laptops & Computers",
-    icon: Icons.laptop_mac_rounded,
-  ),
-  PopularCategoryItem(title: "TV & Home Theater", icon: Icons.tv_rounded),
-  PopularCategoryItem(
-    title: "Gaming Consoles",
-    icon: Icons.sports_esports_rounded,
-  ),
+  PopularCategoryItem(title: "Smartphones"),
+  PopularCategoryItem(title: "Laptops & Computers"),
+  PopularCategoryItem(title: "TV & Home Theater"),
+  PopularCategoryItem(title: "Gaming Consoles"),
 ];
 
 class PopularCategoriesSection extends StatelessWidget {
@@ -519,7 +504,6 @@ class PopularCategoriesSection extends StatelessWidget {
     super.key,
     this.categories = popularCategories,
     required this.textPrimary,
-    required this.textSecondary,
     required this.accent,
     required this.cardBg,
     required this.borderColor,
@@ -527,7 +511,6 @@ class PopularCategoriesSection extends StatelessWidget {
 
   final List<PopularCategoryItem> categories;
   final Color textPrimary;
-  final Color textSecondary;
   final Color accent;
   final Color cardBg;
   final Color borderColor;
@@ -561,7 +544,6 @@ class PopularCategoriesSection extends StatelessWidget {
                   _CategoryRow(
                     item: item,
                     textPrimary: textPrimary,
-                    textSecondary: textSecondary,
                     accent: accent,
                   ),
                   if (!isLast) Divider(height: 1, color: borderColor),
@@ -579,13 +561,11 @@ class _CategoryRow extends StatelessWidget {
   const _CategoryRow({
     required this.item,
     required this.textPrimary,
-    required this.textSecondary,
     required this.accent,
   });
 
   final PopularCategoryItem item;
   final Color textPrimary;
-  final Color textSecondary;
   final Color accent;
 
   @override
@@ -597,13 +577,8 @@ class _CategoryRow extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: 42,
               height: 42,
-              decoration: BoxDecoration(
-                color: accent.withOpacity(0.12),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(item.icon, color: accent, size: 22),
+              child: Icon(Icons.trending_up_outlined, size: 22),
             ),
             const SizedBox(width: 14),
             Expanded(
@@ -616,7 +591,7 @@ class _CategoryRow extends StatelessWidget {
                 ),
               ),
             ),
-            Icon(Icons.chevron_right_rounded, color: textSecondary, size: 22),
+            Icon(Icons.chevron_right_rounded, size: 22),
           ],
         ),
       ),

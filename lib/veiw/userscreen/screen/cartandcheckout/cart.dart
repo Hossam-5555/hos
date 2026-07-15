@@ -84,7 +84,7 @@ class ShoppingCartPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Divider(height: (height * 0.03).clamp(20.0, 35.0)),
+                        SizedBox(height: (height * 0.015).clamp(8.0, 16.0)),
 
                         Coubone(
                           onChanged: (val) {

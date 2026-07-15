@@ -12,9 +12,16 @@ import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 import 'package:hos/veiw/wedget/items/itemsappbar.dart';
+import 'package:hos/veiw/wedget/items/itemsdetails/anmationbutton.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/countofproduct.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/description.dart';
 import 'package:lottie/lottie.dart';
+
+class FilterButtonColors {
+  static const fillOverlay = Color.fromRGBO(255, 255, 255, 0.16);
+  static const borderOverlay = Color.fromRGBO(255, 255, 255, 0.24);
+  static const contentColor = Color(0xFFC7C9D6);
+}
 
 class Itemsdetailes extends StatelessWidget {
   const Itemsdetailes({super.key});
@@ -259,8 +266,11 @@ class Itemsdetailes extends StatelessWidget {
                       ), // مسافة ديناميكية بين الزرين
                       GetBuilder<FavController>(
                         builder: (favController) {
-                          bool isFav = favController.isfavorite[item.id] == "1";
-                          return GestureDetector(
+                          final isFav =
+                              favController.isfavorite[item.id] == "1";
+                          return FavoriteButton(
+                            key: ValueKey(item.id),
+                            isFav: isFav,
                             onTap: () {
                               favController.favmanget(item.id!);
                               favController.chasngfav(
@@ -268,37 +278,6 @@ class Itemsdetailes extends StatelessWidget {
                                 isFav ? "0" : "1",
                               );
                             },
-                            child: Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: ClipPath(
-                                clipper: ShapeBorderClipper(
-                                  shape: CircleBorder(),
-                                ),
-                                child: BackdropFilter(
-                                  filter: ImageFilter.blur(
-                                    sigmaX: 10,
-                                    sigmaY: 10,
-                                  ),
-                                  child: Container(
-                                    height: 50,
-                                    width: 50,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.3),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Icon(
-                                      isFav
-                                          ? Icons.favorite
-                                          : Icons.favorite_border_rounded,
-                                      color: isFav
-                                          ? Colors.redAccent
-                                          : Colors.black,
-                                      size: 20,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
                           );
                         },
                       ),

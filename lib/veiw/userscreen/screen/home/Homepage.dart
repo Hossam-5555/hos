@@ -243,7 +243,7 @@ class AddToCartButton extends StatelessWidget {
             color: added.value ? Colors.green : Colors.black,
             shape: BoxShape.circle,
           ),
-          child: AnimatedSwitcher(
+          child: AnimatedSwitcher(switchInCurve: Curves.bounceIn,
             duration: const Duration(milliseconds: 300),
             transitionBuilder: (child, animation) =>
                 ScaleTransition(scale: animation, child: child),
