@@ -3,8 +3,11 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/favorite/fav_controller.dart';
 import 'package:hos/controler/usercontroller/offercontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
+import 'package:hos/data/model/itemsmodel.dart';
+import 'package:hos/veiw/wedget/SharedProductCard.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
-import 'package:hos/veiw/wedget/items/productcard.dart';
+
+import 'home/Homepage.dart';
 
 class Offer extends StatelessWidget {
   const Offer({super.key});
@@ -22,37 +25,92 @@ class Offer extends StatelessWidget {
           return RefreshIndicator(
             color: const Color.fromARGB(255, 8, 110, 150),
             onRefresh: () async => controller.getoffer(),
-            child: HandlingDataView(
-              statusrequest: controller.statusrequest,
-              widget: CustomScrollView(
-                physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics(),
-                ),
-                slivers: [
-                  // 🔥 الجزء العلوي: البانر الإعلاني المتحرك أو الثابت
-                  SliverToBoxAdapter(child: _buildResponsiveBanner(context)),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final width = constraints.maxWidth;
 
-                  // 🧱 شبكة العروض (Grid) مع الـ Skeletonizer
-                  SliverPadding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 10,
+                // نقاط توقف بسيطة: هاتف صغير / هاتف عادي / تابلت
+                final bool isSmallPhone = width < 360;
+                final bool isTablet = width >= 600;
+
+                // مسافات متجاوبة اعتماداً على العرض (أثبت من الطول بين الأجهزة)
+                // مع حدود دنيا وقصوى عشان ماتبقاش صغيرة أوي أو كبيرة أوي
+                final double horizontalPadding = (width * 0.045).clamp(
+                  12.0,
+                  32.0,
+                );
+                // final double sectionSpacing = (width * 0.05).clamp(14.0, 26.0);
+
+                // // ارتفاع قائمة التصنيفات الأفقية: نسبة من العرض مش من الطول
+                // final double categoryHeight = (width * 0.32).clamp(92.0, 132.0);
+
+                // عدد أعمدة الجريد: 2 للهاتف، 3 للتابلت الصغير، 4 للتابلت الكبير
+                final int gridCrossAxisCount = isTablet
+                    ? (width >= 900 ? 4 : 3)
+                    : 2;
+                final double gridSpacing = isSmallPhone ? 10.0 : 12.0;
+
+                // عرض الكارت الفعلي بعد خصم الـ padding والمسافات بين الأعمدة
+                final double cardWidth =
+                    (width -
+                        (horizontalPadding * 2) -
+                        (gridSpacing * (gridCrossAxisCount - 1))) /
+                    gridCrossAxisCount;
+                return HandlingDataView(
+                  statusrequest: controller.statusrequest,
+                  widget: CustomScrollView(
+                    physics: const BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics(),
                     ),
-                    sliver: SliverGrid(
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                        return productcard(controller.offerList[index], () {});
-                      }, childCount: controller.offerList.length),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 16,
-                            crossAxisSpacing: 12,
-                            childAspectRatio: 0.65, // متناسب مع أغلب الشاشات
-                          ),
-                    ),
+                    slivers: [
+                      // 🔥 الجزء العلوي: البانر الإعلاني المتحرك أو الثابت
+                      SliverToBoxAdapter(
+                        child: _buildResponsiveBanner(context),
+                      ),
+
+                      // 🧱 شبكة العروض (Grid) مع الـ Skeletonizer
+                      SliverPadding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 10,
+                        ),
+                        sliver: SliverGrid(
+                          delegate: SliverChildBuilderDelegate((
+                            context,
+                            index,
+                          ) {
+                            ItemsModel item = controller.offerList[index];
+                            final double baseHeight = cardWidth * 1.55;
+                            final double cardHeight = index.isEven
+                                ? baseHeight
+                                : baseHeight * 1.2;
+                            return SharedProductCard(
+                              image: "${item.itemsImage}",
+                              title: "${item.itemsName}",
+                              price: "${item.itemsPrice}",
+                              rating: 4.8,
+                              onTap: () {},
+
+                              actionButton: AddToCartButton(itemId: item.id!),
+
+                              /// 🔥 أهم سطر
+                              height: cardHeight,
+                            );
+                          }, childCount: controller.offerList.length),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 16,
+                                crossAxisSpacing: 12,
+                                childAspectRatio:
+                                    0.65, // متناسب مع أغلب الشاشات
+                              ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                );
+              },
             ),
           );
         },
