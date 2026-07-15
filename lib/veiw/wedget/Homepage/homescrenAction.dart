@@ -18,7 +18,7 @@ class Homescrenaction extends StatelessWidget {
       child: Container(
         width: 50,
         height: 50,
-        decoration: BoxDecoration(
+        decoration: BoxDecoration(border: Border.all(color: Colors.grey.withAlpha(46)),
           gradient: const LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,

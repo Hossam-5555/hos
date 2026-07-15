@@ -1,14 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:hos/veiw/userscreen/screen/home/itemsdetailes.dart';
 
 class FavoriteButton extends StatefulWidget {
-  const FavoriteButton({
-    super.key,
-    required this.isFav,
-    required this.onTap,
-  });
+  const FavoriteButton({super.key, required this.isFav, required this.onTap});
 
   final bool isFav;
   final VoidCallback onTap;
@@ -26,7 +21,10 @@ class _FavoriteButtonState extends State<FavoriteButton>
 
   late final Animation<double> _scale = TweenSequence<double>([
     TweenSequenceItem(
-      tween: Tween(begin: 1.0, end: 1.6).chain(CurveTween(curve: Curves.easeInOut)),
+      tween: Tween(
+        begin: 1.0,
+        end: 1.6,
+      ).chain(CurveTween(curve: Curves.easeInOut)),
       weight: 40,
     ),
     TweenSequenceItem(
@@ -53,20 +51,29 @@ class _FavoriteButtonState extends State<FavoriteButton>
         child: ClipPath(
           clipper: ShapeBorderClipper(shape: const CircleBorder()),
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
             child: Container(
               height: 50,
               width: 50,
               decoration: BoxDecoration(
-                color: FilterButtonColors.fillOverlay,
-                border: Border.all(color: FilterButtonColors.borderOverlay),
+                gradient: LinearGradient(
+                  begin: AlignmentGeometry.topLeft,
+                  end: AlignmentGeometry.bottomRight,
+                  colors: [
+                    Colors.white.withAlpha(102),
+                    Colors.white.withAlpha(25),
+                  ],
+                ),
+                border: Border.all(color: Colors.white.withAlpha(51)),
                 shape: BoxShape.circle,
               ),
               child: ScaleTransition(
                 scale: _scale,
                 child: Icon(
                   widget.isFav ? Icons.favorite : Icons.favorite_border_rounded,
-                  color: widget.isFav ? Colors.redAccent : FilterButtonColors.contentColor,
+                  color: widget.isFav
+                      ? Colors.redAccent
+                      : Colors.black,
                   size: 20,
                 ),
               ),

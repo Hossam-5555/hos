@@ -33,6 +33,7 @@ class Appbarbackicon extends StatelessWidget implements PreferredSizeWidget {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.withAlpha(46)),
                 shape: BoxShape.circle,
                 gradient: const LinearGradient(
                   begin: Alignment.topCenter,

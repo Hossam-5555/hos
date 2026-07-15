@@ -244,7 +244,7 @@ Widget orderCard(String title, String image, Function()? onTap, context) {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             // الحواف المضيئة الخفيفة (نفس الـ Stroke اللي في الصورة)
-            border: Border.all(color: Colors.white.withOpacity(0.18), width: 1),
+            border: Border.all(color: Colors.grey.withOpacity(0.18), width: 1),
 
             gradient: isDarkMode
                 ? AppGradients.darkTitanium

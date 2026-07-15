@@ -93,13 +93,13 @@ Widget _card(
     decoration: BoxDecoration(
       color: Theme.of(context).cardColor,
       borderRadius: BorderRadius.circular(20),
-      border: Border.all(color: Colors.grey.shade300, width: 1.5),
+      border: Border.all(color: Colors.grey.shade300, width: 1),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.05),
-          blurRadius: 10,
+          color: Colors.black.withOpacity(0.03),
+          blurRadius: 5,
           spreadRadius: 1,
-          offset: const Offset(0, 4),
+          offset: const Offset(0, 2),
         ),
       ],
     ),
