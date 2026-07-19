@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/addres/addrescontroller.dart';
 import 'package:hos/core/class/crud.dart';
@@ -12,7 +13,7 @@ class Editaddress extends GetxController {
   String? selectedGovernorate;
   String? selectedCity;
   String? selectedLocationType; // (منزل، كافيه، إلخ)
-
+ MapController mapController=MapController();
   final List<String> locationTypes = [
     'منزل',
     'عمل',

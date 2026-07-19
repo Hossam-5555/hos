@@ -70,6 +70,9 @@ dependencies:
   skeletonizer: ^2.1.1
   flutter_staggered_grid_view: ^0.7.0
   fl_chart: ^1.2.0
+  flutter_map: ^8.3.1
+  latlong2: ^0.9.1
+  flutter_map_location_marker: ^10.2.0
 
 dev_dependencies:
   flutter_test:

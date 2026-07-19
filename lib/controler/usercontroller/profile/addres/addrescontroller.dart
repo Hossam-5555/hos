@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart' show MapController;
+// import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
@@ -27,7 +29,7 @@ class AddressController extends GetxController {
   String? selectedGovernorate;
   String? selectedCity;
   String? selectedLocationType; // (منزل، كافيه، إلخ)
-
+ MapController map=MapController();
   final List<String> locationTypes = [
     'منزل',
     'عمل',

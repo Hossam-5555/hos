@@ -37,8 +37,9 @@ class AddNewAddres extends StatelessWidget {
           selectedCity: controller.selectedCity,
 
           onChanged: controller.onGovernorateChanged,
-          onChangedcity:
-              controller.onCityChanged, // إضافة هذا السطر لتمرير onChangedcity
+          onChangedcity: controller.onCityChanged,
+          map: controller.map,
+          // إضافة هذا السطر لتمرير onChangedcity
         ),
       ),
     );

@@ -1,12 +1,15 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:get/get.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:hos/core/conistant/locationdata.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
+import 'package:latlong2/latlong.dart';
 
 // ignore: must_be_immutable
 class Addresspage<T extends GetxController> extends StatelessWidget {
@@ -20,7 +23,7 @@ class Addresspage<T extends GetxController> extends StatelessWidget {
   ValueChanged<String?>? onChanged;
   ValueChanged<String?>? onChangedcity;
   ValueChanged<String?>? onChangedtype;
-
+  MapController map;
   List<String> locationTypes;
   Size size;
   Addresspage({
@@ -37,6 +40,7 @@ class Addresspage<T extends GetxController> extends StatelessWidget {
     required this.selectedLocationType,
     required this.locationTypes,
     this.onChangedtype,
+    required this.map,
   });
 
   @override
@@ -45,9 +49,30 @@ class Addresspage<T extends GetxController> extends StatelessWidget {
     return Stack(
       children: [
         // 1. الجزء العلوي: الخريطة تملأ الجزء المتاح خلف الكارت
-        SizedBox(
-          height: size.height * 0.55,
-          child: const Center(child: Text('Google Map Here')),
+        FlutterMap(
+          mapController: map,
+          options: const MapOptions(
+            initialRotation: 1,
+            initialCenter: LatLng(0, 0),
+            initialZoom: 10,
+            minZoom: 0,
+            maxZoom: 10,
+          ),
+          children: [
+            TileLayer(
+              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+              userAgentPackageName: 'com.example.hos',
+            ),
+            CurrentLocationLayer(
+              style: const LocationMarkerStyle(
+                marker: DefaultLocationMarker(
+                  child: Icon(Icons.location_pin, color: Colors.white),
+                ),
+                markerSize: Size(35, 35),
+                markerDirection: MarkerDirection.heading,
+              ),
+            ),
+          ],
         ),
 
         // 2. زر تعديل الموقع (مع حماية خاصة من الأعلى)
@@ -55,20 +80,20 @@ class Addresspage<T extends GetxController> extends StatelessWidget {
           top: 16,
           right: 16,
           child: SafeArea(
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                elevation: 4,
-              ),
-              onPressed: () => Get.snackbar(
+            child: GestureDetector(
+              onTap: () => Get.snackbar(
                 'تعديل الموقع',
                 'اضغط على الخريطة لتغيير الموقع',
               ),
-              child: const Text('تعديل الموقع على الخريطة'),
+              child: Container(
+                height: 50,
+                width: 50,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.blue,
+                ),
+                child: const Icon(Icons.gps_fixed),
+              ),
             ),
           ),
         ),

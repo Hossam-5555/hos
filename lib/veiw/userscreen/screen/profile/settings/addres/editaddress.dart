@@ -35,6 +35,7 @@ class EditAddressPage extends StatelessWidget {
           selectedGovernorate: controller.selectedGovernorate,
           selectedCity: controller.selectedCity,
           onChanged: controller.onGovernorateChanged,
+          map: controller.mapController,
           onChangedcity:
               controller.onCityChanged, // إضافة هذا السطر لتمرير onChangedcity
         ),

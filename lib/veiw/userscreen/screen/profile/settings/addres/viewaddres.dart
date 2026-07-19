@@ -88,18 +88,18 @@ Widget _card(
   bool isdefalt = c.isdefault == address.id;
 
   return Container(
-    margin: const EdgeInsets.only(bottom: 16),
+    margin: const EdgeInsets.all(5),
     padding: const EdgeInsets.all(12),
     decoration: BoxDecoration(
       color: Theme.of(context).cardColor,
-      borderRadius: BorderRadius.circular(20),
-      border: Border.all(color: Colors.grey.shade300, width: 1),
+      borderRadius: BorderRadius.circular(25),
+      border: Border.all(color: Colors.grey, width: 0.2),
       boxShadow: [
         BoxShadow(
           color: Colors.black.withOpacity(0.03),
-          blurRadius: 5,
-          spreadRadius: 1,
-          offset: const Offset(0, 2),
+          blurRadius:2,
+          spreadRadius: 0.5,
+          offset: const Offset(0, 1),
         ),
       ],
     ),
@@ -124,7 +124,7 @@ Widget _card(
                       ),
                       decoration: BoxDecoration(
                         color: Colors.teal.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(6),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       child: const Text(
                         'DEFAULT ADDRESS',
