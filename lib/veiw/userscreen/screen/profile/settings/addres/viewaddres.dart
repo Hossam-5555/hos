@@ -93,7 +93,6 @@ Widget _card(
     decoration: BoxDecoration(
       color: Theme.of(context).cardColor,
       borderRadius: BorderRadius.circular(25),
-      border: Border.all(color: Colors.grey, width: 0.2),
       boxShadow: [
         BoxShadow(
           color: Colors.black.withOpacity(0.03),

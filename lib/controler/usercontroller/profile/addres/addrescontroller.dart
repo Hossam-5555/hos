@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart' show MapController;
+import 'package:geocoding/geocoding.dart' as geocoding;
+import 'package:geolocator/geolocator.dart';
 // import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -29,7 +31,7 @@ class AddressController extends GetxController {
   String? selectedGovernorate;
   String? selectedCity;
   String? selectedLocationType; // (منزل، كافيه، إلخ)
- MapController map=MapController();
+  MapController map = MapController();
   final List<String> locationTypes = [
     'منزل',
     'عمل',
@@ -39,6 +41,7 @@ class AddressController extends GetxController {
     'مدرسة',
     'مصنع',
   ];
+
   void onGovernorateChanged(String? val) {
     selectedGovernorate = val;
     selectedCity = null; // إعادة تعيين المركز عند تغيير المحافظة
@@ -67,11 +70,33 @@ class AddressController extends GetxController {
     update();
   }
 
+  getcurrentlocation() async {
+    final LocationSettings locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 100,
+    );
+
+    Position position = await Geolocator.getCurrentPosition(
+      locationSettings: locationSettings,
+    );
+    lat = position.latitude;
+    long = position.longitude;
+
+    List<geocoding.Placemark> placemarks = await geocoding
+        .placemarkFromCoordinates(lat, long);
+    print("${placemarks[0].country}");
+    print("${placemarks[0].street}");
+    print("${placemarks[0].administrativeArea}");
+    print("${placemarks[0].locality}");
+    print("${placemarks[0].name}");
+  }
+
   @override
   void onInit() {
     name = TextEditingController();
     city = TextEditingController();
     street = TextEditingController();
+    // getcurrentlocation();
     viewaddres();
     super.onInit();
   }
@@ -192,14 +217,20 @@ class AddressController extends GetxController {
                 borderRadius: BorderRadius.circular(12),
                 child: Container(
                   // شريط أحمر رأسي جهة اليمين/اليسار يعطي لمسة جمالية واحترافية
+                  margin: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    border: Border(
-                      right: BorderSide(
-                        color: Colors.red.shade600,
-                        width: 5,
-                      ), // إذا كان التطبيق عربي
-                      // left: BorderSide(color: Colors.red.shade600, width: 5), // غيرها لـ left لو واجهة التطبيق إنجليزي
-                    ),
+                    color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.circular(25),
+                    // border: Border.all(color: Colors.grey, width: 0.1),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.03),
+                        blurRadius: 2,
+                        spreadRadius: 0.5,
+                        offset: const Offset(0, 1),
+                      ),
+                    ],
                   ),
                   child: ListTile(
                     contentPadding: const EdgeInsets.symmetric(
@@ -279,4 +310,8 @@ class AddressController extends GetxController {
 
     super.dispose();
   }
+
+  // Returns a list of addresses matching the supplied coordinates. The first
+  // entry in the list is generally the address closest to the supplied
+  // coordinates.
 }

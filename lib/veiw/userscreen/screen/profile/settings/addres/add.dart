@@ -11,7 +11,6 @@ class AddNewAddres extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // 1. استخدام Get.put كما أنت تفعل
-    Get.put(AddressController());
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -39,6 +38,7 @@ class AddNewAddres extends StatelessWidget {
           onChanged: controller.onGovernorateChanged,
           onChangedcity: controller.onCityChanged,
           map: controller.map,
+          currentlocation: controller.getcurrentlocation,
           // إضافة هذا السطر لتمرير onChangedcity
         ),
       ),
