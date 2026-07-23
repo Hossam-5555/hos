@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
 import 'package:hos/core/class/searchclass.dart';
 import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/core/conistant/routs.dart';
+import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/saerch/productcard.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';
@@ -260,12 +263,14 @@ class _IdleState extends StatelessWidget {
           ),
           const SizedBox(height: 28),
           PopularCategoriesSection(
+            categories: Get.find<HomepageController>().categories.sublist(0, 3),
             textPrimary: textPrimary,
             accent: accent,
             cardBg: cardBg,
             borderColor: context.isDarkMode
                 ? Colors.white.withOpacity(0.08)
                 : Colors.grey.withOpacity(0.15),
+            ontap: () {},
           ),
         ],
       ),
@@ -485,36 +490,24 @@ class _SearchResults extends StatelessWidget {
 // لو جهزت API بعدين كفاية تستبدل الـ list دي بـ .map() من
 // الـ response، والـ UI مش هيتغير.
 // ==========================================================
-class PopularCategoryItem {
-  final String title;
-  final VoidCallback? onTap;
-
-  const PopularCategoryItem({required this.title, this.onTap});
-}
-
-const List<PopularCategoryItem> popularCategories = [
-  PopularCategoryItem(title: "Smartphones"),
-  PopularCategoryItem(title: "Laptops & Computers"),
-  PopularCategoryItem(title: "TV & Home Theater"),
-  PopularCategoryItem(title: "Gaming Consoles"),
-];
 
 class PopularCategoriesSection extends StatelessWidget {
-  const PopularCategoriesSection({
+  PopularCategoriesSection({
     super.key,
-    this.categories = popularCategories,
+    required this.categories,
     required this.textPrimary,
     required this.accent,
     required this.cardBg,
     required this.borderColor,
+    required this.ontap,
   });
 
-  final List<PopularCategoryItem> categories;
+  final List<CategoriesModel> categories;
   final Color textPrimary;
   final Color accent;
   final Color cardBg;
   final Color borderColor;
-
+  void Function() ontap;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -545,6 +538,7 @@ class PopularCategoriesSection extends StatelessWidget {
                     item: item,
                     textPrimary: textPrimary,
                     accent: accent,
+                    ontap: ontap,
                   ),
                   if (!isLast) Divider(height: 1, color: borderColor),
                 ],
@@ -558,20 +552,22 @@ class PopularCategoriesSection extends StatelessWidget {
 }
 
 class _CategoryRow extends StatelessWidget {
-  const _CategoryRow({
+  _CategoryRow({
     required this.item,
     required this.textPrimary,
     required this.accent,
+    required this.ontap,
   });
 
-  final PopularCategoryItem item;
+  final CategoriesModel item;
   final Color textPrimary;
   final Color accent;
+  void Function() ontap;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: item.onTap,
+      onTap: ontap,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         child: Row(
@@ -583,7 +579,7 @@ class _CategoryRow extends StatelessWidget {
             const SizedBox(width: 14),
             Expanded(
               child: Text(
-                item.title.tr,
+                item.name!,
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,

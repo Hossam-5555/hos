@@ -23,7 +23,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     LocalController controller = Get.put(LocalController());
     return GetMaterialApp(
-      // home: ProfilePage(),
       debugShowCheckedModeBanner: false,
       initialBinding: MyBinding(),
       locale: controller.language,
