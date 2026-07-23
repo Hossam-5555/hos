@@ -71,19 +71,46 @@ class AddressController extends GetxController {
   }
 
   getcurrentlocation() async {
-    final LocationSettings locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
-    );
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      Get.snackbar('Location Disabled', 'Please enable location service');
+      return;
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        Get.snackbar('Permission Denied', 'Location access is required');
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      Get.snackbar(
+        'Permission Required',
+        'Please enable location from settings',
+        mainButton: TextButton(
+          onPressed: () => Geolocator.openAppSettings(),
+          child: const Text('Open Settings'),
+        ),
+      );
+      return;
+    }
 
     Position position = await Geolocator.getCurrentPosition(
-      locationSettings: locationSettings,
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 100,
+      ),
     );
+
     lat = position.latitude;
     long = position.longitude;
 
     List<geocoding.Placemark> placemarks = await geocoding
         .placemarkFromCoordinates(lat, long);
+
     print("${placemarks[0].country}");
     print("${placemarks[0].street}");
     print("${placemarks[0].administrativeArea}");

@@ -325,9 +325,9 @@ class _EditProfileViewState extends State<EditProfileView> {
                   ],
                 ),
                 const SizedBox(height: 32),
-                _buildSaveButton(),
-                const SizedBox(height: 12),
-                _buildCancelButton(),
+                // _buildSaveButton(),
+                // const SizedBox(height: 12),
+                // _buildCancelButton(),
               ],
             ),
           ),
@@ -510,6 +510,7 @@ class _EditProfileViewState extends State<EditProfileView> {
         ),
         const SizedBox(height: 8),
         TextFormField(
+          enabled: false,
           controller: controller,
           keyboardType: keyboardType,
           textDirection: textDirection,
@@ -554,74 +555,74 @@ class _EditProfileViewState extends State<EditProfileView> {
   }
 
   // ---------------- Save Button ----------------
-  Widget _buildSaveButton() {
-    return Obx(
-      () => SizedBox(
-        height: 54,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: _EPColors.primary,
-            disabledBackgroundColor: _EPColors.primary.withOpacity(0.6),
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-          ),
-          onPressed: controller.isSaving.value
-              ? null
-              : () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    controller.saveProfile(
-                      newName: _nameCtrl.text,
-                      newEmail: _emailCtrl.text,
-                      newPhone: _phoneCtrl.text,
-                      newAddress: _addressCtrl.text,
-                    );
-                  }
-                },
-          child: controller.isSaving.value
-              ? const SizedBox(
-                  width: 22,
-                  height: 22,
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                    strokeWidth: 2.4,
-                  ),
-                )
-              : const Text(
-                  "حفظ التغييرات",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-        ),
-      ),
-    );
-  }
+  // Widget _buildSaveButton() {
+  //   return Obx(
+  //     () => SizedBox(
+  //       height: 54,
+  //       child: ElevatedButton(
+  //         style: ElevatedButton.styleFrom(
+  //           backgroundColor: _EPColors.primary,
+  //           disabledBackgroundColor: _EPColors.primary.withOpacity(0.6),
+  //           elevation: 0,
+  //           shape: RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.circular(16),
+  //           ),
+  //         ),
+  //         onPressed: controller.isSaving.value
+  //             ? null
+  //             : () {
+  //                 if (_formKey.currentState?.validate() ?? false) {
+  //                   controller.saveProfile(
+  //                     newName: _nameCtrl.text,
+  //                     newEmail: _emailCtrl.text,
+  //                     newPhone: _phoneCtrl.text,
+  //                     newAddress: _addressCtrl.text,
+  //                   );
+  //                 }
+  //               },
+  //         child: controller.isSaving.value
+  //             ? const SizedBox(
+  //                 width: 22,
+  //                 height: 22,
+  //                 child: CircularProgressIndicator(
+  //                   color: Colors.white,
+  //                   strokeWidth: 2.4,
+  //                 ),
+  //               )
+  //             : const Text(
+  //                 "حفظ التغييرات",
+  //                 style: TextStyle(
+  //                   fontSize: 16,
+  //                   fontWeight: FontWeight.bold,
+  //                   color: Colors.white,
+  //                 ),
+  //               ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   // ---------------- Cancel Button ----------------
-  Widget _buildCancelButton() {
-    return SizedBox(
-      height: 50,
-      child: OutlinedButton(
-        style: OutlinedButton.styleFrom(
-          side: BorderSide(color: Colors.grey.shade300),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-        onPressed: () => Get.back(),
-        child: Text(
-          "إلغاء",
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w600,
-            color: Colors.grey.shade700,
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _buildCancelButton() {
+  //   return SizedBox(
+  //     height: 50,
+  //     child: OutlinedButton(
+  //       style: OutlinedButton.styleFrom(
+  //         side: BorderSide(color: Colors.grey.shade300),
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(16),
+  //         ),
+  //       ),
+  //       onPressed: () => Get.back(),
+  //       child: Text(
+  //         "إلغاء",
+  //         style: TextStyle(
+  //           fontSize: 15,
+  //           fontWeight: FontWeight.w600,
+  //           color: Colors.grey.shade700,
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

@@ -44,7 +44,10 @@ class Settings extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     // ------- بطاقة الترويسة (الملف الشخصي) -------
-                    _buildProfileHeader(isDarkMode, controller.username??"User"),
+                    _buildProfileHeader(
+                      isDarkMode,
+                      controller.username ?? "User",
+                    ),
 
                     const SizedBox(height: 24),
 
@@ -53,19 +56,19 @@ class Settings extends StatelessWidget {
                       context,
                       title: "Account".tr,
                       children: [
-                        _buildSettingsTile(
-                          icon: Icons.person_outline,
-                          title: "Profile".tr,
-                          subtitle: 'Edit Account'.tr,
-                          onTap: () {
-                            Get.to(() => EditProfileView());
-                          },
-                          gradientColors: [
-                            Colors.indigo.shade400,
-                            Colors.indigo.shade700,
-                          ],
-                        ),
-                        _buildDivider(),
+                        // _buildSettingsTile(
+                        //   icon: Icons.person_outline,
+                        //   title: "Profile".tr,
+                        //   subtitle: 'Edit Account'.tr,
+                        //   onTap: () {
+                        //     Get.to(() => EditProfileView());
+                        //   },
+                        //   gradientColors: [
+                        //     Colors.indigo.shade400,
+                        //     Colors.indigo.shade700,
+                        //   ],
+                        // ),
+                        // _buildDivider(),
                         _buildThemeTile(local),
                       ],
                     ),
@@ -125,6 +128,15 @@ class Settings extends StatelessWidget {
                             Colors.cyan.shade700,
                           ],
                         ),
+                        _buildSettingsTile(
+                          icon: Icons.ios_share,
+                          title: "Share App",
+                          onTap: () {},
+                          gradientColors: [
+                            Colors.green.shade400,
+                            Colors.green.shade700,
+                          ],
+                        ),
                       ],
                     ),
 
@@ -161,7 +173,7 @@ class Settings extends StatelessWidget {
   }
 
   // ---------------- بطاقة الملف الشخصي أعلى الصفحة ----------------
-  Widget _buildProfileHeader(bool isDarkMode,String username) {
+  Widget _buildProfileHeader(bool isDarkMode, String username) {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -194,7 +206,7 @@ class Settings extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   Text(
+                  Text(
                     "$username",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),

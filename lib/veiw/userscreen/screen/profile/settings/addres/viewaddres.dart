@@ -5,7 +5,6 @@ import 'package:hos/controler/usercontroller/profile/addres/addrescontroller.dar
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/data/model/Addresmodel.dart';
-import 'package:hos/veiw/userscreen/screen/profile/settings/addres/editaddress.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
 class ViewMyAddres extends StatelessWidget {
@@ -96,7 +95,7 @@ Widget _card(
       boxShadow: [
         BoxShadow(
           color: Colors.black.withOpacity(0.03),
-          blurRadius:2,
+          blurRadius: 2,
           spreadRadius: 0.5,
           offset: const Offset(0, 1),
         ),
@@ -176,37 +175,6 @@ Widget _card(
                       ),
                       itemBuilder: (BuildContext context) {
                         return [
-                          PopupMenuItem(
-                            onTap: () {
-                              if (address.id != null) {
-                                Get.to(
-                                  () => EditAddressPage(),
-                                  transition: context.isPhone
-                                      ? Transition.cupertino
-                                      : Transition.fadeIn,
-                                  arguments: {"AddresModel": address},
-                                );
-                              }
-                            },
-                            value: 'edit',
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.edit_rounded,
-                                  color: Colors.blue.shade600,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 12),
-                                const Text(
-                                  "تعديل",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
                           PopupMenuItem(
                             onTap: onDelete,
                             value: 'delete',
