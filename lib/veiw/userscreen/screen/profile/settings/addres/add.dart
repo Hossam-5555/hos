@@ -6,13 +6,13 @@ import 'package:hos/veiw/wedget/Address/addandedit.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
 class AddNewAddres extends StatelessWidget {
-  const AddNewAddres({super.key});
+   AddNewAddres({super.key});
+
 
   @override
   Widget build(BuildContext context) {
     // 1. استخدام Get.put كما أنت تفعل
     final size = MediaQuery.of(context).size;
-
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: PreferredSize(

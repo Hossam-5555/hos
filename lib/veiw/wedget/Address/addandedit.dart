@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:hos/core/conistant/locationdata.dart';
@@ -14,7 +13,7 @@ import 'package:latlong2/latlong.dart';
 
 class LatLngTween extends Tween<LatLng> {
   LatLngTween({required LatLng begin, required LatLng end})
-      : super(begin: begin, end: end);
+    : super(begin: begin, end: end);
 
   @override
   LatLng lerp(double t) {
@@ -40,8 +39,7 @@ class Addresspage<T extends GetxController> extends StatefulWidget {
   MapController map;
   List<String> locationTypes;
   Size size;
-  void Function() currentlocation;
-
+  Future<LatLng?> Function() currentlocation;
   Addresspage({
     super.key,
     required this.controller,
@@ -64,24 +62,43 @@ class Addresspage<T extends GetxController> extends StatefulWidget {
   State<Addresspage<T>> createState() => _AddresspageState<T>();
 }
 
-class _AddresspageState<T extends GetxController>
-    extends State<Addresspage<T>> with SingleTickerProviderStateMixin {
+class _AddresspageState<T extends GetxController> extends State<Addresspage<T>>
+    with SingleTickerProviderStateMixin {
   LatLng? selectedPoint;
   LatLng? displayedPoint;
   late AnimationController _animController;
   LatLngTween? _tween;
+  late final MapOptions _mapOptions; // ✅ instance ثابتة
+  bool _isLocating = false; // ✅ حالة التحميل
+
+  static final LatLngBounds _egyptBounds = LatLngBounds(
+    const LatLng(22.0, 25.0),
+    const LatLng(31.7, 36.0),
+  );
 
   @override
   void initState() {
     super.initState();
-    _animController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 350),
-    )..addListener(() {
-        if (_tween != null) {
-          setState(() => displayedPoint = _tween!.evaluate(_animController));
-        }
-      });
+    _animController =
+        AnimationController(
+          vsync: this,
+          duration: const Duration(milliseconds: 350),
+        )..addListener(() {
+          if (_tween != null) {
+            setState(() => displayedPoint = _tween!.evaluate(_animController));
+          }
+        });
+
+    // ✅ تتعمل مرة واحدة بس، مش هتتغير كل rebuild
+    _mapOptions = MapOptions(
+      initialCenter: const LatLng(26.8206, 30.8025),
+      initialZoom: 6.0,
+      onTap: _handleTap,
+      minZoom: 3.0,
+      maxZoom: 18.0,
+      initialRotation: 0,
+      cameraConstraint: CameraConstraint.contain(bounds: _egyptBounds),
+    );
   }
 
   @override
@@ -97,6 +114,9 @@ class _AddresspageState<T extends GetxController>
   }
 
   Future<void> _handleTap(TapPosition tapPosition, LatLng point) async {
+    // ✅ تحقق من الـ bounds قبل أي حركة
+    if (!_egyptBounds.contains(point)) return;
+
     setState(() => selectedPoint = point);
     _animateMarkerTo(point);
     try {
@@ -113,13 +133,23 @@ class _AddresspageState<T extends GetxController>
   }
 
   Future<void> _handleCurrentLocation() async {
-    widget.currentlocation();
+    if (_isLocating) return; // منع الضغط المتكرر أثناء التحميل
+
+    setState(() => _isLocating = true);
+
+    final point = await widget.currentlocation();
+
+    if (!mounted) return; // احتياط لو الـ widget اتشال أثناء الانتظار
+
+    if (point == null) {
+      setState(() => _isLocating = false);
+      return;
+    }
+
+    setState(() => selectedPoint = point);
+    _animateMarkerTo(point);
+
     try {
-      final position = await Geolocator.getCurrentPosition();
-      final point = LatLng(position.latitude, position.longitude);
-      setState(() => selectedPoint = point);
-      _animateMarkerTo(point);
-      widget.map.move(point, widget.map.camera.zoom);
       final placemarks = await geocoding.placemarkFromCoordinates(
         point.latitude,
         point.longitude,
@@ -130,6 +160,8 @@ class _AddresspageState<T extends GetxController>
         widget.onChangedcity?.call(place.locality);
       }
     } catch (_) {}
+
+    if (mounted) setState(() => _isLocating = false);
   }
 
   void _openDetailsSheet() {
@@ -160,20 +192,7 @@ class _AddresspageState<T extends GetxController>
       children: [
         FlutterMap(
           mapController: widget.map,
-          options: MapOptions(
-            initialCenter: const LatLng(26.8206, 30.8025),
-            initialZoom: 6.0,
-            onTap: _handleTap,
-            minZoom: 3.0,
-            maxZoom: 18.0,
-            initialRotation: 0,
-            cameraConstraint: CameraConstraint.contain(
-              bounds: LatLngBounds(
-                const LatLng(22.0, 25.0),
-                const LatLng(31.7, 36.0),
-              ),
-            ),
-          ),
+          options: _mapOptions, // ✅ نفس الـ instance كل مرة
           children: [
             TileLayer(
               urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -193,7 +212,6 @@ class _AddresspageState<T extends GetxController>
               ),
           ],
         ),
-
         Positioned(
           top: 16,
           right: 16,
@@ -207,12 +225,19 @@ class _AddresspageState<T extends GetxController>
                   shape: BoxShape.circle,
                   color: Colors.blue,
                 ),
-                child: const Icon(Icons.gps_fixed),
+                child: _isLocating
+                    ? const Padding(
+                        padding: EdgeInsets.all(12),
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2.5,
+                        ),
+                      )
+                    : const Icon(Icons.gps_fixed, color: Colors.white),
               ),
             ),
           ),
         ),
-
         AnimatedPositioned(
           duration: const Duration(milliseconds: 250),
           curve: Curves.easeOut,
@@ -341,7 +366,11 @@ class _LocationDetailsSheet<T extends GetxController> extends StatelessWidget {
                 top: Radius.circular(24),
               ),
               boxShadow: const [
-                BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2),
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 10,
+                  spreadRadius: 2,
+                ),
               ],
             ),
             child: SafeArea(
@@ -389,7 +418,9 @@ class _LocationDetailsSheet<T extends GetxController> extends StatelessWidget {
                             selectedItem: selectedGovernorate,
                             onChanged: onChanged,
                             decoratorProps: const DropDownDecoratorProps(
-                              decoration: InputDecoration(labelText: 'المحافظة'),
+                              decoration: InputDecoration(
+                                labelText: 'المحافظة',
+                              ),
                             ),
                           ),
                         ),
@@ -399,8 +430,8 @@ class _LocationDetailsSheet<T extends GetxController> extends StatelessWidget {
                             items: (f, cs) => selectedGovernorate == null
                                 ? []
                                 : (EgyptLocations
-                                        .governorates[selectedGovernorate] ??
-                                    []),
+                                          .governorates[selectedGovernorate] ??
+                                      []),
                             selectedItem: selectedCity,
                             onChanged: onChangedcity,
                             decoratorProps: const DropDownDecoratorProps(

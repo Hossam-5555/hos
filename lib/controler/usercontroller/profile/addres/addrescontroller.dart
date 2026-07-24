@@ -1,18 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart' show MapController;
+import 'package:flutter_map/flutter_map.dart' show MapController, LatLngBounds;
 import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:geolocator/geolocator.dart';
-// import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/addresdata.dart';
 import 'package:hos/data/model/Addresmodel.dart';
+import 'package:latlong2/latlong.dart';
 
 class AddressController extends GetxController {
   Addresdata addresdata = Addresdata(Get.find());
@@ -20,17 +19,24 @@ class AddressController extends GetxController {
   Statusrequest? statusrequest;
   List<AddressModel> listaddresdata = <AddressModel>[].obs;
   GlobalKey<FormState> addadredKey = GlobalKey();
+
   // متغيرات الحقول
   TextEditingController? name;
   TextEditingController? city;
   TextEditingController? street;
-  double lat = 23.3344;
-  double long = 23.3344;
+
+  double lat = 30.0444;
+  double long = 31.2357;
+
+  final LatLngBounds egyptBounds = LatLngBounds(
+    const LatLng(22.0, 25.0),
+    const LatLng(31.7, 36.0),
+  );
 
   /////////////////////////
   String? selectedGovernorate;
   String? selectedCity;
-  String? selectedLocationType; // (منزل، كافيه، إلخ)
+  String? selectedLocationType;
   MapController map = MapController();
   final List<String> locationTypes = [
     'منزل',
@@ -44,7 +50,7 @@ class AddressController extends GetxController {
 
   void onGovernorateChanged(String? val) {
     selectedGovernorate = val;
-    selectedCity = null; // إعادة تعيين المركز عند تغيير المحافظة
+    selectedCity = null;
     update();
   }
 
@@ -58,72 +64,81 @@ class AddressController extends GetxController {
     update();
   }
 
-  Completer<GoogleMapController>? completercontroller;
-
-  List<Marker> markers = [];
-
-  void addMarkers(LatLng latLng) {
-    markers.clear();
-    markers.add(Marker(markerId: MarkerId("1"), position: latLng));
-    lat = latLng.latitude;
-    long = latLng.longitude;
-    update();
+ Future<LatLng?> getcurrentlocation() async {
+  bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    Get.snackbar('Location Disabled', 'Please enable location service');
+    return null;
   }
 
-  getcurrentlocation() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      Get.snackbar('Location Disabled', 'Please enable location service');
-      return;
-    }
-
-    LocationPermission permission = await Geolocator.checkPermission();
+  LocationPermission permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        Get.snackbar('Permission Denied', 'Location access is required');
-        return;
-      }
+      Get.snackbar('Permission Denied', 'Location access is required');
+      return null;
     }
+  }
 
-    if (permission == LocationPermission.deniedForever) {
-      Get.snackbar(
-        'Permission Required',
-        'Please enable location from settings',
-        mainButton: TextButton(
-          onPressed: () => Geolocator.openAppSettings(),
-          child: const Text('Open Settings'),
-        ),
-      );
-      return;
-    }
-
-    Position position = await Geolocator.getCurrentPosition(
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter: 100,
+  if (permission == LocationPermission.deniedForever) {
+    Get.snackbar(
+      'Permission Required',
+      'Please enable location from settings',
+      mainButton: TextButton(
+        onPressed: () => Geolocator.openAppSettings(),
+        child: const Text('Open Settings'),
       ),
     );
-
-    lat = position.latitude;
-    long = position.longitude;
-
-    List<geocoding.Placemark> placemarks = await geocoding
-        .placemarkFromCoordinates(lat, long);
-
-    print("${placemarks[0].country}");
-    print("${placemarks[0].street}");
-    print("${placemarks[0].administrativeArea}");
-    print("${placemarks[0].locality}");
-    print("${placemarks[0].name}");
+    return null;
   }
+
+  Position position = await Geolocator.getCurrentPosition(
+    locationSettings: const LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 100,
+    ),
+  );
+
+  final newLat = position.latitude;
+  final newLng = position.longitude;
+  final point = LatLng(newLat, newLng);
+
+  if (!egyptBounds.contains(point)) {
+    Get.snackbar(
+      'Outside Coverage',
+      'Your current location is outside our delivery area',
+    );
+    return null;
+  }
+
+  lat = newLat;
+  long = newLng;
+
+  map.move(point, 15);
+
+  try {
+    List<geocoding.Placemark> placemarks =
+        await geocoding.placemarkFromCoordinates(lat, long);
+    if (placemarks.isNotEmpty) {
+      print("${placemarks[0].country}");
+      print("${placemarks[0].street}");
+      print("${placemarks[0].administrativeArea}");
+      print("${placemarks[0].locality}");
+      print("${placemarks[0].name}");
+    }
+  } catch (e) {
+    print("Geocoding error: $e");
+  }
+
+  update();
+  return point; // ✅ رجّع النقطة عشان الـ widget يحط العلامة عليها
+}
 
   @override
   void onInit() {
     name = TextEditingController();
     city = TextEditingController();
     street = TextEditingController();
-    // getcurrentlocation();
     viewaddres();
     super.onInit();
   }
@@ -132,8 +147,7 @@ class AddressController extends GetxController {
 
   Future<void> addaddres() async {
     String cityText = city!.text = "$selectedGovernorate - $selectedCity";
-    String nameText = name!.text =
-        selectedLocationType ?? "منزل"; // تعيين نوع المكان
+    String nameText = name!.text = selectedLocationType ?? "منزل";
 
     statusrequest = Statusrequest.loading;
     update();
@@ -146,11 +160,10 @@ class AddressController extends GetxController {
       long.toString(),
       "+201034567820",
     );
-    // print("response addres : $response");
+
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
-        // تحديث القائمة بعد الإضافة
         await viewaddres();
         if (Get.isRegistered<Checkoutcontroller>()) {
           Checkoutcontroller controller = Get.find<Checkoutcontroller>();
@@ -161,7 +174,6 @@ class AddressController extends GetxController {
         response['message'] != null
             ? Get.snackbar("Error", response['message'])
             : Get.snackbar("Error", "Failed to add address");
-        // Get.back();
       }
     }
     update();
@@ -169,7 +181,6 @@ class AddressController extends GetxController {
 
   int isdefault = 0;
 
-  // viewaddress
   Future<void> viewaddres() async {
     statusrequest = Statusrequest.loading;
     update();
@@ -181,9 +192,7 @@ class AddressController extends GetxController {
       if (response['status'] == true) {
         List data = response['data']['data'];
         isdefault = response['data']['is_default'];
-        // تنظيف القائمة قبل الإضافة
         listaddresdata.clear();
-
         listaddresdata.addAll(data.map((e) => AddressModel.fromJson(e)));
       } else {
         statusrequest = Statusrequest.failure;
@@ -210,46 +219,32 @@ class AddressController extends GetxController {
       GlobalKey<AnimatedListState>();
 
   void deleteAddres(int addresid) {
-    // 1️⃣ البحث عن الـ index الخاص بالعنوان داخل القائمة المحلية قبل حذفه
     int index = listaddresdata.indexWhere((e) => e.id == addresid);
-    // 💡 ملاحظة: تأكد هل اسم المتغير في الموديل addressId أم id .. قمت بكتابتها تبعاً لمنطق الكود لديك
 
-    // 2️⃣ التأكد من أن العنصر موجود فعلياً في القائمة لتفادي الـ Crash
     if (index != -1) {
-      // أخذ نسخة من العنصر لعرض بياناته أثناء حركية الحذف قبل مسحه من القائمة
       var removedItem = listaddresdata[index];
 
-      // 3️⃣ تحديث الـ AnimatedListState بشكل آمن
       if (Addressket.currentState != null) {
         Addressket.currentState!.removeItem(
-          index, // تم التعديل هنا ليأخذ الـ index وليس الـ id
+          index,
           (context, animation) => ScaleTransition(
             scale: animation,
             child: Card(
               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              elevation: 0, // إلغاء الظل الثقيل لجعلها عصرية ومسطحة Flat
+              elevation: 0,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12), // زوايا دائرية ناعمة
-                side: BorderSide(
-                  color: Colors
-                      .red
-                      .shade200, // إطار خارجي خفيف جداً بلون أحمر هادئ
-                  width: 1,
-                ),
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Colors.red.shade200, width: 1),
               ),
-              color: Colors
-                  .green
-                  .shade50, // خلفية حمراء باهتة ومريحة جداً للعين (Soft Red)
+              color: Colors.green.shade50,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Container(
-                  // شريط أحمر رأسي جهة اليمين/اليسار يعطي لمسة جمالية واحترافية
                   margin: const EdgeInsets.all(5),
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(25),
-                    // border: Border.all(color: Colors.grey, width: 0.1),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.03),
@@ -268,12 +263,10 @@ class AddressController extends GetxController {
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: Colors.red.shade100,
-                        shape: BoxShape
-                            .circle, // وضع الأيقونة داخل دائرة خلفيتها حمراء فاتحة
+                        shape: BoxShape.circle,
                       ),
                       child: Icon(
-                        Icons
-                            .delete_sweep_rounded, // أيقونة حذف أكثر احترافية وديناميكية
+                        Icons.delete_sweep_rounded,
                         color: Colors.red.shade700,
                         size: 22,
                       ),
@@ -283,11 +276,8 @@ class AddressController extends GetxController {
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
-                        color: Colors
-                            .red
-                            .shade900, // لون الخط متناسق مع الخلفية الحمراء
-                        fontFamily:
-                            "sans-serif", // استبدله بخط تطبيقك إذا كان لديك خط مخصص
+                        color: Colors.red.shade900,
+                        fontFamily: "sans-serif",
                       ),
                     ),
                     subtitle: const Text(
@@ -303,30 +293,17 @@ class AddressController extends GetxController {
         );
       }
 
-      // 4️⃣ حذف العنصر من القائمة المحلية (List) بعد تمرير الـ index للأنيميشن
       listaddresdata.removeAt(index);
-
-      // 5️⃣ استدعاء الـ API لحذف العنوان من السيرفر
       addresdata.deleteAddresdata(addresid);
 
-      // 7️⃣ تحديث حالة الواجهة إذا أصبحت القائمة فارغة
       if (listaddresdata.isEmpty) {
         statusrequest = Statusrequest.failure;
       }
 
-      // 8️⃣ تحديث الواجهة (GetX Update)
       update();
     } else {
       print("خطأ: العنصر غير موجود في القائمة المحلية أساساً!");
     }
-  }
-
-  // دالة الحفظ
-  List<Marker> marker = [];
-  void addmarker(LatLng latlang) {
-    marker.clear();
-    marker.add(Marker(markerId: MarkerId('1'), position: latlang));
-    update();
   }
 
   @override
@@ -334,11 +311,6 @@ class AddressController extends GetxController {
     name!.dispose();
     city!.dispose();
     street!.dispose();
-
     super.dispose();
   }
-
-  // Returns a list of addresses matching the supplied coordinates. The first
-  // entry in the list is generally the address closest to the supplied
-  // coordinates.
 }

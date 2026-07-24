@@ -1,59 +1,19 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
 import 'package:hos/core/class/searchclass.dart';
 import 'package:hos/core/conistant/imageasset.dart';
-import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/saerch/productcard.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';
-
-// ==========================================================
-// Trending Now — بيانات ثابتة حالياً.
-// لما يبقى فيه API، كفاية تستبدل الـ list دي بـ mapping من الـ
-// response بنفس الشكل (title / subtitle / imageUrl) والـ UI
-// مش هيتغير خالص.
-// ==========================================================
-class _TrendingItem {
-  final String title;
-  final String subtitle;
-  final String imageUrl;
-  const _TrendingItem({
-    required this.title,
-    required this.subtitle,
-    required this.imageUrl,
-  });
-}
-
-const _trendingHero = _TrendingItem(
-  title: "Smartwatches",
-  subtitle: "Top tier wearables",
-  imageUrl:
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80",
-);
-
-const List<_TrendingItem> _trendingGrid = [
-  _TrendingItem(
-    title: "Gaming Laptops",
-    subtitle: "Ultimate performance",
-    imageUrl:
-        "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=600&q=80",
-  ),
-  _TrendingItem(
-    title: "Pro Cameras",
-    subtitle: "Capture every detail",
-    imageUrl:
-        "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&q=80",
-  ),
-];
 
 // ignore: must_be_immutable
 class Searchpage extends StatelessWidget {
   Searchpage({super.key});
 
   final controller = Get.put(SearchMix());
+  // final home = Get.find<HomepageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +31,7 @@ class Searchpage extends StatelessWidget {
         : const Color(0xFFF1F0ED);
     final Color cardBg = isDark
         ? Colors.white.withOpacity(0.06)
-        : const Color(0xFFF1F0ED);
+        : const Color.fromARGB(255, 255, 253, 253);
 
     return Scaffold(
       body: LayoutBuilder(
@@ -122,6 +82,13 @@ class Searchpage extends StatelessWidget {
                               chipBg: chipBg,
                               cardBg: cardBg,
                               accent: accent,
+                              ontap: () {
+                                // home.gotoitems(
+                                //   home.categories,
+                                //   0,
+                                //   home.categories[0].id.toString(),
+                                // );
+                              },
                             ),
                     ),
                   ],
@@ -138,8 +105,9 @@ class Searchpage extends StatelessWidget {
 // ==========================================================
 // حالة عدم البحث: Recent Searches + Trending Now
 // ==========================================================
+// ignore: must_be_immutable
 class _IdleState extends StatelessWidget {
-  const _IdleState({
+  _IdleState({
     required this.controller,
     required this.hPad,
     required this.width,
@@ -148,6 +116,7 @@ class _IdleState extends StatelessWidget {
     required this.chipBg,
     required this.cardBg,
     required this.accent,
+    required this.ontap,
   });
 
   final SearchMix controller;
@@ -158,7 +127,7 @@ class _IdleState extends StatelessWidget {
   final Color chipBg;
   final Color cardBg;
   final Color accent;
-
+  void Function() ontap;
   @override
   Widget build(BuildContext context) {
     final bool hasRecent = controller.recentSearches.isNotEmpty;
@@ -167,7 +136,7 @@ class _IdleState extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(hPad, 20, hPad, 24),
       physics: const BouncingScrollPhysics(),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // ───────────── Recent Searches ─────────────
           if (hasRecent) ...[
@@ -221,212 +190,18 @@ class _IdleState extends StatelessWidget {
             const SizedBox(height: 28),
           ],
 
-          // ───────────── Trending Now ─────────────
-          Row(
-            children: [
-              Icon(Icons.trending_up_rounded, color: textPrimary, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                "Trending Now".tr,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: textPrimary,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-
-          // Hero card
-          _TrendingHeroCard(item: _trendingHero, width: width, accent: accent),
-          const SizedBox(height: 14),
-
-          // Grid cards
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: _trendingGrid.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 14,
-              mainAxisSpacing: 14,
-              childAspectRatio: 0.95,
-            ),
-            itemBuilder: (context, index) {
-              return _TrendingTile(
-                item: _trendingGrid[index],
-                cardBg: cardBg,
-                textPrimary: textPrimary,
-              );
-            },
-          ),
           const SizedBox(height: 28),
           PopularCategoriesSection(
-            categories: Get.find<HomepageController>().categories.sublist(0, 3),
+            categories: Get.find<HomepageController>().categories.sublist(0, 4),
             textPrimary: textPrimary,
             accent: accent,
             cardBg: cardBg,
             borderColor: context.isDarkMode
                 ? Colors.white.withOpacity(0.08)
                 : Colors.grey.withOpacity(0.15),
-            ontap: () {},
+            ontap: ontap,
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _TrendingHeroCard extends StatelessWidget {
-  const _TrendingHeroCard({
-    required this.item,
-    required this.width,
-    required this.accent,
-  });
-
-  final _TrendingItem item;
-  final double width;
-  final Color accent;
-
-  @override
-  Widget build(BuildContext context) {
-    final double height = (width * 0.42).clamp(150.0, 220.0);
-
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(22),
-      child: SizedBox(
-        height: height,
-        width: double.infinity,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            CachedNetworkImage(
-              imageUrl: item.imageUrl,
-              fit: BoxFit.cover,
-              placeholder: (_, __) => Container(color: Colors.grey.shade300),
-              errorWidget: (_, __, ___) =>
-                  Container(color: Colors.grey.shade400),
-            ),
-            // تظليل تدريجي أسفل الصورة عشان النص يبان بوضوح
-            Positioned.fill(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.black.withOpacity(0.0),
-                      Colors.black.withOpacity(0.55),
-                    ],
-                    stops: const [0.4, 1.0],
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              left: 18,
-              bottom: 18,
-              right: 70,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.title,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    item.subtitle,
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.85),
-                      fontSize: 13,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              right: 16,
-              bottom: 16,
-              child: Container(
-                width: 42,
-                height: 42,
-                decoration: BoxDecoration(
-                  color: accent,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.arrow_forward_rounded,
-                  color: Colors.white,
-                  size: 20,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _TrendingTile extends StatelessWidget {
-  const _TrendingTile({
-    required this.item,
-    required this.cardBg,
-    required this.textPrimary,
-  });
-
-  final _TrendingItem item;
-  final Color cardBg;
-  final Color textPrimary;
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(18),
-      child: Container(
-        color: cardBg,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18),
-            image: DecorationImage(
-              image: CachedNetworkImageProvider(item.imageUrl),
-              fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(
-                Colors.white.withOpacity(0.15),
-                BlendMode.darken,
-              ),
-            ),
-          ),
-          child: Container(
-            margin: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
-
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  item.title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Color.fromARGB(255, 255, 255, 255),
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  item.subtitle,
-                  style: TextStyle(fontSize: 12, color: Colors.grey.shade200),
-                ),
-              ],
-            ),
-          ),
-        ),
       ),
     );
   }
@@ -491,6 +266,7 @@ class _SearchResults extends StatelessWidget {
 // الـ response، والـ UI مش هيتغير.
 // ==========================================================
 
+// ignore: must_be_immutable
 class PopularCategoriesSection extends StatelessWidget {
   PopularCategoriesSection({
     super.key,
@@ -551,6 +327,7 @@ class PopularCategoriesSection extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class _CategoryRow extends StatelessWidget {
   _CategoryRow({
     required this.item,
