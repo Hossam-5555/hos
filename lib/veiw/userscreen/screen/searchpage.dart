@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
+import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/searchclass.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/saerch/productcard.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 // ignore: must_be_immutable
 class Searchpage extends StatelessWidget {
@@ -192,6 +194,7 @@ class _IdleState extends StatelessWidget {
 
           const SizedBox(height: 28),
           PopularCategoriesSection(
+            c: controller,
             categories: Get.find<HomepageController>().categories.sublist(0, 4),
             textPrimary: textPrimary,
             accent: accent,
@@ -276,8 +279,9 @@ class PopularCategoriesSection extends StatelessWidget {
     required this.cardBg,
     required this.borderColor,
     required this.ontap,
+    required this.c,
   });
-
+  SearchMix c;
   final List<CategoriesModel> categories;
   final Color textPrimary;
   final Color accent;
@@ -298,12 +302,8 @@ class PopularCategoriesSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 14),
-        Container(
-          decoration: BoxDecoration(
-            color: cardBg,
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: borderColor),
-          ),
+        Skeletonizer(
+          enabled: c.statusrequest == Statusrequest.loading,
           child: Column(
             children: List.generate(categories.length, (index) {
               final item = categories[index];

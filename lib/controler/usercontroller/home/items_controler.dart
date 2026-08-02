@@ -139,8 +139,6 @@ class ItemsController extends SearchMix {
   void onInit() {
     search = TextEditingController();
     initdata();
-    print(Get.currentRoute);
-
     super.onInit();
   }
 

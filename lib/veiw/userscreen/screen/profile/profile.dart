@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
+import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/veiw/userscreen/screen/profile/review.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
@@ -47,12 +48,13 @@ class ProfilePage extends StatelessWidget {
                       orderCard("الطلبات و\nالمشتريات", Imageasset.order, () {
                         Get.toNamed(Approute.Orders);
                       }, context),
-                      orderCard(
-                        "نقاط\nالمكافأه",
-                        Imageasset.goold,
-                        () {},
-                        context,
-                      ),
+                      orderCard("نقاط\nالمكافأه", Imageasset.goold, () {
+                        showSnackBar(
+                          context,
+                          "Coming Soon",
+                          Icon(Icons.check_circle),
+                        );
+                      }, context),
                       orderCard(
                         "App Settings and Privacy".tr,
                         Imageasset.settings,
@@ -242,6 +244,7 @@ Widget orderCard(String title, String image, Function()? onTap, context) {
           width: 120,
           alignment: Alignment.center,
           decoration: BoxDecoration(
+            image: DecorationImage(image: AssetImage(image)),
             borderRadius: BorderRadius.circular(20),
             // الحواف المضيئة الخفيفة (نفس الـ Stroke اللي في الصورة)
             border: Border.all(color: Colors.grey.withOpacity(0.18), width: 1),
@@ -271,25 +274,9 @@ Widget orderCard(String title, String image, Function()? onTap, context) {
                   title,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize:
-                        16, // تصغير الخط ليناسب عرض الكارت (120) ولا يحدث OverFlow
-                    // color: Colors.white,
+                    fontSize: 16, // حجم الخط مناسب للقراءة على البطاقة الصغيرة
                     fontWeight: FontWeight.bold,
                     height: 1.3,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Expanded(
-                  child: Image.asset(
-                    image,
-                    filterQuality: FilterQuality.medium,
-                    fit: BoxFit
-                        .contain, // contain أفضل هنا عشان تفاصيل الـ 3D تظهر كاملة بدون قص
-                    errorBuilder: (context, error, stackTrace) => const Icon(
-                      Icons.error_outline,
-                      color: Colors.white54,
-                      size: 40,
-                    ),
                   ),
                 ),
               ],
