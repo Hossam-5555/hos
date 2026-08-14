@@ -50,32 +50,28 @@ class _FavoriteButtonState extends State<FavoriteButton>
         padding: const EdgeInsets.all(4.0),
         child: ClipPath(
           clipper: ShapeBorderClipper(shape: const CircleBorder()),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-            child: Container(
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: AlignmentGeometry.topLeft,
-                  end: AlignmentGeometry.bottomRight,
-                  colors: [
-                    Colors.white.withAlpha(102),
-                    Colors.white.withAlpha(25),
-                  ],
-                ),
-                border: Border.all(color: Colors.white.withAlpha(51)),
-                shape: BoxShape.circle,
+          child: Container(
+            height: 50,
+            width: 50,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  
+                  Color(0xFFFFFFFF), // مركز الإضاءة الأبيض المشع
+                  Color(0xFFF2F4F7), // البلاتينيوم الناعم
+                  Color(0xFFD0D5DD), // الأطراف الفضية الراقية
+                ],
               ),
-              child: ScaleTransition(
-                scale: _scale,
-                child: Icon(
-                  widget.isFav ? Icons.favorite : Icons.favorite_border_rounded,
-                  color: widget.isFav
-                      ? Colors.redAccent
-                      : Colors.black,
-                  size: 20,
-                ),
+            ),
+            child: ScaleTransition(
+              scale: _scale,
+              child: Icon(
+                widget.isFav ? Icons.favorite : Icons.favorite_border_rounded,
+                color: widget.isFav ? Colors.redAccent : Colors.black,
+                size: 20,
               ),
             ),
           ),

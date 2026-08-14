@@ -6,45 +6,74 @@ import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.da
 // دوال بناء الواجهة
 // ==========================================
 
+
 Widget buildPaymentMethod({
   required String title,
   required IconData icon,
   required String method,
+  String? subtitle,
+  Color? iconColor,
   controller,
 }) {
   final isSelected = controller.selectedMethod == method;
-  return Expanded(
-    child: GestureDetector(
-      onTap: () => controller.changePaymentMethod(method),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.black : Colors.transparent,
-          border: Border.all(
-            color: isSelected ? Colors.black : Colors.grey.shade300,
-            width: 1.5,
-          ),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              color: isSelected ? Colors.white : Colors.grey.shade700,
-              size: 28,
+
+  return GestureDetector(
+    onTap: () => controller.changePaymentMethod(method),
+    child: AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: (iconColor ?? Colors.black).withOpacity(0.1),
+              shape: BoxShape.circle,
             ),
-            const SizedBox(height: 8),
-            Text(
-              title,
-              style: TextStyle(
-                color: isSelected ? Colors.white : Colors.grey.shade700,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                fontSize: 13,
+            child: Icon(icon, color: iconColor ?? Colors.black87, size: 20),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                if (subtitle != null) ...[
+                  Text(
+                    subtitle,
+                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            width: 22,
+            height: 22,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: isSelected ? Colors.green : Colors.transparent,
+              border: Border.all(
+                color: isSelected ? Colors.black : Colors.grey.shade400,
+                width: .1,
               ),
             ),
-          ],
-        ),
+            child: isSelected
+                ? const Icon(Icons.check_rounded, size: 14, color: Colors.black)
+                : null,
+          ),
+        ],
       ),
     ),
   );

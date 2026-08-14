@@ -303,7 +303,9 @@ class PopularCategoriesSection extends StatelessWidget {
         ),
         const SizedBox(height: 14),
         Skeletonizer(
-          enabled: c.statusrequest == Statusrequest.loading,
+          enabled:
+              c.statusrequest == Statusrequest.loading ||
+              c.statusrequest == Statusrequest.serverfailure,
           child: Column(
             children: List.generate(categories.length, (index) {
               final item = categories[index];

@@ -113,18 +113,17 @@ class Checkoutcontroller extends GetxController {
       if (statusrequest == Statusrequest.success) {
         if (response['status'] == true) {
           // نجاح العملية
-          showSnackBar(
-            Get.context!,
-            "تم إرسال الطلب بنجاح",
-            Icon(Icons.check_circle, color: Colors.green),
-          );
+          // showSnackBar(
+          //   Get.context!,
+          //   "تم إرسال الطلب بنجاح",
+          //   Icon(Icons.check_circle, color: Colors.green),
+          // );
+          int orderId = response['data']['order_id'];
 
+          var paymentResponse = await checkoutdata.payment(orderId);
+          print("Payment response: $paymentResponse");
           // مسح السلة (يفضل تفعيلها لضمان عدم تكرار الطلب)
           Get.find<CartController>().view();
-
-          Future.delayed(const Duration(milliseconds: 300), () {
-            Get.back();
-          });
         } else {
           statusrequest = Statusrequest.failure;
           showSnackBar(

@@ -17,166 +17,150 @@ class Checkout extends StatelessWidget {
     PaymentController controller1 = Get.put(PaymentController());
 
     return Scaffold(
-      // شيلنا الـ bottomNavigationBar خالص لأن الزرار اتنقل جوة الشاشة
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(65),
-        child: Appbarbackicon(herotag: '', title: "confirm order".tr),
-      ),
+      appBar: Appbarbackicon(title: "confirm order".tr, herotag: "checkout"),
       body: GetBuilder<Checkoutcontroller>(
         builder: (c) => ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
           children: [
-            // قسم عنوان التوصيل
+            // ================= طرق الدفع =================
+            _buildCard(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GetBuilder<Checkoutcontroller>(
+                    builder: (c) => Column(
+                      children: [
+                        buildPaymentMethod(
+                          controller: c,
+                          title: 'بطاقة ائتمان',
+                          subtitle: '******** 8463',
+                          icon: Icons.credit_card_rounded,
+                          iconColor: const Color(0xFFEB5757),
+                          method: "credit",
+                        ),
+                        buildPaymentMethod(
+                          controller: c,
+                          title: 'محفظة',
+                          subtitle: 'orb****@gmail.com',
+                          icon: Icons.account_balance_wallet_rounded,
+                          iconColor: const Color(0xFF2D9CDB),
+                          method: "mobile",
+                        ),
+                        buildPaymentMethod(
+                          controller: c,
+                          title: 'كاش',
+                          icon: Icons.money_rounded,
+                          iconColor: Colors.grey,
+                          method: "cash",
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            GetBuilder<Checkoutcontroller>(
+              builder: (c) => AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                switchInCurve: Curves.easeOutCubic,
+                transitionBuilder: (child, animation) => FadeTransition(
+                  opacity: animation,
+                  child: SlideTransition(
+                    position: Tween<Offset>(
+                      begin: const Offset(0, 0.05),
+                      end: Offset.zero,
+                    ).animate(animation),
+                    child: child,
+                  ),
+                ),
+                child: buildFormContent(c),
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // ================= عنوان التوصيل =================
             HandlingDataView(
               mediaType: HandlingMediaType.animation,
               mode: HandlingMode.skeleton,
               statusrequest: c.statusrequest,
-              widget: _buildSectionCard(
-                title: "shipping address".tr,
-                icon: Icons.location_on_rounded,
+              widget: _buildCard(
                 child: c.listaddresdata.isEmpty
                     ? ListTile(
+                        contentPadding: EdgeInsets.zero,
                         onTap: () => Get.to(() => AddNewAddres()),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        leading: const Icon(
-                          Icons.add_location_alt,
-                        ),
+                        leading: const Icon(Icons.add_location_alt),
                         title: Text(
                           "Add new address".tr,
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        trailing: const Icon(
-                          Icons.add_circle,
-                        ),
+                        trailing: const Icon(Icons.add_circle),
                       )
                     : _buildAddressSelector(c, context),
               ),
             ),
             const SizedBox(height: 16),
 
-            const SizedBox(height: 16),
+            // ================= ملخص الطلب =================
+            _buildCard(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Order Summary".tr,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildPriceRow("Order Amount".tr, "\$${c.totalprice}"),
+                  const SizedBox(height: 10),
+                  _buildPriceRow("Delivery".tr, "\$50"),
+                  const SizedBox(height: 16),
+                  const Divider(height: 1),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Total Amount".tr,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      Text(
+                        '\$${c.totalprice}',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w900,
+                          color: Color(0xFFFF7A45),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
 
-            // الـ Form وبداخله اختيارات الدفع وزرار التأكيد الجديد
+            // ================= الفورم الديناميكي + زرار التأكيد =================
             Form(
               key: controller1.formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'اختر طريقة الدفع',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
-                  ),
-                  const SizedBox(height: 16),
-
-                  // 1. اختيارات الدفع (بطاقة، محفظة، كاش)
-                  GetBuilder<Checkoutcontroller>(
-                    builder: (c) => Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        buildPaymentMethod(
-                          controller: c,
-                          title: 'بطاقة ائتمان',
-                          icon: Icons.credit_card_rounded,
-                          method: "credit",
-                        ),
-                        const SizedBox(width: 8),
-                        buildPaymentMethod(
-                          controller: c,
-                          title: 'محفظة',
-                          icon: Icons.account_balance_wallet_rounded,
-                          method: "mobile",
-                        ),
-                        const SizedBox(width: 8),
-                        buildPaymentMethod(
-                          controller: c,
-                          title: 'كاش',
-                          icon: Icons.money_rounded,
-                          method: "cash",
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 24),
-                    child: Divider(height: 1),
-                  ),
-
-                  // 2. نموذج الدفع الديناميكي (بيظهر حسب الاختيار)
-                  GetBuilder<Checkoutcontroller>(
-                    builder: (c) => AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      switchInCurve: Curves.easeOutCubic,
-                      transitionBuilder: (child, animation) => FadeTransition(
-                        opacity: animation,
-                        child: SlideTransition(
-                          position: Tween<Offset>(
-                            begin: const Offset(0, 0.05),
-                            end: Offset.zero,
-                          ).animate(animation),
-                          child: child,
-                        ),
-                      ),
-                      child: buildFormContent(c),
-                    ),
-                  ),
-
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 24),
-                    child: Divider(thickness: 1),
-                  ),
-
-                  // 3. تفاصيل الحساب والأسعار تحت الـ Form مباشرة
-                  _buildPriceRow("Sipping".tr, "${50} \$"),
-                  const SizedBox(height: 8),
-                  _buildPriceRow("Subtotal".tr, "${c.totalprice} \$"),
-                  const SizedBox(height: 8),
-                  _buildPriceRow(
-                    "موعد التوصيل المتوقع:",
-                    "خلال 3 أيام",
-                    isDate: true,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12),
-                    child: Divider(thickness: 1),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Total price".tr,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        '${c.totalprice} \$',
-                        style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.blueAccent,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  // 🔥 زرار التأكيد تم وضعه هنا (تحت الـ Form والأسعار مباشرة)
+                  // 🔥 نفس الـ Checkbutton ونفس الأنيميشن، بس بستايل "Pay Now"
                   Checkbutton(
                     width: MediaQuery.of(context).size.width,
                     buttonColor: Colors.black,
                     onTap: () {
-                      print("Hssa");
-                      c.checkoutoder(); // الآن يستدعي الكنترولر بأمان بدون تعارض
+                      c.checkoutoder();
                     },
-                    buttonName: "confirm order".tr,
+                    buttonName: "Pay Now".tr,
                     statusrequest: c.statusrequest,
                   ),
-                  const SizedBox(height: 20), // مسافة أمان أسفل الشاشة
                 ],
               ),
             ),
@@ -188,72 +172,93 @@ class Checkout extends StatelessWidget {
 
   // ================= دوال التصميم الفرعية =================
 
-  Widget _buildSectionCard({
-    required String title,
-    required IconData icon,
-    required Widget child,
-  }) {
+  Widget _buildCard({required Widget child}) {
     return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
+        color: Theme.of(Get.context!).cardColor,
         borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(icon, color: Colors.blueAccent, size: 22),
-                const SizedBox(width: 8),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              ],
-            ),
-            const Divider(height: 24, thickness: 0.5),
-            child,
-          ],
-        ),
-      ),
+      child: child,
     );
   }
 
   Widget _buildAddressSelector(Checkoutcontroller c, BuildContext con) {
     return Obx(() {
-      // 1️⃣ حماية: لو لسه البيانات مفيش فيها عنوان مختار (الـ API بيحمل)
       if (c.selectedAddress.value == null) {
-        return const ListTile(
-          contentPadding: EdgeInsets.zero,
-          leading: CircularProgressIndicator(),
-          title: Text("جاري تحميل العنوان الافتراضي..."),
+        return const Row(
+          children: [
+            SizedBox(
+              width: 18,
+              height: 18,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
+            SizedBox(width: 12),
+            Text("جاري تحميل العنوان الافتراضي..."),
+          ],
         );
       }
 
-      // 2️⃣ الـ UI بياخد البيانات الجاهزة من الكنترولر فوراً وبدون أي لفة!
       final addr = c.selectedAddress.value!;
 
-      return ListTile(
-        contentPadding: EdgeInsets.zero,
-        leading: const CircleAvatar(
-          backgroundColor: Color(0xFFE3F2FD),
-          child: Icon(Icons.home_work, color: Colors.blue),
-        ),
-        title: Text(
-          addr.name ?? "غير معروف",
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Text(
-          "ؤ${addr.city ?? "غير معروف"} - ${addr.street ?? "غير معروف"}",
-          style: const TextStyle(fontSize: 12, color: Colors.grey),
-        ),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-        onTap: () => _showAddressesSheet(c, con),
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Delivery Address".tr,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+          ),
+          const SizedBox(height: 12),
+          InkWell(
+            borderRadius: BorderRadius.circular(12),
+            onTap: () => _showAddressesSheet(c, con),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.location_on_rounded,
+                  color: Colors.black54,
+                  size: 20,
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        addr.street ?? "غير معروف",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        addr.city ?? "غير معروف",
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 14,
+                  color: Colors.grey,
+                ),
+              ],
+            ),
+          ),
+        ],
       );
     });
   }
@@ -263,8 +268,8 @@ class Checkout extends StatelessWidget {
       Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: context.isDarkMode ? Color(0xff323538) : Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          color: context.isDarkMode ? const Color(0xff323538) : Colors.white,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: SingleChildScrollView(
           child: Column(
@@ -281,40 +286,33 @@ class Checkout extends StatelessWidget {
               ...c.listaddresdata.map(
                 (addr) => Obx(
                   () => RadioListTile<int>(
-                    // 💡 تحديد الـ Type هنا كـ int أفضل لـ Radio
-                    value:
-                        addr.id ??
-                        0, // الـ ID الخاص بهذا العنوان في اللفة الحالية
-                    groupValue: c
-                        .selectedAddress
-                        .value
-                        ?.id, // مقارنته بـ ID العنوان المختار بالكنترولر
+                    value: addr.id ?? 0,
+                    groupValue: c.selectedAddress.value?.id,
                     activeColor: Colors.green,
-                    title: Text(
-                      addr.city ?? "",
-                    ),
+                    title: Text(addr.city ?? ""),
                     subtitle: Text(
                       addr.street ?? "",
                       style: const TextStyle(color: Colors.grey),
                     ),
                     onChanged: (val) {
                       if (val != null) {
-                        // 💡 التعديل الجوهري: بنباصي الـ addr بالكامل (الـ Object) مش الـ ID
                         c.chooseAddres(addr);
-                        Get.back(); // إغلاق الـ BottomSheet بعد الاختيار
+                        Get.back();
                       }
                     },
                   ),
                 ),
               ),
-              const SizedBox(height: 10), // مسافة بسيطة قبل الزرار
-              TextButton.icon(
-                onPressed: () {
+              const SizedBox(height: 10),
+
+              Checkbutton(
+                width: MediaQuery.of(context).size.width,
+                buttonColor: Colors.black,
+                onTap: () {
                   Get.back();
                   Get.to(() => AddNewAddres());
                 },
-                icon: const Icon(Icons.add),
-                label: Text("Add new address".tr),
+                buttonName: "Add new address".tr,
               ),
             ],
           ),
@@ -323,21 +321,21 @@ class Checkout extends StatelessWidget {
     );
   }
 
-  Widget _buildPriceRow(String label, String value, {bool isDate = false}) {
+  Widget _buildPriceRow(String label, String value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           label,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+          style: const TextStyle(
+            fontSize: 14,
+            color: Colors.grey,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         Text(
           value,
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: isDate ? Colors.green : Colors.blue,
-          ),
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
         ),
       ],
     );
