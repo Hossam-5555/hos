@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
-import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/veiw/userscreen/screen/profile/review.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
+import 'package:hos/veiw/wedget/profiledailoge.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
@@ -49,11 +49,7 @@ class ProfilePage extends StatelessWidget {
                         Get.toNamed(Approute.Orders);
                       }, context),
                       orderCard("نقاط\nالمكافأه", Imageasset.goold, () {
-                        showSnackBar(
-                          context,
-                          "Coming Soon",
-                          Icon(Icons.check_circle),
-                        );
+                        ComingSoonOverlay.show();
                       }, context),
                       orderCard(
                         "App Settings and Privacy".tr,

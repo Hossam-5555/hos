@@ -10,6 +10,8 @@ import 'package:hos/data/datasource/userdata/addresdata.dart';
 import 'package:hos/data/datasource/userdata/checkoutdata.dart';
 import 'package:hos/data/model/Addresmodel.dart';
 import 'package:hos/data/model/cartmodel.dart';
+import 'package:hos/veiw/userscreen/screen/cartandcheckout/PaymentResultPage.dart';
+import 'package:hos/veiw/userscreen/screen/cartandcheckout/paymentwepview.dart';
 
 class Checkoutcontroller extends GetxController {
   final formKey = GlobalKey<FormState>();
@@ -107,30 +109,36 @@ class Checkoutcontroller extends GetxController {
 
       // تنفيذ الطلب
       var response = await checkoutdata.Checkout(data);
-      print("Response from checkout: $response");
       statusrequest = handling(response);
 
       if (statusrequest == Statusrequest.success) {
         if (response['status'] == true) {
-          // نجاح العملية
-          // showSnackBar(
-          //   Get.context!,
-          //   "تم إرسال الطلب بنجاح",
-          //   Icon(Icons.check_circle, color: Colors.green),
-          // );
           int orderId = response['data']['order_id'];
 
+          // ✅ لو كاش → روح لصفحة النجاح مباشرة
+          // لو كاش → روح لصفحة النجاح مباشرة
+          if (selectedMethod == 'cash') {
+            Get.to(() => PaymentResultPage(isSuccess: true));
+            return;
+          }
+
+          // ✅ لو credit → ابدأ الدفع
           var paymentResponse = await checkoutdata.payment(orderId);
-          print("Payment response: $paymentResponse");
-          // مسح السلة (يفضل تفعيلها لضمان عدم تكرار الطلب)
+          if (paymentResponse['status'] == true) {
+            String paymentUrl = paymentResponse['data']['payment_url'];
+            Get.to(
+              () => PaymentWebViewScreen(),
+              arguments: {'url': paymentUrl, 'order_id': orderId},
+            );
+          } else {
+            showSnackBar(
+              Get.context!,
+              "فشل في إنشاء رابط الدفع",
+              Icon(Icons.error, color: Colors.red),
+            );
+          }
+
           Get.find<CartController>().view();
-        } else {
-          statusrequest = Statusrequest.failure;
-          showSnackBar(
-            Get.context!,
-            "خطأ في البيانات، الرجاء المحاولة مرة أخرى",
-            Icon(Icons.question_mark, color: Colors.red),
-          );
         }
       } else {
         // التعامل مع أخطاء السيرفر أو الإنترنت
@@ -150,6 +158,28 @@ class Checkoutcontroller extends GetxController {
       );
     } finally {
       update(); // تحديث الواجهة في كل الحالات
+    }
+  }
+
+  //============================ التحقق من حالة الدفع
+  Future<void> checkPaymentStatus(int orderId) async {
+    try {
+      // استنى ثانيتين عشان الـ webhook يوصل للسيرفر الأول
+      await Future.delayed(const Duration(seconds: 2));
+
+      var response = await checkoutdata.payment(orderId);
+
+      if (response['data']['payment_status'] == 'paid') {
+        Get.offAll(() => PaymentResultPage(isSuccess: true));
+      } else {
+        Get.offAll(() => PaymentResultPage(isSuccess: false));
+      }
+    } catch (e) {
+      showSnackBar(
+        Get.context!,
+        "تعذر التحقق من حالة الدفع",
+        Icon(Icons.error, color: Colors.red),
+      );
     }
   }
 

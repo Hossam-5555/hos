@@ -65,6 +65,7 @@ class Homescreen extends StatelessWidget {
                     herotag: "notification",
                     onPressed: () {
                       Get.toNamed(Approute.notificationPage);
+                      // Get.to( () => PaymentResultPage(isSuccess: false,));
                     },
                     child: GetBuilder<Notificationcontroller>(
                       builder: (controller) {

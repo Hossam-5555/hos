@@ -224,7 +224,6 @@ class Checkout extends StatelessWidget {
               children: [
                 const Icon(
                   Icons.location_on_rounded,
-                  color: Colors.black54,
                   size: 20,
                 ),
                 const SizedBox(width: 10),

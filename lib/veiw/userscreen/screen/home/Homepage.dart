@@ -223,7 +223,7 @@ class AddToCartButton extends StatelessWidget {
       return InkWell(
         onTap: () {
           // 1️⃣ إضافة للـ Cart
-          CartController().addtocart(itemId, 1);
+          Get.find<CartController>().addtocart(itemId, 1);
 
           // 2️⃣ تغيير اللون لعلامة صح
           added.value = true;
