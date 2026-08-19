@@ -6,14 +6,9 @@ import 'package:hos/core/localization/changlocal.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/Editprofile.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/about_us_page.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
+import 'package:hos/veiw/wedget/bulidfooter.dart';
 
-/// ==================================================
-///                    UI THEME
-/// ==================================================
-class _STColors {
-  static const primary = Color(0xFF2962FF);
-  // static const primaryDark = Color(0xFF0039CB);
-}
+
 
 class Settings extends StatelessWidget {
   Settings({super.key});
@@ -165,7 +160,7 @@ class Settings extends StatelessWidget {
               ),
             ),
             // Footer Section
-            _buildFooter(),
+            buildFooter(),
           ],
         ),
       ),
@@ -429,43 +424,7 @@ class Settings extends StatelessWidget {
     color: Colors.grey.withOpacity(0.1),
   );
 
-  Widget _buildFooter() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 18),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: _STColors.primary.withOpacity(0.08),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.storefront_outlined,
-              color: _STColors.primary,
-              size: 22,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            "HOS App",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.grey[500],
-              letterSpacing: 1.2,
-              fontSize: 13,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            "© 2026 All Rights Reserved",
-            style: TextStyle(color: Colors.grey[400], fontSize: 11),
-          ),
-        ],
-      ),
-    );
-  }
-
+ 
   // ---------------- تأكيد تسجيل الخروج ----------------
   void _confirmLogout(BuildContext context, SettingsController controller) {
     Get.defaultDialog(

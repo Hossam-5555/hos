@@ -5,13 +5,13 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
 import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
-import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/wedget/Homepage/CurvedItemsView.dart';
 import 'package:hos/veiw/wedget/Homepage/categorieswidget.dart';
 import 'package:hos/veiw/wedget/Homepage/dicountcard.dart';
 import 'package:hos/veiw/wedget/Homepage/titles.dart';
 import 'package:hos/veiw/wedget/SharedProductCard.dart';
+import 'package:hos/veiw/wedget/bulidfooter.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -43,16 +43,10 @@ class HomePage extends StatelessWidget {
                   12.0,
                   32.0,
                 );
-                final double sectionSpacing = (width * 0.05).clamp(
-                  14.0,
-                  26.0,
-                );
+                final double sectionSpacing = (width * 0.05).clamp(14.0, 26.0);
 
                 // ارتفاع قائمة التصنيفات الأفقية: نسبة من العرض مش من الطول
-                final double categoryHeight = (width * 0.32).clamp(
-                  92.0,
-                  132.0,
-                );
+                final double categoryHeight = (width * 0.32).clamp(92.0, 132.0);
 
                 // عدد أعمدة الجريد: 2 للهاتف، 3 للتابلت الصغير، 4 للتابلت الكبير
                 final int gridCrossAxisCount = isTablet
@@ -74,7 +68,7 @@ class HomePage extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: horizontalPadding,
-                      vertical: sectionSpacing * 0.6,
+                      vertical: sectionSpacing * 0.1,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,58 +97,13 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
 
-                        SizedBox(height: sectionSpacing),
-
                         /// New Items Header
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Titles(title: "New Items".tr),
-                            TextButton.icon(
-                              onPressed: controller.newArival.isEmpty
-                                  ? null
-                                  : () => controller.gotoAllItems(
-                                      controller.newArival,
-                                      "New Items".tr,
-                                    ),
-                              icon: const Text("See All"),
-                              label: const Icon(
-                                Icons.arrow_forward_ios,
-                                size: 16,
-                              ),
-                              style: TextButton.styleFrom(
-                                foregroundColor: Appcolor.primaryColor,
-                              ),
-                            ),
-                          ],
-                        ),
+                        Titles(title: "New Items".tr),
                         CurvedItemsView(),
 
                         SizedBox(height: sectionSpacing * 0.5),
 
-                        /// Most Sale Header
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Titles(title: "Most Sale".tr),
-                            TextButton.icon(
-                              onPressed: controller.mostsaleitem.isEmpty
-                                  ? null
-                                  : () => controller.gotoAllItems(
-                                      controller.mostsaleitem,
-                                      "Most Sale".tr,
-                                    ),
-                              icon: const Text("See All"),
-                              label: const Icon(
-                                Icons.arrow_forward_ios,
-                                size: 16,
-                              ),
-                              style: TextButton.styleFrom(
-                                foregroundColor: Appcolor.primaryColor,
-                              ),
-                            ),
-                          ],
-                        ),
+                        Titles(title: "Most Sale".tr),
                         SizedBox(height: sectionSpacing * 0.6),
 
                         MasonryGridView.builder(
@@ -196,6 +145,10 @@ class HomePage extends StatelessWidget {
                             );
                           },
                         ),
+
+                        //footer
+                        SizedBox(height: sectionSpacing * 0.6),
+                        Center(child: buildFooter()),
                       ],
                     ),
                   ),
@@ -243,7 +196,8 @@ class AddToCartButton extends StatelessWidget {
             color: added.value ? Colors.green : Colors.black,
             shape: BoxShape.circle,
           ),
-          child: AnimatedSwitcher(switchInCurve: Curves.bounceIn,
+          child: AnimatedSwitcher(
+            switchInCurve: Curves.bounceIn,
             duration: const Duration(milliseconds: 300),
             transitionBuilder: (child, animation) =>
                 ScaleTransition(scale: animation, child: child),

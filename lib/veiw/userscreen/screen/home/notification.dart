@@ -47,8 +47,7 @@ class NotificationPage extends StatelessWidget {
           ),
           body: HandlingDataView(
             statusrequest: controller.statusrequest,
-            mediaType: HandlingMediaType.svgImage,
-            mode: HandlingMode.fullScreen,
+            mode: HandlingMode.skeleton,
             widget: Skeletonizer(
               enabled: isLoading,
               child: ListView.builder(
