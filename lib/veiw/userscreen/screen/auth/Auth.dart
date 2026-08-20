@@ -17,13 +17,15 @@ class AuthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     Get.put(AuthController());
+    Get.put(AuthController());
     final size = MediaQuery.of(context).size;
     final height = size.height;
     final width = size.width;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final glassColor = isDark ? Colors.white.withAlpha(15) : Appcolor.glass.withAlpha(51);
+    final glassColor = isDark
+        ? Colors.white.withAlpha(15)
+        : Appcolor.glass.withAlpha(51);
     final glassBorder = isDark
         ? Colors.white.withAlpha(40)
         : const Color.fromARGB(240, 145, 222, 255).withAlpha(77);
@@ -69,14 +71,21 @@ class AuthPage extends StatelessWidget {
                             duration: const Duration(milliseconds: 350),
                             curve: Curves.easeOutCubic,
                             width: width * 0.9,
-                            constraints: BoxConstraints(maxHeight: height * 0.72),
+                            constraints: BoxConstraints(
+                              maxHeight: height * 0.72,
+                            ),
                             decoration: BoxDecoration(
                               color: glassColor,
                               borderRadius: BorderRadius.circular(28),
-                              border: Border.all(color: glassBorder, width: 1.2),
+                              border: Border.all(
+                                color: glassBorder,
+                                width: 1.2,
+                              ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withAlpha(isDark ? 60 : 20),
+                                  color: Colors.black.withAlpha(
+                                    isDark ? 60 : 20,
+                                  ),
                                   blurRadius: 24,
                                   offset: const Offset(0, 12),
                                 ),
@@ -85,7 +94,9 @@ class AuthPage extends StatelessWidget {
                             child: Form(
                               key: controller.formKey,
                               child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: width * 0.06),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: width * 0.06,
+                                ),
                                 child: SingleChildScrollView(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -104,9 +115,13 @@ class AuthPage extends StatelessWidget {
                                       SizedBox(height: height * 0.025),
 
                                       AnimatedSwitcher(
-                                        duration: const Duration(milliseconds: 300),
+                                        duration: const Duration(
+                                          milliseconds: 300,
+                                        ),
                                         child: Text(
-                                          controller.isLogin ? "Welcome Back".tr : "Create New Account".tr,
+                                          controller.isLogin
+                                              ? "Welcome Back".tr
+                                              : "Create New Account".tr,
                                           key: ValueKey(controller.isLogin),
                                           style: TextStyle(
                                             fontSize: 24,
@@ -120,30 +135,45 @@ class AuthPage extends StatelessWidget {
                                         controller.isLogin
                                             ? "Login to continue shopping".tr
                                             : "Sign up to start shopping".tr,
-                                        style: TextStyle(fontSize: 13, color: subTextColor),
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color: subTextColor,
+                                        ),
                                       ),
                                       SizedBox(height: height * 0.028),
 
                                       AnimatedSize(
-                                        duration: const Duration(milliseconds: 300),
+                                        duration: const Duration(
+                                          milliseconds: 300,
+                                        ),
                                         curve: Curves.easeOutCubic,
                                         child: !controller.isLogin
                                             ? Column(
                                                 children: [
                                                   Textfealdauth(
-                                                    valid: (val) => validInput(val!, 3, 20, "username"),
-                                                    textEditingController: controller.username,
-                                                    suffixIcon: Icons.person_outline,
+                                                    valid: (val) => validInput(
+                                                      val!,
+                                                      3,
+                                                      20,
+                                                      "username",
+                                                    ),
+                                                    textEditingController:
+                                                        controller.username,
+                                                    suffixIcon:
+                                                        Icons.person_outline,
                                                     hint: "Enter Your username",
                                                   ),
-                                                  SizedBox(height: height * 0.015),
+                                                  SizedBox(
+                                                    height: height * 0.015,
+                                                  ),
                                                 ],
                                               )
                                             : const SizedBox.shrink(),
                                       ),
 
                                       Textfealdauth(
-                                        valid: (val) => validInput(val!, 6, 50, 'email'),
+                                        valid: (val) =>
+                                            validInput(val!, 6, 50, 'email'),
                                         textEditingController: controller.email,
                                         suffixIcon: Icons.email_outlined,
                                         hint: 'Email Address',
@@ -152,18 +182,24 @@ class AuthPage extends StatelessWidget {
 
                                       Textfealdauth(
                                         obscureText: controller.showpass,
-                                        onTapIcon: () => controller.isshowpass(),
-                                        valid: (val) => validInput(val!, 6, 30, 'password'),
-                                        textEditingController: controller.passward,
+                                        onTapIcon: () =>
+                                            controller.isshowpass(),
+                                        valid: (val) =>
+                                            validInput(val!, 6, 30, 'password'),
+                                        textEditingController:
+                                            controller.passward,
                                         suffixIcon: controller.showpass
                                             ? Icons.visibility_off
                                             : Icons.visibility,
                                         hint: "Password",
                                       ),
 
-                                      if (controller.statusrequest == Statusrequest.failure)
+                                      if (controller.statusrequest ==
+                                          Statusrequest.failure)
                                         Padding(
-                                          padding: const EdgeInsets.only(top: 10),
+                                          padding: const EdgeInsets.only(
+                                            top: 10,
+                                          ),
                                           child: Text(
                                             controller.isLogin
                                                 ? "البريد الإلكتروني أو كلمة المرور غير صحيحة"
@@ -177,12 +213,16 @@ class AuthPage extends StatelessWidget {
                                         ),
 
                                       AnimatedSize(
-                                        duration: const Duration(milliseconds: 300),
+                                        duration: const Duration(
+                                          milliseconds: 300,
+                                        ),
                                         child: controller.isLogin
                                             ? Align(
-                                                alignment: Alignment.centerRight,
+                                                alignment:
+                                                    Alignment.centerRight,
                                                 child: Forgetpassbutton(
-                                                  onPressed: () => controller.checkemailpage(),
+                                                  onPressed: () => controller
+                                                      .checkemailpage(),
                                                 ),
                                               )
                                             : SizedBox(height: height * 0.012),
@@ -193,7 +233,9 @@ class AuthPage extends StatelessWidget {
                                       Checkbutton(
                                         statusrequest: controller.statusrequest,
                                         onTap: () => controller.submit(),
-                                        buttonName: controller.isLogin ? 'Login' : 'Create Account',
+                                        buttonName: controller.isLogin
+                                            ? 'Login'
+                                            : 'Create Account',
                                         width: width * 0.75,
                                         buttonColor: Appcolor.primaryColor,
                                       ),
@@ -202,15 +244,28 @@ class AuthPage extends StatelessWidget {
 
                                       Row(
                                         children: [
-                                          Expanded(child: Divider(color: subTextColor.withAlpha(80))),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                                            child: Text(
-                                              "or continue with".tr,
-                                              style: TextStyle(fontSize: 12, color: subTextColor),
+                                          Expanded(
+                                            child: Divider(
+                                              color: subTextColor.withAlpha(80),
                                             ),
                                           ),
-                                          Expanded(child: Divider(color: subTextColor.withAlpha(80))),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 10,
+                                            ),
+                                            child: Text(
+                                              "or continue with".tr,
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: subTextColor,
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Divider(
+                                              color: subTextColor.withAlpha(80),
+                                            ),
+                                          ),
                                         ],
                                       ),
 
@@ -218,7 +273,8 @@ class AuthPage extends StatelessWidget {
 
                                       Checkbutton.widget(
                                         widget: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             Image.asset(
                                               Imageasset.googlepay,
@@ -230,13 +286,15 @@ class AuthPage extends StatelessWidget {
                                             Text(
                                               "Continue with Google".tr,
                                               style: TextStyle(
-                                                color: isDark ? Colors.white : Colors.black87,
+                                                color: isDark
+                                                    ? Colors.white
+                                                    : Colors.black87,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
                                           ],
                                         ),
-                                        statusrequest: controller.statusrequest,
+                                        statusrequest: Statusrequest.none,
                                         onTap: () => controller.submit(),
                                         buttonName: 'google',
                                         width: width * 0.75,
@@ -250,20 +308,30 @@ class AuthPage extends StatelessWidget {
                                       GestureDetector(
                                         onTap: () => controller.toggleMode(),
                                         child: Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 6),
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 6,
+                                          ),
                                           child: RichText(
                                             text: TextSpan(
                                               children: [
                                                 TextSpan(
                                                   text: controller.isLogin
-                                                      ? "Don't have an account? ".tr
-                                                      : "Already have an account? ".tr,
-                                                  style: TextStyle(color: subTextColor, fontSize: 13),
+                                                      ? "Don't have an account? "
+                                                            .tr
+                                                      : "Already have an account? "
+                                                            .tr,
+                                                  style: TextStyle(
+                                                    color: subTextColor,
+                                                    fontSize: 13,
+                                                  ),
                                                 ),
                                                 TextSpan(
-                                                  text: controller.isLogin ? "Sign Up".tr : "Login".tr,
+                                                  text: controller.isLogin
+                                                      ? "Sign Up".tr
+                                                      : "Login".tr,
                                                   style: TextStyle(
-                                                    color: Appcolor.primaryColor,
+                                                    color:
+                                                        Appcolor.primaryColor,
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 13,
                                                   ),
@@ -304,7 +372,9 @@ class _ModeSwitcher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final trackColor = isDark ? Colors.white.withAlpha(20) : Colors.black.withAlpha(15);
+    final trackColor = isDark
+        ? Colors.white.withAlpha(20)
+        : Colors.black.withAlpha(15);
     final inactiveText = isDark ? Colors.white70 : Colors.black54;
 
     return Container(

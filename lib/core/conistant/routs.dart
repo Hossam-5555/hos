@@ -11,7 +11,7 @@ import 'package:hos/core/middilware/midelware.dart';
 import 'package:hos/veiw/userscreen/screen/auth/forgetpass/forgetpass.dart';
 import 'package:hos/veiw/userscreen/screen/auth/forgetpass/resetpass.dart';
 import 'package:hos/veiw/userscreen/screen/auth/forgetpass/veryficode.dart';
-import 'package:hos/veiw/userscreen/screen/auth/login.dart';
+import 'package:hos/veiw/userscreen/screen/auth/Auth.dart';
 import 'package:hos/veiw/userscreen/screen/auth/veryfisign.dart';
 import 'package:hos/veiw/userscreen/screen/home/homescreen.dart';
 import 'package:hos/veiw/userscreen/screen/home/itemsdetailes.dart';
