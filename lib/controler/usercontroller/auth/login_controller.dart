@@ -6,65 +6,66 @@ import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/auth/logindata.dart';
+import 'package:hos/data/datasource/userdata/auth/signupdata.dart';
 import 'package:hos/data/model/UserModel.dart';
-import 'package:hos/veiw/userscreen/screen/auth/signup%20.dart';
 
-class LoginController extends GetxController {
+class AuthController extends GetxController {
+  bool isLogin = true;
+  bool showpass = true;
+
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  TextEditingController username = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController passward = TextEditingController();
+
+  Myservisec myservisec = Get.find();
+  LoginData logindata = LoginData(Get.find());
+  Signupdata signupdata = Signupdata(Get.find());
+
+  Statusrequest statusrequest = Statusrequest.none;
+
+  void toggleMode() {
+    isLogin = !isLogin;
+    formKey = GlobalKey<FormState>();
+    statusrequest = Statusrequest.none;
+    username.clear();
+    email.clear();
+    passward.clear();
+    update();
+  }
+
+  void isshowpass() {
+    showpass = !showpass;
+    update();
+  }
+
   void checkemailpage() {
     Get.toNamed(Approute.checkemailpage);
   }
 
-  List<UserModel> userinfo = [];
-  String? token;
-  void gotosignup() {
-    Get.off(
-      () => Signup(),
-      transition: Transition.fade,
-      duration: const Duration(milliseconds: 400),
-    );
+  Future<void> submit() async {
+    if (!formKey.currentState!.validate()) return;
+    if (isLogin) {
+      await login();
+    } else {
+      await signup();
+    }
   }
 
-  GlobalKey<FormState> loginkey = GlobalKey();
-  TextEditingController email = TextEditingController();
-  TextEditingController passward = TextEditingController();
-  Myservisec myservisec = Get.find();
-  bool showpass = true;
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  void isshowpass() {
-    showpass = showpass == true ? false : true;
-    update();
-  }
-
-  @override
-  void dispose() {
-    email.dispose();
-    passward.dispose();
-    super.dispose();
-  }
-
-  LoginData logindata = LoginData(Get.find());
-  Statusrequest statusrequest = Statusrequest.none;
   Future<void> login() async {
-    if (!loginkey.currentState!.validate()) return;
-
     statusrequest = Statusrequest.loading;
     update();
 
     var response = await logindata.postdata(email.text, passward.text);
     statusrequest = handling(response);
+
     if (statusrequest == Statusrequest.success && response['status'] == true) {
       var data = response['data'];
       var userJson = data['user'];
       var token = data['token'];
 
-      // 🔥 تحويل المستخدم
       UserModel user = UserModel.fromJson(userJson);
 
-      // 🔥 حفظ البيانات
       await myservisec.sharedPreferences.setInt("id", user.id!);
       await myservisec.sharedPreferences.setString("usersname", user.name!);
       await myservisec.sharedPreferences.setString("email", user.email!);
@@ -74,7 +75,6 @@ class LoginController extends GetxController {
 
       int id = user.id!;
 
-      // 🔥 Check approval
       if (user.isAprove == 1) {
         if (user.usersType == "admin") {
           FirebaseMessaging.instance.subscribeToTopic("admin");
@@ -93,5 +93,32 @@ class LoginController extends GetxController {
     }
 
     update();
+  }
+
+  Future<void> signup() async {
+    statusrequest = Statusrequest.loading;
+    update();
+
+    var response = await signupdata.postdata(username.text, email.text, passward.text);
+    statusrequest = handling(response);
+
+    if (statusrequest == Statusrequest.success) {
+      if (response['status'] == true) {
+        Get.offNamed(Approute.veryfisign, arguments: {"email": email.text});
+      } else {
+        Get.defaultDialog(title: "Warning", middleText: "email are Exist");
+        statusrequest = Statusrequest.failure;
+      }
+    }
+
+    update();
+  }
+
+  @override
+  void dispose() {
+    email.dispose();
+    passward.dispose();
+    username.dispose();
+    super.dispose();
   }
 }

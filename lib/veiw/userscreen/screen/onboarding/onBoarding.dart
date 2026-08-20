@@ -53,7 +53,7 @@ class Onboarding extends StatelessWidget {
                               controller.myservisec.sharedPreferences.setString('step', "1");
 
                               Get.offAll(
-                                () => const Login(),
+                                () => const AuthPage(),
                                 transition: Transition.fadeIn,
                                 duration: const Duration(milliseconds: 500), // نعومة في الانتقال
                               );

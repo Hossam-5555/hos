@@ -21,7 +21,7 @@ class OnboardingControler extends GetxController {
     if (curentpage > onBoarding.length - 1) {
       myservisec.sharedPreferences.setString('step', "1");
       Get.offAll(
-        () => Login(),
+        () => AuthPage(),
         transition: Transition.fadeIn,
         curve: Curves.easeInOut,
         duration: const Duration(milliseconds: 900),

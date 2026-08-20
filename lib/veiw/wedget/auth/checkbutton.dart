@@ -11,6 +11,16 @@ class Checkbutton extends StatelessWidget {
     this.buttonColor,
     this.statusrequest,
   });
+  Checkbutton.widget({
+    super.key,
+    required this.onTap,
+    required this.buttonName,
+    this.widget,
+    this.width,
+    this.buttonColor,
+    this.statusrequest,
+  });
+  Widget? widget;
   void Function() onTap;
   double? width;
   Color? buttonColor;
@@ -20,7 +30,7 @@ class Checkbutton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: IgnorePointer(
-        ignoring:statusrequest == Statusrequest.loading,
+        ignoring: statusrequest == Statusrequest.loading,
         child: AnimatedContainer(
           decoration: BoxDecoration(
             color: buttonColor ?? Colors.black,
@@ -29,7 +39,7 @@ class Checkbutton extends StatelessWidget {
             ),
           ),
           duration: Duration(milliseconds: 400),
-          width:statusrequest == Statusrequest.loading ? 60 : width,
+          width: statusrequest == Statusrequest.loading ? 60 : width,
           height: 60,
           curve: Curves.easeInOut,
           child: Material(
@@ -58,15 +68,16 @@ class Checkbutton extends StatelessWidget {
                             color: Colors.white,
                           ),
                         )
-                      : Text(
-                          "$buttonName",
-                          key: ValueKey("text"),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                      : widget ??
+                            Text(
+                              "$buttonName",
+                              key: ValueKey("text"),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                 ),
               ),
             ),

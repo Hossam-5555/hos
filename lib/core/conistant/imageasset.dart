@@ -4,7 +4,7 @@ class Imageasset {
   static String onbordingImagetwo = "$routeImage/shopping cart.json";
   static String twetter = "$routeImage/x.png";
   static String google = "$routeImage/google.png";
-  static String loginanimation = "$routeImage/1.json";
+  static String loginanimation = "$routeImage/Login.json";
   static String animation2 = "$routeImage/2.json";
   static String animation3 = "$routeImage/3.json";
   static String nodata = "$routeImage/nodata.json";

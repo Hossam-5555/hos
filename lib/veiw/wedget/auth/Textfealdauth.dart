@@ -51,13 +51,12 @@ class Textfealdauth extends StatelessWidget {
             child: Icon(
               suffixIcon,
               size: width * 0.060,
-              // color: const Color.fromARGB(255, 10, 10, 10),
             ),
           ),
 
           hintText: hint,
           hintStyle: TextStyle(
-            // color: Colors.black.withAlpha(153), // 0.6 * 255 = 153
+            color: Colors.grey.withAlpha(153), // 0.6 * 255 = 153
             fontSize: width * 0.04,
           ),
         ),
