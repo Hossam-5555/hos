@@ -59,6 +59,11 @@ class AuthController extends GetxController {
     var response = await logindata.postdata(email.text, passward.text);
     statusrequest = handling(response);
 
+    if (statusrequest == Statusrequest.checkinterner) {
+      update();
+      return;
+    }
+
     if (statusrequest == Statusrequest.success && response['status'] == true) {
       var data = response['data'];
       var userJson = data['user'];
@@ -101,6 +106,11 @@ class AuthController extends GetxController {
 
     var response = await signupdata.postdata(username.text, email.text, passward.text);
     statusrequest = handling(response);
+
+    if (statusrequest == Statusrequest.checkinterner) {
+      update();
+      return;
+    }
 
     if (statusrequest == Statusrequest.success) {
       if (response['status'] == true) {

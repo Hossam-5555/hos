@@ -1,5 +1,7 @@
 import 'dart:io';
 
+
+
  Future<bool> checkinterner() async {
   try {
     final result = await InternetAddress.lookup('google.com')
@@ -11,3 +13,6 @@ import 'dart:io';
     return false;
   }
 }
+
+
+

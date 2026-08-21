@@ -14,21 +14,30 @@ class CheckemailController extends GetxController {
     super.dispose();
   }
 
+  String errorMessage = "";
   Statusrequest statusrequest = Statusrequest.none;
   Checkemaildata checkemaildata = Checkemaildata(Get.find());
   Future<void> checkemail() async {
-    if (formstate.currentState!.validate()) {
-      statusrequest = Statusrequest.loading;
+    if (!formstate.currentState!.validate()) return;
+
+    statusrequest = Statusrequest.loading;
+    update();
+
+    var response = await checkemaildata.postdata(email.text);
+    statusrequest = handling(response);
+
+    if (statusrequest == Statusrequest.checkinterner) {
       update();
-      var response = await checkemaildata.postdata(email.text);
-      statusrequest = handling(response);
-      if (Statusrequest.success == statusrequest &&
-          response['status'] == true) {
-        Get.offNamed(Approute.Veryficode, arguments: {"email": email.text});
-      } else {
-        statusrequest = Statusrequest.failure;
-      }
-      update();
+      return;
     }
+
+    if (statusrequest == Statusrequest.success && response['status'] == true) {
+      Get.toNamed(Approute.Veryficode, arguments: {"email": email.text});
+    } else {
+      errorMessage = response['message'];
+      statusrequest = Statusrequest.failure;
+    }
+
+    update();
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/auth/veryficodesignup.dart';
+import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
@@ -16,11 +17,14 @@ class Veryfisign extends StatelessWidget {
     final colors = theme.colorScheme;
 
     return Scaffold(
-      backgroundColor: colors.surface,
-      appBar: Appbarbackicon(title: "Verification Code", herotag: "code"),
+      appBar: Appbarbackicon(title: "", herotag: "code"),
       body: SafeArea(
         child: GetBuilder<VeryfiSignControler>(
           builder: (_) => HandlingDataView(
+            onTapError: () {
+              controller.statusrequest = Statusrequest.none;
+              controller.update();
+            },
             statusrequest: controller.statusrequest,
             widget: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
@@ -77,14 +81,19 @@ class Veryfisign extends StatelessWidget {
                               fieldWidth: fieldSize,
                               borderRadius: BorderRadius.circular(14),
                               enabledBorderColor: colors.outlineVariant,
-                              focusedBorderColor: Appcolor.deepPurple,
+                              focusedBorderColor: Appcolor.primaryColor,
                               showFieldAsBox: true,
-                              cursorColor: Appcolor.deepPurple,
+                              cursorColor: Appcolor.primaryColor,
                               textStyle: theme.textTheme.titleMedium?.copyWith(
                                 color: colors.onSurface,
                                 fontWeight: FontWeight.bold,
                               ),
-                              onCodeChanged: (String code) {},
+                              onCodeChanged: (String code) {
+                                if (code.length == 5) {
+                                  FocusScope.of(context).unfocus();
+                                  controller.gotosuccessignup(code);
+                                }
+                              },
                               onSubmit: (String verificationCode) {
                                 controller.gotosuccessignup(verificationCode);
                               },
@@ -102,11 +111,13 @@ class Veryfisign extends StatelessWidget {
                                 TextButton(
                                   onPressed: controller.resendcode,
                                   style: TextButton.styleFrom(
-                                    foregroundColor: Appcolor.deepPurple,
+                                    foregroundColor: Appcolor.primaryColor,
                                   ),
                                   child: const Text(
                                     "Resend",
-                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -139,11 +150,11 @@ class _VerifyIcon extends StatelessWidget {
       height: 72,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Appcolor.deepPurple.withOpacity(0.12),
+        color: Appcolor.primaryColor.withOpacity(0.12),
       ),
       child: Icon(
         Icons.mark_email_read_outlined,
-        color: Appcolor.deepPurple,
+        color: Appcolor.primaryColor,
         size: 34,
       ),
     );

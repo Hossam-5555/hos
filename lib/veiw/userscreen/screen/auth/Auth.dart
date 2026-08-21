@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/usercontroller/auth/login_controller.dart';
+import 'package:hos/controler/usercontroller/auth/AuthController.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/imageasset.dart';
@@ -195,19 +195,60 @@ class AuthPage extends StatelessWidget {
                                       ),
 
                                       if (controller.statusrequest ==
-                                          Statusrequest.failure)
+                                              Statusrequest.failure ||
+                                          controller.statusrequest ==
+                                              Statusrequest.checkinterner)
                                         Padding(
                                           padding: const EdgeInsets.only(
                                             top: 10,
                                           ),
-                                          child: Text(
-                                            controller.isLogin
-                                                ? "البريد الإلكتروني أو كلمة المرور غير صحيحة"
-                                                : "حدث خطأ، من فضلك حاول مرة أخرى",
-                                            style: TextStyle(
-                                              color: Colors.red.shade400,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 13,
+                                          child: Container(
+                                            width: double.infinity,
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 14,
+                                              vertical: 10,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: Colors.red.withAlpha(
+                                                isDark ? 40 : 20,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              border: Border.all(
+                                                color: Colors.red.shade300,
+                                              ),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  controller.statusrequest ==
+                                                          Statusrequest
+                                                              .checkinterner
+                                                      ? Icons.wifi_off_rounded
+                                                      : Icons.error_outline,
+                                                  color: Colors.red.shade400,
+                                                  size: 18,
+                                                ),
+                                                const SizedBox(width: 8),
+                                                Expanded(
+                                                  child: Text(
+                                                    controller.statusrequest ==
+                                                            Statusrequest
+                                                                .checkinterner
+                                                        ? "تأكد من اتصالك بالإنترنت وحاول مرة أخرى"
+                                                        : (controller.isLogin
+                                                              ? "البريد الإلكتروني أو كلمة المرور غير صحيحة"
+                                                              : "حدث خطأ، من فضلك حاول مرة أخرى"),
+                                                    style: TextStyle(
+                                                      color:
+                                                          Colors.red.shade400,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 13,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),

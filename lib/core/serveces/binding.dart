@@ -1,6 +1,6 @@
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
-import 'package:hos/controler/usercontroller/auth/login_controller.dart';
+import 'package:hos/controler/usercontroller/auth/AuthController.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/controler/usercontroller/home/itemsdetailscontroller.dart';
 import 'package:hos/controler/usercontroller/notificationcontroller.dart';

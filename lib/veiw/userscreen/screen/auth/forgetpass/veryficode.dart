@@ -5,6 +5,7 @@ import 'package:hos/controler/usercontroller/auth/forgetpass/veryficodecontrolle
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/appcolor.dart';
+import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
 class Veryficode extends StatelessWidget {
   const Veryficode({super.key});
@@ -13,24 +14,21 @@ class Veryficode extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(VeryFiControler());
     final size = MediaQuery.of(context).size;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final titleColor = isDark ? Colors.white : Colors.black87;
+    final subTextColor = isDark ? Colors.white70 : Colors.black54;
+    final fieldEnabledColor = isDark ? Colors.white24 : Colors.grey.shade300;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Verification Code'),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        foregroundColor: Appcolor.black,
-      ),
+      appBar: Appbarbackicon(title: "", herotag: "Verifi", selected: false),
       body: SafeArea(
         child: GetBuilder<VeryFiControler>(
           builder: (_) => HandlingDataView(
             onTapError: () {
-              controller.statusrequest =
-                  Statusrequest.none; // أو الحالة الافتراضية عندك
+              controller.statusrequest = Statusrequest.none;
               controller.update();
             },
-
             statusrequest: controller.statusrequest,
             widget: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
@@ -44,42 +42,61 @@ class Veryficode extends StatelessWidget {
                   children: [
                     SizedBox(height: size.height * 0.03),
 
-                    /// 🟢 عنوان
-                    Text(
-                      'Verify Code',
-                      style: Theme.of(context).textTheme.headlineSmall!
-                          .copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Appcolor.black,
-                          ),
+                    Container(
+                      height: 84,
+                      width: 84,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Appcolor.primaryColor.withAlpha(isDark ? 40 : 25),
+                      ),
+                      child: Icon(
+                        Icons.mark_email_read_rounded,
+                        size: 40,
+                        color: Appcolor.primaryColor,
+                      ),
                     ),
 
-                    SizedBox(height: 10),
+                    SizedBox(height: size.height * 0.03),
 
-                    /// 🟢 وصف
+                    Text(
+                      'Verify Code',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: titleColor,
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+
                     Text(
                       'Enter the 5-digit code sent to your email',
                       textAlign: TextAlign.center,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodyMedium!.copyWith(color: Colors.grey),
+                      style: TextStyle(fontSize: 13, color: subTextColor),
                     ),
 
                     SizedBox(height: size.height * 0.06),
 
-                    /// 🟢 OTP
                     OtpTextField(
                       numberOfFields: 5,
-                      fieldWidth: size.width * 0.12,
-                      borderRadius: BorderRadius.circular(12),
-                      borderColor: Appcolor.black,
-                      enabledBorderColor: Colors.grey.shade400,
-                      focusedBorderColor: Appcolor.black,
+                      fieldWidth: size.width * 0.13,
+                      borderRadius: BorderRadius.circular(14),
+                      borderColor: fieldEnabledColor,
+                      enabledBorderColor: fieldEnabledColor,
+                      focusedBorderColor: Appcolor.primaryColor,
                       showFieldAsBox: true,
-                      cursorColor: Appcolor.black,
-
-                      onCodeChanged: (String code) {},
-
+                      cursorColor: Appcolor.primaryColor,
+                      textStyle: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: titleColor,
+                      ),
+                      onCodeChanged: (String code) {
+                        if (code.length == 5) {
+                          FocusScope.of(context).unfocus();
+                          controller.chekCode(code);
+                        }
+                      },
                       onSubmit: (String verificationCode) {
                         controller.chekCode(verificationCode);
                       },
@@ -87,23 +104,28 @@ class Veryficode extends StatelessWidget {
 
                     SizedBox(height: size.height * 0.05),
 
-                    /// 🟢 إعادة إرسال
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           "Didn't receive code?",
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(color: subTextColor, fontSize: 13),
                         ),
                         TextButton(
                           onPressed: () {
-                            // controller.resendCode(); // اعملها في الكنترولر
+                            // controller.resendCode();
                           },
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(horizontal: 6),
+                            minimumSize: Size.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
                           child: Text(
                             "Resend",
                             style: TextStyle(
-                              color: Appcolor.black,
+                              color: Appcolor.primaryColor,
                               fontWeight: FontWeight.bold,
+                              fontSize: 13,
                             ),
                           ),
                         ),
