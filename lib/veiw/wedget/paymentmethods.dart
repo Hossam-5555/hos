@@ -6,7 +6,6 @@ import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.da
 // دوال بناء الواجهة
 // ==========================================
 
-
 Widget buildPaymentMethod({
   required String title,
   required IconData icon,
@@ -22,9 +21,7 @@ Widget buildPaymentMethod({
     child: AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
-      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(14)),
       child: Row(
         children: [
           Container(
@@ -195,7 +192,7 @@ Widget buildInfoBox(
     key: key,
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
-      color: const Color(0xFFF8F9FA), // رمادي فاتح جداً بدل البرتقالي
+      color: Colors.grey.shade100, // رمادي فاتح جداً بدل البرتقالي
       borderRadius: BorderRadius.circular(12),
       border: Border.all(color: Colors.grey.shade200),
     ),

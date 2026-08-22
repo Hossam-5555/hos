@@ -49,8 +49,8 @@ class Checkout extends StatelessWidget {
                         buildPaymentMethod(
                           controller: c,
                           title: 'كاش',
-                          icon: Icons.money_rounded,
-                          iconColor: Colors.grey,
+                          icon: Icons.attach_money_rounded,
+                          iconColor: Colors.green,
                           method: "cash",
                         ),
                       ],

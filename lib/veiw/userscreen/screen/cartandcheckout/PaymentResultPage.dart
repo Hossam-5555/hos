@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hos/core/class/crud.dart';
+import 'package:hos/veiw/userscreen/screen/profile/order/orders.dart';
+import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 /// صفحة واحدة بتعرض نتيجة الدفع (نجاح أو فشل) حسب الـ [isSuccess]
 /// اللي بييجي من بوابة الدفع (Paymob webhook / response).
@@ -49,7 +53,8 @@ class _PaymentResultPageState extends State<PaymentResultPage>
   bool get _ok => widget.isSuccess;
 
   Color get _accent => _ok ? const Color(0xff22A86B) : const Color(0xffE5484D);
-  Color get _accentBg => _ok ? const Color(0xffE9F8F0) : const Color(0xffFDECEC);
+  Color get _accentBg =>
+      _ok ? const Color(0xffE9F8F0) : const Color(0xffFDECEC);
 
   @override
   void initState() {
@@ -80,12 +85,13 @@ class _PaymentResultPageState extends State<PaymentResultPage>
       curve: Curves.easeOut,
     );
 
-    _contentSlideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.08),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(parent: _contentController, curve: Curves.easeOutCubic),
-    );
+    _contentSlideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.08), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: _contentController,
+            curve: Curves.easeOutCubic,
+          ),
+        );
 
     _iconController.forward();
 
@@ -112,7 +118,10 @@ class _PaymentResultPageState extends State<PaymentResultPage>
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 20,
+                ),
                 child: Column(
                   children: [
                     const SizedBox(height: 25),
@@ -142,7 +151,9 @@ class _PaymentResultPageState extends State<PaymentResultPage>
                                 fontSize: 28,
                                 fontWeight: FontWeight.w800,
                                 letterSpacing: -0.5,
-                                color: isDark ? Colors.white : const Color(0xff17191C),
+                                color: isDark
+                                    ? Colors.white
+                                    : const Color(0xff17191C),
                               ),
                             ),
                             const SizedBox(height: 10),
@@ -154,7 +165,9 @@ class _PaymentResultPageState extends State<PaymentResultPage>
                               style: TextStyle(
                                 fontSize: 15,
                                 height: 1.5,
-                                color: isDark ? Colors.white60 : const Color(0xff777B82),
+                                color: isDark
+                                    ? Colors.white60
+                                    : const Color(0xff777B82),
                               ),
                             ),
                             const SizedBox(height: 32),
@@ -183,7 +196,9 @@ class _PaymentResultPageState extends State<PaymentResultPage>
                   children: [
                     _ok ? _viewOrderButton() : _tryAgainButton(),
                     const SizedBox(height: 14),
-                    _ok ? _backToHomeButton(isDark) : _backToCheckoutButton(isDark),
+                    _ok
+                        ? _backToHomeButton(isDark)
+                        : _backToCheckoutButton(isDark),
                   ],
                 ),
               ),
@@ -231,7 +246,9 @@ class _PaymentResultPageState extends State<PaymentResultPage>
         color: isDark ? const Color(0xff181B21) : Colors.white,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: isDark ? Colors.white.withOpacity(.06) : const Color(0xffEDEEF0),
+          color: isDark
+              ? Colors.white.withOpacity(.06)
+              : const Color(0xffEDEEF0),
         ),
         boxShadow: [
           BoxShadow(
@@ -309,7 +326,9 @@ class _PaymentResultPageState extends State<PaymentResultPage>
     bool highlight = false,
     bool error = false,
   }) {
-    final Color rowAccent = error ? const Color(0xffE5484D) : const Color(0xff22A86B);
+    final Color rowAccent = error
+        ? const Color(0xffE5484D)
+        : const Color(0xff22A86B);
 
     return Row(
       children: [
@@ -320,10 +339,10 @@ class _PaymentResultPageState extends State<PaymentResultPage>
             color: error
                 ? const Color(0xffFDECEC)
                 : highlight
-                    ? const Color(0xffE9F8F0)
-                    : isDark
-                        ? const Color(0xff22262E)
-                        : const Color(0xffF5F6F8),
+                ? const Color(0xffE9F8F0)
+                : isDark
+                ? const Color(0xff22262E)
+                : const Color(0xffF5F6F8),
             borderRadius: BorderRadius.circular(14),
           ),
           child: Icon(
@@ -332,10 +351,10 @@ class _PaymentResultPageState extends State<PaymentResultPage>
             color: error
                 ? const Color(0xffE5484D)
                 : highlight
-                    ? rowAccent
-                    : isDark
-                        ? Colors.white70
-                        : const Color(0xff60656C),
+                ? rowAccent
+                : isDark
+                ? Colors.white70
+                : const Color(0xff60656C),
           ),
         ),
         const SizedBox(width: 14),
@@ -356,14 +375,16 @@ class _PaymentResultPageState extends State<PaymentResultPage>
                 value,
                 style: TextStyle(
                   fontSize: highlight || error ? 16 : 14,
-                  fontWeight: highlight || error ? FontWeight.w800 : FontWeight.w600,
+                  fontWeight: highlight || error
+                      ? FontWeight.w800
+                      : FontWeight.w600,
                   color: error
                       ? const Color(0xffE5484D)
                       : highlight
-                          ? const Color(0xff22A86B)
-                          : isDark
-                              ? Colors.white
-                              : const Color(0xff202328),
+                      ? const Color(0xff22A86B)
+                      : isDark
+                      ? Colors.white
+                      : const Color(0xff202328),
                 ),
               ),
             ],
@@ -419,26 +440,27 @@ class _PaymentResultPageState extends State<PaymentResultPage>
   /// زرار "View Order" (نجاح)
   Widget _viewOrderButton() {
     return SizedBox(
-      width: double.infinity,
-      height: 58,
-      child: ElevatedButton(
-        onPressed: () {
-          // Navigate to Order Details
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xff22A86B),
-          foregroundColor: Colors.white,
-          elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-        ),
-        child: const Row(
+      child: Checkbutton.widget(
+        buttonColor: Color(0xff22A86B),
+        statusrequest: Statusrequest.none,
+        onTap: () {
+          // هنا ممكن تضيف منطق فتح صفحة الطلبات أو تفاصيل الطلب
+          Get.offAll(() => Orders());
+        },  
+        widget: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('View Order', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
-            SizedBox(width: 10),
-            Icon(Icons.arrow_forward_rounded, size: 21),
+            Text(
+              'View Order',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
+            ),
           ],
         ),
+        buttonName: 'View Order',
       ),
     );
   }
@@ -454,14 +476,19 @@ class _PaymentResultPageState extends State<PaymentResultPage>
           backgroundColor: const Color(0xff17191C),
           foregroundColor: Colors.white,
           elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
         ),
         child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.refresh_rounded, size: 21),
             SizedBox(width: 9),
-            Text('Try Again', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+            Text(
+              'Try Again',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            ),
           ],
         ),
       ),
@@ -493,9 +520,13 @@ class _PaymentResultPageState extends State<PaymentResultPage>
         style: OutlinedButton.styleFrom(
           foregroundColor: isDark ? Colors.white : const Color(0xff30343A),
           side: BorderSide(
-            color: isDark ? Colors.white.withOpacity(.15) : const Color(0xffDCDDE0),
+            color: isDark
+                ? Colors.white.withOpacity(.15)
+                : const Color(0xffDCDDE0),
           ),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(17),
+          ),
         ),
         child: const Text(
           'Back to Checkout',

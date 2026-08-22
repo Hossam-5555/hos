@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/controler/usercontroller/home/favorite/fav_controller.dart';
 import 'package:hos/controler/usercontroller/home/itemsdetailscontroller.dart';
+import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/data/model/itemsmodel.dart';
@@ -308,29 +309,25 @@ class Itemsdetailes extends StatelessWidget {
             Flexible(
               child: SizedBox(
                 height: 55,
-                child: GetBuilder<Itemdetailscontroller>(
-                  builder: (controller) {
-                    return Checkbutton(
-                      statusrequest: controller.statusrequest,
-                      buttonColor: Colors.black,
-                      onTap: () {
-                        if (controller.itemcount == 0) {
-                          Get.snackbar(
-                            "تنبيه",
-                            "يرجى اختيار الكمية أولاً",
-                            backgroundColor: Colors.red.shade50,
-                            colorText: Colors.red,
-                          );
-                        } else {
-                          Get.find<CartController>().addtocart(
-                            controller.itemsmodel.id!,
-                            controller.itemcount,
-                          );
-                        }
-                      },
-                      buttonName: "Add to Card",
-                    );
+                child: Checkbutton(
+                  statusrequest: Statusrequest.none,
+                  buttonColor: Colors.black,
+                  onTap: () {
+                    if (controller.itemcount == 0) {
+                      Get.snackbar(
+                        "تنبيه",
+                        "يرجى اختيار الكمية أولاً",
+                        backgroundColor: Colors.red.shade50,
+                        colorText: Colors.red,
+                      );
+                    } else {
+                      Get.find<CartController>().addtocart(
+                        controller.itemsmodel.id!,
+                        controller.itemcount,
+                      );
+                    }
                   },
+                  buttonName: "Add to Card",
                 ),
               ),
             ),

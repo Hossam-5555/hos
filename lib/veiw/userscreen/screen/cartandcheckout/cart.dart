@@ -5,6 +5,7 @@ import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 // import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/shoppage/carditem.dart'; // تأكد من المسار
 import 'package:hos/veiw/wedget/shoppage/coubone.dart';
@@ -150,8 +151,30 @@ class ShoppingCartPage extends StatelessWidget {
                           width:
                               MediaQuery.of(context).size.width *
                               0.8, // يضمن أخذ الزر العرض المتاح بشكل مثالي
-                          child: ElevatedButton(
-                            onPressed: () {
+                          child: Checkbutton.widget(
+                            widget: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.shopify,
+                                  size: (width * 0.04).clamp(16.0, 20.0),
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: (width * 0.02).clamp(8.0, 12.0),
+                                ),
+                                Text(
+                                  'Proceed to Checkout'.tr,
+                                  style: TextStyle(
+                                    fontSize: (width * 0.045).clamp(16.0, 22.0),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            width: width * 0.8,
+                            buttonName: 'Proceed to Checkout'.tr,
+                            onTap: () {
                               controller.data.isNotEmpty
                                   ? controller.gotochechout()
                                   : Get.snackbar(
@@ -159,46 +182,8 @@ class ShoppingCartPage extends StatelessWidget {
                                       "لا يمكن تنفيذ العملية",
                                     );
                             },
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(
-                                vertical: (height * 0.012).clamp(
-                                  10.0,
-                                  20.0,
-                                ), // تبطين مرن للزر
-                              ),
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(80),
-                              ),
-                              textStyle: TextStyle(
-                                fontSize: (width * 0.040).clamp(14.0, 18.0),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Container(
-                                  // ✅ ربط الدائرة بعرض الشاشة مع وضع حد أقصى وأدنى لكي لا تتشوه
-                                  height: (width * 0.1).clamp(40.0, 50.0),
-                                  width: (width * 0.1).clamp(40.0, 50.0),
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Color.fromARGB(255, 54, 53, 53),
-                                  ),
-                                  child: Icon(
-                                    Icons.shopify_outlined,
-                                    color: Colors.white,
-                                    size: (width * 0.06).clamp(
-                                      20.0,
-                                      28.0,
-                                    ), // أيقونة متجاوبة
-                                  ),
-                                ),
-                                Text('Proceed to Checkout'.tr),
-                                const Icon(Icons.navigate_next_outlined),
-                              ],
-                            ),
+                            buttonColor: Colors.black,
+                            statusrequest: Statusrequest.none,
                           ),
                         ),
                       ],

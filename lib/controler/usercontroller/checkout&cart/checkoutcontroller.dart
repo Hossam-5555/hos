@@ -101,7 +101,7 @@ class Checkoutcontroller extends GetxController {
       // تجهيز البيانات
       Map<String, dynamic> data = {
         "address_id": selectedAddress.value?.id,
-        "payment_method": "credit",
+        "payment_method": selectedMethod,
         "items": cartdata
             .map((e) => {"product_id": e.itemid, "quantity": e.cartCount})
             .toList(),
@@ -118,7 +118,18 @@ class Checkoutcontroller extends GetxController {
           // ✅ لو كاش → روح لصفحة النجاح مباشرة
           // لو كاش → روح لصفحة النجاح مباشرة
           if (selectedMethod == 'cash') {
-            Get.to(() => PaymentResultPage(isSuccess: true));
+            Get.find<CartController>().view();
+
+            Get.to(
+              () => PaymentResultPage(
+                isSuccess: true,
+                orderNumber: '#${orderId}',
+                amount: '${totalprice} EGP',
+                transactionId: 'CASH',
+                paymentMethod: 'كاش عند الاستلام',
+              ),
+            );
+
             return;
           }
 
