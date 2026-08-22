@@ -140,7 +140,7 @@ class AuthPage extends StatelessWidget {
                                           color: subTextColor,
                                         ),
                                       ),
-                                      SizedBox(height: height * 0.028),
+                                      SizedBox(height: height * 0.025),
 
                                       AnimatedSize(
                                         duration: const Duration(
@@ -164,7 +164,7 @@ class AuthPage extends StatelessWidget {
                                                     hint: "Enter Your username",
                                                   ),
                                                   SizedBox(
-                                                    height: height * 0.015,
+                                                    height: height * 0.010,
                                                   ),
                                                 ],
                                               )
@@ -178,7 +178,7 @@ class AuthPage extends StatelessWidget {
                                         suffixIcon: Icons.email_outlined,
                                         hint: 'Email Address',
                                       ),
-                                      SizedBox(height: height * 0.015),
+                                      SizedBox(height: height * 0.010),
 
                                       Textfealdauth(
                                         obscureText: controller.showpass,
@@ -269,7 +269,7 @@ class AuthPage extends StatelessWidget {
                                             : SizedBox(height: height * 0.012),
                                       ),
 
-                                      SizedBox(height: height * 0.012),
+                                      SizedBox(height: height * 0.010),
 
                                       Checkbutton(
                                         statusrequest: controller.statusrequest,

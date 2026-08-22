@@ -33,7 +33,7 @@ class Items extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: _FilterButton(
         bottomMargin: height * 0.02,
-        onTap: () => showFilterDialog(context, controller),
+        onTap: () => showFilterSheet(context, controller),
       ),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),

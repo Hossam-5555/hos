@@ -31,91 +31,84 @@ class ProfilePage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildProfileHeader(Colors.black),
+            SizedBox(height: 20),
+            _buildProfileHeader(Colors.black, context),
+            SizedBox(height: 20),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                orderCard("الطلبات و\nالمشتريات", Imageasset.order, () {
+                  Get.toNamed(Approute.Orders);
+                }, context),
+                orderCard("نقاط\nالمكافأه", Imageasset.goold, () {
+                  ComingSoonOverlay.show();
+                }, context),
+                orderCard(
+                  "App Settings and Privacy".tr,
+                  Imageasset.settings,
+                  () {
+                    Get.to(
+                      () => Settings(),
+                      transition: Transition.fadeIn,
+                      duration: Duration(milliseconds: 400),
+                      curve: Curves.fastOutSlowIn,
+                    );
+                  },
+                  context,
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
 
             Container(
+              padding: EdgeInsets.all(5),
+              margin: EdgeInsets.only(bottom: 20),
               decoration: BoxDecoration(
+                gradient: isDarkMode
+                    ? AppGradients.darkTitanium
+                    : AppGradients.lightPlatinum,
                 borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.grey.withAlpha(50)),
               ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      orderCard("الطلبات و\nالمشتريات", Imageasset.order, () {
-                        Get.toNamed(Approute.Orders);
-                      }, context),
-                      orderCard("نقاط\nالمكافأه", Imageasset.goold, () {
-                        ComingSoonOverlay.show();
-                      }, context),
-                      orderCard(
-                        "App Settings and Privacy".tr,
-                        Imageasset.settings,
-                        () {
-                          Get.to(
-                            () => Settings(),
-                            transition: Transition.fadeIn,
-                            duration: Duration(milliseconds: 400),
-                            curve: Curves.fastOutSlowIn,
-                          );
-                        },
-                        context,
-                      ),
+                  _buildListTile(
+                    gradientColors: [
+                      const Color.fromARGB(255, 95, 182, 8),
+                      const Color.fromARGB(255, 96, 192, 17),
                     ],
+                    icon: Icons.location_on_outlined,
+                    title: "Saved Addresses".tr,
+                    onTap: () => Get.toNamed(Approute.viewmyaddres),
                   ),
-                  SizedBox(height: 20),
-                  Container(
-                    padding: EdgeInsets.all(5),
-                    margin: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      gradient: isDarkMode
-                          ? AppGradients.darkTitanium
-                          : AppGradients.lightPlatinum,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.grey.withAlpha(50)),
-                    ),
-                    child: Column(
-                      children: [
-                        _buildListTile(
-                          gradientColors: [
-                            const Color.fromARGB(255, 95, 182, 8),
-                            const Color.fromARGB(255, 96, 192, 17),
-                          ],
-                          icon: Icons.location_on_outlined,
-                          title: "Saved Addresses".tr,
-                          onTap: () => Get.toNamed(Approute.viewmyaddres),
-                        ),
 
-                        _buildListTile(
-                          gradientColors: [
-                            const Color.fromARGB(255, 243, 9, 9),
-                            Colors.red,
-                          ],
-                          icon: Icons.favorite_border,
-                          title: "Favorite".tr,
-                          onTap: () => Get.toNamed(Approute.myfavorite),
-                        ),
+                  _buildListTile(
+                    gradientColors: [
+                      const Color.fromARGB(255, 243, 9, 9),
+                      Colors.red,
+                    ],
+                    icon: Icons.favorite_border,
+                    title: "Favorite".tr,
+                    onTap: () => Get.toNamed(Approute.myfavorite),
+                  ),
 
-                        _buildListTile(
-                          icon: Icons.note_alt_sharp,
-                          title: "مراجعاتي",
-                          isLast: true, // لإزالة الفاصل في العنصر الأخير
-                          onTap: () => Get.to(
-                            () => MyReviewsPage(),
-                            transition: Transition.cupertino,
-                            duration: Duration(milliseconds: 500),
-                            curve: Curves.fastOutSlowIn,
-                          ),
-                        ),
-                      ],
+                  _buildListTile(
+                    icon: Icons.note_alt_sharp,
+                    title: "مراجعاتي",
+                    isLast: true, // لإزالة الفاصل في العنصر الأخير
+                    onTap: () => Get.to(
+                      () => MyReviewsPage(),
+                      transition: Transition.cupertino,
+                      duration: Duration(milliseconds: 500),
+                      curve: Curves.fastOutSlowIn,
                     ),
                   ),
                 ],
               ),
             ),
+            SizedBox(height: 20),
           ],
         ),
       ),
@@ -123,40 +116,113 @@ class ProfilePage extends StatelessWidget {
   }
 
   // ================= Header =================
-  Widget _buildProfileHeader(Color color) {
+  Widget _buildProfileHeader(Color color, BuildContext context) {
     String userName =
         myservisec.sharedPreferences.getString("usersname") ?? "User Name";
     String email =
         myservisec.sharedPreferences.getString("email") ?? "user@email.com";
 
-    return Column(
-      children: [
-        Stack(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(shape: BoxShape.circle),
-              child: CircleAvatar(
-                radius: 55,
-                // backgroundColor: Colors.blue,
-                backgroundImage: AssetImage(Imageasset.twetter),
-                onBackgroundImageError: (_, _) {},
-              ),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.white.withValues(alpha: 0.15),
+                Colors.white.withValues(alpha: 0.05),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-          ],
-        ),
-        const SizedBox(height: 10),
-        Text(
-          userName,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 0.5,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.2),
+              width: 1.5,
+            ),
+          ),
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            children: [
+              // Profile Image
+              Stack(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        colors: [color.withValues(alpha: 0.6), color],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Theme.of(
+                        context,
+                      ).scaffoldBackgroundColor,
+                      backgroundImage: AssetImage(Imageasset.twetter),
+                      onBackgroundImageError: (_, __) {
+                        // Fallback handling
+                      },
+                    ),
+                  ),
+                  // Online Status Indicator
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                      width: 16,
+                      height: 16,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.green,
+                        border: Border.all(
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(width: 16),
+              // User Info
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      userName,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.3,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      email,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(
+                          context,
+                        ).textTheme.bodySmall?.color?.withValues(alpha: 0.7),
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+
+              // Edit Button
+            ],
           ),
         ),
-        const SizedBox(height: 4),
-        Text(email, style: TextStyle(color: Colors.grey[600], fontSize: 14)),
-      ],
+      ),
     );
   }
 

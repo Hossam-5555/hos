@@ -19,9 +19,9 @@ class Buttomappbar extends GetView<Homescreencontroller> {
         child: IgnorePointer(
           ignoring: !controller.upordown,
           child: Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            width: width * 0.70, // ← متجاوب يعرض 85% من الشاشة
-            height: 75, // ← ارتفاع ثابت ومناسب
+            margin: const EdgeInsets.only(bottom:5),
+            width: width * 0.80, // ← متجاوب يعرض 85% من الشاشة
+            height: 70, // ← ارتفاع ثابت ومناسب
             child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(

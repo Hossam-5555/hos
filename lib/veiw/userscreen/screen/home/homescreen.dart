@@ -100,13 +100,14 @@ class Homescreen extends StatelessWidget {
           ),
 
           // ============= تعديل مكان الـ BottomAppbar =================
-          bottomNavigationBar: Container(
+          floatingActionButton: Container(alignment: Alignment.bottomCenter,
             margin: EdgeInsetsDirectional.symmetric(
               horizontal: 12,
-              vertical: 5,
             ),
             child: Buttomappbar(),
           ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked, // تعديل مكان الـ BottomAppbar
           body: PageView(
             controller: controller.pageControllers,
             onPageChanged: (i) {

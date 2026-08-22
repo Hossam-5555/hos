@@ -1,51 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// تأكد من مسار الكنترولر الخاص بك
 import 'package:hos/controler/usercontroller/home/items_controler.dart';
+import 'package:hos/core/class/crud.dart';
+import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
-void showFilterDialog(BuildContext context, ItemsController c) {
-  showDialog(
+void showFilterSheet(BuildContext context, ItemsController c) {
+  showModalBottomSheet(
     context: context,
-    builder: (BuildContext context) {
-      return Dialog(
-        // هنا السر: الـ insetPadding هو المسؤول عن عمل مارجن من كل الجهات
-        insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-        backgroundColor:
-            Colors.transparent, // شفافة عشان نتحكم في شكل الـ Container الداخلي
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            borderRadius: BorderRadius.circular(28), // حواف دائرية لكل النافذة
-          ),
-          child: Column(
-            children: [
-              _buildHandle(Theme.of(context)), // المقبض العلوي
-              Expanded(
-                child: ListView(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  children: [
-                    _buildHeader(context, c),
-                    const SizedBox(height: 24),
-                    _buildSectionTitle(context, "Sort By"),
-                    _buildSortOptions(c, Theme.of(context)),
-                    const SizedBox(height: 28),
-                    _buildSectionTitle(context, "Price Range"),
-                    _buildPriceSlider(context, c),
-                    const SizedBox(height: 28),
-                    _buildSectionTitle(context, "Brands"),
-                    _buildBrandImages(context, c),
-                    const SizedBox(height: 20),
-                  ],
-                ),
+    isScrollControlled: true, // مهم عشان يملا الشاشة
+    backgroundColor: Colors.transparent,
+    builder: (context) {
+      return DraggableScrollableSheet(
+        initialChildSize: 0.85, // بيفتح على 85% من الشاشة
+        minChildSize: 0.5, // أقل حجم ممكن لما يسحب لتحت
+        maxChildSize: 0.95, // أقصى حجم ممكن لما يسحب لفوق
+        expand: false,
+        builder: (context, scrollController) {
+          return Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(28),
               ),
-              _buildBottomButtons(context, c), // زر التطبيق
-            ],
-          ),
-        ),
+            ),
+            child: Column(
+              children: [
+                _buildHandle(Theme.of(context)),
+                Expanded(
+                  child: ListView(
+                    controller:
+                        scrollController, // مهم للـ DraggableScrollableSheet
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    children: [
+                      _buildHeader(context, c),
+                      const SizedBox(height: 24),
+                      _buildSectionTitle(context, "Sort By"),
+                      _buildSortOptions(c, Theme.of(context)),
+                      const SizedBox(height: 28),
+                      _buildSectionTitle(context, "Price Range"),
+                      _buildPriceSlider(context, c),
+                      const SizedBox(height: 28),
+                      _buildSectionTitle(context, "Brands"),
+                      _buildBrandImages(context, c),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                ),
+                _buildBottomButtons(context, c),
+              ],
+            ),
+          );
+        },
       );
     },
   );
 }
+
+// ─── باقي الـ Widgets زي ما هي من غير تغيير ───
 
 Widget _buildSectionTitle(BuildContext context, String title) {
   return Padding(
@@ -71,7 +82,6 @@ Widget _buildHeader(BuildContext context, ItemsController c) {
         ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
       ),
       Obx(() {
-        // استدعاء القيمة داخل الـ Obx لضمان التحديث
         if (c.activeFiltersCount > 0) {
           return TextButton(
             onPressed: c.resetFilters,
@@ -109,7 +119,6 @@ Widget _buildSortOptions(ItemsController c, ThemeData theme) {
       itemBuilder: (context, index) {
         String key = sortOptions.keys.elementAt(index);
         var option = sortOptions[key]!;
-
         bool isSelected = currentSort == key;
 
         return GestureDetector(
@@ -117,7 +126,6 @@ Widget _buildSortOptions(ItemsController c, ThemeData theme) {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             decoration: BoxDecoration(
-              // لون داكن هادئ للعنصر غير المحدد، ولون مميز للمحدد
               color: isSelected
                   ? Colors.blue.withOpacity(0.15)
                   : const Color(0xFF1E1E1E),
@@ -166,8 +174,7 @@ Widget _buildPriceSlider(BuildContext context, ItemsController c) {
         ),
         RangeSlider(
           values: RangeValues(c.minPrice.value, c.maxPrice.value),
-          min: c
-              .defaultMin, // تأكد إن دي RxDouble في الكنترولر أو غيرها لـ double عادي
+          min: c.defaultMin,
           max: c.defaultMax,
           divisions: 50,
           activeColor: Colors.blueAccent,
@@ -202,33 +209,35 @@ Widget _priceContainer(BuildContext context, String label, double value) {
 }
 
 Widget _buildBrandImages(BuildContext context, ItemsController c) {
-  // شيل Obx وحط GetBuilder (لازم تدي له الـ controller كـ generic)
   return GetBuilder<ItemsController>(
     builder: (controller) {
       final brands = controller.brands;
 
       if (brands.isEmpty) {
-        return Center(child: const Text("No brands found"));
+        return const Center(child: Text("No brands found"));
       }
 
       return Wrap(
         children: brands.map((brand) {
-          // هنا بتستخدم controller بدل c
           final isSelected = controller.selectedBrands.contains(brand.id);
           return GestureDetector(
             onTap: () => controller.toggleBrand(brand.id!),
             child: Container(
               alignment: AlignmentDirectional.center,
-              margin: EdgeInsets.all(5),
+              margin: const EdgeInsets.all(5),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                gradient: LinearGradient(colors: [const Color.fromARGB(255, 56, 61, 61), Colors.grey]),
+                gradient: LinearGradient(
+                  colors: [const Color.fromARGB(255, 56, 61, 61), Colors.grey],
+                ),
               ),
               width: 100,
               height: 40,
               child: Text(
                 brand.name!,
-                style: TextStyle(color: isSelected ? Colors.blue : Colors.white),
+                style: TextStyle(
+                  color: isSelected ? Colors.blue : Colors.white,
+                ),
               ),
             ),
           );
@@ -239,35 +248,27 @@ Widget _buildBrandImages(BuildContext context, ItemsController c) {
 }
 
 Widget _buildBottomButtons(BuildContext context, ItemsController c) {
-  return Container(
+  return Padding(
     padding: const EdgeInsets.all(20),
-    decoration: const BoxDecoration(
-      border: Border(top: BorderSide(color: Colors.white12, width: 0.5)),
-    ),
-    child: SafeArea(
-      child: SizedBox(
-        width: double.infinity,
-        height: 55,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(40),
-            ),
-            elevation: 0,
-          ),
-          onPressed: () {
-            c.applyFilters(); // يفضل وضع دالة التطبيق هنا
-          },
-          child: Obx(() {
-            return Text(
-              c.activeFiltersCount > 0
-                  ? "Apply Filters (${c.activeFiltersCount})"
-                  : "Apply Filters",
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            );
-          }),
-        ),
-      ),
+    child: Checkbutton.widget(
+      width: context.width * 0.7,
+      widget: Obx(() {
+        return Text(
+          c.activeFiltersCount > 0
+              ? "Apply Filters (${c.activeFiltersCount})"
+              : "Apply Filters",
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        );
+      }),
+      buttonColor: Colors.black,
+      statusrequest: Statusrequest.none,
+      onTap: () {
+        c.applyFilters();
+        if (Get.isBottomSheetOpen ?? false) {
+          Get.back(); // Close the bottom sheet
+        }
+      },
+      buttonName: "buttonName",
     ),
   );
 }

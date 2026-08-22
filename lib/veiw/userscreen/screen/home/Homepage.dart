@@ -6,6 +6,7 @@ import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
 import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/veiw/wedget/Homepage/Ads.dart';
 import 'package:hos/veiw/wedget/Homepage/CurvedItemsView.dart';
 import 'package:hos/veiw/wedget/Homepage/categorieswidget.dart';
 import 'package:hos/veiw/wedget/Homepage/dicountcard.dart';
@@ -101,8 +102,14 @@ class HomePage extends StatelessWidget {
                         Titles(title: "New Items".tr),
                         CurvedItemsView(),
 
-                        SizedBox(height: sectionSpacing * 0.5),
+                        SizedBox(height: sectionSpacing),
 
+                        // ─── إعلانات ───
+                        Titles(title: "Special Offers".tr),
+                        SizedBox(height: sectionSpacing * 0.6),
+                        AdsSection(), // ← ضيف ده هنا
+
+                        SizedBox(height: sectionSpacing * 0.5),
                         Titles(title: "Most Sale".tr),
                         SizedBox(height: sectionSpacing * 0.6),
 
