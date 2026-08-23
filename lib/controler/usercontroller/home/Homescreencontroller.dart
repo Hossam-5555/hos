@@ -71,7 +71,7 @@ class Homescreencontroller extends SearchMix {
     ['Home', Imageasset.homesvg],
     ['Search', Imageasset.search],
     ['Cart', Imageasset.cart],
-    ['Profile', Imageasset.profile],
+    ['Profile', Imageasset.twetter],
   ];
   final List<Widget> pages = [
     HomePage(),

@@ -100,14 +100,38 @@ class Homescreen extends StatelessWidget {
           ),
 
           // ============= تعديل مكان الـ BottomAppbar =================
-          floatingActionButton: Container(alignment: Alignment.bottomCenter,
-            margin: EdgeInsetsDirectional.symmetric(
-              horizontal: 12,
+          floatingActionButton: Container(
+            alignment: Alignment.bottomCenter,
+            margin: EdgeInsetsDirectional.symmetric(horizontal: 12),
+            child: // مع GetX
+            GetBuilder<Homescreencontroller>(
+              builder: (controller) => CustomBottomNavBar(
+                items: [
+                  NavItem(
+                    label: controller.appbartitle[0][0],
+                    svgAsset: controller.appbartitle[0][1],
+                  ),
+                  NavItem(
+                    label: controller.appbartitle[1][0],
+                    svgAsset:controller.appbartitle[1][1],
+                  ),
+                  NavItem(
+                    label: controller.appbartitle[2][0],
+                    svgAsset: controller.appbartitle[2][1],
+                  ),
+                  NavItem(
+                    label: controller.appbartitle[3][0],
+                    imageAsset: controller.appbartitle[3][1],
+                  ),
+                ],
+                currentIndex: controller.Currentpage,
+                onTap: controller.changpage,
+                visible: controller.upordown,
+              ),
             ),
-            child: Buttomappbar(),
           ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked, // تعديل مكان الـ BottomAppbar
+          floatingActionButtonLocation: FloatingActionButtonLocation
+              .centerDocked, // تعديل مكان الـ BottomAppbar
           body: PageView(
             controller: controller.pageControllers,
             onPageChanged: (i) {

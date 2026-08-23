@@ -5,6 +5,7 @@ import 'package:hos/controler/admincontroller/AdminHome.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/userscreen/screen/home/notification.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
+import 'package:hos/veiw/wedget/Homepage/buttomAppbar.dart';
 import 'package:hos/veiw/wedget/Homepage/homescrenAction.dart';
 
 class AdminHome extends StatelessWidget {
@@ -49,36 +50,29 @@ class AdminHome extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar: GetBuilder<Adminhome>(
-          builder: (controller) => BottomNavigationBar(
-            selectedItemColor: Colors.blue,
-            unselectedItemColor: Colors.grey,
-            showUnselectedLabels: true,
-            selectedLabelStyle: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-            ),
-            unselectedLabelStyle: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.normal,
-            ),
-            onTap: (value) {
-              controller.changePage(value);
-            },
-            currentIndex: controller.currentpage,
-            items: controller.pages.map((e) {
-              int index = controller.pages.indexOf(e);
-              return BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  controller.title[index][1],
-                  height: 24,
-                  color: controller.currentpage == index
-                      ? Colors.blue
-                      : Colors.grey.shade600,
+        floatingActionButton: Container(
+          alignment: Alignment.bottomCenter,
+          margin: EdgeInsetsDirectional.symmetric(horizontal: 12),
+          child: // مع GetX
+          GetBuilder<Adminhome>(
+            builder: (controller) => CustomBottomNavBar(
+              items: [
+                NavItem(
+                  label: controller.title[0][0],
+                  svgAsset: controller.title[0][1],
                 ),
-                label: controller.title[index][0],
-              );
-            }).toList(),
+                NavItem(
+                  label: controller.title[1][0],
+                  svgAsset: controller.title[1][1],
+                ),
+                NavItem(
+                  label: controller.title[2][0],
+                  svgAsset: controller.title[2][1],
+                ),
+              ],
+              currentIndex: controller.currentpage,
+              onTap: controller.changePage,
+            ),
           ),
         ),
         body: PageView(

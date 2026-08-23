@@ -1,108 +1,155 @@
+// import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
-import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
-import 'package:hos/core/conistant/imageasset.dart';
 
-class Buttomappbar extends GetView<Homescreencontroller> {
-  const Buttomappbar({super.key});
+// ─────────────────────────────────────────
+// موديل الـ Tab
+// ─────────────────────────────────────────
+class NavItem {
+  final String label;
+  final String? svgAsset;   // لو الأيقونة SVG
+  final String? imageAsset; // لو الأيقونة Image عادية
+  final IconData? icon;     // لو الأيقونة Material Icon
+
+  const NavItem({
+    required this.label,
+    this.svgAsset,
+    this.imageAsset,
+    this.icon,
+  });
+}
+
+// ─────────────────────────────────────────
+// الـ Widget المستقل
+// ─────────────────────────────────────────
+class CustomBottomNavBar extends StatelessWidget {
+  final List<NavItem> items;
+  final int currentIndex;
+  final ValueChanged<int> onTap;
+  final bool visible;
+
+  const CustomBottomNavBar({
+    super.key,
+    required this.items,
+    required this.currentIndex,
+    required this.onTap,
+    this.visible = true,
+  });
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final width = MediaQuery.of(context).size.width;
 
-    return GetBuilder<Homescreencontroller>(
-      builder: (controller) => AnimatedSlide(
-        offset: controller.upordown ? Offset.zero : const Offset(0, 2),
-        duration: const Duration(milliseconds: 100),
-        curve: Curves.easeInQuad,
-        child: IgnorePointer(
-          ignoring: !controller.upordown,
-          child: Container(
-            margin: const EdgeInsets.only(bottom:5),
-            width: width * 0.80, // ← متجاوب يعرض 85% من الشاشة
-            height: 70, // ← ارتفاع ثابت ومناسب
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: context.isDarkMode
-                      ? [Colors.grey.shade900, Colors.grey.shade800]
-                      : [
-                          Color(0xFFFFFFFF),
-                          Color(0xFFD0D5DD), // الأطراف الفضية الراقية
-                          // مركز الإضاءة الأبيض المشع
-                          Color(0xFFF2F4F7), // البلاتينيوم الناعم
-                        ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(40),
-                border: Border.all(color: Colors.grey.withAlpha(50)),
-              ),
-              child: Row(
-                children: List.generate(controller.pages.length, (index) {
-                  final bool isSelected = controller.Currentpage == index;
-
-                  return Expanded(
-                    child: GestureDetector(
-                      onTap: () => controller.changpage(index),
-                      child: AnimatedContainer(
-                        margin: EdgeInsets.symmetric(horizontal: 5),
-                        duration: const Duration(milliseconds: 250),
-                        width: isSelected ? 65 : 48,
-                        height: isSelected ? 65 : 48,
-                        decoration: BoxDecoration(
-                          color: isSelected
-                              ? Colors.blueAccent.withAlpha(50)
-                              : null,
-                          borderRadius: BorderRadius.circular(40),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            index == 3
-                                ? ClipOval(
-                                    child: SizedBox(
-                                      height: isSelected ? 30 : 25,
-                                      width: isSelected ? 30 : 25,
-                                      child: Image.asset(
-                                        Imageasset.twetter,
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                  )
-                                : SvgPicture.asset(
-                                    color: isSelected
-                                        ? Colors.blue
-                                        : Colors.grey,
-                                    controller.appbartitle[index][1],
-                                    height: isSelected ? 25 : 22,
-                                    width: isSelected ? 25 : 22,
-                                  ),
-                            // if (isSelected)
-                            Text(
-                              controller.appbartitle[index][0],
-                              style: TextStyle(
-                                fontSize: isSelected ? 12 : 10,
-                                fontWeight: isSelected
-                                    ? FontWeight.bold
-                                    : FontWeight.w200,
-                                color: isSelected
-                                    ? Colors.black
-                                    : Colors.grey.shade700,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-              ),
+    return AnimatedSlide(
+      offset: visible ? Offset.zero : const Offset(0, 2),
+      duration: const Duration(milliseconds: 100),
+      curve: Curves.easeInQuad,
+      child: IgnorePointer(
+        ignoring: !visible,
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 5),
+          width: width * 0.80,
+          height: 70,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: isDark
+                  ? [Colors.grey.shade900, Colors.grey.shade800]
+                  : [
+                      const Color(0xFFFFFFFF),
+                      const Color(0xFFD0D5DD),
+                      const Color(0xFFF2F4F7),
+                    ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
+            borderRadius: BorderRadius.circular(40),
+            border: Border.all(color: Colors.grey.withAlpha(50)),
+          ),
+          child: Row(
+            children: List.generate(items.length, (index) {
+              final isSelected = currentIndex == index;
+              final item = items[index];
+
+              return Expanded(
+                child: GestureDetector(
+                  onTap: () => onTap(index),
+                  child: AnimatedContainer(
+                    margin: const EdgeInsets.symmetric(horizontal: 5),
+                    duration: const Duration(milliseconds: 250),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? Colors.blueAccent.withAlpha(50)
+                          : null,
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // ── الأيقونة ──
+                        _buildIcon(item, isSelected),
+                        const SizedBox(height: 2),
+                        // ── النص ──
+                        Text(
+                          item.label,
+                          style: TextStyle(
+                            fontSize: isSelected ? 12 : 10,
+                            fontWeight: isSelected
+                                ? FontWeight.bold
+                                : FontWeight.w200,
+                            color: isSelected
+                                ? Colors.black
+                                : Colors.grey.shade700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }),
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildIcon(NavItem item, bool isSelected) {
+    final size = isSelected ? 25.0 : 22.0;
+
+    // Image Asset
+    if (item.imageAsset != null) {
+      return ClipOval(
+        child: SizedBox(
+          height: size,
+          width: size,
+          child: Image.asset(item.imageAsset!, fit: BoxFit.contain),
+        ),
+      );
+    }
+
+    // SVG Asset
+    if (item.svgAsset != null) {
+      return SvgPicture.asset(
+        item.svgAsset!,
+        height: size,
+        width: size,
+        colorFilter: ColorFilter.mode(
+          isSelected ? Colors.blue : Colors.grey,
+          BlendMode.srcIn,
+        ),
+      );
+    }
+
+    // Material Icon
+    if (item.icon != null) {
+      return Icon(
+        item.icon,
+        size: size,
+        color: isSelected ? Colors.blue : Colors.grey,
+      );
+    }
+
+    return const SizedBox.shrink();
   }
 }

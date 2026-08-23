@@ -79,6 +79,11 @@ class Adminpending extends StatelessWidget {
             /// 📦 2. قائمة عرض الطلبات المستلمة
             Expanded(
               child: HandlingDataView(
+                mediaType: HandlingMediaType.animation,
+                message:
+                    "لا توجد طلبات حالياً", // رسالة توضيحية عند عدم وجود بيانات
+                imagePath:
+                    Imageasset.nodata, // صورة توضيحية عند عدم وجود بيانات
                 statusrequest: controller
                     .statusrequest, // يتكفل تلقائياً بالـ Loading، والـ No Data بناءً على استجابة السيرفر
                 widget: ListView.separated(
