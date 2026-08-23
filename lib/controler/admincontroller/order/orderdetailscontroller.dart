@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/order/pindingcontroller.dart';
 import 'package:hos/core/functions/handlingdata.dart';
-import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/admindata/orderdata.dart';
 import 'package:hos/data/model/ordersmodel.dart';
@@ -72,21 +71,6 @@ class AdminOrderDetailesController extends GetxController {
         // 🔹 3. هنا الحل! بنعدل المتغير المحلي للـ Controller مش الـ Model
         currentStatus = s;
         getcolorandstause(s);
-
-        showSnackBar(
-          Get.context!,
-          lang
-              ? "تم تحديث حالة الطلب بنجاح"
-              : "Order Status updated successfully",
-          Icon(Icons.check_circle_outline, color: statusColor),
-          s: SnackBarAction(
-            label: "UNDO",
-            textColor: Colors.green,
-            onPressed: () {
-              
-            },
-          ),
-        );
 
         try {
           if (Get.isRegistered<AdminPindingController>()) {

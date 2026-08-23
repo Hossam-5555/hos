@@ -52,13 +52,13 @@ class _ComingSoonDialog extends StatelessWidget {
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
+                      color: Colors.white,
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
                       Icons.close_rounded,
+                      color: Colors.black,
                       size: 18,
-                      color: Colors.grey,
                     ),
                   ),
                 ),

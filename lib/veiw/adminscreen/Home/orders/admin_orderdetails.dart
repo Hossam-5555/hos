@@ -2,7 +2,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/order/orderdetailscontroller.dart';
+import 'package:hos/core/class/crud.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
+import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 import 'package:hos/veiw/wedget/order/detailsorder.dart';
 
 class AdminOrderdetails extends StatelessWidget {
@@ -50,14 +52,14 @@ class AdminOrderdetails extends StatelessWidget {
           );
         },
       ),
-
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       // الزر السفلي الثابت المخصص للـ Admin لتحديث الحالة في أي وقت
-      bottomNavigationBar: GetBuilder<AdminOrderDetailesController>(
+      floatingActionButton: GetBuilder<AdminOrderDetailesController>(
         builder: (_) {
           final o = controller.order;
           if (o == null) return const SizedBox.shrink();
 
-          return Container(
+          return Padding(
             padding: EdgeInsets.only(
               left: w * 0.04,
               right: w * 0.04,
@@ -66,35 +68,33 @@ class AdminOrderdetails extends StatelessWidget {
                   MediaQuery.of(context).padding.bottom +
                   12, // لتجنب حواف الـ Safe Area في بعض الأجهزة
             ),
-
-            child: ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                // يأخذ لون الحالة الحالية ليعطي انطباعاً متناسقاً بصرياً
-                backgroundColor:
-                    controller.statusColor ?? Theme.of(context).primaryColor,
-                minimumSize: const Size(double.infinity, 52),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40),
-                ),
-                elevation: 0,
+            child: Checkbutton.widget(
+              width: w * 0.8,
+              buttonColor:
+                  controller.statusColor ?? Theme.of(context).primaryColor,
+              statusrequest: Statusrequest.none,
+              widget: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.edit_note, color: Colors.white, size: 24),
+                  Text(
+                    controller.currentStatus == 'delivered' ||
+                            controller.currentStatus == 'cancelled'
+                        ? "لا يمكن التعديل علي حاله الطلب"
+                        : "change status order",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontFamily: 'Cairo', // أو خط تطبيقك المعتمد
+                    ),
+                  ),
+                ],
               ),
-              onPressed: () {
-                // فتح قائمة الحالات عند الضغط على الزر
+              onTap: () {
                 _showStatusBottomSheet(context, controller);
               },
-              icon: Icon(Icons.edit_note, color: Colors.white, size: 24),
-              label: Text(
-                controller.currentStatus == 'delivered' ||
-                        controller.currentStatus == 'cancelled'
-                    ? "لا يمكن التعديل علي حاله الطلب"
-                    : "change status order",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontFamily: 'Cairo', // أو خط تطبيقك المعتمد
-                ),
-              ),
+              buttonName: "orderstate",
             ),
           );
         },
@@ -118,8 +118,8 @@ class AdminOrderdetails extends StatelessWidget {
     Get.bottomSheet(
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-        decoration:  BoxDecoration(
-          color:  Theme.of(context).scaffoldBackgroundColor,
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: Column(
@@ -186,7 +186,11 @@ class AdminOrderdetails extends StatelessWidget {
       leading: CircleAvatar(radius: 7, backgroundColor: color),
       title: Text(
         title,
-        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15,color: color),
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 15,
+          color: color,
+        ),
       ),
       trailing: const Icon(
         Icons.arrow_forward_ios,
@@ -201,29 +205,3 @@ class AdminOrderdetails extends StatelessWidget {
     );
   }
 }
-
-// Google Map
-// SizedBox(
-//   height: 200,
-//   child: Text("Google map disabled for demo purposes"),
-//   //  GoogleMap(
-//   //   initialCameraPosition: CameraPosition(
-//   //     target: location,
-//   //     zoom: 14.0,
-//   //   ),
-//   //   markers: {
-//   //     Marker(
-//   //       markerId: MarkerId('deliveryLocation'),
-//   //       position: location,
-//   //       infoWindow: InfoWindow(title: "موقع التوصيل"),
-//   //     ),
-//   //   },
-//   //   zoomControlsEnabled: false,
-//   //   myLocationEnabled: false,
-//   //   onMapCreated: (GoogleMapController controller) {
-//   //     // ممكن تتحكم بالخريطة هنا
-//   //   },
-//   // ),
-// ),
-
-// ودجت لعرض الحالة بشكل جميل

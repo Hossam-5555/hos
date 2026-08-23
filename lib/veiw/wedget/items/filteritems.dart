@@ -11,9 +11,9 @@ void showFilterSheet(BuildContext context, ItemsController c) {
     backgroundColor: Colors.transparent,
     builder: (context) {
       return DraggableScrollableSheet(
-        initialChildSize: 0.85, // بيفتح على 85% من الشاشة
+        initialChildSize: 0.75, // بيفتح على 85% من الشاشة
         minChildSize: 0.5, // أقل حجم ممكن لما يسحب لتحت
-        maxChildSize: 0.95, // أقصى حجم ممكن لما يسحب لفوق
+        maxChildSize: 0.80, // أقصى حجم ممكن لما يسحب لفوق
         expand: false,
         builder: (context, scrollController) {
           return Container(
@@ -42,7 +42,6 @@ void showFilterSheet(BuildContext context, ItemsController c) {
                       const SizedBox(height: 28),
                       _buildSectionTitle(context, "Brands"),
                       _buildBrandImages(context, c),
-                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
@@ -217,31 +216,37 @@ Widget _buildBrandImages(BuildContext context, ItemsController c) {
         return const Center(child: Text("No brands found"));
       }
 
-      return Wrap(
-        children: brands.map((brand) {
-          final isSelected = controller.selectedBrands.contains(brand.id);
-          return GestureDetector(
-            onTap: () => controller.toggleBrand(brand.id!),
-            child: Container(
-              alignment: AlignmentDirectional.center,
-              margin: const EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                gradient: LinearGradient(
-                  colors: [const Color.fromARGB(255, 56, 61, 61), Colors.grey],
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: brands.map((brand) {
+            final isSelected = controller.selectedBrands.contains(brand.id);
+            return GestureDetector(
+              onTap: () => controller.toggleBrand(brand.id!),
+              child: Container(
+                alignment: AlignmentDirectional.center,
+                margin: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  gradient: LinearGradient(
+                    colors: [
+                      const Color.fromARGB(255, 56, 61, 61),
+                      Colors.grey,
+                    ],
+                  ),
+                ),
+                width: 100,
+                height: 40,
+                child: Text(
+                  brand.name!,
+                  style: TextStyle(
+                    color: isSelected ? Colors.blue : Colors.white,
+                  ),
                 ),
               ),
-              width: 100,
-              height: 40,
-              child: Text(
-                brand.name!,
-                style: TextStyle(
-                  color: isSelected ? Colors.blue : Colors.white,
-                ),
-              ),
-            ),
-          );
-        }).toList(),
+            );
+          }).toList(),
+        ),
       );
     },
   );
@@ -249,7 +254,7 @@ Widget _buildBrandImages(BuildContext context, ItemsController c) {
 
 Widget _buildBottomButtons(BuildContext context, ItemsController c) {
   return Padding(
-    padding: const EdgeInsets.all(20),
+    padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
     child: Checkbutton.widget(
       width: context.width * 0.7,
       widget: Obx(() {

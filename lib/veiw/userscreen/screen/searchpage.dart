@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/searchclass.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
+import 'package:hos/veiw/wedget/SharedProductCard.dart';
 import 'package:hos/veiw/wedget/animation.dart';
-import 'package:hos/veiw/wedget/saerch/productcard.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -67,6 +68,7 @@ class Searchpage extends StatelessWidget {
                     Expanded(
                       child: isSearching
                           ? _SearchResults(
+                              width: width,
                               controller: controller,
                               hPad: hPad,
                               textSecondary: textSecondary,
@@ -215,16 +217,37 @@ class _SearchResults extends StatelessWidget {
     required this.controller,
     required this.hPad,
     required this.textSecondary,
+    required this.width,
   });
 
   final SearchMix controller;
   final double hPad;
   final Color textSecondary;
-
+  final double width;
   @override
   Widget build(BuildContext context) {
     final bool isLoading = controller.statusrequest == Statusrequest.loading;
+    // نقاط توقف بسيطة: هاتف صغير / هاتف عادي / تابلت
+    final bool isSmallPhone = width < 360;
+    final bool isTablet = width >= 600;
 
+    // مسافات متجاوبة اعتماداً على العرض (أثبت من الطول بين الأجهزة)
+    // مع حدود دنيا وقصوى عشان ماتبقاش صغيرة أوي أو كبيرة أوي
+    final double horizontalPadding = (width * 0.045).clamp(12.0, 32.0);
+    final double sectionSpacing = (width * 0.05).clamp(14.0, 26.0);
+
+    // ارتفاع قائمة التصنيفات الأفقية: نسبة من العرض مش من الطول
+
+    // عدد أعمدة الجريد: 2 للهاتف، 3 للتابلت الصغير، 4 للتابلت الكبير
+    final int gridCrossAxisCount = isTablet ? (width >= 900 ? 4 : 3) : 2;
+    final double gridSpacing = isSmallPhone ? 10.0 : 12.0;
+
+    // عرض الكارت الفعلي بعد خصم الـ padding والمسافات بين الأعمدة
+    final double cardWidth =
+        (width -
+            (horizontalPadding * 2) -
+            (gridSpacing * (gridCrossAxisCount - 1))) /
+        gridCrossAxisCount;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: hPad),
       child: Column(
@@ -244,11 +267,28 @@ class _SearchResults extends StatelessWidget {
                     ),
                   )
                 : Expanded(
-                    child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.only(top: 4, bottom: 20),
-                      itemCount: isLoading ? 5 : controller.searchlist.length,
-                      itemBuilder: (context, i) {
+                    child: MasonryGridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.symmetric(
+                        vertical: sectionSpacing * 0.3,
+                      ),
+                      gridDelegate:
+                          SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: gridCrossAxisCount,
+                          ),
+                      mainAxisSpacing: gridSpacing + 4,
+                      crossAxisSpacing: gridSpacing,
+                      itemCount: controller.searchlist.length,
+                      itemBuilder: (context, index) {
+                        final item = controller.searchlist[index];
+
+                        // ارتفاع الكارت نسبي لعرضه الفعلي، مش رقم ثابت،
+                        // فبكده بيتصرف صح على أي مقاس شاشة
+                        final double baseHeight = cardWidth * 1.55;
+                        final double cardHeight = index.isEven
+                            ? baseHeight
+                            : baseHeight * 1.2;
                         if (isLoading) {
                           return const Card(
                             child: ListTile(
@@ -258,10 +298,19 @@ class _SearchResults extends StatelessWidget {
                             ),
                           );
                         }
-                        final item = controller.searchlist[i];
-                        return SearchProductCard(
-                          item: item,
-                          onTap: () => controller.gotoitemsdatails(item),
+                        return SharedProductCard(
+                          image: "${item.itemsImage}",
+                          title: "${item.itemsName}",
+                          price: "${item.itemsPrice}",
+                          rating: 4.8,
+                          onTap: () {
+                            controller.gotoitemsdatails(item);
+                          },
+
+                          actionButton: Text(""),
+
+                          /// 🔥 أهم سطر
+                          height: cardHeight,
                         );
                       },
                     ),
@@ -327,7 +376,6 @@ class PopularCategoriesSection extends StatelessWidget {
           child: Column(
             children: List.generate(displayCategories.length, (index) {
               final item = displayCategories[index];
-              final bool isLast = index == displayCategories.length - 1;
               return Column(
                 children: [
                   _CategoryRow(
@@ -336,7 +384,6 @@ class PopularCategoriesSection extends StatelessWidget {
                     accent: accent,
                     ontap: ontap,
                   ),
-                  if (!isLast) Divider(height: 1, color: borderColor),
                 ],
               );
             }),
@@ -368,11 +415,6 @@ class _CategoryRow extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         child: Row(
           children: [
-            const SizedBox(
-              height: 42,
-              child: Icon(Icons.trending_up_outlined, size: 22),
-            ),
-            const SizedBox(width: 14),
             Expanded(
               child: Text(
                 item.name ?? "",
@@ -383,7 +425,10 @@ class _CategoryRow extends StatelessWidget {
                 ),
               ),
             ),
-            const Icon(Icons.chevron_right_rounded, size: 22),
+            const SizedBox(
+              height: 42,
+              child: Icon(Icons.trending_up_outlined, size: 22),
+            ),
           ],
         ),
       ),

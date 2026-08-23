@@ -105,6 +105,15 @@ class ProfilePage extends StatelessWidget {
                       curve: Curves.fastOutSlowIn,
                     ),
                   ),
+                  _buildListTile(
+                    gradientColors: [
+                      const Color.fromARGB(255, 243, 9, 9),
+                      Colors.red,
+                    ],
+                    icon: Icons.favorite_border,
+                    title: "Favorite".tr,
+                    onTap: () => Get.toNamed(Approute.myfavorite),
+                  ),
                 ],
               ),
             ),
