@@ -174,25 +174,38 @@ class Checkoutcontroller extends GetxController {
 
   //============================ التحقق من حالة الدفع
   Future<void> checkPaymentStatus(int orderId) async {
-    try {
-      // استنى ثانيتين عشان الـ webhook يوصل للسيرفر الأول
-      await Future.delayed(const Duration(seconds: 2));
+  try {
+    await Future.delayed(const Duration(seconds: 2));
 
-      var response = await checkoutdata.payment(orderId);
+    var result = await checkoutdata.getPaymentStatus(orderId);
 
-      if (response['data']['payment_status'] == 'paid') {
-        Get.offAll(() => PaymentResultPage(isSuccess: true));
-      } else {
-        Get.offAll(() => PaymentResultPage(isSuccess: false));
-      }
-    } catch (e) {
-      showSnackBar(
-        Get.context!,
-        "تعذر التحقق من حالة الدفع",
-        Icon(Icons.error, color: Colors.red),
-      );
-    }
+    // fold عشان نتعامل مع الـ Either
+    result.fold(
+      (failure) {
+        // فشل في الاتصال
+        showSnackBar(
+          Get.context!,
+          "تعذر التحقق من حالة الدفع",
+          Icon(Icons.error, color: Colors.red),
+        );
+      },
+      (response) {
+        // نجح الاتصال
+        if (response['data']['payment_status'] == 'paid') {
+          Get.offAll(() => PaymentResultPage(isSuccess: true));
+        } else {
+          Get.offAll(() => PaymentResultPage(isSuccess: false));
+        }
+      },
+    );
+  } catch (e) {
+    showSnackBar(
+      Get.context!,
+      "حدث خطأ غير متوقع",
+      Icon(Icons.error, color: Colors.red),
+    );
   }
+}
 
   //============================ متغيرات الكوبون والسعر
   String? couponeid;

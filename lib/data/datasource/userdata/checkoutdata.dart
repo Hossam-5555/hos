@@ -13,4 +13,9 @@ class Checkoutdata {
     var response = await crud.postrequset("${LinkApi.payment}/${orderid}",{});
     return response.fold((l) => l, (r) => r);
   }
+
+  Future getPaymentStatus(int orderId) async {
+  var response = await crud.getrequset('${LinkApi.payment}$orderId');
+  return response.fold((l) => l, (r) => r);
+}
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentWebViewScreen extends StatefulWidget {
@@ -17,25 +18,26 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
   @override
   void initState() {
     super.initState();
-    // جيب البيانات من الـ arguments
     paymentUrl = Get.arguments['url'];
+    final int orderId = Get.arguments['order_id'];
 
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(NavigationDelegate(
-        onPageStarted: (_) => setState(() => isPageLoading = true),
-        onPageFinished: (url) {
-          setState(() => isPageLoading = false);
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (_) => setState(() => isPageLoading = true),
+          onPageFinished: (url) {
+            setState(() => isPageLoading = false);
 
-          // لما Paymob تعمل redirect بعد الدفع
-          if (url.contains('success') ||
-              url.contains('pending') ||
-              url.contains('error') ||
-              url.contains('txn_response_code')) {
-            // Payment status is handled by the checkout flow after the redirect.
-          }
-        },
-      ))
+            // لو الـ URL مش بتاع Paymob → يبقى اتعمل redirect
+            if (!url.contains('accept.paymob.com') &&
+                !url.contains('mastercard.com') &&
+                url != paymentUrl) {
+              Get.find<Checkoutcontroller>().checkPaymentStatus(orderId);
+            }
+          },
+        ),
+      )
       ..loadRequest(Uri.parse(paymentUrl));
   }
 
@@ -55,8 +57,7 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
       body: Stack(
         children: [
           WebViewWidget(controller: _controller),
-          if (isPageLoading)
-            const Center(child: CircularProgressIndicator()),
+          if (isPageLoading) const Center(child: CircularProgressIndicator()),
         ],
       ),
     );

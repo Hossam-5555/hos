@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 import 'package:hos/controler/usercontroller/profile/paymentcontroller.dart';
+import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/add.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
@@ -14,7 +15,7 @@ class Checkout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(Checkoutcontroller());
-    PaymentController controller1 = Get.put(PaymentController());
+    Get.put(PaymentController());
 
     return Scaffold(
       appBar: Appbarbackicon(title: "confirm order".tr, herotag: "checkout"),
@@ -81,9 +82,8 @@ class Checkout extends StatelessWidget {
 
             // ================= عنوان التوصيل =================
             HandlingDataView(
-              mediaType: HandlingMediaType.animation,
               mode: HandlingMode.skeleton,
-              statusrequest: c.statusrequest,
+              statusrequest: Statusrequest.none,
               widget: _buildCard(
                 child: c.listaddresdata.isEmpty
                     ? ListTile(
@@ -146,23 +146,14 @@ class Checkout extends StatelessWidget {
             const SizedBox(height: 24),
 
             // ================= الفورم الديناميكي + زرار التأكيد =================
-            Form(
-              key: controller1.formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // 🔥 نفس الـ Checkbutton ونفس الأنيميشن، بس بستايل "Pay Now"
-                  Checkbutton(
-                    width: MediaQuery.of(context).size.width,
-                    buttonColor: Colors.black,
-                    onTap: () {
-                      c.checkoutoder();
-                    },
-                    buttonName: "Pay Now".tr,
-                    statusrequest: c.statusrequest,
-                  ),
-                ],
-              ),
+            Checkbutton(
+              width: MediaQuery.of(context).size.width,
+              buttonColor: Colors.black,
+              onTap: () {
+                c.checkoutoder();
+              },
+              buttonName: "Pay Now".tr,
+              statusrequest: c.statusrequest,
             ),
           ],
         ),
@@ -222,10 +213,7 @@ class Checkout extends StatelessWidget {
             onTap: () => _showAddressesSheet(c, con),
             child: Row(
               children: [
-                const Icon(
-                  Icons.location_on_rounded,
-                  size: 20,
-                ),
+                const Icon(Icons.location_on_rounded, size: 20),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
