@@ -7,7 +7,6 @@ import 'package:hos/controler/usercontroller/notificationcontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/appexitalert.dart';
-import 'package:hos/veiw/userscreen/screen/cartandcheckout/PaymentResultPage.dart';
 import 'package:hos/veiw/wedget/Homepage/buttomAppbar.dart';
 import 'package:hos/veiw/wedget/Homepage/homescrenAction.dart';
 
@@ -57,45 +56,44 @@ class Homescreen extends StatelessWidget {
                 // زر البحث
 
                 // زر الإشعارات
-                // Padding(
-                //   padding: EdgeInsetsDirectional.symmetric(
-                //     horizontal: 10,
-                //   ), // مسافة ممتازة من الحافة
-                //   child: Homescrenaction(
-                //     herotag: "notification",
-                //     onPressed: () {
-                //       // Get.toNamed(Approute.notificationPage);
-                //       Get.to( () => PaymentResultPage(isSuccess: false,));
-                //     },
-                //     child: GetBuilder<Notificationcontroller>(
-                //       builder: (controller) {
-                //         // نتحقق إذا كان فيه إشعارات ولا لأ
-                //         int hasUnread = controller.notificationcount;
+                Padding(
+                  padding: EdgeInsetsDirectional.symmetric(
+                    horizontal: 10,
+                  ), // مسافة ممتازة من الحافة
+                  child: Homescrenaction(
+                    herotag: "notification",
+                    onPressed: () {
+                      Get.toNamed(Approute.notificationPage);
+                    },
+                    child: GetBuilder<Notificationcontroller>(
+                      builder: (controller) {
+                        // نتحقق إذا كان فيه إشعارات ولا لأ
+                        int hasUnread = controller.notificationcount;
 
-                //         return Badge(
-                //           isLabelVisible:
-                //               hasUnread > 0, // دي الطريقة الصح لإخفاء البادج
-                //           // alignment: const Alignment(0.1, 0.90),
-                //           // label: Text(
-                //           //   hasUnread.toString(),
-                //           //   style: const TextStyle(
-                //           //     color: Colors.white,
-                //           //     fontSize: 12,
-                //           //   ),
-                //           // ), // تظبيط مكان النقطة على الأيقونة
-                //           // smallSize: 9, // حجم النقطة مناسب للعين
-                //           backgroundColor: Colors.redAccent,
-                //           child: SvgPicture.asset(
-                //             Imageasset.notification,
-                //             height: 24, // توحيد الحجم
-                //             width: 24,
-                //             color: Colors.black,
-                //           ),
-                //         );
-                //       },
-                //     ),
-                //   ),
-                // ),
+                        return Badge(
+                          isLabelVisible:
+                              hasUnread > 0, // دي الطريقة الصح لإخفاء البادج
+                          // alignment: const Alignment(0.1, 0.90),
+                          // label: Text(
+                          //   hasUnread.toString(),
+                          //   style: const TextStyle(
+                          //     color: Colors.white,
+                          //     fontSize: 12,
+                          //   ),
+                          // ), // تظبيط مكان النقطة على الأيقونة
+                          // smallSize: 9, // حجم النقطة مناسب للعين
+                          backgroundColor: Colors.redAccent,
+                          child: SvgPicture.asset(
+                            Imageasset.notification,
+                            height: 24, // توحيد الحجم
+                            width: 24,
+                            color: Colors.black,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -114,7 +112,7 @@ class Homescreen extends StatelessWidget {
                   ),
                   NavItem(
                     label: controller.appbartitle[1][0],
-                    svgAsset:controller.appbartitle[1][1],
+                    svgAsset: controller.appbartitle[1][1],
                   ),
                   NavItem(
                     label: controller.appbartitle[2][0],

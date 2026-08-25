@@ -19,10 +19,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HomepageController controller = Get.put(HomepageController());
-    final Homescreencontroller homescreencontroller = Get.put(
-      Homescreencontroller(),
-    );
+    final HomepageController controller = Get.find<HomepageController>();
+    final Homescreencontroller homescreencontroller =
+        Get.find<Homescreencontroller>();
 
     return GetBuilder<HomepageController>(
       builder: (_) => Scaffold(

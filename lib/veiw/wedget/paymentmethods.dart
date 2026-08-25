@@ -191,7 +191,7 @@ Widget buildInfoBox(
     key: key,
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
-      color: Colors.lightGreen, // رمادي فاتح جداً بدل البرتقالي
+      color: Colors.lightGreen.withAlpha(50), // رمادي فاتح جداً بدل البرتقالي
       borderRadius: BorderRadius.circular(12),
     ),
     child: Row(

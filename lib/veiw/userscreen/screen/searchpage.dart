@@ -16,7 +16,6 @@ class Searchpage extends StatelessWidget {
   Searchpage({super.key});
 
   final controller = Get.put(SearchMix());
-  final homeController = Get.find<HomepageController>();
 
   @override
   Widget build(BuildContext context) {

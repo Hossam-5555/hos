@@ -9,13 +9,14 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 class Myfavorite extends StatelessWidget {
   Myfavorite({super.key});
+  final c = Get.put(Myfavcontroler());
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final height = size.height;
     final width = size.width;
 
-    Get.put(Myfavcontroler());
     return Scaffold(
       appBar: Appbarbackicon(
         herotag: "Favorite".tr,

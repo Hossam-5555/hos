@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
+import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/routs.dart';
+import 'package:hos/veiw/userscreen/screen/home/homescreen.dart';
 import 'package:hos/veiw/userscreen/screen/profile/order/orders.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
@@ -448,7 +450,7 @@ class _PaymentResultPageState extends State<PaymentResultPage>
         statusrequest: Statusrequest.none,
         onTap: () {
           // هنا ممكن تضيف منطق فتح صفحة الطلبات أو تفاصيل الطلب
-          Get.offAll(() => Orders());
+          Get.off(() => Orders());
         },
         widget: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -530,6 +532,7 @@ class _PaymentResultPageState extends State<PaymentResultPage>
           if (widget.orderId != null) {
             Get.find<Checkoutcontroller>().cancelOrder(widget.orderId!);
           } else {
+            Get.offAllNamed(Approute.Homescreen);
           }
         },
         style: OutlinedButton.styleFrom(
