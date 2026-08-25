@@ -241,9 +241,6 @@ class ShoppingCartPage extends StatelessWidget {
                           );
                         }, childCount: controller.data.length),
                       ),
-
-                // مسافة سفلية مرنة عشان العناصر ما تلزقش في الحافة أو في أزرار التنقل (Safe Area)
-                SliverToBoxAdapter(child: SizedBox(height: height * 0.1)),
               ],
             ),
           );

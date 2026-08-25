@@ -10,12 +10,19 @@ class Checkoutdata {
   }
 
   payment(int orderid) async {
-    var response = await crud.postrequset("${LinkApi.payment}/${orderid}",{});
+    var response = await crud.postrequset("${LinkApi.payment}/$orderid", {});
     return response.fold((l) => l, (r) => r);
   }
 
   Future getPaymentStatus(int orderId) async {
-  var response = await crud.getrequset('${LinkApi.payment}$orderId');
-  return response.fold((l) => l, (r) => r);
-}
+    var response = await crud.getrequset('${LinkApi.payment}$orderId');
+    return response.fold((l) => l, (r) => r);
+  }
+
+  Future cancelOrder(int orderId) async {
+    var response = await crud.putandpacth('${LinkApi.order}/$orderId', {
+      "status": "cancelled",
+    });
+    return response.fold((l) => l, (r) => r);
+  }
 }

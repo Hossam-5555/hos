@@ -32,7 +32,7 @@ class Orders extends StatelessWidget {
             child: ListView.separated(
               padding: EdgeInsets.all(w * 0.03),
               itemCount: controller.orders.length,
-              separatorBuilder: (_, _) => SizedBox(height: h * 0.010),
+              separatorBuilder: (_, _) => SizedBox(height: h * 0.001),
 
               itemBuilder: (context, index) {
                 final order = controller.orders[index];

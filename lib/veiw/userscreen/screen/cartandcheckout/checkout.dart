@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
-import 'package:hos/controler/usercontroller/profile/paymentcontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/veiw/userscreen/screen/profile/settings/addres/add.dart';
@@ -15,7 +14,6 @@ class Checkout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(Checkoutcontroller());
-    Get.put(PaymentController());
 
     return Scaffold(
       appBar: Appbarbackicon(title: "confirm order".tr, herotag: "checkout"),

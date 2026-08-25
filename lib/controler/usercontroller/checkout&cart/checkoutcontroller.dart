@@ -207,6 +207,39 @@ class Checkoutcontroller extends GetxController {
   }
 }
 
+
+
+// إعادة المحاولة
+Future<void> retryPayment(int orderId) async {
+  statusrequest = Statusrequest.loading;
+  update();
+  try {
+    var paymentResponse = await checkoutdata.payment(orderId);
+    if (paymentResponse['status'] == true) {
+      String paymentUrl = paymentResponse['data']['payment_url'];
+      Get.to(() => PaymentWebViewScreen(), arguments: {
+        'url': paymentUrl,
+        'order_id': orderId,
+      });
+    }
+  } catch (e) {
+    showSnackBar(Get.context!, "حدث خطأ", Icon(Icons.error, color: Colors.red));
+  } finally {
+    statusrequest = Statusrequest.none;
+    update();
+  }
+}
+
+// إلغاء الأوردر
+Future<void> cancelOrder(int orderId) async {
+  try {
+    await checkoutdata.cancelOrder(orderId);
+    Get.offAllNamed('/home');
+  } catch (e) {
+    showSnackBar(Get.context!, "حدث خطأ في الإلغاء", Icon(Icons.error, color: Colors.red));
+  }
+}
+
   //============================ متغيرات الكوبون والسعر
   String? couponeid;
   String couponediscount = "0";

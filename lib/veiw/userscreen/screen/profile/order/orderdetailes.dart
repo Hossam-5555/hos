@@ -52,9 +52,9 @@ class Orderdetailes extends StatelessWidget {
             padding: EdgeInsets.all(w * 0.04),
             children: [
               statusorder(o.status, c.statusColor!, c.statusText!),
-              card(info(o)),
-              card(items(o)),
-              card(price(o)),
+              CardWidget(child:info(o)),
+              CardWidget(child:items(o)),
+              CardWidget(child:price(o)),
             ],
           );
         },

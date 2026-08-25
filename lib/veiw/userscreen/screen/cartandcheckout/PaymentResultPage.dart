@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 import 'package:hos/core/class/crud.dart';
+import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/veiw/userscreen/screen/profile/order/orders.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
@@ -23,7 +25,7 @@ class PaymentResultPage extends StatefulWidget {
   /// Callback اختياري لو عايز تربط زرار "Try Again" بمنطق إعادة فتح
   /// الـ Paymob WebView بتاعك
   final VoidCallback? onRetry;
-
+  final int? orderId; // ← ضيف ده
   const PaymentResultPage({
     super.key,
     required this.isSuccess,
@@ -33,6 +35,7 @@ class PaymentResultPage extends StatefulWidget {
     this.paymentMethod = 'Visa •••• 4242',
     this.failureReason = 'Your payment could not be completed.',
     this.onRetry,
+    this.orderId,
   });
 
   @override
@@ -446,7 +449,7 @@ class _PaymentResultPageState extends State<PaymentResultPage>
         onTap: () {
           // هنا ممكن تضيف منطق فتح صفحة الطلبات أو تفاصيل الطلب
           Get.offAll(() => Orders());
-        },  
+        },
         widget: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -471,7 +474,14 @@ class _PaymentResultPageState extends State<PaymentResultPage>
       width: double.infinity,
       height: 58,
       child: ElevatedButton(
-        onPressed: widget.onRetry ?? () {},
+        onPressed: () {
+          if (widget.onRetry != null) {
+            widget.onRetry!();
+          } else if (widget.orderId != null) {
+            // يعمل initiate جديد لنفس الأوردر
+            Get.find<Checkoutcontroller>().retryPayment(widget.orderId!);
+          }
+        },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xff17191C),
           foregroundColor: Colors.white,
@@ -516,7 +526,12 @@ class _PaymentResultPageState extends State<PaymentResultPage>
       width: double.infinity,
       height: 52,
       child: OutlinedButton(
-        onPressed: () => Navigator.pop(context),
+        onPressed: () {
+          if (widget.orderId != null) {
+            Get.find<Checkoutcontroller>().cancelOrder(widget.orderId!);
+          } else {
+          }
+        },
         style: OutlinedButton.styleFrom(
           foregroundColor: isDark ? Colors.white : const Color(0xff30343A),
           side: BorderSide(
@@ -529,7 +544,7 @@ class _PaymentResultPageState extends State<PaymentResultPage>
           ),
         ),
         child: const Text(
-          'Back to Checkout',
+          'Cancel Order',
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
         ),
       ),

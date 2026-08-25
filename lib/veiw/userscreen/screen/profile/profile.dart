@@ -105,15 +105,6 @@ class ProfilePage extends StatelessWidget {
                       curve: Curves.fastOutSlowIn,
                     ),
                   ),
-                  _buildListTile(
-                    gradientColors: [
-                      const Color.fromARGB(255, 243, 9, 9),
-                      Colors.red,
-                    ],
-                    icon: Icons.favorite_border,
-                    title: "Favorite".tr,
-                    onTap: () => Get.toNamed(Approute.myfavorite),
-                  ),
                 ],
               ),
             ),
@@ -152,7 +143,7 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
           padding: const EdgeInsets.all(10),
-          child: Row(
+          child: Column(
             children: [
               // Profile Image
               Stack(
@@ -199,32 +190,30 @@ class ProfilePage extends StatelessWidget {
               ),
               const SizedBox(width: 16),
               // User Info
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      userName,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.3,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    userName,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.3,
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      email,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(
-                          context,
-                        ).textTheme.bodySmall?.color?.withValues(alpha: 0.7),
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    email,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(
+                        context,
+                      ).textTheme.bodySmall?.color?.withValues(alpha: 0.7),
                     ),
-                  ],
-                ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
 
               // Edit Button

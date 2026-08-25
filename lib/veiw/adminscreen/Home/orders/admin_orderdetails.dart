@@ -42,9 +42,9 @@ class AdminOrderdetails extends StatelessWidget {
                 controller.statusColor!,
                 controller.statusText!,
               ),
-              card(info(o)),
-              card(items(o)),
-              card(price(o)),
+              CardWidget(child: info(o)),
+              CardWidget(child: items(o)),
+              CardWidget(child: price(o)),
 
               // مسافة أمان إضافية لضمان عدم اختفاء آخر كارت خلف الزر السفلي عند عمل سكرول
               const SizedBox(height: 80),

@@ -62,8 +62,7 @@ Widget buildPaymentMethod({
               shape: BoxShape.circle,
               color: isSelected ? Colors.green : Colors.transparent,
               border: Border.all(
-                color: isSelected ? Colors.black : Colors.grey.shade400,
-                width: .1,
+                color:Colors.grey ,
               ),
             ),
             child: isSelected
@@ -192,9 +191,8 @@ Widget buildInfoBox(
     key: key,
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
-      color: Colors.grey.shade100, // رمادي فاتح جداً بدل البرتقالي
+      color: Colors.lightGreen, // رمادي فاتح جداً بدل البرتقالي
       borderRadius: BorderRadius.circular(12),
-      border: Border.all(color: Colors.grey.shade200),
     ),
     child: Row(
       children: [
@@ -203,7 +201,7 @@ Widget buildInfoBox(
         Expanded(
           child: Text(
             text,
-            style: TextStyle(color: Colors.grey.shade800, height: 1.5),
+            // style: TextStyle(color: Colors.grey.shade800, height: 1.5),
           ),
         ),
       ],

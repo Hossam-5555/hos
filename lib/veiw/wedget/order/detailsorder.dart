@@ -3,16 +3,24 @@ import 'package:flutter/material.dart';
 
 import 'package:hos/data/model/ordersmodel.dart';
 
-Widget card(Widget child) => Container(
-  margin: const EdgeInsets.only(bottom: 12),
-  padding: const EdgeInsets.all(12),
-  decoration: BoxDecoration(
-    border: Border.all(color: Colors.grey.withAlpha(50)),
-    borderRadius: BorderRadius.circular(20),
-    // boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],
-  ),
-  child: child,
-);
+// ignore: must_be_immutable
+class CardWidget extends StatelessWidget {
+  CardWidget({super.key, required this.child});
+  Widget child;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        border: Border.all(color: Colors.grey.withAlpha(50)),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: child,
+    );
+  }
+}
 
 // status
 Widget statusorder(String status, Color currentColor, String text) {
@@ -41,8 +49,8 @@ Widget statusorder(String status, Color currentColor, String text) {
 
   const animationDuration = Duration(milliseconds: 400);
 
-  return card(
-    Column(
+  return CardWidget(
+    child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // 🔹 العنوان + الحالة العامة
@@ -217,10 +225,7 @@ Widget items(OrderModel order) => Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text("x${e.quantity}"),
-            Text(
-              "${e.price}\$",
-              style: TextStyle(color: Colors.green),
-            ),
+            Text("${e.price}\$", style: TextStyle(color: Colors.green)),
           ],
         ),
         // trailing: Text(

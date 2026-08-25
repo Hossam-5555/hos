@@ -8,6 +8,7 @@ import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/veiw/wedget/SharedProductCard.dart';
 import 'package:hos/veiw/wedget/animation.dart';
+import 'package:hos/veiw/wedget/items/itemslist.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -15,6 +16,7 @@ class Searchpage extends StatelessWidget {
   Searchpage({super.key});
 
   final controller = Get.put(SearchMix());
+  final homeController = Get.find<HomepageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +84,6 @@ class Searchpage extends StatelessWidget {
                               chipBg: chipBg,
                               cardBg: cardBg,
                               accent: accent,
-                              ontap: () {},
                             ),
                     ),
                   ],
@@ -106,7 +107,6 @@ class _IdleState extends StatelessWidget {
     required this.chipBg,
     required this.cardBg,
     required this.accent,
-    required this.ontap,
   });
 
   final SearchMix controller;
@@ -117,7 +117,6 @@ class _IdleState extends StatelessWidget {
   final Color chipBg;
   final Color cardBg;
   final Color accent;
-  final void Function() ontap;
 
   @override
   Widget build(BuildContext context) {
@@ -204,7 +203,6 @@ class _IdleState extends StatelessWidget {
             borderColor: context.isDarkMode
                 ? Colors.white.withOpacity(0.08)
                 : Colors.grey.withOpacity(0.15),
-            ontap: ontap,
           ),
         ],
       ),
@@ -224,98 +222,234 @@ class _SearchResults extends StatelessWidget {
   final double hPad;
   final Color textSecondary;
   final double width;
+
   @override
   Widget build(BuildContext context) {
-    final bool isLoading = controller.statusrequest == Statusrequest.loading;
-    // نقاط توقف بسيطة: هاتف صغير / هاتف عادي / تابلت
+    final status = controller.statusrequest;
+
+    final bool isLoading = status == Statusrequest.loading;
+
+    final bool isError =
+        status == Statusrequest.serverfailure ||
+        status == Statusrequest.failure;
+
+    final bool isEmpty =
+        !isLoading && !isError && controller.searchlist.isEmpty;
+
+    // Responsive
     final bool isSmallPhone = width < 360;
     final bool isTablet = width >= 600;
 
-    // مسافات متجاوبة اعتماداً على العرض (أثبت من الطول بين الأجهزة)
-    // مع حدود دنيا وقصوى عشان ماتبقاش صغيرة أوي أو كبيرة أوي
-    final double horizontalPadding = (width * 0.045).clamp(12.0, 32.0);
-    final double sectionSpacing = (width * 0.05).clamp(14.0, 26.0);
+    final int crossAxisCount = isTablet ? (width >= 900 ? 4 : 3) : 2;
 
-    // ارتفاع قائمة التصنيفات الأفقية: نسبة من العرض مش من الطول
+    final double spacing = isSmallPhone ? 9 : 12;
 
-    // عدد أعمدة الجريد: 2 للهاتف، 3 للتابلت الصغير، 4 للتابلت الكبير
-    final int gridCrossAxisCount = isTablet ? (width >= 900 ? 4 : 3) : 2;
-    final double gridSpacing = isSmallPhone ? 10.0 : 12.0;
+    final double horizontalPadding = width >= 600 ? 24 : 14;
 
-    // عرض الكارت الفعلي بعد خصم الـ padding والمسافات بين الأعمدة
     final double cardWidth =
-        (width -
-            (horizontalPadding * 2) -
-            (gridSpacing * (gridCrossAxisCount - 1))) /
-        gridCrossAxisCount;
+        (width - (horizontalPadding * 2) - (spacing * (crossAxisCount - 1))) /
+        crossAxisCount;
+
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: hPad),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 10),
-          Skeletonizer(
-            enabled: isLoading,
-            child: controller.searchlist.isEmpty && !isLoading
-                ? Container(
-                    alignment: Alignment.center,
-                    child: Animationlottie(
-                      animationPath: Imageasset.emptystate,
-                      h: 200,
-                      w: 200,
-                    ),
-                  )
-                : Expanded(
-                    child: MasonryGridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.symmetric(
-                        vertical: sectionSpacing * 0.3,
-                      ),
-                      gridDelegate:
-                          SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: gridCrossAxisCount,
-                          ),
-                      mainAxisSpacing: gridSpacing + 4,
-                      crossAxisSpacing: gridSpacing,
-                      itemCount: controller.searchlist.length,
-                      itemBuilder: (context, index) {
-                        final item = controller.searchlist[index];
+          const SizedBox(height: 8),
 
-                        // ارتفاع الكارت نسبي لعرضه الفعلي، مش رقم ثابت،
-                        // فبكده بيتصرف صح على أي مقاس شاشة
-                        final double baseHeight = cardWidth * 1.55;
-                        final double cardHeight = index.isEven
-                            ? baseHeight
-                            : baseHeight * 1.2;
-                        if (isLoading) {
-                          return const Card(
-                            child: ListTile(
-                              leading: CircleAvatar(),
-                              title: Text("Loading Product Name..."),
-                              subtitle: Text("Price / Details"),
-                            ),
-                          );
-                        }
-                        return SharedProductCard(
-                          image: "${item.itemsImage}",
-                          title: "${item.itemsName}",
-                          price: "${item.itemsPrice}",
-                          rating: 4.8,
-                          onTap: () {
-                            controller.gotoitemsdatails(item);
-                          },
-
-                          actionButton: Text(""),
-
-                          /// 🔥 أهم سطر
-                          height: cardHeight,
-                        );
-                      },
-                    ),
+          // =========================
+          // Result Header
+          // =========================
+          if (!isLoading && !isError) ...[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  isEmpty
+                      ? "No Products Found".tr
+                      : "${controller.searchlist.length} Products Found".tr,
+                  style: TextStyle(
+                    fontSize: isTablet ? 18 : 16,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : const Color(0xFF16181D),
                   ),
-          ),
+                ),
+
+                if (!isEmpty)
+                  Text(
+                    "Search Results".tr,
+                    style: TextStyle(fontSize: 12, color: textSecondary),
+                  ),
+              ],
+            ),
+
+            const SizedBox(height: 14),
+          ],
+
+          // =========================
+          // Loading
+          // =========================
+          if (isLoading)
+            Expanded(
+              child: Skeletonizer(
+                enabled: true,
+                child: MasonryGridView.builder(
+                  padding: const EdgeInsets.only(top: 8, bottom: 24),
+                  gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                  ),
+                  mainAxisSpacing: spacing,
+                  crossAxisSpacing: spacing,
+                  itemCount: 6,
+                  itemBuilder: (context, index) {
+                    final double baseHeight = cardWidth * 1.55;
+
+                    return SharedProductCard(
+                      image: "",
+                      title: "Loading Product",
+                      price: "0000",
+                      rating: 4.8,
+                      onTap: () {},
+                      actionButton: const SizedBox(),
+                      height: index.isEven ? baseHeight : baseHeight * 1.15,
+                    );
+                  },
+                ),
+              ),
+            )
+          // =========================
+          // Error
+          // =========================
+          else if (isError)
+            Expanded(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.cloud_off_rounded,
+                        size: 64,
+                        color: textSecondary,
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      Text(
+                        "Something went wrong".tr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : const Color(0xFF16181D),
+                        ),
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      Text(
+                        "We couldn't load the search results. Please try again."
+                            .tr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 14, color: textSecondary),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      ElevatedButton.icon(
+                        onPressed: controller.onsearch,
+                        icon: const Icon(Icons.refresh_rounded),
+                        label: Text("Try Again".tr),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          // =========================
+          // Empty
+          // =========================
+          else if (isEmpty)
+            Expanded(
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Animationlottie(
+                        animationPath: Imageasset.emptystate,
+                        h: isTablet ? 240 : 190,
+                        w: isTablet ? 240 : 190,
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      Text(
+                        "No products found".tr,
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : const Color(0xFF16181D),
+                        ),
+                      ),
+
+                      const SizedBox(height: 6),
+
+                      Text(
+                        "Try searching with another name or category.".tr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 13, color: textSecondary),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          // =========================
+          // Results
+          // =========================
+          else
+            Expanded(
+              child: MasonryGridView.builder(
+                padding: const EdgeInsets.only(top: 4, bottom: 24),
+                physics: const BouncingScrollPhysics(),
+                gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                ),
+                mainAxisSpacing: spacing,
+                crossAxisSpacing: spacing,
+                itemCount: controller.searchlist.length,
+                itemBuilder: (context, index) {
+                  final item = controller.searchlist[index];
+
+                  final double baseHeight = cardWidth * 1.55;
+
+                  final double cardHeight = index.isEven
+                      ? baseHeight
+                      : baseHeight * 1.15;
+
+                  return SharedProductCard(
+                    image: "${item.itemsImage}",
+                    title: "${item.itemsName}",
+                    price: "${item.itemsPrice}",
+                    rating: 4.8,
+                    onTap: () {
+                      controller.gotoitemsdatails(item);
+                    },
+                    actionButton: const SizedBox(),
+                    height: cardHeight,
+                  );
+                },
+              ),
+            ),
         ],
       ),
     );
@@ -331,7 +465,6 @@ class PopularCategoriesSection extends StatelessWidget {
     required this.accent,
     required this.cardBg,
     required this.borderColor,
-    required this.ontap,
     required this.c,
   });
 
@@ -342,7 +475,7 @@ class PopularCategoriesSection extends StatelessWidget {
   final Color accent;
   final Color cardBg;
   final Color borderColor;
-  final void Function() ontap;
+  // final void Function() ontap;
 
   @override
   Widget build(BuildContext context) {
@@ -373,65 +506,20 @@ class PopularCategoriesSection extends StatelessWidget {
         const SizedBox(height: 14),
         Skeletonizer(
           enabled: showSkeleton,
-          child: Column(
+          child: Wrap(
             children: List.generate(displayCategories.length, (index) {
               final item = displayCategories[index];
-              return Column(
-                children: [
-                  _CategoryRow(
-                    item: item,
-                    textPrimary: textPrimary,
-                    accent: accent,
-                    ontap: ontap,
-                  ),
-                ],
+              return BuildCategoryItems(
+                catmodel: item,
+                isSelected: true,
+                onTap: () {
+                  c.search!.text = item.name!;
+                },
               );
             }),
           ),
         ),
       ],
-    );
-  }
-}
-
-class _CategoryRow extends StatelessWidget {
-  const _CategoryRow({
-    required this.item,
-    required this.textPrimary,
-    required this.accent,
-    required this.ontap,
-  });
-
-  final CategoriesModel item;
-  final Color textPrimary;
-  final Color accent;
-  final void Function() ontap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: ontap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                item.name ?? "",
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: textPrimary,
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 42,
-              child: Icon(Icons.trending_up_outlined, size: 22),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

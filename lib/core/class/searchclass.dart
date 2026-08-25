@@ -29,7 +29,7 @@ class SearchMix extends GetxController {
     update();
 
     var response = await homedata.searchdata(search!.text);
-    // print("Response==========================: $response");
+    print("Response==========================: $response");
 
     statusrequest = handling(response);
 

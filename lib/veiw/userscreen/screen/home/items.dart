@@ -89,10 +89,18 @@ class _CategoryBar extends StatelessWidget {
         itemBuilder: (_, i) {
           final catmodel = controller.categories[i];
           controller.indexofcategrry = i;
-          return BuildCategoryItems(
-            catmodel: catmodel,
-            urlIcon: "${catmodel.image}",
-            i: i,
+          return GetBuilder<ItemsController>(
+            builder: (controller) {
+              return BuildCategoryItems(
+                catmodel: catmodel,
+
+                isSelected: controller.selecteditem == i,
+
+                onTap: () {
+                  controller.changcat(i, catmodel.id.toString());
+                },
+              );
+            },
           );
         },
       ),
