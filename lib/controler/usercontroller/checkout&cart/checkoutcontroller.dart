@@ -123,8 +123,8 @@ class Checkoutcontroller extends GetxController {
             Get.to(
               () => PaymentResultPage(
                 isSuccess: true,
-                orderNumber: '#${orderId}',
-                amount: '${totalprice} EGP',
+                orderNumber: '#$orderId',
+                amount: '$totalprice'"EGP".tr,
                 transactionId: 'CASH',
                 paymentMethod: 'كاش عند الاستلام',
               ),

@@ -13,9 +13,24 @@ class Checkout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(Checkoutcontroller());
+    final c = Get.put(Checkoutcontroller());
 
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GetBuilder<Checkoutcontroller>(
+          builder: (controller) => Checkbutton(
+            width: MediaQuery.of(context).size.width * 0.9,
+            buttonColor: Colors.black,
+            onTap: () {
+              c.checkoutoder();
+            },
+            buttonName: "Pay Now".tr,
+            statusrequest: c.statusrequest,
+          ),
+        ),
+      ),
       appBar: Appbarbackicon(title: "confirm order".tr, herotag: "checkout"),
       body: GetBuilder<Checkoutcontroller>(
         builder: (c) => ListView(
@@ -144,15 +159,6 @@ class Checkout extends StatelessWidget {
             const SizedBox(height: 24),
 
             // ================= الفورم الديناميكي + زرار التأكيد =================
-            Checkbutton(
-              width: MediaQuery.of(context).size.width,
-              buttonColor: Colors.black,
-              onTap: () {
-                c.checkoutoder();
-              },
-              buttonName: "Pay Now".tr,
-              statusrequest: c.statusrequest,
-            ),
           ],
         ),
       ),

@@ -47,9 +47,9 @@ class CustomBottomNavBar extends StatelessWidget {
       curve: Curves.easeInQuad,
       child: IgnorePointer(
         ignoring: !visible,
-        child: Container(
-          margin: const EdgeInsets.only(bottom: 5),
-          width: width * 0.80,
+        child: Container(padding: EdgeInsets.all(5),
+          margin: const EdgeInsets.only(bottom: 8),
+          width: width * 0.9,
           height: 70,
           decoration: BoxDecoration(
             gradient: LinearGradient(

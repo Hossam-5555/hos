@@ -13,7 +13,7 @@ Widget buildCartItemCard(
   return GetBuilder<CartController>(
     builder: (controller) => Container(
       margin: const EdgeInsets.all(5),
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(14),
@@ -100,10 +100,18 @@ Widget buildCartItemCard(
                           IconButton(
                             iconSize: 18,
                             padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(minWidth: 40),
+                            constraints: const BoxConstraints(
+                              minWidth: 30,
+                              minHeight: 30,
+                            ),
+                            style: IconButton.styleFrom(
+                              backgroundColor:
+                                  Colors.white, // اللون اللي أنت عايزه
+                              shape: const CircleBorder(),
+                            ),
                             icon: const Icon(
                               Icons.remove_rounded,
-                              color: Colors.redAccent,
+                              color: Colors.black,
                             ),
                             onPressed: () => controller.decrement(cart.itemid!),
                           ),
@@ -115,14 +123,22 @@ Widget buildCartItemCard(
                             ),
                           ),
                           IconButton(
+                            onPressed: () => controller.increment(cart.itemid!),
                             iconSize: 18,
                             padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(minWidth: 40),
+                            constraints: const BoxConstraints(
+                              minWidth: 30,
+                              minHeight: 30,
+                            ),
+                            style: IconButton.styleFrom(
+                              backgroundColor:
+                                  Colors.black, // اللون اللي أنت عايزه
+                              shape: const CircleBorder(),
+                            ),
                             icon: const Icon(
                               Icons.add_rounded,
-                              color: Colors.blueAccent,
+                              color: Colors.white,
                             ),
-                            onPressed: () => controller.increment(cart.itemid!),
                           ),
                         ],
                       ),

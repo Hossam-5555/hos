@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
-import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/routs.dart';
-import 'package:hos/veiw/userscreen/screen/home/homescreen.dart';
 import 'package:hos/veiw/userscreen/screen/profile/order/orders.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
@@ -202,7 +200,7 @@ class _PaymentResultPageState extends State<PaymentResultPage>
                     _ok ? _viewOrderButton() : _tryAgainButton(),
                     const SizedBox(height: 14),
                     _ok
-                        ? _backToHomeButton(isDark)
+                        ? SizedBox.shrink()
                         : _backToCheckoutButton(isDark),
                   ],
                 ),
@@ -448,15 +446,12 @@ class _PaymentResultPageState extends State<PaymentResultPage>
       child: Checkbutton.widget(
         buttonColor: Color(0xff22A86B),
         statusrequest: Statusrequest.none,
-        onTap: () {
-          // هنا ممكن تضيف منطق فتح صفحة الطلبات أو تفاصيل الطلب
-          Get.off(() => Orders());
-        },
+        onTap:() => Navigator.popUntil(context, (route) => route.isFirst),
         widget: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'View Order',
+              'Back to Home',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
@@ -465,7 +460,7 @@ class _PaymentResultPageState extends State<PaymentResultPage>
             ),
           ],
         ),
-        buttonName: 'View Order',
+        buttonName: 'Back to Home',
       ),
     );
   }
@@ -507,20 +502,7 @@ class _PaymentResultPageState extends State<PaymentResultPage>
     );
   }
 
-  /// زرار "Back to Home" (نجاح)
-  Widget _backToHomeButton(bool isDark) {
-    return TextButton(
-      onPressed: () => Navigator.popUntil(context, (route) => route.isFirst),
-      child: Text(
-        'Back to Home',
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: isDark ? Colors.white70 : const Color(0xff555A61),
-        ),
-      ),
-    );
-  }
+ 
 
   /// زرار "Back to Checkout" (فشل)
   Widget _backToCheckoutButton(bool isDark) {

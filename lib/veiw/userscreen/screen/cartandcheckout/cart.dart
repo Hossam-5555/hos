@@ -31,6 +31,17 @@ class ShoppingCartPage extends StatelessWidget {
               slivers: [
                 SliverToBoxAdapter(
                   child: Container(
+                    margin: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 1,blurStyle: BlurStyle.outer,
+                          color: Colors.black.withAlpha(50),
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(30),
+                      color: Theme.of(context).cardColor,
+                    ),
                     // ❌ تم إزالة الارتفاع الثابت ليأخذ الحاوية حجم العناصر تلقائياً
                     padding: EdgeInsets.symmetric(
                       horizontal: width * 0.04, // هامش جانبي مرن
@@ -40,12 +51,19 @@ class ShoppingCartPage extends StatelessWidget {
                       // ✅ يجعل العمود يأخذ مساحة محتواه فقط لمنع التمدد غير المبرر
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        Coubone(
+                          onChanged: (val) {
+                            controller.havecoupone(val);
+                          },
+                        ),
+                        SizedBox(height: (height * 0.015).clamp(8.0, 16.0)),
+
                         // الإجمالي
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Total price'.tr,
+                              'Sub Total',
                               style: TextStyle(
                                 // ✅ استخدام clamp لمنع الخط من التضخم أو التضاؤل بشكل مبالغ فيه
                                 fontSize: (width * 0.04).clamp(14.0, 18.0),
@@ -85,17 +103,9 @@ class ShoppingCartPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(height: (height * 0.015).clamp(8.0, 16.0)),
 
-                        Coubone(
-                          onChanged: (val) {
-                            controller.havecoupone(val);
-                          },
-                        ),
+                        SizedBox(height: (height * 0.025).clamp(16.0, 30.0)),
 
-                        Divider(height: (height * 0.03).clamp(20.0, 35.0)),
-
-                        // المجموع الكلي
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -143,8 +153,9 @@ class ShoppingCartPage extends StatelessWidget {
                             ),
                           ],
                         ),
+                        Divider(height: (height * 0.03).clamp(20.0, 35.0)),
 
-                        SizedBox(height: (height * 0.025).clamp(16.0, 30.0)),
+                        // المجموع الكلي
 
                         // زر إتمام الشراء
                         SizedBox(
@@ -201,7 +212,7 @@ class ShoppingCartPage extends StatelessWidget {
                               MainAxisAlignment.center, // توسيط عمودي
                           children: [
                             Container(
-                              padding: const EdgeInsets.all(20),
+                              padding: const EdgeInsets.all(10),
                               // تحديد أبعاد ثابتة أو نسبة من الشاشة
                               width: MediaQuery.of(context).size.width * 0.6,
                               height: MediaQuery.of(context).size.width * 0.6,
@@ -211,7 +222,6 @@ class ShoppingCartPage extends StatelessWidget {
                                     .contain, // لضمان احتواء الصورة داخل الحاوية دون قص
                               ),
                             ),
-                            const SizedBox(height: 20),
                             const Text(
                               "السلة فارغة تسوق الان ",
                               style: TextStyle(
@@ -228,7 +238,7 @@ class ShoppingCartPage extends StatelessWidget {
                           return Padding(
                             // ✅ تم إضافة مسافة جانبية لكي لا تلتصق الكروت بحافة الشاشة
                             padding: EdgeInsets.only(
-                              bottom: 8,
+                              bottom: 5,
                               left: width * 0.04,
                               right: width * 0.04,
                             ),

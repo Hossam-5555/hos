@@ -47,7 +47,7 @@ class Textfealdauth extends StatelessWidget {
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide(color: Colors.white),
+            borderSide: BorderSide.none,
           ),
           suffixIcon: InkWell(
             onTap: onTapIcon,

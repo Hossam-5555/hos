@@ -11,6 +11,7 @@ class Checkbutton extends StatelessWidget {
     this.buttonColor,
     this.statusrequest,
   });
+
   Checkbutton.widget({
     super.key,
     required this.onTap,
@@ -19,7 +20,9 @@ class Checkbutton extends StatelessWidget {
     this.width,
     this.buttonColor,
     this.statusrequest,
+    this.h
   });
+  double? h;
   Widget? widget;
   void Function() onTap;
   double? width;
@@ -40,7 +43,7 @@ class Checkbutton extends StatelessWidget {
           ),
           duration: Duration(milliseconds: 400),
           width: statusrequest == Statusrequest.loading ? 60 : width,
-          height: 60,
+          height:h?? 60,
           curve: Curves.easeInOut,
           child: Material(
             color: Colors.transparent,

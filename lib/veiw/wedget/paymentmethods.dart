@@ -94,7 +94,7 @@ Widget buildCreditCardForm() {
     children: [
       // شكل الكارت الفخم
       Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           gradient: const LinearGradient(
             colors: [Color(0xFF1E1E1E), Color(0xFF3A3A3A)], // تدرج أسود فخم

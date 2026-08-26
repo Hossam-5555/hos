@@ -38,7 +38,7 @@ class Searchpage extends StatelessWidget {
       body: LayoutBuilder(
         builder: (context, constraints) {
           final width = constraints.maxWidth;
-          final hPad = (width * 0.045).clamp(14.0, 22.0);
+          final hPad = (width * 0.040).clamp(14.0, 22.0);
 
           return GetBuilder<SearchMix>(
             builder: (controller) {

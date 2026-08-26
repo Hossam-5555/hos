@@ -245,7 +245,7 @@ class SharedProductCard extends StatelessWidget {
                         Positioned(
                           bottom: 10,
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(40),
                             child: BackdropFilter(
                               filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                               child: Container(
@@ -256,7 +256,7 @@ class SharedProductCard extends StatelessWidget {
                                 ),
                                 decoration: BoxDecoration(
                                   color: chipBackground,
-                                  borderRadius: BorderRadius.circular(16),
+                                  borderRadius: BorderRadius.circular(40),
                                   border: Border.all(color: chipBorder),
                                 ),
                                 child: Row(
