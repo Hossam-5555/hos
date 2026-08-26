@@ -98,8 +98,8 @@ class CustomBottomNavBar extends StatelessWidget {
                                 ? FontWeight.bold
                                 : FontWeight.w200,
                             color: isSelected
-                                ? Colors.black
-                                : Colors.grey.shade700,
+                                ? Colors.blue
+                                : Colors.grey.shade500,
                           ),
                         ),
                       ],
