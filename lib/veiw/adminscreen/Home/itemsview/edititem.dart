@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/items/edititemcontroller.dart';
 import 'package:hos/veiw/adminscreen/Home/itemsview/additem.dart';
+import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 // لا تنسى تعديل مسار الاستيراد بناءً على مجلدات مشروعك
 // import 'package:hos/controller/edit_item_controller.dart';
@@ -16,14 +17,7 @@ class EditItem extends StatelessWidget {
     Get.put(Edititemcontroller());
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'تعديل بيانات المنتج',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        elevation: 0,
-      ),
+      appBar: Appbarbackicon(title: "Edit Items", herotag: ""),
       body: GetBuilder<Edititemcontroller>(
         builder: (controller) {
           return Form(

@@ -48,9 +48,9 @@ class CustomBottomNavBar extends StatelessWidget {
       child: IgnorePointer(
         ignoring: !visible,
         child: Container(padding: EdgeInsets.all(5),
-          margin: const EdgeInsets.only(bottom: 8),
+          // margin: const EdgeInsets.only(bottom: 5),
           width: width * 0.9,
-          height: 70,
+          height: 65,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: isDark

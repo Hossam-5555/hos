@@ -10,9 +10,8 @@ import 'package:hos/veiw/wedget/appbarbackicon.dart';
 class ViewMyAddres extends StatelessWidget {
   ViewMyAddres({super.key});
 
-  // من الأفضل استخدام Get.find() إذا كان الكنترولر قد تم حقنه مسبقاً،
-  // ولكن سنترك Get.put() كما هي لضمان عدم حدوث تغيير في الهيكل الحالي لديك.
   final AddressController controller = Get.put(AddressController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,49 +21,52 @@ class ViewMyAddres extends StatelessWidget {
       ),
 
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         onPressed: () => Get.toNamed(Approute.addnewaddres),
-        icon: const Icon(Icons.add_location_alt_outlined, color: Colors.green),
+        icon: const Icon(Icons.add_location_alt_outlined, color: Colors.white),
         label: const Text("Add Address", style: TextStyle(color: Colors.white)),
       ),
 
       body: GetBuilder<AddressController>(
         builder: (controller) {
-          // تأمين حالة الـ null في البداية لتفادي أي استدعاء عشوائي قبل اكتمال الطلب
           if (controller.statusrequest == null) {
             return const Center(child: CircularProgressIndicator());
           }
 
           return HandlingDataView(
             statusrequest: controller.statusrequest!,
-            mediaType: HandlingMediaType.svgImage,
+            mediaType: HandlingMediaType.animation,
             mode: HandlingMode.fullScreen,
             showRetryButton: true,
             widget: AnimatedList(
-              // 1️⃣ هذا هو الرابط السحري الذي كان ينقص الكود ليربط الواجهة بالـ Controller
               key: controller.Addressket,
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 90),
               initialItemCount: controller.listaddresdata.length,
               itemBuilder: (context, index, animation) {
-                // 2️⃣ تأمين إضافي للتأكد من أن الـ index لا يتخطى حجم المصفوفة الفعلي أثناء الحركات السريعة
                 if (index >= controller.listaddresdata.length) {
                   return const SizedBox.shrink();
                 }
 
                 final address = controller.listaddresdata[index];
 
-                return ScaleTransition(
-                  scale: animation,
-                  child: _card(
-                    address,
-                    () {
-                      // تأكيد تمرير الـ id بشكل آمن من الموديل
-                      if (address.id != null) {
-                        controller.deleteAddres(address.id!);
-                      }
-                    },
-                    context,
-                    controller,
+                return SizeTransition(
+                  sizeFactor: animation,
+                  child: FadeTransition(
+                    opacity: animation,
+                    child: _AddressCard(
+                      address: address,
+                      isDefault: controller.isdefault == address.id,
+                      onDelete: () {
+                        if (address.id != null) {
+                          controller.deleteAddres(address.id!);
+                        }
+                      },
+                      onSetDefault: () {
+                        if (address.id != null) {
+                          controller.updatedefault(address.id!);
+                        }
+                      },
+                    ),
                   ),
                 );
               },
@@ -76,223 +78,226 @@ class ViewMyAddres extends StatelessWidget {
   }
 }
 
-/// 📦 UI Card محسّن
-/// 📦 UI Card محسّن بالتصميم الجديد
-Widget _card(
-  AddressModel address,
-  VoidCallback onDelete,
-  BuildContext context,
-  AddressController c,
-) {
-  bool isdefalt = c.isdefault == address.id;
+class _AddressCard extends StatelessWidget {
+  final AddressModel address;
+  final bool isDefault;
+  final VoidCallback onDelete;
+  final VoidCallback onSetDefault;
 
-  return Container(
-    margin: const EdgeInsets.all(5),
-    padding: const EdgeInsets.all(12),
-    decoration: BoxDecoration(
-      color: Theme.of(context).cardColor,
-      borderRadius: BorderRadius.circular(25),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.03),
-          blurRadius: 2,
-          spreadRadius: 0.5,
-          offset: const Offset(0, 1),
-        ),
-      ],
-    ),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // ---------------- القسم الأيسر: النصوص والأيقونات ----------------
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // 1️⃣ الشارات (Tags) - يمكنك استخدامها لإظهار ما إذا كان العنوان هو الأساسي
-              Wrap(
-                spacing: 8,
-                runSpacing: 4,
-                children: [
-                  if (isdefalt)
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
+  const _AddressCard({
+    required this.address,
+    required this.isDefault,
+    required this.onDelete,
+    required this.onSetDefault,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 230,
+      margin: const EdgeInsets.only(bottom: 16),
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          CachedNetworkImage(
+            fit: BoxFit.cover,
+            imageUrl:
+                "https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=1200&auto=format&fit=crop",
+            placeholder: (context, url) => Container(
+              color: Theme.of(context).cardColor,
+              child: const Center(
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
+            ),
+            errorWidget: (context, url, error) => Container(
+              color: Theme.of(context).cardColor,
+              child: const Icon(Icons.image_not_supported_outlined, size: 40),
+            ),
+          ),
+
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withOpacity(0.0),
+                  Colors.black.withOpacity(0.35),
+                  Colors.black.withOpacity(0.85),
+                ],
+                stops: const [0.0, 0.5, 1.0],
+              ),
+            ),
+          ),
+
+          if (isDefault)
+            Positioned(
+              top: 14,
+              left: 14,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.tealAccent.withOpacity(0.9),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const Text(
+                  "DEFAULT ADDRESS",
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+              ),
+            ),
+
+          Positioned(
+            top: 12,
+            right: 12,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: Container(
+                color: Colors.white.withOpacity(0.25),
+                child: PopupMenuButton<String>(
+                  padding: EdgeInsets.zero,
+                  icon: const Icon(Icons.more_vert, color: Colors.white),
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      onTap: onDelete,
+                      value: 'delete',
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.delete_outline_rounded,
+                            color: Colors.red.shade600,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            "حذف",
+                            style: TextStyle(
+                              color: Colors.red.shade600,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
-                      decoration: BoxDecoration(
-                        color: Colors.teal.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const Text(
-                        'DEFAULT ADDRESS',
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.teal,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          Positioned(
+            left: 16,
+            right: 16,
+            bottom: 14,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  address.name ?? '',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  "${address.city ?? ''}, ${address.street ?? ''}",
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.85),
+                    fontSize: 13,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    _infoChip(
+                      Icons.phone_outlined,
+                      address.phone ?? 'No phone',
+                    ),
+                    const SizedBox(width: 10),
+                    if (!isDefault)
+                      GestureDetector(
+                        onTap: onSetDefault,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: const Text(
+                            "Set as default",
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                ],
-              ),
-              const SizedBox(height: 8),
-
-              // 2️⃣ العنوان (Title) مع زر القائمة (Menu)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Text(
-                      "${address.name}",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 18,
-                        color: context.isDarkMode
-                            ? Colors.white
-                            : Colors.black87,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-
-                  // زر الـ Menu القديم الخاص بك مدمج هنا بشكل أنيق
-                  SizedBox(
-                    height: 24,
-                    width: 24,
-                    child: PopupMenuButton<String>(
-                      padding: EdgeInsets.zero,
-                      icon: const Icon(
-                        Icons.more_vert,
-                        color: Colors.grey,
-                        size: 20,
-                      ),
-                      color: Colors.white,
-                      elevation: 8,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      itemBuilder: (BuildContext context) {
-                        return [
-                          PopupMenuItem(
-                            onTap: onDelete,
-                            value: 'delete',
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.delete_outline_rounded,
-                                  color: Colors.red.shade600,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 12),
-                                Text(
-                                  "حذف",
-                                  style: TextStyle(
-                                    color: Colors.red.shade600,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          PopupMenuItem(
-                            onTap: () {
-                              if (address.id != null)
-                                c.updatedefault(address.id!);
-                            },
-                            value: 'Set default',
-                            child: Row(
-                              children: [
-                                Icon(
-                                  isdefalt
-                                      ? Icons.turned_in
-                                      : Icons.turned_in_not_sharp,
-                                  color: Colors.black,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 12),
-                                const Text(
-                                  "Set default",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ];
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 6),
-
-              // 3️⃣ تفاصيل العنوان
-              Text(
-                "${address.city}, ${address.street}",
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey.shade600,
-                  height: 1.3,
+                  ],
                 ),
-                maxLines: 2,
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _infoChip(IconData icon, String label) {
+    return Flexible(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.15),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 14, color: Colors.white),
+            const SizedBox(width: 5),
+            Flexible(
+              child: Text(
+                label,
+                style: const TextStyle(color: Colors.white, fontSize: 12),
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 4),
-
-              // 4️⃣ رقم الهاتف
-              Text(
-                address.phone ?? 'No phone provided',
-                style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
-              ),
-              const SizedBox(height: 16),
-
-              // 5️⃣ الأيقونات السفلية (كما في التصميم)
-              Row(
-                children: [
-                  _buildBottomIcon(Icons.location_on_outlined),
-                  _buildBottomIcon(Icons.phone_outlined),
-                  _buildBottomIcon(Icons.language),
-                ],
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-
-        const SizedBox(width: 12),
-
-        // ---------------- القسم الأيمن: الصورة ----------------
-        ClipRRect(
-          borderRadius: BorderRadius.circular(16),
-          child: CachedNetworkImage(
-            height: 140,
-            width: 110,
-            imageUrl:
-                "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2053&auto=format&fit=crop",
-            fit: BoxFit.cover,
-            placeholder: (context, url) =>
-                const Center(child: CircularProgressIndicator(strokeWidth: 2)),
-            errorWidget: (context, url, error) =>
-                const Icon(Icons.error_outline),
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-// ---------------- ويدجت مساعدة للأيقونات السفلية ----------------
-Widget _buildBottomIcon(IconData icon, {Color color = Colors.black54}) {
-  return Container(
-    margin: const EdgeInsets.only(right: 8),
-    padding: const EdgeInsets.all(6),
-    decoration: BoxDecoration(
-      color: Colors.grey.shade200, // لون خلفية الأيقونة
-      shape: BoxShape.circle,
-    ),
-    child: Icon(icon, size: 18, color: color),
-  );
+      ),
+    );
+  }
 }

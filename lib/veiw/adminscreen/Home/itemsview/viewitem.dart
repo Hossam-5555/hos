@@ -29,21 +29,9 @@ class ViewItemScreen extends StatelessWidget {
             /// 🔍 1. شريط البحث
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.cyanAccent.withOpacity(0.1),
-                      blurRadius: 10,
-                      spreadRadius: 2,
-                    ),
-                  ],
-                ),
-                child: Searchbar(
-                  title: "ابحث عن منتج، رمز، أو قسم...",
-                  mycontroller: controller.controller,
-                ),
+              child: Searchbar(
+                title: "ابحث عن منتج، رمز، أو قسم...",
+                mycontroller: controller.controller,
               ),
             ),
 

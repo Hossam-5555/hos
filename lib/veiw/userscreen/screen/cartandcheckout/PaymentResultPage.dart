@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/routs.dart';
-import 'package:hos/veiw/userscreen/screen/profile/order/orders.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 /// صفحة واحدة بتعرض نتيجة الدفع (نجاح أو فشل) حسب الـ [isSuccess]

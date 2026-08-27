@@ -98,10 +98,10 @@ class SharedProductCard extends StatelessWidget {
                 colors: (isDarkMode
                     ? [
                         const Color(
-                          0xFFEAAFC8,
+                          0xFFFD343A,
                         ).withOpacity(0.8), // لمعة بينك/بيضاء (وضع ليلي)
                         Colors.transparent,
-                        Colors.white.withOpacity(0.3),
+                        Colors.grey.withOpacity(0.3),
                       ]
                     : [
                         Colors.blue.withOpacity(0.5), // لمعة زرقاء (وضع فاتح)

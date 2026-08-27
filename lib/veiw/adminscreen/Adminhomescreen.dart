@@ -50,29 +50,25 @@ class AdminHome extends StatelessWidget {
             ],
           ),
         ),
-        floatingActionButton: Container(
-          alignment: Alignment.bottomCenter,
-          margin: EdgeInsetsDirectional.symmetric(horizontal: 12),
-          child: // مع GetX
-          GetBuilder<Adminhome>(
-            builder: (controller) => CustomBottomNavBar(
-              items: [
-                NavItem(
-                  label: controller.title[0][0],
-                  svgAsset: controller.title[0][1],
-                ),
-                NavItem(
-                  label: controller.title[1][0],
-                  svgAsset: controller.title[1][1],
-                ),
-                NavItem(
-                  label: controller.title[2][0],
-                  svgAsset: controller.title[2][1],
-                ),
-              ],
-              currentIndex: controller.currentpage,
-              onTap: controller.changePage,
-            ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: GetBuilder<Adminhome>(
+          builder: (controller) => CustomBottomNavBar(
+            items: [
+              NavItem(
+                label: controller.title[0][0],
+                svgAsset: controller.title[0][1],
+              ),
+              NavItem(
+                label: controller.title[1][0],
+                svgAsset: controller.title[1][1],
+              ),
+              NavItem(
+                label: controller.title[2][0],
+                svgAsset: controller.title[2][1],
+              ),
+            ],
+            currentIndex: controller.currentpage,
+            onTap: controller.changePage,
           ),
         ),
         body: PageView(

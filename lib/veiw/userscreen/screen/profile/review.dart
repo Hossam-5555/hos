@@ -11,7 +11,7 @@ class MyReviewsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     Get.put(MyReviewsController());
+    Get.put(MyReviewsController());
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -43,17 +43,21 @@ class MyReviewsPage extends StatelessWidget {
                       width * 0.04,
                       100,
                     ),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, i) => Padding(
-                          padding: const EdgeInsets.only(bottom: 16),
-                          child: _MyReviewCard(
-                            review: controller.filteredReviews[i],
-                            onDelete: () => controller.deleteReview(
-                              controller.filteredReviews[i].id,
-                            ),
-                            onEdit: () {},
+                    sliver: SliverGrid(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 14,
+                            crossAxisSpacing: 14,
+                            childAspectRatio: 0.72,
                           ),
+                      delegate: SliverChildBuilderDelegate(
+                        (context, i) => _MyReviewCard(
+                          review: controller.filteredReviews[i],
+                          onDelete: () => controller.deleteReview(
+                            controller.filteredReviews[i].id,
+                          ),
+                          onEdit: () {},
                         ),
                         childCount: controller.filteredReviews.length,
                       ),
@@ -244,99 +248,179 @@ class _MyReviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color:Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey[200]!),
+        borderRadius: BorderRadius.circular(22),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
+        fit: StackFit.expand,
         children: [
-          Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  review.productImage,
-                  width: 44,
-                  height: 44,
-                  fit: BoxFit.cover,
+          Image.network(
+            review.productImage,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stack) => Container(
+              color: Theme.of(context).cardColor,
+              child: const Icon(Icons.image_not_supported_outlined, size: 32),
+            ),
+            loadingBuilder: (context, child, progress) {
+              if (progress == null) return child;
+              return Container(
+                color: Theme.of(context).cardColor,
+                child: const Center(
+                  child: CircularProgressIndicator(strokeWidth: 2),
                 ),
+              );
+            },
+          ),
+
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withOpacity(0.0),
+                  Colors.black.withOpacity(0.35),
+                  Colors.black.withOpacity(0.88),
+                ],
+                stops: const [0.0, 0.45, 1.0],
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      review.productName,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 13,
-                      ),
+            ),
+          ),
+
+          Positioned(
+            top: 10,
+            left: 10,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.star_rounded,
+                    size: 13,
+                    color: Colors.amber,
+                  ),
+                  const SizedBox(width: 3),
+                  Text(
+                    review.rating.toString(),
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
                     ),
-                    Text(
-                      DateFormat("d MMM yyyy").format(review.date),
-                      style: TextStyle(fontSize: 11, color: Colors.grey[500]),
-                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          Positioned(
+            top: 6,
+            right: 6,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: Container(
+                color: Colors.white.withOpacity(0.25),
+                child: PopupMenuButton<String>(
+                  padding: EdgeInsets.zero,
+                  icon: const Icon(
+                    Icons.more_vert_rounded,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                  onSelected: (v) => v == "edit" ? onEdit() : onDelete(),
+                  itemBuilder: (_) => const [
+                    PopupMenuItem(value: "edit", child: Text("Edit")),
+                    PopupMenuItem(value: "delete", child: Text("Delete")),
                   ],
                 ),
               ),
-              PopupMenuButton<String>(
-                icon: Icon(
-                  Icons.more_vert_rounded,
-                  color: Colors.grey[500],
-                  size: 20,
-                ),
-                onSelected: (v) => v == "edit" ? onEdit() : onDelete(),
-                itemBuilder: (_) => const [
-                  PopupMenuItem(value: "edit", child: Text("Edit")),
-                  PopupMenuItem(value: "delete", child: Text("Delete")),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Row(
-            children: List.generate(
-              5,
-              (i) => Icon(
-                i < review.rating
-                    ? Icons.star_rounded
-                    : Icons.star_border_rounded,
-                size: 15,
-                color: Appcolor.primaryColor,
-              ),
             ),
           ),
-          const SizedBox(height: 8),
-          Text(
-            review.comment,
-            style: const TextStyle(fontSize: 13, height: 1.4),
-          ),
-          if (review.images.isNotEmpty) ...[
-            const SizedBox(height: 10),
-            SizedBox(
-              height: 64,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: review.images.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 8),
-                itemBuilder: (_, i) => ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    review.images[i],
-                    width: 64,
-                    height: 64,
-                    fit: BoxFit.cover,
+
+          Positioned(
+            left: 12,
+            right: 12,
+            bottom: 12,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  review.productName,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 14,
                   ),
                 ),
-              ),
+                const SizedBox(height: 2),
+                Text(
+                  DateFormat("d MMM yyyy").format(review.date),
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.75),
+                    fontSize: 11,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  review.comment,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.9),
+                    fontSize: 11,
+                    height: 1.3,
+                  ),
+                ),
+                if (review.images.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.photo_outlined,
+                          size: 12,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          "${review.images.length}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ],
             ),
-          ],
+          ),
         ],
       ),
     );

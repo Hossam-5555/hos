@@ -10,7 +10,7 @@ class AppTheme {
   static const Color _lightTextSec = Color(0xFF6B7280); // رمادي للنصوص الثانوية والأسعار القديمة
 
   // 2. ألوان احترافية للثيم الداكن (Dark Palette)
-  static const Color _darkBg = Color(0xFF1F1F1F); // أسود فخم وعميق للخلفية
+  static const Color _darkBg = Color(0xFF1A1C22); // أسود فخم وعميق للخلفية
   static const Color _darkSurface = Color(0xFF161616); // درجة أفتح للبطاقات لخلق عمق
   static const Color _darkTextMain = Color(0xFFF5F5F7); // أبيض عاجي يمنع التشتت
   static const Color _darkTextSec = Color.fromARGB(255, 247, 247, 247); // رمادي فاتح للنصوص الثانوية

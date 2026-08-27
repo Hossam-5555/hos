@@ -90,7 +90,7 @@ class OrderCard extends StatelessWidget {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: color.withOpacity(0.15),
+                          color: Colors.black.withOpacity(0.15),
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(color: color.withOpacity(0.2)),
                         ),

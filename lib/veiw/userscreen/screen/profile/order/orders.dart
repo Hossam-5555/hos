@@ -25,6 +25,9 @@ class Orders extends StatelessWidget {
       body: GetBuilder<Ordercontroller>(
         builder: (controller) => HandlingDataView(
           statusrequest: controller.statusrequest,
+          mode: HandlingMode.fullScreen,
+          mediaType: HandlingMediaType.svgImage,
+          onRetry: controller.viewmyorders, // لازم تبعتها عشان الزرار يظهر
 
           widget: RefreshIndicator(
             onRefresh: () async => await controller.viewmyorders(),

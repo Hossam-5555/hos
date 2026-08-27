@@ -32,39 +32,6 @@ enum HandlingMediaType {
   pngImage,
 }
 
-/// ويدجت موحّدة بديلة لـ Handlingdataview + Handlingdatrequest.
-///
-/// أمثلة استخدام:
-///
-/// 1) صفحة كاملة (بدل Handlingdataview القديمة):
-/// ```dart
-/// HandlingDataView(
-///   statusrequest: controller.status,
-///   mode: HandlingMode.fullScreen,
-///   widget: YourPageContent(),
-/// )
-/// ```
-///
-/// 2) سكيلتون فوق نفس شكل المحتوى:
-/// ```dart
-/// HandlingDataView(
-///   statusrequest: controller.status,
-///   mode: HandlingMode.skeleton,
-///   widget: YourListView(),
-/// )
-/// ```
-///
-/// 3) أوفرلاي فوق أي حتة في الصفحة (مثلاً فورم أو بوتوم شيت):
-/// ```dart
-/// HandlingDataView(
-///   statusrequest: controller.status,
-///   mode: HandlingMode.overlay,
-///   mediaType: HandlingMediaType.svgImage,
-///   onRetry: controller.retry,
-///   onTapError: () => controller.resetStatus(),
-///   widget: YourFormWidget(),
-/// )
-/// ```
 class HandlingDataView extends StatelessWidget {
   const HandlingDataView({
     super.key,
@@ -123,23 +90,19 @@ class HandlingDataView extends StatelessWidget {
       "assets/images/empty_cart.svg",
     ],
     Approute.myfavorite: [
-      "No items in your favorites".tr,
-      Imageasset.emptyfavorite,
+      "No favorites yet — go find something you'll love!",
+      Imageasset.emptystate,
     ],
-    Approute.viewmyaddres: ["Add new address".tr, Imageasset.emptyAddress],
+    Approute.viewmyaddres: ["Add new address".tr, Imageasset.emptystate],
     Approute.Orders: [
       "You have no orders yet".tr,
       "assets/images/empty_orders.svg",
     ],
-    Approute.Items: [
+    Approute.Items: ["No items in this Category yet", Imageasset.emptycart],
+    AdminApproate.ViewItemScreen: [
       "No items in this Category yet",
       Imageasset.emptycart,
     ],
-      AdminApproate.ViewItemScreen: [
-      "No items in this Category yet",
-      Imageasset.emptycart,
-    ],
-    
   };
 
   List<String> _defaultForRoute() {
@@ -190,12 +153,15 @@ class HandlingDataView extends StatelessWidget {
   // ---------------------------------------------------------------------
   // بناء الميديا (انيميشن / svg / png) حسب mediaType المختار
   // ---------------------------------------------------------------------
-  Widget _buildMedia({double? width, double? height}) {
+  Widget _buildMedia({double? width, double? height, isTablet}) {
     final path = _getImagePath();
-
     switch (mediaType) {
       case HandlingMediaType.animation:
-        return Animationforstatus(animationPath: path);
+        return Animationlottie(
+          animationPath: path,
+          h: isTablet ? 240 : 190,
+          w: isTablet ? 240 : 190,
+        );
       case HandlingMediaType.svgImage:
         return SvgPicture.asset(
           path,
@@ -223,37 +189,55 @@ class HandlingDataView extends StatelessWidget {
         statusrequest != Statusrequest.checkinterner &&
         onRetry != null;
 
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              width: MediaQuery.of(context).size.width * 0.6,
-              height: MediaQuery.of(context).size.width * 0.6,
-              child: _buildMedia(),
-            ),
-            const SizedBox(height: 20),
-            if (msg.isNotEmpty)
+    return Expanded(
+      child: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Center(
+                child: Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(25),
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  height: MediaQuery.of(context).size.width * 0.6,
+                  child: _buildMedia(
+                    isTablet: MediaQuery.of(context).size.width >= 600,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 10),
+              if (msg.isNotEmpty)
+                Text(
+                  msg,
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : const Color(0xFF16181D),
+                  ),
+                ),
+
+              const SizedBox(height: 6),
+
               Text(
-                msg,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey.shade600,
-                  fontSize: 16,
-                ),
+                "Try searching with another name or category.",
                 textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 13, color: Colors.grey),
               ),
-            if (canRetry)
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: ElevatedButton(
-                  onPressed: onRetry,
-                  child: Text("Try again"),
+              if (canRetry)
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: ElevatedButton(
+                    onPressed: onRetry,
+                    child: Text("Try again"),
+                  ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );

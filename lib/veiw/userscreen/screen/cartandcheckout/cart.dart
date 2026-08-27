@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
-// import 'package:hos/veiw/wedget/animation.dart';
-import 'package:hos/veiw/wedget/shoppage/carditem.dart'; // تأكد من المسار
+import 'package:hos/veiw/wedget/shoppage/carditem.dart';
 import 'package:hos/veiw/wedget/shoppage/coubone.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class ShoppingCartPage extends StatelessWidget {
   const ShoppingCartPage({super.key});
@@ -20,35 +17,38 @@ class ShoppingCartPage extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final width = size.width;
     final height = size.height;
+  
 
     return Scaffold(
       body: GetBuilder<CartController>(
         builder: (controller) {
           return HandlingDataView(
-            statusrequest: Statusrequest.none,
-            widget: CustomScrollView(
-              physics: const BouncingScrollPhysics(),
-              slivers: [
-                SliverToBoxAdapter(
+            imagePath: Imageasset.emptycart,
+            message: "Start shopping now".tr,
+            statusrequest: controller.statusrequest,
+            mediaType: HandlingMediaType.svgImage,
+            mode: HandlingMode.fullScreen,
+            widget: Column(
+              children: [
+                SafeArea(
+                  top: false,
                   child: Container(
-                    margin: EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
-                          blurRadius: 1,blurStyle: BlurStyle.outer,
+                          blurRadius: 1,
+                          blurStyle: BlurStyle.outer,
                           color: Colors.black.withAlpha(50),
                         ),
                       ],
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(30),
+                        bottomRight: Radius.circular(30),
+                      ),
                       color: Theme.of(context).cardColor,
                     ),
-                    // ❌ تم إزالة الارتفاع الثابت ليأخذ الحاوية حجم العناصر تلقائياً
-                    padding: EdgeInsets.symmetric(
-                      horizontal: width * 0.04, // هامش جانبي مرن
-                      vertical: height * 0.02,
-                    ),
+                    padding: EdgeInsets.all(8),
                     child: Column(
-                      // ✅ يجعل العمود يأخذ مساحة محتواه فقط لمنع التمدد غير المبرر
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Coubone(
@@ -58,14 +58,12 @@ class ShoppingCartPage extends StatelessWidget {
                         ),
                         SizedBox(height: (height * 0.015).clamp(8.0, 16.0)),
 
-                        // الإجمالي
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               'Sub Total',
                               style: TextStyle(
-                                // ✅ استخدام clamp لمنع الخط من التضخم أو التضاؤل بشكل مبالغ فيه
                                 fontSize: (width * 0.04).clamp(14.0, 18.0),
                                 color: Colors.grey,
                               ),
@@ -75,15 +73,13 @@ class ShoppingCartPage extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: (width * 0.045).clamp(16.0, 22.0),
                                 fontWeight: FontWeight.bold,
-                                color: Colors
-                                    .green, // تمييز السعر بلون مختلف لزيادة الوضوح
+                                color: Colors.green,
                               ),
                             ),
                           ],
                         ),
                         SizedBox(height: (height * 0.015).clamp(8.0, 16.0)),
 
-                        // الخصم
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -116,52 +112,45 @@ class ShoppingCartPage extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-
-                            /// 🔥 الحل هنا
                             SizedBox(
-                              height: 35, // تثبيت الارتفاع للحفاظ على الأنيميشن
+                              height: 35,
                               child: GetBuilder<CartController>(
-                                builder: (controller) => TweenAnimationBuilder<double>(
-                                  tween: Tween<double>(
-                                    begin: controller.totalprice,
-                                    end:
-                                        controller.totalprice -
-                                        (controller.totalprice *
-                                            controller.couponediscount /
-                                            100),
-                                  ),
-                                  duration: const Duration(seconds: 1),
-                                  curve: Curves.easeOut,
-                                  builder: (context, value, child) {
-                                    return Text(
-                                      '${value.toStringAsFixed(0)}${" EGP".tr}',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        // جعله متجاوباً مع الحفاظ على الحجم التقريبي السابق (20)
-                                        fontSize: (width * 0.05).clamp(
-                                          20.0,
-                                          26.0,
-                                        ),
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.green,
+                                builder: (controller) =>
+                                    TweenAnimationBuilder<double>(
+                                      tween: Tween<double>(
+                                        begin: controller.totalprice,
+                                        end:
+                                            controller.totalprice -
+                                            (controller.totalprice *
+                                                controller.couponediscount /
+                                                100),
                                       ),
-                                    );
-                                  },
-                                ),
+                                      duration: const Duration(seconds: 1),
+                                      curve: Curves.easeOut,
+                                      builder: (context, value, child) {
+                                        return Text(
+                                          '${value.toStringAsFixed(0)}${" EGP".tr}',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: (width * 0.05).clamp(
+                                              20.0,
+                                              26.0,
+                                            ),
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.green,
+                                          ),
+                                        );
+                                      },
+                                    ),
                               ),
                             ),
                           ],
                         ),
                         Divider(height: (height * 0.03).clamp(20.0, 35.0)),
 
-                        // المجموع الكلي
-
-                        // زر إتمام الشراء
                         SizedBox(
-                          width:
-                              MediaQuery.of(context).size.width *
-                              0.8, // يضمن أخذ الزر العرض المتاح بشكل مثالي
+                          width: width * 0.8,
                           child: Checkbutton.widget(
                             widget: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -189,7 +178,7 @@ class ShoppingCartPage extends StatelessWidget {
                               controller.data.isNotEmpty
                                   ? controller.gotochechout()
                                   : Get.snackbar(
-                                      "السلة فارغة", // تعديل إملائي بسيط
+                                      "السلة فارغة",
                                       "لا يمكن تنفيذ العملية",
                                     );
                             },
@@ -201,56 +190,30 @@ class ShoppingCartPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                controller.data.isEmpty &&
-                        controller.statusrequest != Statusrequest.loading
-                    ? SliverFillRemaining(
-                        // استخدمنا SliverFillRemaining لملء الفراغ وجعل المحتوى في المنتصف
-                        hasScrollBody:
-                            false, // نجعل المحتوى يملأ المساحة المتاحة فقط
-                        child: Column(
-                          mainAxisAlignment:
-                              MainAxisAlignment.center, // توسيط عمودي
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              // تحديد أبعاد ثابتة أو نسبة من الشاشة
-                              width: MediaQuery.of(context).size.width * 0.6,
-                              height: MediaQuery.of(context).size.width * 0.6,
-                              child: SvgPicture.asset(
-                                "${Imageasset.emptycart}",
-                                fit: BoxFit
-                                    .contain, // لضمان احتواء الصورة داخل الحاوية دون قص
-                              ),
-                            ),
-                            const Text(
-                              "السلة فارغة تسوق الان ",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
+                Expanded(
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    padding: EdgeInsets.fromLTRB(
+                      width * 0.04,
+                      12,
+                      width * 0.04,
+                      12,
+                    ),
+                    itemCount: controller.data.length,
+                    itemBuilder: (context, index) {
+                      final item = controller.data[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 5),
+                        child: buildCartItemCard(
+                          context,
+                          item,
+                          controller,
+                          index,
                         ),
-                      )
-                    : SliverList(
-                        delegate: SliverChildBuilderDelegate((context, index) {
-                          final item = controller.data[index];
-                          return Padding(
-                            // ✅ تم إضافة مسافة جانبية لكي لا تلتصق الكروت بحافة الشاشة
-                            padding: EdgeInsets.only(
-                              bottom: 5,
-                              left: width * 0.04,
-                              right: width * 0.04,
-                            ),
-                            child: buildCartItemCard(
-                              context,
-                              item,
-                              controller,
-                              index,
-                            ),
-                          );
-                        }, childCount: controller.data.length),
-                      ),
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
           );

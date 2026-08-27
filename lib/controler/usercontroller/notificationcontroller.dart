@@ -16,7 +16,7 @@ class Notificationcontroller extends GetxController {
 
   Myservisec myservisec = Get.put(Myservisec());
   String? get usertype => myservisec.sharedPreferences.getString("usertype");
-  Notificationdata notificationdata = Get.put(Notificationdata(Get.find()));
+  Notificationdata notificationdata = Notificationdata(Get.find());
   int? get userid => myservisec.sharedPreferences.getInt("id");
 
   List<MassageModel> notificationlist = [];
@@ -117,7 +117,6 @@ class Notificationcontroller extends GetxController {
   Future<void> getnotifier() async {
     statusrequest = Statusrequest.loading;
     update();
-
     var response = await notificationdata.getNotificationsData();
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest && response['status'] == true) {
@@ -125,9 +124,7 @@ class Notificationcontroller extends GetxController {
       List data = response["data"]["messages"];
       notificationlist.addAll((data).map((e) => MassageModel.fromJson(e)));
       notificationcount = response["data"]["total_inactive_count"];
-      if (notificationcount == 0) {
-        statusrequest = Statusrequest.nodata;
-      }
+      notificationcount==0?statusrequest=Statusrequest.failure:Statusrequest.none;
     } else {
       statusrequest = Statusrequest.failure;
     }
