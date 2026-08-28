@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
+import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/admindata/itemdata.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/data/model/itemsmodel.dart';
@@ -12,6 +13,9 @@ import 'package:hos/veiw/adminscreen/Home/itemsview/edititem.dart';
 class ViewItemController extends GetxController {
   Admindataitem admindata = Admindataitem(Get.find());
   Statusrequest statusrequest = Statusrequest.none;
+    Myservisec myservisec = Get.find();
+
+  bool get isarabic => myservisec.sharedPreferences.getString("lang") == "ar";
 
   List<ItemsModel> itemlist = []; // قائمة المنتجات للقسم المختار فقط
   CategoriesModel? catcodel;

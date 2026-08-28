@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -9,6 +8,7 @@ import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/showdialoge.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/addcat.dart';
+import 'package:hos/veiw/wedget/Admin/SheardCard.dart';
 
 class ViewCategories extends StatelessWidget {
   const ViewCategories({super.key});
@@ -100,11 +100,12 @@ class ViewCategories extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final categoryItem = controller.catdata[index];
                         return CategoryCard(
-                          isarabic: controller.isarabic,
                           onTap: () {
                             controller.gotoproducts(categoryItem);
                           },
-                          item: categoryItem,
+                          name: controller.isarabic
+                              ? categoryItem.nameAr
+                              : categoryItem.name,
                           onEdit: () => controller.gotoeditpage(categoryItem),
                           onDelete: () {
                             AppCupertinoDialog.show(
@@ -115,6 +116,7 @@ class ViewCategories extends StatelessWidget {
                               },
                             );
                           },
+                          imageUrl: categoryItem.image!,
                         );
                       },
                     ),
@@ -132,168 +134,267 @@ class ViewCategories extends StatelessWidget {
 // كارت القسم كـ Widget مستقل لتحسين الأداء (Highly Optimized Widget)
 // ==========================================
 // ignore: must_be_immutable
-class CategoryCard extends StatelessWidget {
-  final dynamic item;
-  final VoidCallback onEdit;
-  final VoidCallback onDelete;
-  final void Function() onTap;
-  bool isarabic;
-  CategoryCard({
-    super.key,
-    required this.item,
-    required this.onEdit,
-    required this.onDelete,
-    required this.onTap,
-    required this.isarabic,
-  });
+// class CategoryCard extends StatefulWidget {
+//   final dynamic item;
+//   final VoidCallback onEdit;
+//   final VoidCallback onDelete;
+//   final VoidCallback onTap;
+//   final bool isarabic;
 
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap, // النقر على الكارت نفسه يفتح صفحة التعديل
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20), // حواف دائرية ناعمة جداً
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.04),
-              blurRadius: 16,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // 1. عرض الصورة بالكامل في النصف العلوي
-                  Expanded(
-                    child: CachedNetworkImage(
-                      imageUrl: item.image ?? "",
-                      fit: BoxFit.contain,
-                      placeholder: (context, url) => Container(
-                        color: Colors.grey[100],
-                        child: const Center(
-                          child: SizedBox(
-                            width: 24,
-                            height: 24,
-                            child: CircularProgressIndicator(strokeWidth: 2.5),
-                          ),
-                        ),
-                      ),
-                      errorWidget: (context, url, error) => Container(
-                        color: const Color(0xffF4F6FA),
-                        child: const Icon(
-                          Icons.image_not_supported_rounded,
-                          color: Colors.grey,
-                          size: 28,
-                        ),
-                      ),
-                    ),
-                  ),
+//   const CategoryCard({
+//     super.key,
+//     required this.item,
+//     required this.onEdit,
+//     required this.onDelete,
+//     required this.onTap,
+//     required this.isarabic,
+//   });
 
-                  // 2. تفاصيل النصوص في النصف السفلي
-                ],
-              ),
-              Positioned(
-                top: 8,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 8,
-                  ),
-                  child: Text(
-                    isarabic ? item.nameAr ?? "" : item.name ?? "",
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    overflow:
-                        TextOverflow.ellipsis, // حماية الكارت من الـ Overflow
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                      color: Colors.black87,
-                    ),
-                  ),
-                ),
-              ),
+//   @override
+//   State<CategoryCard> createState() => _CategoryCardState();
+// }
 
-              // 3. أزرار التحكم العائمة بتصميم زجاجي أنيق فوق الصورة
-              Positioned(
-                bottom: 10,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
+// class _CategoryCardState extends State<CategoryCard> {
+//   bool _showActions = false;
 
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: 170,
-                      height: 40, // حجم مناسب لأزرار التحكم
-                      decoration: BoxDecoration(
-                        color:
-                            Theme.of(
-                              context,
-                            ).cardTheme.color?.withOpacity(0.5) ??
-                            Colors.white.withOpacity(0.5),
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          _buildActionButton(
-                            icon: Icons.edit_rounded,
-                            iconColor: Colors.blueAccent,
-                            onTap: onEdit,
-                          ),
-                          const SizedBox(width: 8),
-                          _buildActionButton(
-                            icon: Icons.delete_rounded,
-                            iconColor: Colors.redAccent,
-                            onTap: onDelete,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+//   void _hideActions() {
+//     if (_showActions) {
+//       setState(() => _showActions = false);
+//     }
+//   }
 
-  // بناء زر تحكم مخصص ومصغر بشكل احترافي
-  Widget _buildActionButton({
-    required IconData icon,
-    required Color iconColor,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(6),
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(
-            0.9,
-          ), // خلفية شبه شفافة تتماشى مع أي صورة خلفها
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.08),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Icon(icon, color: iconColor, size: 18),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     final categoryName = widget.isarabic
+//         ? widget.item.nameAr ?? ""
+//         : widget.item.name ?? "";
+
+//     return GestureDetector(
+//       onTap: () {
+//         if (_showActions) {
+//           _hideActions();
+//         } else {
+//           widget.onTap();
+//         }
+//       },
+//       onLongPress: () {
+//         setState(() => _showActions = true);
+//       },
+//       child: AnimatedContainer(
+//         duration: const Duration(milliseconds: 220),
+//         curve: Curves.easeOutCubic,
+//         transform: Matrix4.translationValues(
+//           0,
+//           _showActions ? -7 : 0,
+//           0,
+//         ),
+//         decoration: BoxDecoration(
+//           color: Colors.white,
+//           borderRadius: BorderRadius.circular(20),
+//           boxShadow: [
+//             BoxShadow(
+//               color: Colors.black.withOpacity(
+//                 _showActions ? 0.13 : 0.05,
+//               ),
+//               blurRadius: _showActions ? 20 : 14,
+//               offset: Offset(0, _showActions ? 10 : 6),
+//             ),
+//           ],
+//         ),
+//         child: ClipRRect(
+//           borderRadius: BorderRadius.circular(20),
+//           child: Stack(
+//             fit: StackFit.expand,
+//             children: [
+//               // صورة القسم كخلفية للكارت بالكامل
+//               CachedNetworkImage(
+//                 imageUrl: widget.item.image ?? "",
+//                 fit: BoxFit.cover,
+//                 placeholder: (context, url) => Container(
+//                   color: const Color(0xffF4F6FA),
+//                   child: const Center(
+//                     child: SizedBox(
+//                       width: 25,
+//                       height: 25,
+//                       child: CircularProgressIndicator(
+//                         strokeWidth: 2.5,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 errorWidget: (context, url, error) => Container(
+//                   color: const Color(0xffF4F6FA),
+//                   child: const Icon(
+//                     Icons.image_not_supported_rounded,
+//                     color: Colors.grey,
+//                     size: 30,
+//                   ),
+//                 ),
+//               ),
+
+//               // تدرج خفيف يجعل اسم القسم واضحاً فوق الصورة
+//               const DecoratedBox(
+//                 decoration: BoxDecoration(
+//                   gradient: LinearGradient(
+//                     begin: Alignment.topCenter,
+//                     end: Alignment.bottomCenter,
+//                     colors: [
+//                       Colors.transparent,
+//                       Colors.transparent,
+//                       Color(0xCC000000),
+//                     ],
+//                     stops: [0.0, 0.48, 1.0],
+//                   ),
+//                 ),
+//               ),
+
+//               // اسم القسم في مكان أزرار التعديل والحذف
+//               AnimatedPositioned(
+//                 duration: const Duration(milliseconds: 200),
+//                 curve: Curves.easeOut,
+//                 left: 10,
+//                 right: 10,
+//                 bottom: _showActions ? 58 : 12,
+//                 child: AnimatedOpacity(
+//                   duration: const Duration(milliseconds: 150),
+//                   opacity: _showActions ? 0 : 1,
+//                   child: Container(
+//                     padding: const EdgeInsets.symmetric(
+//                       horizontal: 12,
+//                       vertical: 9,
+//                     ),
+//                     decoration: BoxDecoration(
+//                       color: Colors.black.withOpacity(0.32),
+//                       borderRadius: BorderRadius.circular(14),
+//                       border: Border.all(
+//                         color: Colors.white.withOpacity(0.16),
+//                       ),
+//                     ),
+//                     child: Text(
+//                       categoryName,
+//                       textAlign: TextAlign.center,
+//                       maxLines: 1,
+//                       overflow: TextOverflow.ellipsis,
+//                       style: const TextStyle(
+//                         color: Colors.white,
+//                         fontSize: 14,
+//                         fontWeight: FontWeight.bold,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ),
+
+//               // الأزرار تظهر فقط بعد الضغط المطول
+//               AnimatedPositioned(
+//                 duration: const Duration(milliseconds: 220),
+//                 curve: Curves.easeOutBack,
+//                 left: 10,
+//                 right: 10,
+//                 bottom: _showActions ? 10 : -55,
+//                 child: AnimatedOpacity(
+//                   duration: const Duration(milliseconds: 150),
+//                   opacity: _showActions ? 1 : 0,
+//                   child: Row(
+//                     children: [
+//                       Expanded(
+//                         child: _buildActionButton(
+//                           icon: Icons.edit_rounded,
+//                           label: "تعديل",
+//                           color: Colors.blueAccent,
+//                           onTap: widget.onEdit,
+//                         ),
+//                       ),
+//                       const SizedBox(width: 8),
+//                       Expanded(
+//                         child: _buildActionButton(
+//                           icon: Icons.delete_rounded,
+//                           label: "حذف",
+//                           color: Colors.redAccent,
+//                           onTap: widget.onDelete,
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//               ),
+
+//               // زر إغلاق صغير بعد ظهور الخيارات
+//               if (_showActions)
+//                 Positioned(
+//                   top: 8,
+//                   right: 8,
+//                   child: GestureDetector(
+//                     onTap: _hideActions,
+//                     child: Container(
+//                       width: 30,
+//                       height: 30,
+//                       decoration: BoxDecoration(
+//                         color: Colors.black.withOpacity(0.42),
+//                         shape: BoxShape.circle,
+//                         border: Border.all(
+//                           color: Colors.white.withOpacity(0.25),
+//                         ),
+//                       ),
+//                       child: const Icon(
+//                         Icons.close_rounded,
+//                         color: Colors.white,
+//                         size: 18,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+//   Widget _buildActionButton({
+//     required IconData icon,
+//     required String label,
+//     required Color color,
+//     required VoidCallback onTap,
+//   }) {
+//     return Material(
+//       color: Colors.transparent,
+//       child: InkWell(
+//         onTap: () {
+//           onTap();
+//           _hideActions();
+//         },
+//         borderRadius: BorderRadius.circular(14),
+//         child: Container(
+//           height: 42,
+//           decoration: BoxDecoration(
+//             color: Colors.white.withOpacity(0.94),
+//             borderRadius: BorderRadius.circular(14),
+//             boxShadow: [
+//               BoxShadow(
+//                 color: Colors.black.withOpacity(0.12),
+//                 blurRadius: 7,
+//                 offset: const Offset(0, 3),
+//               ),
+//             ],
+//           ),
+//           child: Row(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [
+//               Icon(icon, color: color, size: 18),
+//               const SizedBox(width: 6),
+//               Text(
+//                 label,
+//                 style: TextStyle(
+//                   color: color,
+//                   fontSize: 13,
+//                   fontWeight: FontWeight.bold,
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

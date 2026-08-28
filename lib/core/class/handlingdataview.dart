@@ -189,56 +189,52 @@ class HandlingDataView extends StatelessWidget {
         statusrequest != Statusrequest.checkinterner &&
         onRetry != null;
 
-    return Expanded(
-      child: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Center(
-                child: Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(25),
-                  width: MediaQuery.of(context).size.width * 0.6,
-                  height: MediaQuery.of(context).size.width * 0.6,
-                  child: _buildMedia(
-                    isTablet: MediaQuery.of(context).size.width >= 600,
-                  ),
-                ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Center(
+            child: Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(25),
+              width: MediaQuery.of(context).size.width * 0.6,
+              height: MediaQuery.of(context).size.width * 0.6,
+              child: _buildMedia(
+                isTablet: MediaQuery.of(context).size.width >= 600,
               ),
-
-              const SizedBox(height: 10),
-              if (msg.isNotEmpty)
-                Text(
-                  msg,
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? Colors.white
-                        : const Color(0xFF16181D),
-                  ),
-                ),
-
-              const SizedBox(height: 6),
-
-              Text(
-                "Try searching with another name or category.",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 13, color: Colors.grey),
-              ),
-              if (canRetry)
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: ElevatedButton(
-                    onPressed: onRetry,
-                    child: Text("Try again"),
-                  ),
-                ),
-            ],
+            ),
           ),
-        ),
+      
+          const SizedBox(height: 10),
+          if (msg.isNotEmpty)
+            Text(
+              msg,
+              style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : const Color(0xFF16181D),
+              ),
+            ),
+      
+          const SizedBox(height: 6),
+      
+          Text(
+            "Try searching with another name or category.",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 13, color: Colors.grey),
+          ),
+          if (canRetry)
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: ElevatedButton(
+                onPressed: onRetry,
+                child: Text("Try again"),
+              ),
+            ),
+        ],
       ),
     );
   }

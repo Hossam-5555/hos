@@ -35,12 +35,14 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
     AdminHome2(),
     Adminpending(),
     ViewCategories(),
+    // Settings(),
   ];
 
   final List<List<dynamic>> title = [
     ["Dashboard", Imageasset.homesvg],
-    ["Orders",    Imageasset.cart],
-    ["Categories",Imageasset.category],
+    ["Orders", Imageasset.cart],
+    ["Categories", Imageasset.category],
+    // ["settings", Imageasset.profile],
   ];
 
   // ─────────────────────── Getters ─────────────────────────────
@@ -52,7 +54,7 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
     if (apidata.isEmpty) return [];
 
     final chartData = apidata[0].salesChart;
-    if ( chartData.isEmpty) return [];
+    if (chartData.isEmpty) return [];
 
     final List<FlSpot> spots = [];
     for (int i = 0; i < chartData.length; i++) {

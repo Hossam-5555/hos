@@ -52,23 +52,28 @@ class AdminHome extends StatelessWidget {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: GetBuilder<Adminhome>(
-          builder: (controller) => CustomBottomNavBar(
-            items: [
-              NavItem(
-                label: controller.title[0][0],
-                svgAsset: controller.title[0][1],
-              ),
-              NavItem(
-                label: controller.title[1][0],
-                svgAsset: controller.title[1][1],
-              ),
-              NavItem(
-                label: controller.title[2][0],
-                svgAsset: controller.title[2][1],
-              ),
-            ],
-            currentIndex: controller.currentpage,
-            onTap: controller.changePage,
+          builder: (controller) => Container(
+            padding: EdgeInsets.all(5),
+            margin: EdgeInsets.all(5),
+            child: CustomBottomNavBar(
+              items: [
+                NavItem(
+                  label: controller.title[0][0],
+                  svgAsset: controller.title[0][1],
+                ),
+                NavItem(
+                  label: controller.title[1][0],
+                  svgAsset: controller.title[1][1],
+                ),
+                NavItem(
+                  label: controller.title[2][0],
+                  svgAsset: controller.title[2][1],
+                ),
+           
+              ],
+              currentIndex: controller.currentpage,
+              onTap: controller.changePage,
+            ),
           ),
         ),
         body: PageView(

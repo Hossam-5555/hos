@@ -101,7 +101,7 @@ class Homescreen extends StatelessWidget {
           // ============= تعديل مكان الـ BottomAppbar =================
           floatingActionButton: Container(
             alignment: Alignment.bottomCenter,
-            margin: EdgeInsetsDirectional.symmetric(horizontal: 12),
+            margin: EdgeInsetsDirectional.symmetric(horizontal: 12,vertical: 5),
             child: // مع GetX
             GetBuilder<Homescreencontroller>(
               builder: (controller) => CustomBottomNavBar(

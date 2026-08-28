@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/categories/editcontroller.dart';
+import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
@@ -14,19 +15,7 @@ class Editcat extends StatelessWidget {
     Get.put(Editcontroller());
     double w = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 2,
-        centerTitle: true,
-        title: Text(
-          "Edit Category",
-          style: TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 0.5,
-          ),
-        ),
-        iconTheme: const IconThemeData(color: Colors.black87),
-      ),
+      appBar: Appbarbackicon(title: "Edit Category", herotag: "Edit category"),
       body: GetBuilder<Editcontroller>(
         builder: (controller) => Form(
           key: controller.editkey,
