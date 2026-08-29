@@ -41,29 +41,27 @@ class Homescreencontroller extends SearchMix {
     y.value += details.delta.dy;
   }
 
-  final ScrollController scrollController = ScrollController();
-  bool upordown = true;
-  void secrolcotroller() {
-    if (scrollController.position.userScrollDirection ==
-        ScrollDirection.reverse) {
+bool upordown = true;
+
+  /// دالة تحديث الرؤية بناءً على اتجاه السكرول
+  void onScrollNotification(ScrollDirection direction) {
+    if (direction == ScrollDirection.reverse && upordown != false) {
       upordown = false;
-    } else if (scrollController.position.userScrollDirection ==
-        ScrollDirection.forward) {
+      update(); // بيعمل update فقط لما يتغير الشريط من ظاهر لـ مخفي
+    } else if (direction == ScrollDirection.forward && upordown != true) {
       upordown = true;
+      update(); // بيعمل update فقط لما يتغير الشريط من مخفي لـ ظاهر
     }
-    update();
   }
 
   @override
   void onInit() {
     super.onInit();
-    scrollController.addListener(secrolcotroller);
   }
 
   @override
   void onClose() {
-    scrollController.removeListener(secrolcotroller);
-    scrollController.dispose();
+ 
     pageControllers.dispose();
   }
 

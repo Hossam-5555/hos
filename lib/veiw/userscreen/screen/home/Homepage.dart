@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
-import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/wedget/Homepage/Ads.dart';
 import 'package:hos/veiw/wedget/Homepage/CurvedItemsView.dart';
@@ -20,8 +19,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomepageController controller = Get.find<HomepageController>();
-    final Homescreencontroller homescreencontroller =
-        Get.find<Homescreencontroller>();
 
     return GetBuilder<HomepageController>(
       builder: (_) => Scaffold(
@@ -62,7 +59,6 @@ class HomePage extends StatelessWidget {
                     gridCrossAxisCount;
 
                 return SingleChildScrollView(
-                  controller: homescreencontroller.scrollController,
                   keyboardDismissBehavior:
                       ScrollViewKeyboardDismissBehavior.onDrag,
                   child: Padding(

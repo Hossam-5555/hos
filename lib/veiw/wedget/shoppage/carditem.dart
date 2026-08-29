@@ -68,6 +68,8 @@ Widget buildCartItemCard(
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
+                const SizedBox(height: 6),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -80,7 +82,7 @@ Widget buildCartItemCard(
                     infoChip(Icons.access_time_rounded, "20-25 min", isdark),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 6),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

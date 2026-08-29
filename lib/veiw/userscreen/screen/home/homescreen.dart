@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart'; // لتفعيل ScrollDirection
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
@@ -13,16 +14,15 @@ import 'package:hos/veiw/wedget/Homepage/homescrenAction.dart';
 class Homescreen extends StatelessWidget {
   Homescreen({super.key});
   final controller = Get.put(Homescreencontroller());
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    // final h = size.height;
     final w = size.width;
 
     return GetBuilder<Homescreencontroller>(
       builder: (controller) => PopScope(
         canPop: false,
-        // ignore: deprecated_member_use
         onPopInvoked: (didPop) async {
           if (didPop) return;
           final bool shouldExit = await appexitAlert();
@@ -94,15 +94,13 @@ class Homescreen extends StatelessWidget {
                   ),
                 ),
 
-          // ============= تعديل مكان الـ BottomAppbar =================
           floatingActionButton: Container(
             alignment: Alignment.bottomCenter,
-            margin: EdgeInsetsDirectional.symmetric(
+            margin: const EdgeInsetsDirectional.symmetric(
               horizontal: 12,
               vertical: 5,
             ),
-            child: // مع GetX
-            GetBuilder<Homescreencontroller>(
+            child: GetBuilder<Homescreencontroller>(
               builder: (controller) => CustomBottomNavBar(
                 items: [
                   NavItem(
@@ -128,14 +126,30 @@ class Homescreen extends StatelessWidget {
               ),
             ),
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation
-              .centerDocked, // تعديل مكان الـ BottomAppbar
-          body: PageView(
-            controller: controller.pageControllers,
-            onPageChanged: (i) {
-              controller.onpagechnage(i);
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+
+          // ============= الاستماع للتمرير داخل جميع الصفحات =============
+          body: NotificationListener<UserScrollNotification>(
+            onNotification: (notification) {
+              // التأكد إن السكرول رأسي وليس أفقياً بين صفحات الـ PageView
+              if (notification.metrics.axis == Axis.vertical) {
+                // نمرر الاتجاه للدالة المعدلة في الكنترولر
+                controller.onScrollNotification(notification.direction);
+              }
+              return false;
             },
-            children: controller.pages,
+            child: PageView(
+              controller: controller.pageControllers,
+              onPageChanged: (i) {
+                // إرجاع الـ BottomNavBar للظهور عند التنقل بين الصفحات (اختياري)
+                if (!controller.upordown) {
+                  controller.onScrollNotification(ScrollDirection.forward);
+                }
+                controller.onpagechnage(i);
+              },
+              children: controller.pages,
+            ),
           ),
         ),
       ),

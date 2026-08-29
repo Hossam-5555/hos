@@ -19,7 +19,7 @@ class CartController extends GetxController {
 
   int? get userid => myservisec.sharedPreferences.getInt("id");
   bool isCartLoaded = false; // 🌟 علم لمعرفة هل تم تحميل السلة مسبقاً أم لا
-
+  final scrol = ScrollController();
   // الأنيميشن
   late AnimationController controllerAnimation;
   late Animation<double> priceAnimation;
@@ -111,7 +111,7 @@ class CartController extends GetxController {
     update(); // التحديث اللحظي للواجهة 🚀
 
     // 3. إرسال الطلب للسيرفر في الخلفية
-    var response = await cartdata.addcartdata( itemid, count);
+    var response = await cartdata.addcartdata(itemid, count);
     var requestStatus = handling(response);
 
     if (requestStatus == Statusrequest.success && response["status"] == true) {
@@ -184,7 +184,7 @@ class CartController extends GetxController {
     update(); // التحديث اللحظي 🚀
 
     // 3. إرسال طلب الحذف للسيرفر
-    var response = await cartdata.deletcartdata( itemid);
+    var response = await cartdata.deletcartdata(itemid);
     var requestStatus = handling(response);
 
     if (requestStatus == Statusrequest.success && response["status"] == true) {
