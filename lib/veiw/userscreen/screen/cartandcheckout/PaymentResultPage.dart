@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
+import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
@@ -198,9 +199,7 @@ class _PaymentResultPageState extends State<PaymentResultPage>
                   children: [
                     _ok ? _viewOrderButton() : _tryAgainButton(),
                     const SizedBox(height: 14),
-                    _ok
-                        ? SizedBox.shrink()
-                        : _backToCheckoutButton(isDark),
+                    _ok ? SizedBox.shrink() : _backToCheckoutButton(isDark),
                   ],
                 ),
               ),
@@ -445,7 +444,10 @@ class _PaymentResultPageState extends State<PaymentResultPage>
       child: Checkbutton.widget(
         buttonColor: Color(0xff22A86B),
         statusrequest: Statusrequest.none,
-        onTap:() => Navigator.popUntil(context, (route) => route.isFirst),
+        onTap: () {
+          Get.find<Homescreencontroller>().Currentpage == 0;
+          Navigator.popUntil(context, (route) => route.isFirst);
+        },
         widget: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -500,8 +502,6 @@ class _PaymentResultPageState extends State<PaymentResultPage>
       ),
     );
   }
-
- 
 
   /// زرار "Back to Checkout" (فشل)
   Widget _backToCheckoutButton(bool isDark) {
