@@ -1,4 +1,4 @@
-// import 'dart:math';
+// ignore_for_file: non_constant_identifier_names
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -18,22 +18,15 @@ import 'package:hos/veiw/wedget/items/itemsdetails/countofproduct.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/description.dart';
 import 'package:lottie/lottie.dart';
 
-class FilterButtonColors {
-  static const fillOverlay = Color.fromRGBO(255, 255, 255, 0.16);
-  static const borderOverlay = Color.fromRGBO(255, 255, 255, 0.24);
-  static const contentColor = Color(0xFFC7C9D6);
-}
-
 class Itemsdetailes extends StatelessWidget {
   const Itemsdetailes({super.key});
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    double h = size.height;
-    double w = size.width;
-
-    // متغير محلي سريع من GetX للتحكم في حالة عرض الوصف كاملاً أو اختصاره
+    final double h = size.height;
+    final double w = size.width;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final RxBool isDescriptionExpanded = false.obs;
     Get.put(FavController());
 
@@ -41,162 +34,193 @@ class Itemsdetailes extends StatelessWidget {
       builder: (controller) {
         final item = controller.itemsmodel;
         return Scaffold(
-          bottomNavigationBar: _buildBottomBar(controller),
-
+          backgroundColor:
+              isDark ? const Color(0xFF0F0F0F) : const Color(0xFFF8F8F8),
+          bottomNavigationBar: _buildBottomBar(controller, isDark),
           body: Stack(
             children: [
               ListView(
                 physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.only(
-                  bottom: 40, // زيادة مسافة الأمان السفلية لجميع الشاشات
-                ),
+                padding: const EdgeInsets.only(bottom: 40),
                 children: [
-                  // 1. صورة المنتج مع الشعار
+                  // ─── صورة المنتج ───
                   Stack(
                     alignment: Alignment.center,
                     children: [
                       Container(
-                        height: h * 0.55, // متناسق ديناميكياً مع ارتفاع الشاشة
+                        height: h * 0.48,
                         width: double.infinity,
                         margin: const EdgeInsets.only(bottom: 20),
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.vertical(
+                        decoration: BoxDecoration(
+                          color: isDark
+                              ? const Color(0xFF1A1A1A)
+                              : Colors.white,
+                          borderRadius: const BorderRadius.vertical(
                             bottom: Radius.circular(40),
                           ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.08),
+                              blurRadius: 20,
+                              offset: const Offset(0, 8),
+                            ),
+                          ],
                         ),
-                        child: PageView.builder(
-                          onPageChanged: (value) {
-                            controller.onimagechange(value);
-                          },
-                          itemCount: item.images!.length,
-                          itemBuilder: (context, index) => Center(
-                            child: Hero(
-                              tag: '${item.id}',
-                              child: CachedNetworkImage(
-                                imageUrl: item.images![index],
-                                imageBuilder: (context, imageProvider) =>
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.only(
-                                          bottomRight: Radius.circular(20),
-                                          bottomLeft: Radius.circular(20),
-                                        ),
-                                        image: DecorationImage(
-                                          image: imageProvider,
-                                          fit: BoxFit.contain,
-                                        ),
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.vertical(
+                            bottom: Radius.circular(40),
+                          ),
+                          child: PageView.builder(
+                            onPageChanged: controller.onimagechange,
+                            itemCount: item.images!.length,
+                            itemBuilder: (context, index) => Center(
+                              child: Hero(
+                                tag: '${item.id}',
+                                child: CachedNetworkImage(
+                                  imageUrl: item.images![index],
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.contain,
                                       ),
                                     ),
-                                placeholder: (context, url) =>
-                                    const CircularProgressIndicator(),
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
+                                  ),
+                                  placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                ),
                               ),
                             ),
+                            controller: controller.controller,
                           ),
-                          controller: controller.controller,
                         ),
                       ),
                     ],
                   ),
 
-                  // 2. تفاصيل المنتج
+                  // ─── تفاصيل المنتج ───
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
-                    ),
+                        horizontal: 20, vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // التقييم واسم المنتج
+                        // اسم المنتج + تقييم
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
                               child: Text(
-                                maxLines: 2,
                                 item.itemsName ?? '',
-                                style: const TextStyle(
-                                  fontSize: 20,
+                                maxLines: 2,
+                                style: TextStyle(
+                                  fontSize: 22,
                                   fontWeight: FontWeight.bold,
+                                  color: isDark
+                                      ? Colors.white
+                                      : const Color(0xFF1A1A1A),
                                 ),
                               ),
                             ),
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.star_rounded,
-                                  color: Colors.amber,
-                                  size: 22,
-                                ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  "4.8",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize:
-                                        h *
-                                        0.018, // حجم خط مرن يتناسب مع الشاشة
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              decoration: BoxDecoration(
+                                color: Colors.amber.withOpacity(0.15),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.star_rounded,
+                                      color: Colors.amber, size: 18),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    "4.8",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                      color: isDark
+                                          ? Colors.white
+                                          : Colors.black87,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  Text(
+                                    " (193+)",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.grey.shade500,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
+
+                        const SizedBox(height: 6),
+
+                        // وصف قصير
+                        Text(
+                          item.itemsDesc?.split('.').first ?? '',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.grey.shade500,
+                          ),
+                        ),
+
                         const SizedBox(height: 16),
 
-                        // السعر والخصم
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _buildPriceSection(item),
-                            if (item.itemsDiscount != 0)
-                              SizedBox(
-                                height: 50,
-                                child: Transform.rotate(
-                                  angle: 0.20,
-                                  child: Lottie.asset(
-                                    Imageasset.sale,
-                                    width: 50,
-                                    height: 50,
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
+                        // السعر
+                        _buildPriceSection(item),
+
+                        const SizedBox(height: 20),
+
+                        // ─── معلومات التوصيل ───
+                        _buildInfoRow(isDark),
 
                         const Padding(
                           padding: EdgeInsets.symmetric(vertical: 20),
-                          child: Divider(height: 1, color: Color(0xFFEEEEEE)),
+                          child: Divider(height: 1),
                         ),
 
-                        // 🔥 تعديل قسم الوصف: التحكم في العرض هنا داخلياً وإلغاء الـ BottomSheet
+                        // ─── Quick Choices ───
+                        _buildQuickChoices(isDark),
+
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          child: Divider(height: 1),
+                        ),
+
+                        // ─── Description ───
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               "Description".tr,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
+                                color: isDark ? Colors.white : Colors.black87,
                               ),
                             ),
                             InkWell(
-                              onTap: () => isDescriptionExpanded
-                                  .toggle(), // يعكس الحالة مباشرة عند الضغط
+                              onTap: () => isDescriptionExpanded.toggle(),
                               child: Padding(
                                 padding: const EdgeInsets.all(6.0),
                                 child: Obx(
                                   () => Text(
                                     isDescriptionExpanded.value
                                         ? "See less".tr
-                                        : "See more".tr,
+                                        : "More...".tr,
                                     style: TextStyle(
                                       color: Appcolor.primaryColor,
                                       fontWeight: FontWeight.bold,
+                                      fontSize: 13,
                                     ),
                                   ),
                                 ),
@@ -205,8 +229,6 @@ class Itemsdetailes extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 10),
-
-                        // يظهر الـ SmartDescriptionView كاملة عند التمديد، أو نصاً مختصراً بـ 3 أسطر
                         Obx(
                           () => isDescriptionExpanded.value
                               ? SmartDescriptionView(
@@ -216,17 +238,31 @@ class Itemsdetailes extends StatelessWidget {
                                   "${item.itemsDesc}",
                                   maxLines: 3,
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(height: 1.4),
+                                  style: TextStyle(
+                                    height: 1.6,
+                                    color: isDark
+                                        ? Colors.grey.shade400
+                                        : Colors.grey.shade700,
+                                  ),
                                 ),
                         ),
-                        const SizedBox(
-                          height: 40,
-                        ), // مساحة إضافية لتسهيل السكرول فوق الـ bottomNavigationBar
+
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          child: Divider(height: 1),
+                        ),
+
+                        // ─── Often Order With ───
+                        _buildOftenOrderWith(isDark),
+
+                        const SizedBox(height: 40),
                       ],
                     ),
                   ),
                 ],
               ),
+
+              // ─── AppBar فوق الصورة ───
               PositionedDirectional(
                 top: 30,
                 child: SizedBox(
@@ -235,6 +271,7 @@ class Itemsdetailes extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       BackButtonCircle(),
+                      // مؤشر الصور
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
@@ -243,16 +280,16 @@ class Itemsdetailes extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            filter:
+                                ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: List.generate(
                                 item.images!.length,
                                 (index) => AnimatedContainer(
                                   margin: const EdgeInsets.all(10),
-                                  width: controller.curentpage == index
-                                      ? 15
-                                      : 5,
+                                  width:
+                                      controller.curentpage == index ? 15 : 5,
                                   height: 6,
                                   decoration: BoxDecoration(
                                     color: Appcolor.primaryColor,
@@ -264,7 +301,8 @@ class Itemsdetailes extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ), // مسافة ديناميكية بين الزرين
+                      ),
+                      // زرار المفضلة
                       GetBuilder<FavController>(
                         builder: (favController) {
                           final isFav =
@@ -275,9 +313,7 @@ class Itemsdetailes extends StatelessWidget {
                             onTap: () {
                               favController.favmanget(item.id!);
                               favController.chasngfav(
-                                item.id,
-                                isFav ? "0" : "1",
-                              );
+                                  item.id, isFav ? "0" : "1");
                             },
                           );
                         },
@@ -293,20 +329,245 @@ class Itemsdetailes extends StatelessWidget {
     );
   }
 
-  // ==========================================
-  // دوال بناء الواجهة
-  // ==========================================
-
-  Widget _buildBottomBar(Itemdetailscontroller controller) {
+  // ─── معلومات التوصيل ───
+  Widget _buildInfoRow(bool isDark) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      child: SafeArea(
-        child: Row(
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          infoChip(Icons.local_shipping_outlined, "Free Delivery", isDark),
+          verticalDivider(),
+          infoChip(Icons.access_time_rounded, "20-25 min", isDark),
+          verticalDivider(),
+          infoChip(Icons.local_fire_department_outlined, "162 Kcal", isDark),
+        ],
+      ),
+    );
+  }
+
+  Widget infoChip(IconData icon, String label, bool isDark) {
+    return Column(
+      children: [
+        Icon(icon,
+            size: 20,
+            color: isDark ? Colors.white70 : const Color(0xFF555555)),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            color: isDark ? Colors.white60 : const Color(0xFF555555),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget verticalDivider() {
+    return Container(
+      height: 35,
+      width: 1,
+      color: Colors.grey.withOpacity(0.2),
+    );
+  }
+
+  // ─── Quick Choices ───
+  Widget _buildQuickChoices(bool isDark) {
+    final RxString selected = 'Medium'.obs;
+    final choices = ['Small', 'Medium', 'Large', 'Extra large'];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Try these quick choices",
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: isDark ? Colors.white : Colors.black87,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Obx(
+          () => Wrap(
+            spacing: 10,
+            children: choices.map((choice) {
+              final isSelected = selected.value == choice;
+              return GestureDetector(
+                onTap: () => selected.value = choice,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 18, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? Colors.black
+                        : isDark
+                            ? const Color(0xFF2A2A2A)
+                            : Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(
+                      color: isSelected
+                          ? Colors.black
+                          : Colors.grey.withOpacity(0.25),
+                    ),
+                    boxShadow: isSelected
+                        ? [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 8,
+                              offset: const Offset(0, 3),
+                            )
+                          ]
+                        : [],
+                  ),
+                  child: Text(
+                    choice,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: isSelected
+                          ? Colors.white
+                          : isDark
+                              ? Colors.white70
+                              : Colors.black87,
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // ─── Often Order With ───
+  Widget _buildOftenOrderWith(bool isDark) {
+    // بيانات ثابتة مؤقتة
+    final List<Map<String, String>> suggestions = [
+      {'name': 'Cola', 'price': '\$1.50', 'image': Imageasset.twetter},
+      {'name': 'Fries', 'price': '\$2.00', 'image': Imageasset.twetter},
+      {'name': 'Salad', 'price': '\$3.00', 'image': Imageasset.twetter},
+      {'name': 'Juice', 'price': '\$2.50', 'image': Imageasset.twetter},
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Text(
+              "Often order with",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: isDark ? Colors.white : Colors.black87,
+              ),
+            ),
+            Text(
+              "See all >",
+              style: TextStyle(
+                fontSize: 13,
+                color: Appcolor.primaryColor,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 14),
+        SizedBox(
+          height: 120,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: suggestions.length,
+            separatorBuilder: (_, __) => const SizedBox(width: 12),
+            itemBuilder: (context, index) {
+              final s = suggestions[index];
+              return Container(
+                width: 90,
+                decoration: BoxDecoration(
+                  color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 8,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.asset(
+                        s['image']!,
+                        width: 55,
+                        height: 55,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      s['name']!,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: isDark ? Colors.white : Colors.black87,
+                      ),
+                    ),
+                    Text(
+                      s['price']!,
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: Colors.grey.shade500,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  // ─── Bottom Bar ───
+  Widget _buildBottomBar(Itemdetailscontroller controller, bool isDark) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF0F0F0F) : const Color(0xFFF8F8F8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, -5),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        child: Row(
+          children: [
             Flexible(child: Countofproduct(count: controller.itemcount)),
-            const SizedBox(width: 10),
+            const SizedBox(width: 12),
             Flexible(
+              flex: 2,
               child: SizedBox(
                 height: 55,
                 child: Checkbutton(
@@ -327,7 +588,7 @@ class Itemsdetailes extends StatelessWidget {
                       );
                     }
                   },
-                  buttonName: "Add to Card",
+                  buttonName: "Add to Cart",
                 ),
               ),
             ),
@@ -337,8 +598,10 @@ class Itemsdetailes extends StatelessWidget {
     );
   }
 
+  // ─── السعر ───
   Widget _buildPriceSection(ItemsModel item) {
-    double discount = double.tryParse(item.itemsDiscount.toString()) ?? 0;
+    double discount =
+        double.tryParse(item.itemsDiscount.toString()) ?? 0;
     double price = double.tryParse(item.itemsPrice.toString()) ?? 0;
     double priceDiscount =
         double.tryParse(item.priceAfterDiscount.toString()) ?? 0;
@@ -348,13 +611,13 @@ class Itemsdetailes extends StatelessWidget {
         Text(
           "\$${priceDiscount.toStringAsFixed(2)}",
           style: const TextStyle(
-            fontSize: 24,
+            fontSize: 26,
             fontWeight: FontWeight.bold,
             color: Colors.green,
           ),
         ),
         const SizedBox(width: 12),
-        if (discount > 0)
+        if (discount > 0) ...[
           Text(
             "\$${price.toStringAsFixed(2)}",
             style: const TextStyle(
@@ -364,6 +627,17 @@ class Itemsdetailes extends StatelessWidget {
               decorationThickness: 1,
             ),
           ),
+          const SizedBox(width: 8),
+          Transform.rotate(
+            angle: 0.20,
+            child: Lottie.asset(
+              Imageasset.sale,
+              width: 40,
+              height: 40,
+              fit: BoxFit.fill,
+            ),
+          ),
+        ],
       ],
     );
   }

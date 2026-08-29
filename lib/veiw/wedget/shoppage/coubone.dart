@@ -13,7 +13,7 @@ class Coubone extends GetView<CartController> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(5),
           child: controller.couponename == null
               ? Row(
                   children: [

@@ -83,17 +83,19 @@ class HomePage extends StatelessWidget {
                         /// Categories List
                         SizedBox(
                           height: categoryHeight,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: controller.categories.length,
-                            itemBuilder: (context, index) {
-                              final cat = controller.categories[index];
-                              return CategoryItem(
-                                index: index,
-                                name: cat.name ?? "",
-                                imageUrl: cat.image.toString(),
-                              );
-                            },
+                          child: Center(
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: controller.categories.length,
+                              itemBuilder: (context, index) {
+                                final cat = controller.categories[index];
+                                return CategoryItem(
+                                  index: index,
+                                  name: cat.name ?? "",
+                                  imageUrl: cat.image.toString(),
+                                );
+                              },
+                            ),
                           ),
                         ),
 

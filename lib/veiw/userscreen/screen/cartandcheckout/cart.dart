@@ -4,6 +4,7 @@ import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/veiw/wedget/Homepage/titles.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 import 'package:hos/veiw/wedget/shoppage/carditem.dart';
 import 'package:hos/veiw/wedget/shoppage/coubone.dart';
@@ -17,7 +18,6 @@ class ShoppingCartPage extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final width = size.width;
     final height = size.height;
-  
 
     return Scaffold(
       body: GetBuilder<CartController>(
@@ -47,10 +47,13 @@ class ShoppingCartPage extends StatelessWidget {
                       ),
                       color: Theme.of(context).cardColor,
                     ),
-                    padding: EdgeInsets.all(8),
+                    padding: EdgeInsets.all(5),
+                    margin: EdgeInsets.symmetric(horizontal: 10),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        SizedBox(height: (height * 0.05)),
+
                         Coubone(
                           onChanged: (val) {
                             controller.havecoupone(val);
@@ -59,13 +62,22 @@ class ShoppingCartPage extends StatelessWidget {
                         SizedBox(height: (height * 0.015).clamp(8.0, 16.0)),
 
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [Titles(title: "Order Summary")],
+                        ),
+                        SizedBox(height: (height * 0.015).clamp(8.0, 16.0)),
+
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              'Sub Total',
-                              style: TextStyle(
-                                fontSize: (width * 0.04).clamp(14.0, 18.0),
-                                color: Colors.grey,
+                            Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Text(
+                                'Sub Total',
+                                style: TextStyle(
+                                  fontSize: (width * 0.04).clamp(14.0, 18.0),
+                                  color: Colors.grey,
+                                ),
                               ),
                             ),
                             Text(
@@ -73,7 +85,6 @@ class ShoppingCartPage extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: (width * 0.045).clamp(16.0, 22.0),
                                 fontWeight: FontWeight.bold,
-                                color: Colors.green,
                               ),
                             ),
                           ],
@@ -83,11 +94,14 @@ class ShoppingCartPage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              'Discount'.tr,
-                              style: TextStyle(
-                                fontSize: (width * 0.04).clamp(14.0, 18.0),
-                                color: Colors.grey,
+                            Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Text(
+                                'Discount'.tr,
+                                style: TextStyle(
+                                  fontSize: (width * 0.04).clamp(14.0, 18.0),
+                                  color: Colors.grey,
+                                ),
                               ),
                             ),
                             Text(
@@ -99,8 +113,7 @@ class ShoppingCartPage extends StatelessWidget {
                             ),
                           ],
                         ),
-
-                        SizedBox(height: (height * 0.025).clamp(16.0, 30.0)),
+                        Divider(height: (height * 0.03).clamp(20.0, 35.0)),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -138,7 +151,6 @@ class ShoppingCartPage extends StatelessWidget {
                                               26.0,
                                             ),
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.green,
                                           ),
                                         );
                                       },
@@ -147,33 +159,25 @@ class ShoppingCartPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Divider(height: (height * 0.03).clamp(20.0, 35.0)),
+                        SizedBox(height: (height * 0.025).clamp(16.0, 30.0)),
 
                         SizedBox(
-                          width: width * 0.8,
+                          width: width * 0.9,
                           child: Checkbutton.widget(
                             widget: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
-                                  Icons.shopify,
-                                  size: (width * 0.04).clamp(16.0, 20.0),
-                                  color: Colors.white,
-                                ),
-                                SizedBox(
-                                  width: (width * 0.02).clamp(8.0, 12.0),
-                                ),
                                 Text(
-                                  'Proceed to Checkout'.tr,
+                                  'Checkout'.tr,
                                   style: TextStyle(
-                                    fontSize: (width * 0.045).clamp(16.0, 22.0),
+                                    fontSize: (width * 0.040).clamp(16.0, 22.0),
                                     color: Colors.white,
                                   ),
                                 ),
                               ],
                             ),
                             width: width * 0.8,
-                            buttonName: 'Proceed to Checkout'.tr,
+                            buttonName: 'Checkout'.tr,
                             onTap: () {
                               controller.data.isNotEmpty
                                   ? controller.gotochechout()
@@ -202,6 +206,7 @@ class ShoppingCartPage extends StatelessWidget {
                     itemCount: controller.data.length,
                     itemBuilder: (context, index) {
                       final item = controller.data[index];
+                      bool isdark = context.isDarkMode ? true : false;
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 5),
                         child: buildCartItemCard(
@@ -209,6 +214,7 @@ class ShoppingCartPage extends StatelessWidget {
                           item,
                           controller,
                           index,
+                          isdark,
                         ),
                       );
                     },

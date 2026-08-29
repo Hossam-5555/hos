@@ -9,6 +9,7 @@ Widget buildCartItemCard(
   CartModel cart,
   CartController controller,
   int i,
+  bool isdark,
 ) {
   return GetBuilder<CartController>(
     builder: (controller) => Container(
@@ -22,7 +23,7 @@ Widget buildCartItemCard(
         children: [
           // 1. صورة المنتج
           Container(
-            width: 90,
+            width: 110,
             height: 90,
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -61,11 +62,23 @@ Widget buildCartItemCard(
                 Text(
                   cart.itemsname ?? "بدون اسم",
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    infoChip(
+                      Icons.local_shipping_outlined,
+                      "Free Delivery",
+                      isdark,
+                    ),
+                    verticalDivider(),
+                    infoChip(Icons.access_time_rounded, "20-25 min", isdark),
+                  ],
                 ),
                 const SizedBox(height: 12),
                 Row(
@@ -74,15 +87,15 @@ Widget buildCartItemCard(
                     Text(
                       '${double.parse(controller.data[i].subtotal.toString()).toStringAsFixed(2)} \$',
                       style: const TextStyle(
-                        fontSize: 16,
-                        // color: Colors.black87,
+                        fontSize: 15,
+                        color: Color(0xFFB65030),
                         fontWeight: FontWeight.w800,
                       ),
                     ),
 
                     // كبسولة التحكم في الكمية
                     Container(
-                      height: 40, // جعلنا الارتفاع مناسب للزرار (بدل 80)
+                      height: 35, // جعلنا الارتفاع مناسب للزرار (بدل 80)
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
@@ -98,11 +111,11 @@ Widget buildCartItemCard(
                       child: Row(
                         children: [
                           IconButton(
-                            iconSize: 18,
+                            iconSize: 15,
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(
-                              minWidth: 30,
-                              minHeight: 30,
+                              minWidth: 25,
+                              minHeight: 25,
                             ),
                             style: IconButton.styleFrom(
                               backgroundColor:
@@ -124,11 +137,11 @@ Widget buildCartItemCard(
                           ),
                           IconButton(
                             onPressed: () => controller.increment(cart.itemid!),
-                            iconSize: 18,
+                            iconSize: 15,
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(
-                              minWidth: 30,
-                              minHeight: 30,
+                              minWidth: 25,
+                              minHeight: 25,
                             ),
                             style: IconButton.styleFrom(
                               backgroundColor:
@@ -152,4 +165,29 @@ Widget buildCartItemCard(
       ),
     ),
   );
+}
+
+Widget infoChip(IconData icon, String label, bool isDark) {
+  return Column(
+    children: [
+      Icon(
+        icon,
+        size: 15,
+        color: isDark ? Colors.white70 : const Color(0xFF555555),
+      ),
+      const SizedBox(height: 4),
+      Text(
+        label,
+        style: TextStyle(
+          fontSize: 10,
+          fontWeight: FontWeight.w600,
+          color: isDark ? Colors.white60 : const Color(0xFF555555),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget verticalDivider() {
+  return Container(height: 35, width: 1, color: Colors.grey.withOpacity(0.2));
 }

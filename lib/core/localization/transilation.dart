@@ -11,7 +11,7 @@ class Mytransilation extends Translations {
       "New Items": "عناصر جدد",
       "product": "المنتجات",
       "Description": "الوصف",
-      "Proceed to Checkout": "اتمام الشراء",
+      "Checkout": "اتمام الشراء",
       "product Details": "تفاصيل المنتج",
       //cart&&checkout
       "confirm order": "تأكيد الطلب",
@@ -70,7 +70,7 @@ class Mytransilation extends Translations {
       "product": "product",
       "Description": "Description",
       "Discount": "Discount",
-      "Proceed to Checkout": "Proceed to Checkout",
+      "Checkout": "Proceed to Checkout",
       "product Details": "product Details",
       //Homepage
       "confirm order": "Confirm Order",
