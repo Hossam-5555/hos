@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/veiw/wedget/Admin/SheardCard.dart';
 import 'package:hos/veiw/wedget/Homepage/Ads.dart';
 import 'package:hos/veiw/wedget/Homepage/CurvedItemsView.dart';
-import 'package:hos/veiw/wedget/Homepage/categorieswidget.dart';
 import 'package:hos/veiw/wedget/Homepage/dicountcard.dart';
 import 'package:hos/veiw/wedget/Homepage/titles.dart';
 import 'package:hos/veiw/wedget/SharedProductCard.dart';
@@ -76,22 +76,43 @@ class HomePage extends StatelessWidget {
                         Titles(title: "Categories".tr),
                         SizedBox(height: sectionSpacing * 0.6),
 
-                        /// Categories List
-                        SizedBox(
-                          height: categoryHeight,
-                          child: Center(
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: controller.categories.length,
-                              itemBuilder: (context, index) {
-                                final cat = controller.categories[index];
-                                return CategoryItem(
-                                  index: index,
-                                  name: cat.name ?? "",
-                                  imageUrl: cat.image.toString(),
-                                );
-                              },
-                            ),
+                        Wrap(
+                          direction: Axis.horizontal,
+                          spacing: 10,
+                          runSpacing: 10,
+                          alignment: WrapAlignment.start,
+                          children: List.generate(
+                            controller.categories.length,
+                            (index) {
+                              final cat = controller.categories[index];
+
+                              return SizedBox(
+                                height: categoryHeight,
+                                width: 120,
+                                child: CategoryCard.Homepage(
+                                  inHome: true,
+                                  onTap: () {
+                                    controller.gotoitems(
+                                      controller.categories,
+                                      index,
+                                      controller.categories[index].id
+                                          .toString(),
+                                    );
+                                  },
+                                  name: controller.isarabic
+                                      ? cat.nameAr
+                                      : cat.name,
+                                  onEdit: () {},
+                                  onDelete: () {},
+                                  imageUrl: cat.image!,
+                                ),
+                              );
+                              // CategoryItem(
+                              //   index: index,
+                              //   name: cat.name ?? "",
+                              //   imageUrl: cat.image.toString(),
+                              // );
+                            },
                           ),
                         ),
 

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/utils.dart';
 
+// ignore: must_be_immutable
 class CategoryCard extends StatefulWidget {
   final VoidCallback onEdit;
   final VoidCallback onDelete;
@@ -10,6 +11,7 @@ class CategoryCard extends StatefulWidget {
   final String? name;
   final String? price;
   final String? stock;
+  bool? inHome;
   CategoryCard({
     super.key,
     required this.name,
@@ -31,7 +33,17 @@ class CategoryCard extends StatefulWidget {
     required this.onDelete,
     required this.onTap,
   });
-
+  CategoryCard.Homepage({
+    super.key,
+    required this.name,
+    required this.imageUrl,
+    this.price,
+    this.stock,
+    this.inHome,
+    required this.onEdit,
+    required this.onDelete,
+    required this.onTap,
+  });
   @override
   State<CategoryCard> createState() => _CategoryCardState();
 }
@@ -58,7 +70,7 @@ class _CategoryCardState extends State<CategoryCard> {
         }
       },
       onLongPress: () {
-        setState(() => _showActions = true);
+        widget.inHome == true ? null : setState(() => _showActions = true);
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 220),
@@ -160,7 +172,9 @@ class _CategoryCardState extends State<CategoryCard> {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   Text(
-                                   "${widget.price!} ""EGP".tr,
+                                    "${widget.price!} "
+                                            "EGP"
+                                        .tr,
                                     textAlign: TextAlign.center,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,

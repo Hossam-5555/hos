@@ -23,6 +23,7 @@ class HomepageController extends GetxController {
   List<ItemsModel> newArival = [];
   List<CategoriesModel> categories = [];
   Statusrequest statusrequest = Statusrequest.none;
+  bool get isarabic => myservisec.sharedPreferences.getString("lang") == "ar";
 
   Homedata homedata = Homedata(Get.find());
 
