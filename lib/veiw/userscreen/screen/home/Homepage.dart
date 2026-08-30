@@ -57,6 +57,7 @@ class HomePage extends StatelessWidget {
                         (horizontalPadding * 2) -
                         (gridSpacing * (gridCrossAxisCount - 1))) /
                     gridCrossAxisCount;
+                final itemWidth = (width - 30) / 3;
 
                 return SingleChildScrollView(
                   keyboardDismissBehavior:
@@ -76,19 +77,25 @@ class HomePage extends StatelessWidget {
                         Titles(title: "Categories".tr),
                         SizedBox(height: sectionSpacing * 0.6),
 
-                        Wrap(
-                          direction: Axis.horizontal,
-                          spacing: 10,
-                          runSpacing: 10,
-                          alignment: WrapAlignment.start,
-                          children: List.generate(
-                            controller.categories.length,
-                            (index) {
+                        SizedBox(
+                          height: (categoryHeight * 2) ,
+                          child: GridView.builder(
+                            scrollDirection: Axis.horizontal,
+                            physics: const BouncingScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2, // صفين
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
+                                  childAspectRatio: categoryHeight / itemWidth,
+                                ),
+                            itemCount: controller.categories.length,
+                            itemBuilder: (context, index) {
                               final cat = controller.categories[index];
 
                               return SizedBox(
+                                width: 100,
                                 height: categoryHeight,
-                                width: 120,
                                 child: CategoryCard.Homepage(
                                   inHome: true,
                                   onTap: () {
@@ -107,11 +114,6 @@ class HomePage extends StatelessWidget {
                                   imageUrl: cat.image!,
                                 ),
                               );
-                              // CategoryItem(
-                              //   index: index,
-                              //   name: cat.name ?? "",
-                              //   imageUrl: cat.image.toString(),
-                              // );
                             },
                           ),
                         ),

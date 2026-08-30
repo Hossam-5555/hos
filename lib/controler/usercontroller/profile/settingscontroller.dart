@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/conistant/routs.dart';
+import 'package:hos/core/conistant/static.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -11,7 +12,7 @@ class SettingsController extends GetxController {
   var notificationsEnabled = true.obs;
   var selectedTheme = 'Light'.obs;
   String? get usrtype => myservisec.sharedPreferences.getString("usertype");
-    String? get username => myservisec.sharedPreferences.getString("usersname");
+  String? get username => myservisec.sharedPreferences.getString("usersname");
 
   @override
   void onInit() {
@@ -20,12 +21,18 @@ class SettingsController extends GetxController {
     loadSettings(); // تحميل الإعدادات عند بدء تشغيل الـ controller
   }
 
-  Map userdata = {"user": "user", "admin": "admin", 'driver': "driver"};
   //logout تسجيل الخروج من البرنامج
   void logout() {
     int id = myservisec.sharedPreferences.getInt("id")!;
-    FirebaseMessaging.instance.unsubscribeFromTopic("${userdata[usrtype]}");
-    FirebaseMessaging.instance.unsubscribeFromTopic("${userdata[usrtype]}$id");
+
+    if (usrtype == Static.admin) {
+      FirebaseMessaging.instance.unsubscribeFromTopic(Static.admin);
+      FirebaseMessaging.instance.unsubscribeFromTopic("${Static.admin}_$id");
+    } else {
+      FirebaseMessaging.instance.unsubscribeFromTopic(Static.user);
+      FirebaseMessaging.instance.unsubscribeFromTopic("${Static.user}_$id");
+    }
+
     myservisec.sharedPreferences.clear();
     Get.offAllNamed(Approute.login);
     update();

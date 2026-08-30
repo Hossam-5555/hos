@@ -1,6 +1,6 @@
 class LinkApi {
-  // static String lravelserver = "http://192.168.1.2:8000/api";
-  static String lravelserver = "http://10.0.2.2:8000/api";
+  static String lravelserver ="http://10.190.237.253:8000/api";
+  // static String lravelserver ="http://10.0.2.2:8000/api";
   //imagelink=============================
 
   //Auth=============================

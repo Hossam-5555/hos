@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/routs.dart';
+import 'package:hos/core/conistant/static.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/auth/logindata.dart';
@@ -59,16 +60,16 @@ class AuthController extends GetxController {
     var response = await logindata.postdata(email.text, passward.text);
     statusrequest = handling(response);
 
-    if (statusrequest == Statusrequest.checkinterner) {
-      update();
-      return;
-    }
+    // if (statusrequest == Statusrequest.checkinterner) {
+    //   update();
+    //   return;
+    // }
+    print(response);
 
     if (statusrequest == Statusrequest.success && response['status'] == true) {
       var data = response['data'];
       var userJson = data['user'];
       var token = data['token'];
-
       UserModel user = UserModel.fromJson(userJson);
 
       await myservisec.sharedPreferences.setInt("id", user.id!);
@@ -81,13 +82,13 @@ class AuthController extends GetxController {
       int id = user.id!;
 
       if (user.isAprove == 1) {
-        if (user.usersType == "admin") {
-          FirebaseMessaging.instance.subscribeToTopic("admin");
-          FirebaseMessaging.instance.subscribeToTopic("admin$id");
+        if (user.usersType == Static.admin) {
+          FirebaseMessaging.instance.subscribeToTopic(Static.admin);
+          FirebaseMessaging.instance.subscribeToTopic("${Static.admin}_$id");
           Get.offAllNamed(AdminApproate.adminHome);
         } else {
-          FirebaseMessaging.instance.subscribeToTopic("users");
-          FirebaseMessaging.instance.subscribeToTopic("users$id");
+          FirebaseMessaging.instance.subscribeToTopic(Static.user);
+          FirebaseMessaging.instance.subscribeToTopic("${Static.user}_$id");
           Get.offAllNamed(Approute.Homescreen);
         }
       } else {
@@ -104,7 +105,11 @@ class AuthController extends GetxController {
     statusrequest = Statusrequest.loading;
     update();
 
-    var response = await signupdata.postdata(username.text, email.text, passward.text);
+    var response = await signupdata.postdata(
+      username.text,
+      email.text,
+      passward.text,
+    );
     statusrequest = handling(response);
 
     if (statusrequest == Statusrequest.checkinterner) {

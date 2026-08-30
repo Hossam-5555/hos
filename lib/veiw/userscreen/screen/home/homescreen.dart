@@ -93,6 +93,7 @@ class Homescreen extends StatelessWidget {
                     ],
                   ),
                 ),
+          resizeToAvoidBottomInset: false,
 
           floatingActionButton: Container(
             alignment: Alignment.bottomCenter,

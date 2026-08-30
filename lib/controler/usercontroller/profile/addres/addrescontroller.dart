@@ -64,75 +64,69 @@ class AddressController extends GetxController {
     update();
   }
 
- Future<LatLng?> getcurrentlocation() async {
-  bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-    Get.snackbar('Location Disabled', 'Please enable location service');
-    return null;
-  }
-
-  LocationPermission permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied) {
-    permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied) {
-      Get.snackbar('Permission Denied', 'Location access is required');
+  Future<LatLng?> getcurrentlocation() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      Get.snackbar('Location Disabled', 'Please enable location service');
       return null;
     }
-  }
 
-  if (permission == LocationPermission.deniedForever) {
-    Get.snackbar(
-      'Permission Required',
-      'Please enable location from settings',
-      mainButton: TextButton(
-        onPressed: () => Geolocator.openAppSettings(),
-        child: const Text('Open Settings'),
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        Get.snackbar('Permission Denied', 'Location access is required');
+        return null;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      Get.snackbar(
+        'Permission Required',
+        'Please enable location from settings',
+        mainButton: TextButton(
+          onPressed: () => Geolocator.openAppSettings(),
+          child: const Text('Open Settings'),
+        ),
+      );
+      return null;
+    }
+
+    Position position = await Geolocator.getCurrentPosition(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 100,
       ),
     );
-    return null;
-  }
 
-  Position position = await Geolocator.getCurrentPosition(
-    locationSettings: const LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
-    ),
-  );
+    final newLat = position.latitude;
+    final newLng = position.longitude;
+    final point = LatLng(newLat, newLng);
 
-  final newLat = position.latitude;
-  final newLng = position.longitude;
-  final point = LatLng(newLat, newLng);
-
-  if (!egyptBounds.contains(point)) {
-    Get.snackbar(
-      'Outside Coverage',
-      'Your current location is outside our delivery area',
-    );
-    return null;
-  }
-
-  lat = newLat;
-  long = newLng;
-
-  map.move(point, 15);
-
-  try {
-    List<geocoding.Placemark> placemarks =
-        await geocoding.placemarkFromCoordinates(lat, long);
-    if (placemarks.isNotEmpty) {
-      print("${placemarks[0].country}");
-      print("${placemarks[0].street}");
-      print("${placemarks[0].administrativeArea}");
-      print("${placemarks[0].locality}");
-      print("${placemarks[0].name}");
+    if (!egyptBounds.contains(point)) {
+      Get.snackbar(
+        'Outside Coverage',
+        'Your current location is outside our delivery area',
+      );
+      return null;
     }
-  } catch (e) {
-    print("Geocoding error: $e");
-  }
 
-  update();
-  return point; // ✅ رجّع النقطة عشان الـ widget يحط العلامة عليها
-}
+    lat = newLat;
+    long = newLng;
+
+    map.move(point, 15);
+
+    try {
+      List<geocoding.Placemark> placemarks = await geocoding
+          .placemarkFromCoordinates(lat, long);
+      if (placemarks.isNotEmpty) {}
+    } catch (e) {
+      print("Geocoding error: $e");
+    }
+
+    update();
+    return point; // ✅ رجّع النقطة عشان الـ widget يحط العلامة عليها
+  }
 
   @override
   void onInit() {

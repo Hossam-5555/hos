@@ -25,6 +25,7 @@ Widget buildCartItemCard(
           Container(
             width: 110,
             height: 90,
+            margin: EdgeInsetsDirectional.all(5),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,

@@ -34,8 +34,9 @@ class Itemsdetailes extends StatelessWidget {
       builder: (controller) {
         final item = controller.itemsmodel;
         return Scaffold(
-          backgroundColor:
-              isDark ? const Color(0xFF0F0F0F) : const Color(0xFFF8F8F8),
+          backgroundColor: isDark
+              ? const Color(0xFF0F0F0F)
+              : const Color(0xFFF8F8F8),
           bottomNavigationBar: _buildBottomBar(controller, isDark),
           body: Stack(
             children: [
@@ -80,13 +81,13 @@ class Itemsdetailes extends StatelessWidget {
                                   imageUrl: item.images![index],
                                   imageBuilder: (context, imageProvider) =>
                                       Container(
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: imageProvider,
-                                        fit: BoxFit.contain,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
                                   placeholder: (context, url) => const Center(
                                     child: CircularProgressIndicator(),
                                   ),
@@ -105,7 +106,9 @@ class Itemsdetailes extends StatelessWidget {
                   // ─── تفاصيل المنتج ───
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -129,15 +132,20 @@ class Itemsdetailes extends StatelessWidget {
                             ),
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
+                                horizontal: 10,
+                                vertical: 5,
+                              ),
                               decoration: BoxDecoration(
                                 color: Colors.amber.withOpacity(0.15),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Row(
                                 children: [
-                                  const Icon(Icons.star_rounded,
-                                      color: Colors.amber, size: 18),
+                                  const Icon(
+                                    Icons.star_rounded,
+                                    color: Colors.amber,
+                                    size: 18,
+                                  ),
                                   const SizedBox(width: 4),
                                   Text(
                                     "4.8",
@@ -280,16 +288,16 @@ class Itemsdetailes extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: BackdropFilter(
-                            filter:
-                                ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: List.generate(
                                 item.images!.length,
                                 (index) => AnimatedContainer(
                                   margin: const EdgeInsets.all(10),
-                                  width:
-                                      controller.curentpage == index ? 15 : 5,
+                                  width: controller.curentpage == index
+                                      ? 15
+                                      : 5,
                                   height: 6,
                                   decoration: BoxDecoration(
                                     color: Appcolor.primaryColor,
@@ -313,7 +321,9 @@ class Itemsdetailes extends StatelessWidget {
                             onTap: () {
                               favController.favmanget(item.id!);
                               favController.chasngfav(
-                                  item.id, isFav ? "0" : "1");
+                                item.id,
+                                isFav ? "0" : "1",
+                              );
                             },
                           );
                         },
@@ -337,10 +347,7 @@ class Itemsdetailes extends StatelessWidget {
         color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-          ),
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10),
         ],
       ),
       child: Row(
@@ -359,9 +366,11 @@ class Itemsdetailes extends StatelessWidget {
   Widget infoChip(IconData icon, String label, bool isDark) {
     return Column(
       children: [
-        Icon(icon,
-            size: 20,
-            color: isDark ? Colors.white70 : const Color(0xFF555555)),
+        Icon(
+          icon,
+          size: 20,
+          color: isDark ? Colors.white70 : const Color(0xFF555555),
+        ),
         const SizedBox(height: 4),
         Text(
           label,
@@ -376,11 +385,7 @@ class Itemsdetailes extends StatelessWidget {
   }
 
   Widget verticalDivider() {
-    return Container(
-      height: 35,
-      width: 1,
-      color: Colors.grey.withOpacity(0.2),
-    );
+    return Container(height: 35, width: 1, color: Colors.grey.withOpacity(0.2));
   }
 
   // ─── Quick Choices ───
@@ -410,13 +415,15 @@ class Itemsdetailes extends StatelessWidget {
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 18, vertical: 10),
+                    horizontal: 18,
+                    vertical: 10,
+                  ),
                   decoration: BoxDecoration(
                     color: isSelected
                         ? Colors.black
                         : isDark
-                            ? const Color(0xFF2A2A2A)
-                            : Colors.white,
+                        ? const Color(0xFF2A2A2A)
+                        : Colors.white,
                     borderRadius: BorderRadius.circular(30),
                     border: Border.all(
                       color: isSelected
@@ -429,7 +436,7 @@ class Itemsdetailes extends StatelessWidget {
                               color: Colors.black.withOpacity(0.2),
                               blurRadius: 8,
                               offset: const Offset(0, 3),
-                            )
+                            ),
                           ]
                         : [],
                   ),
@@ -441,8 +448,8 @@ class Itemsdetailes extends StatelessWidget {
                       color: isSelected
                           ? Colors.white
                           : isDark
-                              ? Colors.white70
-                              : Colors.black87,
+                          ? Colors.white70
+                          : Colors.black87,
                     ),
                   ),
                 ),
@@ -552,14 +559,13 @@ class Itemsdetailes extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF0F0F0F) : const Color(0xFFF8F8F8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, -5),
-          ),
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: Colors.black.withOpacity(0.05),
+        //     blurRadius: 10,
+        //     offset: const Offset(0, -5),
+        //   ),
+        // ],
       ),
       child: SafeArea(
         child: Row(
@@ -572,7 +578,7 @@ class Itemsdetailes extends StatelessWidget {
                 height: 55,
                 child: Checkbutton(
                   statusrequest: Statusrequest.none,
-                  buttonColor: Colors.black,
+                  buttonColor: isDark ? const Color.fromARGB(255, 82, 80, 80) : Colors.black,
                   onTap: () {
                     if (controller.itemcount == 0) {
                       Get.snackbar(
@@ -600,8 +606,7 @@ class Itemsdetailes extends StatelessWidget {
 
   // ─── السعر ───
   Widget _buildPriceSection(ItemsModel item) {
-    double discount =
-        double.tryParse(item.itemsDiscount.toString()) ?? 0;
+    double discount = double.tryParse(item.itemsDiscount.toString()) ?? 0;
     double price = double.tryParse(item.itemsPrice.toString()) ?? 0;
     double priceDiscount =
         double.tryParse(item.priceAfterDiscount.toString()) ?? 0;

@@ -60,6 +60,7 @@ class _CategoryCardState extends State<CategoryCard> {
   @override
   Widget build(BuildContext context) {
     final categoryName = widget.name;
+    final ishome = widget.inHome;
 
     return GestureDetector(
       onTap: () {
@@ -159,9 +160,9 @@ class _CategoryCardState extends State<CategoryCard> {
                           textAlign: TextAlign.center,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
+                            fontSize: ishome == true ? 10 : 14,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
