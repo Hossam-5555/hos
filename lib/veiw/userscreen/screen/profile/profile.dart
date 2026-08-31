@@ -14,112 +14,136 @@ class ProfilePage extends StatelessWidget {
 
   final Myservisec myservisec = Get.find();
 
-  // لون أساسي مريح للتطبيق يمكن تغييره حسب الهوية البصرية لمشروعك
-  final Color primaryColor = const Color.fromARGB(
-    255,
-    44,
-    46,
-    46,
-  ); // لون نيلي عصري
-
   @override
   Widget build(BuildContext context) {
-    // final h = Get.height;
-    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final width = MediaQuery.of(context).size.width;
+    final isTablet = width >= 600;
+
+    final maxContentWidth = isTablet ? 720.0 : double.infinity;
+    final horizontalPadding = isTablet ? 24.0 : 8.0;
+    final avatarRadius = isTablet ? 58.0 : 46.0;
+    final cardGap = isTablet ? 20.0 : 10.0;
+    final cardWidth =
+        (width.clamp(0, maxContentWidth) -
+            horizontalPadding * 2 -
+            cardGap * 2) /
+        3;
+    final cardHeight = (cardWidth * (isTablet ? 1.3 : 1.9)).clamp(120.0, 240.0);
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            SizedBox(height: 20),
-            _buildProfileHeader(Colors.black, context),
-            SizedBox(height: 20),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                orderCard("الطلبات و\nالمشتريات", Imageasset.order, () {
-                  Get.toNamed(Approute.Orders);
-                }, context),
-                orderCard("نقاط\nالمكافأه", Imageasset.goold, () {
-                  ComingSoonOverlay.show();
-                }, context),
-                orderCard(
-                  "App Settings and Privacy".tr,
-                  Imageasset.settings,
-                  () {
-                    Get.to(
-                      () => Settings(),
-                      transition: Transition.fadeIn,
-                      duration: Duration(milliseconds: 400),
-                      curve: Curves.fastOutSlowIn,
-                    );
-                  },
-                  context,
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-
-            Container(
-              padding: EdgeInsets.all(5),
-              margin: EdgeInsets.only(bottom: 20),
-              decoration: BoxDecoration(
-                gradient: isDarkMode
-                    ? AppGradients.darkTitanium
-                    : AppGradients.lightPlatinum,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.grey.withAlpha(50)),
-              ),
+      body: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: maxContentWidth),
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  _buildListTile(
-                    gradientColors: [
-                      const Color.fromARGB(255, 95, 182, 8),
-                      const Color.fromARGB(255, 96, 192, 17),
-                    ],
-                    icon: Icons.location_on_outlined,
-                    title: "Saved Addresses".tr,
-                    onTap: () => Get.toNamed(Approute.viewmyaddres),
+                  _ProfileHeader(
+                    myservisec: myservisec,
+                    avatarRadius: avatarRadius,
                   ),
-
-                  _buildListTile(
-                    gradientColors: [
-                      const Color.fromARGB(255, 243, 9, 9),
-                      Colors.red,
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      orderCard(
+                        "الطلبات و\nالمشتريات",
+                        Imageasset.order,
+                        () => Get.toNamed(Approute.Orders),
+                        context,
+                        width: cardWidth,
+                        height: cardHeight,
+                      ),
+                      orderCard(
+                        "نقاط\nالمكافأه",
+                        Imageasset.goold,
+                        () => ComingSoonOverlay.show(),
+                        context,
+                        width: cardWidth,
+                        height: cardHeight,
+                      ),
+                      orderCard(
+                        "App Settings and Privacy".tr,
+                        Imageasset.settings,
+                        () => Get.to(
+                          () => Settings(),
+                          transition: Transition.fadeIn,
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.fastOutSlowIn,
+                        ),
+                        context,
+                        width: cardWidth,
+                        height: cardHeight,
+                      ),
                     ],
-                    icon: Icons.favorite_border,
-                    title: "Favorite".tr,
-                    onTap: () => Get.toNamed(Approute.myfavorite),
                   ),
-
-                  _buildListTile(
-                    icon: Icons.note_alt_sharp,
-                    title: "مراجعاتي",
-                    isLast: true, // لإزالة الفاصل في العنصر الأخير
-                    onTap: () => Get.to(
-                      () => MyReviewsPage(),
-                      transition: Transition.cupertino,
-                      duration: Duration(milliseconds: 500),
-                      curve: Curves.fastOutSlowIn,
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      gradient: isDarkMode
+                          ? AppGradients.darkTitanium
+                          : AppGradients.lightPlatinum,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: Colors.grey.withAlpha(50)),
+                    ),
+                    child: Column(
+                      children: [
+                        _ListTile(
+                          gradientColors: const [
+                            Color.fromARGB(255, 95, 182, 8),
+                            Color.fromARGB(255, 96, 192, 17),
+                          ],
+                          icon: Icons.location_on_outlined,
+                          title: "Saved Addresses".tr,
+                          onTap: () => Get.toNamed(Approute.viewmyaddres),
+                        ),
+                        _ListTile(
+                          gradientColors: const [
+                            Color.fromARGB(255, 243, 9, 9),
+                            Colors.red,
+                          ],
+                          icon: Icons.favorite_border,
+                          title: "Favorite".tr,
+                          onTap: () => Get.toNamed(Approute.myfavorite),
+                        ),
+                        _ListTile(
+                          icon: Icons.note_alt_sharp,
+                          title: "مراجعاتي",
+                          onTap: () => Get.to(
+                            () => MyReviewsPage(),
+                            transition: Transition.cupertino,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.fastOutSlowIn,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 20),
-          ],
+          ),
         ),
       ),
     );
   }
+}
 
-  // ================= Header =================
-  Widget _buildProfileHeader(Color color, BuildContext context) {
-    String userName =
+class _ProfileHeader extends StatelessWidget {
+  final Myservisec myservisec;
+  final double avatarRadius;
+
+  const _ProfileHeader({required this.myservisec, required this.avatarRadius});
+
+  @override
+  Widget build(BuildContext context) {
+    final userName =
         myservisec.sharedPreferences.getString("usersname") ?? "User Name";
-    String email =
+    final email =
         myservisec.sharedPreferences.getString("email") ?? "user@email.com";
 
     return ClipRRect(
@@ -142,34 +166,30 @@ class ProfilePage extends StatelessWidget {
               width: 1.5,
             ),
           ),
-          padding: const EdgeInsets.all(10),
-          child: Column(
+          padding: const EdgeInsets.all(5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              // Profile Image
               Stack(
                 children: [
                   Container(
                     padding: const EdgeInsets.all(3),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: LinearGradient(
-                        colors: [color.withValues(alpha: 0.6), color],
+                        colors: [Colors.black54, Colors.black],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
                     ),
                     child: CircleAvatar(
-                      radius: 50,
+                      radius: avatarRadius,
                       backgroundColor: Theme.of(
                         context,
                       ).scaffoldBackgroundColor,
                       backgroundImage: AssetImage(Imageasset.twetter),
-                      onBackgroundImageError: (_, __) {
-                        // Fallback handling
-                      },
                     ),
                   ),
-                  // Online Status Indicator
                   Positioned(
                     bottom: 0,
                     right: 0,
@@ -188,10 +208,9 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(width: 16),
-              // User Info
+              const SizedBox(height: 16),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     userName,
@@ -215,37 +234,39 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ],
               ),
-
-              // Edit Button
             ],
           ),
         ),
       ),
     );
   }
+}
 
-  // ================= Quick Action Cards =================
+class _ListTile extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+  final List<Color>? gradientColors;
 
-  // ================= Settings Group Items =================
-  Widget _buildListTile({
-    required IconData icon,
-    required String title,
-    required VoidCallback onTap,
-    bool isLast = false,
-    List<Color>? gradientColors, // أضفت باراميتر لتخصيص الألوان لكل أيقونة
-  }) {
+  const _ListTile({
+    required this.icon,
+    required this.title,
+    required this.onTap,
+    this.gradientColors,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Row(
           children: [
-            // الحاوية المعدلة مع التدرج اللوني
             Container(
               padding: const EdgeInsets.all(5),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                // استخدام Linear Gradient هنا
                 gradient: LinearGradient(
                   colors:
                       gradientColors ??
@@ -262,11 +283,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Icon(
-                icon,
-                color: Colors.white,
-                size: 22,
-              ), // جعلت الأيقونة بيضاء لتتناسب مع التدرج
+              child: Icon(icon, color: Colors.white, size: 22),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -290,29 +307,32 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-Widget orderCard(String title, String image, Function()? onTap, context) {
-  bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+Widget orderCard(
+  String title,
+  String image,
+  VoidCallback onTap,
+  BuildContext context, {
+  double? width,
+  double? height,
+}) {
+  final isDarkMode = Theme.of(context).brightness == Brightness.dark;
   return GestureDetector(
     onTap: onTap,
     child: ClipRRect(
-      // تم تعديل BorderRadius لتجنب مشاكل الـ Geometry ولتتطابق مع الـ Container بالداخل
       borderRadius: BorderRadius.circular(20),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
-          height: 240,
-          width: 120,
-          alignment: Alignment.center,
+          height: height,
+          width: width,
+          alignment: Alignment.topCenter,
           decoration: BoxDecoration(
-            image: DecorationImage(image: AssetImage(image)),
+            image: DecorationImage(image: AssetImage(image), fit: BoxFit.contain),
             borderRadius: BorderRadius.circular(20),
-            // الحواف المضيئة الخفيفة (نفس الـ Stroke اللي في الصورة)
             border: Border.all(color: Colors.grey.withOpacity(0.18), width: 1),
-
             gradient: isDarkMode
                 ? AppGradients.darkTitanium
                 : AppGradients.lightPlatinum,
-            // ظل خفيف جداً وناعم يتناسب مع الخلفية الغامقة
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.5),
@@ -322,24 +342,23 @@ Widget orderCard(String title, String image, Function()? onTap, context) {
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 16.0,
-              horizontal: 8.0,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment
-                  .spaceBetween, // لتوزيع النص فوق والصورة تحت زي الصورة
-              children: [
-                Text(
-                  title,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 16, // حجم الخط مناسب للقراءة على البطاقة الصغيرة
-                    fontWeight: FontWeight.bold,
-                    height: 1.3,
-                  ),
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 6),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.32),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: Colors.white.withOpacity(0.16)),
+              ),
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  height: 1.3,
                 ),
-              ],
+              ),
             ),
           ),
         ),
@@ -349,26 +368,15 @@ Widget orderCard(String title, String image, Function()? onTap, context) {
 }
 
 class AppGradients {
-  // 1. التدرج الداكن الفخم (ألوانك الأصلية) - ممتاز لخلفيات أو كروت الثيم الأسود
   static const LinearGradient darkTitanium = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [
-      Color(0xFF4A4B4D), // مركز الإضاءة الفضي الداكن
-      Color(0xFF232526), // الدرجة الوسطى الرمادية
-      Color(0xFF111314), // الأطراف الداكنة
-    ],
+    colors: [Color(0xFF4A4B4D), Color(0xFF232526), Color(0xFF111314)],
   );
 
-  // 2. التدرج الفاتح المقابل (Silver/Platinum) - ممتاز لخلفيات أو كروت الثيم الأبيض
   static const LinearGradient lightPlatinum = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [
-      Color(0xFFFFFFFF),
-      Color(0xFFD0D5DD), // الأطراف الفضية الراقية
-      // مركز الإضاءة الأبيض المشع
-      Color(0xFFF2F4F7), // البلاتينيوم الناعم
-    ],
+    colors: [Color(0xFFFFFFFF), Color(0xFFD0D5DD), Color(0xFFF2F4F7)],
   );
 }
