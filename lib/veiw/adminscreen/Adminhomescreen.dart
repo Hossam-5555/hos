@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/AdminHome.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/userscreen/screen/home/notification.dart';
-import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
 import 'package:hos/veiw/wedget/Homepage/buttomAppbar.dart';
 import 'package:hos/veiw/wedget/Homepage/homescrenAction.dart';
 
@@ -19,9 +18,7 @@ class AdminHome extends StatelessWidget {
           title: Row(
             children: [
               InkWell(
-                onTap: () {
-                  Get.to(() => Settings(), transition: Transition.cupertino);
-                },
+                onTap: () {},
                 child: CircleAvatar(
                   radius: 20,
                   backgroundImage: AssetImage(Imageasset.twetter),
@@ -69,7 +66,6 @@ class AdminHome extends StatelessWidget {
                   label: controller.title[2][0],
                   svgAsset: controller.title[2][1],
                 ),
-           
               ],
               currentIndex: controller.currentpage,
               onTap: controller.changePage,

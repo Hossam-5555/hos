@@ -2,17 +2,23 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hos/controler/usercontroller/profile/settingscontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
+import 'package:hos/core/localization/changlocal.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/veiw/userscreen/screen/profile/review.dart';
-import 'package:hos/veiw/userscreen/screen/profile/settings/settings.dart';
+import 'package:hos/veiw/userscreen/screen/profile/settings/Editprofile.dart';
+import 'package:hos/veiw/userscreen/screen/profile/settings/about_us_page.dart';
+import 'package:hos/veiw/wedget/bulidfooter.dart';
 import 'package:hos/veiw/wedget/profiledailoge.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
 
   final Myservisec myservisec = Get.find();
+  final SettingsController settingsController = Get.put(SettingsController());
+  final LocalController localController = Get.put(LocalController());
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +44,7 @@ class ProfilePage extends StatelessWidget {
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: maxContentWidth),
             child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               padding: EdgeInsets.only(
                 left: horizontalPadding,
                 right: horizontalPadding,
@@ -71,13 +78,11 @@ class ProfilePage extends StatelessWidget {
                         height: cardHeight,
                       ),
                       orderCard(
-                        "App Settings and Privacy".tr,
+                        "تعديل\nالبيانات",
                         Imageasset.settings,
                         () => Get.to(
-                          () => Settings(),
-                          transition: Transition.fadeIn,
-                          duration: const Duration(milliseconds: 400),
-                          curve: Curves.fastOutSlowIn,
+                          () => EditProfileView(),
+                          transition: Transition.cupertino,
                         ),
                         context,
                         width: cardWidth,
@@ -86,51 +91,228 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      gradient: isDarkMode
-                          ? AppGradients.darkTitanium
-                          : AppGradients.lightPlatinum,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.grey.withAlpha(50)),
-                    ),
-                    child: Column(
-                      children: [
-                        _ListTile(
-                          gradientColors: const [
-                            Color.fromARGB(255, 95, 182, 8),
-                            Color.fromARGB(255, 96, 192, 17),
-                          ],
-                          icon: Icons.location_on_outlined,
-                          title: "Saved Addresses".tr,
-                          onTap: () => Get.toNamed(Approute.viewmyaddres),
+
+                  // ------- المفضلة / العناوين / المراجعات -------
+                  _GradientGroup(
+                    isDarkMode: isDarkMode,
+                    children: [
+                      _ListTile(
+                        gradientColors: const [
+                          Color.fromARGB(255, 95, 182, 8),
+                          Color.fromARGB(255, 96, 192, 17),
+                        ],
+                        icon: Icons.location_on_outlined,
+                        title: "Saved Addresses".tr,
+                        onTap: () => Get.toNamed(Approute.viewmyaddres),
+                      ),
+                      _ListTile(
+                        gradientColors: const [
+                          Color.fromARGB(255, 243, 9, 9),
+                          Colors.red,
+                        ],
+                        icon: Icons.favorite_border,
+                        title: "Favorite".tr,
+                        onTap: () => Get.toNamed(Approute.myfavorite),
+                      ),
+                      _ListTile(
+                        icon: Icons.note_alt_sharp,
+                        title: "مراجعاتي",
+                        onTap: () => Get.to(
+                          () => MyReviewsPage(),
+                          transition: Transition.cupertino,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.fastOutSlowIn,
                         ),
-                        _ListTile(
-                          gradientColors: const [
-                            Color.fromARGB(255, 243, 9, 9),
-                            Colors.red,
-                          ],
-                          icon: Icons.favorite_border,
-                          title: "Favorite".tr,
-                          onTap: () => Get.toNamed(Approute.myfavorite),
-                        ),
-                        _ListTile(
-                          icon: Icons.note_alt_sharp,
-                          title: "مراجعاتي",
-                          onTap: () => Get.to(
-                            () => MyReviewsPage(),
-                            transition: Transition.cupertino,
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.fastOutSlowIn,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
+
+                  const SizedBox(height: 20),
+
+                  // ------- الإعدادات: الثيم -------
+                  _GroupLabel(title: "Account".tr),
+                  _GradientGroup(
+                    isDarkMode: isDarkMode,
+                    children: [_ThemeTile(controller: localController)],
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // ------- الإعدادات: الدعم -------
+                  _GroupLabel(title: "Support".tr),
+                  _GradientGroup(
+                    isDarkMode: isDarkMode,
+                    children: [
+                      _ListTile(
+                        gradientColors: [
+                          Colors.teal.shade400,
+                          Colors.teal.shade700,
+                        ],
+                        icon: Icons.info_outline,
+                        title: "About App".tr,
+                        subtitle: '${"version".tr} 1.0.0',
+                        onTap: () => Get.to(
+                          () => EnglishAbout(),
+                          transition: Transition.cupertino,
+                        ),
+                      ),
+                      _ListTile(
+                        gradientColors: [
+                          Colors.orange.shade400,
+                          Colors.orange.shade700,
+                        ],
+                        icon: Icons.language_outlined,
+                        title: "Language".tr,
+                        onTap: () => _showLanguageDialog(context),
+                      ),
+                      _ListTile(
+                        gradientColors: [
+                          Colors.cyan.shade400,
+                          Colors.cyan.shade700,
+                        ],
+                        icon: Icons.headset_mic_outlined,
+                        title: "Contact Us".tr,
+                        onTap: settingsController.makePhoneCall,
+                        trailing: Obx(
+                          () => settingsController.isLoading.value
+                              ? const SizedBox(
+                                  width: 18,
+                                  height: 18,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  color: Colors.grey[400],
+                                  size: 16,
+                                ),
+                        ),
+                      ),
+                      _ListTile(
+                        gradientColors: [
+                          Colors.green.shade400,
+                          Colors.green.shade700,
+                        ],
+                        icon: Icons.ios_share,
+                        title: "Share App",
+                        onTap: () {},
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // ------- تسجيل الخروج -------
+                  _GroupLabel(title: "Session".tr),
+                  _GradientGroup(
+                    isDarkMode: isDarkMode,
+                    children: [
+                      _ListTile(
+                        gradientColors: [
+                          Colors.red.shade400,
+                          Colors.red.shade700,
+                        ],
+                        icon: Icons.logout_rounded,
+                        title: "Logout".tr,
+                        titleColor: Colors.red.shade600,
+                        showArrow: false,
+                        onTap: () =>
+                            _confirmLogout(context, settingsController),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 20),
+                  buildFooter(),
                 ],
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ---------------- تأكيد تسجيل الخروج ----------------
+  void _confirmLogout(BuildContext context, SettingsController controller) {
+    Get.defaultDialog(
+      title: "Logout".tr,
+      titleStyle: const TextStyle(fontWeight: FontWeight.bold),
+      middleText: "Are you sure you want to logout?".tr,
+      radius: 16,
+      cancel: TextButton(
+        onPressed: () => Get.back(),
+        child: Text("Cancel".tr, style: TextStyle(color: Colors.grey.shade600)),
+      ),
+      confirm: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.red.shade500,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        onPressed: () {
+          Get.back();
+          controller.logout();
+        },
+        child: Text("Logout".tr, style: const TextStyle(color: Colors.white)),
+      ),
+    );
+  }
+
+  void _showLanguageDialog(BuildContext context) {
+    Get.defaultDialog(
+      title: "Choose Language".tr,
+      titleStyle: const TextStyle(fontWeight: FontWeight.bold),
+      radius: 16,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _languageOption(
+            label: "العربية",
+            icon: Icons.language,
+            color: Colors.green,
+            onTap: () {
+              localController.changeLang('ar');
+              Get.back();
+            },
+          ),
+          const SizedBox(height: 4),
+          _languageOption(
+            label: "English",
+            icon: Icons.language,
+            color: Colors.blue,
+            onTap: () {
+              localController.changeLang('en');
+              Get.back();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _languageOption({
+    required String label,
+    required IconData icon,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: onTap,
+        child: ListTile(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          tileColor: color.withOpacity(0.06),
+          leading: Icon(icon, color: color),
+          title: Text(
+            label,
+            style: const TextStyle(fontWeight: FontWeight.w600),
           ),
         ),
       ),
@@ -221,17 +403,73 @@ class _ProfileHeader extends StatelessWidget {
   }
 }
 
+// ---------------- عنوان مجموعة (Account / Support / Session) ----------------
+class _GroupLabel extends StatelessWidget {
+  final String title;
+  const _GroupLabel({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsetsDirectional.only(start: 6, bottom: 8),
+      child: Align(
+        alignment: AlignmentDirectional.centerStart,
+        child: Text(
+          title.toUpperCase(),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 12.5,
+            letterSpacing: 0.6,
+            color: Colors.grey.shade500,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ---------------- الكونتينر الزجاجي الموحّد لكل مجموعة عناصر ----------------
+class _GradientGroup extends StatelessWidget {
+  final bool isDarkMode;
+  final List<Widget> children;
+
+  const _GradientGroup({required this.isDarkMode, required this.children});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        gradient: isDarkMode
+            ? AppGradients.darkTitanium
+            : AppGradients.lightPlatinum,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.grey.withAlpha(50)),
+      ),
+      child: Column(children: children),
+    );
+  }
+}
+
 class _ListTile extends StatelessWidget {
   final IconData icon;
   final String title;
+  final String? subtitle;
   final VoidCallback onTap;
   final List<Color>? gradientColors;
+  final Widget? trailing;
+  final Color? titleColor;
+  final bool showArrow;
 
   const _ListTile({
     required this.icon,
     required this.title,
     required this.onTap,
+    this.subtitle,
     this.gradientColors,
+    this.trailing,
+    this.titleColor,
+    this.showArrow = true,
   });
 
   @override
@@ -266,23 +504,147 @@ class _ListTile extends StatelessWidget {
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: titleColor,
+                    ),
+                  ),
+                  if (subtitle != null) ...[
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle!,
+                      style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+                    ),
+                  ],
+                ],
               ),
             ),
-            Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: Colors.grey[400],
-              size: 16,
-            ),
+            trailing ??
+                (showArrow
+                    ? Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: Colors.grey[400],
+                        size: 16,
+                      )
+                    : const SizedBox.shrink()),
           ],
         ),
       ),
     );
+  }
+}
+
+// ---------------- عنصر الثيم (Dark/Light) بنفس منطق GetX الأصلي ----------------
+class _ThemeTile extends StatelessWidget {
+  final LocalController controller;
+  const _ThemeTile({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      bool isDark = controller.selectedTheme.value == 'Dark';
+
+      return Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                gradient: LinearGradient(
+                  colors: [Colors.purple.shade400, Colors.purple.shade700],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.purple.withOpacity(0.3),
+                    blurRadius: 5,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: const Icon(
+                Icons.palette_outlined,
+                color: Colors.white,
+                size: 22,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Theme'.tr,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    (isDark ? 'Dark mode' : 'Light mode').tr,
+                    style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+                  ),
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () => controller.changeTheme(!isDark),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                width: 55,
+                height: 32,
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: isDark ? Colors.black : Colors.grey.shade300,
+                ),
+                child: AnimatedAlign(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                  alignment:
+                      isDark ? Alignment.centerRight : Alignment.centerLeft,
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    transitionBuilder: (child, animation) {
+                      return RotationTransition(
+                        turns: animation,
+                        child: ScaleTransition(scale: animation, child: child),
+                      );
+                    },
+                    key: ValueKey<bool>(isDark),
+                    child: isDark
+                        ? const Icon(
+                            Icons.dark_mode,
+                            key: ValueKey('dark'),
+                            color: Colors.white,
+                            size: 20,
+                          )
+                        : const Icon(
+                            Icons.sunny,
+                            key: ValueKey('light'),
+                            color: Colors.orange,
+                            size: 20,
+                          ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }
 
@@ -326,7 +688,6 @@ Widget orderCard(
         borderRadius: BorderRadius.circular(24),
         child: Column(
           children: [
-
             // =========================
             // صورة المنتج
             // =========================
@@ -398,13 +759,13 @@ class AppGradients {
     colors: [Color(0xFF4A4B4D), Color(0xFF232526), Color(0xFF111314)],
   );
 
- static const LinearGradient lightPlatinum = LinearGradient(
-  begin: Alignment.topCenter,
-  end: Alignment.bottomCenter,
-  colors: [
-    Color(0xFFFFFFFF),
-    Color(0xFFF1F3F5),
-    Color(0xFFDDE1E6),
-  ],
-);
+  static const LinearGradient lightPlatinum = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      Color(0xFFFFFFFF),
+      Color(0xFFF1F3F5),
+      Color(0xFFDDE1E6),
+    ],
+  );
 }
