@@ -7,9 +7,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 // ─────────────────────────────────────────
 class NavItem {
   final String label;
-  final String? svgAsset;   // لو الأيقونة SVG
+  final String? svgAsset; // لو الأيقونة SVG
   final String? imageAsset; // لو الأيقونة Image عادية
-  final IconData? icon;     // لو الأيقونة Material Icon
+  final IconData? icon; // لو الأيقونة Material Icon
 
   const NavItem({
     required this.label,
@@ -47,7 +47,8 @@ class CustomBottomNavBar extends StatelessWidget {
       curve: Curves.easeInQuad,
       child: IgnorePointer(
         ignoring: !visible,
-        child: Container(padding: EdgeInsets.all(5),
+        child: Container(
+          padding: EdgeInsets.all(5),
           // margin: const EdgeInsets.only(bottom: 5),
           width: width * 0.9,
           height: 65,
@@ -55,11 +56,7 @@ class CustomBottomNavBar extends StatelessWidget {
             gradient: LinearGradient(
               colors: isDark
                   ? [Colors.grey.shade900, Colors.grey.shade800]
-                  : [
-                      const Color(0xFFFFFFFF),
-                      const Color(0xFFD0D5DD),
-                      const Color(0xFFF2F4F7),
-                    ],
+                  : [Color(0xFFFFFFFF), Color(0xFFF1F3F5), Color(0xFFDDE1E6)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
