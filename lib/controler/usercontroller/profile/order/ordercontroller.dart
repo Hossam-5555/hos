@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
-import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/orderdata.dart';
 import 'package:hos/data/model/ordersmodel.dart';
@@ -97,11 +96,11 @@ class Ordercontroller extends GetxController {
         if (response['status'] == true) {
           orders.removeWhere((e) => e.orderId == orderid);
           // 2. إظهار الرسالة
-          showSnackBar(
-            Get.context!,
-            "تم إلغاء الطلب بنجاح",
-            Icon(Icons.check_circle),
-          );
+          // showSnackBar(
+          //   Get.context!,
+          //   "تم إلغاء الطلب بنجاح",
+          //   Icon(Icons.check_circle),
+          // );
           viewmyorders();
           Get.back();
           // 3. العودة للخلف أولاً

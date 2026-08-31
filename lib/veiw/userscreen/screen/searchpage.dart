@@ -6,6 +6,7 @@ import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/searchclass.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
+import 'package:hos/veiw/userscreen/screen/home/Homepage.dart';
 import 'package:hos/veiw/wedget/SharedProductCard.dart';
 import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/items/itemslist.dart';
@@ -443,7 +444,7 @@ class _SearchResults extends StatelessWidget {
                     onTap: () {
                       controller.gotoitemsdatails(item);
                     },
-                    actionButton: const SizedBox(),
+                    actionButton: AddToCartButton(itemId: item.id!),
                     height: cardHeight,
                   );
                 },
@@ -513,6 +514,7 @@ class PopularCategoriesSection extends StatelessWidget {
                 isSelected: true,
                 onTap: () {
                   c.search!.text = item.name!;
+                  c.onsearch();
                 },
               );
             }),

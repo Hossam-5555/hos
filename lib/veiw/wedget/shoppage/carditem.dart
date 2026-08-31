@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -72,16 +74,8 @@ Widget buildCartItemCard(
                 const SizedBox(height: 6),
 
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    infoChip(
-                      Icons.local_shipping_outlined,
-                      "Free Delivery",
-                      isdark,
-                    ),
-                    verticalDivider(),
-                    infoChip(Icons.access_time_rounded, "20-25 min", isdark),
-                  ],
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [ToggleInfoChips(isDark: isdark)],
                 ),
                 const SizedBox(height: 6),
                 Row(
@@ -170,13 +164,15 @@ Widget buildCartItemCard(
   );
 }
 
-Widget infoChip(IconData icon, String label, bool isDark) {
+Widget infoChip(IconData icon, String label, bool isDark, Key key) {
   return Column(
+    key: key, // استخدام المفتاح القادم مباشرة
+    mainAxisSize: MainAxisSize.min,
     children: [
       Icon(
         icon,
         size: 15,
-        color: isDark ? Colors.white70 : const Color(0xFF555555),
+        color: isDark ? Colors.green : const Color(0xFF555555),
       ),
       const SizedBox(height: 4),
       Text(
@@ -193,4 +189,72 @@ Widget infoChip(IconData icon, String label, bool isDark) {
 
 Widget verticalDivider() {
   return Container(height: 35, width: 1, color: Colors.grey.withOpacity(0.2));
+}
+
+
+class ToggleInfoChips extends StatefulWidget {
+  final bool isDark;
+
+  const ToggleInfoChips({super.key, required this.isDark});
+
+  @override
+  State<ToggleInfoChips> createState() => _ToggleInfoChipsState();
+}
+
+class _ToggleInfoChipsState extends State<ToggleInfoChips> {
+  Timer? _timer;
+  bool _showFirst = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      setState(() {
+        _showFirst = !_showFirst;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(width: 80,
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 600), // مدة الحركة
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          // تحديد اتجاه الحركة (من اليمين/اليسار)
+          final offsetAnimation = Tween<Offset>(
+            begin: const Offset(1.0, 0.0), // يبدأ من جهة اليمين خارج الشاشة
+            end: Offset.zero,              // ينتهي في المنتصف
+          ).animate(animation);
+      
+          return SlideTransition(
+            position: offsetAnimation,
+            child: FadeTransition(
+              opacity: animation, // إضافة شفافيه خفيفة أثناء السحب
+              child: child,
+            ),
+          );
+        },
+        child: _showFirst
+            ? infoChip(
+                Icons.local_shipping_outlined,
+                "Free Delivery",
+                widget.isDark,
+                const ValueKey('delivery'),
+              )
+            : infoChip(
+                Icons.access_time_rounded,
+                "20-25 min",
+                widget.isDark,
+                const ValueKey('time'),
+              ),
+      ),
+    );
+  }
 }

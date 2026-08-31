@@ -44,6 +44,14 @@ class ItemsController extends SearchMix {
     catid = catigid;
     selectedCategory.value =
         int.tryParse(catigid) ?? 0; // نحدث الـ Category الخاص بالفلتر
+
+    // تصفير الفلاتر عند تغيير القسم
+    minPrice.value = defaultMin;
+    maxPrice.value = defaultMax;
+    selectedSort.value = "newest";
+    selectedBrands.clear();
+    selectedfilter = null;
+
     update();
     getitems(catid, isNewCategory: true);
   }

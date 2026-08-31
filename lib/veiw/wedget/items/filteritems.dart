@@ -46,6 +46,7 @@ void showFilterSheet(BuildContext context, ItemsController c) {
                   ),
                 ),
                 _buildBottomButtons(context, c),
+                const SizedBox(height: 28),
               ],
             ),
           );
@@ -254,7 +255,7 @@ Widget _buildBrandImages(BuildContext context, ItemsController c) {
 
 Widget _buildBottomButtons(BuildContext context, ItemsController c) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
     child: Checkbutton.widget(
       width: context.width * 0.7,
       widget: Obx(() {
