@@ -4,45 +4,21 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/veiw/userscreen/screen/auth/Auth.dart';
-import 'package:hos/veiw/wedget/onpording/silder.dart';
 
 class OnboardingControler extends GetxController {
-
-
-
-
-
-  
   Myservisec myservisec = Get.find();
-  int curentpage = 0;
-  late PageController pageController;
   void next() {
-    curentpage++;
-    if (curentpage > onBoarding.length - 1) {
-      myservisec.sharedPreferences.setString('step', "1");
-      Get.offAll(
-        () => AuthPage(),
-        transition: Transition.fadeIn,
-        curve: Curves.easeInOut,
-        duration: const Duration(milliseconds: 900),
-      );
-    } else {
-      pageController.animateToPage(
-        curentpage,
-        duration: Duration(milliseconds: 400),
-        curve: Curves.easeInOut,
-      );
-    }
-  }
-
-  void onpagechange(int index) {
-    curentpage = index;
-    update();
+    myservisec.sharedPreferences.setString('step', "1");
+    Get.offAll(
+      () => AuthPage(),
+      transition: Transition.fadeIn,
+      curve: Curves.easeInOut,
+      duration: const Duration(milliseconds: 900),
+    );
   }
 
   @override
   void onInit() {
-    pageController = PageController();
     super.onInit();
   }
 }

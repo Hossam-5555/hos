@@ -93,26 +93,22 @@ class HomePage extends StatelessWidget {
                             itemBuilder: (context, index) {
                               final cat = controller.categories[index];
 
-                              return SizedBox(
-                                width: 100,
-                                height: categoryHeight,
-                                child: CategoryCard.Homepage(
-                                  inHome: true,
-                                  onTap: () {
-                                    controller.gotoitems(
-                                      controller.categories,
-                                      index,
-                                      controller.categories[index].id
-                                          .toString(),
-                                    );
-                                  },
-                                  name: controller.isarabic
-                                      ? cat.nameAr
-                                      : cat.name,
-                                  onEdit: () {},
-                                  onDelete: () {},
-                                  imageUrl: cat.image!,
-                                ),
+                              return CategoryCard.Homepage(
+                                inHome: true,
+                                onTap: () {
+                                  controller.gotoitems(
+                                    controller.categories,
+                                    index,
+                                    controller.categories[index].id
+                                        .toString(),
+                                  );
+                                },
+                                name: controller.isarabic
+                                    ? cat.nameAr
+                                    : cat.name,
+                                onEdit: () {},
+                                onDelete: () {},
+                                imageUrl: cat.image!,
                               );
                             },
                           ),

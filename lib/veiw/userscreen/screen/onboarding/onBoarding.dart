@@ -1,94 +1,116 @@
-import 'package:flutter/material.dart' hide Slider;
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/onpoarding/onboarding_controler.dart';
-import 'package:hos/core/conistant/appcolor.dart';
-import 'package:hos/veiw/userscreen/screen/auth/Auth.dart';
-import 'package:hos/veiw/wedget/onpording/costumButton.dart';
-import 'package:hos/veiw/wedget/onpording/dotcontroller.dart';
-import 'package:hos/veiw/wedget/onpording/silder.dart';
+import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 class Onboarding extends StatelessWidget {
-  const Onboarding({super.key});
+  Onboarding({super.key});
+
+  final c = Get.put(OnboardingControler());
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(OnboardingControler());
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
-        child: Padding(
-          // إضافة مساحة سفلية لتبديل الأزرار عن حافة الشاشة
-          padding: const EdgeInsets.only(bottom: 24.0),
-          child: Column(
-            children: [
-              /// 🟢 السلايدر (يأخذ المساحة الأكبر بتصميم مريح)
-              Expanded(
-                flex: 4, 
-                child: const Slideronboarding(),
+        child: Stack(
+          fit: StackFit.expand,
+
+          children: [
+            // =========================
+            // الصورة
+            // =========================
+            Positioned.fill(
+              child: Image.network(
+                'https://shebad.app/wp-content/uploads/2025/01/1263-1.png',
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Center(
+                    child: Icon(
+                      Icons.image_not_supported,
+                      color: Colors.white,
+                      size: 50,
+                    ),
+                  );
+                },
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  }
+
+                  return const Center(
+                    child: CircularProgressIndicator(color: Colors.white),
+                  );
+                },
               ),
+            ),
 
-              /// 🟢 الجزء السفلي (مؤشرات وأزرار)
-              Expanded(
-                flex: 1,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0), // مسافة جانبية أوسع لشكل أرقى
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end, // دفع العناصر للأسفل
-                    children: [
-                      /// 🟢 Dots
-                      const Dotcontroller(),
-                      
-                      SizedBox(height: size.height * 0.04), // مسافة مرنة بين النقاط والأزرار
-
-                      /// 🟢 الأزرار
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          /// Skip Button
-                          TextButton(
-                            onPressed: () {
-                              // 💡 نصيحة: يفضل نقل هذا السطر داخل دالة في الكونترولر للحفاظ على نظافة الـ UI
-                              controller.myservisec.sharedPreferences.setString('step', "1");
-
-                              Get.offAll(
-                                () => const AuthPage(),
-                                transition: Transition.fadeIn,
-                                duration: const Duration(milliseconds: 500), // نعومة في الانتقال
-                              );
-                            },
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            child: Text(
-                              "skip".tr,
-                              style: TextStyle(
-                                fontSize: size.width * 0.045,
-                                fontWeight: FontWeight.w600, // خط أسمك قليلاً
-                                color: Colors.grey.shade600, // لون رمادي أنيق
-                                letterSpacing: 0.5,
-                              ),
-                            ),
-                          ),
-
-                          /// Continue Button
-                          CustomButton(
-                            width: size.width * 0.35, // عرض أكبر قليلاً ليبرز كزر رئيسي (Call to Action)
-                            buttonName: 'continue'.tr,
-                            buttonColor: Appcolor.black, 
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+            // =========================
+            // اسم التطبيق
+            // =========================
+            Positioned(
+              top: size.height * 0.075,
+              left: 24,
+              child: const Text(
+                'LuxCart',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: -2,
                 ),
               ),
-            ],
-          ),
+            ),
+
+            // =========================
+            // النصوص والزر
+            // =========================
+            Positioned(
+              left: 24,
+              right: 24,
+              bottom: 20,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Find Your Perfect Fit',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ),
+
+                  const SizedBox(height: 6),
+
+                  Text(
+                    'Discover styles tailored to you, with\n'
+                    'comfort and confidence.',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 11,
+                      height: 1.35,
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  SizedBox(
+                    width: double.infinity,
+                    child: Checkbutton(
+                      buttonColor: Colors.black,
+                      width: double.infinity,
+                      onTap: () {
+                        c.next();
+                      },
+                      buttonName: 'Get Started',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -108,14 +108,18 @@ class OrderCard extends StatelessWidget {
                   SizedBox(height: h * 0.015),
 
                   // --- القسم الثاني: رقم الطلب (بارز وسينمائي) ---
-                  Text(
-                    "${'Order numper'.tr} #${order.orderNumber}",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                      fontSize: w * 0.05,
-                      color: primaryTextColor,
-                      letterSpacing: 1.0,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        "${'Order numper'.tr} #${order.orderNumber}",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: w * 0.035,
+                          color: primaryTextColor,
+                          letterSpacing: 1.0,
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(height: h * 0.015),
 
@@ -135,14 +139,25 @@ class OrderCard extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          Text(
-                            "${'Payment'.tr}: ${order.paymentStatus}",
-                            style: TextStyle(
-                              color: isDark
-                                  ? Colors.blue[300]
-                                  : const Color.fromARGB(255, 95, 255, 3),
-                              fontWeight: FontWeight.w600,
-                              fontSize: w * 0.035,
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: color.withOpacity(0.2)),
+                            ),
+                            child: Text(
+                              "${'Payment'.tr}: ${order.paymentStatus}",
+                              style: TextStyle(
+                                color: isDark
+                                    ? Colors.blue[300]
+                                    : const Color.fromARGB(255, 31, 56, 16),
+                                fontWeight: FontWeight.w600,
+                                fontSize: w * 0.035,
+                              ),
                             ),
                           ),
                         ],
