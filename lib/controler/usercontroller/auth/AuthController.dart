@@ -60,10 +60,10 @@ class AuthController extends GetxController {
     var response = await logindata.postdata(email.text, passward.text);
     statusrequest = handling(response);
 
-    // if (statusrequest == Statusrequest.checkinterner) {
-    //   update();
-    //   return;
-    // }
+    if (statusrequest == Statusrequest.checkinterner) {
+      update();
+      return;
+    }
     print(response);
 
     if (statusrequest == Statusrequest.success && response['status'] == true) {

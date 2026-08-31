@@ -94,8 +94,8 @@ class OnboardingController extends GetxController {
 }
 
 class Onboarding extends StatelessWidget {
-  const Onboarding({super.key});
-
+   Onboarding({super.key});
+  final c= Get.put(OnboardingController());
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
