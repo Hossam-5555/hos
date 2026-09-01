@@ -5,18 +5,19 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/settingscontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
+import 'package:hos/core/conistant/static.dart';
 import 'package:hos/core/localization/changlocal.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/veiw/userscreen/screen/profile/review.dart';
-import 'package:hos/veiw/userscreen/screen/profile/settings/Editprofile.dart';
-import 'package:hos/veiw/userscreen/screen/profile/settings/about_us_page.dart';
+import 'package:hos/veiw/userscreen/screen/profile/Editprofile.dart';
+import 'package:hos/veiw/userscreen/screen/profile/about_us_page.dart';
 import 'package:hos/veiw/wedget/bulidfooter.dart';
 import 'package:hos/veiw/wedget/profiledailoge.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
 
-  final Myservisec myservisec = Get.find();
+  // final Myservisec myservisec = Get.find();
   final SettingsController settingsController = Get.put(SettingsController());
   final LocalController localController = Get.put(LocalController());
 
@@ -54,78 +55,82 @@ class ProfilePage extends StatelessWidget {
               child: Column(
                 children: [
                   _ProfileHeader(
-                    myservisec: myservisec,
+                    myservisec: settingsController.myservisec,
                     avatarRadius: avatarRadius,
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      orderCard(
-                        "الطلبات و\nالمشتريات",
-                        Imageasset.order,
-                        () => Get.toNamed(Approute.Orders),
-                        context,
-                        width: cardWidth,
-                        height: cardHeight,
-                      ),
-                      orderCard(
-                        "نقاط\nالمكافأه",
-                        Imageasset.goold,
-                        () => ComingSoonOverlay.show(),
-                        context,
-                        width: cardWidth,
-                        height: cardHeight,
-                      ),
-                      orderCard(
-                        "تعديل\nالبيانات",
-                        Imageasset.settings,
-                        () => Get.to(
-                          () => EditProfileView(),
-                          transition: Transition.cupertino,
-                        ),
-                        context,
-                        width: cardWidth,
-                        height: cardHeight,
-                      ),
-                    ],
-                  ),
+                  settingsController.usrtype == "user"
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            orderCard(
+                              "الطلبات و\nالمشتريات",
+                              Imageasset.order,
+                              () => Get.toNamed(Approute.Orders),
+                              context,
+                              width: cardWidth,
+                              height: cardHeight,
+                            ),
+                            orderCard(
+                              "نقاط\nالمكافأه",
+                              Imageasset.goold,
+                              () => ComingSoonOverlay.show(),
+                              context,
+                              width: cardWidth,
+                              height: cardHeight,
+                            ),
+                            orderCard(
+                              "تعديل\nالبيانات",
+                              Imageasset.settings,
+                              () => Get.to(
+                                () => EditProfileView(),
+                                transition: Transition.cupertino,
+                              ),
+                              context,
+                              width: cardWidth,
+                              height: cardHeight,
+                            ),
+                          ],
+                        )
+                      : SizedBox.shrink(),
                   const SizedBox(height: 20),
 
-                  // ------- المفضلة / العناوين / المراجعات -------
-                  _GradientGroup(
-                    isDarkMode: isDarkMode,
-                    children: [
-                      _ListTile(
-                        gradientColors: const [
-                          Color.fromARGB(255, 95, 182, 8),
-                          Color.fromARGB(255, 96, 192, 17),
-                        ],
-                        icon: Icons.location_on_outlined,
-                        title: "Saved Addresses".tr,
-                        onTap: () => Get.toNamed(Approute.viewmyaddres),
-                      ),
-                      _ListTile(
-                        gradientColors: const [
-                          Color.fromARGB(255, 243, 9, 9),
-                          Colors.red,
-                        ],
-                        icon: Icons.favorite_border,
-                        title: "Favorite".tr,
-                        onTap: () => Get.toNamed(Approute.myfavorite),
-                      ),
-                      _ListTile(
-                        icon: Icons.note_alt_sharp,
-                        title: "مراجعاتي",
-                        onTap: () => Get.to(
-                          () => MyReviewsPage(),
-                          transition: Transition.cupertino,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.fastOutSlowIn,
-                        ),
-                      ),
-                    ],
-                  ),
+                  settingsController.usrtype == "user"
+                      ? // ------- المفضلة / العناوين / المراجعات -------
+                        _GradientGroup(
+                          isDarkMode: isDarkMode,
+                          children: [
+                            _ListTile(
+                              gradientColors: const [
+                                Color.fromARGB(255, 95, 182, 8),
+                                Color.fromARGB(255, 96, 192, 17),
+                              ],
+                              icon: Icons.location_on_outlined,
+                              title: "Saved Addresses".tr,
+                              onTap: () => Get.toNamed(Approute.viewmyaddres),
+                            ),
+                            _ListTile(
+                              gradientColors: const [
+                                Color.fromARGB(255, 243, 9, 9),
+                                Colors.red,
+                              ],
+                              icon: Icons.favorite_border,
+                              title: "Favorite".tr,
+                              onTap: () => Get.toNamed(Approute.myfavorite),
+                            ),
+                            _ListTile(
+                              icon: Icons.note_alt_sharp,
+                              title: "مراجعاتي",
+                              onTap: () => Get.to(
+                                () => MyReviewsPage(),
+                                transition: Transition.cupertino,
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.fastOutSlowIn,
+                              ),
+                            ),
+                          ],
+                        )
+                      : SizedBox.shrink(),
 
                   const SizedBox(height: 20),
 
@@ -520,7 +525,10 @@ class _ListTile extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       subtitle!,
-                      style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey.shade500,
+                      ),
                     ),
                   ],
                 ],
@@ -613,8 +621,9 @@ class _ThemeTile extends StatelessWidget {
                 child: AnimatedAlign(
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeInOut,
-                  alignment:
-                      isDark ? Alignment.centerRight : Alignment.centerLeft,
+                  alignment: isDark
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
                   child: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
                     transitionBuilder: (child, animation) {
@@ -676,9 +685,7 @@ Widget orderCard(
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(
-              isDarkMode ? 0.35 : 0.12,
-            ),
+            color: Colors.black.withOpacity(isDarkMode ? 0.35 : 0.12),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -701,10 +708,7 @@ Widget orderCard(
                       ? Colors.white.withOpacity(0.04)
                       : Colors.black.withOpacity(0.025),
                 ),
-                child: Image.asset(
-                  image,
-                  fit: BoxFit.contain,
-                ),
+                child: Image.asset(image, fit: BoxFit.contain),
               ),
             ),
 
@@ -738,9 +742,7 @@ Widget orderCard(
                     fontSize: 15,
                     height: 1.2,
                     fontWeight: FontWeight.w700,
-                    color: isDarkMode
-                        ? Colors.white
-                        : Colors.black87,
+                    color: isDarkMode ? Colors.white : Colors.black87,
                   ),
                 ),
               ),
@@ -762,10 +764,6 @@ class AppGradients {
   static const LinearGradient lightPlatinum = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [
-      Color(0xFFFFFFFF),
-      Color(0xFFF1F3F5),
-      Color(0xFFDDE1E6),
-    ],
+    colors: [Color(0xFFFFFFFF), Color(0xFFF1F3F5), Color(0xFFDDE1E6)],
   );
 }

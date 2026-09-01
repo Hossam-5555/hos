@@ -17,13 +17,6 @@ class AdminHome extends StatelessWidget {
         appBar: AppBar(
           title: Row(
             children: [
-              InkWell(
-                onTap: () {},
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundImage: AssetImage(Imageasset.twetter),
-                ),
-              ),
               const SizedBox(width: 10),
               const Text(
                 "Hello, Admin",
@@ -65,6 +58,10 @@ class AdminHome extends StatelessWidget {
                 NavItem(
                   label: controller.title[2][0],
                   svgAsset: controller.title[2][1],
+                ),
+                  NavItem(
+                  label: controller.title[3][0],
+                  svgAsset: controller.title[3][1],
                 ),
               ],
               currentIndex: controller.currentpage,

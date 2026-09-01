@@ -5,7 +5,6 @@ import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/veiw/wedget/Notificationcard.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class NotificationPage extends StatelessWidget {
   NotificationPage({super.key});
@@ -77,11 +76,7 @@ class NotificationPage extends StatelessWidget {
             
                 bool isSelected = controller.isSelected(id);
             
-                return HandlingDataView(
-                  statusrequest: s.statusrequest,
-                  mediaType: HandlingMediaType.svgImage,
-                  mode: HandlingMode.skeleton,
-                  widget: NotificationCard(
+                return NotificationCard(
                     title: title,
                     body: body,
                     time: time,
@@ -90,8 +85,7 @@ class NotificationPage extends StatelessWidget {
                     selectionMode: controller.selectionMode,
                     onLongPress: () => controller.onLongPress(id),
                     onTap: () => controller.onTap(id),
-                  ),
-                );
+                  );
               },
             ),
           ),

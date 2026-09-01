@@ -79,6 +79,7 @@ class Notificationcontroller extends GetxController {
     update();
 
     bool isUndo = false;
+    selectionMode = false;
 
     showSnackBar(
       context,
@@ -105,7 +106,6 @@ class Notificationcontroller extends GetxController {
 
     // تنظيف
     selectedIds.clear();
-    selectionMode = false;
 
     if (notificationlist.isEmpty) {
       statusrequest = Statusrequest.failure;
@@ -124,7 +124,9 @@ class Notificationcontroller extends GetxController {
       List data = response["data"]["messages"];
       notificationlist.addAll((data).map((e) => MassageModel.fromJson(e)));
       notificationcount = response["data"]["total_inactive_count"];
-      notificationcount==0?statusrequest=Statusrequest.failure:Statusrequest.none;
+      notificationcount == 0
+          ? statusrequest = Statusrequest.failure
+          : Statusrequest.none;
     } else {
       statusrequest = Statusrequest.failure;
     }

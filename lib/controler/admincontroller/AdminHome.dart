@@ -9,6 +9,7 @@ import 'package:hos/data/model/dashboardmodel.dart';
 import 'package:hos/veiw/adminscreen/Home/AdminHome.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/viewcat.dart';
 import 'package:hos/veiw/adminscreen/Home/orders/adminpending.dart';
+import 'package:hos/veiw/userscreen/screen/profile/profile.dart';
 
 class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
   // ─────────────────────────── State ───────────────────────────
@@ -35,14 +36,14 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
     AdminHome2(),
     Adminpending(),
     ViewCategories(),
-    // Settings(),
+    ProfilePage(),
   ];
 
   final List<List<dynamic>> title = [
     ["Dashboard", Imageasset.homesvg],
     ["Orders", Imageasset.cart],
     ["Categories", Imageasset.category],
-    // ["settings", Imageasset.profile],
+    ["Profile", Imageasset.profile],
   ];
 
   // ─────────────────────── Getters ─────────────────────────────

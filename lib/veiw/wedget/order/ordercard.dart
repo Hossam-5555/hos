@@ -72,16 +72,34 @@ class OrderCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: color.withOpacity(0.2)),
+                        ),
+                        child: Text(
+                          Jiffy.parse(
+                            isUtc: true,
+                            order.createdAt,
+                            pattern: 'yyyy-MM-dd hh:mm a',
+                          ).fromNow(),
+                          style: TextStyle(
+                            fontSize: w * 0.033,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
                       Text(
-                        Jiffy.parse(
-                          isUtc: true,
-                          order.createdAt,
-                          pattern: 'yyyy-MM-dd hh:mm a',
-                        ).fromNow(),
+                        "\$${order.totalAmount}",
                         style: TextStyle(
-                          fontSize: w * 0.035,
-                          fontWeight: FontWeight.w600,
-                          color: secondaryTextColor,
+                          color: Colors.black,
+                          fontSize: w * 0.05,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       Container(
@@ -128,73 +146,50 @@ class OrderCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${'paymentMethod'.tr}: ${order.paymentMethod}",
-                            style: TextStyle(
-                              color: secondaryTextColor,
-                              fontSize: w * 0.035,
-                            ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: color.withOpacity(0.2)),
+                        ),
+                        child: Text(
+                          "${'paymentMethod'.tr}: ${order.paymentMethod}",
+                          style: TextStyle(
+                            color: secondaryTextColor,
+                            fontSize: w * 0.035,
                           ),
-                          const SizedBox(height: 4),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: color.withOpacity(0.2)),
-                            ),
-                            child: Text(
-                              "${'Payment'.tr}: ${order.paymentStatus}",
-                              style: TextStyle(
-                                color: isDark
-                                    ? Colors.blue[300]
-                                    : const Color.fromARGB(255, 31, 56, 16),
-                                fontWeight: FontWeight.w600,
-                                fontSize: w * 0.035,
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                      Text(
-                        "\$${order.totalAmount}",
-                        style: TextStyle(
-                          color: isDark ? Colors.greenAccent : Colors.black87,
-                          fontSize: w * 0.06,
-                          fontWeight: FontWeight.bold,
+                      const SizedBox(height: 4),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: color.withOpacity(0.2)),
+                        ),
+                        child: Text(
+                          "${'Payment'.tr}: ${order.paymentStatus}",
+                          style: TextStyle(
+                            color: isDark
+                                ? Colors.blue[300]
+                                : const Color.fromARGB(255, 31, 56, 16),
+                            fontWeight: FontWeight.w600,
+                            fontSize: w * 0.035,
+                          ),
                         ),
                       ),
                     ],
                   ),
 
                   // --- القسم الرابع: التقييم (يظهر فقط إذا كان الطلب مستلماً) ---
-                  if (order.status == "delivered") ...[
-                    SizedBox(height: h * 0.015),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.star_rounded,
-                          color: Colors.amber,
-                          size: w * 0.05,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          "4 ⭐ (1k) ${'reviews'.tr}",
-                          style: TextStyle(
-                            color: secondaryTextColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: w * 0.035,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
                 ],
               ),
             ),

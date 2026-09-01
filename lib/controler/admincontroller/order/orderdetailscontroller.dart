@@ -24,23 +24,19 @@ class AdminOrderDetailesController extends GetxController {
   String? get langage => myservisec.sharedPreferences.getString("lang");
   bool get lang => langage == "ar";
 
-  void getcolorandstause(String status) {
-    String state = status.toLowerCase();
-    if (state == "pending") {
+   void getcolorandstause(String status) {
+    if (status == "pending") {
       statusColor = Colors.orange;
       statusText = lang ? "قيد الانتظار" : "Pending";
-    } else if (state == "processing") {
+    } else if (status == "processing") {
       statusColor = Colors.blue;
       statusText = lang ? "قيد التجهيز" : "Processing";
-    } else if (state == "shipped") {
-      statusColor = const Color.fromARGB(255, 179, 123, 39);
+    } else if (status == "shipped") {
+      statusColor = const Color.fromARGB(255, 148, 21, 173);
       statusText = lang ? "في الطريق" : "Shipped";
-    } else if (state == "delivered") {
+    } else if (status == "delivered") {
       statusColor = const Color.fromARGB(255, 33, 201, 10);
       statusText = lang ? "تم التسليم" : "Delivered";
-    } else if (state == "cancelled") {
-      statusColor = Colors.red;
-      statusText = lang ? "ملغي" : "Cancelled";
     } else {
       statusColor = const Color.fromARGB(200, 226, 226, 226);
       statusText = lang ? "غير معروف" : "Unknown";

@@ -60,7 +60,11 @@ class AdminHome2 extends StatelessWidget {
                     SizedBox(height: sectionSpacing * 0.4),
                     Skeletonizer(
                       enabled: c.statusrequest == Statusrequest.loading,
-                      child: AnalyticsSection(c: c, width: width, isWide: isWide),
+                      child: AnalyticsSection(
+                        c: c,
+                        width: width,
+                        isWide: isWide,
+                      ),
                     ),
                     SizedBox(height: sectionSpacing),
                   ],
@@ -95,26 +99,57 @@ class StatsSection extends StatelessWidget {
 
     // Guard: الـ apidata لسه فاضية — نرجع placeholder بنفس شكل الكروت
     // عشان الـ Skeletonizer يرسمها صح ومفيش RangeError
-    if (c.apidata.isEmpty) {
+    if (c.apidata.isEmpty && c.statusrequest == Statusrequest.loading) {
       final emptyCards = [
-        StatCard(title: "Total Sales",  value: r"$----",      growth: "+---%", width: width),
-        StatCard(title: "Total Orders", value: "----",        growth: "+---%", width: width),
-        StatCard(title: "Products",     value: "---- Active",                  width: width),
-        StatCard(title: "Customers",    value: "----",        growth: "+---%", width: width),
+        StatCard(
+          title: "Total Sales",
+          value: r"$----",
+          growth: "+---%",
+          width: width,
+        ),
+        StatCard(
+          title: "Total Orders",
+          value: "----",
+          growth: "+---%",
+          width: width,
+        ),
+        StatCard(title: "Products", value: "---- Active", width: width),
+        StatCard(
+          title: "Customers",
+          value: "----",
+          growth: "+---%",
+          width: width,
+        ),
       ];
       if (isWide) {
-        return Row(children: [
-          for (int i = 0; i < emptyCards.length; i++) ...[
-            if (i != 0) SizedBox(width: spacing),
-            Expanded(child: emptyCards[i]),
+        return Row(
+          children: [
+            for (int i = 0; i < emptyCards.length; i++) ...[
+              if (i != 0) SizedBox(width: spacing),
+              Expanded(child: emptyCards[i]),
+            ],
           ],
-        ]);
+        );
       }
-      return Column(children: [
-        Row(children: [Expanded(child: emptyCards[0]), SizedBox(width: spacing), Expanded(child: emptyCards[1])]),
-        SizedBox(height: spacing),
-        Row(children: [Expanded(child: emptyCards[2]), SizedBox(width: spacing), Expanded(child: emptyCards[3])]),
-      ]);
+      return Column(
+        children: [
+          Row(
+            children: [
+              Expanded(child: emptyCards[0]),
+              SizedBox(width: spacing),
+              Expanded(child: emptyCards[1]),
+            ],
+          ),
+          SizedBox(height: spacing),
+          Row(
+            children: [
+              Expanded(child: emptyCards[2]),
+              SizedBox(width: spacing),
+              Expanded(child: emptyCards[3]),
+            ],
+          ),
+        ],
+      );
     }
 
     final cards = [
@@ -544,10 +579,7 @@ class _SalesChartState extends State<SalesChart> {
             gradient: LinearGradient(
               colors: isEmpty
                   ? [Colors.grey.withAlpha(26), Colors.grey.withAlpha(0)]
-                  : [
-                      Colors.blue.withAlpha(51),
-                      Colors.blue.withAlpha(0),
-                    ],
+                  : [Colors.blue.withAlpha(51), Colors.blue.withAlpha(0)],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -620,7 +652,7 @@ class AnalyticsSection extends StatelessWidget {
             ),
             _AnalyticsSlice(
               "Cancelled",
-              orderStats.cancelled.percentage ,
+              orderStats.cancelled.percentage,
               Colors.red,
             ),
           ];
@@ -628,21 +660,15 @@ class AnalyticsSection extends StatelessWidget {
     final List<Map<String, String>> kpis = [
       {
         "label": "Conversion Rate",
-        "value": analytics == null
-            ? "--%"
-            : "${analytics.conversionRate}%",
+        "value": analytics == null ? "--%" : "${analytics.conversionRate}%",
       },
       {
         "label": "Avg. Order Value",
-        "value": analytics == null
-            ? "\$--"
-            : "\$${analytics.avgOrderValue}",
+        "value": analytics == null ? "\$--" : "\$${analytics.avgOrderValue}",
       },
       {
         "label": "Refund Rate",
-        "value": analytics == null
-            ? "--%"
-            : "${analytics.refundRate}%",
+        "value": analytics == null ? "--%" : "${analytics.refundRate}%",
       },
     ];
 
@@ -681,10 +707,7 @@ class AnalyticsSection extends StatelessWidget {
                     _OrdersPieChart(size: pieSize, data: orderStatusData),
                     SizedBox(width: (width * 0.04).clamp(14.0, 24.0)),
                     Expanded(
-                      child: _OrdersLegend(
-                        data: orderStatusData,
-                        width: width,
-                      ),
+                      child: _OrdersLegend(data: orderStatusData, width: width),
                     ),
                   ],
                 )
@@ -702,7 +725,11 @@ class AnalyticsSection extends StatelessWidget {
 }
 
 class _KpiChip extends StatelessWidget {
-  const _KpiChip({required this.label, required this.value, required this.width});
+  const _KpiChip({
+    required this.label,
+    required this.value,
+    required this.width,
+  });
 
   final String label;
   final String value;
@@ -719,9 +746,7 @@ class _KpiChip extends StatelessWidget {
         vertical: (width * 0.02).clamp(8.0, 10.0),
       ),
       decoration: BoxDecoration(
-        color: isDark
-            ? Colors.white.withAlpha(15)
-            : Colors.grey.withAlpha(20),
+        color: isDark ? Colors.white.withAlpha(15) : Colors.grey.withAlpha(20),
         borderRadius: BorderRadius.circular(14),
       ),
       child: Column(
@@ -770,17 +795,14 @@ class _OrdersPieChart extends StatelessWidget {
               showTitle: false,
             ),
           ]
-        : data
-            .where((s) => s.value > 0)
-            .map((slice) {
-              return PieChartSectionData(
-                value: slice.value,
-                color: slice.color,
-                radius: size * 0.22,
-                showTitle: false,
-              );
-            })
-            .toList();
+        : data.where((s) => s.value > 0).map((slice) {
+            return PieChartSectionData(
+              value: slice.value,
+              color: slice.color,
+              radius: size * 0.22,
+              showTitle: false,
+            );
+          }).toList();
 
     return SizedBox(
       width: size,

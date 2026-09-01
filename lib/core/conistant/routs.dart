@@ -25,8 +25,8 @@ import 'package:hos/veiw/userscreen/screen/home/itemsdetailes.dart';
 import 'package:hos/veiw/userscreen/screen/home/notification.dart';
 import 'package:hos/veiw/userscreen/screen/myfavorite.dart';
 import 'package:hos/veiw/userscreen/screen/onboarding/onBoarding.dart';
-import 'package:hos/veiw/userscreen/screen/profile/settings/addres/add.dart';
-import 'package:hos/veiw/userscreen/screen/profile/settings/addres/viewaddres.dart';
+import 'package:hos/veiw/userscreen/screen/profile/addres/add.dart';
+import 'package:hos/veiw/userscreen/screen/profile/addres/viewaddres.dart';
 import '../../veiw/userscreen/screen/profile/order/orders.dart';
 
 List<GetPage<dynamic>>? routes = [
