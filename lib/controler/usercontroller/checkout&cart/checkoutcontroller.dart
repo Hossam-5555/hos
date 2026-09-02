@@ -124,7 +124,10 @@ class Checkoutcontroller extends GetxController {
               () => PaymentResultPage(
                 isSuccess: true,
                 orderNumber: '#$orderId',
-                amount: '$totalprice'"EGP".tr,
+                amount:
+                    '$totalprice'
+                            "EGP"
+                        .tr,
                 transactionId: 'CASH',
                 paymentMethod: 'كاش عند الاستلام',
               ),
@@ -174,71 +177,107 @@ class Checkoutcontroller extends GetxController {
 
   //============================ التحقق من حالة الدفع
   Future<void> checkPaymentStatus(int orderId) async {
-  try {
-    await Future.delayed(const Duration(seconds: 2));
+    try {
+      int maxAttempts = 6;
+      int currentAttempt = 0;
+      Map<String, dynamic>? paymentData;
+      bool isPaid = false;
 
-    var result = await checkoutdata.getPaymentStatus(orderId);
+      Get.dialog(
+        const Center(child: CircularProgressIndicator()),
+        barrierDismissible: false,
+      );
 
-    // fold عشان نتعامل مع الـ Either
-    result.fold(
-      (failure) {
-        // فشل في الاتصال
-        showSnackBar(
-          Get.context!,
-          "تعذر التحقق من حالة الدفع",
-          Icon(Icons.error, color: Colors.red),
+      while (currentAttempt < maxAttempts) {
+        await Future.delayed(const Duration(seconds: 2));
+
+        var result = await checkoutdata.getPaymentStatus(orderId);
+
+        result.fold(
+          (failure) {
+            print("⚠️ API Failure: ${failure.toString()}");
+          },
+          (response) {
+            print("📡 API Response: $response");
+
+            // الاعتماد على رد الـ Trait الخاص بك
+            if (response['status'] == true || response['data'] != null) {
+              paymentData = response['data'];
+
+              if (paymentData?['payment_status'] == 'paid' ||
+                  paymentData?['payment_status'] == 'Paid') {
+                isPaid = true;
+              }
+            }
+          },
         );
-      },
-      (response) {
-        // نجح الاتصال
-        if (response['data']['payment_status'] == 'paid') {
-          Get.offAll(() => PaymentResultPage(isSuccess: true));
-        } else {
-          Get.offAll(() => PaymentResultPage(isSuccess: false));
-        }
-      },
-    );
-  } catch (e) {
-    showSnackBar(
-      Get.context!,
-      "حدث خطأ غير متوقع",
-      Icon(Icons.error, color: Colors.red),
-    );
-  }
-}
 
+        if (isPaid) break;
+        currentAttempt++;
+      }
 
+      if (Get.isDialogOpen ?? false) Get.back();
 
-// إعادة المحاولة
-Future<void> retryPayment(int orderId) async {
-  statusrequest = Statusrequest.loading;
-  update();
-  try {
-    var paymentResponse = await checkoutdata.payment(orderId);
-    if (paymentResponse['status'] == true) {
-      String paymentUrl = paymentResponse['data']['payment_url'];
-      Get.to(() => PaymentWebViewScreen(), arguments: {
-        'url': paymentUrl,
-        'order_id': orderId,
-      });
+      // التوجيه للنتيجة ببيانات الـ ApiResponse مباشرة
+      Get.to(
+        () => PaymentResultPage(
+          isSuccess: isPaid,
+          orderId: orderId,
+          orderNumber: paymentData?['order_number'] ?? '#$orderId',
+          amount: paymentData?['amount']?.toString() ?? '',
+          transactionId: paymentData?['transaction_id'] ?? 'N/A',
+          paymentMethod: paymentData?['payment_method'] ?? 'Visa / Mastercard',
+          failureReason: isPaid
+              ? ''
+              : (paymentData?['failure_reason'] ??
+                    'فشلت عملية الدفع، يرجى إعادة المحاولة.'),
+          onRetry: () => Get.back(),
+        ),
+      );
+    } catch (e) {
+      if (Get.isDialogOpen ?? false) Get.back();
+      print("❌ Exception: $e");
     }
-  } catch (e) {
-    showSnackBar(Get.context!, "حدث خطأ", Icon(Icons.error, color: Colors.red));
-  } finally {
-    statusrequest = Statusrequest.none;
-    update();
   }
-}
 
-// إلغاء الأوردر
-Future<void> cancelOrder(int orderId) async {
-  try {
-    await checkoutdata.cancelOrder(orderId);
-    Get.offAllNamed('/home');
-  } catch (e) {
-    showSnackBar(Get.context!, "حدث خطأ في الإلغاء", Icon(Icons.error, color: Colors.red));
+  // إعادة المحاولة
+  Future<void> retryPayment(int orderId) async {
+    statusrequest = Statusrequest.loading;
+    update();
+    try {
+      var paymentResponse = await checkoutdata.payment(orderId);
+      if (paymentResponse['status'] == true) {
+        String paymentUrl = paymentResponse['data']['payment_url'];
+        Get.to(
+          () => PaymentWebViewScreen(),
+          arguments: {'url': paymentUrl, 'order_id': orderId},
+        );
+      }
+    } catch (e) {
+      showSnackBar(
+        Get.context!,
+        "حدث خطأ",
+        Icon(Icons.error, color: Colors.red),
+      );
+    } finally {
+      statusrequest = Statusrequest.none;
+      update();
+    }
   }
-}
+
+  // إلغاء الأوردر
+  Future<void> cancelOrder(int orderId, BuildContext context) async {
+    try {
+      await checkoutdata.cancelOrder(orderId);
+      Navigator.popUntil(context, (route) => route.isFirst);
+    } catch (e) {
+      showSnackBar(
+        Get.context!,
+        "حدث خطأ في الإلغاء",
+        Icon(Icons.error, color: Colors.red),
+      );
+    }
+  }
 
   //============================ متغيرات الكوبون والسعر
   String? couponeid;

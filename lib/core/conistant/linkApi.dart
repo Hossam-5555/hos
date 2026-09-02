@@ -37,6 +37,7 @@ class LinkApi {
   static String order = '$lravelserver/order';
   static String viewmyorder = '$lravelserver/userorders';
   static String payment = '$lravelserver/payment/initiate';
+  static String paymentstatus = '$lravelserver/payment/status';
 
   //notification
   static String notification = '$lravelserver/massage';

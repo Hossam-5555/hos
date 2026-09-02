@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:math' as math;
 
 class MyListController extends GetxController {
   // 1. مفتاح للتحكم في AnimatedList من خلال الـ Controller
@@ -158,4 +159,82 @@ class MyAnimatedList extends StatelessWidget {
   //     ),
   //   );
   // }
+}
+
+
+class AnimatedBorderContainer extends StatefulWidget {
+  final Widget child;
+  final double width;
+  final double height;
+  final double borderRadius;
+  final double borderWidth;
+
+  const AnimatedBorderContainer({
+    Key? key,
+    required this.child,
+    this.width = 200,
+    this.height = 200,
+    this.borderRadius = 16,
+    this.borderWidth = 3,
+  }) : super(key: key);
+
+  @override
+  State<AnimatedBorderContainer> createState() => _AnimatedBorderContainerState();
+}
+
+class _AnimatedBorderContainerState extends State<AnimatedBorderContainer>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    // تحكم في سرعة اللفة من خلال ה- duration (مثلاً ثانتين)
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..repeat(); // تكرار الحركة للابد
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Container(
+          width: widget.width,
+          height: widget.height,
+          padding: EdgeInsets.all(widget.borderWidth), // مساحة للـ Border
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(widget.borderRadius),
+            // هنا السر: الـ Gradient بيلف مع قيمة الأنيماشن
+            gradient: SweepGradient(
+              transform: GradientRotation(_controller.value * 2 * math.pi),
+              colors: const [
+                Colors.cyan,
+                Colors.purple,
+                Colors.pink,
+                Colors.cyan, // نفس لون البداية عشان اللفة تبقى ناعمة
+              ],
+            ),
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.black, // لون خلفية الـ Container من جوة
+              borderRadius: BorderRadius.circular(
+                widget.borderRadius - widget.borderWidth,
+              ),
+            ),
+            child: widget.child,
+          ),
+        );
+      },
+    );
+  }
 }

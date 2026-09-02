@@ -199,7 +199,9 @@ class _PaymentResultPageState extends State<PaymentResultPage>
                   children: [
                     _ok ? _viewOrderButton() : _tryAgainButton(),
                     const SizedBox(height: 14),
-                    _ok ? SizedBox.shrink() : _backToCheckoutButton(isDark),
+                    _ok
+                        ? SizedBox.shrink()
+                        : _backToCheckoutButton(isDark, context),
                   ],
                 ),
               ),
@@ -504,14 +506,17 @@ class _PaymentResultPageState extends State<PaymentResultPage>
   }
 
   /// زرار "Back to Checkout" (فشل)
-  Widget _backToCheckoutButton(bool isDark) {
+  Widget _backToCheckoutButton(bool isDark, BuildContext context) {
     return SizedBox(
       width: double.infinity,
       height: 52,
       child: OutlinedButton(
         onPressed: () {
           if (widget.orderId != null) {
-            Get.find<Checkoutcontroller>().cancelOrder(widget.orderId!);
+            Get.find<Checkoutcontroller>().cancelOrder(
+              widget.orderId!,
+              context,
+            );
           } else {
             Get.offAllNamed(Approute.Homescreen);
           }

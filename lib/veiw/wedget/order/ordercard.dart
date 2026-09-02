@@ -89,7 +89,7 @@ class OrderCard extends StatelessWidget {
                             pattern: 'yyyy-MM-dd hh:mm a',
                           ).fromNow(),
                           style: TextStyle(
-                            fontSize: w * 0.033,
+                            fontSize: w * 0.025,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -97,7 +97,6 @@ class OrderCard extends StatelessWidget {
                       Text(
                         "\$${order.totalAmount}",
                         style: TextStyle(
-                          color: Colors.black,
                           fontSize: w * 0.05,
                           fontWeight: FontWeight.bold,
                         ),

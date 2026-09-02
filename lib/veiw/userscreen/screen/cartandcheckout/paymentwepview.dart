@@ -13,32 +13,42 @@ class PaymentWebViewScreen extends StatefulWidget {
 class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
   late final WebViewController _controller;
   late final String paymentUrl;
+  late final int orderId;
   var isPageLoading = true;
+  bool _hasCheckedStatus = false; // لمنع التكرار
 
   @override
   void initState() {
     super.initState();
     paymentUrl = Get.arguments['url'];
-    final int orderId = Get.arguments['order_id'];
+    orderId = Get.arguments['order_id'];
 
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (_) => setState(() => isPageLoading = true),
-          onPageFinished: (url) {
-            setState(() => isPageLoading = false);
-
-            // لو الـ URL مش بتاع Paymob → يبقى اتعمل redirect
-            if (!url.contains('accept.paymob.com') &&
-                !url.contains('mastercard.com') &&
-                url != paymentUrl) {
+          onPageFinished: (_) => setState(() => isPageLoading = false),
+          onNavigationRequest: (NavigationRequest request) {
+            // نتحقق لو الرابط فيه payment-result أو callback
+            if ((request.url.contains('payment-result') ||
+                    request.url.contains('callback')) &&
+                !_hasCheckedStatus) {
+              // نمرر الـ orderId اللي جاي من الـ URL أو المتغير الأصلي
+              _hasCheckedStatus = true;
               Get.find<Checkoutcontroller>().checkPaymentStatus(orderId);
+
+              return NavigationDecision.prevent;
             }
+            return NavigationDecision.navigate;
           },
         ),
       )
-      ..loadRequest(Uri.parse(paymentUrl));
+      // إضافة ngrok-skip-browser-warning لتخطي شاشة ngrok
+      ..loadRequest(
+        Uri.parse(paymentUrl),
+        headers: {'ngrok-skip-browser-warning': 'true'},
+      );
   }
 
   @override

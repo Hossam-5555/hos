@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/linkApi.dart';
 
@@ -14,10 +15,9 @@ class Checkoutdata {
     return response.fold((l) => l, (r) => r);
   }
 
-  Future getPaymentStatus(int orderId) async {
-    var response = await crud.getrequset('${LinkApi.payment}$orderId');
-    return response.fold((l) => l, (r) => r);
-  }
+ Future<Either<Statusrequest, Map>> getPaymentStatus(int orderId) async {
+  return await crud.getrequset('${LinkApi.paymentstatus}/$orderId');
+}
 
   Future cancelOrder(int orderId) async {
     var response = await crud.putandpacth('${LinkApi.order}/$orderId', {

@@ -503,6 +503,7 @@ class PopularCategoriesSection extends StatelessWidget {
             color: textPrimary,
           ),
         ),
+
         const SizedBox(height: 14),
         Skeletonizer(
           enabled: showSkeleton,

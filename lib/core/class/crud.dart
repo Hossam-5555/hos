@@ -56,6 +56,7 @@ class Crud {
           "Content-Type": "application/json",
           "Accept": "application/json",
           "Authorization": "Bearer $token",
+          'ngrok-skip-browser-warning': 'true'
         },
       );
       if (response.statusCode == 200 || response.statusCode == 201) {

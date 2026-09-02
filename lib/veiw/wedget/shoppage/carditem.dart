@@ -18,8 +18,15 @@ Widget buildCartItemCard(
       margin: const EdgeInsets.all(5),
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 2,
+            offset: const Offset(0, 0.2),
+          ),
+        ],
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         children: [
@@ -38,7 +45,7 @@ Widget buildCartItemCard(
                   Color(0xFFD0D5DD), // الأطراف الفضية الراقية
                 ],
               ),
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(20),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(14),
@@ -94,15 +101,7 @@ Widget buildCartItemCard(
                     Container(
                       height: 35, // جعلنا الارتفاع مناسب للزرار (بدل 80)
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Color(0xFFFFFFFF), // مركز الإضاءة الأبيض المشع
-                            Color(0xFFF2F4F7), // البلاتينيوم الناعم
-                            Color(0xFFD0D5DD), // الأطراف الفضية الراقية
-                          ],
-                        ),
+                        color: Colors.grey.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Row(
@@ -127,10 +126,7 @@ Widget buildCartItemCard(
                           ),
                           Text(
                             '${controller.data[i].cartCount}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
-                            ),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           IconButton(
                             onPressed: () => controller.increment(cart.itemid!),
@@ -191,7 +187,6 @@ Widget verticalDivider() {
   return Container(height: 35, width: 1, color: Colors.grey.withOpacity(0.2));
 }
 
-
 class ToggleInfoChips extends StatefulWidget {
   final bool isDark;
 
@@ -223,16 +218,17 @@ class _ToggleInfoChipsState extends State<ToggleInfoChips> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(width: 80,
+    return SizedBox(
+      width: 80,
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 600), // مدة الحركة
         transitionBuilder: (Widget child, Animation<double> animation) {
           // تحديد اتجاه الحركة (من اليمين/اليسار)
           final offsetAnimation = Tween<Offset>(
             begin: const Offset(1.0, 0.0), // يبدأ من جهة اليمين خارج الشاشة
-            end: Offset.zero,              // ينتهي في المنتصف
+            end: Offset.zero, // ينتهي في المنتصف
           ).animate(animation);
-      
+
           return SlideTransition(
             position: offsetAnimation,
             child: FadeTransition(
