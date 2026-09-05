@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
+import 'package:hos/controler/usercontroller/checkout&cart/paymentcontroller.dart';
 import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
-/// صفحة واحدة بتعرض نتيجة الدفع (نجاح أو فشل) حسب الـ [isSuccess]
-/// اللي بييجي من بوابة الدفع (Paymob webhook / response).
 class PaymentResultPage extends StatefulWidget {
   /// ده المتغير اللي بيحكم شكل الصفحة بالكامل
   final bool isSuccess;
@@ -110,6 +108,7 @@ class _PaymentResultPageState extends State<PaymentResultPage>
     super.dispose();
   }
 
+  PaymentController paymentController = Get.put(PaymentController());
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -475,12 +474,7 @@ class _PaymentResultPageState extends State<PaymentResultPage>
       height: 58,
       child: ElevatedButton(
         onPressed: () {
-          if (widget.onRetry != null) {
-            widget.onRetry!();
-          } else if (widget.orderId != null) {
-            // يعمل initiate جديد لنفس الأوردر
-            Get.find<Checkoutcontroller>().retryPayment(widget.orderId!);
-          }
+          paymentController.retryPayment(widget.orderId!);
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xff17191C),
@@ -513,10 +507,7 @@ class _PaymentResultPageState extends State<PaymentResultPage>
       child: OutlinedButton(
         onPressed: () {
           if (widget.orderId != null) {
-            Get.find<Checkoutcontroller>().cancelOrder(
-              widget.orderId!,
-              context,
-            );
+            paymentController.cancelOrder(widget.orderId!, context);
           } else {
             Get.offAllNamed(Approute.Homescreen);
           }

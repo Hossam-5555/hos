@@ -50,7 +50,7 @@ class Checkout extends StatelessWidget {
                           subtitle: '******** 8463',
                           icon: Icons.credit_card_rounded,
                           iconColor: const Color(0xFFEB5757),
-                          method: "credit",
+                          method: "card",
                         ),
                         buildPaymentMethod(
                           controller: c,
@@ -58,7 +58,7 @@ class Checkout extends StatelessWidget {
                           subtitle: 'orb****@gmail.com',
                           icon: Icons.account_balance_wallet_rounded,
                           iconColor: const Color(0xFF2D9CDB),
-                          method: "mobile",
+                          method: "wallet",
                         ),
                         buildPaymentMethod(
                           controller: c,

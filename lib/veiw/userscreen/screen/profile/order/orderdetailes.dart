@@ -24,7 +24,7 @@ class Orderdetailes extends StatelessWidget {
 
       bottomNavigationBar: c.order?.status == "pending"
           ? Padding(
-              padding: EdgeInsets.all(w * 0.06),
+              padding: EdgeInsets.all(w * 0.05),
               child: GetBuilder<Ordercontroller>(
                 builder: (controller) {
                   return Checkbutton(
@@ -52,9 +52,29 @@ class Orderdetailes extends StatelessWidget {
             padding: EdgeInsets.all(w * 0.04),
             children: [
               statusorder(o.status, c.statusColor!, c.statusText!),
-              CardWidget(child:info(o)),
-              CardWidget(child:items(o)),
-              CardWidget(child:price(o)),
+              c.order!.paymentStatus == "unpaid" &&
+                      (c.order!.paymentMethod == "card" ||
+                          c.order!.paymentMethod == "wallet")
+                  ? GetBuilder<Orderdetailescontroller>(
+                      builder: (controller) {
+                        return Checkbutton(
+                          statusrequest: controller.statusrequest,
+                          buttonColor: c.statusColor ?? Colors.black,
+                          width: w * 0.9,
+                          onTap: () {
+                            controller.paymentController.retryPayment(
+                              c.order!.orderId,
+                            );
+                          },
+                          buttonName: "retray payment",
+                        );
+                      },
+                    )
+                  : SizedBox.shrink(),
+              SizedBox(height: w * 0.04),
+              CardWidget(child: info(o)),
+              CardWidget(child: items(o)),
+              CardWidget(child: price(o)),
             ],
           );
         },
@@ -63,6 +83,4 @@ class Orderdetailes extends StatelessWidget {
   }
 
   // ---------------- UI ----------------
-
- 
 }

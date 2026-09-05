@@ -1,18 +1,21 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hos/controler/usercontroller/checkout&cart/paymentcontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/serveces/myservisec.dart';
+import 'package:hos/data/datasource/userdata/checkoutdata.dart';
 
 import 'package:hos/data/model/ordersmodel.dart';
 
+
 class Orderdetailescontroller extends GetxController {
   OrderModel? order;
-    Statusrequest statusrequest = Statusrequest.none;
+  Statusrequest statusrequest = Statusrequest.none;
   Myservisec myservisec = Get.find();
   int? get userid => myservisec.sharedPreferences.getInt("id");
- 
-
+  Checkoutdata checkoutdata = Checkoutdata(Get.find());
+PaymentController paymentController = Get.put(PaymentController());
   Color? statusColor;
   String? statusText;
   String? get langage => myservisec.sharedPreferences.getString("lang");
@@ -39,6 +42,7 @@ class Orderdetailescontroller extends GetxController {
       statusText = lang ? "غير معروف" : "Unknown";
     }
   }
+
   @override
   void onInit() {
     // تأكد إن Get.arguments مش null

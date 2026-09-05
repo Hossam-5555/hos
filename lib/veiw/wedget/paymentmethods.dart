@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 
@@ -61,9 +60,7 @@ Widget buildPaymentMethod({
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: isSelected ? Colors.green : Colors.transparent,
-              border: Border.all(
-                color:Colors.grey ,
-              ),
+              border: Border.all(color: Colors.grey),
             ),
             child: isSelected
                 ? const Icon(Icons.check_rounded, size: 14, color: Colors.black)
@@ -77,10 +74,10 @@ Widget buildPaymentMethod({
 
 buildFormContent(Checkoutcontroller controller) {
   switch (controller.selectedMethod) {
-    case "credit":
+    case "card":
       return buildCreditCardForm();
-    case "mobile":
-      return buildCreditCardForm();
+    case "wallet":
+      return buildmobileForm();
     case "cash":
       return buildCODForm();
   }
@@ -89,7 +86,7 @@ buildFormContent(Checkoutcontroller controller) {
 // ✨ تصميم البطاقة الائتمانية كأنها فيزا حقيقية
 Widget buildCreditCardForm() {
   return Column(
-    key: const ValueKey('CreditCard'),
+    key: const ValueKey('card'),
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       // شكل الكارت الفخم
@@ -114,27 +111,12 @@ Widget buildCreditCardForm() {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const Icon(
                   Icons.contactless_rounded,
                   color: Colors.white70,
                   size: 28,
-                ),
-                // صورة لوجو ماستركارد من النت كمثال للاحترافية
-                CachedNetworkImage(
-                  imageUrl:
-                      "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png",
-                  imageBuilder: (context, imageProvider) => Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: imageProvider,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  placeholder: (context, url) => CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               ],
             ),
@@ -173,8 +155,16 @@ Widget buildCreditCardForm() {
 Widget buildCODForm() {
   return buildInfoBox(
     'الدفع عند الاستلام متاح.\nسوف تقوم بدفع قيمة الطلب نقداً للمندوب عند التوصيل.',
-    key: const ValueKey('COD'),
+    key: const ValueKey('cash'),
     icon: Icons.local_shipping_outlined,
+  );
+}
+
+Widget buildmobileForm() {
+  return buildInfoBox(
+    'الدفع عند الاستلام متاح.\nسوف تقوم بدفع قيمة الطلب نقداً للمندوب عند التوصيل.',
+    key: const ValueKey('wallet'),
+    icon: Icons.mobile_friendly_outlined,
   );
 }
 
