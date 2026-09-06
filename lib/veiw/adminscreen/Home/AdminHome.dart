@@ -1,874 +1,1299 @@
-import 'package:fl_chart/fl_chart.dart';
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/AdminHome.dart';
-import 'package:hos/core/class/crud.dart';
-import 'package:hos/veiw/wedget/Homepage/titles.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
-// ignore: must_be_immutable
-class AdminHome2 extends StatelessWidget {
-  AdminHome2({super.key});
+// عدّل المسار ده على مسار ملف الكنترولر (Adminhome) اللي بعتهولي
+
+/// ============================================================================
+/// ملاحظات مهمة قبل ما تستخدم الملف ده:
+///
+/// 1) الحاجات اللي متوصلة فعلاً بالـ API الحقيقي (من الكنترولر اللي بعتهولي):
+///    - controller.isLoading
+///    - controller.getdashboardapi()   (Pull to refresh)
+///    - controller.salesSpots          (چارت الإيرادات - LineChart)
+///    - controller.selectedtime / controller.changetime()  (تبديل أسبوعي/شهري)
+///
+/// 2) كل باقي الأرقام في الملف ده (Total Revenue, AOV, CLV, CAC, Top Customers,
+///    Best Selling Products, ... إلخ) هي MOCK data مؤقتة عشان التصميم يشتغل
+///    ويتعرض صح من غير ما يعتمد على شكل موديل DashboardResponse بتاعك اللي
+///    مش متأكد منه. كل كارت فيه تعليق "// TODO(API)" يوضح منين المفروض
+///    تيجي البيانات دي (مطابقة لأسماء الحقول في AnalyticsService.php).
+///
+/// 3) ابعتلي DashboardResponse model (أو الملف اللي فيه Dashboarddata) وهظبطلك
+///    كل القيم دي تتوصل بالـ API الحقيقي على طول بدل الـ mock.
+/// ============================================================================
+
+const String kCurrency = 'EGP ';
+
+// ألوان أساسية بتتحط مرة واحدة عشان تفضل متسقة في كل التطبيق
+class _AppColors {
+  static const primary = Color(0xFF3F6FFF);
+  static const purple = Color(0xFF9B59B6);
+  static const success = Color(0xFF2ECC71); // زي لون "fulfilled" في الباك اند
+  static const warning = Color(0xFFFFA500); // زي لون "pending" في الباك اند
+  static const danger = Color(0xFFFF5252); // زي لون "cancelled" في الباك اند
+  static const orange = Color(0xFFFF9F43);
+}
+
+String _compact(num value) {
+  if (value >= 1000000) return '${(value / 1000000).toStringAsFixed(1)}M';
+  if (value >= 1000) return '${(value / 1000).toStringAsFixed(1)}K';
+  return value.toStringAsFixed(0);
+}
+
+// =============================== الشاشة الرئيسية ===============================
+
+class Adminhomedashboard extends StatelessWidget {
+  const Adminhomedashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final c = Get.put(Adminhome());
+    return GetBuilder<Adminhome>(
+      builder: (c) {
+        if (c.isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          body: SafeArea(
+            child: RefreshIndicator(
+              onRefresh: c.getdashboardapi,
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+                children: [
+                  const SizedBox(height: 20),
 
-    return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: () async {
-          await c.getdashboardapi();
-        },
-        child: SafeArea(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final double width = constraints.maxWidth;
+                  // نظرة عامة (Total Revenue / Total Orders / AOV / Conversion Rate)
+                  const _OverviewGrid(),
+                  const SizedBox(height: 20),
 
-              // مسافات متجاوبة حسب عرض الشاشة (بحد أدنى وأقصى) عشان
-              // تفضل مظبوطة على كل أنواع الهواتف والتابلت
-              final double horizontalPadding = (width * 0.045).clamp(
-                14.0,
-                32.0,
-              );
-              final double sectionSpacing = (width * 0.05).clamp(16.0, 26.0);
-              final bool isWide = width >= 600;
+                  // Revenue Growth (Weekly/Monthly) - متوصل فعلاً بالـ API
+                  _RevenueChartCard(controller: c),
+                  const SizedBox(height: 22),
 
-              return Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: horizontalPadding,
-                  vertical: sectionSpacing * 0.5,
-                ),
-                child: ListView(
-                  children: [
-                    SizedBox(height: sectionSpacing * 0.6),
-                    StatsSection(c: c, isWide: isWide, width: width),
-                    SizedBox(height: sectionSpacing),
-                    Container(
-                      alignment: AlignmentDirectional.centerStart,
-                      child: Titles(title: "Sales Overview"),
-                    ),
-                    SizedBox(height: sectionSpacing * 0.4),
-                    Skeletonizer(
-                      enabled: c.statusrequest == Statusrequest.loading,
-                      child: SalesChart(c: c, width: width),
-                    ),
-                    SizedBox(height: sectionSpacing),
-                    Container(
-                      alignment: AlignmentDirectional.centerStart,
-                      child: Titles(title: "Analytics"),
-                    ),
-                    SizedBox(height: sectionSpacing * 0.4),
-                    Skeletonizer(
-                      enabled: c.statusrequest == Statusrequest.loading,
-                      child: AnalyticsSection(
-                        c: c,
-                        width: width,
-                        isWide: isWide,
+                  const _SectionTitle('المبيعات'),
+                  const SizedBox(height: 12),
+                  const _SalesByCategoryCard(),
+                  const SizedBox(height: 12),
+                  const _SalesByProductCard(),
+                  const SizedBox(height: 12),
+                  const _RefundRateCard(),
+                  const SizedBox(height: 22),
+
+                  const _SectionTitle('العملاء'),
+                  const SizedBox(height: 12),
+                  const _CustomersOverviewRow(),
+                  const SizedBox(height: 12),
+                  const Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(child: _ReturningRateGaugeCard()),
+                      SizedBox(width: 12),
+                      Expanded(child: _ClvCacCard()),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  const _TopCustomersCard(),
+                  const SizedBox(height: 22),
+
+                  const _SectionTitle('المنتجات'),
+                  const SizedBox(height: 12),
+                  const _BestSellingProductsCard(),
+                  const SizedBox(height: 12),
+                  const _StockStatusCard(),
+                  const SizedBox(height: 12),
+                  const _MostWishlistedCard(),
+                  const SizedBox(height: 22),
+
+                  const _SectionTitle('الطلبات'),
+                  const SizedBox(height: 12),
+                  const Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: _PieBreakdownCard(
+                          title: 'حالة الطلبات',
+                          // TODO(API): استبدلها بـ order_stats من AnalyticsService.php
+                          items: [
+                            _PieItem('مكتمل', 68, _AppColors.success),
+                            _PieItem('قيد الانتظار', 22, _AppColors.warning),
+                            _PieItem('ملغي', 10, _AppColors.danger),
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(height: sectionSpacing),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
-}
+                      SizedBox(width: 5),
+                      Expanded(child: _DeliveryAbandonedCard()),
+                    ],
+                  ),
+                  const SizedBox(height: 22),
 
-// ================= Stats Section =================
+                  const _SectionTitle('التسويق والأداء'),
 
-// ignore: must_be_immutable
-class StatsSection extends StatelessWidget {
-  StatsSection({
-    super.key,
-    required this.c,
-    required this.isWide,
-    required this.width,
-  });
-
-  Adminhome c;
-  final bool isWide;
-  final double width;
-
-  @override
-  Widget build(BuildContext context) {
-    final double spacing = (width * 0.025).clamp(8.0, 14.0);
-
-    // Guard: الـ apidata لسه فاضية — نرجع placeholder بنفس شكل الكروت
-    // عشان الـ Skeletonizer يرسمها صح ومفيش RangeError
-    if (c.apidata.isEmpty && c.statusrequest == Statusrequest.loading) {
-      final emptyCards = [
-        StatCard(
-          title: "Total Sales",
-          value: r"$----",
-          growth: "+---%",
-          width: width,
-        ),
-        StatCard(
-          title: "Total Orders",
-          value: "----",
-          growth: "+---%",
-          width: width,
-        ),
-        StatCard(title: "Products", value: "---- Active", width: width),
-        StatCard(
-          title: "Customers",
-          value: "----",
-          growth: "+---%",
-          width: width,
-        ),
-      ];
-      if (isWide) {
-        return Row(
-          children: [
-            for (int i = 0; i < emptyCards.length; i++) ...[
-              if (i != 0) SizedBox(width: spacing),
-              Expanded(child: emptyCards[i]),
-            ],
-          ],
-        );
-      }
-      return Column(
-        children: [
-          Row(
-            children: [
-              Expanded(child: emptyCards[0]),
-              SizedBox(width: spacing),
-              Expanded(child: emptyCards[1]),
-            ],
-          ),
-          SizedBox(height: spacing),
-          Row(
-            children: [
-              Expanded(child: emptyCards[2]),
-              SizedBox(width: spacing),
-              Expanded(child: emptyCards[3]),
-            ],
-          ),
-        ],
-      );
-    }
-
-    final cards = [
-      StatCard(
-        title: "Total Sales",
-        value: "\$${c.apidata[0].totalSales}",
-        growth: "+8.5%",
-        width: width,
-      ),
-      StatCard(
-        title: "Total Orders",
-        value: "${c.apidata[0].totalOrders}",
-        growth: "+12%",
-        width: width,
-      ),
-      StatCard(
-        title: "Products",
-        value: "${c.apidata[0].activeProducts} Active",
-        width: width,
-      ),
-      StatCard(
-        title: "Customers",
-        value: "${c.apidata[0].customers}",
-        growth: "+5%",
-        width: width,
-      ),
-    ];
-
-    // على الشاشات الواسعة (تابلت) الكروت الأربعة بتتعرض في صف واحد،
-    // وعلى الهاتف بتفضل شبكة 2x2 زي ما كانت
-    if (isWide) {
-      return Row(
-        children: [
-          for (int i = 0; i < cards.length; i++) ...[
-            if (i != 0) SizedBox(width: spacing),
-            Expanded(child: cards[i]),
-          ],
-        ],
-      );
-    }
-
-    return Column(
-      children: [
-        Row(
-          children: [
-            Expanded(child: cards[0]),
-            SizedBox(width: spacing),
-            Expanded(child: cards[1]),
-          ],
-        ),
-        SizedBox(height: spacing),
-        Row(
-          children: [
-            Expanded(child: cards[2]),
-            SizedBox(width: spacing),
-            Expanded(child: cards[3]),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-// ================= Stat Card =================
-
-class StatCard extends StatelessWidget {
-  final String title;
-  final String value;
-  final String? growth;
-  final double width;
-
-  const StatCard({
-    super.key,
-    required this.title,
-    required this.value,
-    required this.width,
-    this.growth,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-
-    final Color cardColor = isDark
-        ? Colors.white.withAlpha(15)
-        : Colors.white.withAlpha(140);
-    final Color borderColor = isDark
-        ? Colors.white.withAlpha(30)
-        : Colors.grey.withAlpha(64);
-    final Color titleColor = theme.colorScheme.onSurface.withAlpha(166);
-    final Color valueColor = theme.colorScheme.onSurface;
-
-    // كل الأحجام بتتحسب نسبة لعرض الشاشة عشان تفضل مظبوطة على أي هاتف
-    final double cardPadding = (width * 0.04).clamp(12.0, 18.0);
-    final double titleFontSize = (width * 0.033).clamp(11.0, 14.0);
-    final double valueFontSize = (width * 0.05).clamp(16.0, 22.0);
-    final double growthFontSize = (width * 0.032).clamp(11.0, 13.0);
-
-    return Container(
-      padding: EdgeInsets.all(cardPadding),
-      decoration: BoxDecoration(
-        color: cardColor,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: borderColor,
-          strokeAlign: BorderSide.strokeAlignCenter,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: titleColor, fontSize: titleFontSize),
-          ),
-          SizedBox(height: (width * 0.02).clamp(6.0, 10.0)),
-          Text(
-            value,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: valueFontSize,
-              fontWeight: FontWeight.bold,
-              color: valueColor,
-            ),
-          ),
-          if (growth != null)
-            Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: Text(
-                growth!,
-                style: TextStyle(
-                  color: Colors.green,
-                  fontSize: growthFontSize,
-                  fontWeight: FontWeight.w600,
-                ),
+                  const SizedBox(height: 12),
+                  const _PieBreakdownCard(
+                    title: 'طرق الدفع',
+                    items: [
+                      _PieItem('فيزا / ماستركارد', 46, _AppColors.primary),
+                      _PieItem('الدفع عند الاستلام', 39, _AppColors.orange),
+                      _PieItem('محفظة إلكترونية', 15, _AppColors.success),
+                    ],
+                  ),
+                ],
               ),
             ),
-        ],
-      ),
+          ),
+        );
+      },
     );
   }
 }
 
-// ================= Sales Chart =================
 
-// ignore: must_be_immutable
-class SalesChart extends StatefulWidget {
-  SalesChart({super.key, required this.c, required this.width});
-
-  Adminhome c;
-  final double width;
-
-  static const List<String> _filters = ["Day", "Week", "Month", "Year"];
-
-  @override
-  State<SalesChart> createState() => _SalesChartState();
-}
-
-class _SalesChartState extends State<SalesChart> {
-  // بيتحول لـ true بعد أول فريم عشان الرسم البياني يتحرك من الصفر
-  // لحد القيم الحقيقية، بدل ما يترسم مرة واحدة وهو واقف
-  bool _animateIn = false;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        setState(() => _animateIn = true);
-      }
-    });
-  }
+class _Card extends StatelessWidget {
+  final Widget child;
+  final EdgeInsetsGeometry padding;
+  const _Card({required this.child, this.padding = const EdgeInsets.all(16)});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-
-    final double chartHeight = (widget.width * 0.62).clamp(220.0, 320.0);
-    final double chartPadding = (widget.width * 0.04).clamp(12.0, 18.0);
-
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      height: chartHeight,
-      padding: EdgeInsets.all(chartPadding),
+      width: double.infinity,
+      padding: padding,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: isDark
-              ? Colors.white.withAlpha(26)
-              : Colors.grey.withAlpha(38),
-        ),
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(18),
+        border: isDark
+            ? Border.all(color: Colors.white.withOpacity(0.06))
+            : null,
+        boxShadow: isDark
+            ? const []
+            : [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 16,
+                  offset: const Offset(0, 6),
+                ),
+              ],
       ),
+      child: child,
+    );
+  }
+}
+
+class _SectionTitle extends StatelessWidget {
+  final String text;
+  const _SectionTitle(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: Theme.of(
+        context,
+      ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+    );
+  }
+}
+
+class _BarRow extends StatelessWidget {
+  final String label;
+  final double percent; // 0..1
+  final Color color;
+  final String trailing;
+  const _BarRow({
+    required this.label,
+    required this.percent,
+    required this.color,
+    required this.trailing,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: isDark
-                      ? Colors.white.withAlpha(13)
-                      : Colors.grey.withAlpha(20),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: List.generate(SalesChart._filters.length, (i) {
-                    return GetBuilder<Adminhome>(
-                      builder: (controller) => AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 300),
-                        reverseDuration: const Duration(milliseconds: 200),
-                        switchInCurve: Curves.linearToEaseOut,
-                        transitionBuilder: (child, animation) {
-                          return ScaleTransition(
-                            alignment: Alignment.center,
-                            scale: animation,
-                            child: child,
-                          );
-                        },
-                        child: _buildFilterChip(
-                          SalesChart._filters[i],
-                          widget.c.selectedtime == i,
-                          i,
-                          widget.c,
-                          isDark,
-                        ),
-                      ),
-                    );
-                  }),
-                ),
+              Text(label, style: Theme.of(context).textTheme.bodySmall),
+              Text(
+                trailing,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
               ),
             ],
           ),
-          SizedBox(height: (widget.width * 0.07).clamp(20.0, 32.0)),
-          Expanded(
-            child: LineChart(
-              _mainData(widget.c, _animateIn),
-              // 👇 دي اللي بتخلي الرسم البياني "يتحرك" لحد قيمته الحقيقية
-              // بدل ما يترسم مرة واحدة على طول
-              duration: const Duration(milliseconds: 900),
-              curve: Curves.easeOutCubic,
+          const SizedBox(height: 6),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6),
+            child: LinearProgressIndicator(
+              value: percent,
+              minHeight: 7,
+              backgroundColor: Theme.of(context).dividerColor.withOpacity(0.15),
+              valueColor: AlwaysStoppedAnimation(color),
             ),
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildFilterChip(
-    String label,
-    bool isSelected,
-    int i,
-    Adminhome controller,
-    bool isDark,
-  ) {
-    return InkWell(
-      onTap: () {
-        controller.changetime(i);
-      },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeInOut,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? (isDark ? Colors.white.withAlpha(230) : Colors.white)
-              : null,
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 200),
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return ScaleTransition(scale: animation, child: child);
-          },
-          child: Text(
-            label,
-            key: ValueKey<String>('${label}_$isSelected'),
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              color: isSelected
-                  ? Colors.black
-                  : (isDark ? Colors.grey.shade400 : Colors.grey.shade600),
+class _PieItem {
+  final String label;
+  final double value;
+  final Color color;
+  const _PieItem(this.label, this.value, this.color);
+}
+
+class _PieBreakdownCard extends StatelessWidget {
+  final String title;
+  final List<_PieItem> items;
+  const _PieBreakdownCard({required this.title, required this.items});
+
+  @override
+  Widget build(BuildContext context) {
+    return _Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            height: 130,
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: PieChart(
+                    PieChartData(
+                      sectionsSpace: 2,
+                      centerSpaceRadius: 15,
+                      sections: items
+                          .map(
+                            (e) => PieChartSectionData(
+                              value: e.value,
+                              color: e.color,
+                              radius: 20,
+                              title: '',
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  flex: 5,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: items
+                        .map(
+                          (e) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 3),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 8,
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                    color: e.color,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                                const SizedBox(width: 6),
+                                Expanded(
+                                  child: Text(
+                                    e.label,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodySmall,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                Text(
+                                  '${e.value.toStringAsFixed(0)}%',
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// =============================== الهيدر ===============================
+
+// =============================== نظرة عامة (KPI Grid) ===============================
+// TODO(API): متوصلة بـ total_sales / total_orders / analytics.avg_order_value /
+// analytics.conversion_rate من AnalyticsService.php
+
+class _KpiData {
+  final String label;
+  final String value;
+  final IconData icon;
+  final Color color;
+  final String delta;
+  final bool positive;
+  _KpiData(
+    this.label,
+    this.value,
+    this.icon,
+    this.color,
+    this.delta,
+    this.positive,
+  );
+}
+
+class _OverviewGrid extends StatelessWidget {
+  const _OverviewGrid();
+
+  @override
+  Widget build(BuildContext context) {
+    final items = [
+      _KpiData(
+        'إجمالي الإيرادات',
+        '$kCurrency${_compact(446700)}',
+        Icons.payments_rounded,
+        _AppColors.primary,
+        '+8.5%',
+        true,
+      ),
+      _KpiData(
+        'إجمالي الطلبات',
+        _compact(1224),
+        Icons.receipt_long_rounded,
+        _AppColors.purple,
+        '+4.6%',
+        true,
+      ),
+      _KpiData(
+        'متوسط قيمة الطلب',
+        '$kCurrency${(446700 / 1224).toStringAsFixed(0)}',
+        Icons.shopping_bag_rounded,
+        _AppColors.success,
+        '+2.1%',
+        true,
+      ),
+      _KpiData(
+        'معدل التحويل',
+        '4.6%',
+        Icons.trending_up_rounded,
+        _AppColors.orange,
+        '-0.6%',
+        false,
+      ),
+    ];
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: items.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 12,
+        crossAxisSpacing: 12,
+        childAspectRatio: 1.5,
+      ),
+      itemBuilder: (_, i) => _KpiCard(data: items[i]),
+    );
+  }
+}
+
+class _KpiCard extends StatelessWidget {
+  final _KpiData data;
+  const _KpiCard({required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    return _Card(
+      padding: const EdgeInsets.all(14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  data.label,
+                  style: textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).hintColor,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Icon(data.icon, color: data.color, size: 18),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            data.value,
+            style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          Row(
+            children: [
+              Icon(
+                data.positive
+                    ? Icons.arrow_upward_rounded
+                    : Icons.arrow_downward_rounded,
+                size: 12,
+                color: data.positive ? _AppColors.success : _AppColors.danger,
+              ),
+              const SizedBox(width: 2),
+              Text(
+                data.delta,
+                style: textTheme.bodySmall?.copyWith(
+                  color: data.positive ? _AppColors.success : _AppColors.danger,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// =============================== Revenue Growth (Weekly/Monthly) ===============================
+// دي بتستخدم بيانات حقيقية من الكنترولر (controller.salesSpots)
+
+class _RevenueChartCard extends StatelessWidget {
+  final Adminhome controller;
+  const _RevenueChartCard({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    final spots = controller.salesSpots;
+    return _Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'نمو الإيرادات',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              _TimeToggle(controller: controller),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '$kCurrency${_compact(446700)}',
+            style: Theme.of(
+              context,
+            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            height: 180,
+            child: spots.isEmpty
+                ? Center(
+                    child: Text(
+                      'لا توجد بيانات كافية بعد',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  )
+                : LineChart(
+                    LineChartData(
+                      gridData: const FlGridData(show: false),
+                      titlesData: const FlTitlesData(show: false),
+                      borderData: FlBorderData(show: false),
+                      lineTouchData: const LineTouchData(enabled: true),
+                      lineBarsData: [
+                        LineChartBarData(
+                          spots: spots,
+                          isCurved: true,
+                          color: _AppColors.primary,
+                          barWidth: 3,
+                          dotData: const FlDotData(show: false),
+                          belowBarData: BarAreaData(
+                            show: true,
+                            gradient: LinearGradient(
+                              colors: [
+                                _AppColors.primary.withOpacity(0.25),
+                                _AppColors.primary.withOpacity(0.0),
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TimeToggle extends StatelessWidget {
+  final Adminhome controller;
+  const _TimeToggle({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<Adminhome>(
+      builder: (c) => Container(
+        padding: const EdgeInsets.all(3),
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _TimeChip(
+              label: 'أسبوعي',
+              selected: c.selectedtime == 0,
+              onTap: () => c.changetime(0),
+            ),
+            _TimeChip(
+              label: 'شهري',
+              selected: c.selectedtime == 1,
+              onTap: () => c.changetime(1),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _TimeChip extends StatelessWidget {
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+  const _TimeChip({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: selected ? _AppColors.primary : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: selected ? Colors.white : Theme.of(context).hintColor,
           ),
         ),
       ),
     );
   }
+}
 
-  // دالة إعداد بيانات الرسم البياني وتصميمه
-  LineChartData _mainData(Adminhome c, bool animateIn) {
-    final spots = c.salesSpots;
-    final bool isEmpty = spots.isEmpty;
+// =============================== المبيعات ===============================
 
-    double minX = 0;
-    double maxY = 50;
-    List<FlSpot> finalSpots = [];
+class _SalesByCategoryCard extends StatelessWidget {
+  const _SalesByCategoryCard();
 
-    if (isEmpty) {
-      finalSpots = [
-        const FlSpot(0, 20),
-        const FlSpot(1, 35),
-        const FlSpot(2, 25),
-        const FlSpot(3, 45),
-        const FlSpot(4, 30),
-        const FlSpot(5, 40),
-      ];
-      minX = 0;
-      maxY = 60;
-    } else {
-      finalSpots = spots;
-      minX = spots.first.x;
-      maxY = spots.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 2;
-    }
-
-    // في أول فريم لسه الرسم واقف عند صفر، وبعدها بيتحرك لحد القيم دي
-    // بفضل الـ duration اللي حطيناها فوق على LineChart
-    final List<FlSpot> displaySpots = animateIn
-        ? finalSpots
-        : finalSpots.map((s) => FlSpot(s.x, 0)).toList();
-
-    return LineChartData(
-      gridData: FlGridData(show: false),
-      titlesData: FlTitlesData(
-        show: true,
-        rightTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-        leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 30,
-            interval: 1,
-            getTitlesWidget: (value, meta) {
-              int index = value.toInt();
-              String showDate = "";
-
-              if (isEmpty) {
-                List<String> dummyDates = ['01', '02', '03', '04', '05', '06'];
-                if (index >= 0 && index < dummyDates.length) {
-                  showDate = dummyDates[index];
-                }
-              } else {
-                if (c.apidata.isNotEmpty &&
-                    index >= 0 &&
-                    index < c.apidata[0].salesChart.length) {
-                  String fullDate =
-                      c.apidata[0].salesChart[index].date ?? "0000-00-00";
-                  showDate = fullDate.length >= 10
-                      ? fullDate.substring(8)
-                      : fullDate;
-                }
-              }
-
-              if (showDate.isNotEmpty) {
-                return SideTitleWidget(
-                  meta: meta,
-                  child: Text(
-                    showDate,
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: isEmpty ? Colors.grey.shade400 : Colors.grey,
-                      fontWeight: isEmpty ? FontWeight.normal : FontWeight.bold,
-                    ),
-                  ),
-                );
-              }
-              return const SizedBox.shrink();
-            },
+  @override
+  Widget build(BuildContext context) {
+    // TODO(API): سيب الباك اند يرجع sales_by_category: [{name, percent, total}]
+    const data = [
+      ('إلكترونيات', 0.78, 'EGP 172K', _AppColors.primary),
+      ('أزياء', 0.55, 'EGP 96K', _AppColors.purple),
+      ('منزل ومطبخ', 0.40, 'EGP 61K', _AppColors.success),
+      ('إكسسوارات', 0.24, 'EGP 33K', _AppColors.orange),
+    ];
+    return _Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'المبيعات حسب التصنيف',
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
-        ),
-      ),
-      borderData: FlBorderData(show: false),
-      minX: minX,
-      minY: 0,
-      maxY: maxY,
-      lineTouchData: LineTouchData(
-        enabled: !isEmpty && animateIn,
-        touchTooltipData: LineTouchTooltipData(
-          getTooltipItems: (touchedSpots) {
-            return touchedSpots.map((spot) {
-              if (c.apidata.isEmpty) {
-                return null;
-              }
-              final data = c.apidata[0].salesChart[spot.x.toInt()];
-              return LineTooltipItem(
-                textDirection: TextDirection.rtl,
-                "${data.date}\n\$${spot.y.toStringAsFixed(0)}",
-                const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                ),
-              );
-            }).toList();
-          },
-        ),
-      ),
-      lineBarsData: [
-        LineChartBarData(
-          spots: displaySpots,
-          isCurved: true,
-          color: isEmpty ? Colors.grey.shade300 : Colors.blue.shade700,
-          barWidth: isEmpty ? 2.0 : 2.5,
-          dotData: FlDotData(
-            show: !isEmpty && animateIn,
-            getDotPainter: (spot, percent, barData, index) {
-              return FlDotCirclePainter(
-                radius: 4,
-                color: Colors.white,
-                strokeWidth: 2,
-                strokeColor: Colors.blue.shade700,
-              );
-            },
-          ),
-          belowBarData: BarAreaData(
-            show: true,
-            gradient: LinearGradient(
-              colors: isEmpty
-                  ? [Colors.grey.withAlpha(26), Colors.grey.withAlpha(0)]
-                  : [Colors.blue.withAlpha(51), Colors.blue.withAlpha(0)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+          const SizedBox(height: 6),
+          ...data.map(
+            (e) => _BarRow(
+              label: e.$1,
+              percent: e.$2,
+              trailing: e.$3,
+              color: e.$4,
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SalesByProductCard extends StatelessWidget {
+  const _SalesByProductCard();
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO(API): سيب الباك اند يرجع sales_by_product: [{name, percent, total}]
+    const data = [
+      ('سماعة لاسلكية', 0.85, 'EGP 124.8K', _AppColors.primary),
+      ('ساعة كاسيو', 0.63, 'EGP 92.6K', _AppColors.purple),
+      ('سامسونج S25', 0.51, 'EGP 74K', _AppColors.orange),
+    ];
+    return _Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'المبيعات حسب المنتج',
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 6),
+          ...data.map(
+            (e) => _BarRow(
+              label: e.$1,
+              percent: e.$2,
+              trailing: e.$3,
+              color: e.$4,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RefundRateCard extends StatelessWidget {
+  const _RefundRateCard();
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO(API): متوصلة بـ analytics.refund_rate من AnalyticsService.php
+    return _Card(
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: _AppColors.danger.withOpacity(0.12),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(
+              Icons.assignment_return_rounded,
+              color: _AppColors.danger,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'معدل الاسترجاع / الإلغاء',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                Text(
+                  '3.2%',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// =============================== العملاء ===============================
+
+class _CustomersOverviewRow extends StatelessWidget {
+  const _CustomersOverviewRow();
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO(API): "إجمالي العملاء" متوصل بـ customers، والباقي محتاج endpoint جديد
+    return _Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'العملاء',
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 14),
+          const Row(
+            children: [
+              Expanded(
+                child: _MiniStat(
+                  icon: Icons.person_add_alt_1_rounded,
+                  color: _AppColors.primary,
+                  value: '312',
+                  label: 'عملاء جدد',
+                ),
+              ),
+              Expanded(
+                child: _MiniStat(
+                  icon: Icons.group_rounded,
+                  color: _AppColors.success,
+                  value: '2.884',
+                  label: 'إجمالي العملاء',
+                ),
+              ),
+              Expanded(
+                child: _MiniStat(
+                  icon: Icons.repeat_rounded,
+                  color: _AppColors.orange,
+                  value: '68%',
+                  label: 'عملاء متكررين',
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MiniStat extends StatelessWidget {
+  final IconData icon;
+  final Color color;
+  final String value;
+  final String label;
+  const _MiniStat({
+    required this.icon,
+    required this.color,
+    required this.value,
+    required this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Icon(icon, color: color, size: 20),
+        const SizedBox(height: 6),
+        Text(
+          value,
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+        ),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.bodySmall,
+          textAlign: TextAlign.center,
         ),
       ],
     );
   }
 }
 
-// ================= Analytics (replaces Recent Orders) =================
+class _ReturningRateGaugeCard extends StatelessWidget {
+  const _ReturningRateGaugeCard();
 
-/// شريحة واحدة في الـ Pie chart (Fulfilled / Pending / Cancelled)
-class _AnalyticsSlice {
-  final String label;
-  final double value; // نسبة مئوية
+  @override
+  Widget build(BuildContext context) {
+    // TODO(API): معدل تكرار الشراء (Returning Customers Rate) محتاج endpoint جديد
+    return _Card(
+      child: Column(
+        children: [
+          Text(
+            'معدل تكرار الشراء',
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 4),
+          const _SemiGauge(percent: 0.68, color: _AppColors.success),
+          Text('آخر 30 يوم', style: Theme.of(context).textTheme.bodySmall),
+        ],
+      ),
+    );
+  }
+}
+
+class _SemiGauge extends StatelessWidget {
+  final double percent; // 0..1
   final Color color;
-  const _AnalyticsSlice(this.label, this.value, this.color);
-}
-
-class AnalyticsSection extends StatelessWidget {
-  const AnalyticsSection({
-    super.key,
-    required this.c,
-    required this.width,
-    required this.isWide,
-  });
-
-  final Adminhome c;
-  final double width;
-  final bool isWide;
+  const _SemiGauge({required this.percent, required this.color});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-
-    final Color cardColor = isDark
-        ? Colors.white.withAlpha(15)
-        : Colors.white.withAlpha(140);
-    final Color borderColor = isDark
-        ? Colors.white.withAlpha(30)
-        : Colors.grey.withAlpha(64);
-
-    final double cardPadding = (width * 0.045).clamp(14.0, 20.0);
-    final double pieSize = (width * 0.34).clamp(110.0, 170.0);
-
-    // Guard: نفس منطق StatsSection — لو apidata لسه فاضية، منعرضش
-    // بيانات وهمية بأرقام مضروبة، بس placeholder صفري آمن للـ Skeletonizer
-    final bool hasData = c.apidata.isNotEmpty;
-    final orderStats = hasData ? c.apidata[0].orderStats : null;
-    final analytics = c.apidata.isNotEmpty ? c.apidata[0].analytics : null;
-
-    final List<_AnalyticsSlice> orderStatusData = orderStats == null
-        ? const [
-            _AnalyticsSlice("Fulfilled", 0, Colors.green),
-            _AnalyticsSlice("Pending", 0, Colors.orange),
-            _AnalyticsSlice("Cancelled", 0, Colors.red),
-          ]
-        : [
-            _AnalyticsSlice(
-              "Fulfilled",
-              orderStats.fulfilled.percentage,
-              Colors.green,
-            ),
-            _AnalyticsSlice(
-              "Pending",
-              orderStats.pending.percentage,
-              Colors.orange,
-            ),
-            _AnalyticsSlice(
-              "Cancelled",
-              orderStats.cancelled.percentage,
-              Colors.red,
-            ),
-          ];
-
-    final List<Map<String, String>> kpis = [
-      {
-        "label": "Conversion Rate",
-        "value": analytics == null ? "--%" : "${analytics.conversionRate}%",
-      },
-      {
-        "label": "Avg. Order Value",
-        "value": analytics == null ? "\$--" : "\$${analytics.avgOrderValue}",
-      },
-      {
-        "label": "Refund Rate",
-        "value": analytics == null ? "--%" : "${analytics.refundRate}%",
-      },
-    ];
-
-    return Container(
-      padding: EdgeInsets.all(cardPadding),
-      decoration: BoxDecoration(
-        color: cardColor,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: borderColor,
-          strokeAlign: BorderSide.strokeAlignCenter,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // صف الـ KPIs السريعة
-          Wrap(
-            spacing: (width * 0.03).clamp(10.0, 18.0),
-            runSpacing: 10,
-            children: kpis.map((kpi) {
-              return _KpiChip(
-                label: kpi["label"]!,
-                value: kpi["value"]!,
-                width: width,
-              );
-            }).toList(),
-          ),
-          SizedBox(height: (width * 0.06).clamp(18.0, 26.0)),
-
-          // توزيع حالة الطلبات: Pie chart + Legend
-          isWide
-              ? Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _OrdersPieChart(size: pieSize, data: orderStatusData),
-                    SizedBox(width: (width * 0.04).clamp(14.0, 24.0)),
-                    Expanded(
-                      child: _OrdersLegend(data: orderStatusData, width: width),
-                    ),
-                  ],
-                )
-              : Column(
-                  children: [
-                    _OrdersPieChart(size: pieSize, data: orderStatusData),
-                    SizedBox(height: (width * 0.04).clamp(14.0, 20.0)),
-                    _OrdersLegend(data: orderStatusData, width: width),
-                  ],
-                ),
-        ],
-      ),
-    );
-  }
-}
-
-class _KpiChip extends StatelessWidget {
-  const _KpiChip({
-    required this.label,
-    required this.value,
-    required this.width,
-  });
-
-  final String label;
-  final String value;
-  final double width;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: (width * 0.03).clamp(10.0, 14.0),
-        vertical: (width * 0.02).clamp(8.0, 10.0),
-      ),
-      decoration: BoxDecoration(
-        color: isDark ? Colors.white.withAlpha(15) : Colors.grey.withAlpha(20),
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: (width * 0.03).clamp(10.0, 12.0),
-              color: theme.colorScheme.onSurface.withAlpha(153), // 0.6 * 255
-            ),
-          ),
-          const SizedBox(height: 3),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: (width * 0.038).clamp(13.0, 16.0),
-              fontWeight: FontWeight.bold,
-              color: theme.colorScheme.onSurface,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _OrdersPieChart extends StatelessWidget {
-  const _OrdersPieChart({required this.size, required this.data});
-
-  final double size;
-  final List<_AnalyticsSlice> data;
-
-  @override
-  Widget build(BuildContext context) {
-    // لو كل القيم صفر (زي وقت الـ loading قبل وصول الـ API) بنعرض
-    // دائرة رمادية محايدة بدل ما نسيب fl_chart يتعامل مع مجموع = 0
-    final bool allZero = data.every((s) => s.value <= 0);
-    final sections = allZero
-        ? [
-            PieChartSectionData(
-              value: 1,
-              color: Colors.grey.withAlpha(64),
-              radius: size * 0.22,
-              showTitle: false,
-            ),
-          ]
-        : data.where((s) => s.value > 0).map((slice) {
-            return PieChartSectionData(
-              value: slice.value,
-              color: slice.color,
-              radius: size * 0.22,
-              showTitle: false,
-            );
-          }).toList();
-
     return SizedBox(
-      width: size,
-      height: size,
-      child: PieChart(
-        PieChartData(
-          sectionsSpace: 3,
-          centerSpaceRadius: size * 0.28,
-          startDegreeOffset: -90,
-          sections: sections,
+      height: 100,
+      child: CustomPaint(
+        painter: _SemiGaugePainter(
+          percent: percent,
+          color: color,
+          trackColor: Theme.of(context).dividerColor.withOpacity(0.25),
         ),
-        swapAnimationDuration: const Duration(milliseconds: 700),
-        swapAnimationCurve: Curves.easeOutCubic,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 24),
+            child: Text(
+              '${(percent * 100).toStringAsFixed(0)}%',
+              style: Theme.of(
+                context,
+              ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
       ),
     );
   }
 }
 
-class _OrdersLegend extends StatelessWidget {
-  const _OrdersLegend({required this.data, required this.width});
+class _SemiGaugePainter extends CustomPainter {
+  final double percent;
+  final Color color;
+  final Color trackColor;
+  _SemiGaugePainter({
+    required this.percent,
+    required this.color,
+    required this.trackColor,
+  });
 
-  final List<_AnalyticsSlice> data;
-  final double width;
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.width / 2);
+    final radius = size.width / 2 - 10;
+
+    final trackPaint = Paint()
+      ..color = trackColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 12
+      ..strokeCap = StrokeCap.round;
+
+    final fgPaint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 12
+      ..strokeCap = StrokeCap.round;
+
+    const startAngle = pi;
+    const sweepFull = pi;
+
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius),
+      startAngle,
+      sweepFull,
+      false,
+      trackPaint,
+    );
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius),
+      startAngle,
+      sweepFull * percent,
+      false,
+      fgPaint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _SemiGaugePainter oldDelegate) =>
+      oldDelegate.percent != percent;
+}
+
+class _ClvCacCard extends StatelessWidget {
+  const _ClvCacCard();
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    // TODO(API): CLV و CAC محتاجين endpoint جديد في الباك اند
+    return _Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'قيمة العميل مدى الحياة',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          Text(
+            'EGP 1,240',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: _AppColors.primary,
+            ),
+          ),
+          const Divider(height: 24),
+          Text(
+            'تكلفة اكتساب العميل',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          Text(
+            'EGP 86',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: _AppColors.purple,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: data.map((slice) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5),
-          child: Row(
+class _TopCustomersCard extends StatelessWidget {
+  const _TopCustomersCard();
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO(API): محتاج endpoint يرجع top_customers: [{name, total_spent, orders_count}]
+    const customers = [
+      ('أحمد محمود', 'EGP 12,400', 18),
+      ('سارة علي', 'EGP 9,850', 14),
+      ('محمد ياسر', 'EGP 8,120', 11),
+    ];
+    return _Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'أفضل العملاء',
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          ...customers.map(
+            (c) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 16,
+                    backgroundColor: _AppColors.primary.withOpacity(0.15),
+                    child: Text(
+                      c.$1[0],
+                      style: const TextStyle(
+                        color: _AppColors.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      c.$1,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
+                  Text(
+                    '${c.$3} طلب',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    c.$2,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// =============================== المنتجات ===============================
+
+class _BestSellingProductsCard extends StatelessWidget {
+  const _BestSellingProductsCard();
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO(API): محتاج endpoint يرجع أفضل المنتجات مبيعاً (id, name, sold, revenue, rating)
+    const products = [
+      ('#3009', 'سماعة لاسلكية', '2.310 مباع', 'EGP 124.839', 5.0),
+      ('#3010', 'ساعة كاسيو', '1.230 مباع', 'EGP 92.662', 4.8),
+      ('#3014', 'سامسونج S25', '812 مباع', 'EGP 74.029', 4.3),
+    ];
+    return _Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'الأكثر مبيعاً',
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 10),
+          ...products.map(
+            (p) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(Icons.shopping_bag_outlined, size: 18),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          p.$2,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(fontWeight: FontWeight.w600),
+                        ),
+                        Text(
+                          '${p.$1} · ${p.$3}',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        p.$4,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: _AppColors.success,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.star_rounded,
+                            size: 14,
+                            color: Color(0xFFFFC107),
+                          ),
+                          Text(
+                            ' ${p.$5}',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StockStatusCard extends StatelessWidget {
+  const _StockStatusCard();
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO(API): محتاج endpoint للمنتجات اللي مخزونها منخفض أو نافد
+    const items = [
+      ('حذاء رياضي - مقاس 42', 3, false),
+      ('سماعة بلوتوث X200', 0, true),
+      ('شاحن سريع 65W', 5, false),
+    ];
+    return _Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'المخزون المنخفض / النافد',
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          ...items.map(
+            (e) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.circle,
+                    size: 8,
+                    color: e.$3 ? _AppColors.danger : _AppColors.warning,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      e.$1,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
+                  Text(
+                    e.$3 ? 'نفذ' : '${e.$2} متبقي',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: e.$3 ? _AppColors.danger : _AppColors.warning,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MostWishlistedCard extends StatelessWidget {
+  const _MostWishlistedCard();
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO(API): محتاج endpoint يرجع المنتجات الأكثر إضافة للمفضلة
+    const items = [
+      ('سماعة لاسلكية', 412),
+      ('حذاء رياضي', 305),
+      ('ساعة ذكية', 260),
+    ];
+    return _Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'الأكثر إضافة للمفضلة',
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          ...items.map(
+            (e) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.favorite_rounded,
+                    size: 16,
+                    color: _AppColors.danger,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      e.$1,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
+                  Text(
+                    '${e.$2}',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// =============================== الطلبات ===============================
+
+class _DeliveryAbandonedCard extends StatelessWidget {
+  const _DeliveryAbandonedCard();
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO(API): متوسط وقت التوصيل والسلات المتروكة محتاجين endpoint جديد
+    return _Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              Container(
-                width: 10,
-                height: 10,
-                decoration: BoxDecoration(
-                  color: slice.color,
-                  shape: BoxShape.circle,
-                ),
+              const Icon(
+                Icons.local_shipping_rounded,
+                size: 18,
+                color: _AppColors.primary,
               ),
               const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  slice.label,
-                  style: TextStyle(
-                    fontSize: (width * 0.033).clamp(12.0, 14.0),
-                    color: theme.colorScheme.onSurface.withOpacity(0.8),
-                  ),
-                ),
-              ),
               Text(
-                "${slice.value.toStringAsFixed(0)}%",
-                style: TextStyle(
-                  fontSize: (width * 0.033).clamp(12.0, 14.0),
-                  fontWeight: FontWeight.w600,
-                  color: theme.colorScheme.onSurface,
-                ),
+                'متوسط وقت التوصيل',
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
           ),
-        );
-      }).toList(),
+          Text(
+            '2.4 يوم',
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const Divider(height: 24),
+          Row(
+            children: [
+              const Icon(
+                Icons.remove_shopping_cart_rounded,
+                size: 18,
+                color: _AppColors.orange,
+              ),
+              const SizedBox(width: 8),
+              Text('سلات متروكة', style: Theme.of(context).textTheme.bodySmall),
+            ],
+          ),
+          Text(
+            '186',
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
     );
   }
 }

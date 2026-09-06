@@ -90,7 +90,7 @@ class OrderCard extends StatelessWidget {
                           ).fromNow(),
                           style: TextStyle(
                             fontSize: w * 0.025,
-                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -99,6 +99,7 @@ class OrderCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: w * 0.05,
                           fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
                       ),
                       Container(
@@ -156,9 +157,9 @@ class OrderCard extends StatelessWidget {
                           border: Border.all(color: color.withOpacity(0.2)),
                         ),
                         child: Text(
-                          "${'paymentMethod'.tr}: ${order.paymentMethod}",
+                          "${'Payment Methods'.tr}: ${order.paymentMethod}",
                           style: TextStyle(
-                            color: secondaryTextColor,
+                            color: Colors.white,
                             fontSize: w * 0.035,
                           ),
                         ),

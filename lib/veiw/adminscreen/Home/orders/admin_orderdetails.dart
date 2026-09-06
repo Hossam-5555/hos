@@ -69,7 +69,8 @@ class AdminOrderdetails extends StatelessWidget {
                   12, // لتجنب حواف الـ Safe Area في بعض الأجهزة
             ),
             child: Checkbutton.widget(
-              width: w * 0.8,
+              width: w * 0.9,
+              h: 50,
               buttonColor:
                   controller.statusColor ?? Theme.of(context).primaryColor,
               statusrequest: Statusrequest.none,

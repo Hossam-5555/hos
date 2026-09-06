@@ -33,7 +33,7 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
 
   // ─────────────────── Static Data ─────────────────────────────
   final List<Widget> pages = [
-    AdminHome2(),
+    Adminhomedashboard(),
     Adminpending(),
     ViewCategories(),
     ProfilePage(),
