@@ -79,12 +79,9 @@ class ProfilePage extends StatelessWidget {
                               height: cardHeight,
                             ),
                             orderCard(
-                              "تعديل\nالبيانات",
+                              "Saved Addresses".tr,
                               Imageasset.settings,
-                              () => Get.to(
-                                () => EditProfileView(),
-                                transition: Transition.cupertino,
-                              ),
+                              () => Get.toNamed(Approute.viewmyaddres),
                               context,
                               width: cardWidth,
                               height: cardHeight,
@@ -93,6 +90,7 @@ class ProfilePage extends StatelessWidget {
                         )
                       : SizedBox.shrink(),
                   const SizedBox(height: 20),
+                  _GroupLabel(title: "General"),
 
                   settingsController.usrtype == "user"
                       ? // ------- المفضلة / العناوين / المراجعات -------
@@ -104,9 +102,16 @@ class ProfilePage extends StatelessWidget {
                                 Color.fromARGB(255, 95, 182, 8),
                                 Color.fromARGB(255, 96, 192, 17),
                               ],
-                              icon: Icons.location_on_outlined,
-                              title: "Saved Addresses".tr,
-                              onTap: () => Get.toNamed(Approute.viewmyaddres),
+                              icon: Icons.person_pin,
+                              title: "تعديل البيانات",
+                              onTap: () {
+                                Get.to(
+                                  () => EditProfileView(),
+                                  transition: Transition.cupertino,
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.fastOutSlowIn,
+                                );
+                              },
                             ),
                             _ListTile(
                               gradientColors: const [
@@ -679,7 +684,7 @@ Widget orderCard(
         border: Border.all(
           color: isDarkMode
               ? Colors.white.withOpacity(0.10)
-              : Colors.black.withOpacity(0.08),
+              : Colors.black.withOpacity(0.09),
           width: 1,
         ),
         boxShadow: [
@@ -701,13 +706,12 @@ Widget orderCard(
               flex: 7,
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: isDarkMode
                       ? Colors.white.withOpacity(0.04)
                       : Colors.black.withOpacity(0.025),
                 ),
-                child: Image.asset(image, fit: BoxFit.contain),
+                child: Image.asset(image, fit: BoxFit.cover),
               ),
             ),
 

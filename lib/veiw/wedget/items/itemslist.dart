@@ -27,7 +27,7 @@ class BuildCategoryItems extends StatelessWidget {
       colors: isSelected
           ? (isDarkMode
               ? [
-                  const Color(0xFFEAAFC8).withOpacity(0.8),
+                  const Color.fromARGB(255, 145, 40, 45).withOpacity(0.8),
                   Colors.transparent,
                   Colors.white.withOpacity(0.3),
                 ]
@@ -103,7 +103,7 @@ class BuildCategoryItems extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
-                  vertical: 8,
+                  vertical: 10,
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,

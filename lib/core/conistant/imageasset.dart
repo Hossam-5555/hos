@@ -34,7 +34,8 @@ class Imageasset {
   static String location = "$routeImage/unnamed.jpg";
   static String filter = "$routeImage/filter-svgrepo-com.svg";
   static String search = "$routeImage/search-alt-2-svgrepo-com.svg";
-  static String settings = "$routeImage/setting.png";
+  static String settings = "$routeImage/location23.jpg";
+  // setting.png";
   static String goold = "$routeImage/sc.png";
   static String order = "$routeImage/order.png";
   //order status

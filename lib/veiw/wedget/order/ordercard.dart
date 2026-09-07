@@ -31,7 +31,6 @@ class OrderCard extends StatelessWidget {
 
     // 2. تحديد الألوان بناءً على الثيم
     final primaryTextColor = isDark ? Colors.white : Colors.black87;
-    final secondaryTextColor = isDark ? Colors.white70 : Colors.black54;
     final shadowColor = Colors.white70;
 
     return GestureDetector(

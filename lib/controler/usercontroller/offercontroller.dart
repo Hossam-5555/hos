@@ -9,7 +9,11 @@ class Offercontroller extends GetxController {
   Statusrequest statusrequest = Statusrequest.none;
   Myservisec myservisec = Get.put(Myservisec());
   Offerdata notificationdata = Get.put(Offerdata(Get.find()));
-  List offerList = [];
+  List<ItemsModel> offerList = [];
+
+  /// الكاتيجوري المختارة حاليًا من الـ Chips (null = "الكل")
+  int? selectedCategoryId;
+
   Future<void> getoffer() async {
     offerList.clear();
     statusrequest = Statusrequest.loading;
@@ -30,6 +34,54 @@ class Offercontroller extends GetxController {
     update();
   }
 
+  void selectCategory(int? categoryId) {
+    selectedCategoryId = categoryId;
+    update();
+  }
+
+  /// المنتجات بعد تطبيق فلتر الكاتيجوري (أو الكل لو مفيش اختيار)
+  List<ItemsModel> get filteredOffers {
+    if (selectedCategoryId == null) return offerList;
+    return offerList.where((e) => e.categoryId == selectedCategoryId).toList();
+  }
+
+  /// قائمة الكاتيجوريز الحقيقية المستخرجة من المنتجات اللي رجعت من الباك اند
+  List<Brandmodel> get availableCategories {
+    final Map<int, String> map = {};
+    for (final item in offerList) {
+      if (item.categoryId != null) {
+        map[item.categoryId!] = item.categoryNameAr ?? item.categoryName ?? '';
+      }
+    }
+    return map.entries
+        .map((e) => Brandmodel(id: e.key, name: e.value))
+        .toList();
+  }
+
+  /// عروض هتنتهي قريبًا - فقط المنتجات اللي فعلاً عندها offerEndsAt من الباك اند
+  List<ItemsModel> get endingSoonOffers {
+    final list = offerList.where((e) => e.categoryName != null).toList();
+    list.sort((a, b) => a.itemsActive!.compareTo(b.itemsActive!));
+    return list;
+  }
+
+  /// أفضل العروض - أعلى نسبة خصم من ضمن الفلتر الحالي
+  List<ItemsModel> get bestOffers {
+    final list = List<ItemsModel>.from(filteredOffers);
+    list.sort((a, b) => (b.itemsDiscount ?? 0).compareTo(a.itemsDiscount ?? 0));
+    return list;
+  }
+
+  /// تجميع العروض حسب الكاتيجوري لعرض قسم لكل قسم
+  Map<int, List<ItemsModel>> get offersGroupedByCategory {
+    final Map<int, List<ItemsModel>> grouped = {};
+    for (final item in offerList) {
+      if (item.categoryId == null) continue;
+      grouped.putIfAbsent(item.categoryId!, () => []).add(item);
+    }
+    return grouped;
+  }
+
   List<ItemsModel> skeletonData = List.generate(
     6,
     (index) => ItemsModel(
@@ -42,6 +94,7 @@ class Offercontroller extends GetxController {
       isFavorite: false,
     ),
   );
+
   @override
   void onInit() {
     getoffer();

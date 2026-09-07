@@ -172,20 +172,6 @@ Widget statusorder(String status, Color currentColor, String text) {
 Widget items(OrderModel order) => Column(
   crossAxisAlignment: CrossAxisAlignment.start,
   children: [
-    Row(
-      children: [
-        Icon(Icons.shopping_cart),
-        const SizedBox(width: 10),
-        const Text(
-          "Products",
-          style: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
-            // color: Colors.black87,
-          ),
-        ),
-      ],
-    ),
     ...order.items.map<Widget>(
       (e) => ListTile(
         leading: Container(
@@ -228,10 +214,6 @@ Widget items(OrderModel order) => Column(
             Text("${e.price}\$", style: TextStyle(color: Colors.green)),
           ],
         ),
-        // trailing: Text(
-        //   "${e.price}\$",
-        //   style: TextStyle(color: Colors.green, fontSize: 16),
-        // ),
       ),
     ),
   ],
@@ -248,26 +230,6 @@ Widget price(order) => Column(
   ],
 );
 
-// helpers
-// Widget row(IconData i, String t, String? v) => ListTile(
-//   contentPadding: EdgeInsets.zero,
-//   leading: Icon(i),
-//   title: Text(t),
-//   subtitle: Text(v ?? "-"),
-// );
-// info
-// Widget info(order) => Column(
-//   children: [
-//     row(Icons.person, "Name", order.username),
-//     row(Icons.phone, "Phone", order.shippingAddress.phone),
-//     row(
-//       Icons.location_on,
-//       "Address",
-//       "${order.shippingAddress.city} - ${order.shippingAddress.street}",
-//     ),
-//   ],
-// );
-
 // الويدجت الرئيسية لعرض بيانات العميل
 Widget info(order) {
   return Container(
@@ -283,14 +245,12 @@ Widget info(order) {
             const Text(
               "Customer Details",
               style: TextStyle(
-                fontSize: 17,
                 fontWeight: FontWeight.bold,
                 // color: Colors.black87,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 20),
 
         // --- البيانات ---
         row(
@@ -299,25 +259,19 @@ Widget info(order) {
           value: order.username ?? "Unknown",
           iconColor: Colors.purple,
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 5.0),
-          child: Divider(height: 1, thickness: 1),
-        ),
+
         row(
           icon: Icons.phone_android_rounded,
           title: "Phone Number",
           value: order.shippingAddress.phone ?? "-",
           iconColor: Colors.green,
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 5.0),
-          child: Divider(height: 1, thickness: 1),
-        ),
+
         row(
           icon: Icons.location_on_outlined,
           title: "Shipping Address",
           value:
-              "${order.shippingAddress.city ?? ""} - ${order.shippingAddress.street ?? ""}",
+              "${order.shippingAddress.city ?? ""} -\n ${order.shippingAddress.street ?? ""}",
           iconColor: Colors.orange,
         ),
       ],
@@ -338,40 +292,21 @@ Widget row({
       // خلفية الأيقونة (مربع بحواف دائرية ولون شفاف)
       Container(
         padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: iconColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Icon(icon, color: iconColor, size: 22),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+        child: Icon(icon, color: iconColor, size: 18),
       ),
-      const SizedBox(width: 16),
+      const SizedBox(width: 5),
+      Text(
+        value,
+        style: const TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
+          // color: Colors.black87,
+          height: 1.3,
+        ),
+      ),
 
       // النصوص
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey.shade500,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              value,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                // color: Colors.black87,
-                height: 1.3,
-              ),
-            ),
-          ],
-        ),
-      ),
     ],
   );
 }

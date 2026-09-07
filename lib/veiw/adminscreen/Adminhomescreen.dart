@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/AdminHome.dart';
+import 'package:hos/controler/usercontroller/notificationcontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
-import 'package:hos/veiw/userscreen/screen/home/notification.dart';
+import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/veiw/wedget/Homepage/buttomAppbar.dart';
 import 'package:hos/veiw/wedget/Homepage/homescrenAction.dart';
 
@@ -24,18 +25,33 @@ class AdminHome extends StatelessWidget {
               ),
               const Spacer(),
 
-              Homescrenaction(
-                herotag: "notification",
-                onPressed: () {
-                  Get.to(
-                    () => NotificationPage(),
-                    transition: Transition.cupertino,
+              GetBuilder<Notificationcontroller>(
+                builder: (controller) {
+                  int hasUnread = controller.notificationcount;
+
+                  return Homescrenaction(
+                    herotag: "notification",
+                    onPressed: () {
+                      Get.toNamed(Approute.notificationPage);
+                    },
+                    child: Badge(
+                      isLabelVisible: hasUnread > 0,
+                      alignment: const Alignment(0.1, 0.90),
+                      label: Text(
+                        hasUnread.toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
+                      ),
+                      smallSize: 9,
+                      backgroundColor: Colors.redAccent,
+                      child: SvgPicture.asset(
+                        Imageasset.notification,
+                      ),
+                    ),
                   );
                 },
-                child: Badge(
-                  isLabelVisible: true,
-                  child: SvgPicture.asset(Imageasset.notification),
-                ),
               ),
             ],
           ),
@@ -59,7 +75,7 @@ class AdminHome extends StatelessWidget {
                   label: controller.title[2][0],
                   svgAsset: controller.title[2][1],
                 ),
-                  NavItem(
+                NavItem(
                   label: controller.title[3][0],
                   svgAsset: controller.title[3][1],
                 ),
