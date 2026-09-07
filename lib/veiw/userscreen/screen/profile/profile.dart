@@ -63,7 +63,7 @@ class ProfilePage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             orderCard(
-                              "الطلبات و\nالمشتريات",
+                              "Orders".tr,
                               Imageasset.order,
                               () => Get.toNamed(Approute.Orders),
                               context,
@@ -103,7 +103,7 @@ class ProfilePage extends StatelessWidget {
                                 Color.fromARGB(255, 96, 192, 17),
                               ],
                               icon: Icons.person_pin,
-                              title: "تعديل البيانات",
+                              title: "Edit Account".tr,
                               onTap: () {
                                 Get.to(
                                   () => EditProfileView(),
@@ -132,6 +132,7 @@ class ProfilePage extends StatelessWidget {
                                 curve: Curves.fastOutSlowIn,
                               ),
                             ),
+                            _ThemeTile(controller: localController),
                           ],
                         )
                       : SizedBox.shrink(),
@@ -139,13 +140,6 @@ class ProfilePage extends StatelessWidget {
                   const SizedBox(height: 20),
 
                   // ------- الإعدادات: الثيم -------
-                  _GroupLabel(title: "Account".tr),
-                  _GradientGroup(
-                    isDarkMode: isDarkMode,
-                    children: [_ThemeTile(controller: localController)],
-                  ),
-
-                  const SizedBox(height: 20),
 
                   // ------- الإعدادات: الدعم -------
                   _GroupLabel(title: "Support".tr),

@@ -98,7 +98,7 @@ class HandlingDataView extends StatelessWidget {
       "You have no orders yet".tr,
       "assets/images/empty_orders.svg",
     ],
-    Approute.Items: ["No items in this Category yet", Imageasset.emptycart],
+    Approute.Items: ["No items in this Category yet", Imageasset.animation2],
     AdminApproate.ViewItemScreen: [
       "No items in this Category yet",
       Imageasset.emptycart,
@@ -159,8 +159,8 @@ class HandlingDataView extends StatelessWidget {
       case HandlingMediaType.animation:
         return Animationlottie(
           animationPath: path,
-          h: isTablet ? 240 : 190,
-          w: isTablet ? 240 : 190,
+          h: isTablet ? 250 : 200,
+          w: isTablet ? 250 : 200,
         );
       case HandlingMediaType.svgImage:
         return SvgPicture.asset(

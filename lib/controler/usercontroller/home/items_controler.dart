@@ -122,7 +122,6 @@ class ItemsController extends SearchMix {
           brands.addAll(brandList.map((e) => Brandmodel.fromjson(e)));
         }
         data.addAll(itemlist.map((e) => ItemsModel.fromJson(e)));
-        print(data);
         if (currentPage >= lastPage) {
           hasMoreData = false;
         } else {

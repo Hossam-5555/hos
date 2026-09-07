@@ -51,7 +51,7 @@ class Items extends StatelessWidget {
               child: GetBuilder<ItemsController>(
                 builder: (controller) => HandlingDataView(
                   mode: HandlingMode.fullScreen,
-                  mediaType: HandlingMediaType.svgImage,
+                  mediaType: HandlingMediaType.animation,
                   showRetryButton: true,
                   statusrequest: controller.statusrequest,
                   widget: _ProductGrid(controller: controller, width: width),
