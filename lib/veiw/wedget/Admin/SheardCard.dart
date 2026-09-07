@@ -98,7 +98,6 @@ class _CategoryCardState extends State<CategoryCard> {
                 imageUrl: widget.imageUrl,
                 fit: BoxFit.cover,
                 placeholder: (context, url) => Container(
-                  color: const Color(0xffF4F6FA),
                   child: const Center(
                     child: SizedBox(
                       width: 25,
@@ -108,27 +107,10 @@ class _CategoryCardState extends State<CategoryCard> {
                   ),
                 ),
                 errorWidget: (context, url, error) => Container(
-                  color: const Color(0xffF4F6FA),
                   child: const Icon(
                     Icons.image_not_supported_rounded,
                     color: Colors.grey,
                     size: 30,
-                  ),
-                ),
-              ),
-
-              // تدرج خفيف يجعل اسم القسم واضحاً فوق الصورة
-              const DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      Colors.transparent,
-                      Color(0xCC000000),
-                    ],
-                    stops: [0.0, 0.48, 1.0],
                   ),
                 ),
               ),

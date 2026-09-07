@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
+import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/wedget/Admin/SheardCard.dart';
 import 'package:hos/veiw/wedget/Homepage/Ads.dart';
@@ -12,6 +13,7 @@ import 'package:hos/veiw/wedget/Homepage/dicountcard.dart';
 import 'package:hos/veiw/wedget/Homepage/titles.dart';
 import 'package:hos/veiw/wedget/SharedProductCard.dart';
 import 'package:hos/veiw/wedget/bulidfooter.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -78,39 +80,44 @@ class HomePage extends StatelessWidget {
                         SizedBox(height: sectionSpacing * 0.6),
 
                         SizedBox(
-                          height: (categoryHeight * 2) ,
-                          child: GridView.builder(
-                            scrollDirection: Axis.horizontal,
-                            physics: const BouncingScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2, // صفين
-                                  mainAxisSpacing: 10,
-                                  crossAxisSpacing: 10,
-                                  childAspectRatio: categoryHeight / itemWidth,
-                                ),
-                            itemCount: controller.categories.length,
-                            itemBuilder: (context, index) {
-                              final cat = controller.categories[index];
+                          height: (categoryHeight * 2),
+                          child: HandlingDataView(
+                            statusrequest: controller.statusrequest,
+                            mode: HandlingMode.skeleton,
+                            widget: GridView.builder(
+                              scrollDirection: Axis.horizontal,
+                              physics: const BouncingScrollPhysics(),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2, // صفين
+                                    mainAxisSpacing: 10,
+                                    crossAxisSpacing: 10,
+                                    childAspectRatio:
+                                        categoryHeight / itemWidth,
+                                  ),
+                              itemCount: controller.categories.length ,
+                              itemBuilder: (context, index) {
+                                final cat = controller.categories[index];
 
-                              return CategoryCard.Homepage(
-                                inHome: true,
-                                onTap: () {
-                                  controller.gotoitems(
-                                    controller.categories,
-                                    index,
-                                    controller.categories[index].id
-                                        .toString(),
-                                  );
-                                },
-                                name: controller.isarabic
-                                    ? cat.nameAr
-                                    : cat.name,
-                                onEdit: () {},
-                                onDelete: () {},
-                                imageUrl: cat.image!,
-                              );
-                            },
+                                return CategoryCard.Homepage(
+                                  inHome: true,
+                                  onTap: () {
+                                    controller.gotoitems(
+                                      controller.categories,
+                                      index,
+                                      controller.categories[index].id
+                                          .toString(),
+                                    );
+                                  },
+                                  name: controller.isarabic
+                                      ? cat.nameAr
+                                      : cat.name,
+                                  onEdit: () {},
+                                  onDelete: () {},
+                                  imageUrl: cat.image!,
+                                );
+                              },
+                            ),
                           ),
                         ),
 

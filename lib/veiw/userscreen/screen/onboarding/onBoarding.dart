@@ -212,72 +212,69 @@ class Onboarding extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: 58,
-                        child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 300),
-                          transitionBuilder: (child, animation) =>
-                              FadeTransition(
-                                opacity: animation,
-                                child: ScaleTransition(
-                                  scale: animation,
-                                  child: child,
+                    SizedBox(
+                      width: double.infinity,
+                      height: 60,
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        transitionBuilder: (child, animation) =>
+                            FadeTransition(
+                              opacity: animation,
+                              child: ScaleTransition(
+                                scale: animation,
+                                child: child,
+                              ),
+                            ),
+                        child: ElevatedButton(
+                          key: ValueKey(ctrl.isLastPage),
+                          onPressed: ctrl.nextPage,
+                          style:
+                              ElevatedButton.styleFrom(
+                                backgroundColor: current.gradient.last,
+                                foregroundColor: Colors.white,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18),
+                                ),
+                              ).copyWith(
+                                backgroundColor: WidgetStateProperty.all(
+                                  Colors.transparent,
+                                ),
+                                shadowColor: WidgetStateProperty.all(
+                                  Colors.transparent,
+                                ),
+                                overlayColor: WidgetStateProperty.all(
+                                  Colors.white.withOpacity(0.1),
                                 ),
                               ),
-                          child: ElevatedButton(
-                            key: ValueKey(ctrl.isLastPage),
-                            onPressed: ctrl.nextPage,
-                            style:
-                                ElevatedButton.styleFrom(
-                                  backgroundColor: current.gradient.last,
-                                  foregroundColor: Colors.white,
-                                  elevation: 0,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18),
-                                  ),
-                                ).copyWith(
-                                  backgroundColor: WidgetStateProperty.all(
-                                    Colors.transparent,
-                                  ),
-                                  shadowColor: WidgetStateProperty.all(
-                                    Colors.transparent,
-                                  ),
-                                  overlayColor: WidgetStateProperty.all(
-                                    Colors.white.withOpacity(0.1),
-                                  ),
-                                ),
-                            child: Ink(
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: current.gradient,
-                                ),
-                                borderRadius: BorderRadius.circular(18),
+                          child: Ink(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: current.gradient,
                               ),
-                              child: Container(
-                                alignment: Alignment.center,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      ctrl.isLastPage ? 'ابدأ الآن' : 'التالي',
-                                      style: const TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w700,
-                                        letterSpacing: -0.2,
-                                      ),
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    ctrl.isLastPage ? 'ابدأ الآن' : 'التالي',
+                                    style: const TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: -0.2,
                                     ),
-                                    const SizedBox(width: 6),
-                                    Icon(
-                                      ctrl.isLastPage
-                                          ? Icons.arrow_forward_rounded
-                                          : Icons.arrow_forward_ios_rounded,
-                                      size: 18,
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Icon(
+                                    ctrl.isLastPage
+                                        ? Icons.arrow_forward_rounded
+                                        : Icons.arrow_forward_ios_rounded,
+                                    size: 18,
+                                  ),
+                                ],
                               ),
                             ),
                           ),

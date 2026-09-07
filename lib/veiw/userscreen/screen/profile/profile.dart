@@ -192,15 +192,6 @@ class ProfilePage extends StatelessWidget {
                                 ),
                         ),
                       ),
-                      _ListTile(
-                        gradientColors: [
-                          Colors.green.shade400,
-                          Colors.green.shade700,
-                        ],
-                        icon: Icons.ios_share,
-                        title: "Share App",
-                        onTap: () {},
-                      ),
                     ],
                   ),
 

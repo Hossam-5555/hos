@@ -196,14 +196,6 @@ class Itemsdetailes extends StatelessWidget {
                           child: Divider(height: 1),
                         ),
 
-                        // ─── Quick Choices ───
-                        _buildQuickChoices(isDark),
-
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 20),
-                          child: Divider(height: 1),
-                        ),
-
                         // ─── Description ───
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -388,79 +380,6 @@ class Itemsdetailes extends StatelessWidget {
     return Container(height: 35, width: 1, color: Colors.grey.withOpacity(0.2));
   }
 
-  // ─── Quick Choices ───
-  Widget _buildQuickChoices(bool isDark) {
-    final RxString selected = 'Medium'.obs;
-    final choices = ['Small', 'Medium', 'Large', 'Extra large'];
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Try these quick choices",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: isDark ? Colors.white : Colors.black87,
-          ),
-        ),
-        const SizedBox(height: 12),
-        Obx(
-          () => Wrap(
-            spacing: 10,
-            children: choices.map((choice) {
-              final isSelected = selected.value == choice;
-              return GestureDetector(
-                onTap: () => selected.value = choice,
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 18,
-                    vertical: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? Colors.black
-                        : isDark
-                        ? const Color(0xFF2A2A2A)
-                        : Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                    border: Border.all(
-                      color: isSelected
-                          ? Colors.black
-                          : Colors.grey.withOpacity(0.25),
-                    ),
-                    boxShadow: isSelected
-                        ? [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              blurRadius: 8,
-                              offset: const Offset(0, 3),
-                            ),
-                          ]
-                        : [],
-                  ),
-                  child: Text(
-                    choice,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: isSelected
-                          ? Colors.white
-                          : isDark
-                          ? Colors.white70
-                          : Colors.black87,
-                    ),
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-        ),
-      ],
-    );
-  }
-
   // ─── Often Order With ───
   Widget _buildOftenOrderWith(bool isDark) {
     // بيانات ثابتة مؤقتة
@@ -578,7 +497,9 @@ class Itemsdetailes extends StatelessWidget {
                 height: 55,
                 child: Checkbutton(
                   statusrequest: Statusrequest.none,
-                  buttonColor: isDark ? const Color.fromARGB(255, 82, 80, 80) : Colors.black,
+                  buttonColor: isDark
+                      ? const Color.fromARGB(255, 82, 80, 80)
+                      : Colors.black,
                   onTap: () {
                     if (controller.itemcount == 0) {
                       Get.snackbar(
