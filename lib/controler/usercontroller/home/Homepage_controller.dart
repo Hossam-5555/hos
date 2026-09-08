@@ -33,7 +33,6 @@ class HomepageController extends GetxController {
 
     try {
       var response = await homedata.postdata();
-      print("Response: $response");
 
       statusrequest = handling(response);
 
@@ -65,12 +64,12 @@ class HomepageController extends GetxController {
               data["new_arrivals"].map((e) => ItemsModel.fromJson(e)),
             ),
           );
+          statusrequest = Statusrequest.success;
         } else {
           statusrequest = Statusrequest.failure;
         }
       }
     } catch (e) {
-      print("Error Parsing Data: $e");
       statusrequest = Statusrequest.serverfailure;
     }
 

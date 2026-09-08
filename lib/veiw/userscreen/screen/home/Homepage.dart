@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
+import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/wedget/Admin/SheardCard.dart';
@@ -21,7 +22,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomepageController controller = Get.find<HomepageController>();
-
+    final bool showSkeleton = controller.statusrequest == Statusrequest.loading;
     return GetBuilder<HomepageController>(
       builder: (_) => Scaffold(
         resizeToAvoidBottomInset: true, // مهم مع الكيبورد
@@ -61,125 +62,159 @@ class HomePage extends StatelessWidget {
                     gridCrossAxisCount;
                 final itemWidth = (width - 30) / 3;
 
-                return SingleChildScrollView(
-                  keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: horizontalPadding,
-                      vertical: sectionSpacing * 0.1,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        /// Main Offer
-                        AutoRotatingOffers(),
+                return HandlingDataView(
+                  mode: HandlingMode.fullScreen,
+                  showRetryButton: true,
+                  onRetry: () {
+                    controller.getdata();
+                  },
+                  statusrequest:
+                      controller.statusrequest == Statusrequest.loading
+                      ? Statusrequest.none
+                      : controller.statusrequest,
+                  widget: SingleChildScrollView(
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: horizontalPadding,
+                        vertical: sectionSpacing * 0.1,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          /// Main Offer
+                          Skeletonizer(
+                            enabled: showSkeleton,
+                            child: AutoRotatingOffers(),
+                          ),
 
-                        SizedBox(height: sectionSpacing),
-                        Titles(title: "Categories".tr),
-                        SizedBox(height: sectionSpacing * 0.6),
+                          SizedBox(height: sectionSpacing),
+                          Skeletonizer(
+                            enabled: showSkeleton,
+                            child: Titles(title: "Categories".tr),
+                          ),
+                          SizedBox(height: sectionSpacing * 0.6),
 
-                        SizedBox(
-                          height: (categoryHeight * 2),
-                          child: HandlingDataView(
-                            statusrequest: controller.statusrequest,
-                            mode: HandlingMode.skeleton,
-                            widget: GridView.builder(
-                              scrollDirection: Axis.horizontal,
-                              physics: const BouncingScrollPhysics(),
+                          SizedBox(
+                            height: (categoryHeight * 2),
+                            child: HandlingDataView(
+                              statusrequest: controller.statusrequest,
+                              mode: HandlingMode.skeleton,
+                              widget: GridView.builder(
+                                scrollDirection: Axis.horizontal,
+                                physics: const BouncingScrollPhysics(),
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2, // صفين
+                                      mainAxisSpacing: 10,
+                                      crossAxisSpacing: 10,
+                                      childAspectRatio:
+                                          categoryHeight / itemWidth,
+                                    ),
+                                itemCount: controller.categories.length,
+                                itemBuilder: (context, index) {
+                                  final cat = controller.categories[index];
+
+                                  return CategoryCard.Homepage(
+                                    inHome: true,
+                                    onTap: () {
+                                      controller.gotoitems(
+                                        controller.categories,
+                                        index,
+                                        controller.categories[index].id
+                                            .toString(),
+                                      );
+                                    },
+                                    name: controller.isarabic
+                                        ? cat.nameAr
+                                        : cat.name,
+                                    onEdit: () {},
+                                    onDelete: () {},
+                                    imageUrl: cat.image!,
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+
+                          /// New Items Header
+                          Skeletonizer(
+                            enabled: showSkeleton,
+                            child: Titles(title: "New Items".tr),
+                          ),
+                          CurvedItemsView(),
+
+                          SizedBox(height: sectionSpacing),
+
+                          // ─── إعلانات ───
+                          Skeletonizer(
+                            enabled: showSkeleton,
+                            child: Titles(title: "Special Offers".tr),
+                          ),
+                          SizedBox(height: sectionSpacing * 0.6),
+                          Skeletonizer(
+                            enabled: showSkeleton,
+                            child: AdsSection(),
+                          ), // ← ضيف ده هنا[]
+
+                          SizedBox(height: sectionSpacing * 0.5),
+                          Skeletonizer(
+                            enabled: showSkeleton,
+                            child: Titles(title: "Most Sale".tr),
+                          ),
+                          SizedBox(height: sectionSpacing * 0.6),
+
+                          Skeletonizer(
+                            enabled: showSkeleton,
+                            child: MasonryGridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              padding: EdgeInsets.symmetric(
+                                vertical: sectionSpacing * 0.3,
+                              ),
                               gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2, // صفين
-                                    mainAxisSpacing: 10,
-                                    crossAxisSpacing: 10,
-                                    childAspectRatio:
-                                        categoryHeight / itemWidth,
+                                  SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: gridCrossAxisCount,
                                   ),
-                              itemCount: controller.categories.length ,
+                              mainAxisSpacing: gridSpacing + 4,
+                              crossAxisSpacing: gridSpacing,
+                              itemCount: controller.mostsaleitem.length,
                               itemBuilder: (context, index) {
-                                final cat = controller.categories[index];
+                                final item = controller.mostsaleitem[index];
 
-                                return CategoryCard.Homepage(
-                                  inHome: true,
+                                // ارتفاع الكارت نسبي لعرضه الفعلي، مش رقم ثابت،
+                                // فبكده بيتصرف صح على أي مقاس شاشة
+                                final double baseHeight = cardWidth * 1.55;
+                                final double cardHeight = index.isEven
+                                    ? baseHeight
+                                    : baseHeight * 1.2;
+
+                                return SharedProductCard(
+                                  image: "${item.itemsImage}",
+                                  title: "${item.itemsName}",
+                                  price: "${item.itemsPrice}",
+                                  rating: 4.8,
                                   onTap: () {
-                                    controller.gotoitems(
-                                      controller.categories,
-                                      index,
-                                      controller.categories[index].id
-                                          .toString(),
-                                    );
+                                    controller.gotoitemsdetails(item);
                                   },
-                                  name: controller.isarabic
-                                      ? cat.nameAr
-                                      : cat.name,
-                                  onEdit: () {},
-                                  onDelete: () {},
-                                  imageUrl: cat.image!,
+
+                                  actionButton: AddToCartButton(
+                                    itemId: item.id!,
+                                  ),
+
+                                  /// 🔥 أهم سطر
+                                  height: cardHeight,
                                 );
                               },
                             ),
                           ),
-                        ),
 
-                        /// New Items Header
-                        Titles(title: "New Items".tr),
-                        CurvedItemsView(),
-
-                        SizedBox(height: sectionSpacing),
-
-                        // ─── إعلانات ───
-                        Titles(title: "Special Offers".tr),
-                        SizedBox(height: sectionSpacing * 0.6),
-                        AdsSection(), // ← ضيف ده هنا
-
-                        SizedBox(height: sectionSpacing * 0.5),
-                        Titles(title: "Most Sale".tr),
-                        SizedBox(height: sectionSpacing * 0.6),
-
-                        MasonryGridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: EdgeInsets.symmetric(
-                            vertical: sectionSpacing * 0.3,
-                          ),
-                          gridDelegate:
-                              SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: gridCrossAxisCount,
-                              ),
-                          mainAxisSpacing: gridSpacing + 4,
-                          crossAxisSpacing: gridSpacing,
-                          itemCount: controller.mostsaleitem.length,
-                          itemBuilder: (context, index) {
-                            final item = controller.mostsaleitem[index];
-
-                            // ارتفاع الكارت نسبي لعرضه الفعلي، مش رقم ثابت،
-                            // فبكده بيتصرف صح على أي مقاس شاشة
-                            final double baseHeight = cardWidth * 1.55;
-                            final double cardHeight = index.isEven
-                                ? baseHeight
-                                : baseHeight * 1.2;
-
-                            return SharedProductCard(
-                              image: "${item.itemsImage}",
-                              title: "${item.itemsName}",
-                              price: "${item.itemsPrice}",
-                              rating: 4.8,
-                              onTap: () {
-                                controller.gotoitemsdetails(item);
-                              },
-
-                              actionButton: AddToCartButton(itemId: item.id!),
-
-                              /// 🔥 أهم سطر
-                              height: cardHeight,
-                            );
-                          },
-                        ),
-
-                        //footer
-                        SizedBox(height: sectionSpacing * 0.6),
-                        Center(child: buildFooter()),
-                      ],
+                          //footer
+                          SizedBox(height: sectionSpacing * 0.6),
+                          Center(child: buildFooter()),
+                        ],
+                      ),
                     ),
                   ),
                 );

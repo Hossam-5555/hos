@@ -487,20 +487,22 @@ class PopularCategoriesSection extends StatelessWidget {
     // إنشاء قائمة نموذجية وهمية للعرض أثناء الـ Skeleton
     final displayCategories = showSkeleton
         ? List.generate(
-            4,
-            (index) => CategoriesModel(id: index, name: "Loading Category"),
+            6,
+            (index) => CategoriesModel(id: index, name: "Loading Cat"),
           )
         : categories;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Popular Categories".tr,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-            color: textPrimary,
+        Skeletonizer(enabled: showSkeleton,
+          child: Text(
+            "Popular Categories".tr,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              color: textPrimary,
+            ),
           ),
         ),
 

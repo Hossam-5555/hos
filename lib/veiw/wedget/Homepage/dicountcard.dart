@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
@@ -115,7 +116,26 @@ class OfferCard extends StatelessWidget {
                 top: -10,
                 bottom: -10,
                 width: MediaQuery.of(context).size.width * 0.45,
-                child: Image.network(image, fit: BoxFit.cover),
+                child: CachedNetworkImage(
+                  imageUrl: image,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Container(
+                    child: const Center(
+                      child: SizedBox(
+                        width: 25,
+                        height: 25,
+                        child: CircularProgressIndicator(strokeWidth: 2.5),
+                      ),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    child: const Icon(
+                      Icons.image_not_supported_rounded,
+                      color: Colors.grey,
+                      size: 30,
+                    ),
+                  ),
+                ),
               ),
               // غطاء شفاف (Gradient overlay) لجعل النص مقروءاً فوق الصورة
               Container(

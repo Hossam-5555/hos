@@ -7,7 +7,6 @@ import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/localization/changlocal.dart';
 import 'package:hos/core/serveces/myservisec.dart';
-import 'package:hos/veiw/userscreen/screen/profile/review.dart';
 import 'package:hos/veiw/userscreen/screen/profile/Editprofile.dart';
 import 'package:hos/veiw/userscreen/screen/profile/about_us_page.dart';
 import 'package:hos/veiw/wedget/bulidfooter.dart';
@@ -121,16 +120,6 @@ class ProfilePage extends StatelessWidget {
                               icon: Icons.favorite_border,
                               title: "Favorite".tr,
                               onTap: () => Get.toNamed(Approute.myfavorite),
-                            ),
-                            _ListTile(
-                              icon: Icons.note_alt_sharp,
-                              title: "مراجعاتي",
-                              onTap: () => Get.to(
-                                () => MyReviewsPage(),
-                                transition: Transition.cupertino,
-                                duration: const Duration(milliseconds: 500),
-                                curve: Curves.fastOutSlowIn,
-                              ),
                             ),
                             _ThemeTile(controller: localController),
                           ],

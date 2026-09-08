@@ -22,13 +22,6 @@ class CurvedItemsView extends StatelessWidget {
 
     return GetBuilder<HomepageController>(
       builder: (controller) {
-        if (controller.newArival.isEmpty) {
-          return SizedBox(
-            height: viewHeight,
-            child: const Center(child: CircularProgressIndicator()),
-          );
-        }
-
         final PageController pageController =
             controller.pageController ??
             PageController(

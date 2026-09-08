@@ -5,6 +5,7 @@ import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/veiw/wedget/animation.dart';
+import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 /// طريقة عرض حالة الطلب
@@ -185,9 +186,7 @@ class HandlingDataView extends StatelessWidget {
   Widget _buildFullState(BuildContext context) {
     final msg = _getMessage();
     final canRetry =
-        statusrequest != Statusrequest.loading &&
-        statusrequest != Statusrequest.checkinterner &&
-        onRetry != null;
+        statusrequest == Statusrequest.checkinterner && onRetry != null;
 
     return Center(
       child: Column(
@@ -205,7 +204,7 @@ class HandlingDataView extends StatelessWidget {
               ),
             ),
           ),
-      
+
           const SizedBox(height: 10),
           if (msg.isNotEmpty)
             Text(
@@ -218,22 +217,25 @@ class HandlingDataView extends StatelessWidget {
                     : const Color(0xFF16181D),
               ),
             ),
-      
+
           const SizedBox(height: 6),
-      
+
           Text(
             "Try searching with another name or category.",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 13, color: Colors.grey),
           ),
           if (canRetry)
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: ElevatedButton(
-                onPressed: onRetry,
-                child: Text("Try again"),
-              ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: Checkbutton(
+              width: context.width * 0.4,
+              onTap: () {
+                if (onRetry != null) onRetry!();
+              },
+              buttonName: "Try again",
             ),
+          ),
         ],
       ),
     );

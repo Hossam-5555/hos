@@ -32,7 +32,7 @@ class BuildCategoryItems extends StatelessWidget {
                   Colors.white.withOpacity(0.3),
                 ]
               : [
-                  Colors.blue.withAlpha(125),
+                  const Color.fromARGB(255, 63, 65, 66).withAlpha(125),
                   Colors.transparent,
                   Colors.blueAccent.withOpacity(0.2),
                 ])
