@@ -1,4 +1,6 @@
 // import 'package:flutter/material.dart';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -23,7 +25,7 @@ class NavItem {
 // الـ Widget المستقل
 // ─────────────────────────────────────────
 class CustomBottomNavBar extends StatelessWidget {
-  final List<NavItem> items;
+  final List items;
   final int currentIndex;
   final ValueChanged<int> onTap;
   final bool visible;
@@ -47,68 +49,74 @@ class CustomBottomNavBar extends StatelessWidget {
       curve: Curves.easeInQuad,
       child: IgnorePointer(
         ignoring: !visible,
-        child: Container(
-          padding: EdgeInsets.all(5),
-          // margin: const EdgeInsets.only(bottom: 5),
-          width: width * 0.9,
-          height: 65,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: isDark
-                  ? [Colors.grey.shade900, Colors.grey.shade800]
-                  : [
-                        const Color.fromARGB(255, 0, 2, 90), // لمعة زرقاء (وضع فاتح)
-                        Colors.grey,
-                        Colors.blueAccent.withOpacity(0.2),
-                      ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(40),
-            border: Border.all(color: Colors.grey.withAlpha(50)),
-          ),
-          child: Row(
-            children: List.generate(items.length, (index) {
-              final isSelected = currentIndex == index;
-              final item = items[index];
+        child: ClipRRect(
+          borderRadius: BorderRadiusGeometry.circular(40),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
+            child: Container(
+              padding: EdgeInsets.all(5),
+              width: width * 0.9,
+              height: 65,
+              decoration: BoxDecoration(
+                color: Colors.white.withAlpha(30),
 
-              return Expanded(
-                child: GestureDetector(
-                  onTap: () => onTap(index),
-                  child: AnimatedContainer(
-                    // margin: const EdgeInsets.symmetric(horizontal: 5),
-                    duration: const Duration(milliseconds: 250),
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? Colors.blue.withAlpha(50)
-                          : null,
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // ── الأيقونة ──
-                        _buildIcon(item, isSelected),
-                        const SizedBox(height: 2),
-                        // ── النص ──
-                        Text(
-                          item.label,
-                          style: TextStyle(
-                            fontSize: isSelected ? 12 : 10,
-                            fontWeight: isSelected
-                                ? FontWeight.bold
-                                : FontWeight.w200,
-                            color: isSelected
-                                ? Colors.blue
-                                : Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                borderRadius: BorderRadius.circular(40),
+                border: Border.all(
+                  color: isDark
+                      ? Colors.white.withOpacity(0.28)
+                      : Colors.grey.shade300,
                 ),
-              );
-            }),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.12),
+                    blurRadius: 25,
+                    spreadRadius: -5,
+                    offset: Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: List.generate(items.length, (index) {
+                  final isSelected = currentIndex == index;
+                  final item = items[index];
+
+                  return Expanded(
+                    child: GestureDetector(
+                      onTap: () => onTap(index),
+                      child: AnimatedContainer(
+                        // margin: const EdgeInsets.symmetric(horizontal: 5),
+                        duration: const Duration(milliseconds: 250),
+                        decoration: BoxDecoration(
+                          color: isSelected ? Colors.black : null,
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // ── الأيقونة ──
+                            _buildIcon(item, isSelected),
+                            const SizedBox(height: 2),
+                            // ── النص ──
+                            Text(
+                              item.label,
+                              style: TextStyle(
+                                fontSize: isSelected ? 12 : 10,
+                                fontWeight: isSelected
+                                    ? FontWeight.bold
+                                    : FontWeight.w200,
+                                color: isSelected
+                                    ? Colors.white
+                                    : Colors.blueAccent,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
           ),
         ),
       ),
@@ -136,7 +144,7 @@ class CustomBottomNavBar extends StatelessWidget {
         height: size,
         width: size,
         colorFilter: ColorFilter.mode(
-          isSelected ? Colors.blue : const Color.fromARGB(255, 4, 28, 48),
+          isSelected ? Colors.white : Colors.blueAccent,
           BlendMode.srcIn,
         ),
       );

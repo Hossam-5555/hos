@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/admincontroller/AdminHome.dart';
+import 'package:hos/controler/admincontroller/admin_home.dart';
 
 // عدّل المسار ده على مسار ملف الكنترولر (Adminhome) اللي بعتهولي
 

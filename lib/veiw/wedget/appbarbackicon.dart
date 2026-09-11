@@ -18,6 +18,7 @@ class Appbarbackicon extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return AppBar(
       actions: [if (selected == true && iconButton != null) iconButton!],
       title: Text(title),
@@ -32,17 +33,8 @@ class Appbarbackicon extends StatelessWidget implements PreferredSizeWidget {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.withAlpha(46)),
                 shape: BoxShape.circle,
-                gradient: const LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFFFFFFFF), // مركز الإضاءة الأبيض المشع
-                    Color(0xFFF2F4F7), // البلاتينيوم الناعم
-                    Color(0xFFD0D5DD), // الأطراف الفضية الراقية
-                  ],
-                ),
+                color: Color(0xFFE0E3E8),
               ),
               child: Material(
                 color: Colors.transparent,

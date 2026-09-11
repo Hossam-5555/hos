@@ -9,7 +9,7 @@ import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/appexitalert.dart';
 import 'package:hos/veiw/wedget/Homepage/buttomAppbar.dart';
-import 'package:hos/veiw/wedget/Homepage/homescrenAction.dart';
+import 'package:hos/veiw/wedget/Homepage/home_screnaction.dart';
 
 class Homescreen extends StatelessWidget {
   Homescreen({super.key});

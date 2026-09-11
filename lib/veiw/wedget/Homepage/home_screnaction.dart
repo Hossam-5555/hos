@@ -18,18 +18,9 @@ class Homescrenaction extends StatelessWidget {
       child: Container(
         width: 50,
         height: 50,
-        decoration: BoxDecoration(border: Border.all(color: Colors.grey.withAlpha(46)),
-          gradient: const LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFFFFFFFF), // مركز الإضاءة الأبيض المشع
-              Color(0xFFF2F4F7), // البلاتينيوم الناعم
-              Color(0xFFD0D5DD), // الأطراف الفضية الراقية
-            ],
-          ),
-
+        decoration: BoxDecoration(
           shape: BoxShape.circle,
+          color: Color(0xFFE0E3E8),
         ),
         child: MaterialButton(
           shape: const CircleBorder(),

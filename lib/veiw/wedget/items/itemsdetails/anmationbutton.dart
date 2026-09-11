@@ -41,6 +41,8 @@ class _FavoriteButtonState extends State<FavoriteButton>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return GestureDetector(
       onTap: () {
         _controller.forward(from: 0);
@@ -55,16 +57,7 @@ class _FavoriteButtonState extends State<FavoriteButton>
             width: 50,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              gradient: const LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  
-                  Color(0xFFFFFFFF), // مركز الإضاءة الأبيض المشع
-                  Color(0xFFF2F4F7), // البلاتينيوم الناعم
-                  Color(0xFFD0D5DD), // الأطراف الفضية الراقية
-                ],
-              ),
+              color: isDark ?  Color(0xFF8C949D):Colors.grey 
             ),
             child: ScaleTransition(
               scale: _scale,

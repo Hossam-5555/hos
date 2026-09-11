@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/admincontroller/AdminHome.dart';
+import 'package:hos/controler/admincontroller/admin_home.dart';
 import 'package:hos/controler/usercontroller/notificationcontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/veiw/wedget/Homepage/buttomAppbar.dart';
-import 'package:hos/veiw/wedget/Homepage/homescrenAction.dart';
+import 'package:hos/veiw/wedget/Homepage/home_screnaction.dart';
 
 class AdminHome extends StatelessWidget {
   AdminHome({super.key});

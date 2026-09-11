@@ -597,7 +597,7 @@ class _ThemeTile extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: isDark ? Colors.black : Colors.grey.shade300,
+                  color: isDark ? Colors.black : Colors.white,
                 ),
                 child: AnimatedAlign(
                   duration: const Duration(milliseconds: 300),
@@ -616,13 +616,13 @@ class _ThemeTile extends StatelessWidget {
                     key: ValueKey<bool>(isDark),
                     child: isDark
                         ? const Icon(
-                            Icons.dark_mode,
+                            Icons.dark_mode_outlined,
                             key: ValueKey('dark'),
                             color: Colors.white,
                             size: 20,
                           )
                         : const Icon(
-                            Icons.sunny,
+                            Icons.lightbulb_outline_rounded,
                             key: ValueKey('light'),
                             color: Colors.orange,
                             size: 20,
