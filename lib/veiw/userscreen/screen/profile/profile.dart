@@ -91,12 +91,12 @@ class ProfilePage extends StatelessWidget {
                   const SizedBox(height: 20),
                   _GroupLabel(title: "General"),
 
-                  settingsController.usrtype == "user"
-                      ? // ------- المفضلة / العناوين / المراجعات -------
-                        _GradientGroup(
-                          isDarkMode: isDarkMode,
-                          children: [
-                            _ListTile(
+                  // ------- المفضلة / العناوين / المراجعات -------
+                  _GradientGroup(
+                    isDarkMode: isDarkMode,
+                    children: [
+                      settingsController.usrtype == "user"
+                          ? _ListTile(
                               gradientColors: const [
                                 Color.fromARGB(255, 95, 182, 8),
                                 Color.fromARGB(255, 96, 192, 17),
@@ -111,8 +111,10 @@ class ProfilePage extends StatelessWidget {
                                   curve: Curves.fastOutSlowIn,
                                 );
                               },
-                            ),
-                            _ListTile(
+                            )
+                          : SizedBox.shrink(),
+                      settingsController.usrtype == "user"
+                          ? _ListTile(
                               gradientColors: const [
                                 Color.fromARGB(255, 243, 9, 9),
                                 Colors.red,
@@ -120,11 +122,11 @@ class ProfilePage extends StatelessWidget {
                               icon: Icons.favorite_border,
                               title: "Favorite".tr,
                               onTap: () => Get.toNamed(Approute.myfavorite),
-                            ),
-                            _ThemeTile(controller: localController),
-                          ],
-                        )
-                      : SizedBox.shrink(),
+                            )
+                          : SizedBox.shrink(),
+                      _ThemeTile(controller: localController),
+                    ],
+                  ),
 
                   const SizedBox(height: 20),
 
@@ -165,6 +167,7 @@ class ProfilePage extends StatelessWidget {
                         icon: Icons.headset_mic_outlined,
                         title: "Contact Us".tr,
                         onTap: settingsController.makePhoneCall,
+                        subtitle: " رقم تواصل علي واتساب",
                         trailing: Obx(
                           () => settingsController.isLoading.value
                               ? const SizedBox(

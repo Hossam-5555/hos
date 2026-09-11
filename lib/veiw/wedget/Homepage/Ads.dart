@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:hos/veiw/userscreen/screen/offer.dart';
 
 // ─────────────────────────────────────────
 // موديل الإعلان
@@ -45,7 +43,6 @@ final List<AdModel> appAds = [
     gradient: const [Color(0xFF1a1a2e), Color(0xFF16213e)],
     icon: Icons.stars_rounded,
     onTap: () {
-      Get.to(() => Offer());
       // هنا ممكن تضيف أي وظيفة عند الضغط على الإعلان
     },
   ),
@@ -57,7 +54,6 @@ final List<AdModel> appAds = [
     gradient: const [Color(0xFF200122), Color(0xFF6f0000)],
     icon: Icons.bolt_rounded,
     onTap: () {
-      Get.to(() => Offer());
       // هنا ممكن تضيف أي وظيفة عند الضغط على الإعلان
     },
   ),

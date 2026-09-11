@@ -78,8 +78,6 @@ class Adminhomedashboard extends StatelessWidget {
                   const _SalesByCategoryCard(),
                   const SizedBox(height: 12),
                   const _SalesByProductCard(),
-                  const SizedBox(height: 12),
-                  const _RefundRateCard(),
                   const SizedBox(height: 22),
 
                   const _SectionTitle('العملاء'),
@@ -104,8 +102,6 @@ class Adminhomedashboard extends StatelessWidget {
                   const SizedBox(height: 12),
                   const _StockStatusCard(),
                   const SizedBox(height: 12),
-                  const _MostWishlistedCard(),
-                  const SizedBox(height: 22),
 
                   const _SectionTitle('الطلبات'),
                   const SizedBox(height: 12),
@@ -124,7 +120,6 @@ class Adminhomedashboard extends StatelessWidget {
                         ),
                       ),
                       SizedBox(width: 5),
-                      Expanded(child: _DeliveryAbandonedCard()),
                     ],
                   ),
                   const SizedBox(height: 22),
@@ -149,7 +144,6 @@ class Adminhomedashboard extends StatelessWidget {
     );
   }
 }
-
 
 class _Card extends StatelessWidget {
   final Widget child;
@@ -231,10 +225,10 @@ class _BarRow extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           ClipRRect(
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(20),
             child: LinearProgressIndicator(
               value: percent,
-              minHeight: 7,
+              minHeight: 10,
               backgroundColor: Theme.of(context).dividerColor.withOpacity(0.15),
               valueColor: AlwaysStoppedAnimation(color),
             ),
@@ -398,7 +392,7 @@ class _OverviewGrid extends StatelessWidget {
         true,
       ),
       _KpiData(
-        'معدل التحويل',
+        'معدل استرجاع',
         '4.6%',
         Icons.trending_up_rounded,
         _AppColors.orange,
@@ -691,50 +685,6 @@ class _SalesByProductCard extends StatelessWidget {
               percent: e.$2,
               trailing: e.$3,
               color: e.$4,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _RefundRateCard extends StatelessWidget {
-  const _RefundRateCard();
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO(API): متوصلة بـ analytics.refund_rate من AnalyticsService.php
-    return _Card(
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: _AppColors.danger.withOpacity(0.12),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(
-              Icons.assignment_return_rounded,
-              color: _AppColors.danger,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'معدل الاسترجاع / الإلغاء',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                Text(
-                  '3.2%',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-                ),
-              ],
             ),
           ),
         ],
@@ -1180,117 +1130,6 @@ class _StockStatusCard extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _MostWishlistedCard extends StatelessWidget {
-  const _MostWishlistedCard();
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO(API): محتاج endpoint يرجع المنتجات الأكثر إضافة للمفضلة
-    const items = [
-      ('سماعة لاسلكية', 412),
-      ('حذاء رياضي', 305),
-      ('ساعة ذكية', 260),
-    ];
-    return _Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'الأكثر إضافة للمفضلة',
-            style: Theme.of(
-              context,
-            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          ...items.map(
-            (e) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 6),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.favorite_rounded,
-                    size: 16,
-                    color: _AppColors.danger,
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      e.$1,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ),
-                  Text(
-                    '${e.$2}',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// =============================== الطلبات ===============================
-
-class _DeliveryAbandonedCard extends StatelessWidget {
-  const _DeliveryAbandonedCard();
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO(API): متوسط وقت التوصيل والسلات المتروكة محتاجين endpoint جديد
-    return _Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(
-                Icons.local_shipping_rounded,
-                size: 18,
-                color: _AppColors.primary,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                'متوسط وقت التوصيل',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            ],
-          ),
-          Text(
-            '2.4 يوم',
-            style: Theme.of(
-              context,
-            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-          ),
-          const Divider(height: 24),
-          Row(
-            children: [
-              const Icon(
-                Icons.remove_shopping_cart_rounded,
-                size: 18,
-                color: _AppColors.orange,
-              ),
-              const SizedBox(width: 8),
-              Text('سلات متروكة', style: Theme.of(context).textTheme.bodySmall),
-            ],
-          ),
-          Text(
-            '186',
-            style: Theme.of(
-              context,
-            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
         ],
       ),

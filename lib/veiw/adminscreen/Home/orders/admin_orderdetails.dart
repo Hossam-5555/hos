@@ -45,6 +45,12 @@ class AdminOrderdetails extends StatelessWidget {
               CardWidget(child: info(o)),
               CardWidget(child: items(o)),
               CardWidget(child: price(o)),
+              CardWidget(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [Text("Payment"), Text(o.paymentMethod)],
+                ),
+              ),
 
               // مسافة أمان إضافية لضمان عدم اختفاء آخر كارت خلف الزر السفلي عند عمل سكرول
               const SizedBox(height: 80),

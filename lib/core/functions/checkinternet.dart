@@ -10,7 +10,7 @@ import 'dart:io';
     return result.isNotEmpty &&
         result.first.rawAddress.isNotEmpty;
   } catch (_) {
-    return false;
+    return true;
   }
 }
 

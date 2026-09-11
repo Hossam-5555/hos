@@ -13,7 +13,7 @@ class Coubone extends GetView<CartController> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(5),
+          padding: const EdgeInsets.all(6),
           child: controller.couponename == null
               ? Row(
                   children: [
@@ -24,7 +24,7 @@ class Coubone extends GetView<CartController> {
                           filled: true,
                           suffixIcon: Checkbutton.widget(
                             h: 40,
-                            width: 100,
+                            width: 90,
                             onTap: () {},
 
                             buttonName: "Apply",
@@ -32,7 +32,7 @@ class Coubone extends GetView<CartController> {
                           hintText: "أدخل كود الخصم",
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
-                            gapPadding: 5,
+                            gapPadding: 6,
                             borderRadius: BorderRadius.circular(40),
                           ),
                           contentPadding: const EdgeInsets.symmetric(
