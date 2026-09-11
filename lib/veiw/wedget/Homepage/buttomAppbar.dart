@@ -56,7 +56,11 @@ class CustomBottomNavBar extends StatelessWidget {
             gradient: LinearGradient(
               colors: isDark
                   ? [Colors.grey.shade900, Colors.grey.shade800]
-                  : [Color(0xFFFFFFFF), Color(0xFFF1F3F5), Color(0xFFDDE1E6)],
+                  : [
+                        const Color.fromARGB(255, 0, 2, 90), // لمعة زرقاء (وضع فاتح)
+                        Colors.grey,
+                        Colors.blueAccent.withOpacity(0.2),
+                      ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -76,7 +80,7 @@ class CustomBottomNavBar extends StatelessWidget {
                     duration: const Duration(milliseconds: 250),
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? Colors.blueAccent.withAlpha(50)
+                          ? Colors.blue.withAlpha(50)
                           : null,
                       borderRadius: BorderRadius.circular(40),
                     ),
@@ -96,7 +100,7 @@ class CustomBottomNavBar extends StatelessWidget {
                                 : FontWeight.w200,
                             color: isSelected
                                 ? Colors.blue
-                                : Colors.grey.shade500,
+                                : Colors.white,
                           ),
                         ),
                       ],
@@ -132,7 +136,7 @@ class CustomBottomNavBar extends StatelessWidget {
         height: size,
         width: size,
         colorFilter: ColorFilter.mode(
-          isSelected ? Colors.blue : Colors.grey,
+          isSelected ? Colors.blue : const Color.fromARGB(255, 4, 28, 48),
           BlendMode.srcIn,
         ),
       );

@@ -104,8 +104,8 @@ class SharedProductCard extends StatelessWidget {
                         Colors.grey.withOpacity(0.3),
                       ]
                     : [
-                        Colors.blue.withOpacity(0.5), // لمعة زرقاء (وضع فاتح)
-                        Colors.transparent,
+                        const Color.fromARGB(255, 0, 2, 90).withOpacity(0.5), // لمعة زرقاء (وضع فاتح)
+                        Colors.grey,
                         Colors.blueAccent.withOpacity(0.2),
                       ]),
               ),
