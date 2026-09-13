@@ -47,7 +47,7 @@ class SharedProductCard extends StatelessWidget {
       onTap: onTap,
       child: LayoutBuilder(
         builder: (context, constraints) {
-              final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+          // final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
           // نستخدم عرض الكارت الفعلي (مش عرض الشاشة كله) عشان الأبعاد
           // تتظبط صح مهما كان عدد أعمدة الجريد (2 هاتف / 3-4 تابلت)
@@ -63,18 +63,12 @@ class SharedProductCard extends StatelessWidget {
           );
           final double titleFontSize = (cardWidth * 0.062).clamp(11.0, 14.0);
 
-          final double ratingBadgeWidth = (cardWidth * 0.27).clamp(
-            42.0,
-            56.0,
-          );
+          final double ratingBadgeWidth = (cardWidth * 0.27).clamp(42.0, 56.0);
           final double ratingBadgeHeight = (ratingBadgeWidth * 0.6).clamp(
             24.0,
             30.0,
           );
-          final double ratingFontSize = (cardWidth * 0.045).clamp(
-            10.0,
-            13.0,
-          );
+          final double ratingFontSize = (cardWidth * 0.045).clamp(10.0, 13.0);
           final double ratingIconSize = (cardWidth * 0.05).clamp(12.0, 16.0);
 
           final double bottomBarWidth = (cardWidth * 0.9).clamp(140.0, 230.0);
@@ -95,19 +89,10 @@ class SharedProductCard extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: (isDarkMode
-                    ? [
-                        const Color(
-                          0xFFFD343A,
-                        ).withOpacity(0.8), // لمعة بينك/بيضاء (وضع ليلي)
-                        Colors.transparent,
-                        Colors.grey.withOpacity(0.3),
-                      ]
-                    : [
-                        const Color.fromARGB(255, 0, 2, 90).withOpacity(0.5), // لمعة زرقاء (وضع فاتح)
-                        Colors.grey,
-                        Colors.blueAccent.withOpacity(0.2),
-                      ]),
+                colors: ([
+                  const Color.fromARGB(255, 29, 4, 4).withOpacity(0.8), // لمعة بينك/بيضاء (وضع ليلي)
+                  Colors.grey,
+                ]),
               ),
               color: theme.cardColor,
               borderRadius: const BorderRadius.all(Radius.circular(25)),
@@ -131,15 +116,14 @@ class SharedProductCard extends StatelessWidget {
                           padding: EdgeInsets.all(imagePadding),
                           child: CachedNetworkImage(
                             imageUrl: image,
-                            imageBuilder: (context, imageProvider) =>
-                                Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: imageProvider,
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
+                            imageBuilder: (context, imageProvider) => Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.contain,
                                 ),
+                              ),
+                            ),
                             placeholder: (context, url) => Center(
                               child: SizedBox(
                                 width: 22,
@@ -208,9 +192,7 @@ class SharedProductCard extends StatelessWidget {
                                           borderRadius: BorderRadius.circular(
                                             20,
                                           ),
-                                          color: Colors.white.withOpacity(
-                                            0.18,
-                                          ),
+                                          color: Colors.white.withOpacity(0.18),
                                         ),
                                         child: Row(
                                           mainAxisAlignment:

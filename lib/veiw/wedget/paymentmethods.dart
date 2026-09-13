@@ -185,7 +185,7 @@ Widget buildInfoBox(
     ),
     child: Row(
       children: [
-        Icon(icon, color: Colors.black87),
+        Icon(icon),
         const SizedBox(width: 12),
         Expanded(
           child: Text(

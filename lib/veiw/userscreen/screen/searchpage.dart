@@ -290,7 +290,7 @@ class _SearchResults extends StatelessWidget {
           ],
 
           // =========================
-          // Loading
+          // Loading 
           // =========================
           if (isLoading)
             Expanded(

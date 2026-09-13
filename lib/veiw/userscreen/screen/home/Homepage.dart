@@ -46,7 +46,7 @@ class HomePage extends StatelessWidget {
                 final double sectionSpacing = (width * 0.05).clamp(14.0, 26.0);
 
                 // ارتفاع قائمة التصنيفات الأفقية: نسبة من العرض مش من الطول
-                final double categoryHeight = (width * 0.32).clamp(92.0, 132.0);
+                final double categoryHeight = (width * 0.3).clamp(92.0, 132.0);
 
                 // عدد أعمدة الجريد: 2 للهاتف، 3 للتابلت الصغير، 4 للتابلت الكبير
                 final int gridCrossAxisCount = isTablet

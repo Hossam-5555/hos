@@ -41,7 +41,6 @@ class _FavoriteButtonState extends State<FavoriteButton>
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return GestureDetector(
       onTap: () {
@@ -57,7 +56,7 @@ class _FavoriteButtonState extends State<FavoriteButton>
             width: 50,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: isDark ?  Color(0xFF8C949D):Colors.grey 
+                color: Color(0xFFE0E3E8),
             ),
             child: ScaleTransition(
               scale: _scale,

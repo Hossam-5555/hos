@@ -156,7 +156,7 @@ class ProfilePage extends StatelessWidget {
                           Colors.orange.shade700,
                         ],
                         icon: Icons.language_outlined,
-                        title: "Language".tr,
+                        title: "Languages".tr,
                         onTap: () => _showLanguageDialog(context),
                       ),
                       _ListTile(
@@ -323,64 +323,48 @@ class _ProfileHeader extends StatelessWidget {
       borderRadius: BorderRadius.circular(20),
       child: Container(
         padding: const EdgeInsets.all(10),
-        child: Column(
+        child: Row(
           children: [
-            Stack(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(3),
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      colors: [Colors.black54, Colors.black],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                  ),
-                  child: CircleAvatar(
-                    radius: avatarRadius,
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    backgroundImage: AssetImage(Imageasset.twetter),
-                  ),
+            Container(
+              padding: const EdgeInsets.all(3),
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: [Colors.black54, Colors.black],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Container(
-                    width: 16,
-                    height: 16,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.green,
-                      border: Border.all(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        width: 2,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              ),
+              child: CircleAvatar(
+                radius: avatarRadius,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                backgroundImage: AssetImage(Imageasset.twetter),
+              ),
             ),
             const SizedBox(height: 16),
-            Text(
-              userName,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.3,
+            SizedBox(
+              width: context.width * 0.5,
+              child: ListTile(
+                title: Text(
+                  userName,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.3,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                subtitle: Text(
+                  email,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.color?.withValues(alpha: 0.7),
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              email,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(
-                  context,
-                ).textTheme.bodySmall?.color?.withValues(alpha: 0.7),
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),
