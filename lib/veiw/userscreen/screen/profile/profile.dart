@@ -10,7 +10,6 @@ import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/veiw/userscreen/screen/profile/Editprofile.dart';
 import 'package:hos/veiw/userscreen/screen/profile/about_us_page.dart';
 import 'package:hos/veiw/wedget/bulidfooter.dart';
-import 'package:hos/veiw/wedget/profiledailoge.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
@@ -33,7 +32,7 @@ class ProfilePage extends StatelessWidget {
         (width.clamp(0, maxContentWidth) -
             horizontalPadding * 2 -
             cardGap * 2) /
-        3;
+        2;
     final cardHeight = (cardWidth * (isTablet ? 1.3 : 1.9)).clamp(120.0, 240.0);
 
     return Scaffold(
@@ -59,20 +58,12 @@ class ProfilePage extends StatelessWidget {
                   const SizedBox(height: 20),
                   settingsController.usrtype == "user"
                       ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             orderCard(
                               "Orders".tr,
                               Imageasset.order,
                               () => Get.toNamed(Approute.Orders),
-                              context,
-                              width: cardWidth,
-                              height: cardHeight,
-                            ),
-                            orderCard(
-                              "نقاط\nالمكافأه",
-                              Imageasset.goold,
-                              () => ComingSoonOverlay.show(),
                               context,
                               width: cardWidth,
                               height: cardHeight,
@@ -627,8 +618,8 @@ Widget orderCard(
   String image,
   VoidCallback onTap,
   BuildContext context, {
-  double width = 160,
-  double height = 240,
+  double width = 250,
+  double height = 200,
 }) {
   final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
@@ -664,7 +655,7 @@ Widget orderCard(
             // صورة المنتج
             // =========================
             Expanded(
-              flex: 7,
+              flex: 6,
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
