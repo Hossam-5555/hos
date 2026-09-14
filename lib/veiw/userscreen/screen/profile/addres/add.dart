@@ -5,6 +5,7 @@ import 'package:hos/core/class/crud.dart';
 import 'package:hos/veiw/wedget/Address/addandedit.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
+// ignore: must_be_immutable
 class AddNewAddres extends StatelessWidget {
   AddNewAddres({super.key});
 

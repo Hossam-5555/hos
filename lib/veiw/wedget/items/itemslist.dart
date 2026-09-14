@@ -27,7 +27,7 @@ class BuildCategoryItems extends StatelessWidget {
       colors: isSelected
           ? (isDarkMode
               ? [
-                  const Color.fromARGB(255, 145, 40, 45).withOpacity(0.8),
+                  const Color.fromARGB(255, 78, 78, 78).withOpacity(0.8),
                   Colors.transparent,
                   Colors.white.withOpacity(0.3),
                 ]
@@ -76,7 +76,7 @@ class BuildCategoryItems extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.fastLinearToSlowEaseIn,
-        decoration: BoxDecoration(
+        decoration: BoxDecoration(color: Color(0xFF767D84),
           borderRadius: BorderRadius.circular(30),
           gradient: borderGradient,
           boxShadow: boxShadow,
@@ -97,9 +97,9 @@ class BuildCategoryItems extends StatelessWidget {
               // هنا الـ Widget مش عارف إيه اللي هيحصل
               onTap: onTap,
 
-              splashColor:
-                  isDarkMode ? Colors.white10 : Colors.black12,
-              highlightColor: Colors.transparent,
+              // splashColor:
+              //     isDarkMode ? Colors.white10 : Colors.black12,
+              // highlightColor: Colors.transparent,
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,

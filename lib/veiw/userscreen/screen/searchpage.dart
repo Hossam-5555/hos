@@ -129,8 +129,8 @@ class _IdleState extends StatelessWidget {
     if (Get.isRegistered<HomepageController>()) {
       final homeController = Get.find<HomepageController>();
       if (homeController.categories.isNotEmpty) {
-        categories = homeController.categories.length >= 4
-            ? homeController.categories.sublist(0, 4)
+        categories = homeController.categories.length >= 6
+            ? homeController.categories.sublist(0, 6)
             : homeController.categories;
         isLoading = false;
       }
