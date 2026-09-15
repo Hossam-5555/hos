@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/auth/AuthController.dart';
 import 'package:hos/core/class/crud.dart';
@@ -313,27 +314,10 @@ class AuthPage extends StatelessWidget {
                                       SizedBox(height: height * 0.015),
 
                                       Checkbutton.widget(
-                                        widget: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Image.asset(
-                                              Imageasset.googlepay,
-                                              height: 26,
-                                              width: 26,
-                                              fit: BoxFit.contain,
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Text(
-                                              "Continue with Google".tr,
-                                              style: TextStyle(
-                                                color: isDark
-                                                    ? Colors.white
-                                                    : Colors.black87,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          ],
+                                        widget: SvgPicture.asset(
+                                          Imageasset.googlepay,
+                                          height: 20,
+                                          width: 20,
                                         ),
                                         statusrequest: Statusrequest.none,
                                         onTap: () => controller.submit(),
