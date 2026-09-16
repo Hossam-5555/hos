@@ -74,6 +74,20 @@ dependencies:
   latlong2: ^0.9.1
   flutter_map_location_marker: ^10.2.0
   webview_flutter: ^4.14.1
+  flutter_native_splash: ^2.4.7
+
+
+flutter_native_splash:
+  color: "#FFFFFF" # لون خلفية الـ Splash (غيره للون تطبيقك)
+  image: assets/img/logo.png # مسار صورة اللوجو الخاص بك
+
+  # إعدادات خاصة بدعم Android 12 والأحدث
+  android_12:
+    image: assets/img/logo.png
+    icon_background_color: "#FFFFFF"
+
+
+
 
 dev_dependencies:
   flutter_test:

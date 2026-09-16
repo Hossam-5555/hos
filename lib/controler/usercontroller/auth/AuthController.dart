@@ -77,7 +77,7 @@ class AuthController extends GetxController {
       await myservisec.sharedPreferences.setString("email", user.email!);
       await myservisec.sharedPreferences.setString("usertype", user.usersType!);
       await myservisec.sharedPreferences.setString("token", token);
-      await myservisec.sharedPreferences.setString("step", "2");
+      await myservisec.sharedPreferences.setString("step", "1");
 
       int id = user.id!;
 

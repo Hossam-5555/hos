@@ -24,13 +24,12 @@ import 'package:hos/veiw/userscreen/screen/home/homescreen.dart';
 import 'package:hos/veiw/userscreen/screen/home/itemsdetailes.dart';
 import 'package:hos/veiw/userscreen/screen/home/notification.dart';
 import 'package:hos/veiw/userscreen/screen/myfavorite.dart';
-import 'package:hos/veiw/userscreen/screen/onboarding/onBoarding.dart';
 import 'package:hos/veiw/userscreen/screen/profile/addres/add.dart';
 import 'package:hos/veiw/userscreen/screen/profile/addres/viewaddres.dart';
 import '../../veiw/userscreen/screen/profile/order/orders.dart';
 
 List<GetPage<dynamic>>? routes = [
-  GetPage(name: '/', page: () => Onboarding(), middlewares: [Midelware()]),
+  GetPage(name: '/', page: () => AuthPage(), middlewares: [Midelware()]),
 
   // ─── Admin ───────────────────────────────────────────
   GetPage(name: AdminApproate.adminHome, page: () => AdminHome()),
@@ -103,7 +102,7 @@ List<GetPage<dynamic>>? routes = [
   ),
 
   // ─── Auth ─────────────────────────────────────────────
-  GetPage(name: Approute.login, page: () => AuthPage()),
+  // GetPage(name: Approute.login, page: () => AuthPage()),
   GetPage(name: Approute.veryfisign, page: () => Veryfisign()),
   GetPage(name: Approute.checkemailpage, page: () => ForgetPass()),
   GetPage(name: Approute.Veryficode, page: () => Veryficode()),

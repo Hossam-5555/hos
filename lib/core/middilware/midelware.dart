@@ -16,34 +16,23 @@ class Midelware extends GetMiddleware {
 
     print("🔹 Step = $step | UserType = $userType | Route = $route");
 
-    // ✅ أول مرة يفتح التطبيق — لسه محددش اللغة
-    if (step == null) {
-      if (route != Approute.Onboarding) {
-        return RouteSettings(name: Approute.Onboarding);
-      }
-      return null;
-    }
-
-    // ✅ بعد اختيار اللغة — يروح لتسجيل الدخول
+    // ✅ مسجل دخول بالفعل (step == "1") -> يروح للرئيسية حسب نوع المستخدم
     if (step == "1") {
-      if (route != Approute.login) {
-        return RouteSettings(name: Approute.login);
-      }
-      return null;
-    }
-
-    // ✅ بعد تسجيل الدخول — يروح حسب نوع المستخدم
-    if (step == "2") {
       if (userType == "admin") {
         if (route != AdminApproate.adminHome) {
           return const RouteSettings(name: AdminApproate.adminHome);
         }
-      }  else {
+      } else {
         if (route != Approute.Homescreen) {
           return RouteSettings(name: Approute.Homescreen);
         }
       }
       return null;
+    }
+
+    // ✅ غير مسجل (step == null) -> يروح لصفحة تسجيل الدخول مباشرة
+    if (route != Approute.login) {
+      return RouteSettings(name: Approute.login);
     }
 
     return null;
