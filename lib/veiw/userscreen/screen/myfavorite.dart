@@ -31,7 +31,7 @@ class Myfavorite extends StatelessWidget {
               child: GetBuilder<Myfavcontroler>(
                 builder: (controller) => HandlingDataView(
                   statusrequest: controller.statusrequest,
-                  mediaType: HandlingMediaType.animation,
+                  mediaType: HandlingMediaType.svgImage,
                   mode: HandlingMode.fullScreen,
                   widget: Skeletonizer(
                     containersColor: Colors.grey.withAlpha(90),

@@ -8,22 +8,43 @@ import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
+/// كائن منظم يمثل حالة الصفحة الفارغة
+class EmptyStateModel {
+  final String title;
+  final String subtitle;
+  final String imagePath;
+
+  const EmptyStateModel({
+    required this.title,
+    required this.subtitle,
+    required this.imagePath,
+  });
+}
+
 /// طريقة عرض حالة الطلب
 enum HandlingMode {
-  /// يستبدل الصفحة كلها (زي Handlingdataview القديم)
+  /// يستبدل الصفحة كلها
   fullScreen,
 
   /// اسكيلتون فوق نفس شكل المحتوى
   skeleton,
 
-  /// يظهر فوق المحتوى بستاك (زي Handlingdatrequest القديم)
-  /// - ده اللي بيخليك تحطه فوق أي جزء في الصفحة (فورم، لستة، أي حاجة)
+  /// يظهر فوق المحتوى بستاك (Overlay)
   overlay,
+}
+
+/// نمط تصميم الصفحة الفارغة (2 Styles)
+enum EmptyStateStyle {
+  /// ستايل كلاسيكي بسيط ممتد في المنتصف
+  style1,
+
+  /// ستايل عصري محاط بكارت زجاجي وخلفية دائرية للأيقونة
+  style2,
 }
 
 /// نوع الميديا المستخدمة في العرض
 enum HandlingMediaType {
-  /// ويدجت الأنيميشن بتاعتك (Animationforstatus)
+  /// ويدجت الأنيميشن (Animationlottie)
   animation,
 
   /// صورة SVG ثابتة
@@ -40,10 +61,12 @@ class HandlingDataView extends StatelessWidget {
     required this.widget,
     this.mode = HandlingMode.fullScreen,
     this.mediaType = HandlingMediaType.animation,
+    this.emptyStyle = EmptyStateStyle.style1,
     this.loadingWidget,
     this.onRetry,
     this.onTapError,
     this.message,
+    this.subMessage,
     this.imagePath,
     this.showRetryButton = true,
   });
@@ -51,88 +74,133 @@ class HandlingDataView extends StatelessWidget {
   /// حالة الطلب الحالية
   final Statusrequest statusrequest;
 
-  /// المحتوى الأساسي (الصفحة أو الويدجت اللي هيتحط فوقه/بدل منه الحالة)
+  /// المحتوى الأساسي
   final Widget widget;
 
   /// طريقة العرض: fullScreen / skeleton / overlay
   final HandlingMode mode;
 
-  /// نوع الميديا: انيميشن أو صورة svg أو صورة png - غيّرها حسب رغبتك
+  /// نوع الميديا: انيميشن أو صورة svg أو صورة png
   final HandlingMediaType mediaType;
 
-  /// ويدجت تحميل مخصص (يستخدم فقط في وضع fullScreen)
+  /// اختيار ستايل الصفحة الفارغة: style1 أو style2
+  final EmptyStateStyle emptyStyle;
+
+  /// ويدجت تحميل مخصص
   final Widget? loadingWidget;
 
-  /// دالة إعادة المحاولة (بتظهر كزرار)
+  /// دالة إعادة المحاولة
   final VoidCallback? onRetry;
 
   /// دالة تُنفذ عند الضغط على شاشة الخطأ في وضع overlay
   final VoidCallback? onTapError;
 
-  /// رسالة مخصصة (لو مبعتهاش هتاخد رسالة افتراضية حسب الحالة/الراوت)
+  /// رسالة عنوان مخصصة
   final String? message;
 
-  /// مسار صورة/أنيميشن مخصص (لو مبعتهوش هياخد مسار وهمي افتراضي - استبدله بمسارك الحقيقي)
+  /// رسالة فرعية مخصصة
+  final String? subMessage;
+
+  /// مسار صورة/أنيميشن مخصص
   final String? imagePath;
 
   /// إظهار/إخفاء زرار إعادة المحاولة
   final bool showRetryButton;
 
   // ---------------------------------------------------------------------
-  // رسائل وصور "وهمية" افتراضية لكل راوت - استبدل المسارات دي بصورك الحقيقية
+  // خريطة البيانات المنظمة لجميع الراوتات بالتطبيقات الكبرى
   // ---------------------------------------------------------------------
-  Map<String, List<String>> get _routeMessages => {
-    Approute.notificationPage: [
-      "No notifications yet".tr,
-      Imageasset.emptyNotification,
-    ],
-    Approute.ShoppingCartPage: [
-      "Start shopping now".tr,
-      "assets/images/empty_cart.svg",
-    ],
-    Approute.myfavorite: [
-      "No favorites yet — go find something you'll love!",
-      Imageasset.emptystate,
-    ],
-    Approute.viewmyaddres: ["Add new address".tr, Imageasset.emptystate],
-    Approute.Orders: [
-      "You have no orders yet".tr,
-      "assets/images/empty_orders.svg",
-    ],
-    Approute.Items: ["No items in this Category yet", Imageasset.animation2],
-    AdminApproate.ViewItemScreen: [
-      "No items in this Category yet",
-      Imageasset.emptycart,
-    ],
+  Map<String, EmptyStateModel> get _routeMessages => {
+    Approute.notificationPage: EmptyStateModel(
+      title: "No notifications yet".tr,
+      subtitle: "We'll notify you when something important arrives.".tr,
+      imagePath: Imageasset.emptyNotification,
+    ),
+    Approute.ShoppingCartPage: EmptyStateModel(
+      title: "Your shopping cart is empty".tr,
+      subtitle: "Explore our items and add them to your cart now!".tr,
+      imagePath: "assets/images/empty_cart.svg",
+    ),
+    Approute.myfavorite: EmptyStateModel(
+      title: "No favorites saved yet".tr,
+      subtitle:
+          "Tap the heart icon on any product to save it here for later.".tr,
+      imagePath: Imageasset.emptyfavorite,
+    ),
+    Approute.viewmyaddres: EmptyStateModel(
+      title: "No addresses found".tr,
+      subtitle: "Add a shipping address to ensure fast and smooth delivery.".tr,
+      imagePath: Imageasset.emptyAddress,
+    ),
+    Approute.Orders: EmptyStateModel(
+      title: "You haven't placed any orders".tr,
+      subtitle:
+          "Once you place an order, you can track its status right here.".tr,
+      imagePath:Imageasset.emptyNotification,
+    ),
+    Approute.Items: EmptyStateModel(
+      title: "No products in this category".tr,
+      subtitle: "Check back later or try exploring another category.".tr,
+      imagePath: Imageasset.animation2,
+    ),
+    AdminApproate.ViewItemScreen: EmptyStateModel(
+      title: "Category is empty".tr,
+      subtitle:
+          "Add new items to this category to make them available to users.".tr,
+      imagePath: Imageasset.emptycart,
+    ),
   };
 
-  List<String> _defaultForRoute() {
+  EmptyStateModel _defaultForRoute() {
     final data = _routeMessages[Get.currentRoute];
-    return data ?? ["No data found".tr, Imageasset.emptycart];
+    return data ??
+        EmptyStateModel(
+          title: "No data available".tr,
+          subtitle: "We couldn't find any information to display right now.".tr,
+          imagePath: Imageasset.emptycart,
+        );
   }
 
   // ---------------------------------------------------------------------
-  // اختيار الرسالة المناسبة حسب الحالة
+  // اختيار الرسالة الرئيسية حسب الحالة
   // ---------------------------------------------------------------------
-  String _getMessage() {
+  String _getTitle() {
     if (message != null) return message!;
     switch (statusrequest) {
       case Statusrequest.checkinterner:
-        return "Check your internet connection".tr;
+        return "No Internet Connection".tr;
       case Statusrequest.loading:
         return "Loading...".tr;
       case Statusrequest.serverfailure:
-        return "Server error, try again later".tr;
+        return "Server Error".tr;
       case Statusrequest.failure:
       case Statusrequest.nodata:
-        return _defaultForRoute()[0];
+        return _defaultForRoute().title;
       default:
         return "";
     }
   }
 
   // ---------------------------------------------------------------------
-  // اختيار مسار الصورة/الأنيميشن المناسب حسب الحالة (مسارات وهمية - استبدلها)
+  // اختيار الرسالة الفرعية حسب الحالة
+  // ---------------------------------------------------------------------
+  String _getSubtitle() {
+    if (subMessage != null) return subMessage!;
+    switch (statusrequest) {
+      case Statusrequest.checkinterner:
+        return "Please check your network settings and try again.".tr;
+      case Statusrequest.serverfailure:
+        return "Something went wrong on our end. Please try again later.".tr;
+      case Statusrequest.failure:
+      case Statusrequest.nodata:
+        return _defaultForRoute().subtitle;
+      default:
+        return "";
+    }
+  }
+
+  // ---------------------------------------------------------------------
+  // اختيار مسار الميديا
   // ---------------------------------------------------------------------
   String _getImagePath() {
     if (imagePath != null) return imagePath!;
@@ -145,107 +213,193 @@ class HandlingDataView extends StatelessWidget {
         return Imageasset.nodata;
       case Statusrequest.failure:
       case Statusrequest.nodata:
-        return _defaultForRoute()[1];
+        return _defaultForRoute().imagePath;
       default:
         return Imageasset.nodata;
     }
   }
 
   // ---------------------------------------------------------------------
-  // بناء الميديا (انيميشن / svg / png) حسب mediaType المختار
+  // بناء الميديا (انيميشن / svg / png)
   // ---------------------------------------------------------------------
-  Widget _buildMedia({double? width, double? height, isTablet}) {
+  Widget _buildMedia({double? width, double? height, bool isTablet = false}) {
     final path = _getImagePath();
+    final double defaultSize = isTablet ? 230 : 170;
+    final w = width ?? defaultSize;
+    final h = height ?? defaultSize;
+
     switch (mediaType) {
       case HandlingMediaType.animation:
-        return Animationlottie(
-          animationPath: path,
-          h: isTablet ? 250 : 200,
-          w: isTablet ? 250 : 200,
-        );
+        return Animationlottie(animationPath: path, h: h, w: w);
       case HandlingMediaType.svgImage:
-        return SvgPicture.asset(
-          path,
-          width: width,
-          height: height,
+        return SvgPicture(
+          SvgAssetLoader(path),
+          width: w,
+          height: h,
           fit: BoxFit.contain,
         );
       case HandlingMediaType.pngImage:
-        return Image.asset(
-          path,
-          width: width,
-          height: height,
-          fit: BoxFit.contain,
-        );
+        return Image.asset(path, width: w, height: h, fit: BoxFit.contain);
     }
   }
 
   // ---------------------------------------------------------------------
-  // شكل الحالة الكامل (يستخدم في وضع fullScreen)
+  // Style 1: كلاسيكي متمحور ونظيف
   // ---------------------------------------------------------------------
-  Widget _buildFullState(BuildContext context) {
-    final msg = _getMessage();
+  Widget _buildStyle1(BuildContext context) {
+    final title = _getTitle();
+    final subtitle = _getSubtitle();
     final canRetry =
-        statusrequest == Statusrequest.checkinterner && onRetry != null;
+        (statusrequest == Statusrequest.checkinterner ||
+            statusrequest == Statusrequest.serverfailure) &&
+        onRetry != null &&
+        showRetryButton;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Center(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(
-            child: Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(25),
-              width: MediaQuery.of(context).size.width * 0.6,
-              height: MediaQuery.of(context).size.width * 0.6,
-              child: _buildMedia(
-                isTablet: MediaQuery.of(context).size.width >= 600,
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 10),
-          if (msg.isNotEmpty)
+          _buildMedia(isTablet: MediaQuery.of(context).size.width >= 600),
+          const SizedBox(height: 24),
+          if (title.isNotEmpty)
             Text(
-              msg,
+              title,
+              textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 17,
+                fontSize: 19,
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white
-                    : const Color(0xFF16181D),
+                color: isDark ? Colors.white : const Color(0xFF16181D),
               ),
             ),
-
-          const SizedBox(height: 6),
-
-          Text(
-            "Try searching with another name or category.",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 13, color: Colors.grey),
-          ),
-          if (canRetry)
-          Padding(
-            padding: const EdgeInsets.only(top: 20),
-            child: Checkbutton(
-              width: context.width * 0.4,
-              onTap: () {
-                if (onRetry != null) onRetry!();
-              },
-              buttonName: "Try again",
+          if (subtitle.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Text(
+              subtitle,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                height: 1.4,
+                color: isDark ? Colors.grey[400] : Colors.grey[600],
+              ),
             ),
-          ),
+          ],
+          if (canRetry)
+            Padding(
+              padding: const EdgeInsets.only(top: 24),
+              child: Checkbutton(
+                width: context.width * 0.45,
+                onTap: onRetry!,
+                buttonName: "Try again".tr,
+              ),
+            ),
         ],
       ),
     );
   }
 
   // ---------------------------------------------------------------------
-  // شكل الأوفرلاي (يستخدم في وضع overlay) - يتحط فوق أي حتة في الصفحة
+  // Style 2: عصري بتصميم الكارت والخلفيات الدائرية
+  // ---------------------------------------------------------------------
+  Widget _buildStyle2(BuildContext context) {
+    final title = _getTitle();
+    final subtitle = _getSubtitle();
+    final canRetry =
+        (statusrequest == Statusrequest.checkinterner ||
+            statusrequest == Statusrequest.serverfailure) &&
+        onRetry != null &&
+        showRetryButton;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Center(
+      child: Container(
+        margin: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 24),
+        decoration: BoxDecoration(
+          color: isDark ? const Color(0xFF1E2026) : Colors.grey.shade50,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: isDark ? Colors.white10 : Colors.grey.shade200,
+          ),
+          boxShadow: [
+            if (!isDark)
+              BoxShadow(
+                color: Colors.black.withOpacity(0.03),
+                blurRadius: 15,
+                offset: const Offset(0, 5),
+              ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isDark
+                    ? Colors.white.withOpacity(0.05)
+                    : Colors.grey.shade100,
+              ),
+              child: _buildMedia(width: 120, height: 120),
+            ),
+            const SizedBox(height: 20),
+            if (title.isNotEmpty)
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: isDark ? Colors.white : Colors.black87,
+                ),
+              ),
+            if (subtitle.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Text(
+                subtitle,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 13,
+                  height: 1.4,
+                  color: isDark ? Colors.grey[400] : Colors.grey[600],
+                ),
+              ),
+            ],
+            if (canRetry)
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Checkbutton(
+                  width: context.width * 0.4,
+                  onTap: onRetry!,
+                  buttonName: "Try again".tr,
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------------------
+  // التبديل بين الستايلين في الوضع الكامل
+  // ---------------------------------------------------------------------
+  Widget _buildFullState(BuildContext context) {
+    return Center(
+      child: emptyStyle == EmptyStateStyle.style1
+          ? _buildStyle1(context)
+          : _buildStyle2(context),
+    );
+  }
+
+  // ---------------------------------------------------------------------
+  // شكل الـ Overlay
   // ---------------------------------------------------------------------
   Widget _buildOverlay(BuildContext context, {required bool isInteractive}) {
-    final msg = _getMessage();
+    final title = _getTitle();
 
     return Container(
       width: double.infinity,
@@ -260,16 +414,16 @@ class HandlingDataView extends StatelessWidget {
             child: _buildMedia(width: 120, height: 120),
           ),
           const SizedBox(height: 20),
-          if (msg.isNotEmpty)
+          if (title.isNotEmpty)
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               decoration: BoxDecoration(
-                color: Colors.black45,
+                color: Colors.black12,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
-                msg,
-                style: const TextStyle(color: Colors.white, fontSize: 16),
+                title,
+                style: const TextStyle(color: Colors.white, fontSize: 15),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -315,7 +469,7 @@ class HandlingDataView extends StatelessWidget {
       return widget;
     }
 
-    // ---------------- وضع Overlay (يتحط فوق أي حتة في الصفحة) ----------------
+    // ---------------- وضع Overlay ----------------
     return Stack(
       children: [
         widget,

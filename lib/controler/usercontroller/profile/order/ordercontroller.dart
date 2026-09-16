@@ -75,7 +75,9 @@ class Ordercontroller extends GetxController {
       if (response['status'] == true) {
         List data = response["data"]["data"];
         orders.addAll(data.map((e) => OrderModel.fromJson(e)));
-        pragma("orders length: ${orders}");
+        data.isEmpty
+            ? statusrequest = Statusrequest.nodata
+            : statusrequest = Statusrequest.success;
       } else {
         statusrequest = Statusrequest.failure;
       }

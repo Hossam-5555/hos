@@ -16,7 +16,7 @@ class Imageasset {
   static String emptycart = "$routeImage/Add to Cart-cuate.svg";
   static String noresult = "$routeImage/empty_search.svg";
   static String emptyNotification = "$routeImage/Push notifications-cuate.svg";
-  static String emptyAddress = "$routeImage/empty_addresses_grayscale.svg";
+  static String emptyAddress = "$routeImage/undraw_delivery-address_409g.svg";
   static String emptyfavorite = "$routeImage/empty_favorites.svg";
   static String emptystate="$routeImage/Empty State.json";
   //Animation

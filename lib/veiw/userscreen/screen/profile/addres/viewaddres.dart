@@ -35,7 +35,7 @@ class ViewMyAddres extends StatelessWidget {
 
           return HandlingDataView(
             statusrequest: controller.statusrequest!,
-            mediaType: HandlingMediaType.animation,
+            mediaType: HandlingMediaType.svgImage,
             mode: HandlingMode.fullScreen,
             showRetryButton: true,
             widget: AnimatedList(

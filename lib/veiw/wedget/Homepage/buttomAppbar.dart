@@ -106,7 +106,7 @@ class CustomBottomNavBar extends StatelessWidget {
                                     : FontWeight.w200,
                                 color: isSelected
                                     ? Colors.white
-                                    : Colors.blueAccent,
+                                    : Colors.blueAccent.shade100,
                               ),
                             ),
                           ],
@@ -144,7 +144,8 @@ class CustomBottomNavBar extends StatelessWidget {
         height: size,
         width: size,
         colorFilter: ColorFilter.mode(
-          isSelected ? Colors.white : Colors.blueAccent,
+          isSelected ? Colors.white : Colors.blueAccent.shade100,
+
           BlendMode.srcIn,
         ),
       );
