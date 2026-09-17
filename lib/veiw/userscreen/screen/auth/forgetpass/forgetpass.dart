@@ -90,7 +90,7 @@ class ForgetPass extends StatelessWidget {
                             textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 13, color: subTextColor),
                           ),
-                          SizedBox(height: size.height * 0.035),
+                          SizedBox(height: size.height * 0.025),
 
                           Form(
                             key: controller.formstate,
@@ -159,7 +159,7 @@ class ForgetPass extends StatelessWidget {
                                 : const SizedBox.shrink(),
                           ),
 
-                          SizedBox(height: size.height * 0.04),
+                          SizedBox(height: size.height * 0.02),
 
                           SizedBox(
                             child: GetBuilder<CheckemailController>(

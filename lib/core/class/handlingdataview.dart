@@ -136,7 +136,7 @@ class HandlingDataView extends StatelessWidget {
       title: "You haven't placed any orders".tr,
       subtitle:
           "Once you place an order, you can track its status right here.".tr,
-      imagePath:Imageasset.emptyNotification,
+      imagePath: Imageasset.emptyNotification,
     ),
     Approute.Items: EmptyStateModel(
       title: "No products in this category".tr,
@@ -228,18 +228,22 @@ class HandlingDataView extends StatelessWidget {
     final w = width ?? defaultSize;
     final h = height ?? defaultSize;
 
-    switch (mediaType) {
-      case HandlingMediaType.animation:
-        return Animationlottie(animationPath: path, h: h, w: w);
-      case HandlingMediaType.svgImage:
-        return SvgPicture(
-          SvgAssetLoader(path),
-          width: w,
-          height: h,
-          fit: BoxFit.contain,
-        );
-      case HandlingMediaType.pngImage:
-        return Image.asset(path, width: w, height: h, fit: BoxFit.contain);
+    if (statusrequest == Statusrequest.loading) {
+      return Animationlottie(animationPath: Imageasset.loading, h: h, w: w);
+    } else {
+      switch (mediaType) {
+        case HandlingMediaType.animation:
+          return Animationlottie(animationPath: path, h: h, w: w);
+        case HandlingMediaType.svgImage:
+          return SvgPicture(
+            SvgAssetLoader(path),
+            width: w,
+            height: h,
+            fit: BoxFit.contain,
+          );
+        case HandlingMediaType.pngImage:
+          return Image.asset(path, width: w, height: h, fit: BoxFit.contain);
+      }
     }
   }
 

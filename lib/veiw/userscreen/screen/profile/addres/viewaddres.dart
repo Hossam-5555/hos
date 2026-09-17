@@ -33,7 +33,7 @@ class ViewMyAddres extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
 
-          return HandlingDataView(
+          return HandlingDataView(emptyStyle: EmptyStateStyle.style2,
             statusrequest: controller.statusrequest!,
             mediaType: HandlingMediaType.svgImage,
             mode: HandlingMode.fullScreen,

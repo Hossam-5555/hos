@@ -30,6 +30,7 @@ class Myfavorite extends StatelessWidget {
             Expanded(
               child: GetBuilder<Myfavcontroler>(
                 builder: (controller) => HandlingDataView(
+                  emptyStyle: EmptyStateStyle.style2,
                   statusrequest: controller.statusrequest,
                   mediaType: HandlingMediaType.svgImage,
                   mode: HandlingMode.fullScreen,

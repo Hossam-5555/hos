@@ -23,7 +23,7 @@ class Orders extends StatelessWidget {
       ),
 
       body: GetBuilder<Ordercontroller>(
-        builder: (controller) => HandlingDataView(
+        builder: (controller) => HandlingDataView(emptyStyle: EmptyStateStyle.style2,
            statusrequest: controller.statusrequest,
             mediaType: HandlingMediaType.svgImage,
             mode: HandlingMode.fullScreen,

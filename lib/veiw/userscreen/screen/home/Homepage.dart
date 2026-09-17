@@ -63,6 +63,8 @@ class HomePage extends StatelessWidget {
                 final itemWidth = (width - 30) / 3;
 
                 return HandlingDataView(
+                  emptyStyle: EmptyStateStyle.style1,
+                  mediaType: HandlingMediaType.svgImage,
                   mode: HandlingMode.fullScreen,
                   showRetryButton: true,
                   onRetry: () {

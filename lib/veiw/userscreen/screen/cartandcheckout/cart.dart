@@ -24,7 +24,7 @@ class ShoppingCartPage extends StatelessWidget {
     return Scaffold(
       body: GetBuilder<CartController>(
         builder: (controller) {
-          return HandlingDataView(
+          return HandlingDataView(emptyStyle: EmptyStateStyle.style2,
             imagePath: Imageasset.emptycart,
             message: "Start shopping now".tr,
             statusrequest: controller.statusrequest,
