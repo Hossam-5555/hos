@@ -46,7 +46,7 @@ class ViewCategories extends StatelessWidget {
           ),
           child: Center(
             child: Icon(
-              Icons.add_moderator_rounded,
+              Icons.add_circle,
               color: Colors.white,
               size: 28,
             ),

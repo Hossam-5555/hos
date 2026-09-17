@@ -5,7 +5,6 @@ import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/data/datasource/admindata/dashboarddata.dart';
-import 'package:hos/data/model/dashboardmodel.dart';
 import 'package:hos/veiw/adminscreen/Home/AdminHome.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/viewcat.dart';
 import 'package:hos/veiw/adminscreen/Home/orders/adminpending.dart';
@@ -14,15 +13,21 @@ import 'package:hos/veiw/userscreen/screen/profile/profile.dart';
 class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
   // ─────────────────────────── State ───────────────────────────
   Statusrequest statusrequest = Statusrequest.none;
-  List<DashboardResponse> apidata = [];
   String? errorMessage;
+
+  // ──────────────── Data Objects ──────────────────────────────
+  Map<String, dynamic> overviewData = {};
+  List<dynamic> chartRawData = [];
+  Map<String, dynamic> detailsData = {};
 
   // ─────────────────── Navigation / Pages ──────────────────────
   int currentpage = 0;
   late PageController controller;
 
   // ───────────────────── Chart Filter ──────────────────────────
+  // 0 -> weekly | 1 -> monthly
   int selectedtime = 0;
+  bool isChartLoading = false;
 
   // ─────────────────── Animation (BottomBar) ───────────────────
   late AnimationController animatedContainer;
@@ -33,9 +38,9 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
 
   // ─────────────────── Static Data ─────────────────────────────
   final List<Widget> pages = [
-    Adminhomedashboard(),
-    Adminpending(),
-    ViewCategories(),
+    const Adminhomedashboard(),
+    const Adminpending(),
+    const ViewCategories(),
     ProfilePage(),
   ];
 
@@ -48,20 +53,17 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
 
   // ─────────────────────── Getters ─────────────────────────────
 
-  /// بيرجع نقاط الـ LineChart من بيانات الـ API.
-  /// لو الـ apidata فاضية أو مفيش chart data يرجع قائمة فاضية بأمان
-  /// بدل ما يكرش بـ RangeError.
+  /// استخراج نقاط الـ LineChart للرسم البياني بأمان
   List<FlSpot> get salesSpots {
-    if (apidata.isEmpty) return [];
-
-    final chartData = apidata[0].salesChart;
-    if (chartData.isEmpty) return [];
+    if (chartRawData.isEmpty) return [];
 
     final List<FlSpot> spots = [];
-    for (int i = 0; i < chartData.length; i++) {
-      final rawTotal = chartData[i].total;
-      // تجاهل أي نقطة فيها قيمة null أو مش رقم صالح
-      final double? y = double.tryParse(rawTotal ?? '');
+    for (int i = 0; i < chartRawData.length; i++) {
+      final rawTotal = chartRawData[i]['total'];
+      final double? y = (rawTotal is num)
+          ? rawTotal.toDouble()
+          : double.tryParse(rawTotal?.toString() ?? '');
+
       if (y != null) {
         spots.add(FlSpot(i.toDouble(), y));
       }
@@ -69,39 +71,48 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
     return spots;
   }
 
-  /// true لما الصفحة في حالة loading أو لما الـ apidata لسه فاضية
-  bool get isLoading =>
-      statusrequest == Statusrequest.loading || apidata.isEmpty;
+  bool get isLoading => statusrequest == Statusrequest.loading;
 
-  // ────────────────────── API Call ─────────────────────────────
-  Future<void> getdashboardapi() async {
+  // ────────────────────── API Calls ─────────────────────────────
+
+  /// جلب كافة البيانات عند فتح الشاشة أو التحديث (Pull to refresh)
+  Future<void> getdashboardapi({bool isRefresh = false}) async {
     statusrequest = Statusrequest.loading;
     errorMessage = null;
     update();
 
     try {
-      final response = await _data.getdata();
-      final handledStatus = handling(response);
+      final period = selectedtime == 0 ? 'weekly' : 'monthly';
 
-      // فشل شبكة أو سيرفر
-      if (handledStatus != Statusrequest.success) {
-        statusrequest = handledStatus;
+      // جلب البيانات بالتوازي من الـ 3 Endpoints لسرعة الاستجابة
+      final results = await Future.wait([
+        _data.getOverview(isRefresh: isRefresh),
+        _data.getChartData(period: period, isRefresh: isRefresh),
+        _data.getDetails(isRefresh: isRefresh),
+      ]);
+
+      final overviewRes = results[0];
+      final chartRes = results[1];
+      final detailsRes = results[2];
+
+      final overviewStatus = handling(overviewRes);
+
+      if (overviewStatus != Statusrequest.success) {
+        statusrequest = overviewStatus;
         update();
         return;
       }
 
-      // فشل من جهة الـ API نفسه
-      if (response['status'] != true || response['data'] == null) {
-        statusrequest = Statusrequest.failure;
-        errorMessage = response['message'] ?? 'Something went wrong';
-        update();
-        return;
+      // حفظ نتائج البيانات في المتغيرات المحلية
+      if (overviewRes['status'] == true) {
+        overviewData = Map<String, dynamic>.from(overviewRes['data'] ?? {});
       }
-
-      // نجح — نمسح القديم ونحط الجديد
-      apidata
-        ..clear()
-        ..add(DashboardResponse.fromJson(response['data']));
+      if (chartRes['status'] == true) {
+        chartRawData = List<dynamic>.from(chartRes['data'] ?? []);
+      }
+      if (detailsRes['status'] == true) {
+        detailsData = Map<String, dynamic>.from(detailsRes['data'] ?? {});
+      }
 
       statusrequest = Statusrequest.success;
     } catch (e, stack) {
@@ -112,9 +123,31 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
     update();
   }
 
+  /// تغيير فلترة الرسم البياني (أسبوعي / شهري)
+  Future<void> changetime(int index) async {
+    if (selectedtime == index) return;
+    selectedtime = index;
+    isChartLoading = true;
+    update();
+
+    final period = selectedtime == 0 ? 'weekly' : 'monthly';
+
+    try {
+      final response = await _data.getChartData(period: period);
+      if (response['status'] == true) {
+        chartRawData = List<dynamic>.from(response['data'] ?? []);
+      }
+    } catch (e) {
+      debugPrint('Error updating chart time: $e');
+    }
+
+    isChartLoading = false;
+    update();
+  }
+
   // ───────────────────── Navigation ────────────────────────────
   void changePage(int index) {
-    if (currentpage == index) return; // تجنب إعادة البناء لو نفس الصفحة
+    if (currentpage == index) return;
     currentpage = index;
     controller.animateToPage(
       index,
@@ -127,13 +160,6 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
   void onpagechanged(int index) {
     if (currentpage == index) return;
     currentpage = index;
-    update();
-  }
-
-  // ─────────────────── Chart Filter ────────────────────────────
-  void changetime(int i) {
-    if (selectedtime == i) return; // تجنب إعادة البناء لو نفس الفلتر
-    selectedtime = i;
     update();
   }
 

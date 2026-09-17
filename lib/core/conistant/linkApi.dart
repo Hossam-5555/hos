@@ -1,6 +1,6 @@
 class LinkApi {
   // static String lravelserver ="http://10.190.237.253:8000/api";
-  static String lravelserver ="http://10.0.2.2:8000/api";
+  static String lravelserver = "http://10.0.2.2:8000/api";
   //imagelink=============================
 
   //Auth=============================
@@ -31,7 +31,7 @@ class LinkApi {
   // AddresLink
   static String addaddres = '$lravelserver/Address';
   static String deleteAddres = '$lravelserver/delelteaddres';
-    static String setdafault = '$lravelserver/defaultaddress';
+  static String setdafault = '$lravelserver/defaultaddress';
 
   //orders
   static String order = '$lravelserver/order';
@@ -47,12 +47,16 @@ class LinkApi {
   static String offer = '$lravelserver/offer';
 
   //Admin //categores
-  static String dashborddata="$lravelserver/dashboadcontroller";
+  // رابط لوحة التحكم القديم (قم بإلغائه أو استبداله)
+  // static String dashborddata = "$lravelserver/dashboadcontroller";
+
+  // الروابط الجديدة المقسمة للتحليلات
+  static String analyticsOverview = "$lravelserver/admin/analytics/overview";
+  static String analyticsChart = "$lravelserver/admin/analytics/chart";
+  static String analyticsDetails = "$lravelserver/admin/analytics/details";
   static String admincategrory = '$lravelserver/category';
   static String admindeletecat = '$lravelserver/deletecategory';
   //Admin //items
   static String cruditemsadmin = '$lravelserver/items';
   static String adminviewitem = '$lravelserver/category';
-
- 
 }

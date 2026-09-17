@@ -118,7 +118,7 @@ class ViewItemScreen extends StatelessWidget {
             ),
             child: const Center(
               child: Icon(
-                Icons.add_moderator_rounded,
+                Icons.add_circle,
                 color: Colors.white,
                 size: 26,
               ),
