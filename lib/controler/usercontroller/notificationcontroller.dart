@@ -19,7 +19,7 @@ class Notificationcontroller extends GetxController {
   Notificationdata notificationdata = Notificationdata(Get.find());
   int? get userid => myservisec.sharedPreferences.getInt("id");
 
-  List<MassageModel> notificationlist = [];
+  List<MessageModel> notificationlist = [];
   int notificationcount = 0;
 
   /// ====== MULTI SELECT ======
@@ -122,7 +122,7 @@ class Notificationcontroller extends GetxController {
     if (Statusrequest.success == statusrequest && response['status'] == true) {
       notificationlist.clear();
       List data = response["data"]["messages"];
-      notificationlist.addAll((data).map((e) => MassageModel.fromJson(e)));
+      notificationlist.addAll((data).map((e) => MessageModel.fromJson(e)));
       notificationcount = response["data"]["total_inactive_count"];
       notificationcount == 0
           ? statusrequest = Statusrequest.failure
@@ -152,7 +152,7 @@ class Notificationcontroller extends GetxController {
           rawData = response['data'];
         }
 
-        notificationlist.addAll(rawData.map((e) => MassageModel.fromJson(e)));
+        notificationlist.addAll(rawData.map((e) => MessageModel.fromJson(e)));
 
         if (notificationlist.isEmpty) {
           statusrequest = Statusrequest.nodata;

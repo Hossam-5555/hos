@@ -90,7 +90,7 @@ class SharedProductCard extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: ([
-                  const Color.fromARGB(255, 29, 4, 4).withOpacity(0.8), // لمعة بينك/بيضاء (وضع ليلي)
+                  const Color.fromARGB(255, 97, 93, 93).withOpacity(0.8), // لمعة بينك/بيضاء (وضع ليلي)
                   Colors.grey,
                 ]),
               ),

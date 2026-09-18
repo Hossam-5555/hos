@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -45,11 +43,7 @@ class ViewCategories extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
           child: Center(
-            child: Icon(
-              Icons.add_circle,
-              color: Colors.white,
-              size: 28,
-            ),
+            child: Icon(Icons.add_circle, color: Colors.white, size: 28),
           ),
         ),
       ),
@@ -57,6 +51,7 @@ class ViewCategories extends StatelessWidget {
         builder: (controller) {
           return HandlingDataView(
             mode: HandlingMode.fullScreen,
+            emptyStyle: EmptyStateStyle.style2,
             mediaType: HandlingMediaType.animation,
             statusrequest: controller.statusrequest,
             widget: SafeArea(

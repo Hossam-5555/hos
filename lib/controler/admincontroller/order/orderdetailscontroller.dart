@@ -6,6 +6,7 @@ import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/admindata/orderdata.dart';
 import 'package:hos/data/model/ordersmodel.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/class/crud.dart';
 
@@ -85,4 +86,31 @@ class AdminOrderDetailesController extends GetxController {
     }
     update();
   }
+
+ var isLoading = false.obs;
+
+  Future<void> makePhoneCall() async {
+    isLoading.value = true;
+
+    // ✅ تأخير بسيط قبل تنفيذ العملية (مثلاً ثانية)
+    await Future.delayed(const Duration(milliseconds: 750));
+
+    final Uri phoneUri = Uri(scheme: 'tel', path: '+201023426561');
+
+    try {
+      await launchUrl(phoneUri);
+    } catch (e) {
+      Get.snackbar("خطأ", "تعذر فتح تطبيق الاتصال 😢");
+    }
+
+    // ✅ تأخير بسيط بعد العملية لتجميل الحركة
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    isLoading.value = false;
+  }
+
+
+
+
+
 }

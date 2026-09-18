@@ -44,7 +44,7 @@ class NotificationPage extends StatelessWidget {
               },
             ),
           ),
-          body: HandlingDataView(
+          body: HandlingDataView(emptyStyle: EmptyStateStyle.style2,
             statusrequest: controller.statusrequest,
             mediaType: HandlingMediaType.svgImage,
             mode: HandlingMode.fullScreen,

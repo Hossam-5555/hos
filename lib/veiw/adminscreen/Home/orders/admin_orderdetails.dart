@@ -53,7 +53,7 @@ class AdminOrderdetails extends StatelessWidget {
               // ============================================================
               // QUICK ACTIONS
               // ============================================================
-              _quickActions(context, o),
+              _quickActions(context, o, controller),
 
               const SizedBox(height: 12),
 
@@ -151,7 +151,11 @@ class AdminOrderdetails extends StatelessWidget {
   // QUICK ACTIONS
   // ========================================================================
 
-  Widget _quickActions(BuildContext context, dynamic order) {
+  Widget _quickActions(
+    BuildContext context,
+    dynamic order,
+    AdminOrderDetailesController controller,
+  ) {
     return CardWidget(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,8 +182,7 @@ class AdminOrderdetails extends StatelessWidget {
                   icon: Icons.phone_outlined,
                   title: "Call Customer",
                   onTap: () {
-                    // TODO:
-                    // افتح الاتصال بالعميل
+                    controller.makePhoneCall();
                   },
                 ),
               ),
@@ -200,34 +203,6 @@ class AdminOrderdetails extends StatelessWidget {
           ),
 
           const SizedBox(height: 10),
-
-          Row(
-            children: [
-              Expanded(
-                child: _actionButton(
-                  icon: Icons.delivery_dining_outlined,
-                  title: "Assign Courier",
-                  onTap: () {
-                    // TODO:
-                    // افتح قائمة المندوبين
-                  },
-                ),
-              ),
-
-              const SizedBox(width: 10),
-
-              Expanded(
-                child: _actionButton(
-                  icon: Icons.chat_outlined,
-                  title: "Contact",
-                  onTap: () {
-                    // TODO:
-                    // فتح WhatsApp / Chat
-                  },
-                ),
-              ),
-            ],
-          ),
         ],
       ),
     );

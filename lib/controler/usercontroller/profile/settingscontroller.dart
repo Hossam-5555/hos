@@ -1,4 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/conistant/static.dart';
@@ -55,23 +56,25 @@ class SettingsController extends GetxController {
 
   var isLoading = false.obs;
 
-  Future<void> makePhoneCall() async {
+  Future<void> openWhatsApp({
+    required String phone,
+    String message = '',
+  }) async {
     isLoading.value = true;
 
-    // ✅ تأخير بسيط قبل تنفيذ العملية (مثلاً ثانية)
-    await Future.delayed(const Duration(milliseconds: 750));
+    // تجهيز الرابط المباشر للواتساب
+    final Uri url = Uri.parse(
+      'https://wa.me/$phone?text=${Uri.encodeComponent(message)}',
+    );
 
-    final Uri phoneUri = Uri(scheme: 'tel', path: '+201023426561');
-
-    try {
-      await launchUrl(phoneUri);
-    } catch (e) {
-      Get.snackbar("خطأ", "تعذر فتح تطبيق الاتصال 😢");
+    if (await canLaunchUrl(url)) {
+      await launchUrl(
+        url,
+        mode: LaunchMode.externalApplication, // يفتح في تطبيق الواتساب نفسه
+      );
+    } else {
+      debugPrint('تعذر فتح الواتساب');
     }
-
-    // ✅ تأخير بسيط بعد العملية لتجميل الحركة
-    await Future.delayed(const Duration(milliseconds: 500));
-
     isLoading.value = false;
   }
 

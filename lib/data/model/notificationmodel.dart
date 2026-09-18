@@ -1,4 +1,4 @@
-class MassageModel {
+class MessageModel {
   int? id;
   String? title;
   String? body;
@@ -6,7 +6,7 @@ class MassageModel {
   bool? isActive;
   String? createdAt;
 
-  MassageModel(
+  MessageModel(
       {this.id,
       this.title,
       this.body,
@@ -14,7 +14,7 @@ class MassageModel {
       this.isActive,
       this.createdAt});
 
-  MassageModel.fromJson(Map<String, dynamic> json) {
+  MessageModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     body = json['body'];

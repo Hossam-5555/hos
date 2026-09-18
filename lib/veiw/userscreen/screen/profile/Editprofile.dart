@@ -126,25 +126,19 @@ class _EditProfileViewState extends State<EditProfileView> {
   final _formKey = GlobalKey<FormState>();
 
   late final TextEditingController _nameCtrl;
-  late final TextEditingController _emailCtrl;
   late final TextEditingController _phoneCtrl;
-  late final TextEditingController _addressCtrl;
 
   @override
   void initState() {
     super.initState();
     _nameCtrl = TextEditingController(text: controller.username);
-    _emailCtrl = TextEditingController(text: controller.email.value);
     _phoneCtrl = TextEditingController(text: controller.phone.value);
-    _addressCtrl = TextEditingController(text: controller.address.value);
   }
 
   @override
   void dispose() {
     _nameCtrl.dispose();
-    _emailCtrl.dispose();
     _phoneCtrl.dispose();
-    _addressCtrl.dispose();
     super.dispose();
   }
 
@@ -261,25 +255,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 16),
-                    _buildField(
-                      controller: _emailCtrl,
-                      label: "البريد الإلكتروني",
-                      hint: "example@email.com",
-                      icon: Icons.alternate_email,
-                      keyboardType: TextInputType.emailAddress,
-                      textDirection: TextDirection.ltr,
-                      validator: (v) {
-                        if (v == null || v.trim().isEmpty) {
-                          return "البريد الإلكتروني مطلوب";
-                        }
-                        final regex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
-                        if (!regex.hasMatch(v.trim())) {
-                          return "صيغة البريد غير صحيحة";
-                        }
-                        return null;
-                      },
-                    ),
+                
                     const SizedBox(height: 16),
                     _buildField(
                       controller: _phoneCtrl,
@@ -304,30 +280,6 @@ class _EditProfileViewState extends State<EditProfileView> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 18),
-                _sectionCard(
-                  title: "عنوان الشحن",
-                  icon: Icons.location_on_outlined,
-                  children: [
-                    _buildField(
-                      controller: _addressCtrl,
-                      label: "العنوان",
-                      hint: "المدينة، الحي، الشارع",
-                      icon: Icons.home_outlined,
-                      maxLines: 2,
-                      validator: (v) {
-                        if (v == null || v.trim().isEmpty) {
-                          return "العنوان مطلوب لعمليات التوصيل";
-                        }
-                        return null;
-                      },
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 32),
-                // _buildSaveButton(),
-                // const SizedBox(height: 12),
-                // _buildCancelButton(),
               ],
             ),
           ),
@@ -427,12 +379,9 @@ class _EditProfileViewState extends State<EditProfileView> {
           ),
           const SizedBox(height: 14),
           Text(
-              controller.username,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            controller.username,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 4),
           Text(
             "عضو في المتجر منذ ٢٠٢٤",

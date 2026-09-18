@@ -69,7 +69,7 @@ class CustomBottomNavBar extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.12),
-                    blurRadius: 25,
+                    blurRadius: 12,
                     spreadRadius: -5,
                     offset: Offset(0, 8),
                   ),
@@ -106,7 +106,9 @@ class CustomBottomNavBar extends StatelessWidget {
                                     : FontWeight.w200,
                                 color: isSelected
                                     ? Colors.white
-                                    : Colors.blueAccent.shade100,
+                                    : isDark
+                                    ? Colors.grey.shade400
+                                    : Colors.black,
                               ),
                             ),
                           ],
@@ -144,8 +146,7 @@ class CustomBottomNavBar extends StatelessWidget {
         height: size,
         width: size,
         colorFilter: ColorFilter.mode(
-          isSelected ? Colors.white : Colors.blueAccent.shade100,
-
+          isSelected ? Colors.white : Colors.black.withOpacity(0.7),
           BlendMode.srcIn,
         ),
       );

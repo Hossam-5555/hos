@@ -60,7 +60,7 @@ class AdminHome extends StatelessWidget {
         bottomNavigationBar: GetBuilder<Adminhome>(
           builder: (controller) => Container(
             padding: EdgeInsets.all(5),
-            margin: EdgeInsets.all(5),
+            margin: EdgeInsets.all(10),
             child: CustomBottomNavBar(
               items: [
                 NavItem(

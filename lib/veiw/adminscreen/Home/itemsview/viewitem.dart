@@ -40,6 +40,7 @@ class ViewItemScreen extends StatelessWidget {
                 builder: (controller) {
                   return HandlingDataView(
                     imagePath: Imageasset.animation2,
+                    emptyStyle: EmptyStateStyle.style2,
                     mediaType: HandlingMediaType.animation,
                     statusrequest: controller.statusrequest,
                     widget: GridView.builder(
@@ -117,11 +118,7 @@ class ViewItemScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: const Center(
-              child: Icon(
-                Icons.add_circle,
-                color: Colors.white,
-                size: 26,
-              ),
+              child: Icon(Icons.add_circle, color: Colors.white, size: 26),
             ),
           ),
         ),

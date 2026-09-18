@@ -157,7 +157,14 @@ class ProfilePage extends StatelessWidget {
                         ],
                         icon: Icons.headset_mic_outlined,
                         title: "Contact Us".tr,
-                        onTap: settingsController.makePhoneCall,
+                        onTap: () {
+                          settingsController.openWhatsApp(
+                            phone:
+                                '201023426561', // اكتب رقمك هنا مع كود الدولة
+                            message:
+                                'مرحباً، أود الاستفسار عن بعض الخدمات', // رسالة ترحيبية اختيارية
+                          );
+                        },
                         subtitle: " رقم تواصل علي واتساب",
                         trailing: Obx(
                           () => settingsController.isLoading.value

@@ -345,11 +345,9 @@ class Itemsdetailes extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          infoChip(Icons.local_shipping_outlined, "Free Delivery", isDark),
+          infoChip(Icons.local_shipping_outlined, "Fast", isDark),
           verticalDivider(),
           infoChip(Icons.access_time_rounded, "20-25 min", isDark),
-          verticalDivider(),
-          infoChip(Icons.local_fire_department_outlined, "162 Kcal", isDark),
         ],
       ),
     );
