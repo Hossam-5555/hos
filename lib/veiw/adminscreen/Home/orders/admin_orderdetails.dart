@@ -194,8 +194,10 @@ class AdminOrderdetails extends StatelessWidget {
                   icon: Icons.location_on_outlined,
                   title: "Track Order",
                   onTap: () {
-                    // TODO:
-                    // افتح الخريطة وتتبع الطلب
+                    controller.openMap(
+                      lat: controller.order!.shippingAddress.lat ?? 0.0,
+                      lng: controller.order!.shippingAddress.lng ?? 0.0,
+                    );
                   },
                 ),
               ),

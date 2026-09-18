@@ -25,7 +25,7 @@ class AdminOrderDetailesController extends GetxController {
   String? get langage => myservisec.sharedPreferences.getString("lang");
   bool get lang => langage == "ar";
 
-   void getcolorandstause(String status) {
+  void getcolorandstause(String status) {
     if (status == "pending") {
       statusColor = Colors.orange;
       statusText = lang ? "قيد الانتظار" : "Pending";
@@ -87,7 +87,7 @@ class AdminOrderDetailesController extends GetxController {
     update();
   }
 
- var isLoading = false.obs;
+  var isLoading = false.obs;
 
   Future<void> makePhoneCall() async {
     isLoading.value = true;
@@ -109,8 +109,20 @@ class AdminOrderDetailesController extends GetxController {
     isLoading.value = false;
   }
 
+  Future<void> openMap({required double lat, required double lng}) async {
+    // رابط موحد يفتح Google Maps أو Apple Maps حسب نظام التشغيل
+    final Uri googleMapsUrl = Uri.parse(
+      'https://www.google.com/maps/search/?api=1&query=$lat,$lng',
+    );
 
-
-
-
+    if (await canLaunchUrl(googleMapsUrl)) {
+      await launchUrl(
+        googleMapsUrl,
+        mode: LaunchMode
+            .externalApplication, // يفتح في تطبيق الخرائط الخاص بالجهاز
+      );
+    } else {
+      debugPrint('تعذر فتح الخرائط');
+    }
+  }
 }
