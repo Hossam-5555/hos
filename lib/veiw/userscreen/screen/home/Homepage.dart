@@ -92,10 +92,7 @@ class HomePage extends StatelessWidget {
                           ),
 
                           SizedBox(height: sectionSpacing),
-                          Skeletonizer(
-                            enabled: showSkeleton,
-                            child: Titles(title: "Categories".tr),
-                          ),
+                          Titles(title: "Categories".tr),
                           SizedBox(height: sectionSpacing * 0.6),
 
                           SizedBox(

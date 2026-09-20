@@ -87,7 +87,7 @@ class AdminOrderDetailesController extends GetxController {
     update();
   }
 
-  var isLoading = false.obs;
+  RxBool isLoading = false.obs;
 
   Future<void> makePhoneCall() async {
     isLoading.value = true;
@@ -108,8 +108,10 @@ class AdminOrderDetailesController extends GetxController {
 
     isLoading.value = false;
   }
+  RxBool istracking = false.obs;
 
   Future<void> openMap({required double lat, required double lng}) async {
+    istracking.value = true;
     // رابط موحد يفتح Google Maps أو Apple Maps حسب نظام التشغيل
     final Uri googleMapsUrl = Uri.parse(
       'https://www.google.com/maps/search/?api=1&query=$lat,$lng',
@@ -124,5 +126,6 @@ class AdminOrderDetailesController extends GetxController {
     } else {
       debugPrint('تعذر فتح الخرائط');
     }
+    istracking.value = false;
   }
 }

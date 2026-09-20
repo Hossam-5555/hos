@@ -238,6 +238,35 @@ class _AddresspageState<T extends GetxController> extends State<Addresspage<T>>
             ),
           ),
         ),
+        Positioned(
+          top: 16,
+          left: 16,
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
+              child: Center(
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color(0xFFE0E3E8),
+                  ),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: Icon(Icons.arrow_back_ios_sharp, color: Colors.black),
+                      iconSize: 20,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
         AnimatedPositioned(
           duration: const Duration(milliseconds: 250),
           curve: Curves.easeOut,

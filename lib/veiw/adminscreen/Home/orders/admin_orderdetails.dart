@@ -190,16 +190,20 @@ class AdminOrderdetails extends StatelessWidget {
               const SizedBox(width: 10),
 
               Expanded(
-                child: _actionButton(
-                  icon: Icons.location_on_outlined,
-                  title: "Track Order",
-                  onTap: () {
-                    controller.openMap(
-                      lat: controller.order!.shippingAddress.lat ?? 0.0,
-                      lng: controller.order!.shippingAddress.lng ?? 0.0,
-                    );
-                  },
-                ),
+                child: Obx(() {
+                  return controller.istracking.value
+                      ? const Center(child: CircularProgressIndicator())
+                      : _actionButton(
+                          icon: Icons.location_on_outlined,
+                          title: "Track Order",
+                          onTap: () {
+                            controller.openMap(
+                              lat: controller.order!.shippingAddress.lat ?? 0.0,
+                              lng: controller.order!.shippingAddress.lng ?? 0.0,
+                            );
+                          },
+                        );
+                }),
               ),
             ],
           ),

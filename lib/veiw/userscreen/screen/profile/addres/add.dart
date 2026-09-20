@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/addres/addrescontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/veiw/wedget/Address/addandedit.dart';
-import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
 // ignore: must_be_immutable
 class AddNewAddres extends StatelessWidget {
@@ -16,11 +15,7 @@ class AddNewAddres extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
-        child: Appbarbackicon(herotag: '', title: "Add Address"),
-      ),
-      // 2. تمرير البيانات المطلوبة لـ Addresspage
+
       body: GetBuilder<AddressController>(
         builder: (controller) => Addresspage<AddressController>(
           onChangedtype: controller.onLocationTypeChanged,

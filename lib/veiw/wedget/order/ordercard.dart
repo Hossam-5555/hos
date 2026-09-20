@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
 
-// ignore: must_be_immutable
 class OrderCard extends StatelessWidget {
   const OrderCard({
     super.key,
     this.onTap,
-    required this.h,
     required this.w,
     required this.order,
     required this.status,
@@ -18,7 +16,6 @@ class OrderCard extends StatelessWidget {
 
   final void Function()? onTap;
   final double w;
-  final double h;
   final dynamic order;
   final String status;
   final Color color;
@@ -26,172 +23,170 @@ class OrderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 1. اكتشاف وضع الثيم الحالي (مظلم أو فاتح)
     final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    // 2. تحديد الألوان بناءً على الثيم
     final primaryTextColor = isDark ? Colors.white : Colors.black87;
-    final shadowColor = Colors.white70;
+    final cardColor = isDark ? Colors.grey[900] : Colors.white;
 
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: h * 0.01, horizontal: w * 0.01),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
+          color: cardColor,
+          borderRadius: BorderRadius.circular(22),
           boxShadow: [
             BoxShadow(
-              color: shadowColor,
-              offset: const Offset(0, 0.2), // ظل سينمائي ناعم يعطي عمق
+              color: Colors.black.withOpacity(isDark ? 0.4 : 0.08),
+              blurRadius: 14,
+              offset: const Offset(0, 6),
             ),
           ],
-          // الصورة الخلفية
-          image: DecorationImage(
-            image: AssetImage(orderimage[status]),
-            fit: BoxFit.cover,
-          ),
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(25),
-          child: BackdropFilter(
-            // تأثير البلور (Glassmorphism)
-            filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
-            child: Container(
-              // التدرج اللوني فوق الصورة
-              decoration: BoxDecoration(),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // --- صورة الطلب + الحالة + الوقت فوقها (Glassmorphism badges) ---
+            Stack(
+              children: [
+                AspectRatio(
+                  aspectRatio: 1.2,
+                  child: Image.asset(
+                    orderimage[status],
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                  ),
+                ),
+                // تدرج خفيف تحت الصورة عشان الـ badges تبان
+                Positioned.fill(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.black.withOpacity(0.25),
+                          Colors.transparent,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 8,
+                  left: 8,
+                  child: _glassBadge(
+                    text: "${'Status'.tr}: $status",
+                    textColor: color,
+                  ),
+                ),
+                Positioned(
+                  bottom: 8,
+                  left: 8,
+                  child: _glassBadge(
+                    text: Jiffy.parse(
+                      isUtc: true,
+                      order.createdAt,
+                      pattern: 'yyyy-MM-dd hh:mm a',
+                    ).fromNow(),
+                    textColor: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+
+            // --- تفاصيل الطلب (المحتوى بيحدد الارتفاع = تأثير الـ masonry) ---
+            Padding(
               padding: EdgeInsets.symmetric(
-                vertical: h * 0.02,
-                horizontal: w * 0.04,
+                horizontal: w * 0.03,
+                vertical: w * 0.025,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
                 children: [
-                  // --- القسم الأول: الوقت وحالة الطلب بأسلوب Badge ---
+                  Text(
+                    "${'Order numper'.tr} #${order.orderNumber}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: w * 0.032,
+                      color: primaryTextColor,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: w * 0.015),
+                  Text(
+                    "\$${order.totalAmount}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: w * 0.048,
+                      color: primaryTextColor,
+                    ),
+                  ),
+                  SizedBox(height: w * 0.015),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: color.withOpacity(0.2)),
-                        ),
+                      Icon(Icons.credit_card, size: w * 0.032, color: Colors.grey),
+                      SizedBox(width: w * 0.01),
+                      Expanded(
                         child: Text(
-                          Jiffy.parse(
-                            isUtc: true,
-                            order.createdAt,
-                            pattern: 'yyyy-MM-dd hh:mm a',
-                          ).fromNow(),
-                          style: TextStyle(
-                            fontSize: w * 0.025,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        "\$${order.totalAmount}",
-                        style: TextStyle(
-                          fontSize: w * 0.05,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: color.withOpacity(0.2)),
-                        ),
-                        child: Text(
-                          "${'Status'.tr}: $status",
-                          style: TextStyle(
-                            color: color, // لون الحالة المرسل في المتغيرات
-                            fontWeight: FontWeight.bold,
-                            fontSize: w * 0.035,
-                          ),
+                          order.paymentMethod,
+                          style: TextStyle(fontSize: w * 0.028, color: Colors.grey),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: h * 0.015),
-
-                  // --- القسم الثاني: رقم الطلب (بارز وسينمائي) ---
+                  SizedBox(height: 4),
                   Row(
                     children: [
-                      Text(
-                        "${'Order numper'.tr} #${order.orderNumber}",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontSize: w * 0.035,
-                          color: primaryTextColor,
-                          letterSpacing: 1.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: h * 0.015),
-
-                  // --- القسم الثالث: تفاصيل الدفع والسعر الإجمالي ---
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: color.withOpacity(0.2)),
-                        ),
-                        child: Text(
-                          "${'Payment Methods'.tr}: ${order.paymentMethod}",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: w * 0.035,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: color.withOpacity(0.2)),
-                        ),
+                      Icon(Icons.receipt_long, size: w * 0.032, color: isDark ? Colors.blue[300] : Colors.green[700]),
+                      SizedBox(width: w * 0.01),
+                      Expanded(
                         child: Text(
                           "${'Payment'.tr}: ${order.paymentStatus}",
                           style: TextStyle(
-                            color: isDark
-                                ? Colors.blue[300]
-                                : const Color.fromARGB(255, 31, 56, 16),
+                            fontSize: w * 0.028,
                             fontWeight: FontWeight.w600,
-                            fontSize: w * 0.035,
+                            color: isDark ? Colors.blue[300] : const Color.fromARGB(255, 31, 56, 16),
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
                   ),
-
-                  // --- القسم الرابع: التقييم (يظهر فقط إذا كان الطلب مستلماً) ---
                 ],
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _glassBadge({required String text, required Color textColor}) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.3),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.white.withOpacity(0.2)),
+          ),
+          child: Text(
+            text,
+            style: TextStyle(
+              color: textColor,
+              fontSize: 10.5,
+              fontWeight: FontWeight.w600,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
       ),

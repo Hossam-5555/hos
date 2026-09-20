@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/order/pindingcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
@@ -76,9 +77,10 @@ class Adminpending extends StatelessWidget {
               ),
             ),
 
-            /// 📦 2. قائمة عرض الطلبات المستلمة
+            /// 📦 2. قائمة عرض الطلبات المستلمة (Grid)
             Expanded(
-              child: HandlingDataView(emptyStyle: EmptyStateStyle.style2,
+              child: HandlingDataView(
+                emptyStyle: EmptyStateStyle.style2,
                 mediaType: HandlingMediaType.animation,
                 message:
                     "لا توجد طلبات حالياً", // رسالة توضيحية عند عدم وجود بيانات
@@ -86,18 +88,22 @@ class Adminpending extends StatelessWidget {
                     Imageasset.nodata, // صورة توضيحية عند عدم وجود بيانات
                 statusrequest: controller
                     .statusrequest, // يتكفل تلقائياً بالـ Loading، والـ No Data بناءً على استجابة السيرفر
-                widget: ListView.separated(
+                widget: MasonryGridView.builder(
                   physics:
                       const AlwaysScrollableScrollPhysics(), // لضمان بقاء الـ RefreshIndicator يعمل بكفاءة
-                  padding: const EdgeInsets.all(5),
+                  padding: EdgeInsets.all(size.width * 0.03),
+                  gridDelegate:
+                      const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                      ),
+                  mainAxisSpacing: size.width * 0.025,
+                  crossAxisSpacing: size.width * 0.025,
                   itemCount: controller.orderspending.length,
-                  separatorBuilder: (_, _) => const SizedBox(height: 1),
                   itemBuilder: (context, index) {
                     final order = controller.orderspending[index];
 
                     // استخراج حالة التصميم والترجمة الخاصة بهذا الكارت بأسلوب آمن
                     controller.getcolorandstause(order.status);
-                    // final statustext = controller.statusText ?? "غير معروف";
                     final statuscolor = controller.statusColor ?? Colors.grey;
 
                     return OrderCard(
@@ -106,7 +112,6 @@ class Adminpending extends StatelessWidget {
                       status: order.status,
                       color: statuscolor,
                       w: size.width,
-                      h: size.height,
                       onTap: () => controller.gotodetails(order),
                     );
                   },

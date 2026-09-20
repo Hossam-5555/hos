@@ -89,24 +89,6 @@ class ProfilePage extends StatelessWidget {
                       settingsController.usrtype == "user"
                           ? _ListTile(
                               gradientColors: const [
-                                Color.fromARGB(255, 95, 182, 8),
-                                Color.fromARGB(255, 96, 192, 17),
-                              ],
-                              icon: Icons.person_pin,
-                              title: "Edit Account".tr,
-                              onTap: () {
-                                Get.to(
-                                  () => EditProfileView(),
-                                  transition: Transition.cupertino,
-                                  duration: const Duration(milliseconds: 500),
-                                  curve: Curves.fastOutSlowIn,
-                                );
-                              },
-                            )
-                          : SizedBox.shrink(),
-                      settingsController.usrtype == "user"
-                          ? _ListTile(
-                              gradientColors: const [
                                 Color.fromARGB(255, 243, 9, 9),
                                 Colors.red,
                               ],
@@ -115,6 +97,15 @@ class ProfilePage extends StatelessWidget {
                               onTap: () => Get.toNamed(Approute.myfavorite),
                             )
                           : SizedBox.shrink(),
+                      _ListTile(
+                        gradientColors: [
+                          Colors.orange.shade400,
+                          Colors.orange.shade700,
+                        ],
+                        icon: Icons.language_outlined,
+                        title: "Languages".tr,
+                        onTap: () => _showLanguageDialog(context),
+                      ),
                       _ThemeTile(controller: localController),
                     ],
                   ),
@@ -141,15 +132,7 @@ class ProfilePage extends StatelessWidget {
                           transition: Transition.cupertino,
                         ),
                       ),
-                      _ListTile(
-                        gradientColors: [
-                          Colors.orange.shade400,
-                          Colors.orange.shade700,
-                        ],
-                        icon: Icons.language_outlined,
-                        title: "Languages".tr,
-                        onTap: () => _showLanguageDialog(context),
-                      ),
+
                       _ListTile(
                         gradientColors: [
                           Colors.cyan.shade400,
@@ -182,16 +165,6 @@ class ProfilePage extends StatelessWidget {
                                 ),
                         ),
                       ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // ------- تسجيل الخروج -------
-                  _GroupLabel(title: "Session".tr),
-                  _GradientGroup(
-                    isDarkMode: isDarkMode,
-                    children: [
                       _ListTile(
                         gradientColors: [
                           Colors.red.shade400,
@@ -207,6 +180,7 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
 
+                  // ------- تسجيل الخروج -------
                   const SizedBox(height: 20),
                   buildFooter(),
                 ],
@@ -322,6 +296,8 @@ class _ProfileHeader extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(10),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               padding: const EdgeInsets.all(3),
@@ -363,6 +339,35 @@ class _ProfileHeader extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
+            ),
+            IconButton(
+              constraints: BoxConstraints(maxHeight: context.height * 0.1),
+              style: ButtonStyle(
+                shape: context.isPhone
+                    ? MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      )
+                    : MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                backgroundColor: MaterialStateProperty.all(
+                  Colors.grey.shade200,
+                ),
+                padding: MaterialStateProperty.all(const EdgeInsets.all(8)),
+              ),
+              onPressed: () {
+                Get.to(
+                  () => EditProfileView(),
+                  transition: Transition.cupertino,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.fastOutSlowIn,
+                );
+              },
+              icon: const Icon(Icons.edit, color: Colors.blue),
             ),
           ],
         ),
