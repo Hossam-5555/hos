@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
+import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/addresdata.dart';
 import 'package:hos/data/model/Addresmodel.dart';
@@ -24,6 +25,7 @@ class AddressController extends GetxController {
   TextEditingController? name;
   TextEditingController? city;
   TextEditingController? street;
+  TextEditingController? phone;
 
   double lat = 30.0444;
   double long = 31.2357;
@@ -133,13 +135,14 @@ class AddressController extends GetxController {
     name = TextEditingController();
     city = TextEditingController();
     street = TextEditingController();
+    phone = TextEditingController();
     viewaddres();
     super.onInit();
   }
 
   /////////////////////
 
-  Future<void> addaddres() async {
+  Future<void> addaddres(BuildContext context) async {
     String cityText = city!.text = "$selectedGovernorate - $selectedCity";
     String nameText = name!.text = selectedLocationType ?? "منزل";
 
@@ -152,13 +155,18 @@ class AddressController extends GetxController {
       street!.text,
       lat.toString(),
       long.toString(),
-      "+201034567820",
+      phone!.text,
     );
 
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
         await viewaddres();
+        showSnackBar(
+          context,
+          "تم  اضافه عنوان",
+          const Icon(Icons.check_circle, color: Colors.greenAccent),
+        );
         if (Get.isRegistered<Checkoutcontroller>()) {
           Checkoutcontroller controller = Get.find<Checkoutcontroller>();
           await controller.getaddress();
@@ -195,15 +203,14 @@ class AddressController extends GetxController {
     update();
   }
 
-  updatedefault(int id) async {
+  Future<void> updatedefault(int id) async {
     isdefault = id;
     update();
     var response = await addresdata.setdefault(id);
-    print(response);
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
-        viewaddres();
+        listaddresdata.map((e) => isdefault == e.id);
       }
     }
     update();
@@ -212,7 +219,7 @@ class AddressController extends GetxController {
   final GlobalKey<AnimatedListState> Addressket =
       GlobalKey<AnimatedListState>();
 
-  void deleteAddres(int addresid) {
+  void deleteAddres(int addresid,BuildContext context) {
     int index = listaddresdata.indexWhere((e) => e.id == addresid);
 
     if (index != -1) {
@@ -226,10 +233,6 @@ class AddressController extends GetxController {
             child: Card(
               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: BorderSide(color: Colors.red.shade200, width: 1),
-              ),
               color: Colors.green.shade50,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -255,10 +258,7 @@ class AddressController extends GetxController {
                     ),
                     leading: Container(
                       padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.red.shade100,
-                        shape: BoxShape.circle,
-                      ),
+                      decoration: BoxDecoration(shape: BoxShape.circle),
                       child: Icon(
                         Icons.delete_sweep_rounded,
                         color: Colors.red.shade700,
@@ -289,7 +289,11 @@ class AddressController extends GetxController {
 
       listaddresdata.removeAt(index);
       addresdata.deleteAddresdata(addresid);
-
+      showSnackBar(
+        context,
+        "تم إلغاء الطلب بنجاح",
+        const Icon(Icons.check_circle, color: Colors.greenAccent),
+      );
       if (listaddresdata.isEmpty) {
         statusrequest = Statusrequest.failure;
       }

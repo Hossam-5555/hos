@@ -34,353 +34,361 @@ class AuthPage extends StatelessWidget {
     final subTextColor = isDark ? Colors.white70 : Colors.black54;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      // ignore: deprecated_member_use
-      body: WillPopScope(
-        onWillPop: appexitAlert,
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomLeft,
-              colors: isDark
-                  ? [const Color(0xFF0E0E1A), const Color(0xFF1A1A2E)]
-                  : [const Color(0xFFEAF2FF), const Color(0xFFFFFFFF)],
+      resizeToAvoidBottomInset: true, // السماح بالتجاوب مع الكيبورد
+      body: SafeArea(
+        child: WillPopScope(
+          onWillPop: appexitAlert,
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomLeft,
+                colors: isDark
+                    ? [const Color(0xFF0E0E1A), const Color(0xFF1A1A2E)]
+                    : [const Color(0xFFEAF2FF), const Color(0xFFFFFFFF)],
+              ),
             ),
-          ),
-          child: GetBuilder<AuthController>(
-            builder: (controller) {
-              return Stack(
-                alignment: Alignment.center,
-                children: [
-                  Positioned(
-                    top: height * 0.02,
-                    child: Animationlottie(
-                      h: 180,
-                      w: 180,
-                      animationPath: Imageasset.loginanimation,
-                    ),
-                  ),
-                  Positioned(
-                    top: height * 0.26,
-                    child: Center(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(28),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 350),
-                            curve: Curves.easeOutCubic,
-                            width: width * 0.9,
-                            constraints: BoxConstraints(
-                              maxHeight: height * 0.72,
+            child: GetBuilder<AuthController>(
+              builder: (controller) {
+                return LayoutBuilder(
+                  builder: (context, constraints) {
+                    return SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: width * 0.05,
+                        vertical: height * 0.02,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // حجم مرن للأنيميشن
+                          SizedBox(
+                            height: height * 0.2,
+                            width: height * 0.2,
+                            child: Animationlottie(
+                              h: height * 0.2,
+                              w: height * 0.2,
+                              animationPath: Imageasset.loginanimation,
                             ),
-                            decoration: BoxDecoration(
-                              color: glassColor,
-                              borderRadius: BorderRadius.circular(28),
-                              border: Border.all(
-                                color: glassBorder,
-                                width: 1.2,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withAlpha(
-                                    isDark ? 60 : 20,
+                          ),
+                          SizedBox(height: height * 0.015),
+
+                          // الحاوية الضبابية (Glassmorphism Container)
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(28),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 350),
+                                curve: Curves.easeOutCubic,
+                                width: width * 0.9,
+                                decoration: BoxDecoration(
+                                  color: glassColor,
+                                  borderRadius: BorderRadius.circular(28),
+                                  border: Border.all(
+                                    color: glassBorder,
+                                    width: 1.2,
                                   ),
-                                  blurRadius: 24,
-                                  offset: const Offset(0, 12),
-                                ),
-                              ],
-                            ),
-                            child: Form(
-                              key: controller.formKey,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: width * 0.06,
-                                ),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SizedBox(height: height * 0.025),
-
-                                      _ModeSwitcher(
-                                        isLogin: controller.isLogin,
-                                        onChanged: (value) {
-                                          if (value != controller.isLogin) {
-                                            controller.toggleMode();
-                                          }
-                                        },
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withAlpha(
+                                        isDark ? 60 : 20,
                                       ),
-
-                                      SizedBox(height: height * 0.020),
-
-                                      AnimatedSwitcher(
-                                        duration: const Duration(
-                                          milliseconds: 300,
+                                      blurRadius: 24,
+                                      offset: const Offset(0, 12),
+                                    ),
+                                  ],
+                                ),
+                                child: Form(
+                                  key: controller.formKey,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: width * 0.05,
+                                      vertical: height * 0.02,
+                                    ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        _ModeSwitcher(
+                                          isLogin: controller.isLogin,
+                                          onChanged: (value) {
+                                            if (value != controller.isLogin) {
+                                              controller.toggleMode();
+                                            }
+                                          },
                                         ),
-                                        child: Text(
+
+                                        SizedBox(height: height * 0.020),
+
+                                        AnimatedSwitcher(
+                                          duration: const Duration(
+                                            milliseconds: 300,
+                                          ),
+                                          child: Text(
+                                            controller.isLogin
+                                                ? "Welcome Back".tr
+                                                : "Create New Account".tr,
+                                            key: ValueKey(controller.isLogin),
+                                            style: TextStyle(
+                                              fontSize: width * 0.055 > 24 ? 24 : width * 0.055,
+                                              fontWeight: FontWeight.bold,
+                                              color: titleColor,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: height * 0.006),
+                                        Text(
                                           controller.isLogin
-                                              ? "Welcome Back".tr
-                                              : "Create New Account".tr,
-                                          key: ValueKey(controller.isLogin),
+                                              ? "Login to continue shopping".tr
+                                              : "Sign up to start shopping".tr,
                                           style: TextStyle(
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.bold,
-                                            color: titleColor,
+                                            fontSize: width * 0.032 > 13 ? 13 : width * 0.032,
+                                            color: subTextColor,
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(height: height * 0.006),
-                                      Text(
-                                        controller.isLogin
-                                            ? "Login to continue shopping".tr
-                                            : "Sign up to start shopping".tr,
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color: subTextColor,
-                                        ),
-                                      ),
-                                      SizedBox(height: height * 0.020),
+                                        SizedBox(height: height * 0.020),
 
-                                      AnimatedSize(
-                                        duration: const Duration(
-                                          milliseconds: 300,
-                                        ),
-                                        curve: Curves.easeOutCubic,
-                                        child: !controller.isLogin
-                                            ? Column(
-                                                children: [
-                                                  Textfealdauth(
-                                                    valid: (val) => validInput(
-                                                      val!,
-                                                      3,
-                                                      20,
-                                                      "username",
+                                        AnimatedSize(
+                                          duration: const Duration(
+                                            milliseconds: 300,
+                                          ),
+                                          curve: Curves.easeOutCubic,
+                                          child: !controller.isLogin
+                                              ? Column(
+                                                  children: [
+                                                    Textfealdauth(
+                                                      valid: (val) => validInput(
+                                                        val!,
+                                                        3,
+                                                        20,
+                                                        "username",
+                                                      ),
+                                                      textEditingController:
+                                                          controller.username,
+                                                      suffixIcon:
+                                                          Icons.person_outline,
+                                                      hint: "Enter Your username",
                                                     ),
-                                                    textEditingController:
-                                                        controller.username,
-                                                    suffixIcon:
-                                                        Icons.person_outline,
-                                                    hint: "Enter Your username",
-                                                  ),
-                                                  SizedBox(
-                                                    height: height * 0.0010,
-                                                  ),
-                                                ],
-                                              )
-                                            : const SizedBox.shrink(),
-                                      ),
+                                                    SizedBox(
+                                                      height: height * 0.01,
+                                                    ),
+                                                  ],
+                                                )
+                                              : const SizedBox.shrink(),
+                                        ),
 
-                                      Textfealdauth(
-                                        valid: (val) =>
-                                            validInput(val!, 6, 50, 'email'),
-                                        textEditingController: controller.email,
-                                        suffixIcon: Icons.email_outlined,
-                                        hint: 'Email Address',
-                                      ),
-                                      SizedBox(height: height * 0.0010),
+                                        Textfealdauth(
+                                          valid: (val) =>
+                                              validInput(val!, 6, 50, 'email'),
+                                          textEditingController: controller.email,
+                                          suffixIcon: Icons.email_outlined,
+                                          hint: 'Email Address',
+                                        ),
+                                        SizedBox(height: height * 0.01),
 
-                                      Textfealdauth(
-                                        obscureText: controller.showpass,
-                                        onTapIcon: () =>
-                                            controller.isshowpass(),
-                                        valid: (val) =>
-                                            validInput(val!, 6, 30, 'password'),
-                                        textEditingController:
-                                            controller.passward,
-                                        suffixIcon: controller.showpass
-                                            ? Icons.visibility_off
-                                            : Icons.visibility,
-                                        hint: "Password",
-                                      ),
+                                        Textfealdauth(
+                                          obscureText: controller.showpass,
+                                          onTapIcon: () =>
+                                              controller.isshowpass(),
+                                          valid: (val) =>
+                                              validInput(val!, 6, 30, 'password'),
+                                          textEditingController:
+                                              controller.passward,
+                                          suffixIcon: controller.showpass
+                                              ? Icons.visibility_off
+                                              : Icons.visibility,
+                                          hint: "Password",
+                                        ),
 
-                                      if (controller.statusrequest ==
-                                              Statusrequest.failure ||
-                                          controller.statusrequest ==
-                                              Statusrequest.checkinterner)
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                            top: 10,
-                                          ),
-                                          child: Container(
-                                            width: double.infinity,
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 14,
-                                              vertical: 10,
+                                        if (controller.statusrequest ==
+                                                Statusrequest.failure ||
+                                            controller.statusrequest ==
+                                                Statusrequest.checkinterner)
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              top: height * 0.01,
                                             ),
-                                            decoration: BoxDecoration(
-                                              color: Colors.red.withAlpha(
-                                                isDark ? 40 : 20,
+                                            child: Container(
+                                              width: double.infinity,
+                                              padding: const EdgeInsets.symmetric(
+                                                horizontal: 14,
+                                                vertical: 10,
                                               ),
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              border: Border.all(
-                                                color: Colors.red.shade300,
-                                              ),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  controller.statusrequest ==
-                                                          Statusrequest
-                                                              .checkinterner
-                                                      ? Icons.wifi_off_rounded
-                                                      : Icons.error_outline,
-                                                  color: Colors.red.shade400,
-                                                  size: 18,
+                                              decoration: BoxDecoration(
+                                                color: Colors.red.withAlpha(
+                                                  isDark ? 40 : 20,
                                                 ),
-                                                const SizedBox(width: 8),
-                                                Expanded(
-                                                  child: Text(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                border: Border.all(
+                                                  color: Colors.red.shade300,
+                                                ),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Icon(
                                                     controller.statusrequest ==
                                                             Statusrequest
                                                                 .checkinterner
-                                                        ? "تأكد من اتصالك بالإنترنت وحاول مرة أخرى"
-                                                        : (controller.isLogin
-                                                              ? "البريد الإلكتروني أو كلمة المرور غير صحيحة"
-                                                              : "حدث خطأ، من فضلك حاول مرة أخرى"),
-                                                    style: TextStyle(
-                                                      color:
-                                                          Colors.red.shade400,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 13,
+                                                        ? Icons.wifi_off_rounded
+                                                        : Icons.error_outline,
+                                                    color: Colors.red.shade400,
+                                                    size: 18,
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  Expanded(
+                                                    child: Text(
+                                                      controller.statusrequest ==
+                                                              Statusrequest
+                                                                  .checkinterner
+                                                          ? "تأكد من اتصالك بالإنترنت وحاول مرة أخرى"
+                                                          : (controller.isLogin
+                                                                ? "البريد الإلكتروني أو كلمة المرور غير صحيحة"
+                                                                : "حدث خطأ، من فضلك حاول مرة أخرى"),
+                                                      style: TextStyle(
+                                                        color:
+                                                            Colors.red.shade400,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 13,
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-
-                                      AnimatedSize(
-                                        duration: const Duration(
-                                          milliseconds: 300,
-                                        ),
-                                        child: controller.isLogin
-                                            ? Align(
-                                                alignment:
-                                                    Alignment.centerRight,
-                                                child: Forgetpassbutton(
-                                                  onPressed: () => controller
-                                                      .checkemailpage(),
-                                                ),
-                                              )
-                                            : SizedBox(height: height * 0.012),
-                                      ),
-
-                                      SizedBox(height: height * 0.0010),
-
-                                      Checkbutton(
-                                        statusrequest: controller.statusrequest,
-                                        onTap: () => controller.submit(),
-                                        buttonName: controller.isLogin
-                                            ? 'Login'
-                                            : 'Create Account',
-                                        width: width * 0.75,
-                                        buttonColor: Appcolor.primaryColor,
-                                      ),
-
-                                      SizedBox(height: height * 0.018),
-
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Divider(
-                                              color: subTextColor.withAlpha(80),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 10,
-                                            ),
-                                            child: Text(
-                                              "or continue with".tr,
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: subTextColor,
+                                                ],
                                               ),
                                             ),
                                           ),
-                                          Expanded(
-                                            child: Divider(
-                                              color: subTextColor.withAlpha(80),
+
+                                        AnimatedSize(
+                                          duration: const Duration(
+                                            milliseconds: 300,
+                                          ),
+                                          child: controller.isLogin
+                                              ? Align(
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  child: Forgetpassbutton(
+                                                    onPressed: () => controller
+                                                        .checkemailpage(),
+                                                  ),
+                                                )
+                                              : SizedBox(height: height * 0.012),
+                                        ),
+
+                                        SizedBox(height: height * 0.015),
+
+                                        Checkbutton(
+                                          statusrequest: controller.statusrequest,
+                                          onTap: () => controller.submit(),
+                                          buttonName: controller.isLogin
+                                              ? 'Login'
+                                              : 'Create Account',
+                                          width: width * 0.75,
+                                          buttonColor: Appcolor.primaryColor,
+                                        ),
+
+                                        SizedBox(height: height * 0.018),
+
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: Divider(
+                                                color: subTextColor.withAlpha(80),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(
+                                                horizontal: 10,
+                                              ),
+                                              child: Text(
+                                                "or continue with".tr,
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: subTextColor,
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Divider(
+                                                color: subTextColor.withAlpha(80),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+
+                                        SizedBox(height: height * 0.015),
+
+                                        Checkbutton.widget(
+                                          widget: SvgPicture.asset(
+                                            Imageasset.googlepay,
+                                            height: 20,
+                                            width: 20,
+                                          ),
+                                          statusrequest: Statusrequest.none,
+                                          onTap: () => controller.submit(),
+                                          buttonName: 'google',
+                                          width: width * 0.75,
+                                          buttonColor: isDark
+                                              ? Colors.white.withAlpha(20)
+                                              : Colors.white.withAlpha(140),
+                                        ),
+
+                                        SizedBox(height: height * 0.015),
+
+                                        GestureDetector(
+                                          onTap: () => controller.toggleMode(),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 6,
+                                            ),
+                                            child: RichText(
+                                              text: TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text: controller.isLogin
+                                                        ? "Don't have an account? "
+                                                              .tr
+                                                        : "Already have an account? "
+                                                              .tr,
+                                                    style: TextStyle(
+                                                      color: subTextColor,
+                                                      fontSize: 13,
+                                                    ),
+                                                  ),
+                                                  TextSpan(
+                                                    text: controller.isLogin
+                                                        ? "Sign Up".tr
+                                                        : "Login".tr,
+                                                    style: TextStyle(
+                                                      color:
+                                                          Appcolor.primaryColor,
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 13,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ],
-                                      ),
-
-                                      SizedBox(height: height * 0.015),
-
-                                      Checkbutton.widget(
-                                        widget: SvgPicture.asset(
-                                          Imageasset.googlepay,
-                                          height: 20,
-                                          width: 20,
                                         ),
-                                        statusrequest: Statusrequest.none,
-                                        onTap: () => controller.submit(),
-                                        buttonName: 'google',
-                                        width: width * 0.75,
-                                        buttonColor: isDark
-                                            ? Colors.white.withAlpha(20)
-                                            : Colors.white.withAlpha(140),
-                                      ),
 
-                                      SizedBox(height: height * 0.02),
-
-                                      GestureDetector(
-                                        onTap: () => controller.toggleMode(),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            vertical: 6,
-                                          ),
-                                          child: RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: controller.isLogin
-                                                      ? "Don't have an account? "
-                                                            .tr
-                                                      : "Already have an account? "
-                                                            .tr,
-                                                  style: TextStyle(
-                                                    color: subTextColor,
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: controller.isLogin
-                                                      ? "Sign Up".tr
-                                                      : "Login".tr,
-                                                  style: TextStyle(
-                                                    color:
-                                                        Appcolor.primaryColor,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-
-                                      SizedBox(height: height * 0.02),
-                                    ],
+                                        SizedBox(height: height * 0.01),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ),
-                  ),
-                ],
-              );
-            },
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ),
       ),

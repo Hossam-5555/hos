@@ -28,6 +28,8 @@ class LatLngTween extends Tween<LatLng> {
 class Addresspage<T extends GetxController> extends StatefulWidget {
   final T controller;
   TextEditingController? details;
+  TextEditingController? phone;
+
   String? selectedGovernorate;
   String? selectedCity;
   String? selectedLocationType;
@@ -44,6 +46,8 @@ class Addresspage<T extends GetxController> extends StatefulWidget {
     super.key,
     required this.controller,
     required this.details,
+    required this.phone,
+
     this.selectedGovernorate,
     this.selectedCity,
     required this.statusrequest,
@@ -170,6 +174,7 @@ class _AddresspageState<T extends GetxController> extends State<Addresspage<T>>
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (_) => _LocationDetailsSheet<T>(
+        phone: widget.phone,
         controller: widget.controller,
         details: widget.details,
         selectedGovernorate: widget.selectedGovernorate,
@@ -258,7 +263,10 @@ class _AddresspageState<T extends GetxController> extends State<Addresspage<T>>
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      icon: Icon(Icons.arrow_back_ios_sharp, color: Colors.black),
+                      icon: Icon(
+                        Icons.arrow_back_ios_sharp,
+                        color: Colors.black,
+                      ),
                       iconSize: 20,
                     ),
                   ),
@@ -348,6 +356,8 @@ class _AddDetailsButton extends StatelessWidget {
 class _LocationDetailsSheet<T extends GetxController> extends StatelessWidget {
   final T controller;
   final TextEditingController? details;
+  final TextEditingController? phone;
+
   final String? selectedGovernorate;
   final String? selectedCity;
   final String? selectedLocationType;
@@ -363,6 +373,7 @@ class _LocationDetailsSheet<T extends GetxController> extends StatelessWidget {
     super.key,
     required this.controller,
     required this.details,
+    required this.phone,
     required this.selectedGovernorate,
     required this.selectedCity,
     required this.selectedLocationType,
@@ -423,7 +434,11 @@ class _LocationDetailsSheet<T extends GetxController> extends StatelessWidget {
                     ),
                     DropdownButtonFormField<String>(
                       decoration: const InputDecoration(
+                        filled: true,
                         labelText: 'نوع المكان',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                        ),
                         prefixIcon: Icon(Icons.place),
                       ),
                       value: selectedLocationType,
@@ -448,6 +463,11 @@ class _LocationDetailsSheet<T extends GetxController> extends StatelessWidget {
                             onChanged: onChanged,
                             decoratorProps: const DropDownDecoratorProps(
                               decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(8),
+                                  ),
+                                ),
                                 labelText: 'المحافظة',
                               ),
                             ),
@@ -464,7 +484,14 @@ class _LocationDetailsSheet<T extends GetxController> extends StatelessWidget {
                             selectedItem: selectedCity,
                             onChanged: onChangedcity,
                             decoratorProps: const DropDownDecoratorProps(
-                              decoration: InputDecoration(labelText: 'المركز'),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(8),
+                                  ),
+                                ),
+                                labelText: 'المركز',
+                              ),
                             ),
                           ),
                         ),
@@ -478,6 +505,16 @@ class _LocationDetailsSheet<T extends GetxController> extends StatelessWidget {
                         suffixIcon: Icons.location_on,
                         hint: 'تفاصيل المكان',
                         textEditingController: details!,
+                        valid: (val) => null,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Textfealdauth.phone(phone: true,
+                        obscureText: false,
+                        suffixIcon: Icons.phone,
+                        hint: 'رقم الهاتف',
+                        textEditingController: phone!,
                         valid: (val) => null,
                       ),
                     ),

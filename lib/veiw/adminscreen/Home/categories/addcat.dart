@@ -14,7 +14,6 @@ class Addcategories extends StatelessWidget {
     final controller = Get.put(Addcatcontroller());
 
     return Scaffold(
-      backgroundColor: const Color(0xFFAFAFA),
       appBar: const Appbarbackicon(title: "New Category", herotag: "xx"),
       body: GetBuilder<Addcatcontroller>(
         builder: (controller) => SingleChildScrollView(
@@ -29,19 +28,7 @@ class Addcategories extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color:Theme.of(context).brightness == Brightness.dark
-                        ? Colors.grey.shade800
-                        : Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.04),
-                        blurRadius: 15,
-                        offset: const Offset(0, 5),
-                      ),
-                    ],
-                  ),
+                 
                   child: Column(
                     children: [
                       const Text(
@@ -49,7 +36,6 @@ class Addcategories extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black87,
                         ),
                       ),
                       const SizedBox(height: 15),

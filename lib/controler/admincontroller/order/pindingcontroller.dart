@@ -21,6 +21,7 @@ class AdminPindingController extends GetxController {
     "processing", // 2
     "shipped", // 3
     "delivered", // 4
+    "cancelled"
   ];
 
   @override
@@ -43,12 +44,11 @@ class AdminPindingController extends GetxController {
 
     var response = await orderdata.pendingdata(status);
     statusrequest = handling(response);
- print("Response from viewOrders: $response");
     if (Statusrequest.success == statusrequest) {
       // ✳️ التحقق من نجاح حالة الرد من السيرفر
       if (response['status'] == true && response['data'] != null) {
         List data = [];
-
+       print("$response");
         // هنا نقوم بفحص الهيكل: إذا كان يحتوي على مصفوفة داخلية بسبب الـ Pagination
         if (response['data'] is Map && response['data']['data'] != null) {
           data = response['data']['data'];
@@ -83,8 +83,9 @@ class AdminPindingController extends GetxController {
           "قيد التجهيز",
           "في الطريق",
           "تم التسليم",
+          "ملغي"
         ]
-      : ["All", "Pending", "Processing", "Shipped", "Delivered",];
+      : ["All", "Pending", "Processing", "Shipped", "Delivered","Cancelled"];
 
   void getcolorandstause(String status) {
     if (status == "pending") {
@@ -99,6 +100,9 @@ class AdminPindingController extends GetxController {
     } else if (status == "delivered") {
       statusColor = const Color.fromARGB(255, 33, 201, 10);
       statusText = lang ? "تم التسليم" : "Delivered";
+    }else if (status == "cancelled") {
+      statusColor = Colors.red;
+      statusText = lang ? "ملغي" : "Cancelled";
     } else {
       statusColor = const Color.fromARGB(200, 226, 226, 226);
       statusText = lang ? "غير معروف" : "Unknown";

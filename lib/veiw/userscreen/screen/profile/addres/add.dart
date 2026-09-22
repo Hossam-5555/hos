@@ -18,6 +18,7 @@ class AddNewAddres extends StatelessWidget {
 
       body: GetBuilder<AddressController>(
         builder: (controller) => Addresspage<AddressController>(
+          phone: controller.phone,
           onChangedtype: controller.onLocationTypeChanged,
           locationTypes: controller.locationTypes,
           selectedLocationType: controller.selectedLocationType,
@@ -25,8 +26,9 @@ class AddNewAddres extends StatelessWidget {
           details: controller.street, // تم تمرير حقل الشارع الصحيح
           statusrequest: controller.statusrequest ?? Statusrequest.none,
           onTap: () {
-            controller.addaddres();
+            controller.addaddres(context);
           },
+
           size: size,
           selectedGovernorate: controller.selectedGovernorate,
           selectedCity: controller.selectedCity,

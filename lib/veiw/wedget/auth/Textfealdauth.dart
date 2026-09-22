@@ -10,14 +10,25 @@ class Textfealdauth extends StatelessWidget {
     required this.hint,
     required this.textEditingController,
     required this.valid,
+    this.phone = false,
   });
-
+  Textfealdauth.phone({
+    super.key,
+    this.obscureText,
+    this.onTapIcon,
+    required this.suffixIcon,
+    required this.hint,
+    required this.textEditingController,
+    required this.valid,
+    required this.phone,
+  });
   TextEditingController textEditingController;
   String hint;
   late IconData suffixIcon;
   String? Function(String?)? valid;
   void Function()? onTapIcon;
   bool? obscureText;
+  bool phone;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +39,7 @@ class Textfealdauth extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: height * 0.01),
       child: TextFormField(
+        keyboardType: phone ? TextInputType.phone : TextInputType.text,
         style: TextStyle(
           // color: const Color.fromARGB(255, 10, 10, 10),
           fontSize: width * 0.045, // حجم الخط متناسب مع العرض

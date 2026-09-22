@@ -85,7 +85,7 @@ class Notificationcontroller extends GetxController {
       context,
       "Deleted Successfully",
       Icon(Icons.delete),
-      s: SnackBarAction(
+      action: SnackBarAction(
         label: "UNDO",
         textColor: Colors.orangeAccent,
         onPressed: () {
@@ -118,7 +118,7 @@ class Notificationcontroller extends GetxController {
     statusrequest = Statusrequest.loading;
     update();
     var response = await notificationdata.getNotificationsData();
-          print(response);
+    print(response);
 
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest && response['status'] == true) {

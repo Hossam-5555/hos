@@ -29,13 +29,16 @@ class CustomBottomNavBar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
   final bool visible;
-
+  final int cartcount;
+  final bool? isbadgeActive;
   const CustomBottomNavBar({
     super.key,
     required this.items,
     required this.currentIndex,
     required this.onTap,
     this.visible = true,
+    this.cartcount = 0,
+    this.isbadgeActive
   });
 
   @override
@@ -94,7 +97,11 @@ class CustomBottomNavBar extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             // ── الأيقونة ──
-                            _buildIcon(item, isSelected),
+                            Badge(
+                              isLabelVisible:index==2 ,
+                              label: Text("$cartcount"),
+                              child: _buildIcon(item, isSelected),
+                            ),
                             const SizedBox(height: 2),
                             // ── النص ──
                             Text(

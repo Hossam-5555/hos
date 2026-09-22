@@ -94,24 +94,29 @@ class Ordercontroller extends GetxController {
       var response = await orderdata.deletedata(orderid);
       statusrequest = handling(response);
 
-      if (Statusrequest.success == statusrequest) {
-        if (response['status'] == true) {
-          orders.removeWhere((e) => e.orderId == orderid);
-          // 2. إظهار الرسالة
-          // showSnackBar(
-          //   Get.context!,
-          //   "تم إلغاء الطلب بنجاح",
-          //   Icon(Icons.check_circle),
-          // );
-          viewmyorders();
-          Get.back();
-          // 3. العودة للخلف أولاً
+      if (Statusrequest.success == statusrequest &&
+          response['status'] == true) {
+        Get.back();
+
+        Get.snackbar(
+          "نجاح",
+          "تم إلغاء الطلب بنجاح",
+          icon: const Icon(Icons.check_circle, color: Colors.white),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.grey.shade800,
+          colorText: Colors.white,
+          margin: const EdgeInsets.all(15),
+          duration: const Duration(seconds: 2),
+        );
+
+        final index = orders.indexWhere((e) => e.orderId == orderid);
+        if (index != -1) {
+          orders[index].status = "cancelled";
         }
       }
     } catch (e) {
       statusrequest = Statusrequest.serverfailure;
     } finally {
-      // التحقق من أن الكنترولر لا يزال "حي" قبل التحديث
       if (Get.isRegistered<Ordercontroller>()) {
         update();
       }

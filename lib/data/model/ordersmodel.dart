@@ -9,7 +9,7 @@ class OrderModel {
   final double taxAmount;
   final double shippingFee;
   final double totalAmount;
-  final String status;
+   String status;
   final String paymentStatus;
   final String paymentMethod;
   final String createdAt;

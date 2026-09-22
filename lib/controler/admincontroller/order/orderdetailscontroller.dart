@@ -38,6 +38,9 @@ class AdminOrderDetailesController extends GetxController {
     } else if (status == "delivered") {
       statusColor = const Color.fromARGB(255, 33, 201, 10);
       statusText = lang ? "تم التسليم" : "Delivered";
+    }else if (status == "cancelled") {
+      statusColor = Colors.red;
+      statusText = lang ? "ملغي" : "Cancelled";
     } else {
       statusColor = const Color.fromARGB(200, 226, 226, 226);
       statusText = lang ? "غير معروف" : "Unknown";

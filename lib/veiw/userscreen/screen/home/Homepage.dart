@@ -86,10 +86,7 @@ class HomePage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           /// Main Offer
-                          Skeletonizer(
-                            enabled: showSkeleton,
-                            child: AutoRotatingOffers(),
-                          ),
+                          AutoRotatingOffers(),
 
                           SizedBox(height: sectionSpacing),
                           Titles(title: "Categories".tr),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart'; // لتفعيل ScrollDirection
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
 import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
 import 'package:hos/controler/usercontroller/notificationcontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
@@ -14,6 +15,7 @@ import 'package:hos/veiw/wedget/Homepage/home_screnaction.dart';
 class Homescreen extends StatelessWidget {
   Homescreen({super.key});
   final controller = Get.put(Homescreencontroller());
+  final cart = Get.put(CartController());
 
   @override
   Widget build(BuildContext context) {
@@ -124,6 +126,7 @@ class Homescreen extends StatelessWidget {
                 currentIndex: controller.Currentpage,
                 onTap: controller.changpage,
                 visible: controller.upordown,
+                cartcount: cart.countitem.value,
               ),
             ),
           ),

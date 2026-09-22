@@ -58,7 +58,7 @@ class ViewMyAddres extends StatelessWidget {
                       isDefault: controller.isdefault == address.id,
                       onDelete: () {
                         if (address.id != null) {
-                          controller.deleteAddres(address.id!);
+                          controller.deleteAddres(address.id!,context);
                         }
                       },
                       onSetDefault: () {

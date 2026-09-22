@@ -67,13 +67,13 @@ class AdminHome extends StatelessWidget {
                   label: controller.title[0][0],
                   svgAsset: controller.title[0][1],
                 ),
-                NavItem(
-                  label: controller.title[1][0],
-                  svgAsset: controller.title[1][1],
-                ),
+               
                 NavItem(
                   label: controller.title[2][0],
                   svgAsset: controller.title[2][1],
+                ), NavItem(
+                  label: controller.title[1][0],
+                  svgAsset: controller.title[1][1],
                 ),
                 NavItem(
                   label: controller.title[3][0],
@@ -82,6 +82,8 @@ class AdminHome extends StatelessWidget {
               ],
               currentIndex: controller.currentpage,
               onTap: controller.changePage,
+              cartcount: 0,
+              isbadgeActive: false,
             ),
           ),
         ),
