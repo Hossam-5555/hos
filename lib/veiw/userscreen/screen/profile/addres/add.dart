@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -14,51 +15,23 @@ import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 // ==========================================
-// 1. الصفحة الرئيسية (AddNewAddres View)
+// 0. مقياس الأبعاد (Responsive)
 // ==========================================
-// ignore: must_be_immutable
-class AddNewAddres extends StatelessWidget {
-  AddNewAddres({super.key});
+// التصميم الأساسي على عرض 390، والمعامل محصور بين 0.85 و 1.2
+const double _kDesignWidth = 390;
+const double _kSheetMaxWidth = 600;
 
-  AddressController c = Get.put(AddressController());
-
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: GetBuilder<AddressController>(
-        builder: (controller) => Addresspage<AddressController>(
-          issuccess: controller.isuccess,
-          phone: controller.phone,
-          onChangedtype: controller.onLocationTypeChanged,
-          locationTypes: controller.locationTypes,
-          selectedLocationType: controller.selectedLocationType,
-          controller: controller,
-          details: controller.street,
-          statusrequest: controller.statusrequest ?? Statusrequest.none,
-          onTap: () {
-            controller.addaddres(context);
-          },
-          size: size,
-          selectedGovernorate: controller.selectedGovernorate,
-          selectedCity: controller.selectedCity,
-          onChanged: controller.onGovernorateChanged,
-          onChangedcity: controller.onCityChanged,
-          map: controller.map,
-          currentlocation: controller.getcurrentlocation,
-        ),
-      ),
-    );
-  }
+double _scaleOf(BuildContext context) {
+  final width = MediaQuery.sizeOf(context).width;
+  return (width / _kDesignWidth).clamp(0.85, 1.2).toDouble();
 }
 
 // ==========================================
-// 2. كلاس التحريك وإدراج الـ Marker
+// 1. كلاس التحريك للـ Marker
 // ==========================================
 class LatLngTween extends Tween<LatLng> {
   LatLngTween({required LatLng begin, required LatLng end})
-      : super(begin: begin, end: end);
+    : super(begin: begin, end: end);
 
   @override
   LatLng lerp(double t) {
@@ -70,54 +43,20 @@ class LatLngTween extends Tween<LatLng> {
 }
 
 // ==========================================
-// 3. الـ Addresspage Widget المتفاعل مع الخريطة
+// 2. الصفحة الرئيسية (الصفحة + الخريطة في كلاس واحد)
 // ==========================================
-// ignore: must_be_immutable
-class Addresspage<T extends GetxController> extends StatefulWidget {
-  final T controller;
-  TextEditingController? details;
-  TextEditingController? phone;
-
-  String? selectedGovernorate;
-  String? selectedCity;
-  String? selectedLocationType;
-  Statusrequest statusrequest;
-  void Function() onTap;
-  ValueChanged<String?>? onChanged;
-  ValueChanged<String?>? onChangedcity;
-  ValueChanged<String?>? onChangedtype;
-  MapController map;
-  List<String> locationTypes;
-  Size size;
-  RxBool issuccess;
-  Future<LatLng?> Function() currentlocation;
-
-  Addresspage({
-    required this.issuccess,
-    super.key,
-    required this.controller,
-    required this.details,
-    required this.phone,
-    this.selectedGovernorate,
-    this.selectedCity,
-    required this.statusrequest,
-    required this.onTap,
-    required this.size,
-    this.onChanged,
-    this.onChangedcity,
-    required this.selectedLocationType,
-    required this.locationTypes,
-    this.onChangedtype,
-    required this.map,
-    required this.currentlocation,
-  });
+class AddNewAddres extends StatefulWidget {
+  const AddNewAddres({super.key});
 
   @override
-  State<Addresspage<T>> createState() => _AddresspageState<T>();
+  State<AddNewAddres> createState() => _AddNewAddresState();
 }
 
-class _AddresspageState<T extends GetxController>
-    extends State<Addresspage<T>> with SingleTickerProviderStateMixin {
+class _AddNewAddresState extends State<AddNewAddres>
+    with SingleTickerProviderStateMixin {
+  // الكنترولر مباشرة بدون تمريره كـ parameters
+  final AddressController c = Get.put(AddressController());
+
   LatLng? selectedPoint;
   LatLng? displayedPoint;
   late AnimationController _animController;
@@ -133,14 +72,15 @@ class _AddresspageState<T extends GetxController>
   @override
   void initState() {
     super.initState();
-    _animController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 350),
-    )..addListener(() {
-        if (_tween != null) {
-          setState(() => displayedPoint = _tween!.evaluate(_animController));
-        }
-      });
+    _animController =
+        AnimationController(
+          vsync: this,
+          duration: const Duration(milliseconds: 350),
+        )..addListener(() {
+          if (_tween != null) {
+            setState(() => displayedPoint = _tween!.evaluate(_animController));
+          }
+        });
 
     _mapOptions = MapOptions(
       initialCenter: const LatLng(26.8206, 30.8025),
@@ -165,11 +105,8 @@ class _AddresspageState<T extends GetxController>
     _animController.forward(from: 0);
   }
 
-  Future<void> _handleTap(TapPosition tapPosition, LatLng point) async {
-    if (!_egyptBounds.contains(point)) return;
-
-    setState(() => selectedPoint = point);
-    _animateMarkerTo(point);
+  // تحديد المحافظة والمركز من إحداثيات النقطة
+  Future<void> _fillLocationFrom(LatLng point) async {
     try {
       final placemarks = await geocoding.placemarkFromCoordinates(
         point.latitude,
@@ -177,10 +114,18 @@ class _AddresspageState<T extends GetxController>
       );
       if (placemarks.isNotEmpty) {
         final place = placemarks.first;
-        widget.onChanged?.call(place.administrativeArea);
-        widget.onChangedcity?.call(place.locality);
+        c.onGovernorateChanged(place.administrativeArea);
+        c.onCityChanged(place.locality);
       }
     } catch (_) {}
+  }
+
+  Future<void> _handleTap(TapPosition tapPosition, LatLng point) async {
+    if (!_egyptBounds.contains(point)) return;
+
+    setState(() => selectedPoint = point);
+    _animateMarkerTo(point);
+    await _fillLocationFrom(point);
   }
 
   Future<void> _handleCurrentLocation() async {
@@ -188,7 +133,7 @@ class _AddresspageState<T extends GetxController>
 
     setState(() => _isLocating = true);
 
-    final point = await widget.currentlocation();
+    final point = await c.getcurrentlocation();
 
     if (!mounted) return;
 
@@ -199,159 +144,155 @@ class _AddresspageState<T extends GetxController>
 
     setState(() => selectedPoint = point);
     _animateMarkerTo(point);
-
-    try {
-      final placemarks = await geocoding.placemarkFromCoordinates(
-        point.latitude,
-        point.longitude,
-      );
-      if (placemarks.isNotEmpty) {
-        final place = placemarks.first;
-        widget.onChanged?.call(place.administrativeArea);
-        widget.onChangedcity?.call(place.locality);
-      }
-    } catch (_) {}
+    await _fillLocationFrom(point);
 
     if (mounted) setState(() => _isLocating = false);
   }
 
   void _openDetailsSheet() {
+    // لو الشيت اتفتح تاني بعد نجاح سابق، نرجع للفورم مش لشاشة النجاح
+    c.isuccess.value = false;
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => _LocationDetailsSheet<T>(
-        phone: widget.phone,
-        controller: widget.controller,
-        issuccess: widget.issuccess,
-        details: widget.details,
-        selectedGovernorate: widget.selectedGovernorate,
-        selectedCity: widget.selectedCity,
-        selectedLocationType: widget.selectedLocationType,
-        statusrequest: widget.statusrequest,
-        onTap: widget.onTap,
-        size: widget.size,
-        onChanged: widget.onChanged,
-        onChangedcity: widget.onChangedcity,
-        onChangedtype: widget.onChangedtype,
-        locationTypes: widget.locationTypes,
-      ),
+      constraints: const BoxConstraints(maxWidth: _kSheetMaxWidth),
+      builder: (_) => const _LocationDetailsSheet(),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        FlutterMap(
-          mapController: widget.map,
-          options: _mapOptions,
-          children: [
-            TileLayer(
-              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-              userAgentPackageName: 'com.example.hos',
-            ),
-            if (displayedPoint != null)
-              MarkerLayer(
-                markers: [
-                  Marker(
-                    point: displayedPoint!,
-                    width: 46,
-                    height: 46,
-                    alignment: Alignment.topCenter,
-                    child: const _SelectedLocationPin(),
-                  ),
-                ],
+    final s = _scaleOf(context);
+    final bottomInset = MediaQuery.paddingOf(context).bottom;
+    final circleButton = math.max(48.0, 50 * s);
+    final pinSize = 46 * s;
+    final detailsButtonHeight = 56 * s;
+
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: Stack(
+        children: [
+          FlutterMap(
+            mapController: c.map,
+            options: _mapOptions,
+            children: [
+              TileLayer(
+                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                userAgentPackageName: 'com.example.hos',
               ),
-          ],
-        ),
-        Positioned(
-          top: 16,
-          right: 16,
-          child: SafeArea(
-            child: GestureDetector(
-              onTap: _handleCurrentLocation,
-              child: Container(
-                height: 50,
-                width: 50,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.blue,
+              if (displayedPoint != null)
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      point: displayedPoint!,
+                      width: pinSize,
+                      height: pinSize,
+                      alignment: Alignment.topCenter,
+                      child: _SelectedLocationPin(size: pinSize),
+                    ),
+                  ],
                 ),
-                child: _isLocating
-                    ? const Padding(
-                        padding: EdgeInsets.all(12),
-                        child: CircularProgressIndicator(
+            ],
+          ),
+          Positioned(
+            top: 16 * s,
+            right: 16 * s,
+            child: SafeArea(
+              child: GestureDetector(
+                onTap: _handleCurrentLocation,
+                child: Container(
+                  height: circleButton,
+                  width: circleButton,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.blue,
+                  ),
+                  child: _isLocating
+                      ? Padding(
+                          padding: EdgeInsets.all(12 * s),
+                          child: const CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2.5,
+                          ),
+                        )
+                      : Icon(
+                          Icons.gps_fixed,
                           color: Colors.white,
-                          strokeWidth: 2.5,
+                          size: 24 * s,
                         ),
-                      )
-                    : const Icon(Icons.gps_fixed, color: Colors.white),
+                ),
               ),
             ),
           ),
-        ),
-        Positioned(
-          top: 16,
-          left: 16,
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsetsDirectional.symmetric(horizontal: 10.0),
-              child: Center(
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xFFE0E3E8),
-                  ),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: const Icon(
-                        Icons.arrow_back_ios_sharp,
-                        color: Colors.black,
+          Positioned(
+            top: 16 * s,
+            left: 16 * s,
+            child: SafeArea(
+              child: Padding(
+                padding: EdgeInsetsDirectional.symmetric(horizontal: 10.0 * s),
+                child: Center(
+                  child: Container(
+                    width: circleButton,
+                    height: circleButton,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xFFE0E3E8),
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: const Icon(
+                          Icons.arrow_back_ios_sharp,
+                          color: Colors.black,
+                        ),
+                        iconSize: 20 * s,
                       ),
-                      iconSize: 20,
                     ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-        AnimatedPositioned(
-          duration: const Duration(milliseconds: 250),
-          curve: Curves.easeOut,
-          left: 20,
-          right: 20,
-          bottom: selectedPoint != null ? 24 : -80,
-          child: SafeArea(
-            top: false,
-            child: _AddDetailsButton(onTap: _openDetailsSheet),
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.easeOut,
+            left: 20 * s,
+            right: 20 * s,
+            // وهو مخفي نزوّده بقيمة الـ safe area والظل عشان ميظهرش جزء منه
+            bottom: selectedPoint != null
+                ? 24 * s
+                : -(detailsButtonHeight + bottomInset + 24 * s),
+            child: SafeArea(
+              top: false,
+              child: _AddDetailsButton(onTap: _openDetailsSheet, scale: s),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
 
 // ==========================================
-// 4. عناصر واجهة المستخدم الفرعية
+// 3. عناصر واجهة المستخدم الفرعية
 // ==========================================
 class _SelectedLocationPin extends StatelessWidget {
-  const _SelectedLocationPin();
+  final double size;
+
+  const _SelectedLocationPin({required this.size});
 
   @override
   Widget build(BuildContext context) {
-    return const Icon(
+    return Icon(
       Icons.location_on,
       color: Colors.redAccent,
-      size: 46,
-      shadows: [
+      size: size,
+      shadows: const [
         Shadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2)),
       ],
     );
@@ -360,21 +301,24 @@ class _SelectedLocationPin extends StatelessWidget {
 
 class _AddDetailsButton extends StatelessWidget {
   final void Function() onTap;
+  final double scale;
 
-  const _AddDetailsButton({required this.onTap});
+  const _AddDetailsButton({required this.onTap, required this.scale});
 
   @override
   Widget build(BuildContext context) {
+    final radius = BorderRadius.circular(16 * scale);
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: radius,
         child: Container(
-          height: 56,
+          height: 56 * scale,
+          padding: EdgeInsets.symmetric(horizontal: 12 * scale),
           decoration: BoxDecoration(
             color: Colors.black,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: radius,
             boxShadow: const [
               BoxShadow(
                 color: Colors.black45,
@@ -383,17 +327,27 @@ class _AddDetailsButton extends StatelessWidget {
               ),
             ],
           ),
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.add_location_alt, color: Colors.white),
-              SizedBox(width: 8),
-              Text(
-                'إضافة تفاصيل للموقع',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+              Icon(
+                Icons.add_location_alt,
+                color: Colors.white,
+                size: 24 * scale,
+              ),
+              SizedBox(width: 8 * scale),
+              Flexible(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    'Add New Address',
+                    maxLines: 1,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16 * scale,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -405,64 +359,47 @@ class _AddDetailsButton extends StatelessWidget {
 }
 
 // ==========================================
-// 5. الـ BottomSheet بتحديث فوري وتلقائي
+// 4. الـ BottomSheet (متصل بالكنترولر مباشرة)
 // ==========================================
-// ignore: must_be_immutable
-class _LocationDetailsSheet<T extends GetxController> extends StatelessWidget {
-  final T controller;
-  final TextEditingController? details;
-  final TextEditingController? phone;
+class _LocationDetailsSheet extends StatelessWidget {
+  const _LocationDetailsSheet();
 
-  final String? selectedGovernorate;
-  final String? selectedCity;
-  final String? selectedLocationType;
-  final Statusrequest statusrequest;
-  final void Function() onTap;
-  final Size size;
-  final ValueChanged<String?>? onChanged;
-  final ValueChanged<String?>? onChangedcity;
-  final ValueChanged<String?>? onChangedtype;
-  final List<String> locationTypes;
-  final RxBool issuccess;
+  AddressController get c => Get.find<AddressController>();
 
-  const _LocationDetailsSheet({
-    super.key,
-    required this.controller,
-    required this.details,
-    required this.phone,
-    required this.selectedGovernorate,
-    required this.selectedCity,
-    required this.selectedLocationType,
-    required this.statusrequest,
-    required this.onTap,
-    required this.issuccess,
-    required this.size,
-    required this.onChanged,
-    required this.onChangedcity,
-    required this.onChangedtype,
-    required this.locationTypes,
-  });
+  // عرض المحتوى الفعلي داخل الشيت (بعد الـ padding)
+  double _contentWidth(BuildContext context, double s) {
+    final sheetWidth = math.min(
+      MediaQuery.sizeOf(context).width,
+      _kSheetMaxWidth,
+    );
+    return sheetWidth - (2 * 20 * s);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final s = _scaleOf(context);
+    final media = MediaQuery.of(context);
+    final screenHeight = media.size.height;
+
+    // أقصى ارتفاع: 75% من الشاشة، بس مايتعداش المساحة المتاحة فوق الكيبورد
+    final availableHeight =
+        screenHeight - media.viewInsets.bottom - media.padding.top;
+    final maxSheetHeight = math.min(screenHeight * 0.75, availableHeight);
+
     return Padding(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-      ),
+      padding: EdgeInsets.only(bottom: media.viewInsets.bottom),
       child: ClipRRect(
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24 * s)),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            constraints: BoxConstraints(maxHeight: size.height * 0.75),
+            constraints: BoxConstraints(maxHeight: maxSheetHeight),
             decoration: BoxDecoration(
               color: context.isDarkMode
                   ? const Color(0xFF232429).withValues(alpha: 0.9)
                   : Colors.white.withValues(alpha: 0.9),
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(24),
-              ),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(24 * s)),
               boxShadow: const [
                 BoxShadow(
                   color: Colors.black12,
@@ -474,29 +411,34 @@ class _LocationDetailsSheet<T extends GetxController> extends StatelessWidget {
             child: SafeArea(
               top: false,
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20),
-                child: GetBuilder<T>(
-                  builder: (controller) {
+                padding: EdgeInsets.all(20 * s),
+                // أي update() في الكنترولر بيعيد بناء الشيت بالقيم الجديدة
+                child: GetBuilder<AddressController>(
+                  builder: (_) {
                     return Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Center(
                           child: Container(
-                            width: 40,
-                            height: 4,
-                            margin: const EdgeInsets.only(bottom: 16),
+                            width: 40 * s,
+                            height: 4 * s,
+                            margin: EdgeInsets.only(bottom: 16 * s),
                             decoration: BoxDecoration(
                               color: Colors.grey.withValues(alpha: 0.4),
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
                         ),
-                        // الاستماع للتغييرات التلقائية
+                        // أول ما isuccess تبقى true الفورم يختفي بـ fade
+                        // وحجم الشيت يتغير بسلاسة لشاشة النجاح
                         Obx(
                           () => AnimatedCrossFade(
-                            duration: const Duration(milliseconds: 300),
-                            crossFadeState: issuccess.value
+                            duration: const Duration(milliseconds: 400),
+                            sizeCurve: Curves.easeInOut,
+                            firstCurve: Curves.easeOut,
+                            secondCurve: Curves.easeIn,
+                            crossFadeState: c.isuccess.value
                                 ? CrossFadeState.showSecond
                                 : CrossFadeState.showFirst,
                             firstChild: _buildFormContent(context),
@@ -517,13 +459,16 @@ class _LocationDetailsSheet<T extends GetxController> extends StatelessWidget {
 
   // 1. واجهة كتابة البيانات
   Widget _buildFormContent(BuildContext context) {
+    final s = _scaleOf(context);
+    final contentWidth = _contentWidth(context, s);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DropdownSearch<String>(
           items: (f, cs) => EgyptLocations.governorates.keys.toList(),
-          selectedItem: selectedGovernorate,
-          onChanged: onChanged,
+          selectedItem: c.selectedGovernorate,
+          onChanged: c.onGovernorateChanged,
           decoratorProps: const DropDownDecoratorProps(
             decoration: InputDecoration(
               border: OutlineInputBorder(
@@ -533,11 +478,13 @@ class _LocationDetailsSheet<T extends GetxController> extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12 * s),
         Row(
           children: [
             Expanded(
               child: DropdownButtonFormField<String>(
+                // isExpanded بيمنع الـ overflow في الشاشات الضيقة
+                isExpanded: true,
                 decoration: const InputDecoration(
                   filled: true,
                   labelText: 'نوع المكان',
@@ -546,26 +493,27 @@ class _LocationDetailsSheet<T extends GetxController> extends StatelessWidget {
                   ),
                   prefixIcon: Icon(Icons.place),
                 ),
-                value: selectedLocationType,
-                items: locationTypes
+                value: c.selectedLocationType,
+                items: c.locationTypes
                     .map(
                       (String type) => DropdownMenuItem<String>(
                         value: type,
-                        child: Text(type),
+                        child: Text(type, overflow: TextOverflow.ellipsis),
                       ),
                     )
                     .toList(),
-                onChanged: onChangedtype,
+                onChanged: c.onLocationTypeChanged,
               ),
             ),
-            const SizedBox(width: 10),
+            SizedBox(width: 10 * s),
             Expanded(
               child: DropdownSearch<String>(
-                items: (f, cs) => selectedGovernorate == null
+                items: (f, cs) => c.selectedGovernorate == null
                     ? []
-                    : (EgyptLocations.governorates[selectedGovernorate] ?? []),
-                selectedItem: selectedCity,
-                onChanged: onChangedcity,
+                    : (EgyptLocations.governorates[c.selectedGovernorate] ??
+                          []),
+                selectedItem: c.selectedCity,
+                onChanged: c.onCityChanged,
                 decoratorProps: const DropDownDecoratorProps(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -578,34 +526,38 @@ class _LocationDetailsSheet<T extends GetxController> extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12 * s),
         Padding(
-          padding: const EdgeInsets.only(bottom: 12),
+          padding: EdgeInsets.only(bottom: 12 * s),
           child: Textfealdauth(
             obscureText: false,
             suffixIcon: Icons.location_on,
             hint: 'تفاصيل المكان',
-            textEditingController: details!,
+            textEditingController: c.street!,
             valid: (val) => null,
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 12),
+          padding: EdgeInsets.only(bottom: 12 * s),
           child: Textfealdauth.phone(
             phone: true,
             obscureText: false,
             suffixIcon: Icons.phone,
             hint: 'رقم الهاتف',
-            textEditingController: phone!,
+            textEditingController: c.phone!,
             valid: (val) => null,
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16 * s),
         Checkbutton(
-          statusrequest: statusrequest,
+          statusrequest: c.statusrequest ?? Statusrequest.none,
           buttonColor: Colors.black,
-          width: size.width,
-          onTap: onTap,
+          width: contentWidth,
+          onTap: () {
+            // نقفل الكيبورد قبل الإرسال عشان الشيت مايهتزش لما شاشة النجاح تظهر
+            FocusManager.instance.primaryFocus?.unfocus();
+            c.addaddres(context);
+          },
           buttonName: "Save location",
         ),
       ],
@@ -614,54 +566,67 @@ class _LocationDetailsSheet<T extends GetxController> extends StatelessWidget {
 
   // 2. واجهة النجاح المباشرة
   Widget _buildSuccessContent(BuildContext context) {
+    final s = _scaleOf(context);
+    final contentWidth = _contentWidth(context, s);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const SizedBox(height: 10),
-        const Icon(Icons.check_circle_rounded, color: Colors.green, size: 70),
-        const SizedBox(height: 14),
-        const Text(
+        SizedBox(height: 10 * s),
+        // الأيقونة بتكبر بحركة بسيطة أول ما النجاح يظهر
+        AnimatedScale(
+          scale: c.isuccess.value ? 1.0 : 0.5,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.elasticOut,
+          child: Icon(
+            Icons.check_circle_rounded,
+            color: Colors.green,
+            size: 70 * s,
+          ),
+        ),
+        SizedBox(height: 14 * s),
+        Text(
           "تم حفظ العنوان بنجاح!",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 18 * s, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6 * s),
         Text(
           "تم تسجيل بيانات الموقع بنجاح في حسابك",
-          style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+          style: TextStyle(fontSize: 13 * s, color: Colors.grey.shade600),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: 24 * s),
         SizedBox(
           width: double.infinity,
-          height: 48,
+          height: 48 * s,
           child: Checkbutton(
             statusrequest: Statusrequest.none,
             buttonColor: Colors.black,
-            width: size.width,
+            width: contentWidth,
             onTap: () {
-              details?.clear();
-              phone?.clear();
-              issuccess.value = false;
+              c.street?.clear();
+              c.phone?.clear();
+              c.isuccess.value = false;
             },
-            buttonName: "Add New Address",
+            buttonName: "New Address",
           ),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12 * s),
         SizedBox(
           width: double.infinity,
-          height: 48,
+          height: 48 * s,
           child: Checkbutton(
             statusrequest: Statusrequest.none,
             buttonColor: Colors.grey.shade800,
-            width: size.width,
+            width: contentWidth,
             onTap: () {
               Navigator.pop(context);
             },
             buttonName: "Close & Back",
           ),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: 10 * s),
       ],
     );
   }

@@ -25,7 +25,7 @@ class Itemsdetailes extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final double h = size.height;
-    final double w = size.width;
+    // final double w = size.width;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final RxBool isDescriptionExpanded = false.obs;
     Get.put(FavController());
@@ -34,6 +34,60 @@ class Itemsdetailes extends StatelessWidget {
       builder: (controller) {
         final item = controller.itemsmodel;
         return Scaffold(
+          appBar: AppBar(
+            leading: BackButtonCircle(),
+            actions: [
+              GetBuilder<FavController>(
+                builder: (favController) {
+                  final isFav = favController.isfavorite[item.id] == "1";
+                  return FavoriteButton(
+                    key: ValueKey(item.id),
+                    isFav: isFav,
+                    onTap: () {
+                      favController.favmanget(item.id!);
+                      favController.chasngfav(item.id, isFav ? "0" : "1");
+                    },
+                  );
+                },
+              ),
+            ],
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // مؤشر الصور
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white.withOpacity(0.3),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                          item.images!.length,
+                          (index) => AnimatedContainer(
+                            margin: const EdgeInsets.all(10),
+                            width: controller.curentpage == index ? 15 : 5,
+                            height: 6,
+                            decoration: BoxDecoration(
+                              color: Appcolor.primaryColor,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            duration: const Duration(milliseconds: 500),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                // زرار المفضلة
+              ],
+            ),
+          ),
           backgroundColor: isDark
               ? const Color(0xFF0F0F0F)
               : const Color(0xFFF8F8F8),
@@ -54,7 +108,7 @@ class Itemsdetailes extends StatelessWidget {
                         margin: const EdgeInsets.only(bottom: 20),
                         decoration: BoxDecoration(
                           color: isDark
-                              ? const Color(0xFF1A1A1A)
+                              ? const Color(0xFF1A1C22)
                               : Colors.white,
                           borderRadius: const BorderRadius.vertical(
                             bottom: Radius.circular(40),
@@ -263,67 +317,10 @@ class Itemsdetailes extends StatelessWidget {
               ),
 
               // ─── AppBar فوق الصورة ───
-              PositionedDirectional(
-                top: 30,
-                child: SizedBox(
-                  width: w,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      BackButtonCircle(),
-                      // مؤشر الصور
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.white.withOpacity(0.3),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: List.generate(
-                                item.images!.length,
-                                (index) => AnimatedContainer(
-                                  margin: const EdgeInsets.all(10),
-                                  width: controller.curentpage == index
-                                      ? 15
-                                      : 5,
-                                  height: 6,
-                                  decoration: BoxDecoration(
-                                    color: Appcolor.primaryColor,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  duration: const Duration(milliseconds: 500),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      // زرار المفضلة
-                      GetBuilder<FavController>(
-                        builder: (favController) {
-                          final isFav =
-                              favController.isfavorite[item.id] == "1";
-                          return FavoriteButton(
-                            key: ValueKey(item.id),
-                            isFav: isFav,
-                            onTap: () {
-                              favController.favmanget(item.id!);
-                              favController.chasngfav(
-                                item.id,
-                                isFav ? "0" : "1",
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              // PositionedDirectional(
+              //   top: 30,
+              //   child:
+              // ),
             ],
           ),
         );

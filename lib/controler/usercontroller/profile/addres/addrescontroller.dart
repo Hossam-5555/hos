@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
-import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/addresdata.dart';
 import 'package:hos/data/model/Addresmodel.dart';
@@ -142,9 +141,9 @@ class AddressController extends GetxController {
   }
 
   /////////////////////
-  RxBool isuccess = false.obs;
+ final RxBool isuccess = false.obs;
   Future<void> addaddres(BuildContext context) async {
-    isuccess = false.obs;
+    isuccess.value = false;
 
     String cityText = city!.text = "$selectedGovernorate - $selectedCity";
     String nameText = name!.text = selectedLocationType ?? "منزل";
@@ -164,7 +163,7 @@ class AddressController extends GetxController {
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
-        isuccess = true.obs;
+        isuccess.value = true;
 
         await viewaddres();
         if (Get.isRegistered<Checkoutcontroller>()) {
