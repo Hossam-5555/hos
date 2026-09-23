@@ -33,68 +33,69 @@ class Homescreen extends StatelessWidget {
           }
         },
         child: Scaffold(
-          appBar: controller.Currentpage == 2
-              ? null
-              : PreferredSize(
-                  preferredSize: const Size.fromHeight(60),
-                  child: AppBar(
-                    centerTitle: false,
-                    scrolledUnderElevation: 0,
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const SizedBox(width: 10),
-                        Text(
-                          "LUXE",
-                          style: TextStyle(
-                            fontSize: (w * 0.065).clamp(20.0, 26.0),
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 1.2,
-                            color: const Color(0xFF3E5FFF),
-                          ),
-                        ),
-                      ],
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(60),
+            child: AppBar(
+              backgroundColor: controller.Currentpage == 2
+                  ? Theme.of(context).cardColor
+                  : Theme.of(context).appBarTheme.backgroundColor,
+              centerTitle: false,
+              scrolledUnderElevation: 0,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const SizedBox(width: 10),
+                  Text(
+                    "LUXE",
+                    style: TextStyle(
+                      fontSize: (w * 0.065).clamp(20.0, 26.0),
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 1.2,
+                      color: const Color(0xFF3E5FFF),
                     ),
-                    actions: [
-                      Padding(
-                        padding: const EdgeInsetsDirectional.symmetric(
-                          horizontal: 10,
-                        ),
-                        child: Homescrenaction(
-                          herotag: "notification",
-                          onPressed: () {
-                            Get.toNamed(Approute.notificationPage);
-                          },
-                          child: GetBuilder<Notificationcontroller>(
-                            builder: (controller) {
-                              int hasUnread = controller.notificationcount;
+                  ),
+                ],
+              ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsetsDirectional.symmetric(
+                    horizontal: 10,
+                  ),
+                  child: Homescrenaction(
+                    herotag: "notification",
+                    onPressed: () {
+                      Get.toNamed(Approute.notificationPage);
+                    },
+                    child: GetBuilder<Notificationcontroller>(
+                      builder: (controller) {
+                        int hasUnread = controller.notificationcount;
 
-                              return Badge(
-                                isLabelVisible: hasUnread > 0,
-                                alignment: const Alignment(0.1, 0.90),
-                                label: Text(
-                                  hasUnread.toString(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                smallSize: 9,
-                                backgroundColor: Colors.redAccent,
-                                child: SvgPicture.asset(
-                                  Imageasset.notification,
-                                  height: 24,
-                                  width: 24,
-                                  color: Colors.black,
-                                ),
-                              );
-                            },
+                        return Badge(
+                          isLabelVisible: hasUnread > 0,
+                          alignment: const Alignment(0.1, 0.90),
+                          label: Text(
+                            hasUnread.toString(),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
+                          smallSize: 9,
+                          backgroundColor: Colors.redAccent,
+                          child: SvgPicture.asset(
+                            Imageasset.notification,
+                            height: 24,
+                            width: 24,
+                            color: Colors.black,
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
+              ],
+            ),
+          ),
           resizeToAvoidBottomInset: false,
 
           floatingActionButton: Container(

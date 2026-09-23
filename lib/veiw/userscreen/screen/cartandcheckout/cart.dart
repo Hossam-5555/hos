@@ -10,7 +10,6 @@ import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 import 'package:hos/veiw/wedget/shoppage/carditem.dart';
 import 'package:hos/veiw/wedget/shoppage/coubone.dart';
 
-
 class ShoppingCartPage extends StatelessWidget {
   const ShoppingCartPage({super.key});
 
@@ -24,7 +23,8 @@ class ShoppingCartPage extends StatelessWidget {
     return Scaffold(
       body: GetBuilder<CartController>(
         builder: (controller) {
-          return HandlingDataView(emptyStyle: EmptyStateStyle.style2,
+          return HandlingDataView(
+            emptyStyle: EmptyStateStyle.style2,
             imagePath: Imageasset.emptycart,
             message: "Start shopping now".tr,
             statusrequest: controller.statusrequest,
@@ -50,15 +50,17 @@ class ShoppingCartPage extends StatelessWidget {
                         ),
                         color: Theme.of(context).cardColor,
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 10,
+                      ),
+                      // margin: const EdgeInsets.symmetric(horizontal: 10),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          SizedBox(height: (height * 0.04)),
-
                           // 1. الجزء المتغير (الكوبون والتفاصيل) - يختفي وينكمش عند السكرول
-                          AnimatedSize(
+                          AnimatedAlign(
+                            alignment: AlignmentGeometry.topCenter,
                             duration: const Duration(milliseconds: 600),
                             curve: Curves.fastOutSlowIn,
                             child: AnimatedOpacity(
@@ -73,21 +75,36 @@ class ShoppingCartPage extends StatelessWidget {
                                             controller.havecoupone(val);
                                           },
                                         ),
-                                        SizedBox(height: (height * 0.015).clamp(8.0, 16.0)),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [Titles(title: "Order Summary")],
+                                        SizedBox(
+                                          height: (height * 0.015).clamp(
+                                            8.0,
+                                            16.0,
+                                          ),
                                         ),
-                                        SizedBox(height: (height * 0.015).clamp(8.0, 16.0)),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Titles(title: "Order Summary"),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: (height * 0.015).clamp(
+                                            8.0,
+                                            16.0,
+                                          ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Padding(
                                               padding: const EdgeInsets.all(5),
                                               child: Text(
                                                 'Sub Total',
                                                 style: TextStyle(
-                                                  fontSize: (width * 0.04).clamp(14.0, 18.0),
+                                                  fontSize: (width * 0.04)
+                                                      .clamp(14.0, 18.0),
                                                   color: Colors.grey,
                                                 ),
                                               ),
@@ -95,22 +112,32 @@ class ShoppingCartPage extends StatelessWidget {
                                             Text(
                                               '${controller.totalprice}${" EGP".tr}',
                                               style: TextStyle(
-                                                fontSize: (width * 0.045).clamp(16.0, 22.0),
+                                                fontSize: (width * 0.045).clamp(
+                                                  16.0,
+                                                  22.0,
+                                                ),
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                           ],
                                         ),
-                                        SizedBox(height: (height * 0.015).clamp(8.0, 16.0)),
+                                        SizedBox(
+                                          height: (height * 0.015).clamp(
+                                            8.0,
+                                            16.0,
+                                          ),
+                                        ),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Padding(
                                               padding: const EdgeInsets.all(5),
                                               child: Text(
                                                 'Discount'.tr,
                                                 style: TextStyle(
-                                                  fontSize: (width * 0.04).clamp(14.0, 18.0),
+                                                  fontSize: (width * 0.04)
+                                                      .clamp(14.0, 18.0),
                                                   color: Colors.grey,
                                                 ),
                                               ),
@@ -118,13 +145,21 @@ class ShoppingCartPage extends StatelessWidget {
                                             Text(
                                               '${controller.couponediscount} %',
                                               style: TextStyle(
-                                                fontSize: (width * 0.045).clamp(16.0, 22.0),
+                                                fontSize: (width * 0.045).clamp(
+                                                  16.0,
+                                                  22.0,
+                                                ),
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                           ],
                                         ),
-                                        Divider(height: (height * 0.03).clamp(20.0, 35.0)),
+                                        Divider(
+                                          height: (height * 0.03).clamp(
+                                            20.0,
+                                            35.0,
+                                          ),
+                                        ),
                                       ],
                                     )
                                   : const SizedBox.shrink(),
@@ -147,30 +182,31 @@ class ShoppingCartPage extends StatelessWidget {
                                 child: GetBuilder<CartController>(
                                   builder: (controller) =>
                                       TweenAnimationBuilder<double>(
-                                    tween: Tween<double>(
-                                      begin: controller.totalprice,
-                                      end: controller.totalprice -
-                                          (controller.totalprice *
-                                              controller.couponediscount /
-                                              100),
-                                    ),
-                                    duration: const Duration(seconds: 1),
-                                    curve: Curves.easeOut,
-                                    builder: (context, value, child) {
-                                      return Text(
-                                        '${value.toStringAsFixed(0)}${" EGP".tr}',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: (width * 0.05).clamp(
-                                            20.0,
-                                            26.0,
-                                          ),
-                                          fontWeight: FontWeight.bold,
+                                        tween: Tween<double>(
+                                          begin: controller.totalprice,
+                                          end:
+                                              controller.totalprice -
+                                              (controller.totalprice *
+                                                  controller.couponediscount /
+                                                  100),
                                         ),
-                                      );
-                                    },
-                                  ),
+                                        duration: const Duration(seconds: 1),
+                                        curve: Curves.easeOut,
+                                        builder: (context, value, child) {
+                                          return Text(
+                                            '${value.toStringAsFixed(0)}${" EGP".tr}',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: (width * 0.05).clamp(
+                                                20.0,
+                                                26.0,
+                                              ),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          );
+                                        },
+                                      ),
                                 ),
                               ),
                             ],
@@ -214,8 +250,8 @@ class ShoppingCartPage extends StatelessWidget {
                     );
                   },
                 ),
-                // =========================================================
 
+                // =========================================================
                 Expanded(
                   child: ListView.builder(
                     physics: const BouncingScrollPhysics(),
