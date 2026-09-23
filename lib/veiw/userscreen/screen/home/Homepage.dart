@@ -60,7 +60,7 @@ class HomePage extends StatelessWidget {
                         (horizontalPadding * 2) -
                         (gridSpacing * (gridCrossAxisCount - 1))) /
                     gridCrossAxisCount;
-                final itemWidth = (width - 30) / 3;
+                final itemWidth = (width - 60) / 3;
 
                 return HandlingDataView(
                   emptyStyle: EmptyStateStyle.style1,
@@ -135,10 +135,7 @@ class HomePage extends StatelessWidget {
                           ),
 
                           /// New Items Header
-                          Skeletonizer(
-                            enabled: showSkeleton,
-                            child: Titles(title: "New Items".tr),
-                          ),
+                          Titles(title: "New Items".tr),
                           CurvedItemsView(),
 
                           SizedBox(height: sectionSpacing),

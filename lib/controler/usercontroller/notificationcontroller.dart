@@ -40,6 +40,10 @@ class Notificationcontroller extends GetxController {
   void onTap(int id) {
     // لو مش في وضع التحديد، اضغط ضغطة عادية (مثلاً تفتح الإشعار أو تخليه مقروء)
     if (!selectionMode) {
+      // Get.off(() => Orderdetailes(),arguments: {
+      //   "order":notificationlist[id].userId
+      // });
+
       // هنا ممكن تحط كود فتح الإشعار مستقبلاً
       return;
     }

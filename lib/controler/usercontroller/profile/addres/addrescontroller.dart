@@ -12,6 +12,7 @@ import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/addresdata.dart';
 import 'package:hos/data/model/Addresmodel.dart';
+import 'package:hos/veiw/userscreen/screen/profile/addres/viewaddres.dart';
 import 'package:latlong2/latlong.dart';
 
 class AddressController extends GetxController {
@@ -141,8 +142,10 @@ class AddressController extends GetxController {
   }
 
   /////////////////////
-
+  RxBool isuccess = false.obs;
   Future<void> addaddres(BuildContext context) async {
+    isuccess = false.obs;
+
     String cityText = city!.text = "$selectedGovernorate - $selectedCity";
     String nameText = name!.text = selectedLocationType ?? "منزل";
 
@@ -161,17 +164,13 @@ class AddressController extends GetxController {
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
+        isuccess = true.obs;
+
         await viewaddres();
-        showSnackBar(
-          context,
-          "تم  اضافه عنوان",
-          const Icon(Icons.check_circle, color: Colors.greenAccent),
-        );
         if (Get.isRegistered<Checkoutcontroller>()) {
           Checkoutcontroller controller = Get.find<Checkoutcontroller>();
           await controller.getaddress();
         }
-        Get.back();
       } else {
         response['message'] != null
             ? Get.snackbar("Error", response['message'])
@@ -219,7 +218,7 @@ class AddressController extends GetxController {
   final GlobalKey<AnimatedListState> Addressket =
       GlobalKey<AnimatedListState>();
 
-  void deleteAddres(int addresid,BuildContext context) {
+  void deleteAddres(int addresid, BuildContext context) {
     int index = listaddresdata.indexWhere((e) => e.id == addresid);
 
     if (index != -1) {
@@ -228,72 +227,22 @@ class AddressController extends GetxController {
       if (Addressket.currentState != null) {
         Addressket.currentState!.removeItem(
           index,
-          (context, animation) => ScaleTransition(
-            scale: animation,
-            child: Card(
-              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              elevation: 0,
-              color: Colors.green.shade50,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Container(
-                  margin: const EdgeInsets.all(5),
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    borderRadius: BorderRadius.circular(25),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.03),
-                        blurRadius: 2,
-                        spreadRadius: 0.5,
-                        offset: const Offset(0, 1),
-                      ),
-                    ],
-                  ),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 4,
-                    ),
-                    leading: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(shape: BoxShape.circle),
-                      child: Icon(
-                        Icons.delete_sweep_rounded,
-                        color: Colors.red.shade700,
-                        size: 22,
-                      ),
-                    ),
-                    title: Text(
-                      "تم حذف ${removedItem.name ?? 'العنوان'}",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.red.shade900,
-                        fontFamily: "sans-serif",
-                      ),
-                    ),
-                    subtitle: const Text(
-                      "تم نقل العنصر للمهملات بنجاح",
-                      style: TextStyle(fontSize: 12, color: Colors.black54),
-                    ),
-                  ),
-                ),
-              ),
+          (context, animation) => SizeTransition(
+            sizeFactor: animation,
+            child: AddressCard(
+              address: removedItem,
+              isDefault: false,
+              onDelete: () {},
+              onSetDefault: () {},
             ),
           ),
-          duration: const Duration(milliseconds: 500),
+          duration: const Duration(milliseconds: 300),
         );
       }
 
       listaddresdata.removeAt(index);
       addresdata.deleteAddresdata(addresid);
-      showSnackBar(
-        context,
-        "تم إلغاء الطلب بنجاح",
-        const Icon(Icons.check_circle, color: Colors.greenAccent),
-      );
+
       if (listaddresdata.isEmpty) {
         statusrequest = Statusrequest.failure;
       }

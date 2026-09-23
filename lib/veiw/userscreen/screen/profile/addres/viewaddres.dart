@@ -53,7 +53,7 @@ class ViewMyAddres extends StatelessWidget {
                   sizeFactor: animation,
                   child: FadeTransition(
                     opacity: animation,
-                    child: _AddressCard(
+                    child: AddressCard(
                       address: address,
                       isDefault: controller.isdefault == address.id,
                       onDelete: () {
@@ -78,13 +78,13 @@ class ViewMyAddres extends StatelessWidget {
   }
 }
 
-class _AddressCard extends StatelessWidget {
+class AddressCard extends StatelessWidget {
   final AddressModel address;
   final bool isDefault;
   final VoidCallback onDelete;
   final VoidCallback onSetDefault;
 
-  const _AddressCard({
+  const AddressCard({
     required this.address,
     required this.isDefault,
     required this.onDelete,
