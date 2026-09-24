@@ -58,7 +58,7 @@ class Itemsdetailes extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: Colors.white.withOpacity(0.3),
+                    color: Colors.white.withAlpha(76),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
@@ -115,7 +115,7 @@ class Itemsdetailes extends StatelessWidget {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.08),
+                              color: Colors.black.withAlpha(20),
                               blurRadius: 20,
                               offset: const Offset(0, 8),
                             ),
@@ -190,7 +190,7 @@ class Itemsdetailes extends StatelessWidget {
                                 vertical: 5,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.amber.withOpacity(0.15),
+                                color: Colors.amber.withAlpha(38),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Row(
@@ -336,7 +336,7 @@ class Itemsdetailes extends StatelessWidget {
         color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10),
+          BoxShadow(color: Colors.black.withAlpha(13), blurRadius: 10),
         ],
       ),
       child: Row(
@@ -372,7 +372,7 @@ class Itemsdetailes extends StatelessWidget {
   }
 
   Widget verticalDivider() {
-    return Container(height: 35, width: 1, color: Colors.grey.withOpacity(0.2));
+    return Container(height: 35, width: 1, color: Colors.grey.withAlpha(51));
   }
 
   // ─── Often Order With ───
@@ -415,7 +415,7 @@ class Itemsdetailes extends StatelessWidget {
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: suggestions.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 12),
+            separatorBuilder: (_, _) => const SizedBox(width: 12),
             itemBuilder: (context, index) {
               final s = suggestions[index];
               return Container(
@@ -425,7 +425,7 @@ class Itemsdetailes extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Colors.black.withAlpha(13),
                       blurRadius: 8,
                     ),
                   ],

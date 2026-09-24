@@ -46,7 +46,7 @@ class Addcategories extends StatelessWidget {
                           height: 130,
                           width: 130,
                           decoration: BoxDecoration(
-                            color: Colors.blue.shade50.withOpacity(0.5),
+                            color: Colors.blue.shade50.withAlpha(128),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
                               color: controller.file != null
@@ -69,7 +69,7 @@ class Addcategories extends StatelessWidget {
                                     Container(
                                       padding: const EdgeInsets.all(12),
                                       decoration: BoxDecoration(
-                                        color: Colors.blue.withOpacity(0.1),
+                                        color: Colors.blue.withAlpha(25),
                                         shape: BoxShape.circle,
                                       ),
                                       child: const Icon(
@@ -107,7 +107,7 @@ class Addcategories extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.04),
+                        color: Colors.black.withAlpha(10),
                         blurRadius: 15,
                         offset: const Offset(0, 5),
                       ),

@@ -5,7 +5,7 @@ import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/data/datasource/admindata/dashboarddata.dart';
-import 'package:hos/veiw/adminscreen/Home/AdminHome.dart';
+import 'package:hos/veiw/adminscreen/Home/admin_home.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/viewcat.dart';
 import 'package:hos/veiw/adminscreen/Home/orders/adminpending.dart';
 import 'package:hos/veiw/userscreen/screen/profile/profile.dart';

@@ -107,9 +107,9 @@ class SalesChart {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['date'] = this.date;
-    data['total'] = this.total;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['date'] = date;
+    data['total'] = total;
     return data;
   }
 }

@@ -1,4 +1,4 @@
-import 'package:hos/data/model/Addresmodel.dart';
+import 'package:hos/data/model/addres_model.dart';
 
 class OrderModel {
   final int orderId;
@@ -89,14 +89,14 @@ class OrderItemmodel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['order_id'] = this.orderId;
-    data['product_id'] = this.productId;
-    data['product_name'] = this.productName;
-    data['quantity'] = this.quantity;
-    data['price'] = this.price;
-    data['total_price'] = this.totalPrice;
-    data["image"] = this.image;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['order_id'] = orderId;
+    data['product_id'] = productId;
+    data['product_name'] = productName;
+    data['quantity'] = quantity;
+    data['price'] = price;
+    data['total_price'] = totalPrice;
+    data["image"] = image;
     return data;
   }
 }

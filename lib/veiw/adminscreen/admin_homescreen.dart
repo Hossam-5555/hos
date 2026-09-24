@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/admincontroller/admin_home.dart';
+import 'package:hos/controler/admincontroller/admin_controller.dart';
 import 'package:hos/controler/usercontroller/notificationcontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';

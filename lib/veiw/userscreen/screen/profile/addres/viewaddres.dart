@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/addres/addrescontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/routs.dart';
-import 'package:hos/data/model/Addresmodel.dart';
+import 'package:hos/data/model/addres_model.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
 class ViewMyAddres extends StatelessWidget {

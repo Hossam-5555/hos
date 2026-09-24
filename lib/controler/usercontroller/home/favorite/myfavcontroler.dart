@@ -10,7 +10,7 @@ class Myfavcontroler extends SearchMix {
   @override
   // ignore: overridden_fields
   late Statusrequest statusrequest;
-  List<favoriteModel> data = [];
+  List<FavoriteModel> data = [];
   RxInt get datacount => data.length.obs;
 
   addfavdata favdata = addfavdata(Get.find());
@@ -28,7 +28,7 @@ class Myfavcontroler extends SearchMix {
     if (statusrequest == Statusrequest.success) {
       if (response['status'] == true) {
         List responsedata = response['data'];
-        data.addAll(responsedata.map((e) => favoriteModel.fromJson(e)));
+        data.addAll(responsedata.map((e) => FavoriteModel.fromJson(e)));
         data.isEmpty ? statusrequest = Statusrequest.failure : null;
       } else {
         statusrequest = Statusrequest.failure;

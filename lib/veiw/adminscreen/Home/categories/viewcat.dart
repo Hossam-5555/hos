@@ -29,7 +29,7 @@ class ViewCategories extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: BorderSide(
-            color: Colors.cyanAccent.withOpacity(0.5),
+            color: Colors.cyanAccent.withAlpha(127),
             width: 1.5,
           ),
         ),
@@ -66,7 +66,7 @@ class ViewCategories extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.6,
                           height: MediaQuery.of(context).size.width * 0.6,
                           child: SvgPicture.asset(
-                            "${Imageasset.emptycart}",
+                            Imageasset.emptycart,
                             fit: BoxFit
                                 .contain, // لضمان احتواء الصورة داخل الحاوية دون قص
                           ),

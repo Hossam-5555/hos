@@ -98,8 +98,9 @@ class EditItem extends StatelessWidget {
                                 controller.selectedImages.length,
                                 (index) {
                                   final file = controller.selectedImages[index];
-                                  if (file == null)
+                                  if (file == null) {
                                     return const SizedBox.shrink();
+                                  }
 
                                   return Stack(
                                     clipBehavior: Clip.none,
@@ -289,7 +290,7 @@ class EditItem extends StatelessWidget {
                     style: TextStyle(color: Colors.grey[600], fontSize: 12),
                   ),
                   value: controller.active == 1,
-                  activeColor: Colors.blue,
+                  activeThumbColor: Colors.blue,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                     side: BorderSide(color: Colors.grey[400]!),

@@ -5,7 +5,7 @@ import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 class Additem extends StatelessWidget {
-  const Additem({Key? key}) : super(key: key);
+  const Additem({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -92,8 +92,9 @@ class Additem extends StatelessWidget {
                                 controller.selectedImages.length,
                                 (index) {
                                   final file = controller.selectedImages[index];
-                                  if (file == null)
+                                  if (file == null) {
                                     return const SizedBox.shrink();
+                                  }
 
                                   return Stack(
                                     clipBehavior: Clip.none,
@@ -295,7 +296,7 @@ class Additem extends StatelessWidget {
                       style: TextStyle(color: Colors.grey[600], fontSize: 12),
                     ),
                     value: controller.active == 1,
-                    activeColor: Colors.blue,
+                    activeThumbColor: Colors.blue,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                       side: BorderSide(color: Colors.grey[400]!),
@@ -340,6 +341,7 @@ class Additem extends StatelessWidget {
 }
 
 Widget buildCustomTextField({
+  // ignore: strict_top_level_inference
   enabled = true,
   required TextEditingController controller,
   required String label,

@@ -11,7 +11,7 @@ import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/addresdata.dart';
-import 'package:hos/data/model/Addresmodel.dart';
+import 'package:hos/data/model/addres_model.dart';
 import 'package:hos/veiw/userscreen/screen/profile/addres/viewaddres.dart';
 import 'package:latlong2/latlong.dart';
 

@@ -19,12 +19,12 @@ class CategoriesModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['name_ar'] = this.nameAr;
-    data['image'] = this.image;
-    data['created_at'] = this.createdAt;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['name'] = name;
+    data['name_ar'] = nameAr;
+    data['image'] = image;
+    data['created_at'] = createdAt;
     return data;
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/admincontroller/admin_home.dart';
+import 'package:hos/controler/admincontroller/admin_controller.dart';
 
 const String kCurrency = 'EGP ';
 
@@ -250,7 +250,7 @@ class _RevenueChartCard extends StatelessWidget {
                           barWidth: 3,
                           belowBarData: BarAreaData(
                             show: true,
-                            color: _AppColors.primary.withOpacity(0.15),
+                            color: _AppColors.primary.withAlpha(38),
                           ),
                         ),
                       ],
@@ -600,7 +600,7 @@ class _Card extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withAlpha(10),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -684,7 +684,7 @@ class _BarRow extends StatelessWidget {
           LinearProgressIndicator(
             value: percent,
             color: color,
-            backgroundColor: color.withOpacity(0.15),
+            backgroundColor: color.withAlpha(38),
           ),
         ],
       ),

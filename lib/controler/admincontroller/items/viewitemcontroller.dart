@@ -6,7 +6,7 @@ import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/admindata/itemdata.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/data/model/itemsmodel.dart';
-import 'package:hos/veiw/adminscreen/Adminhomescreen.dart';
+import 'package:hos/veiw/adminscreen/admin_homescreen.dart';
 import 'package:hos/veiw/adminscreen/Home/itemsview/additem.dart';
 import 'package:hos/veiw/adminscreen/Home/itemsview/edititem.dart';
 

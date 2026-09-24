@@ -1,14 +1,14 @@
 import 'package:hos/data/model/itemsmodel.dart';
 
-class favoriteModel {
+class FavoriteModel {
   int? id;
   int? userId;
   ItemsModel? item; // استخدام الموديل الموجود عندك
   String? createdAt;
 
-  favoriteModel({this.id, this.userId, this.item, this.createdAt});
+  FavoriteModel({this.id, this.userId, this.item, this.createdAt});
 
-  favoriteModel.fromJson(Map<String, dynamic> json) {
+  FavoriteModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
     // هنا نقوم بتحويل الجزء الخاص بالمنتج باستخدام الموديل الجاهز لديك

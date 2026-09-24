@@ -38,16 +38,16 @@ class AddressModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['name'] = this.name;
-    data['street'] = this.street;
-    data['city'] = this.city;
-    data['lat'] = this.lat;
-    data['lng'] = this.lng;
-    data['phone'] = this.phone;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['name'] = name;
+    data['street'] = street;
+    data['city'] = city;
+    data['lat'] = lat;
+    data['lng'] = lng;
+    data['phone'] = phone;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

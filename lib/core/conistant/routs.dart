@@ -8,7 +8,7 @@ import 'package:hos/controler/usercontroller/home/homescreen_controller.dart';
 import 'package:hos/controler/usercontroller/home/itemsdetailscontroller.dart';
 import 'package:hos/controler/usercontroller/profile/addres/addrescontroller.dart';
 import 'package:hos/controler/usercontroller/profile/order/ordercontroller.dart';
-import 'package:hos/veiw/adminscreen/Adminhomescreen.dart';
+import 'package:hos/veiw/adminscreen/admin_homescreen.dart';
 import 'package:hos/veiw/adminscreen/Home/itemsview/viewitem.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/cart.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/checkout.dart';

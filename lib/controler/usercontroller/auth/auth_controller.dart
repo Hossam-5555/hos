@@ -8,7 +8,7 @@ import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/auth/logindata.dart';
 import 'package:hos/data/datasource/userdata/auth/signupdata.dart';
-import 'package:hos/data/model/UserModel.dart';
+import 'package:hos/data/model/user_model.dart';
 
 class AuthController extends GetxController {
   bool isLogin = true;
