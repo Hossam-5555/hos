@@ -19,6 +19,7 @@ class ItemsController extends SearchMix {
   List<Brandmodel> brands = []; // تأكد أن Brandmodel معرف بشكل صحيح
   int indexofcategrry = 0;
   @override
+  // ignore: overridden_fields
   Statusrequest statusrequest = Statusrequest.none;
   Myservisec myservisec1 = Get.find();
   Itemsdata itemdata = Itemsdata(Get.find());

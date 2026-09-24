@@ -62,7 +62,7 @@ class AppTheme {
     return CardThemeData(
       color: color,
       elevation: elevation,
-      shadowColor: Colors.black.withOpacity(0.05), // ظل خفيف جداً وأنيق
+      shadowColor: Colors.black.withAlpha(13), // ظل خفيف جداً وأنيق
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(40),
       ),

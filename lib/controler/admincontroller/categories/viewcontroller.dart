@@ -26,7 +26,6 @@ class ViewCatController extends GetxController {
     update();
 
     var response = await admindata.viewcat();
-    print("=============================== Controller $response");
     statusrequest = handling(response);
 
     if (Statusrequest.success == statusrequest) {
@@ -61,7 +60,7 @@ class ViewCatController extends GetxController {
   }
 
   void gotoproducts(CategoriesModel catmodel) {
-    Get.toNamed(AdminApproate.ViewItemScreen, arguments: {"catid": catmodel});
+    Get.toNamed(AdminApproate.viewitemscreen, arguments: {"catid": catmodel});
   }
 
   void backtohomebage() {

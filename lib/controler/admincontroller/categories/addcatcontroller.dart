@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/categories/viewcontroller.dart';
 import 'package:hos/core/class/crud.dart';
@@ -42,7 +41,6 @@ class Addcatcontroller extends GetxController {
         namear.text,
         file!, // دلوقتي آمن نستخدمها
       );
-      print(response);
       statusrequest = handling(response);
       if (statusrequest == Statusrequest.success) {
         if (response['status'] == true) {

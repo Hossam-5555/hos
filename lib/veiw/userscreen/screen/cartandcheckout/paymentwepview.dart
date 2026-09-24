@@ -112,7 +112,7 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
             // 1️⃣ تحميل الصفحات العادية داخل بوابة Paymob
             if (isPageLoading && !isCheckingStatus)
               Container(
-                color: Colors.white.withOpacity(0.8),
+                color: Colors.white.withAlpha(204),
                 child: Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,

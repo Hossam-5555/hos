@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:hos/core/class/crud.dart';
-import 'package:hos/core/conistant/linkApi.dart';
+import 'package:hos/core/conistant/link_api.dart';
 
 class AdmindaTaCaregores {
   Crud crud;

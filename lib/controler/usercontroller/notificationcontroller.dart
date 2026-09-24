@@ -122,7 +122,6 @@ class Notificationcontroller extends GetxController {
     statusrequest = Statusrequest.loading;
     update();
     var response = await notificationdata.getNotificationsData();
-    print(response);
 
     statusrequest = handling(response);
     if (Statusrequest.success == statusrequest && response['status'] == true) {
@@ -142,7 +141,6 @@ class Notificationcontroller extends GetxController {
 
   // 📥 جلب البيانات الحقيقية المتوافقة مع دالة index() بالباك إند
   Future<void> getNotifications() async {
-    print("===================================");
     notificationlist.clear();
     statusrequest = Statusrequest.loading;
     update();

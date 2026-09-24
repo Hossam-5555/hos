@@ -4,7 +4,7 @@ import 'package:hos/controler/usercontroller/home/favorite/myfavcontroler.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
-import 'package:hos/veiw/wedget/SharedProductCard.dart';
+import 'package:hos/veiw/wedget/shared_product_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class Myfavorite extends StatelessWidget {

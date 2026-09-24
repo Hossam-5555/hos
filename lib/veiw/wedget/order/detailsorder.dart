@@ -115,7 +115,7 @@ Widget statusorder(String status, Color currentColor, String text) {
                           boxShadow: active
                               ? [
                                   BoxShadow(
-                                    color: stepColor.withOpacity(0.3),
+                                    color: stepColor.withAlpha(76),
                                     blurRadius: 8,
                                     spreadRadius: 1,
                                   ),
@@ -232,50 +232,47 @@ Widget price(order) => Column(
 
 // الويدجت الرئيسية لعرض بيانات العميل
 Widget info(order) {
-  return Container(
-    // padding: const EdgeInsets.all(10),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // --- عنوان القسم ---
-        Row(
-          children: [
-            Icon(Icons.contact_page_rounded),
-            const SizedBox(width: 10),
-            const Text(
-              "Customer Details",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                // color: Colors.black87,
-              ),
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      // --- عنوان القسم ---
+      Row(
+        children: [
+          Icon(Icons.contact_page_rounded),
+          const SizedBox(width: 10),
+          const Text(
+            "Customer Details",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              // color: Colors.black87,
             ),
-          ],
-        ),
-
-        // --- البيانات ---
-        row(
-          icon: Icons.person_outline_rounded,
-          title: "Name",
-          value: order.username ?? "Unknown",
-          iconColor: Colors.purple,
-        ),
-
-        row(
-          icon: Icons.phone_android_rounded,
-          title: "Phone Number",
-          value: order.shippingAddress.phone ?? "-",
-          iconColor: Colors.green,
-        ),
-
-        row(
-          icon: Icons.location_on_outlined,
-          title: "Shipping Address",
-          value:
-              "${order.shippingAddress.city ?? ""} -\n ${order.shippingAddress.street ?? ""}",
-          iconColor: Colors.orange,
-        ),
-      ],
-    ),
+          ),
+        ],
+      ),
+  
+      // --- البيانات ---
+      row(
+        icon: Icons.person_outline_rounded,
+        title: "Name",
+        value: order.username ?? "Unknown",
+        iconColor: Colors.purple,
+      ),
+  
+      row(
+        icon: Icons.phone_android_rounded,
+        title: "Phone Number",
+        value: order.shippingAddress.phone ?? "-",
+        iconColor: Colors.green,
+      ),
+  
+      row(
+        icon: Icons.location_on_outlined,
+        title: "Shipping Address",
+        value:
+            "${order.shippingAddress.city ?? ""} -\n ${order.shippingAddress.street ?? ""}",
+        iconColor: Colors.orange,
+      ),
+    ],
   );
 }
 

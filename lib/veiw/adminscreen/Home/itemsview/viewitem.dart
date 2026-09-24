@@ -91,7 +91,7 @@ class ViewItemScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.cyanAccent.withOpacity(0.4),
+              color: Colors.cyanAccent.withAlpha(102),
               blurRadius: 15,
               offset: const Offset(0, 4),
             ),
@@ -104,7 +104,7 @@ class ViewItemScreen extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
             side: BorderSide(
-              color: Colors.cyanAccent.withOpacity(0.5),
+              color: Colors.cyanAccent.withAlpha(128),
               width: 1.5,
             ),
           ),

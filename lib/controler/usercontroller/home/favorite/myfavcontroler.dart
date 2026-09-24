@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/searchclass.dart';
 import 'package:hos/core/functions/handlingdata.dart';
-import 'package:hos/core/serveces/myservisec.dart';
+// import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/fav_data.dart';
 import 'package:hos/data/model/myfavorite.dart';
 
@@ -14,7 +14,7 @@ class Myfavcontroler extends SearchMix {
   RxInt get datacount => data.length.obs;
 
   addfavdata favdata = addfavdata(Get.find());
-  Myservisec myservisec = Get.find();
+  // Myservisec myservisec = Get.find();
 
   int get id => myservisec.sharedPreferences.getInt("id")!;
 

@@ -74,7 +74,9 @@ class Listpaymentcard extends GetView<Checkoutcontroller> {
           AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             transform: isActive
+                // ignore: deprecated_member_use
                 ? (Matrix4.identity()..scale(1.1))
+                // ignore: deprecated_member_use
                 : (Matrix4.identity()..scale(1.0)),
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(

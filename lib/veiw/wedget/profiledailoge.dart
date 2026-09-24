@@ -7,7 +7,7 @@ class ComingSoonOverlay {
     Get.dialog(
       const _ComingSoonDialog(),
       barrierDismissible: true,
-      barrierColor: Colors.black.withOpacity(0.35),
+      barrierColor: Colors.black.withAlpha(90),
       transitionDuration: const Duration(milliseconds: 350),
     );
   }
@@ -30,11 +30,12 @@ class _ComingSoonDialog extends StatelessWidget {
           width: 300,
           padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
           decoration: BoxDecoration(
+            // ignore: deprecated_member_use
             color: Theme.of(context).dialogBackgroundColor,
             borderRadius: BorderRadius.circular(28),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.15),
+                color: Colors.black.withAlpha(38),
                 blurRadius: 30,
                 offset: const Offset(0, 15),
               ),

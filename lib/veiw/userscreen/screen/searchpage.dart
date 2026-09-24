@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
+import 'package:hos/controler/usercontroller/home/homepage_controller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/searchclass.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
-import 'package:hos/veiw/userscreen/screen/home/Homepage.dart';
-import 'package:hos/veiw/wedget/SharedProductCard.dart';
+import 'package:hos/veiw/userscreen/screen/home/home_page.dart';
+import 'package:hos/veiw/wedget/shared_product_card.dart';
 import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/items/itemslist.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';

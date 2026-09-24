@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/usercontroller/auth/AuthController.dart';
+import 'package:hos/controler/usercontroller/auth/auth_controller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/imageasset.dart';
@@ -36,6 +36,7 @@ class AuthPage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: true, // السماح بالتجاوب مع الكيبورد
       body: SafeArea(
+        // ignore: deprecated_member_use
         child: WillPopScope(
           onWillPop: appexitAlert,
           child: Container(

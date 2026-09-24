@@ -143,7 +143,7 @@ class HandlingDataView extends StatelessWidget {
       subtitle: "Check back later or try exploring another category.".tr,
       imagePath: Imageasset.animation2,
     ),
-    AdminApproate.ViewItemScreen: EmptyStateModel(
+    AdminApproate.viewitemscreen: EmptyStateModel(
       title: "Category is empty".tr,
       subtitle:
           "Add new items to this category to make them available to users.".tr,
@@ -330,7 +330,7 @@ class HandlingDataView extends StatelessWidget {
           boxShadow: [
             if (!isDark)
               BoxShadow(
-                color: Colors.black.withOpacity(0.03),
+                color: Colors.black.withAlpha(8),
                 blurRadius: 15,
                 offset: const Offset(0, 5),
               ),
@@ -345,7 +345,7 @@ class HandlingDataView extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: isDark
-                    ? Colors.white.withOpacity(0.05)
+                    ? Colors.white.withAlpha(13)
                     : Colors.grey.shade100,
               ),
               child: _buildMedia(width: 120, height: 120),
@@ -408,7 +408,7 @@ class HandlingDataView extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      color: isInteractive ? Colors.transparent : Colors.black.withOpacity(0.3),
+      color: isInteractive ? Colors.transparent : Colors.black.withAlpha(76),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

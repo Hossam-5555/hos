@@ -64,7 +64,6 @@ class AuthController extends GetxController {
       update();
       return;
     }
-    print(response);
 
     if (statusrequest == Statusrequest.success && response['status'] == true) {
       var data = response['data'];

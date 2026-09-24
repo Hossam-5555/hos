@@ -11,7 +11,7 @@ class FavController extends GetxController {
   late Statusrequest statusrequest;
 
   // لتغيير حالة الأيقونة محليًا
-  chasngfav(id, val) {
+  void chasngfav(int id, val) {
     isfavorite[id] = val;
     update();
   }

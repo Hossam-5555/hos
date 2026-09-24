@@ -27,7 +27,7 @@ Widget buildPaymentMethod({
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: (iconColor ?? Colors.black).withOpacity(0.1),
+              color: (iconColor ?? Colors.black).withAlpha(25),
               shape: BoxShape.circle,
             ),
             child: Icon(icon, color: iconColor ?? Colors.black87, size: 20),
@@ -101,7 +101,7 @@ Widget buildCreditCardForm() {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
+              color: Colors.black.withAlpha(51),
               blurRadius: 15,
               offset: const Offset(0, 8),
             ),

@@ -35,7 +35,7 @@ class OrderCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(22),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(isDark ? 0.4 : 0.08),
+              color: Colors.black.withAlpha(isDark ? 102 : 20),
               blurRadius: 14,
               offset: const Offset(0, 6),
             ),
@@ -65,7 +65,7 @@ class OrderCard extends StatelessWidget {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          Colors.black.withOpacity(0.25),
+                          Colors.black.withAlpha(64),
                           Colors.transparent,
                         ],
                       ),
@@ -174,9 +174,9 @@ class OrderCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withAlpha(76),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.2)),
+            border: Border.all(color: Colors.white.withAlpha(51)),
           ),
           child: Text(
             text,

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart' show MapController, LatLngBounds;
 import 'package:geocoding/geocoding.dart' as geocoding;
@@ -123,7 +124,9 @@ class AddressController extends GetxController {
           .placemarkFromCoordinates(lat, long);
       if (placemarks.isNotEmpty) {}
     } catch (e) {
-      print("Geocoding error: $e");
+      if (kDebugMode) {
+        print("Geocoding error: $e");
+      }
     }
 
     update();
@@ -141,7 +144,7 @@ class AddressController extends GetxController {
   }
 
   /////////////////////
- final RxBool isuccess = false.obs;
+  final RxBool isuccess = false.obs;
   Future<void> addaddres(BuildContext context) async {
     isuccess.value = false;
 
@@ -214,6 +217,7 @@ class AddressController extends GetxController {
     update();
   }
 
+  // ignore: non_constant_identifier_names
   final GlobalKey<AnimatedListState> Addressket =
       GlobalKey<AnimatedListState>();
 
@@ -247,8 +251,6 @@ class AddressController extends GetxController {
       }
 
       update();
-    } else {
-      print("خطأ: العنصر غير موجود في القائمة المحلية أساساً!");
     }
   }
 

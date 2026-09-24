@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
+import 'package:hos/controler/usercontroller/checkout&cart/cart_controller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/handlingdata.dart';
@@ -10,7 +10,7 @@ import 'package:hos/data/datasource/userdata/addresdata.dart';
 import 'package:hos/data/datasource/userdata/checkoutdata.dart';
 import 'package:hos/data/model/Addresmodel.dart';
 import 'package:hos/data/model/cartmodel.dart';
-import 'package:hos/veiw/userscreen/screen/cartandcheckout/PaymentResultPage.dart';
+import 'package:hos/veiw/userscreen/screen/cartandcheckout/payment_result.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/paymentwepview.dart';
 
 class Checkoutcontroller extends GetxController {

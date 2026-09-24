@@ -48,7 +48,6 @@ class AdminPindingController extends GetxController {
       // ✳️ التحقق من نجاح حالة الرد من السيرفر
       if (response['status'] == true && response['data'] != null) {
         List data = [];
-       print("$response");
         // هنا نقوم بفحص الهيكل: إذا كان يحتوي على مصفوفة داخلية بسبب الـ Pagination
         if (response['data'] is Map && response['data']['data'] != null) {
           data = response['data']['data'];

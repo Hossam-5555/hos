@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get/state_manager.dart';
 import 'package:hos/core/functions/checkinternet.dart';
@@ -147,7 +148,9 @@ class Crud {
       Map responsebody = jsonDecode(response.body);
       return Right(responsebody);
     } else {
-      print(response.body);
+      if (kDebugMode) {
+        print(response.body);
+      }
       return const Left(Statusrequest.serverfailure);
     }
   }

@@ -1,10 +1,10 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:get/get.dart';
-import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
+import 'package:hos/controler/usercontroller/checkout&cart/cart_controller.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
-import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
-import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
+import 'package:hos/controler/usercontroller/home/homepage_controller.dart';
+import 'package:hos/controler/usercontroller/home/homescreen_controller.dart';
 import 'package:hos/controler/usercontroller/home/itemsdetailscontroller.dart';
 import 'package:hos/controler/usercontroller/profile/addres/addrescontroller.dart';
 import 'package:hos/controler/usercontroller/profile/order/ordercontroller.dart';
@@ -12,13 +12,13 @@ import 'package:hos/veiw/adminscreen/Adminhomescreen.dart';
 import 'package:hos/veiw/adminscreen/Home/itemsview/viewitem.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/cart.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/checkout.dart';
-import 'package:hos/veiw/userscreen/screen/home/Homepage.dart';
+import 'package:hos/veiw/userscreen/screen/home/home_page.dart';
 import 'package:hos/veiw/userscreen/screen/home/items.dart';
 import 'package:hos/core/middilware/midelware.dart';
 import 'package:hos/veiw/userscreen/screen/auth/forgetpass/forgetpass.dart';
 import 'package:hos/veiw/userscreen/screen/auth/forgetpass/resetpass.dart';
 import 'package:hos/veiw/userscreen/screen/auth/forgetpass/veryficode.dart';
-import 'package:hos/veiw/userscreen/screen/auth/Auth.dart';
+import 'package:hos/veiw/userscreen/screen/auth/auth.dart';
 import 'package:hos/veiw/userscreen/screen/auth/veryfisign.dart';
 import 'package:hos/veiw/userscreen/screen/home/homescreen.dart';
 import 'package:hos/veiw/userscreen/screen/home/itemsdetailes.dart';
@@ -33,7 +33,7 @@ List<GetPage<dynamic>>? routes = [
 
   // ─── Admin ───────────────────────────────────────────
   GetPage(name: AdminApproate.adminHome, page: () => AdminHome()),
-  GetPage(name: AdminApproate.ViewItemScreen, page: () => ViewItemScreen()),
+  GetPage(name: AdminApproate.viewitemscreen, page: () => ViewItemScreen()),
 
   // ─── Home ─────────────────────────────────────────────
   GetPage(
@@ -143,5 +143,5 @@ class Approute {
 
 class AdminApproate {
   static const String adminHome = "/adminHome";
-  static const String ViewItemScreen = "/ViewItemScreen";
+  static const String viewitemscreen = "/ViewItemScreen";
 }

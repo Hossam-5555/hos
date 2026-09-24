@@ -30,17 +30,17 @@ class SharedProductCard extends StatelessWidget {
 
     // ألوان الكارت الأساسية بتتغير حسب الوضع (ليلي / نهاري)
     final Color cardBorderColor = isDark
-        ? Colors.white.withOpacity(0.14)
-        : Colors.black.withOpacity(0.08);
+        ? Colors.white.withAlpha(36)
+        : Colors.black.withAlpha(21);
     final Color cardShadow = isDark
-        ? Colors.black.withOpacity(0.35)
-        : Colors.black.withOpacity(0.08);
+        ? Colors.black.withAlpha(90)
+        : Colors.black.withAlpha(20);
 
     // الشارات (title chip / rating badge / price bar) عايمة فوق الصورة
     // فبنخليها "زجاج غامق" ثابت في الوضعين، عشان تفضل واضحة أياً كانت ألوان
     // صورة المنتج نفسها (فاتحة أو غامقة)
-    final Color chipBackground = Colors.black.withOpacity(isDark ? 0.45 : 0.55);
-    final Color chipBorder = Colors.white.withOpacity(0.18);
+    final Color chipBackground = Colors.black.withAlpha(isDark ? 115 : 140);
+    final Color chipBorder = Colors.white.withAlpha(46);
     const Color chipTextColor = Colors.white;
 
     return GestureDetector(
@@ -90,7 +90,7 @@ class SharedProductCard extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: ([
-                  const Color.fromARGB(255, 97, 93, 93).withOpacity(0.8), // لمعة بينك/بيضاء (وضع ليلي)
+                  const Color.fromARGB(255, 97, 93, 93).withAlpha(204), // لمعة بينك/بيضاء (وضع ليلي)
                   Colors.grey,
                 ]),
               ),
@@ -136,8 +136,8 @@ class SharedProductCard extends StatelessWidget {
                             ),
                             errorWidget: (context, url, error) => Icon(
                               Icons.broken_image_outlined,
-                              color: theme.colorScheme.onSurface.withOpacity(
-                                0.4,
+                              color: theme.colorScheme.onSurface.withAlpha(
+                                102,
                               ),
                             ),
                           ),
@@ -192,7 +192,7 @@ class SharedProductCard extends StatelessWidget {
                                           borderRadius: BorderRadius.circular(
                                             20,
                                           ),
-                                          color: Colors.white.withOpacity(0.18),
+                                          color: Colors.white.withAlpha(46),
                                         ),
                                         child: Row(
                                           mainAxisAlignment:

@@ -150,7 +150,7 @@ class _VerifyIcon extends StatelessWidget {
       height: 72,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Appcolor.primaryColor.withOpacity(0.12),
+        color: Appcolor.primaryColor.withAlpha(30),
       ),
       child: Icon(
         Icons.mark_email_read_outlined,

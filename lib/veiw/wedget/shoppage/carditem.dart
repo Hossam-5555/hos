@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
+import 'package:hos/controler/usercontroller/checkout&cart/cart_controller.dart';
 import 'package:hos/data/model/cartmodel.dart';
 
 Widget buildCartItemCard(
@@ -20,7 +20,7 @@ Widget buildCartItemCard(
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withAlpha(77),
             blurRadius: 2,
             offset: const Offset(0, 0.2),
           ),
@@ -101,7 +101,7 @@ Widget buildCartItemCard(
                     Container(
                       height: 35, // جعلنا الارتفاع مناسب للزرار (بدل 80)
                       decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.2),
+                        color: Colors.grey.withAlpha(51),
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Row(
@@ -184,7 +184,7 @@ Widget infoChip(IconData icon, String label, bool isDark, Key key) {
 }
 
 Widget verticalDivider() {
-  return Container(height: 35, width: 1, color: Colors.grey.withOpacity(0.2));
+  return Container(height: 35, width: 1, color: Colors.grey.withAlpha(51));
 }
 
 class ToggleInfoChips extends StatefulWidget {

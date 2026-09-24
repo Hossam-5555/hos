@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
+import 'package:hos/controler/usercontroller/checkout&cart/cart_controller.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 class Coubone extends GetView<CartController> {
@@ -48,7 +48,7 @@ class Coubone extends GetView<CartController> {
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.1),
+                    color: Colors.green.withAlpha(25),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(

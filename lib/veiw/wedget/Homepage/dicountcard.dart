@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/usercontroller/home/Homepage_controller.dart';
+import 'package:hos/controler/usercontroller/home/homepage_controller.dart';
 
 // 1. نموذج (Model) لبيانات العرض
 class OfferModel {

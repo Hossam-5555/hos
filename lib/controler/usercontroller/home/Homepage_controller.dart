@@ -1,7 +1,4 @@
-// ignore_for_file: overridden_fields
-
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';

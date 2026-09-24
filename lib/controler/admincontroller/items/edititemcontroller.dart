@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
@@ -37,6 +36,7 @@ class Edititemcontroller extends GetxController {
   Future<void> pickMultipleImagesFromGallery() async {
     try {
       // تفتح معرض الهاتف وتسمح للمستخدم بتحديد عدة صور دفعة واحدة
+      // ignore: unnecessary_nullable_for_final_variable_declarations
       final List<XFile>? pickedFiles = await _picker.pickMultiImage(
         imageQuality: 80, // لتقليل الحجم والحفاظ على سرعة الرفع
       );

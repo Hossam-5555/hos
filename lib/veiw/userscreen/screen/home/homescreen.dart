@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart'; // لتفعيل ScrollDirection
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
-import 'package:hos/controler/usercontroller/home/Homescreencontroller.dart';
+import 'package:hos/controler/usercontroller/checkout&cart/cart_controller.dart';
+import 'package:hos/controler/usercontroller/home/homescreen_controller.dart';
 import 'package:hos/controler/usercontroller/notificationcontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
@@ -25,6 +25,7 @@ class Homescreen extends StatelessWidget {
     return GetBuilder<Homescreencontroller>(
       builder: (controller) => PopScope(
         canPop: false,
+        // ignore: deprecated_member_use
         onPopInvoked: (didPop) async {
           if (didPop) return;
           final bool shouldExit = await appexitAlert();
@@ -86,6 +87,7 @@ class Homescreen extends StatelessWidget {
                             Imageasset.notification,
                             height: 24,
                             width: 24,
+                            // ignore: deprecated_member_use
                             color: Colors.black,
                           ),
                         );

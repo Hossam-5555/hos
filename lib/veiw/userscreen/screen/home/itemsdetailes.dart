@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/usercontroller/checkout&cart/CartController.dart';
+import 'package:hos/controler/usercontroller/checkout&cart/cart_controller.dart';
 import 'package:hos/controler/usercontroller/home/favorite/fav_controller.dart';
 import 'package:hos/controler/usercontroller/home/itemsdetailscontroller.dart';
 import 'package:hos/core/class/crud.dart';
@@ -39,13 +39,13 @@ class Itemsdetailes extends StatelessWidget {
             actions: [
               GetBuilder<FavController>(
                 builder: (favController) {
-                  final isFav = favController.isfavorite[item.id] == "1";
+                  final isFav = favController.isfavorite[item.id] == 1;
                   return FavoriteButton(
                     key: ValueKey(item.id),
                     isFav: isFav,
                     onTap: () {
                       favController.favmanget(item.id!);
-                      favController.chasngfav(item.id, isFav ? "0" : "1");
+                      favController.chasngfav(item.id!, isFav ? 0 : 1);
                     },
                   );
                 },

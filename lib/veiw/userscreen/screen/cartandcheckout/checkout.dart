@@ -176,7 +176,7 @@ class Checkout extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withAlpha(10),
             blurRadius: 16,
             offset: const Offset(0, 6),
           ),
@@ -278,6 +278,7 @@ class Checkout extends StatelessWidget {
                 (addr) => Obx(
                   () => RadioListTile<int>(
                     value: addr.id ?? 0,
+                    // ignore: deprecated_member_use
                     groupValue: c.selectedAddress.value?.id,
                     activeColor: Colors.green,
                     title: Text(addr.city ?? ""),
@@ -285,6 +286,7 @@ class Checkout extends StatelessWidget {
                       addr.street ?? "",
                       style: const TextStyle(color: Colors.grey),
                     ),
+                    // ignore: deprecated_member_use
                     onChanged: (val) {
                       if (val != null) {
                         c.chooseAddres(addr);

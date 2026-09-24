@@ -1,10 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/checkoutdata.dart';
-import 'package:hos/veiw/userscreen/screen/cartandcheckout/PaymentResultPage.dart';
+import 'package:hos/veiw/userscreen/screen/cartandcheckout/payment_result.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/paymentwepview.dart';
 // قم باستيراد المسارات الخاصة بك بشكل صحيح
 
@@ -24,9 +25,9 @@ class PaymentController extends GetxController {
       var result = await checkoutdata.getPaymentStatus(orderId);
 
       result.fold(
+        // ignore: avoid_print
         (failure) => print("⚠️ API Failure in checkPaymentStatus: $failure"),
         (response) {
-          print("✅ API Response in checkPaymentStatus: $response");
           if (response['status'] == true && response['data'] != null) {
             paymentData = response['data'];
             String status = (paymentData?['payment_status'] ?? '')
@@ -56,7 +57,9 @@ class PaymentController extends GetxController {
       );
     } catch (e) {
       if (Get.isDialogOpen ?? false) Get.back();
-      print("❌ Error in checkPaymentStatus: $e");
+      if (kDebugMode) {
+        print("❌ Error in checkPaymentStatus: $e");
+      }
     }
   }
 
@@ -87,10 +90,9 @@ class PaymentController extends GetxController {
         );
       }
     } catch (e) {
-      print("❌ Error in retryPayment: $e");
       showSnackBar(
         Get.context!,
-        "حدث خطأ غير متوقع",
+        "حدث خطأ غير متوقع $e",
         const Icon(Icons.error, color: Colors.red),
       );
     } finally {
@@ -108,6 +110,7 @@ class PaymentController extends GetxController {
       update();
 
       await checkoutdata.cancelOrder(orderId);
+      // ignore: use_build_context_synchronously
       Navigator.popUntil(context, (route) => route.isFirst);
     } catch (e) {
       showSnackBar(
