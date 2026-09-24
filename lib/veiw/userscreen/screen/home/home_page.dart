@@ -60,7 +60,7 @@ class HomePage extends StatelessWidget {
                         (horizontalPadding * 2) -
                         (gridSpacing * (gridCrossAxisCount - 1))) /
                     gridCrossAxisCount;
-                final itemWidth = (width - 60) / 3;
+                final itemWidth = (width - 48) / 3;
 
                 return HandlingDataView(
                   emptyStyle: EmptyStateStyle.style1,
@@ -103,8 +103,8 @@ class HomePage extends StatelessWidget {
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2, // صفين
-                                      mainAxisSpacing: 10,
-                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 8,
+                                      crossAxisSpacing: 8,
                                       childAspectRatio:
                                           categoryHeight / itemWidth,
                                     ),
@@ -164,13 +164,13 @@ class HomePage extends StatelessWidget {
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               padding: EdgeInsets.symmetric(
-                                vertical: sectionSpacing * 0.3,
+                                vertical: sectionSpacing * 0.2,
                               ),
                               gridDelegate:
                                   SliverSimpleGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: gridCrossAxisCount,
                                   ),
-                              mainAxisSpacing: gridSpacing + 4,
+                              mainAxisSpacing: gridSpacing + 2,
                               crossAxisSpacing: gridSpacing,
                               itemCount: controller.mostsaleitem.length,
                               itemBuilder: (context, index) {

@@ -16,7 +16,7 @@ Widget buildCartItemCard(
   return GetBuilder<CartController>(
     builder: (controller) => Container(
       margin: const EdgeInsets.all(5),
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(

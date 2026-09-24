@@ -100,7 +100,7 @@ class CustomBottomNavBar extends StatelessWidget {
                             Badge(
                               isLabelVisible:index==2 ,
                               label: Text("$cartcount"),
-                              child: _buildIcon(item, isSelected),
+                              child: _buildIcon(item, isSelected, isDark),
                             ),
                             const SizedBox(height: 2),
                             // ── النص ──
@@ -132,7 +132,7 @@ class CustomBottomNavBar extends StatelessWidget {
     );
   }
 
-  Widget _buildIcon(NavItem item, bool isSelected) {
+  Widget _buildIcon(NavItem item, bool isSelected,bool isDark) {
     final size = isSelected ? 25.0 : 22.0;
 
     // Image Asset
@@ -153,20 +153,15 @@ class CustomBottomNavBar extends StatelessWidget {
         height: size,
         width: size,
         colorFilter: ColorFilter.mode(
-          isSelected ? Colors.white : Colors.black.withOpacity(0.7),
+          isSelected ? Colors.white  : isDark
+                                    ? Colors.grey.shade400
+                                    : Colors.black,
           BlendMode.srcIn,
         ),
       );
     }
 
-    // Material Icon
-    if (item.icon != null) {
-      return Icon(
-        item.icon,
-        size: size,
-        color: isSelected ? Colors.blue : Colors.grey,
-      );
-    }
+
 
     return const SizedBox.shrink();
   }

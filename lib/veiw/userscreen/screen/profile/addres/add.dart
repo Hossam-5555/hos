@@ -459,110 +459,254 @@ class _LocationDetailsSheet extends StatelessWidget {
 
   // 1. واجهة كتابة البيانات
   Widget _buildFormContent(BuildContext context) {
-    final s = _scaleOf(context);
-    final contentWidth = _contentWidth(context, s);
+  final s = _scaleOf(context);
+  final contentWidth = _contentWidth(context, s);
 
-    return Column(
+  return Container(
+    width: double.infinity,
+    padding: EdgeInsets.all(5 * s),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(20 * s),
+    
+      // boxShadow: [
+      //   BoxShadow(
+      //     color: Colors.black.withOpacity(0.05),
+      //     blurRadius: 20,
+      //     offset: const Offset(0, 6),
+      //   ),
+      // ],
+    ),
+    child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // =========================
+        // Header
+        // =========================
+        Row(
+          children: [
+            Container(
+              width: 48 * s,
+              height: 48 * s,
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(14 * s),
+              ),
+              child: Icon(
+                Icons.location_on_rounded,
+                color: Colors.white,
+                size: 25 * s,
+              ),
+            ),
+
+            SizedBox(width: 12 * s),
+
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'إضافة عنوان جديد',
+                    style: TextStyle(
+                      fontSize: 18 * s,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+
+                  SizedBox(height: 4 * s),
+
+                  Text(
+                    'أدخل تفاصيل العنوان لتسهيل توصيل طلباتك',
+                    style: TextStyle(
+                      fontSize: 12.5 * s,
+                      color: Colors.grey.shade600,
+                      height: 1.4,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+
+        SizedBox(height: 22 * s),
+
+        // =========================
+        // Location section
+        // =========================
+        Text(
+          'معلومات الموقع',
+          style: TextStyle(
+            fontSize: 14 * s,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+
+        SizedBox(height: 10 * s),
+
         DropdownSearch<String>(
           items: (f, cs) => EgyptLocations.governorates.keys.toList(),
           selectedItem: c.selectedGovernorate,
           onChanged: c.onGovernorateChanged,
-          decoratorProps: const DropDownDecoratorProps(
+          decoratorProps: DropDownDecoratorProps(
             decoration: InputDecoration(
+              filled: true,
+
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
+                borderRadius: BorderRadius.circular(12 * s),
+                borderSide: BorderSide(
+                  color: Colors.grey.shade200,
+                ),
               ),
-              labelText: 'المحافظة',
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12 * s),
+                borderSide: BorderSide(
+                  color: Colors.grey.shade200,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12 * s),
+                borderSide: const BorderSide(
+                  color: Colors.black,
+                  width: 1.2,
+                ),
+              ),
+              labelText: 'المحافظة' ,
+              prefixIcon: const Icon(Icons.map_outlined),
             ),
           ),
         ),
+
         SizedBox(height: 12 * s),
+
         Row(
           children: [
+            // نوع المكان
             Expanded(
               child: DropdownButtonFormField<String>(
-                // isExpanded بيمنع الـ overflow في الشاشات الضيقة
                 isExpanded: true,
-                decoration: const InputDecoration(
-                  filled: true,
+                decoration: InputDecoration(
+                  filled: true,alignLabelWithHint: false,
                   labelText: 'نوع المكان',
+                  prefixIcon: const Icon(Icons.place_outlined),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    borderRadius: BorderRadius.circular(12 * s),
+                    borderSide: BorderSide(
+                      color: Colors.grey.shade200,
+                    ),
                   ),
-                  prefixIcon: Icon(Icons.place),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12 * s),
+                    borderSide: BorderSide(
+                      color: Colors.grey.shade200,
+                    ),
+                  ),
                 ),
                 value: c.selectedLocationType,
                 items: c.locationTypes
                     .map(
                       (String type) => DropdownMenuItem<String>(
                         value: type,
-                        child: Text(type, overflow: TextOverflow.ellipsis),
+                        child: Text(
+                          type,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     )
                     .toList(),
                 onChanged: c.onLocationTypeChanged,
               ),
             ),
+
             SizedBox(width: 10 * s),
+
+            // المركز
             Expanded(
               child: DropdownSearch<String>(
                 items: (f, cs) => c.selectedGovernorate == null
                     ? []
-                    : (EgyptLocations.governorates[c.selectedGovernorate] ??
-                          []),
+                    : (EgyptLocations
+                            .governorates[c.selectedGovernorate] ??
+                        []),
                 selectedItem: c.selectedCity,
                 onChanged: c.onCityChanged,
-                decoratorProps: const DropDownDecoratorProps(
+                decoratorProps: DropDownDecoratorProps(
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
+                    filled: true,
                     labelText: 'المركز',
+                    prefixIcon: const Icon(Icons.location_city_outlined),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12 * s),
+                      borderSide: BorderSide(
+                        color: Colors.grey.shade200,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12 * s),
+                      borderSide: BorderSide(
+                        color: Colors.grey.shade200,
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
           ],
         ),
+
+        SizedBox(height: 20 * s),
+
+        // =========================
+        // Address details
+        // =========================
+        Text(
+          'تفاصيل العنوان',
+          style: TextStyle(
+            fontSize: 14 * s,
+            fontWeight: FontWeight.w700,
+            color: Colors.black87,
+          ),
+        ),
+
+        SizedBox(height: 10 * s),
+
+        Textfealdauth(
+          obscureText: false,
+          suffixIcon: Icons.location_on_outlined,
+          hint: 'الشارع، رقم المبنى، الدور، الشقة...',
+          textEditingController: c.street!,
+          valid: (val) => null,
+        ),
+
         SizedBox(height: 12 * s),
-        Padding(
-          padding: EdgeInsets.only(bottom: 12 * s),
-          child: Textfealdauth(
-            obscureText: false,
-            suffixIcon: Icons.location_on,
-            hint: 'تفاصيل المكان',
-            textEditingController: c.street!,
-            valid: (val) => null,
-          ),
+
+        Textfealdauth.phone(
+          phone: true,
+          obscureText: false,
+          suffixIcon: Icons.phone_outlined,
+          hint: 'رقم الهاتف',
+          textEditingController: c.phone!,
+          valid: (val) => null,
         ),
-        Padding(
-          padding: EdgeInsets.only(bottom: 12 * s),
-          child: Textfealdauth.phone(
-            phone: true,
-            obscureText: false,
-            suffixIcon: Icons.phone,
-            hint: 'رقم الهاتف',
-            textEditingController: c.phone!,
-            valid: (val) => null,
-          ),
-        ),
-        SizedBox(height: 16 * s),
+
+        SizedBox(height: 20 * s),
+
+        // =========================
+        // Save button
+        // =========================
         Checkbutton(
           statusrequest: c.statusrequest ?? Statusrequest.none,
           buttonColor: Colors.black,
           width: contentWidth,
           onTap: () {
-            // نقفل الكيبورد قبل الإرسال عشان الشيت مايهتزش لما شاشة النجاح تظهر
             FocusManager.instance.primaryFocus?.unfocus();
             c.addaddres(context);
           },
           buttonName: "Save location",
         ),
       ],
-    );
-  }
+    ),
+  );
+}
 
   // 2. واجهة النجاح المباشرة
   Widget _buildSuccessContent(BuildContext context) {

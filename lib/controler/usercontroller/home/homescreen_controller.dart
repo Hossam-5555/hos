@@ -54,7 +54,12 @@ bool upordown = true;
     }
   }
 
-  
+  double orderSummaryOffset = 0.0;
+
+void onOrderScroll(double offset) {
+  orderSummaryOffset = offset.clamp(0.0, 150.0);
+  update();
+}
 
   @override
   void onClose() {

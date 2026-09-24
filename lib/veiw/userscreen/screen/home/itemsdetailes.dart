@@ -35,6 +35,7 @@ class Itemsdetailes extends StatelessWidget {
         final item = controller.itemsmodel;
         return Scaffold(
           appBar: AppBar(
+            leadingWidth: 60,
             leading: BackButtonCircle(),
             actions: [
               GetBuilder<FavController>(
@@ -90,12 +91,13 @@ class Itemsdetailes extends StatelessWidget {
           ),
           backgroundColor: isDark
               ? const Color(0xFF0F0F0F)
-              : const Color(0xFFF8F8F8),
+              : Theme.of(context).cardTheme.color,
           bottomNavigationBar: _buildBottomBar(controller, isDark),
           body: Stack(
             children: [
               ListView(
-                physics: const BouncingScrollPhysics(),
+                physics: const ClampingScrollPhysics(),
+
                 padding: const EdgeInsets.only(bottom: 40),
                 children: [
                   // ─── صورة المنتج ───
@@ -107,9 +109,7 @@ class Itemsdetailes extends StatelessWidget {
                         width: double.infinity,
                         margin: const EdgeInsets.only(bottom: 20),
                         decoration: BoxDecoration(
-                          color: isDark
-                              ? const Color(0xFF1A1C22)
-                              : Colors.white,
+                          color: Theme.of(context).appBarTheme.backgroundColor ,
                           borderRadius: const BorderRadius.vertical(
                             bottom: Radius.circular(40),
                           ),
@@ -345,6 +345,8 @@ class Itemsdetailes extends StatelessWidget {
           infoChip(Icons.local_shipping_outlined, "Fast", isDark),
           verticalDivider(),
           infoChip(Icons.access_time_rounded, "20-25 min", isDark),
+          verticalDivider(),
+          infoChip(Icons.workspace_premium, "Premium", isDark),
         ],
       ),
     );
@@ -424,10 +426,7 @@ class Itemsdetailes extends StatelessWidget {
                   color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withAlpha(13),
-                      blurRadius: 8,
-                    ),
+                    BoxShadow(color: Colors.black.withAlpha(13), blurRadius: 8),
                   ],
                 ),
                 child: Column(

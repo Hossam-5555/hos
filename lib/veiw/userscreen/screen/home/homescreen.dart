@@ -143,6 +143,7 @@ class Homescreen extends StatelessWidget {
               if (notification.metrics.axis == Axis.vertical) {
                 // نمرر الاتجاه للدالة المعدلة في الكنترولر
                 controller.onScrollNotification(notification.direction);
+                controller.onOrderScroll(notification.metrics.pixels);
               }
               return false;
             },

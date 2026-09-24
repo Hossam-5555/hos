@@ -62,7 +62,7 @@ class ShoppingCartPage extends StatelessWidget {
                           AnimatedAlign(
                             alignment: AlignmentGeometry.topCenter,
                             duration: const Duration(milliseconds: 600),
-                            curve: Curves.fastOutSlowIn,
+                            curve: Curves.easeInSine,
                             child: AnimatedOpacity(
                               duration: const Duration(milliseconds: 400),
                               opacity: c.upordown ? 1.0 : 0.0,
@@ -70,11 +70,6 @@ class ShoppingCartPage extends StatelessWidget {
                                   ? Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Coubone(
-                                          onChanged: (val) {
-                                            controller.havecoupone(val);
-                                          },
-                                        ),
                                         SizedBox(
                                           height: (height * 0.015).clamp(
                                             8.0,
@@ -89,7 +84,7 @@ class ShoppingCartPage extends StatelessWidget {
                                           ],
                                         ),
                                         SizedBox(
-                                          height: (height * 0.015).clamp(
+                                          height: (height * 0.05).clamp(
                                             8.0,
                                             16.0,
                                           ),
@@ -122,40 +117,47 @@ class ShoppingCartPage extends StatelessWidget {
                                           ],
                                         ),
                                         SizedBox(
-                                          height: (height * 0.015).clamp(
+                                          height: (height * 0.05).clamp(
                                             8.0,
                                             16.0,
                                           ),
                                         ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.all(5),
-                                              child: Text(
-                                                'Discount'.tr,
-                                                style: TextStyle(
-                                                  fontSize: (width * 0.04)
-                                                      .clamp(14.0, 18.0),
-                                                  color: Colors.grey,
-                                                ),
+                                        controller.couponediscount <= 0 
+                                            ? Coubone(
+                                                onChanged: (val) {
+                                                  controller.havecoupone(val);
+                                                },
+                                              )
+                                            : Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(5),
+                                                    child: Text(
+                                                      'Discount'.tr,
+                                                      style: TextStyle(
+                                                        fontSize: (width * 0.04)
+                                                            .clamp(14.0, 18.0),
+                                                        color: Colors.grey,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '${controller.couponediscount} %',
+                                                    style: TextStyle(
+                                                      fontSize: (width * 0.045)
+                                                          .clamp(16.0, 22.0),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
-                                            Text(
-                                              '${controller.couponediscount} %',
-                                              style: TextStyle(
-                                                fontSize: (width * 0.045).clamp(
-                                                  16.0,
-                                                  22.0,
-                                                ),
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
                                         Divider(
-                                          height: (height * 0.03).clamp(
+                                          height: (height * 0.02).clamp(
                                             20.0,
                                             35.0,
                                           ),
@@ -173,7 +175,7 @@ class ShoppingCartPage extends StatelessWidget {
                               Text(
                                 'Total price'.tr,
                                 style: TextStyle(
-                                  fontSize: (width * 0.048).clamp(18.0, 24.0),
+                                  fontSize: (width * 0.040).clamp(18.0, 24.0),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -257,16 +259,16 @@ class ShoppingCartPage extends StatelessWidget {
                     physics: const BouncingScrollPhysics(),
                     padding: EdgeInsets.fromLTRB(
                       width * 0.04,
-                      12,
+                      5,
                       width * 0.04,
-                      12,
+                      5,
                     ),
                     itemCount: controller.data.length,
                     itemBuilder: (context, index) {
                       final item = controller.data[index];
                       bool isdark = context.isDarkMode ? true : false;
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 5),
+                        padding: const EdgeInsets.only(bottom: 4),
                         child: buildCartItemCard(
                           context,
                           item,
