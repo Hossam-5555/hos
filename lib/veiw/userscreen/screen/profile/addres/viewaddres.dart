@@ -21,10 +21,10 @@ class ViewMyAddres extends StatelessWidget {
       ),
 
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.onSecondary,
         onPressed: () => Get.toNamed(Approute.addnewaddres),
-        icon: const Icon(Icons.add_location_alt_outlined, color: Colors.white),
-        label: const Text("Add Address", style: TextStyle(color: Colors.white)),
+        icon: const Icon(Icons.add_location_alt_outlined, ),
+        label: const Text("Add Address", ),
       ),
 
       body: GetBuilder<AddressController>(

@@ -47,7 +47,9 @@ class Veryficode extends StatelessWidget {
                       width: 84,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Appcolor.primaryColor.withAlpha(isDark ? 40 : 25),
+                        color: Appcolor.primaryColor.withAlpha(
+                          isDark ? 40 : 25,
+                        ),
                       ),
                       child: Icon(
                         Icons.mark_email_read_rounded,
@@ -94,11 +96,11 @@ class Veryficode extends StatelessWidget {
                       onCodeChanged: (String code) {
                         if (code.length == 5) {
                           FocusScope.of(context).unfocus();
-                          controller.chekCode(code);
+                          controller.submit(code);
                         }
                       },
                       onSubmit: (String verificationCode) {
-                        controller.chekCode(verificationCode);
+                        controller.submit(verificationCode);
                       },
                     ),
 

@@ -69,7 +69,7 @@ class Homescreen extends StatelessWidget {
                     },
                     child: GetBuilder<Notificationcontroller>(
                       builder: (controller) {
-                        int hasUnread = controller.notificationcount;
+                        int hasUnread = controller.notificationcount.value;
 
                         return Badge(
                           isLabelVisible: hasUnread > 0,
@@ -100,36 +100,38 @@ class Homescreen extends StatelessWidget {
           ),
           resizeToAvoidBottomInset: false,
 
-          floatingActionButton: Container(
-            alignment: Alignment.bottomCenter,
-            margin: const EdgeInsetsDirectional.symmetric(
-              horizontal: 12,
-              vertical: 5,
-            ),
-            child: GetBuilder<Homescreencontroller>(
-              builder: (controller) => CustomBottomNavBar(
-                items: [
-                  NavItem(
-                    label: controller.appbartitle[0][0],
-                    svgAsset: controller.appbartitle[0][1],
-                  ),
-                  NavItem(
-                    label: controller.appbartitle[1][0],
-                    svgAsset: controller.appbartitle[1][1],
-                  ),
-                  NavItem(
-                    label: controller.appbartitle[2][0],
-                    svgAsset: controller.appbartitle[2][1],
-                  ),
-                  NavItem(
-                    label: controller.appbartitle[3][0],
-                    imageAsset: controller.appbartitle[3][1],
-                  ),
-                ],
-                currentIndex: controller.Currentpage,
-                onTap: controller.changpage,
-                visible: controller.upordown,
-                cartcount: cart.countitem.value,
+          floatingActionButton: SafeArea(
+            child: Container(
+              alignment: Alignment.bottomCenter,
+              margin: const EdgeInsetsDirectional.symmetric(
+                horizontal: 12,
+                vertical: 5,
+              ),
+              child: GetBuilder<Homescreencontroller>(
+                builder: (controller) => CustomBottomNavBar(
+                  items: [
+                    NavItem(
+                      label: controller.appbartitle[0][0],
+                      svgAsset: controller.appbartitle[0][1],
+                    ),
+                    NavItem(
+                      label: controller.appbartitle[1][0],
+                      svgAsset: controller.appbartitle[1][1],
+                    ),
+                    NavItem(
+                      label: controller.appbartitle[2][0],
+                      svgAsset: controller.appbartitle[2][1],
+                    ),
+                    NavItem(
+                      label: controller.appbartitle[3][0],
+                      imageAsset: controller.appbartitle[3][1],
+                    ),
+                  ],
+                  currentIndex: controller.Currentpage,
+                  onTap: controller.changpage,
+                  visible: controller.upordown,
+                  cartcount: cart.countitem.value,
+                ),
               ),
             ),
           ),

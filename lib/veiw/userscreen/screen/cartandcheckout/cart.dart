@@ -39,9 +39,9 @@ class ShoppingCartPage extends StatelessWidget {
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            blurRadius: 1,
+                            blurRadius: 20,offset: Offset(0, 8),
                             blurStyle: BlurStyle.outer,
-                            color: Colors.black.withAlpha(50),
+                            color: Colors.black.withAlpha(80),
                           ),
                         ],
                         borderRadius: const BorderRadius.only(
@@ -252,7 +252,7 @@ class ShoppingCartPage extends StatelessWidget {
                     );
                   },
                 ),
-
+              SizedBox(height: height*0.01,),
                 // =========================================================
                 Expanded(
                   child: ListView.builder(

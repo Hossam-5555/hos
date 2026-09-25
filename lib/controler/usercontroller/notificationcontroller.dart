@@ -20,7 +20,7 @@ class Notificationcontroller extends GetxController {
   int? get userid => myservisec.sharedPreferences.getInt("id");
 
   List<MessageModel> notificationlist = [];
-  int notificationcount = 0;
+  RxInt notificationcount = 0.obs;
 
   /// ====== MULTI SELECT ======
   bool selectionMode = false;
@@ -128,10 +128,8 @@ class Notificationcontroller extends GetxController {
       notificationlist.clear();
       List data = response["data"]["messages"];
       notificationlist.addAll((data).map((e) => MessageModel.fromJson(e)));
-      notificationcount = response["data"]["total_inactive_count"];
-      notificationcount == 0
-          ? statusrequest = Statusrequest.failure
-          : Statusrequest.none;
+      // notificationcount.value = response["data"]["total_inactive_count"];
+      notificationcount.value == notificationlist.length;
     } else {
       statusrequest = Statusrequest.failure;
     }

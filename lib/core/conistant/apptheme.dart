@@ -4,7 +4,7 @@ import 'package:hos/core/conistant/appcolor.dart';
 
 class AppTheme {
   // 1. ألوان احترافية للثيم الفاتح (Light Palette)
-  static const Color _lightBg = Color(0xFFF7F7F7); // خلفية مريحة جداً تبرز المنتجات
+  static const Color _lightBg = Colors.white; // خلفية مريحة جداً تبرز المنتجات
   static const Color _lightSurface = Color(0xFFFFFFFF); // لون البطاقات أبيض نقي
   static const Color _lightTextMain = Color(0xFF111827); // أسود مطفأ (لا يرهق العين)
   static const Color _lightTextSec = Color(0xFF6B7280); // رمادي للنصوص الثانوية والأسعار القديمة

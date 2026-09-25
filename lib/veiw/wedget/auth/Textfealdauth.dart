@@ -41,7 +41,6 @@ class Textfealdauth extends StatelessWidget {
       child: TextFormField(
         keyboardType: phone ? TextInputType.phone : TextInputType.text,
         style: TextStyle(
-          // color: const Color.fromARGB(255, 10, 10, 10),
           fontSize: width * 0.045, // حجم الخط متناسب مع العرض
           fontWeight: FontWeight.w500,
         ),
@@ -50,9 +49,7 @@ class Textfealdauth extends StatelessWidget {
         controller: textEditingController,
         decoration: InputDecoration(
           filled: true,
-          fillColor: Theme.of(context).brightness == Brightness.dark
-              ? Colors.white.withAlpha(20)
-              : Colors.white.withAlpha(140),
+
           contentPadding: EdgeInsets.symmetric(
             horizontal: width * 0.04,
             vertical: height * 0.018,

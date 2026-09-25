@@ -52,7 +52,7 @@ class HomePage extends StatelessWidget {
                 final int gridCrossAxisCount = isTablet
                     ? (width >= 900 ? 4 : 3)
                     : 2;
-                final double gridSpacing = isSmallPhone ? 10.0 : 12.0;
+                final double gridSpacing = isSmallPhone ? 6.0 : 8.0;
 
                 // عرض الكارت الفعلي بعد خصم الـ padding والمسافات بين الأعمدة
                 final double cardWidth =
@@ -170,7 +170,7 @@ class HomePage extends StatelessWidget {
                                   SliverSimpleGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: gridCrossAxisCount,
                                   ),
-                              mainAxisSpacing: gridSpacing + 2,
+                              mainAxisSpacing: gridSpacing ,
                               crossAxisSpacing: gridSpacing,
                               itemCount: controller.mostsaleitem.length,
                               itemBuilder: (context, index) {

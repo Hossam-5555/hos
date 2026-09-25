@@ -4,6 +4,9 @@ class Mytransilation extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
     "ar": {
+      "Home": "الرئيسيه",
+      'Cart': "السله",
+      "Profile": "الحساب",
       //Homepage
       "Choose language": "اختر اللغه",
       'continue': 'متابعه',
@@ -39,8 +42,8 @@ class Mytransilation extends Translations {
       "Edit Account": "تعديل الحساب",
       "public Setting": "الاعدادات العامه",
       "Logout": "تسجيل الخروج",
-      "Contact us": "تواصل معنا",
-      "About the app": "عن التطبيق",
+      "Contact Us": "تواصل معنا",
+      "About App": "عن التطبيق",
       "version": "الإصدار",
       "Support": "الدعم",
       "General": "عام",
@@ -49,7 +52,7 @@ class Mytransilation extends Translations {
       //profile
       "Notifications": "الاشعارات",
       //search
-      "search": "البحث",
+      "Search": "اكتشف",
       "Search products...": "ابحث عن منتج...",
       "EGP": "جنيه",
       //رسائل حاله الصفح الفارغه
@@ -62,6 +65,9 @@ class Mytransilation extends Translations {
     },
 
     "en": {
+      "Home": "Home",
+      "Cart": "Cart",
+      "Profile": "Profile",
       //Homepage
       "Choose language": "Choose language",
       'continue': 'continue',
@@ -96,8 +102,8 @@ class Mytransilation extends Translations {
       "Edit Account": "Edit Account",
       "public Setting": "public Setting",
       "Logout": "Logout",
-      "Contact us": "Contact us",
-      "About the app": "About the app",
+      "Contact Us": "Contact Us",
+      "AAbout App": "About App",
       "version": "version",
       "Support": "Support",
       "General": "General",
@@ -107,7 +113,7 @@ class Mytransilation extends Translations {
       //massage
       "Notifications": "Notifications",
       //search
-      "search": "search",
+      "Search": "Search",
       "Search products...": "Search products...",
       "EGP": "EGP",
       //رسائل حاله الصفحه فارغه '

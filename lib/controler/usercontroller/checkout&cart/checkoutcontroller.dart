@@ -16,7 +16,7 @@ import 'package:hos/veiw/userscreen/screen/cartandcheckout/paymentwepview.dart';
 class Checkoutcontroller extends GetxController {
   final formKey = GlobalKey<FormState>();
   String selectedMethod = "cash";
-
+ double get total => double.tryParse(totalprice)! + 50;
   // مفتاح الفورم للتحقق من صحة البيانات
   // دالة لتغيير طريقة الدفع
   void changePaymentMethod(String method) {
@@ -125,7 +125,7 @@ class Checkoutcontroller extends GetxController {
                 isSuccess: true,
                 orderNumber: '#$orderId',
                 amount:
-                    '$totalprice'
+                    '$total'
                             "EGP"
                         .tr,
                 transactionId: 'CASH',

@@ -1,6 +1,4 @@
-// ignore_for_file: non_constant_identifier_names
 import 'dart:ui';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -35,27 +33,13 @@ class Itemsdetailes extends StatelessWidget {
         final item = controller.itemsmodel;
         return Scaffold(
           appBar: AppBar(
-            leadingWidth: 60,
-            leading: BackButtonCircle(),
-            actions: [
-              GetBuilder<FavController>(
-                builder: (favController) {
-                  final isFav = favController.isfavorite[item.id] == 1;
-                  return FavoriteButton(
-                    key: ValueKey(item.id),
-                    isFav: isFav,
-                    onTap: () {
-                      favController.favmanget(item.id!);
-                      favController.chasngfav(item.id!, isFav ? 0 : 1);
-                    },
-                  );
-                },
-              ),
-            ],
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // مؤشر الصور
+            automaticallyImplyLeading: false,
+          centerTitle: true,
+            title: SafeArea(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                 BackButtonCircle(),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
@@ -72,7 +56,7 @@ class Itemsdetailes extends StatelessWidget {
                           (index) => AnimatedContainer(
                             margin: const EdgeInsets.all(10),
                             width: controller.curentpage == index ? 15 : 5,
-                            height: 6,
+                            height: 8,
                             decoration: BoxDecoration(
                               color: Appcolor.primaryColor,
                               borderRadius: BorderRadius.circular(20),
@@ -84,9 +68,21 @@ class Itemsdetailes extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                // زرار المفضلة
-              ],
+                GetBuilder<FavController>(
+                  builder: (favController) {
+                    final isFav = favController.isfavorite[item.id] == 1;
+                    return FavoriteButton(
+                      key: ValueKey(item.id),
+                      isFav: isFav,
+                      onTap: () {
+                        favController.favmanget(item.id!);
+                        favController.chasngfav(item.id!, isFav ? 0 : 1);
+                      },
+                    );
+                  },
+                ),
+                ],
+              ),
             ),
           ),
           backgroundColor: isDark
@@ -109,21 +105,21 @@ class Itemsdetailes extends StatelessWidget {
                         width: double.infinity,
                         margin: const EdgeInsets.only(bottom: 20),
                         decoration: BoxDecoration(
-                          color: Theme.of(context).appBarTheme.backgroundColor ,
+                          color: Theme.of(context).appBarTheme.backgroundColor,
                           borderRadius: const BorderRadius.vertical(
-                            bottom: Radius.circular(40),
+                            bottom: Radius.circular(30),
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withAlpha(20),
+                              color: Colors.black.withAlpha(50),
                               blurRadius: 20,
-                              offset: const Offset(0, 8),
+                              offset: const Offset(0, 12),
                             ),
                           ],
                         ),
                         child: ClipRRect(
                           borderRadius: const BorderRadius.vertical(
-                            bottom: Radius.circular(40),
+                            bottom: Radius.circular(30),
                           ),
                           child: PageView.builder(
                             onPageChanged: controller.onimagechange,
@@ -184,43 +180,6 @@ class Itemsdetailes extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 5,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.amber.withAlpha(38),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    Icons.star_rounded,
-                                    color: Colors.amber,
-                                    size: 18,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    "4.8",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 13,
-                                      color: isDark
-                                          ? Colors.white
-                                          : Colors.black87,
-                                    ),
-                                  ),
-                                  Text(
-                                    " (193+)",
-                                    style: TextStyle(
-                                      fontSize: 11,
-                                      color: Colors.grey.shade500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
                           ],
                         ),
 
@@ -238,7 +197,7 @@ class Itemsdetailes extends StatelessWidget {
                         const SizedBox(height: 16),
 
                         // السعر
-                        _buildPriceSection(item),
+                        _buildPriceSection(item, isDark),
 
                         const SizedBox(height: 20),
 
@@ -346,20 +305,21 @@ class Itemsdetailes extends StatelessWidget {
           verticalDivider(),
           infoChip(Icons.access_time_rounded, "20-25 min", isDark),
           verticalDivider(),
-          infoChip(Icons.workspace_premium, "Premium", isDark),
+          infoChip(Icons.workspace_premium, "Premium", isDark, c: Colors.green),
         ],
       ),
     );
   }
 
-  Widget infoChip(IconData icon, String label, bool isDark) {
+  Widget infoChip(
+    IconData icon,
+    String label,
+    bool isDark, {
+    Color? c = Colors.grey,
+  }) {
     return Column(
       children: [
-        Icon(
-          icon,
-          size: 20,
-          color: isDark ? Colors.white70 : const Color(0xFF555555),
-        ),
+        Icon(icon, size: 20, color: isDark ? Colors.white70 : c),
         const SizedBox(height: 4),
         Text(
           label,
@@ -471,29 +431,19 @@ class Itemsdetailes extends StatelessWidget {
   Widget _buildBottomBar(Itemdetailscontroller controller, bool isDark) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      decoration: BoxDecoration(
-        // boxShadow: [
-        //   BoxShadow(
-        //     color: Colors.black.withOpacity(0.05),
-        //     blurRadius: 10,
-        //     offset: const Offset(0, -5),
-        //   ),
-        // ],
-      ),
+      decoration: BoxDecoration(),
       child: SafeArea(
         child: Row(
           children: [
             Flexible(child: Countofproduct(count: controller.itemcount)),
             const SizedBox(width: 12),
             Flexible(
-              flex: 2,
+              flex: 1,
               child: SizedBox(
-                height: 55,
-                child: Checkbutton(
+                child: Checkbutton.widget(
+                  h: 55,
                   statusrequest: Statusrequest.none,
-                  buttonColor: isDark
-                      ? const Color.fromARGB(255, 82, 80, 80)
-                      : Colors.black,
+                  buttonColor: isDark ? const Color(0xFF1C1C22) : Colors.black,
                   onTap: () {
                     if (controller.itemcount == 0) {
                       Get.snackbar(
@@ -520,13 +470,14 @@ class Itemsdetailes extends StatelessWidget {
   }
 
   // ─── السعر ───
-  Widget _buildPriceSection(ItemsModel item) {
+  Widget _buildPriceSection(ItemsModel item, bool isDark) {
     double discount = double.tryParse(item.itemsDiscount.toString()) ?? 0;
     double price = double.tryParse(item.itemsPrice.toString()) ?? 0;
     double priceDiscount =
         double.tryParse(item.priceAfterDiscount.toString()) ?? 0;
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           "\$${priceDiscount.toStringAsFixed(2)}",
@@ -558,6 +509,31 @@ class Itemsdetailes extends StatelessWidget {
             ),
           ),
         ],
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          decoration: BoxDecoration(
+            color: Colors.amber.withAlpha(38),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            children: [
+              const Icon(Icons.star_rounded, color: Colors.amber, size: 18),
+              const SizedBox(width: 4),
+              Text(
+                "4.8",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                  color: isDark ? Colors.white : Colors.black87,
+                ),
+              ),
+              Text(
+                " (193+)",
+                style: TextStyle(fontSize: 11, color: Colors.grey.shade500),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

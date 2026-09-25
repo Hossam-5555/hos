@@ -148,7 +148,7 @@ class ProfilePage extends StatelessWidget {
                                 'مرحباً، أود الاستفسار عن بعض الخدمات', // رسالة ترحيبية اختيارية
                           );
                         },
-                        subtitle: " رقم تواصل علي واتساب",
+                        subtitle: "Chat with our support team",
                         trailing: Obx(
                           () => settingsController.isLoading.value
                               ? const SizedBox(

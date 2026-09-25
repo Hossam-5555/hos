@@ -32,7 +32,10 @@ class CheckemailController extends GetxController {
     }
 
     if (statusrequest == Statusrequest.success && response['status'] == true) {
-      Get.toNamed(Approute.Veryficode, arguments: {"email": email.text});
+      Get.toNamed(
+        Approute.Veryficode,
+        arguments: {"email": email.text, "isexiting": true},
+      );
     } else {
       errorMessage = response['message'];
       statusrequest = Statusrequest.failure;

@@ -27,7 +27,7 @@ class AdminHome extends StatelessWidget {
 
               GetBuilder<Notificationcontroller>(
                 builder: (controller) {
-                  int hasUnread = controller.notificationcount;
+                  int hasUnread = controller.notificationcount.value;
 
                   return Homescrenaction(
                     herotag: "notification",

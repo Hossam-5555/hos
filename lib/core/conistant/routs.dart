@@ -19,7 +19,6 @@ import 'package:hos/veiw/userscreen/screen/auth/forgetpass/forgetpass.dart';
 import 'package:hos/veiw/userscreen/screen/auth/forgetpass/resetpass.dart';
 import 'package:hos/veiw/userscreen/screen/auth/forgetpass/veryficode.dart';
 import 'package:hos/veiw/userscreen/screen/auth/auth.dart';
-import 'package:hos/veiw/userscreen/screen/auth/veryfisign.dart';
 import 'package:hos/veiw/userscreen/screen/home/homescreen.dart';
 import 'package:hos/veiw/userscreen/screen/home/itemsdetailes.dart';
 import 'package:hos/veiw/userscreen/screen/home/notification.dart';
@@ -103,7 +102,6 @@ List<GetPage<dynamic>>? routes = [
 
   // ─── Auth ─────────────────────────────────────────────
   // GetPage(name: Approute.login, page: () => AuthPage()),
-  GetPage(name: Approute.veryfisign, page: () => Veryfisign()),
   GetPage(name: Approute.checkemailpage, page: () => ForgetPass()),
   GetPage(name: Approute.Veryficode, page: () => Veryficode()),
   GetPage(name: Approute.Resetpass, page: () => Resetpass()),
@@ -131,7 +129,6 @@ class Approute {
   static String myfavorite = "/myfavorite";
   static String Orders = "/Orders";
   static String login = "/login";
-  static String veryfisign = "/veryfisign";
   static String checkemailpage = "/checkemailpage";
   static String Veryficode = "/Veryficode";
   static String Resetpass = "/Resetpass";

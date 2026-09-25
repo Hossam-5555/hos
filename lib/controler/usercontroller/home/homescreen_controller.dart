@@ -68,10 +68,10 @@ void onOrderScroll(double offset) {
   }
 
   List<List<dynamic>> appbartitle = [
-    ['Home', Imageasset.homesvg],
-    ['Search', Imageasset.search],
-    ['Cart', Imageasset.cart],
-    ['Profile', Imageasset.twetter],
+    ['Home'.tr, Imageasset.homesvg],
+    ['Search'.tr, Imageasset.search],
+    ['Cart'.tr, Imageasset.cart],
+    ['Profile'.tr, Imageasset.twetter],
   ];
   final List<Widget> pages = [
     HomePage(),

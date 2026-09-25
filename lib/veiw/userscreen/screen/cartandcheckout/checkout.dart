@@ -144,7 +144,7 @@ class Checkout extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '\$${c.totalprice}',
+                        '\$${c.total}',
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w900,
@@ -176,8 +176,8 @@ class Checkout extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(10),
-            blurRadius: 16,
+            color: Colors.black.withAlpha(80),
+            blurRadius: 8,
             offset: const Offset(0, 6),
           ),
         ],
@@ -233,6 +233,12 @@ class Checkout extends StatelessWidget {
                       const SizedBox(height: 2),
                       Text(
                         addr.city ?? "غير معروف",
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
+                      ),
+                       Text("${addr.phone }",
                         style: const TextStyle(
                           fontSize: 12,
                           color: Colors.grey,

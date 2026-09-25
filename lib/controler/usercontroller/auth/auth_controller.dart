@@ -91,7 +91,10 @@ class AuthController extends GetxController {
           Get.offAllNamed(Approute.Homescreen);
         }
       } else {
-        Get.toNamed(Approute.veryfisign, arguments: {"email": email.text});
+        Get.toNamed(
+          Approute.Veryficode,
+          arguments: {"email": email.text, "isexiting": true},
+        );
       }
     } else {
       statusrequest = Statusrequest.failure;
@@ -118,7 +121,10 @@ class AuthController extends GetxController {
 
     if (statusrequest == Statusrequest.success) {
       if (response['status'] == true) {
-        Get.offNamed(Approute.veryfisign, arguments: {"email": email.text});
+        Get.offNamed(
+          Approute.Veryficode,
+          arguments: {"email": email.text, "isexiting": false},
+        );
       } else {
         Get.defaultDialog(title: "Warning", middleText: "email are Exist");
         statusrequest = Statusrequest.failure;
