@@ -44,22 +44,20 @@ class NotificationPage extends StatelessWidget {
               },
             ),
           ),
-          body: HandlingDataView(emptyStyle: EmptyStateStyle.style2,
-            statusrequest: controller.statusrequest,
+          body: HandlingDataView(
+            emptyStyle: EmptyStateStyle.style2,
+            statusrequest: controller.statusrequest ,
             mediaType: HandlingMediaType.svgImage,
             mode: HandlingMode.fullScreen,
             widget: ListView.builder(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 10,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               itemCount: isLoading ? 6 : controller.notificationlist.length,
               itemBuilder: (context, index) {
                 String title = "";
                 String body = "";
                 int id = 0;
                 String time = "";
-            
+
                 // تجهيز البيانات
                 if (isLoading) {
                   title = "Loading Notification Title";
@@ -73,19 +71,20 @@ class NotificationPage extends StatelessWidget {
                   body = item.body ?? '';
                   time = item.createdAt ?? '';
                 }
-            
+
                 bool isSelected = controller.isSelected(id);
-            
+
                 return NotificationCard(
-                    title: title,
-                    body: body,
-                    time: time,
-                    isSelected: isSelected,
-                    isLoading: isLoading,
-                    selectionMode: controller.selectionMode,
-                    onLongPress: () => controller.onLongPress(id),
-                    onTap: () => controller.onTap(id),
-                  );
+                  title: title,
+                  body: body,
+                  isread: controller.notificationlist[index].isActive!,
+                  time: time,
+                  isSelected: isSelected,
+                  isLoading: isLoading,
+                  selectionMode: controller.selectionMode,
+                  onLongPress: () => controller.onLongPress(id),
+                  onTap: () => controller.onTap(id),
+                );
               },
             ),
           ),

@@ -37,12 +37,15 @@ class Notificationcontroller extends GetxController {
 
   /// ضغط عادي
   /// ضغط عادي (تعديل لضمان التحديد وإلغائه)
-  void onTap(int id) {
+  void onTap(int id) async {
     // لو مش في وضع التحديد، اضغط ضغطة عادية (مثلاً تفتح الإشعار أو تخليه مقروء)
     if (!selectionMode) {
-      // Get.off(() => Orderdetailes(),arguments: {
-      //   "order":notificationlist[id].userId
-      // });
+      final index = notificationlist.indexWhere((e) => e.id == id);
+      if (index != -1) {
+        notificationlist[index].isActive = true;
+        update();
+      }
+       await notificationdata.markasread(id);
 
       // هنا ممكن تحط كود فتح الإشعار مستقبلاً
       return;
@@ -130,6 +133,10 @@ class Notificationcontroller extends GetxController {
       notificationlist.addAll((data).map((e) => MessageModel.fromJson(e)));
       // notificationcount.value = response["data"]["total_inactive_count"];
       notificationcount.value == notificationlist.length;
+
+      if (notificationlist.isEmpty) {
+        statusrequest = Statusrequest.nodata;
+      }
     } else {
       statusrequest = Statusrequest.failure;
     }

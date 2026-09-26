@@ -5,12 +5,12 @@ class Notificationdata {
   Crud crud;
   Notificationdata(this.crud);
 
-  getnotification() async {
+  Future getnotification() async {
     var response = await crud.getrequset(LinkApi.notification);
     return response.fold((l) => l, (r) => r);
   }
 
-  getNotificationsData() async {
+  Future getNotificationsData() async {
     var response = await crud.getrequset("${LinkApi.notification}/${22}");
     return response.fold((l) => l, (r) => r);
   }
@@ -20,6 +20,11 @@ class Notificationdata {
       "massage_id": ids.map((e) => e.toString()).toList(),
     });
 
+    return response.fold((l) => l, (r) => r);
+  }
+
+  Future markasread(int id) async {
+    var response = await crud.putandpacth("${LinkApi.notification}/$id",{});
     return response.fold((l) => l, (r) => r);
   }
 }

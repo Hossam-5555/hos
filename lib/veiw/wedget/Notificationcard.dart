@@ -11,6 +11,7 @@ class NotificationCard extends StatelessWidget {
   final bool selectionMode;
   final void Function()? onLongPress;
   final void Function()? onTap;
+  final bool isread;
 
   const NotificationCard({
     super.key,
@@ -21,6 +22,7 @@ class NotificationCard extends StatelessWidget {
     required this.isLoading,
     required this.selectionMode,
     this.onLongPress,
+    required this.isread,
     this.onTap,
   });
 
@@ -92,7 +94,7 @@ class NotificationCard extends StatelessWidget {
                           height: 22,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: !isread
+                            color: isSelected
                                 ? primaryColor
                                 : Colors.transparent,
                             border: Border.all(
