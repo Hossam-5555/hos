@@ -92,7 +92,7 @@ class NotificationCard extends StatelessWidget {
                           height: 22,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: isSelected
+                            color: !isread
                                 ? primaryColor
                                 : Colors.transparent,
                             border: Border.all(
