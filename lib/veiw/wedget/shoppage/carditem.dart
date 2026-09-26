@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/cart_controller.dart';
 import 'package:hos/data/model/cartmodel.dart';
+import 'package:jiffy/jiffy.dart';
 
 Widget buildCartItemCard(
   BuildContext context,
@@ -79,12 +80,6 @@ Widget buildCartItemCard(
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 6),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [ToggleInfoChips(isDark: isdark)],
-                ),
-                const SizedBox(height: 6),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -96,6 +91,22 @@ Widget buildCartItemCard(
                         fontWeight: FontWeight.w800,
                       ),
                     ),
+                    Text(
+                      style: TextStyle(fontSize: 10),
+                      Jiffy.parse(
+                        isUtc: true,
+                        cart.createdAt!,
+                        pattern: 'yyyy-MM-dd hh:mm a',
+                      ).fromNow(),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 6),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ToggleInfoChips(isDark: isdark),
 
                     // كبسولة التحكم في الكمية
                     Container(

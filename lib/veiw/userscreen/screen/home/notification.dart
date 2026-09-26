@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/notificationcontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
-import 'package:hos/veiw/wedget/Notificationcard.dart';
+import 'package:hos/veiw/wedget/notification_card.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
 class NotificationPage extends StatelessWidget {
@@ -46,7 +46,7 @@ class NotificationPage extends StatelessWidget {
           ),
           body: HandlingDataView(
             emptyStyle: EmptyStateStyle.style2,
-            statusrequest: controller.statusrequest ,
+            statusrequest: controller.statusrequest,
             mediaType: HandlingMediaType.svgImage,
             mode: HandlingMode.fullScreen,
             widget: ListView.builder(
@@ -73,10 +73,12 @@ class NotificationPage extends StatelessWidget {
                 }
 
                 bool isSelected = controller.isSelected(id);
-
+                controller.iconstype(title);
                 return NotificationCard(
                   title: title,
                   body: body,
+                  colors: controller.colors,
+                  iconData: controller.iconData,
                   isread: controller.notificationlist[index].isActive!,
                   time: time,
                   isSelected: isSelected,

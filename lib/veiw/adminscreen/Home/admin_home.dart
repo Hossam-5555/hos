@@ -33,7 +33,6 @@ class Adminhomedashboard extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
         return Scaffold(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: SafeArea(
             child: RefreshIndicator(
               onRefresh: () => c.getdashboardapi(isRefresh: true),
@@ -179,6 +178,7 @@ class _KpiCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _Card(
+      
       padding: const EdgeInsets.all(14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -600,9 +600,9 @@ class _Card extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(10),
+            color: Colors.black.withAlpha(50),
             blurRadius: 10,
-            offset: const Offset(0, 4),
+            offset: const Offset(0,4),
           ),
         ],
       ),

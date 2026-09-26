@@ -172,6 +172,38 @@ class Notificationcontroller extends GetxController {
     }
     update();
   }
+  
+ late IconData iconData;
+ late Color colors;
+ void iconstype(String title) {
+    switch (title) {
+      case "طلب جديد 🛒":
+        iconData = Icons.card_giftcard;
+        colors = Colors.lightGreen;
+        break;
+      case "نتبيه":
+        iconData = Icons.notification_add;
+        colors = Colors.deepOrange;
+
+        break;
+      case "تقدم":
+        iconData = Icons.pending;
+        colors = Colors.yellow;
+
+        break;
+      default:
+        iconData = Icons.notifications_rounded;
+        colors = Colors.red;
+    }
+  }
+
+
+
+
+
+
+
+
 
   @override
   void onInit() {

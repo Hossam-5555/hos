@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/userscreen/screen/profile/addres/add.dart';
+import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 import 'package:hos/veiw/wedget/paymentmethods.dart';
@@ -98,7 +100,9 @@ class Checkout extends StatelessWidget {
               mode: HandlingMode.skeleton,
               statusrequest: Statusrequest.none,
               widget: _buildCard(
-                child: c.listaddresdata.isEmpty
+                child:
+                    c.listaddresdata.isEmpty &&
+                        c.statusrequest == Statusrequest.success
                     ? ListTile(
                         contentPadding: EdgeInsets.zero,
                         onTap: () => Get.to(() => AddNewAddres()),
@@ -189,15 +193,16 @@ class Checkout extends StatelessWidget {
   Widget _buildAddressSelector(Checkoutcontroller c, BuildContext con) {
     return Obx(() {
       if (c.selectedAddress.value == null) {
-        return const Row(
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(
-              width: 18,
-              height: 18,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            ),
-            SizedBox(width: 12),
             Text("جاري تحميل العنوان الافتراضي..."),
+
+            SizedBox(
+              width: 40,
+              height: 40,
+              child: Animationforstatus(animationPath: Imageasset.loading),
+            ),
           ],
         );
       }
@@ -238,7 +243,8 @@ class Checkout extends StatelessWidget {
                           color: Colors.grey,
                         ),
                       ),
-                       Text("${addr.phone }",
+                      Text(
+                        "${addr.phone}",
                         style: const TextStyle(
                           fontSize: 12,
                           color: Colors.grey,

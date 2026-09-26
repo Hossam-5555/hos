@@ -1,7 +1,7 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 
+// ignore: must_be_immutable
 class NotificationCard extends StatelessWidget {
   final String title;
   final String body;
@@ -13,7 +13,7 @@ class NotificationCard extends StatelessWidget {
   final void Function()? onTap;
   final bool isread;
 
-  const NotificationCard({
+  NotificationCard({
     super.key,
     required this.title,
     required this.body,
@@ -24,10 +24,17 @@ class NotificationCard extends StatelessWidget {
     this.onLongPress,
     required this.isread,
     this.onTap,
+    required this.colors,
+    required this.iconData
   });
+   IconData iconData;
+   Color colors;
+
+ 
 
   @override
   Widget build(BuildContext context) {
+    
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     // ألوان نمط Apple
@@ -126,8 +133,8 @@ class NotificationCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(16), // Rounded squircle
                   ),
                   child: Icon(
-                    Icons.card_giftcard_rounded, // أيقونة الأوردرات السلسة
-                    color: isSelected ? Colors.white : primaryColor,
+                    iconData, // أيقونة الأوردرات السلسة
+                    color: colors,
                     size: 22,
                   ),
                 ),

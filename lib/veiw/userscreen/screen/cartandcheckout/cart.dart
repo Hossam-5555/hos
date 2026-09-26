@@ -39,7 +39,8 @@ class ShoppingCartPage extends StatelessWidget {
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            blurRadius: 20,offset: Offset(0, 8),
+                            blurRadius: 20,
+                            offset: Offset(0, 8),
                             blurStyle: BlurStyle.outer,
                             color: Colors.black.withAlpha(80),
                           ),
@@ -122,7 +123,7 @@ class ShoppingCartPage extends StatelessWidget {
                                             16.0,
                                           ),
                                         ),
-                                        controller.couponediscount <= 0 
+                                        controller.couponediscount <= 0
                                             ? Coubone(
                                                 onChanged: (val) {
                                                   controller.havecoupone(val);
@@ -252,10 +253,11 @@ class ShoppingCartPage extends StatelessWidget {
                     );
                   },
                 ),
-              SizedBox(height: height*0.01,),
+                SizedBox(height: height * 0.01),
                 // =========================================================
                 Expanded(
                   child: ListView.builder(
+                 
                     physics: const BouncingScrollPhysics(),
                     padding: EdgeInsets.fromLTRB(
                       width * 0.04,

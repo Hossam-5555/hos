@@ -58,32 +58,34 @@ class AdminHome extends StatelessWidget {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: GetBuilder<Adminhome>(
-          builder: (controller) => Container(
-            padding: EdgeInsets.all(5),
-            margin: EdgeInsets.all(10),
-            child: CustomBottomNavBar(
-              items: [
-                NavItem(
-                  label: controller.title[0][0],
-                  svgAsset: controller.title[0][1],
-                ),
-               
-                NavItem(
-                  label: controller.title[2][0],
-                  svgAsset: controller.title[2][1],
-                ), NavItem(
-                  label: controller.title[1][0],
-                  svgAsset: controller.title[1][1],
-                ),
-                NavItem(
-                  label: controller.title[3][0],
-                  svgAsset: controller.title[3][1],
-                ),
-              ],
-              currentIndex: controller.currentpage,
-              onTap: controller.changePage,
-              cartcount: 0,
-              isbadgeActive: false,
+          builder: (controller) => SafeArea(
+            child: Container(
+              padding: EdgeInsets.all(5),
+              margin: EdgeInsets.all(10),
+              child: CustomBottomNavBar(
+                items: [
+                  NavItem(
+                    label: controller.title[0][0],
+                    svgAsset: controller.title[0][1],
+                  ),
+                 
+                  NavItem(
+                    label: controller.title[2][0],
+                    svgAsset: controller.title[2][1],
+                  ), NavItem(
+                    label: controller.title[1][0],
+                    svgAsset: controller.title[1][1],
+                  ),
+                  NavItem(
+                    label: controller.title[3][0],
+                    svgAsset: controller.title[3][1],
+                  ),
+                ],
+                currentIndex: controller.currentpage,
+                onTap: controller.changePage,
+                cartcount: 0,
+                isbadgeActive: false,
+              ),
             ),
           ),
         ),
