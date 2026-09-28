@@ -26,13 +26,10 @@ class SharedProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
     // ألوان الكارت الأساسية بتتغير حسب الوضع (ليلي / نهاري)
     final Color cardBorderColor = Colors.black.withAlpha(50);
-    final Color cardShadow = isDark
-        ? Colors.black.withAlpha(50)
-        : Colors.black.withAlpha(50);
+    final Color cardShadow = Colors.black.withAlpha(20);
 
     // الشارات (title chip / rating badge / price bar) عايمة فوق الصورة
     // فبنخليها "زجاج غامق" ثابت في الوضعين، عشان تفضل واضحة أياً كانت ألوان
@@ -77,23 +74,8 @@ class SharedProductCard extends StatelessWidget {
             padding: const EdgeInsets.all(5),
             height: height,
             decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: cardShadow,
-                  blurRadius: 6,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: ([
-                  Colors.grey, // لمعة بينك/بيضاء (وضع ليلي)
-                  Color(0xFFE0E3E8),
-                  Colors.grey,
-                ]),
-              ),
-              color: theme.cardColor,
+              boxShadow: [BoxShadow(color: cardShadow, blurRadius: 2)],
+              color: Color(0xFFE0E3E8),
               borderRadius: const BorderRadius.all(Radius.circular(25)),
               border: Border.all(
                 color: cardBorderColor,
@@ -230,7 +212,7 @@ class SharedProductCard extends StatelessWidget {
                               child: Container(
                                 width: bottomBarWidth,
                                 height: bottomBarHeight,
-                                padding: const EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(vertical: 5,
                                   horizontal: 12,
                                 ),
                                 decoration: BoxDecoration(

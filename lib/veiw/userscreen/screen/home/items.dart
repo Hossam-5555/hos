@@ -49,7 +49,7 @@ class Items extends StatelessWidget {
 
             Expanded(
               child: GetBuilder<ItemsController>(
-                builder: (controller) => HandlingDataView(
+                builder: (controller) => HandlingDataView(emptyStyle: EmptyStateStyle.style2,
                   mode: HandlingMode.fullScreen,
                   mediaType: HandlingMediaType.animation,
                   showRetryButton: true,

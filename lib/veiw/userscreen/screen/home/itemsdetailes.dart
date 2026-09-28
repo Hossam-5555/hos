@@ -111,9 +111,9 @@ class Itemsdetailes extends StatelessWidget {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withAlpha(50),
-                              blurRadius: 20,
-                              offset: const Offset(0, 12),
+                              color: Colors.black.withAlpha(40),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
                             ),
                           ],
                         ),

@@ -1,98 +1,77 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/serveces/myservisec.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
 /// ==================================================
 ///                 PROFILE CONTROLLER
 /// ==================================================
 class ProfileController extends GetxController {
-  // ----- الحقول القابلة للمراقبة (Observables) ----
-  Myservisec myservisec = Get.find<Myservisec>();
+  final Myservisec myservisec = Get.find<Myservisec>();
 
   String get username =>
       myservisec.sharedPreferences.getString("usersname") ?? "";
-  var email = "hossam.yasser@example.com".obs;
-  var phone = "01012345678".obs;
-  var address = "المنصورة، الدقهلية".obs;
-  var imagePath = "${Imageasset.twetter}".obs;
 
-  // حالة التحميل أثناء الحفظ / اختيار الصورة
+  var gender = ''.obs; // 'male' | 'female' | ''
+  var birthday = Rxn<DateTime>();
+  var nationality = ''.obs;
+  var phone = ''.obs;
+  var isPhoneVerified = false.obs;
   var isSaving = false.obs;
-  var isPickingImage = false.obs;
 
-  final ImagePicker _picker = ImagePicker();
+  final List<String> topNationalities = const [
+    'Egypt',
+    'Sudan',
+    'Saudi Arabia',
+    'Syrian Arab Republic',
+  ];
 
-  /// اختيار صورة من المعرض أو الكاميرا
-  Future<void> pickImage({required bool fromCamera}) async {
-    try {
-      isPickingImage.value = true;
-      final XFile? pickedFile = await _picker.pickImage(
-        source: fromCamera ? ImageSource.camera : ImageSource.gallery,
-        imageQuality: 80,
-        maxWidth: 1000,
-      );
-      if (pickedFile != null) {
-        imagePath.value = pickedFile.path;
-        Get.snackbar(
-          "نجاح",
-          "تم تحديث الصورة الشخصية",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green.shade50,
-          colorText: Colors.green.shade800,
-          margin: const EdgeInsets.all(14),
-          borderRadius: 14,
-          icon: const Icon(Icons.check_circle, color: Colors.green),
-          duration: const Duration(seconds: 2),
-        );
-      }
-    } catch (e) {
-      Get.snackbar(
-        "خطأ",
-        "تعذر اختيار الصورة، حاول مرة أخرى",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red.shade50,
-        colorText: Colors.red.shade800,
-        margin: const EdgeInsets.all(14),
-        borderRadius: 14,
-        icon: const Icon(Icons.error_outline, color: Colors.red),
-      );
-    } finally {
-      isPickingImage.value = false;
-    }
+  final List<String> allNationalities = const [
+    'Egypt',
+    'Sudan',
+    'Saudi Arabia',
+    'Syrian Arab Republic',
+    'Jordan',
+    'Lebanon',
+    'Iraq',
+    'Yemen',
+    'Libya',
+    'Morocco',
+    'Algeria',
+    'Tunisia',
+    'United Arab Emirates',
+    'Kuwait',
+    'Qatar',
+    'Palestine',
+  ];
+
+  /// نسبة اكتمال الملف الشخصي
+  int completion(String first, String last) {
+    int done = 0;
+    if (first.trim().isNotEmpty) done++;
+    if (last.trim().isNotEmpty) done++;
+    if (isPhoneVerified.value) done++;
+    if (gender.value.isNotEmpty) done++;
+    if (birthday.value != null) done++;
+    if (nationality.value.isNotEmpty) done++;
+    return (done / 6 * 100).round();
   }
 
-  /// حفظ التعديلات (مع محاكاة اتصال بالسيرفر)
   Future<void> saveProfile({
-    required String newName,
-    required String newEmail,
-    required String newPhone,
-    required String newAddress,
+    required String firstName,
+    required String lastName,
   }) async {
     isSaving.value = true;
     try {
-      // محاكاة زمن استجابة API — استبدلها بالنداء الفعلي للـ backend
+      // TODO: استبدلها بالنداء الفعلي للـ backend
       await Future.delayed(const Duration(milliseconds: 900));
-
-      // username.value = newName.trim();
-      // email.value = newEmail.trim();
-      // phone.value = newPhone.trim();
-      // address.value = newAddress.trim();
-
       Get.back();
       Get.snackbar(
-        "تم الحفظ",
-        "تم تحديث بياناتك بنجاح",
+        "Saved",
+        "Your profile has been updated",
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green.shade50,
-        colorText: Colors.green.shade800,
         margin: const EdgeInsets.all(14),
-        borderRadius: 14,
-        icon: const Icon(Icons.check_circle, color: Colors.green),
       );
     } finally {
       isSaving.value = false;
@@ -105,10 +84,10 @@ class ProfileController extends GetxController {
 /// ==================================================
 class _EPColors {
   static const primary = Color(0xFF2962FF);
-  static const primaryDark = Color(0xFF0039CB);
-  static const bg = Color(0xFFF6F7FB);
-  static const label = Color(0xFF6B7280);
-  static const danger = Color(0xFFE53935);
+  static const border = Color(0xFFE5E7EB);
+  static const title = Color(0xFF111827);
+  static const subtitle = Color(0xFF6B7280);
+  static const badge = Color(0xFFFF6A3D);
 }
 
 /// ==================================================
@@ -125,377 +104,254 @@ class _EditProfileViewState extends State<EditProfileView> {
   final ProfileController controller = Get.put(ProfileController());
   final _formKey = GlobalKey<FormState>();
 
-  late final TextEditingController _nameCtrl;
-  late final TextEditingController _phoneCtrl;
+  late final TextEditingController _firstCtrl;
+  late final TextEditingController _lastCtrl;
 
   @override
   void initState() {
     super.initState();
-    _nameCtrl = TextEditingController(text: controller.username);
-    _phoneCtrl = TextEditingController(text: controller.phone.value);
+    final parts = controller.username.trim().split(' ');
+    _firstCtrl = TextEditingController(text: parts.first);
+    _lastCtrl = TextEditingController(
+      text: parts.length > 1 ? parts.sublist(1).join(' ') : '',
+    );
+    _firstCtrl.addListener(() => setState(() {}));
+    _lastCtrl.addListener(() => setState(() {}));
   }
 
   @override
   void dispose() {
-    _nameCtrl.dispose();
-    _phoneCtrl.dispose();
+    _firstCtrl.dispose();
+    _lastCtrl.dispose();
     super.dispose();
   }
 
-  void _showImageSourceSheet() {
+  bool get _canSave =>
+      _firstCtrl.text.trim().isNotEmpty && _lastCtrl.text.trim().isNotEmpty;
+
+  // ---------------- Actions ----------------
+  Future<void> _pickBirthday() async {
+    final now = DateTime.now();
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: controller.birthday.value ?? DateTime(now.year - 20),
+      firstDate: DateTime(1940),
+      lastDate: now,
+    );
+    if (picked != null) controller.birthday.value = picked;
+  }
+
+  Future<void> _verifyPhone() async {
+    final ctrl = TextEditingController(text: controller.phone.value);
+    final result = await Get.dialog<String>(
+      AlertDialog(
+        title: const Text("Phone number"),
+        content: TextField(
+          controller: ctrl,
+          keyboardType: TextInputType.phone,
+          autofocus: true,
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+            LengthLimitingTextInputFormatter(11),
+          ],
+          decoration: const InputDecoration(hintText: "01xxxxxxxxx"),
+        ),
+        actions: [
+          TextButton(onPressed: () => Get.back(), child: const Text("Cancel")),
+          TextButton(
+            onPressed: () => Get.back(result: ctrl.text.trim()),
+            child: const Text("Verify"),
+          ),
+        ],
+      ),
+    );
+    if (result != null && result.length == 11) {
+      controller.phone.value = result;
+      // TODO: أضف خطوة التحقق (OTP) هنا ثم اجعلها true
+      controller.isPhoneVerified.value = true;
+    }
+  }
+
+  void _showAllNationalities() {
     Get.bottomSheet(
       Container(
-        padding: const EdgeInsets.symmetric(vertical: 22, horizontal: 20),
+        constraints: BoxConstraints(maxHeight: Get.height * 0.7),
         decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.symmetric(vertical: 12),
           children: [
-            Container(
-              width: 42,
-              height: 4,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(10),
+            for (final c in controller.allNationalities)
+              ListTile(
+                title: Text(c),
+                trailing: Obx(
+                  () => controller.nationality.value == c
+                      ? const Icon(Icons.check, color: _EPColors.primary)
+                      : const SizedBox.shrink(),
+                ),
+                onTap: () {
+                  controller.nationality.value = c;
+                  Get.back();
+                },
               ),
-            ),
-            const SizedBox(height: 18),
-            const Text(
-              "تحديث الصورة الشخصية",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 18),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _sourceOption(
-                  icon: Icons.photo_camera_outlined,
-                  label: "الكاميرا",
-                  onTap: () {
-                    Get.back();
-                    controller.pickImage(fromCamera: true);
-                  },
-                ),
-                _sourceOption(
-                  icon: Icons.photo_library_outlined,
-                  label: "المعرض",
-                  onTap: () {
-                    Get.back();
-                    controller.pickImage(fromCamera: false);
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
           ],
         ),
       ),
     );
   }
 
-  Widget _sourceOption({
-    required IconData icon,
-    required String label,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(18),
-      child: Container(
-        width: 130,
-        padding: const EdgeInsets.symmetric(vertical: 18),
-        decoration: BoxDecoration(
-          color: _EPColors.bg,
-          borderRadius: BorderRadius.circular(18),
-        ),
-        child: Column(
-          children: [
-            Icon(icon, color: _EPColors.primary, size: 28),
-            const SizedBox(height: 8),
-            Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
-          ],
-        ),
-      ),
-    );
-  }
-
+  // ---------------- Build ----------------
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Appbarbackicon(title: "Edit profile", herotag: ""),
+      appBar:Appbarbackicon(title: "Your Profile", herotag: "herotag"),
       body: SafeArea(
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _buildAvatarSection(),
-                const SizedBox(height: 32),
-                _sectionCard(
-                  title: "البيانات الشخصية",
-                  icon: Icons.person_outline,
-                  children: [
-                    _buildField(
-                      controller: _nameCtrl,
-                      label: "الاسم الكامل",
-                      hint: "أدخل اسمك بالكامل",
-                      icon: Icons.badge_outlined,
-                      validator: (v) {
-                        if (v == null || v.trim().isEmpty) {
-                          return "الاسم مطلوب";
-                        }
-                        if (v.trim().length < 3) {
-                          return "الاسم قصير جدًا";
-                        }
-                        return null;
-                      },
-                    ),
-                
-                    const SizedBox(height: 16),
-                    _buildField(
-                      controller: _phoneCtrl,
-                      label: "رقم الهاتف",
-                      hint: "01xxxxxxxxx",
-                      icon: Icons.phone_outlined,
-                      keyboardType: TextInputType.phone,
-                      textDirection: TextDirection.ltr,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(11),
-                      ],
-                      validator: (v) {
-                        if (v == null || v.trim().isEmpty) {
-                          return "رقم الهاتف مطلوب";
-                        }
-                        if (v.trim().length != 11) {
-                          return "رقم الهاتف يجب أن يكون 11 رقمًا";
-                        }
-                        return null;
-                      },
-                    ),
-                  ],
+        child: Column(
+          children: [
+            Expanded(
+              child: Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildNameRow(),
+                      const SizedBox(height: 28),
+                      _buildPhoneSection(),
+                      const SizedBox(height: 28),
+                      _buildGenderSection(),
+                      const SizedBox(height: 28),
+                      _buildBirthdaySection(),
+                      const SizedBox(height: 28),
+                      _buildNationalitySection(),
+                    ],
+                  ),
                 ),
-              ],
+              ),
             ),
-          ),
+            _buildBottomBar(),
+          ],
         ),
       ),
     );
   }
 
-  // ---------------- Avatar ----------------
-  Widget _buildAvatarSection() {
-    return Center(
-      child: Column(
-        children: [
-          Stack(
-            clipBehavior: Clip.none,
+  // ---------------- Sections ----------------
+  Widget _sectionHeader(String title, {String? subtitle, Widget? trailing}) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: const LinearGradient(
-                    colors: [_EPColors.primary, _EPColors.primaryDark],
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: _EPColors.primary.withOpacity(0.25),
-                      blurRadius: 18,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
-                ),
-                child: Obx(() {
-                  final path = controller.imagePath.value;
-                  ImageProvider provider;
-                  if (path.isNotEmpty &&
-                      !path.startsWith('http') &&
-                      File(path).existsSync()) {
-                    provider = FileImage(File(path));
-                  } else if (path.startsWith('http')) {
-                    provider = NetworkImage(path);
-                  } else {
-                    provider = AssetImage(path);
-                  }
-                  return Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      CircleAvatar(
-                        radius: 62,
-                        backgroundColor: Colors.grey.shade200,
-                        backgroundImage: provider,
-                      ),
-                      if (controller.isPickingImage.value)
-                        Container(
-                          width: 124,
-                          height: 124,
-                          decoration: const BoxDecoration(
-                            color: Colors.black38,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2.5,
-                          ),
-                        ),
-                    ],
-                  );
-                }),
-              ),
-              Positioned(
-                bottom: -2,
-                left: 0,
-                child: GestureDetector(
-                  onTap: _showImageSourceSheet,
-                  child: Container(
-                    padding: const EdgeInsets.all(9),
-                    decoration: BoxDecoration(
-                      color: _EPColors.primary,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 3),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.15),
-                          blurRadius: 6,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: const Icon(
-                      Icons.camera_alt,
-                      color: Colors.white,
-                      size: 18,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-          Text(
-            controller.username,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            "عضو في المتجر منذ ٢٠٢٤",
-            style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ---------------- Section Card ----------------
-  Widget _sectionCard({
-    required String title,
-    required IconData icon,
-    required List<Widget> children,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
-              Icon(icon, color: _EPColors.primary, size: 20),
-              const SizedBox(width: 8),
               Text(
                 title,
                 style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
+              if (subtitle != null) ...[
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    color: _EPColors.subtitle,
+                  ),
+                ),
+              ],
             ],
           ),
-          const SizedBox(height: 16),
-          ...children,
-        ],
+        ),
+        if (trailing != null) trailing,
+      ],
+    );
+  }
+
+  Widget _outlinedBox({required Widget child, VoidCallback? onTap}) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+        decoration: BoxDecoration(
+          border: Border.all(color: _EPColors.border),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: child,
       ),
     );
   }
 
-  // ---------------- Text Field ----------------
-  Widget _buildField({
-    required TextEditingController controller,
-    required String label,
-    required String hint,
-    required IconData icon,
-    String? Function(String?)? validator,
-    TextInputType keyboardType = TextInputType.text,
-    TextDirection? textDirection,
-    List<TextInputFormatter>? inputFormatters,
-    int maxLines = 1,
-  }) {
+  // First name / Last name
+  Widget _buildNameRow() {
+    return Row(
+      children: [
+        Expanded(child: _nameField(_firstCtrl, "First name*")),
+        const SizedBox(width: 12),
+        Expanded(child: _nameField(_lastCtrl, "Last name*")),
+      ],
+    );
+  }
+
+  Widget _nameField(TextEditingController c, String label) {
+    return TextFormField(
+      controller: c,
+      textCapitalization: TextCapitalization.words,
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: const TextStyle(color: _EPColors.subtitle, fontSize: 14),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: _EPColors.border),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: _EPColors.primary, width: 1.4),
+        ),
+      ),
+    );
+  }
+
+  // Phone number
+  Widget _buildPhoneSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: const TextStyle(
-            color: _EPColors.label,
-            fontWeight: FontWeight.w600,
-            fontSize: 13,
-          ),
+        _sectionHeader(
+          "Phone number",
+          subtitle: "We only use this for important updates",
         ),
-        const SizedBox(height: 8),
-        TextFormField(
-          enabled: false,
-          controller: controller,
-          keyboardType: keyboardType,
-          textDirection: textDirection,
-          inputFormatters: inputFormatters,
-          maxLines: maxLines,
-          validator: validator,
-          style: const TextStyle(fontSize: 15),
-          decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
-            filled: true,
-            prefixIcon: Icon(icon, color: Colors.grey.shade500, size: 20),
-            errorStyle: const TextStyle(color: _EPColors.danger, fontSize: 12),
-            contentPadding: const EdgeInsets.symmetric(vertical: 14),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: BorderSide.none,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: BorderSide.none,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(
-                color: _EPColors.primary,
-                width: 1.4,
-              ),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(color: _EPColors.danger, width: 1.2),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(color: _EPColors.danger, width: 1.4),
+        const SizedBox(height: 14),
+        Obx(
+          () => _outlinedBox(
+            onTap: _verifyPhone,
+            child: Row(
+              children: [
+                const Icon(Icons.phone_outlined,
+                    size: 20, color: _EPColors.subtitle),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    controller.isPhoneVerified.value
+                        ? controller.phone.value
+                        : "Tap to verify",
+                    style: const TextStyle(
+                        fontSize: 14, color: _EPColors.subtitle),
+                  ),
+                ),
+                if (controller.isPhoneVerified.value)
+                  const Icon(Icons.verified, color: Colors.green, size: 20),
+              ],
             ),
           ),
         ),
@@ -503,75 +359,234 @@ class _EditProfileViewState extends State<EditProfileView> {
     );
   }
 
-  // ---------------- Save Button ----------------
-  // Widget _buildSaveButton() {
-  //   return Obx(
-  //     () => SizedBox(
-  //       height: 54,
-  //       child: ElevatedButton(
-  //         style: ElevatedButton.styleFrom(
-  //           backgroundColor: _EPColors.primary,
-  //           disabledBackgroundColor: _EPColors.primary.withOpacity(0.6),
-  //           elevation: 0,
-  //           shape: RoundedRectangleBorder(
-  //             borderRadius: BorderRadius.circular(16),
-  //           ),
-  //         ),
-  //         onPressed: controller.isSaving.value
-  //             ? null
-  //             : () {
-  //                 if (_formKey.currentState?.validate() ?? false) {
-  //                   controller.saveProfile(
-  //                     newName: _nameCtrl.text,
-  //                     newEmail: _emailCtrl.text,
-  //                     newPhone: _phoneCtrl.text,
-  //                     newAddress: _addressCtrl.text,
-  //                   );
-  //                 }
-  //               },
-  //         child: controller.isSaving.value
-  //             ? const SizedBox(
-  //                 width: 22,
-  //                 height: 22,
-  //                 child: CircularProgressIndicator(
-  //                   color: Colors.white,
-  //                   strokeWidth: 2.4,
-  //                 ),
-  //               )
-  //             : const Text(
-  //                 "حفظ التغييرات",
-  //                 style: TextStyle(
-  //                   fontSize: 16,
-  //                   fontWeight: FontWeight.bold,
-  //                   color: Colors.white,
-  //                 ),
-  //               ),
-  //       ),
-  //     ),
-  //   );
-  // }
+  // Gender
+  Widget _buildGenderSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _sectionHeader("Gender"),
+        const SizedBox(height: 14),
+        Row(
+          children: [
+            Expanded(child: _genderTile("male", "Male", Icons.male)),
+            const SizedBox(width: 12),
+            Expanded(child: _genderTile("female", "Female", Icons.female)),
+          ],
+        ),
+      ],
+    );
+  }
 
-  // ---------------- Cancel Button ----------------
-  // Widget _buildCancelButton() {
-  //   return SizedBox(
-  //     height: 50,
-  //     child: OutlinedButton(
-  //       style: OutlinedButton.styleFrom(
-  //         side: BorderSide(color: Colors.grey.shade300),
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(16),
-  //         ),
-  //       ),
-  //       onPressed: () => Get.back(),
-  //       child: Text(
-  //         "إلغاء",
-  //         style: TextStyle(
-  //           fontSize: 15,
-  //           fontWeight: FontWeight.w600,
-  //           color: Colors.grey.shade700,
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget _genderTile(String value, String label, IconData icon) {
+    return Obx(() {
+      final selected = controller.gender.value == value;
+      return InkWell(
+        onTap: () => controller.gender.value = value,
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: selected ? _EPColors.primary : _EPColors.border,
+              width: selected ? 1.4 : 1,
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            children: [
+              Icon(icon, size: 20, color: _EPColors.subtitle),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(label, style: const TextStyle(fontSize: 14)),
+              ),
+              Icon(
+                selected ? Icons.radio_button_checked : Icons.radio_button_off,
+                size: 22,
+                color: selected ? _EPColors.primary : Colors.grey.shade400,
+              ),
+            ],
+          ),
+        ),
+      );
+    });
+  }
+
+  // Birthday
+  Widget _buildBirthdaySection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _sectionHeader(
+          "Birthday",
+          subtitle: "Exclusive offers for you on your special day",
+        ),
+        const SizedBox(height: 14),
+        Obx(() {
+          final d = controller.birthday.value;
+          return _outlinedBox(
+            onTap: _pickBirthday,
+            child: Row(
+              children: [
+                const Icon(Icons.calendar_today_outlined,
+                    size: 20, color: _EPColors.subtitle),
+                const SizedBox(width: 10),
+                Text(
+                  d == null
+                      ? "Add your birthday"
+                      : "${d.day.toString().padLeft(2, '0')}/"
+                          "${d.month.toString().padLeft(2, '0')}/${d.year}",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: d == null ? _EPColors.subtitle : _EPColors.title,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }),
+      ],
+    );
+  }
+
+  // Nationality
+  Widget _buildNationalitySection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _sectionHeader(
+          "Nationality",
+          subtitle: "Help us curate your catalogue",
+          trailing: GestureDetector(
+            onTap: _showAllNationalities,
+            child: const Text(
+              "View all",
+              style: TextStyle(
+                color: _EPColors.primary,
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 14),
+        Obx(
+          () => Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: [
+              for (final c in controller.topNationalities)
+                ChoiceChip(
+                  label: Text(c),
+                  selected: controller.nationality.value == c,
+                  onSelected: (_) => controller.nationality.value = c,
+                  selectedColor: _EPColors.primary.withOpacity(0.12),
+                  backgroundColor: Colors.white,
+                  side: BorderSide(
+                    color: controller.nationality.value == c
+                        ? _EPColors.primary
+                        : _EPColors.border,
+                  ),
+                  labelStyle: TextStyle(
+                    fontSize: 13,
+                    color: controller.nationality.value == c
+                        ? _EPColors.primary
+                        : _EPColors.title,
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  // ---------------- Bottom bar ----------------
+  Widget _buildBottomBar() {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 10,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Obx(() {
+            final pct = controller.completion(_firstCtrl.text, _lastCtrl.text);
+            return Row(
+              children: [
+                const Expanded(
+                  child: Text(
+                    "Complete your profile",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: _EPColors.title,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: _EPColors.badge,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    "$pct%",
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }),
+          const SizedBox(height: 12),
+          Obx(
+            () => SizedBox(
+              width: double.infinity,
+              height: 52,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onPressed: (!_canSave || controller.isSaving.value)
+                    ? null
+                    : () => controller.saveProfile(
+                          firstName: _firstCtrl.text,
+                          lastName: _lastCtrl.text,
+                        ),
+                child: controller.isSaving.value
+                    ? const SizedBox(
+                        width: 22,
+                        height: 22,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2.4,
+                        ),
+                      )
+                    : const Text(
+                        "Save",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

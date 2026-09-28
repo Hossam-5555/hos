@@ -37,7 +37,7 @@ class Homescreen extends StatelessWidget {
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(60),
             child: AppBar(
-              backgroundColor: controller.Currentpage == 2
+              backgroundColor: controller.Currentpage == 2 && cart.data.isNotEmpty
                   ? Theme.of(context).cardColor
                   : Theme.of(context).appBarTheme.backgroundColor,
               centerTitle: false,

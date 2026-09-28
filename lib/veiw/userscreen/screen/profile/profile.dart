@@ -355,7 +355,7 @@ class _ProfileHeader extends StatelessWidget {
                         ),
                       ),
                 backgroundColor: MaterialStateProperty.all(
-                  Colors.grey.shade200,
+                  Color(0xFFE0E3E8),
                 ),
                 padding: MaterialStateProperty.all(const EdgeInsets.all(8)),
               ),

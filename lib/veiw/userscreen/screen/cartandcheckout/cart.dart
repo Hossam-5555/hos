@@ -39,8 +39,8 @@ class ShoppingCartPage extends StatelessWidget {
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            blurRadius: 20,
-                            offset: Offset(0, 8),
+                            blurRadius: 10,
+                            offset: Offset(0, 4),
                             blurStyle: BlurStyle.outer,
                             color: Colors.black.withAlpha(80),
                           ),
@@ -71,12 +71,12 @@ class ShoppingCartPage extends StatelessWidget {
                                   ? Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        SizedBox(
-                                          height: (height * 0.015).clamp(
-                                            8.0,
-                                            16.0,
-                                          ),
-                                        ),
+                                        // SizedBox(
+                                        //   height: (height * 0.015).clamp(
+                                        //     8.0,
+                                        //     16.0,
+                                        //   ),
+                                        // ),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,

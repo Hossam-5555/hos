@@ -141,7 +141,7 @@ class HandlingDataView extends StatelessWidget {
     Approute.Items: EmptyStateModel(
       title: "No products in this category".tr,
       subtitle: "Check back later or try exploring another category.".tr,
-      imagePath: Imageasset.animation2,
+      imagePath: Imageasset.nodata,
     ),
     AdminApproate.viewitemscreen: EmptyStateModel(
       title: "Category is empty".tr,
@@ -325,14 +325,14 @@ class HandlingDataView extends StatelessWidget {
           color: isDark ? const Color(0xFF1E2026) : Colors.grey.shade50,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
-            color: isDark ? Colors.white10 : Colors.grey.shade200,
+            color: isDark ? Colors.white10 : Color(0xFFE0E3E8),
           ),
           boxShadow: [
             if (!isDark)
               BoxShadow(
-                color: Colors.black.withAlpha(30),
-                blurRadius: 15,
-                offset: const Offset(0, 5),
+                color: Colors.black.withAlpha(12),
+                blurRadius: 6,
+                offset: const Offset(0, 1),
               ),
           ],
         ),
@@ -345,12 +345,11 @@ class HandlingDataView extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,boxShadow: [   BoxShadow(
                 color: Colors.black.withAlpha(20),
-                blurRadius: 15,
-                offset: const Offset(0, 5),
+                offset: const Offset(0, 4),
               ),],
                 color: isDark
                     ? Colors.white.withAlpha(13)
-                    : Colors.grey.shade100,
+                    : Color(0xFFE0E3E8),
               ),
               child: _buildMedia(width: 120, height: 120),
             ),
