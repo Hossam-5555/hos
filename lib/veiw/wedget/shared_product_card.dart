@@ -28,7 +28,7 @@ class SharedProductCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     // ألوان الكارت الأساسية بتتغير حسب الوضع (ليلي / نهاري)
-    final Color cardBorderColor = Colors.black.withAlpha(50);
+    final Color cardBorderColor = Colors.grey.withAlpha(50);
     final Color cardShadow = Colors.black.withAlpha(20);
 
     // الشارات (title chip / rating badge / price bar) عايمة فوق الصورة

@@ -278,7 +278,7 @@ class AuthPage extends StatelessWidget {
                                               : SizedBox(height: height * 0.012),
                                         ),
 
-                                        SizedBox(height: height * 0.015),
+                                        SizedBox(height: height * 0.01),
 
                                         Checkbutton(
                                           statusrequest: controller.statusrequest,

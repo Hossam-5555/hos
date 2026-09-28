@@ -104,7 +104,7 @@ class Notificationcontroller extends GetxController {
     );
 
     // ⏳ استنى 4 ثواني
-    await Future.delayed(const Duration(seconds: 4));
+    await Future.delayed(const Duration(seconds: 3));
 
     // 🔴 لو المستخدم ما ضغطش Undo
     if (!isUndo) {

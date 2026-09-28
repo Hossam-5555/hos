@@ -34,23 +34,17 @@ Widget buildCartItemCard(
           // 1. صورة المنتج
           Container(
             width: 110,
-            height: 90,
-            margin: EdgeInsetsDirectional.all(5),
+            height: 100,
+            margin: EdgeInsetsDirectional.all(1),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFFFFFFFF), // مركز الإضاءة الأبيض المشع
-                  Color(0xFFF2F4F7), // البلاتينيوم الناعم
-                  Color(0xFFD0D5DD), // الأطراف الفضية الراقية
-                ],
-              ),
+              color: Color(0xFFE0E3E8),
+
               borderRadius: BorderRadius.circular(20),
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(12),
               child: CachedNetworkImage(
+                alignment: Alignment.center,
                 imageUrl: cart.itemimage!,
                 fit: BoxFit.contain,
                 placeholder: (context, url) => const Center(
@@ -110,19 +104,19 @@ Widget buildCartItemCard(
 
                     // كبسولة التحكم في الكمية
                     Container(
-                      height: 35, // جعلنا الارتفاع مناسب للزرار (بدل 80)
+                      height: 40, // جعلنا الارتفاع مناسب للزرار (بدل 80)
                       decoration: BoxDecoration(
-                        color: Colors.grey.withAlpha(51),
+                        color: Color(0xFFE0E3E8),
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      child: Row(
+                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           IconButton(
-                            iconSize: 15,
+                            iconSize: 20,
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(
-                              minWidth: 25,
-                              minHeight: 25,
+                              minWidth: 30,
+                              minHeight: 30,
                             ),
                             style: IconButton.styleFrom(
                               backgroundColor:
@@ -137,15 +131,18 @@ Widget buildCartItemCard(
                           ),
                           Text(
                             '${controller.data[i].cartCount}',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
                           ),
                           IconButton(
                             onPressed: () => controller.increment(cart.itemid!),
-                            iconSize: 15,
+                            iconSize: 20,
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(
-                              minWidth: 25,
-                              minHeight: 25,
+                              minWidth: 30,
+                              minHeight: 30,
                             ),
                             style: IconButton.styleFrom(
                               backgroundColor:

@@ -15,7 +15,8 @@ class ViewItemScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // double screenWidth = MediaQuery.of(context).size.width;
     final controller = Get.put(ViewItemController());
-
+    final w = MediaQuery.of(context).size.width;
+    final h = MediaQuery.of(context).size.height;
     return Scaffold(
       // عرض اسم القسم المختار ديناميكياً في الـ AppBar
       appBar: Appbarbackicon(
@@ -44,13 +45,15 @@ class ViewItemScreen extends StatelessWidget {
                     mediaType: HandlingMediaType.animation,
                     statusrequest: controller.statusrequest,
                     widget: GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 200,
-                            childAspectRatio: 0.78,
-                            crossAxisSpacing: 16,
-                            mainAxisSpacing: 16,
-                          ),
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent:
+                            0.45 * w, // أقصى عرض للكرت يكون 45% من عرض الهاتف
+                        childAspectRatio:
+                            0.78, // النسب تثبت زي ما هي (نسبة عرض الكرت لطوله)
+                        crossAxisSpacing:
+                            0.02 * w, // مسافة بين الأعمدة 2% من عرض الهاتف
+                        mainAxisSpacing: 0.01 * h,
+                      ),
                       physics: const BouncingScrollPhysics(),
                       padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
                       itemCount: controller.itemlist.length,
@@ -117,8 +120,12 @@ class ViewItemScreen extends StatelessWidget {
               ),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Center(
-              child: Icon(Icons.add_circle, color: Colors.white, size: 26),
+            child: Center(
+              child: Icon(
+                Icons.add_circle,
+                color: Colors.white,
+                size: 0.07 * w,
+              ),
             ),
           ),
         ),

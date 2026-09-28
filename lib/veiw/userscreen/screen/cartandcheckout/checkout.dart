@@ -44,8 +44,16 @@ class Checkout extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   GetBuilder<Checkoutcontroller>(
-                    builder: (c) => Column(
+                    builder: (c) => Column(crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text(
+                          "Payment Methods".tr,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        SizedBox(height: 15,),
                         buildPaymentMethod(
                           controller: c,
                           title: 'بطاقة ائتمان',
@@ -181,8 +189,8 @@ class Checkout extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withAlpha(80),
-            blurRadius: 8,
-            offset: const Offset(0, 6),
+            blurRadius: 5,
+            offset: const Offset(0, 0.2),
           ),
         ],
       ),

@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -49,7 +50,8 @@ class Items extends StatelessWidget {
 
             Expanded(
               child: GetBuilder<ItemsController>(
-                builder: (controller) => HandlingDataView(emptyStyle: EmptyStateStyle.style2,
+                builder: (controller) => HandlingDataView(
+                  emptyStyle: EmptyStateStyle.style2,
                   mode: HandlingMode.fullScreen,
                   mediaType: HandlingMediaType.animation,
                   showRetryButton: true,
@@ -177,7 +179,7 @@ class _FilterButton extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
           child: Material(
-            color: const Color.fromARGB(255, 161, 156, 156).withOpacity(0.15),
+            color: Color(0xFFE0E3E8),
             borderRadius: BorderRadius.circular(30),
             child: InkWell(
               borderRadius: BorderRadius.circular(30),
@@ -199,12 +201,20 @@ class _FilterButton extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SvgPicture.asset(Imageasset.filter, width: 18, height: 18),
+                    Transform.rotate(
+                      angle: -math.pi / 4,alignment: Alignment.center,
+                      child: SvgPicture.asset(
+                        Imageasset.filter,
+                        width: 18,
+                        height: 18,
+                      ),
+                    ),
                     const SizedBox(width: 8),
                     Text(
                       "Filter",
                       style: TextStyle(
                         fontSize: 14,
+                        color: Colors.black,
                         fontWeight: FontWeight.w500,
                       ),
                     ),

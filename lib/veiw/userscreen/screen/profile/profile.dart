@@ -415,9 +415,9 @@ class _GradientGroup extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            blurRadius: 12,
-            color: Colors.black.withAlpha(30),
-            offset: Offset(0, 4),
+            blurRadius: 6,
+            color: Colors.black.withAlpha(20),
+            offset: Offset(0, 0.2),
           ),
         ],
         gradient: isDarkMode

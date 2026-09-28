@@ -18,6 +18,16 @@ class Orders extends StatelessWidget {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
 
+    // نقاط توقف بسيطة: هاتف صغير / هاتف عادي / تابلت
+    final bool isTablet = w >= 600;
+
+    // مسافات متجاوبة اعتماداً على العرض (أثبت من الطول بين الأجهزة)
+    // مع حدود دنيا وقصوى عشان ماتبقاش صغيرة أوي أو كبيرة أوي
+    final double horizontalPadding = (w * 0.045).clamp(12.0, 32.0);
+
+    // عدد أعمدة الجريد: 2 للهاتف، 3 للتابلت الصغير، 4 للتابلت الكبير
+    final int gridCrossAxisCount = isTablet ? (w >= 900 ? 4 : 3) : 2;
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(h * 0.08),
@@ -34,9 +44,9 @@ class Orders extends StatelessWidget {
           widget: RefreshIndicator(
             onRefresh: () async => await controller.viewmyorders(),
             child: MasonryGridView.builder(
-              padding: EdgeInsets.all(w * 0.03),
-              gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+              padding: EdgeInsets.all(horizontalPadding),
+              gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: gridCrossAxisCount,
               ),
               mainAxisSpacing: w * 0.025,
               crossAxisSpacing: w * 0.025,
