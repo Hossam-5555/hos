@@ -78,11 +78,13 @@ class _CategoryCardState extends State<CategoryCard> {
         curve: Curves.easeOutCubic,
         transform: Matrix4.translationValues(0, _showActions ? -7 : 0, 0),
         decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(_showActions ? 0.13 : 0.05),
               blurRadius: _showActions ? 20 : 14,
-              offset: Offset(0, _showActions ? 10 : 10),
+              offset: Offset(0, _showActions ? 10 : 5),
             ),
           ],
         ),

@@ -99,7 +99,7 @@ class HomePage extends StatelessWidget {
                               mode: HandlingMode.skeleton,
                               widget: GridView.builder(
                                 scrollDirection: Axis.horizontal,
-                                physics: const BouncingScrollPhysics(),
+                                physics: const ClampingScrollPhysics(),
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2, // صفين

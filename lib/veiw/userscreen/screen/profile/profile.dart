@@ -413,6 +413,13 @@ class _GradientGroup extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 12,
+            color: Colors.black.withAlpha(30),
+            offset: Offset(0, 4),
+          ),
+        ],
         gradient: isDarkMode
             ? AppGradients.darkTitanium
             : AppGradients.lightPlatinum,

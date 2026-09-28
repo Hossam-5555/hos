@@ -35,7 +35,7 @@ class OrderCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(22),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withAlpha(isDark ? 102 : 20),
+              color: Colors.black.withAlpha(isDark ? 102 : 50),
               blurRadius: 14,
               offset: const Offset(0, 6),
             ),

@@ -56,7 +56,7 @@ class AuthPage extends StatelessWidget {
                 return LayoutBuilder(
                   builder: (context, constraints) {
                     return SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
+                      physics: ClampingScrollPhysics(),
                       padding: EdgeInsets.symmetric(
                         horizontal: width * 0.05,
                         vertical: height * 0.02,

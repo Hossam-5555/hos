@@ -330,7 +330,7 @@ class HandlingDataView extends StatelessWidget {
           boxShadow: [
             if (!isDark)
               BoxShadow(
-                color: Colors.black.withAlpha(8),
+                color: Colors.black.withAlpha(30),
                 blurRadius: 15,
                 offset: const Offset(0, 5),
               ),
@@ -343,7 +343,11 @@ class HandlingDataView extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
+                shape: BoxShape.circle,boxShadow: [   BoxShadow(
+                color: Colors.black.withAlpha(20),
+                blurRadius: 15,
+                offset: const Offset(0, 5),
+              ),],
                 color: isDark
                     ? Colors.white.withAlpha(13)
                     : Colors.grey.shade100,
