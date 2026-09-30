@@ -178,7 +178,6 @@ class _KpiCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _Card(
-      
       padding: const EdgeInsets.all(14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,28 +231,103 @@ class _RevenueChartCard extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           SizedBox(
-            height: 180,
+            height: 300,
             child: controller.isChartLoading
                 ? const Center(child: CircularProgressIndicator())
                 : controller.salesSpots.isEmpty
                 ? const Center(child: Text('لا توجد بيانات كافية'))
-                : LineChart(
-                    LineChartData(
-                      gridData: const FlGridData(show: false),
-                      titlesData: const FlTitlesData(show: false),
-                      borderData: FlBorderData(show: false),
-                      lineBarsData: [
-                        LineChartBarData(
-                          spots: controller.salesSpots,
-                          isCurved: true,
-                          color: _AppColors.primary,
-                          barWidth: 3,
-                          belowBarData: BarAreaData(
-                            show: true,
-                            color: _AppColors.primary.withAlpha(38),
-                          ),
+                : SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: SizedBox(
+                      width: controller.salesSpots.length * 50.0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Builder(
+                          builder: (context) {
+                            // 1. حساب أكبر قيمة Y في البيانات المتاحة
+                            final double maxYValue = controller.salesSpots
+                                .map((spot) => spot.y)
+                                .fold(0.0, (max, val) => val > max ? val : max);
+
+                            final lineBarData = LineChartBarData(
+                              spots: controller.salesSpots,
+                              isCurved: true,
+                              color: _AppColors.success,
+                              barWidth: 3,
+                              belowBarData: BarAreaData(
+                                show: true,
+                                color: _AppColors.warning.withAlpha(38),
+                              ),
+                            );
+
+                            return LineChart(
+                              LineChartData(
+                                minX: 1,
+                                maxX: controller.salesSpots.length.toDouble(),
+
+                                // 2. إعطاء مساحة أمان 20% فوق أعلى نقطة ليظهر النص بدون قص
+                                maxY: maxYValue * 1.2,
+
+                                showingTooltipIndicators: controller.salesSpots
+                                    .asMap()
+                                    .entries
+                                    .map((entry) {
+                                      return ShowingTooltipIndicators([
+                                        LineBarSpot(
+                                          lineBarData,
+                                          0,
+                                          entry.value,
+                                        ),
+                                      ]);
+                                    })
+                                    .toList(),
+
+                                lineTouchData: LineTouchData(
+                                  enabled: false,
+                                  touchTooltipData: LineTouchTooltipData(
+                                    fitInsideVertically:
+                                        true, // 3. إجبار النص على البقاء داخل الشاشة عمودياً
+                                    getTooltipColor: (spot) =>
+                                        Colors.transparent,
+                                    tooltipMargin: 4,
+                                    tooltipPadding: EdgeInsets.zero,
+                                    getTooltipItems:
+                                        (List<LineBarSpot> touchedSpots) {
+                                          return touchedSpots.map((spot) {
+                                            return LineTooltipItem(
+                                              '${spot.y.toInt()}',
+                                              const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 11,
+                                              ),
+                                            );
+                                          }).toList();
+                                        },
+                                  ),
+                                ),
+
+                                gridData: const FlGridData(show: false),
+                                titlesData: const FlTitlesData(
+                                  leftTitles: AxisTitles(
+                                    sideTitles: SideTitles(showTitles: false),
+                                  ),
+                                  topTitles: AxisTitles(
+                                    sideTitles: SideTitles(showTitles: false),
+                                  ),
+                                  rightTitles: AxisTitles(
+                                    sideTitles: SideTitles(showTitles: false),
+                                  ),
+                                  bottomTitles: AxisTitles(
+                                    sideTitles: SideTitles(showTitles: true),
+                                  ), // إخفاء محور X
+                                ),
+                                borderData: FlBorderData(show: false),
+                                lineBarsData: [lineBarData],
+                              ),
+                            );
+                          },
                         ),
-                      ],
+                      ),
                     ),
                   ),
           ),
@@ -602,7 +676,7 @@ class _Card extends StatelessWidget {
           BoxShadow(
             color: Colors.black.withAlpha(50),
             blurRadius: 10,
-            offset: const Offset(0,4),
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -635,13 +709,13 @@ class _TimeToggle extends StatelessWidget {
     return Row(
       children: [
         ChoiceChip(
-          label: const Text('أسبوعي', style: TextStyle(fontSize: 11)),
+          label: const Text('monthly', style: TextStyle(fontSize: 11)),
           selected: controller.selectedtime == 0,
           onSelected: (_) => controller.changetime(0),
         ),
         const SizedBox(width: 5),
         ChoiceChip(
-          label: const Text('شهري', style: TextStyle(fontSize: 11)),
+          label: const Text('yearly', style: TextStyle(fontSize: 11)),
           selected: controller.selectedtime == 1,
           onSelected: (_) => controller.changetime(1),
         ),

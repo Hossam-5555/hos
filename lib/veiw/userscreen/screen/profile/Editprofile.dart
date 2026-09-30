@@ -177,7 +177,7 @@ class _EditProfileViewState extends State<EditProfileView> {
       Container(
         constraints: BoxConstraints(maxHeight: Get.height * 0.7),
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: Color(0xFFE0E3E8),
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: ListView(
@@ -186,10 +186,10 @@ class _EditProfileViewState extends State<EditProfileView> {
           children: [
             for (final c in controller.allNationalities)
               ListTile(
-                title: Text(c),
+                title: Text(c, style: TextStyle(color: Colors.black)),
                 trailing: Obx(
                   () => controller.nationality.value == c
-                      ? const Icon(Icons.check, color: _EPColors.primary)
+                      ? const Icon(Icons.check, color: Colors.black)
                       : const SizedBox.shrink(),
                 ),
                 onTap: () {
@@ -207,7 +207,7 @@ class _EditProfileViewState extends State<EditProfileView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:Appbarbackicon(title: "Your Profile", herotag: "herotag"),
+      appBar: Appbarbackicon(title: "Your Profile", herotag: "herotag"),
       body: SafeArea(
         child: Column(
           children: [
@@ -293,11 +293,7 @@ class _EditProfileViewState extends State<EditProfileView> {
   // First name / Last name
   Widget _buildNameRow() {
     return Row(
-      children: [
-        Expanded(child: _nameField(_firstCtrl, "First name*")),
-        const SizedBox(width: 12),
-        Expanded(child: _nameField(_lastCtrl, "Last name*")),
-      ],
+      children: [Expanded(child: _nameField(_firstCtrl, "First name*"))],
     );
   }
 
@@ -308,8 +304,10 @@ class _EditProfileViewState extends State<EditProfileView> {
       decoration: InputDecoration(
         labelText: label,
         labelStyle: const TextStyle(color: _EPColors.subtitle, fontSize: 14),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 16,
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: _EPColors.border),
@@ -337,8 +335,11 @@ class _EditProfileViewState extends State<EditProfileView> {
             onTap: _verifyPhone,
             child: Row(
               children: [
-                const Icon(Icons.phone_outlined,
-                    size: 20, color: _EPColors.subtitle),
+                const Icon(
+                  Icons.phone_outlined,
+                  size: 20,
+                  color: _EPColors.subtitle,
+                ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -346,7 +347,9 @@ class _EditProfileViewState extends State<EditProfileView> {
                         ? controller.phone.value
                         : "Tap to verify",
                     style: const TextStyle(
-                        fontSize: 14, color: _EPColors.subtitle),
+                      fontSize: 14,
+                      color: _EPColors.subtitle,
+                    ),
                   ),
                 ),
                 if (controller.isPhoneVerified.value)
@@ -427,14 +430,17 @@ class _EditProfileViewState extends State<EditProfileView> {
             onTap: _pickBirthday,
             child: Row(
               children: [
-                const Icon(Icons.calendar_today_outlined,
-                    size: 20, color: _EPColors.subtitle),
+                const Icon(
+                  Icons.calendar_today_outlined,
+                  size: 20,
+                  color: _EPColors.subtitle,
+                ),
                 const SizedBox(width: 10),
                 Text(
                   d == null
                       ? "Add your birthday"
                       : "${d.day.toString().padLeft(2, '0')}/"
-                          "${d.month.toString().padLeft(2, '0')}/${d.year}",
+                            "${d.month.toString().padLeft(2, '0')}/${d.year}",
                   style: TextStyle(
                     fontSize: 14,
                     color: d == null ? _EPColors.subtitle : _EPColors.title,
@@ -531,8 +537,10 @@ class _EditProfileViewState extends State<EditProfileView> {
                   ),
                 ),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: _EPColors.badge,
                     borderRadius: BorderRadius.circular(20),
@@ -563,9 +571,9 @@ class _EditProfileViewState extends State<EditProfileView> {
                 onPressed: (!_canSave || controller.isSaving.value)
                     ? null
                     : () => controller.saveProfile(
-                          firstName: _firstCtrl.text,
-                          lastName: _lastCtrl.text,
-                        ),
+                        firstName: _firstCtrl.text,
+                        lastName: _lastCtrl.text,
+                      ),
                 child: controller.isSaving.value
                     ? const SizedBox(
                         width: 22,

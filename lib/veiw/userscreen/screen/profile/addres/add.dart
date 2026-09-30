@@ -196,9 +196,9 @@ class _AddNewAddresState extends State<AddNewAddres>
                 ),
             ],
           ),
-          Positioned(
+          PositionedDirectional(
             top: 16 * s,
-            right: 16 * s,
+            end: 16 * s,
             child: SafeArea(
               child: GestureDetector(
                 onTap: _handleCurrentLocation,
@@ -226,9 +226,9 @@ class _AddNewAddresState extends State<AddNewAddres>
               ),
             ),
           ),
-          Positioned(
+          PositionedDirectional(
             top: 16 * s,
-            left: 16 * s,
+            start: 16 * s,
             child: SafeArea(
               child: Padding(
                 padding: EdgeInsetsDirectional.symmetric(horizontal: 10.0 * s),

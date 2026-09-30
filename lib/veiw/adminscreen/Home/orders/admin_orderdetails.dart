@@ -51,7 +51,7 @@ class AdminOrderdetails extends StatelessWidget {
               // ============================================================
               // QUICK ACTIONS
               // ============================================================
-              _quickActions(context, o, controller),
+              _quickActions(context, o, controller,o.username,),
 
               const SizedBox(height: 12),
 
@@ -153,108 +153,88 @@ class AdminOrderdetails extends StatelessWidget {
     BuildContext context,
     dynamic order,
     AdminOrderDetailesController controller,
+     String customerName,
   ) {
-    return CardWidget(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    // Change this to wherever your customer name lives on the order
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Container(
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        color: isDark?Theme.of(context).cardColor: Color(0xFFE0E3E8),
+        borderRadius: BorderRadius.circular(40),
+      ),
+      child: Row(
         children: [
-          Row(
-            children: [
-              const Icon(Icons.flash_on_outlined, size: 21),
-
-              const SizedBox(width: 9),
-
-              const Text(
-                "Quick Actions",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ],
+          const CircleAvatar(
+            radius: 24,
+            backgroundColor:Colors.white,
+            child: Icon(Icons.person, color: Colors.grey),
           ),
-
-          const SizedBox(height: 15),
-
-          Row(
-            children: [
-              Expanded(
-                child: _actionButton(
-                  icon: Icons.phone_outlined,
-                  title: "Call Customer",
-                  onTap: () {
-                    controller.makePhoneCall();
-                  },
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  customerName,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-
-              const SizedBox(width: 10),
-
-              Expanded(
-                child: Obx(() {
-                  return controller.istracking.value
-                      ? const Center(child: CircularProgressIndicator())
-                      : _actionButton(
-                          icon: Icons.location_on_outlined,
-                          title: "Track Order",
-                          onTap: () {
-                            controller.openMap(
-                              lat: controller.order!.shippingAddress.lat ?? 0.0,
-                              lng: controller.order!.shippingAddress.lng ?? 0.0,
-                            );
-                          },
-                        );
-                }),
-              ),
-            ],
+                const SizedBox(height: 2),
+                const Text(
+                  "Customer",
+                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+              ],
+            ),
           ),
-
-          const SizedBox(height: 10),
+          Obx(() {
+            return controller.istracking.value
+                ? const SizedBox(
+                    width: 44,
+                    height: 44,
+                    child: Center(
+                      child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    ),
+                  )
+                : _circleButton(Icons.location_on, () {
+                    controller.openMap(
+                      lat: controller.order!.shippingAddress.lat ?? 0.0,
+                      lng: controller.order!.shippingAddress.lng ?? 0.0,
+                    );
+                  });
+          }),
+          const SizedBox(width: 8),
+          _circleButton(Icons.phone, () => controller.makePhoneCall()),
         ],
       ),
     );
   }
 
-  // ========================================================================
-  // ACTION BUTTON
-  // ========================================================================
-
-  Widget _actionButton({
-    required IconData icon,
-    required String title,
-    required VoidCallback onTap,
-  }) {
+  Widget _circleButton(IconData icon, VoidCallback onTap) {
     return Material(
-      color: Colors.transparent,
+      color: Colors.white,
+      shape: const CircleBorder(),
       child: InkWell(
+        customBorder: const CircleBorder(),
         onTap: onTap,
-        borderRadius: BorderRadius.circular(14),
-        child: Container(
-          height: 58,
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: Colors.grey.withAlpha(45)),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, size: 21),
-
-              const SizedBox(height: 4),
-
-              Text(
-                title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-        ),
+        child: SizedBox(width: 44, height: 44, child: Icon(icon, size: 20,color: Colors.black,)),
       ),
     );
   }
+  // ========================================================================
+  // ACTION BUTTON
+  // ========================================================================
 
   // ========================================================================
   // PAYMENT CARD
@@ -265,7 +245,7 @@ class AdminOrderdetails extends StatelessWidget {
 
     final isPaid = paymentStatus == "paid";
 
-    final isFailed = paymentStatus == "failed";
+    final isFailed = paymentStatus == "unpaid";
 
     final Color statusColor = isPaid
         ? Colors.green

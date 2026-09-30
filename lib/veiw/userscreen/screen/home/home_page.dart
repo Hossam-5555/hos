@@ -39,7 +39,7 @@ class HomePage extends StatelessWidget {
 
                 // مسافات متجاوبة اعتماداً على العرض (أثبت من الطول بين الأجهزة)
                 // مع حدود دنيا وقصوى عشان ماتبقاش صغيرة أوي أو كبيرة أوي
-                final double horizontalPadding = (width * 0.045).clamp(
+                final double horizontalPadding = (width * 0.035).clamp(
                   12.0,
                   32.0,
                 );
@@ -60,7 +60,7 @@ class HomePage extends StatelessWidget {
                         (horizontalPadding * 2) -
                         (gridSpacing * (gridCrossAxisCount - 1))) /
                     gridCrossAxisCount;
-                final itemWidth = (width - 48) / 3;
+                final itemWidth = (width - 40) / 3;
 
                 return HandlingDataView(
                   emptyStyle: EmptyStateStyle.style1,
@@ -136,7 +136,9 @@ class HomePage extends StatelessWidget {
 
                           /// New Items Header
                           Titles(title: "New Items".tr),
-                          CurvedItemsView(),
+                          CurvedItemsView(
+                            isen: controller.isarabic ? false : true,
+                          ),
 
                           SizedBox(height: sectionSpacing),
 
@@ -170,7 +172,7 @@ class HomePage extends StatelessWidget {
                                   SliverSimpleGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: gridCrossAxisCount,
                                   ),
-                              mainAxisSpacing: gridSpacing ,
+                              mainAxisSpacing: gridSpacing,
                               crossAxisSpacing: gridSpacing,
                               itemCount: controller.mostsaleitem.length,
                               itemBuilder: (context, index) {
@@ -184,10 +186,9 @@ class HomePage extends StatelessWidget {
                                     : baseHeight * 1.2;
 
                                 return SharedProductCard(
-                                  image: "${item.itemsImage}",
-                                  title: "${item.itemsName}",
-                                  price: "${item.itemsPrice}",
-                                  rating: 4.8,
+                                  isen: controller.isarabic ? false : true,
+                                  items: item,
+                            
                                   onTap: () {
                                     controller.gotoitemsdetails(item);
                                   },

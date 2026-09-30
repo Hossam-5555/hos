@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:hos/core/conistant/imageasset.dart';
+import 'package:hos/veiw/wedget/Homepage/home_screnaction.dart';
 
 // ignore: must_be_immutable
 class Searchbar extends StatelessWidget {
@@ -31,48 +31,39 @@ class Searchbar extends StatelessWidget {
       textInputAction: textInputAction,
       controller: mycontroller,
       onChanged: onChanged,
-    
+
       decoration: InputDecoration(
         hintText: title,
         hintStyle: TextStyle(color: Colors.grey),
-    
-        prefixIcon: Padding(
-          padding: const EdgeInsets.all(12),
+
+        suffixIcon: Homescrenaction(
+          herotag: "",
+          onPressed: onPressedIcon,
           child: SvgPicture.asset(
             Imageasset.search,
+            color: Colors.black,
             height: 20,
             width: 20,
           ),
         ),
-    
-        suffixIcon: SizedBox(
-          width: 100,
-          child: TextButton(
-            onPressed: onPressedIcon,
-            child: Text(
-              "search".tr,
-              style: const TextStyle(fontWeight: FontWeight.w600),
-            ),
-          ),
-        ),
-    
+
         // خلفية الحقل
         filled: true,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 20,
           vertical: 14,
         ),
-    
+
         // الشكل الطبيعي
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
-          borderSide:BorderSide.none,
+          borderSide: BorderSide.none,
         ),
-    
+
         // عند الضغط عليه
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
-          borderSide:BorderSide.none,
+          borderSide: BorderSide.none,
         ),
       ),
     );

@@ -77,14 +77,8 @@ Widget buildCartItemCard(
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      '${double.parse(controller.data[i].subtotal.toString()).toStringAsFixed(2)} \$',
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Color(0xFFB65030),
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
+                    ToggleInfoChips(isDark: isdark),
+
                     Text(
                       style: TextStyle(fontSize: 10),
                       Jiffy.parse(
@@ -100,8 +94,14 @@ Widget buildCartItemCard(
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ToggleInfoChips(isDark: isdark),
-
+                    Text(
+                      '${double.parse(controller.data[i].subtotal.toString()).toStringAsFixed(2)} \$',
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: Color(0xFFB65030),
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
                     // كبسولة التحكم في الكمية
                     Container(
                       height: 40, // جعلنا الارتفاع مناسب للزرار (بدل 80)
@@ -109,7 +109,8 @@ Widget buildCartItemCard(
                         color: Color(0xFFE0E3E8),
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           IconButton(
                             iconSize: 20,

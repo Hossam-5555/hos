@@ -15,9 +15,9 @@ class ViewMyAddres extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(60),
-        child: Appbarbackicon(herotag: '', title: "My Addresses"),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: Appbarbackicon(herotag: '', title: "My Addresses",),
       ),
 
       floatingActionButton: FloatingActionButton.extended(
@@ -142,9 +142,9 @@ class AddressCard extends StatelessWidget {
           ),
 
           if (isDefault)
-            Positioned(
+            PositionedDirectional(
               top: 14,
-              left: 14,
+              start: 14,
               child: Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
@@ -165,9 +165,8 @@ class AddressCard extends StatelessWidget {
               ),
             ),
 
-          Positioned(
-            top: 12,
-            right: 12,
+          PositionedDirectional(
+            top: 12,end: 12,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30),
               child: Container(

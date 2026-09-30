@@ -9,8 +9,8 @@ import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/conistant/appcolor.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/data/model/itemsmodel.dart';
+import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
-import 'package:hos/veiw/wedget/items/itemsappbar.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/anmationbutton.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/countofproduct.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/description.dart';
@@ -32,56 +32,24 @@ class Itemsdetailes extends StatelessWidget {
       builder: (controller) {
         final item = controller.itemsmodel;
         return Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-          centerTitle: true,
-            title: SafeArea(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                 BackButtonCircle(),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white.withAlpha(76),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                          item.images!.length,
-                          (index) => AnimatedContainer(
-                            margin: const EdgeInsets.all(10),
-                            width: controller.curentpage == index ? 15 : 5,
-                            height: 8,
-                            decoration: BoxDecoration(
-                              color: Appcolor.primaryColor,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            duration: const Duration(milliseconds: 500),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                GetBuilder<FavController>(
-                  builder: (favController) {
-                    final isFav = favController.isfavorite[item.id] == 1;
-                    return FavoriteButton(
-                      key: ValueKey(item.id),
-                      isFav: isFav,
-                      onTap: () {
-                        favController.favmanget(item.id!);
-                        favController.chasngfav(item.id!, isFav ? 0 : 1);
-                      },
-                    );
-                  },
-                ),
-                ],
+          appBar: Appbarbackicon.nedicon(
+            needicon: true,
+            title: "",
+            herotag: "itemsdeatails",
+            iconButton: Padding(
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
+              child: GetBuilder<FavController>(
+                builder: (favController) {
+                  final isFav = favController.isfavorite[item.id] == 1;
+                  return FavoriteButton(
+                    key: ValueKey(item.id),
+                    isFav: isFav,
+                    onTap: () {
+                      favController.favmanget(item.id!);
+                      favController.chasngfav(item.id!, isFav ? 0 : 1);
+                    },
+                  );
+                },
               ),
             ),
           ),
@@ -147,6 +115,39 @@ class Itemsdetailes extends StatelessWidget {
                               ),
                             ),
                             controller: controller.controller,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.white.withAlpha(76),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: List.generate(
+                                  item.images!.length,
+                                  (index) => AnimatedContainer(
+                                    margin: const EdgeInsets.all(10),
+                                    width: controller.curentpage == index
+                                        ? 15
+                                        : 5,
+                                    height: 8,
+                                    decoration: BoxDecoration(
+                                      color: Appcolor.primaryColor,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    duration: const Duration(milliseconds: 500),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),

@@ -2,22 +2,19 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:hos/data/model/itemsmodel.dart';
 
+// ignore: must_be_immutable
 class SharedProductCard extends StatelessWidget {
-  final String image;
-  final String title;
-  final String price;
-  final double rating;
+  final ItemsModel items;
+  bool isen;
   final VoidCallback? onTap;
   final Widget actionButton; // 👈 ضفنا دي عشان نحط فيها (مسح، مفضلة، أو سلة)
   final double height; // ارتفاع ثابت للكارد
-  const SharedProductCard({
+  SharedProductCard({
     super.key,
-    required this.image,
-    required this.title,
-    required this.price,
-    required this.rating,
+    required this.isen,
+    required this.items,
     required this.actionButton, // 👈 مطلوبة هنا
     this.onTap,
     required this.height, // ممكن تعدلها لو حبيت
@@ -96,7 +93,7 @@ class SharedProductCard extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.all(imagePadding),
                           child: CachedNetworkImage(
-                            imageUrl: image,
+                            imageUrl: items.itemsImage!,
                             imageBuilder: (context, imageProvider) => Container(
                               decoration: BoxDecoration(
                                 image: DecorationImage(
@@ -151,7 +148,9 @@ class SharedProductCard extends StatelessWidget {
                                     children: [
                                       Flexible(
                                         child: Text(
-                                          title,
+                                          isen
+                                              ? (items.itemsName ?? '')
+                                              : (items.itemsNameAr ?? ''),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           textAlign: TextAlign.center,
@@ -184,7 +183,7 @@ class SharedProductCard extends StatelessWidget {
                                             ),
                                             const SizedBox(width: 3),
                                             Text(
-                                              rating.toString(),
+                                              "5.5",
                                               style: TextStyle(
                                                 fontSize: ratingFontSize,
                                                 fontWeight: FontWeight.w500,
@@ -212,7 +211,8 @@ class SharedProductCard extends StatelessWidget {
                               child: Container(
                                 width: bottomBarWidth,
                                 height: bottomBarHeight,
-                                padding: const EdgeInsets.symmetric(vertical: 5,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 5,
                                   horizontal: 12,
                                 ),
                                 decoration: BoxDecoration(
@@ -226,7 +226,7 @@ class SharedProductCard extends StatelessWidget {
                                   children: [
                                     Flexible(
                                       child: Text(
-                                        "$price ${"EGP".tr}",
+                                        "${items.itemsPrice}",
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(

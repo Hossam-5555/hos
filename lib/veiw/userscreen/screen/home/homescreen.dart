@@ -37,7 +37,8 @@ class Homescreen extends StatelessWidget {
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(60),
             child: AppBar(
-              backgroundColor: controller.Currentpage == 2 && cart.data.isNotEmpty
+              backgroundColor:
+                  controller.Currentpage == 2 && cart.data.isNotEmpty
                   ? Theme.of(context).cardColor
                   : Theme.of(context).appBarTheme.backgroundColor,
               centerTitle: false,
@@ -58,43 +59,46 @@ class Homescreen extends StatelessWidget {
                 ],
               ),
               actions: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.symmetric(
-                    horizontal: 10,
-                  ),
-                  child: Homescrenaction(
-                    herotag: "notification",
-                    onPressed: () {
-                      Get.toNamed(Approute.notificationPage);
-                    },
-                    child: GetBuilder<Notificationcontroller>(
-                      builder: (controller) {
-                        int hasUnread = controller.notificationcount.value;
+                controller.Currentpage != 1
+                    ? Padding(
+                        padding: const EdgeInsetsDirectional.symmetric(
+                          horizontal: 10,
+                        ),
+                        child: Homescrenaction(
+                          herotag: "notification",
+                          onPressed: () {
+                            Get.toNamed(Approute.notificationPage);
+                          },
+                          child: GetBuilder<Notificationcontroller>(
+                            builder: (controller) {
+                              int hasUnread =
+                                  controller.notificationcount.value;
 
-                        return Badge(
-                          isLabelVisible: hasUnread > 0,
-                          alignment: const Alignment(0.1, 0.90),
-                          label: Text(
-                            hasUnread.toString(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                            ),
+                              return Badge(
+                                isLabelVisible: hasUnread > 0,
+                                alignment: const Alignment(0.1, 0.90),
+                                label: Text(
+                                  hasUnread.toString(),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                smallSize: 9,
+                                backgroundColor: Colors.redAccent,
+                                child: SvgPicture.asset(
+                                  Imageasset.notification,
+                                  height: 24,
+                                  width: 24,
+                                  // ignore: deprecated_member_use
+                                  color: Colors.black,
+                                ),
+                              );
+                            },
                           ),
-                          smallSize: 9,
-                          backgroundColor: Colors.redAccent,
-                          child: SvgPicture.asset(
-                            Imageasset.notification,
-                            height: 24,
-                            width: 24,
-                            // ignore: deprecated_member_use
-                            color: Colors.black,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
+                        ),
+                      )
+                    : SizedBox.shrink(),
               ],
             ),
           ),
@@ -103,10 +107,8 @@ class Homescreen extends StatelessWidget {
           floatingActionButton: SafeArea(
             child: Container(
               alignment: Alignment.bottomCenter,
-              margin: const EdgeInsetsDirectional.symmetric(
-                horizontal: 12,
-                vertical: 5,
-              ),
+              padding: EdgeInsets.all(5),
+              margin: EdgeInsets.all(10),
               child: GetBuilder<Homescreencontroller>(
                 builder: (controller) => CustomBottomNavBar(
                   items: [
@@ -124,7 +126,7 @@ class Homescreen extends StatelessWidget {
                     ),
                     NavItem(
                       label: controller.appbartitle[3][0],
-                      imageAsset: controller.appbartitle[3][1],
+                      svgAsset: controller.appbartitle[3][1],
                     ),
                   ],
                   currentIndex: controller.Currentpage,

@@ -6,6 +6,7 @@ import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/searchclass.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
+import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/veiw/userscreen/screen/home/home_page.dart';
 import 'package:hos/veiw/wedget/shared_product_card.dart';
 import 'package:hos/veiw/wedget/animation.dart';
@@ -39,7 +40,7 @@ class Searchpage extends StatelessWidget {
       body: LayoutBuilder(
         builder: (context, constraints) {
           final width = constraints.maxWidth;
-          final hPad = (width * 0.040).clamp(14.0, 22.0);
+          final hPad = (width * 0.035).clamp(14.0, 20.0);
 
           return GetBuilder<SearchMix>(
             builder: (controller) {
@@ -290,7 +291,7 @@ class _SearchResults extends StatelessWidget {
           ],
 
           // =========================
-          // Loading 
+          // Loading
           // =========================
           if (isLoading)
             Expanded(
@@ -308,10 +309,15 @@ class _SearchResults extends StatelessWidget {
                     final double baseHeight = cardWidth * 1.55;
 
                     return SharedProductCard(
-                      image: "",
-                      title: "Loading Product",
-                      price: "0000",
-                      rating: 4.8,
+                      isen: false,
+                      items: ItemsModel(
+                        id: 0,
+                        itemsImage: "",
+                        itemsName: '',
+                        itemsNameAr: '',
+                        itemsPrice: 200
+                      ),
+
                       onTap: () {},
                       actionButton: const SizedBox(),
                       height: index.isEven ? baseHeight : baseHeight * 1.15,
@@ -437,10 +443,9 @@ class _SearchResults extends StatelessWidget {
                       : baseHeight * 1.15;
 
                   return SharedProductCard(
-                    image: "${item.itemsImage}",
-                    title: "${item.itemsName}",
-                    price: "${item.itemsPrice}",
-                    rating: 4.8,
+                    isen: controller.lang == "en" ? true : false,
+                    items: item,
+
                     onTap: () {
                       controller.gotoitemsdatails(item);
                     },
@@ -495,7 +500,8 @@ class PopularCategoriesSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Skeletonizer(enabled: showSkeleton,
+        Skeletonizer(
+          enabled: showSkeleton,
           child: Text(
             "Popular Categories".tr,
             style: TextStyle(
@@ -513,6 +519,7 @@ class PopularCategoriesSection extends StatelessWidget {
             children: List.generate(displayCategories.length, (index) {
               final item = displayCategories[index];
               return BuildCategoryItems(
+                isen: c.lang == "en" ? true : false,
                 catmodel: item,
                 isSelected: true,
                 onTap: () {

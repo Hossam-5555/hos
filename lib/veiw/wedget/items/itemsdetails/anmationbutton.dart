@@ -47,24 +47,22 @@ class _FavoriteButtonState extends State<FavoriteButton>
         _controller.forward(from: 0);
         widget.onTap();
       },
-      child: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: ClipPath(
-          clipper: ShapeBorderClipper(shape: const CircleBorder()),
-          child: Container(
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-                color: Color(0xFFE0E3E8),
-            ),
-            child: ScaleTransition(
-              scale: _scale,
-              child: Icon(
-                widget.isFav ? Icons.favorite : Icons.favorite_border_rounded,
-                color: widget.isFav ? Colors.redAccent : Colors.black,
-                size: 20,
-              ),
+      child: ClipPath(
+        clipper: ShapeBorderClipper(shape: const CircleBorder()),
+        child: Container(
+          height: 50,
+          width: 50,
+          margin: EdgeInsets.symmetric(horizontal: 2),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+              color: Color(0xFFE0E3E8),
+          ),
+          child: ScaleTransition(
+            scale: _scale,
+            child: Icon(
+              widget.isFav ? Icons.favorite : Icons.favorite_border_rounded,
+              color: widget.isFav ? Colors.redAccent : Colors.black,
+              size: 20,
             ),
           ),
         ),

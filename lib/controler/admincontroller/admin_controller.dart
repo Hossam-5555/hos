@@ -17,7 +17,7 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
 
   // ──────────────── Data Objects ──────────────────────────────
   Map<String, dynamic> overviewData = {};
-  List<dynamic> chartRawData = [];
+  List<RevenueChartModel> chartData = [];
   Map<String, dynamic> detailsData = {};
 
   // ─────────────────── Navigation / Pages ──────────────────────
@@ -56,20 +56,9 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
 
   /// استخراج نقاط الـ LineChart للرسم البياني بأمان
   List<FlSpot> get salesSpots {
-    if (chartRawData.isEmpty) return [];
-
-    final List<FlSpot> spots = [];
-    for (int i = 0; i < chartRawData.length; i++) {
-      final rawTotal = chartRawData[i]['total'];
-      final double? y = (rawTotal is num)
-          ? rawTotal.toDouble()
-          : double.tryParse(rawTotal?.toString() ?? '');
-
-      if (y != null) {
-        spots.add(FlSpot(i.toDouble(), y));
-      }
-    }
-    return spots;
+    return chartData.asMap().entries.map((entry) {
+      return FlSpot(entry.key.toDouble() + 1, entry.value.total);
+    }).toList();
   }
 
   bool get isLoading => statusrequest == Statusrequest.loading;
@@ -83,12 +72,9 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
     update();
 
     try {
-      final period = selectedtime == 0 ? 'weekly' : 'monthly';
-
-      // جلب البيانات بالتوازي من الـ 3 Endpoints لسرعة الاستجابة
       final results = await Future.wait([
         _data.getOverview(isRefresh: isRefresh),
-        _data.getChartData(period: period, isRefresh: isRefresh),
+        _data.getChartData(period: 'monthly', isRefresh: isRefresh),
         _data.getDetails(isRefresh: isRefresh),
       ]);
 
@@ -104,13 +90,15 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
         return;
       }
 
-      // حفظ نتائج البيانات في المتغيرات المحلية
       if (overviewRes['status'] == true) {
         overviewData = Map<String, dynamic>.from(overviewRes['data'] ?? {});
       }
-      if (chartRes['status'] == true) {
-        chartRawData = List<dynamic>.from(chartRes['data'] ?? []);
+
+      // chart
+      if (chartRes is List<RevenueChartModel>) {
+        chartData = chartRes;
       }
+
       if (detailsRes['status'] == true) {
         detailsData = Map<String, dynamic>.from(detailsRes['data'] ?? {});
       }
@@ -118,6 +106,7 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
       statusrequest = Statusrequest.success;
     } catch (e, stack) {
       debugPrint('getdashboardapi error: $e\n$stack');
+
       statusrequest = Statusrequest.serverfailure;
     }
 
@@ -127,17 +116,15 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
   /// تغيير فلترة الرسم البياني (أسبوعي / شهري)
   Future<void> changetime(int index) async {
     if (selectedtime == index) return;
+
     selectedtime = index;
     isChartLoading = true;
     update();
 
-    final period = selectedtime == 0 ? 'weekly' : 'monthly';
+    final period = selectedtime == 0 ? 'monthly' : 'yearly';
 
     try {
-      final response = await _data.getChartData(period: period);
-      if (response['status'] == true) {
-        chartRawData = List<dynamic>.from(response['data'] ?? []);
-      }
+      chartData = await _data.getChartData(period: period);
     } catch (e) {
       debugPrint('Error updating chart time: $e');
     }

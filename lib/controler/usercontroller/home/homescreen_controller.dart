@@ -67,11 +67,11 @@ void onOrderScroll(double offset) {
     pageControllers.dispose();
   }
 
-  List<List<dynamic>> appbartitle = [
+  List get appbartitle=> [
     ['Home'.tr, Imageasset.homesvg],
     ['Search'.tr, Imageasset.search],
     ['Cart'.tr, Imageasset.cart],
-    ['Profile'.tr, Imageasset.twetter],
+    ['Profile'.tr,Imageasset.profile],
   ];
   final List<Widget> pages = [
     HomePage(),

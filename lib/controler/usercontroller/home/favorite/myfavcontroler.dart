@@ -17,6 +17,7 @@ class Myfavcontroler extends SearchMix {
   // Myservisec myservisec = Get.find();
 
   int get id => myservisec.sharedPreferences.getInt("id")!;
+  String? get lang => myservisec.sharedPreferences.getString('lang');
 
   Future<void> getfav() async {
     data.clear();
@@ -40,7 +41,7 @@ class Myfavcontroler extends SearchMix {
 
   //الحذف من صفحه المفضله
   void deletefromfavpage(int itemid) {
-    favdata.favoritemanger( itemid);
+    favdata.favoritemanger(itemid);
 
     data.removeWhere((e) => e.item!.id == itemid);
     if (data.isEmpty) {

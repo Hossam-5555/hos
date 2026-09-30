@@ -56,10 +56,8 @@ class Myfavorite extends StatelessWidget {
                         final items = controller.data[i];
                         return SharedProductCard(
                           height: 220,
-                          image: "${items.item?.itemsImage}",
-                          title: items.item?.itemsName ?? "بدون اسم",
-                          price: "${items.item?.itemsPrice ?? "0"}",
-                          rating: 4.5, // لو الموديل فيه تقييم حطه هنا
+                          items: items.item!,
+
                           onTap: () {
                             // controller.gotoitemsdatails(items);
                           },
@@ -77,6 +75,7 @@ class Myfavorite extends StatelessWidget {
                               size: 24,
                             ),
                           ),
+                          isen: c.lang == "en" ? true : false,
                         );
                       },
                     ),

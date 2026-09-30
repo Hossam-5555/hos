@@ -8,8 +8,8 @@ import 'package:hos/veiw/wedget/shared_product_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class CurvedItemsView extends StatelessWidget {
-  CurvedItemsView({super.key});
-
+  const CurvedItemsView({super.key, required this.isen});
+  final bool isen;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -76,13 +76,11 @@ class CurvedItemsView extends StatelessWidget {
                                 controller.statusrequest ==
                                 Statusrequest.loading,
                             child: SharedProductCard(
+                              isen: isen,
                               onTap: () {
                                 controller.gotoitemsdetails(items);
                               },
-                              image: items.itemsImage!,
-                              title: items.itemsName!,
-                              price: items.itemsPrice.toString(),
-                              rating: 4.5,
+                              items: items,
                               actionButton: AddToCartButton(itemId: items.id!),
                               height: height,
                             ),

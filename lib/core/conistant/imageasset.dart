@@ -18,7 +18,7 @@ class Imageasset {
   static String emptyNotification = "$routeImage/Push notifications-cuate.svg";
   static String emptyAddress = "$routeImage/undraw_delivery-address_409g.svg";
   static String emptyfavorite = "$routeImage/empty_favorites.svg";
-  static String emptystate="$routeImage/Empty State.json";
+  static String emptystate = "$routeImage/Empty State.json";
   //Animation
   static String category = "$routeImage/category-alt-svgrepo-com.svg";
   static String visa = "$routeImage/visa.png";
@@ -28,8 +28,7 @@ class Imageasset {
   static String homesvg = "$routeImage/home-1-svgrepo-com.svg";
   static String offer = "$routeImage/offer-svgrepo-com.svg";
   static String notification = "$routeImage/notification-svgrepo-com.svg";
-  static String profile =
-      "$routeImage/user-profile-account-person-svgrepo-com.svg";
+  static String profile = "$routeImage/profile.svg";
   static String cart = "$routeImage/cart-5-svgrepo-com.svg";
   static String location = "$routeImage/unnamed.jpg";
   static String filter = "$routeImage/filter-svgrepo-com.svg";

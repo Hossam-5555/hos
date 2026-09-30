@@ -5,17 +5,18 @@ class BuildCategoryItems extends StatelessWidget {
   final CategoriesModel catmodel;
   final bool isSelected;
   final VoidCallback onTap;
-
-  const BuildCategoryItems({
+final bool isen;
+   BuildCategoryItems({
     super.key,
     required this.catmodel,
     required this.isSelected,
     required this.onTap,
+    required this.isen
   });
 
   @override
   Widget build(BuildContext context) {
-    final String name = catmodel.name ?? "";
+     String? name = isen? catmodel.name : catmodel.nameAr;
 
     final isDarkMode =
         Theme.of(context).brightness == Brightness.dark;
@@ -69,7 +70,7 @@ class BuildCategoryItems extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(
-        right: 10,
+        right: 5,
         bottom: 5,
         top: 5,
       ),
@@ -81,7 +82,7 @@ class BuildCategoryItems extends StatelessWidget {
           gradient: borderGradient,
           boxShadow: boxShadow,
         ),
-        padding: const EdgeInsets.all(1.5),
+        padding: const EdgeInsets.all(1),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           curve: Curves.fastLinearToSlowEaseIn,
@@ -110,7 +111,7 @@ class BuildCategoryItems extends StatelessWidget {
                   children: [
                     _buildTextSection(
                       isSelected,
-                      name,
+                      name!,
                       isDarkMode,
                     ),
                   ],

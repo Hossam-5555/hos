@@ -1,6 +1,5 @@
 // ignore_for_file: deprecated_member_use
 
-import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -31,7 +30,7 @@ class Items extends StatelessWidget {
     Get.put(FavController());
 
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: _FilterButton(
         bottomMargin: height * 0.02,
         onTap: () => showFilterSheet(context, controller),
@@ -94,6 +93,7 @@ class _CategoryBar extends StatelessWidget {
           return GetBuilder<ItemsController>(
             builder: (controller) {
               return BuildCategoryItems(
+                isen: controller.lang == "en" ? true : false,
                 catmodel: catmodel,
 
                 isSelected: controller.selecteditem == i,
@@ -148,10 +148,9 @@ class _ProductGrid extends StatelessWidget {
           final cardHeight = i.isEven ? baseHeight : baseHeight * 1.2;
 
           return SharedProductCard(
-            image: "${item.itemsImage}",
-            title: "${item.itemsName}",
-            price: "${item.itemsPrice}",
-            rating: 4.8,
+            isen: controller.lang == "en" ? true : false,
+            items: item,
+
             onTap: () => controller.gotoitemsdatails(item),
             actionButton: AddToCartButton(itemId: item.id!),
             height: cardHeight,
@@ -179,7 +178,7 @@ class _FilterButton extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
           child: Material(
-            color: Color(0xFFE0E3E8),
+            color: Color.fromARGB(255, 21, 92, 214).withAlpha(80),
             borderRadius: BorderRadius.circular(30),
             child: InkWell(
               borderRadius: BorderRadius.circular(30),
@@ -202,7 +201,8 @@ class _FilterButton extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Transform.rotate(
-                      angle: -math.pi / 4,alignment: Alignment.center,
+                      angle: 90,
+                      alignment: Alignment.center,
                       child: SvgPicture.asset(
                         Imageasset.filter,
                         width: 18,

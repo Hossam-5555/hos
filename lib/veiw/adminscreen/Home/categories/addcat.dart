@@ -14,7 +14,7 @@ class Addcategories extends StatelessWidget {
     final controller = Get.put(Addcatcontroller());
 
     return Scaffold(
-      appBar: const Appbarbackicon(title: "New Category", herotag: "xx"),
+      appBar:  Appbarbackicon(title: "New Category", herotag: "xx"),
       body: GetBuilder<Addcatcontroller>(
         builder: (controller) => SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
