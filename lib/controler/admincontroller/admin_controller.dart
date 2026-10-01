@@ -45,11 +45,11 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
     ProfilePage(),
   ];
 
-  final List<List<dynamic>> title = [
-    ["Dashboard", Imageasset.homesvg],
-    ["Orders", Imageasset.cart],
-    ["Categories", Imageasset.category],
-    ["Profile", Imageasset.profile],
+   List<List<dynamic>> get title => [
+    ["Dashboard".tr, Imageasset.homesvg],
+    ["Orders".tr, Imageasset.cart],
+    ["Categories".tr, Imageasset.category],
+    ["Profile".tr, Imageasset.profile],
   ];
 
   // ─────────────────────── Getters ─────────────────────────────

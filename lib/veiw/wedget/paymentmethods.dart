@@ -72,7 +72,7 @@ Widget buildPaymentMethod({
   );
 }
 
-buildFormContent(Checkoutcontroller controller) {
+Widget buildFormContent(Checkoutcontroller controller) {
   switch (controller.selectedMethod) {
     case "card":
       return buildCreditCardForm();
@@ -80,25 +80,26 @@ buildFormContent(Checkoutcontroller controller) {
       return buildmobileForm();
     case "cash":
       return buildCODForm();
+    default:
+      return const SizedBox.shrink();
   }
 }
 
-// ✨ تصميم البطاقة الائتمانية كأنها فيزا حقيقية
+// ───────────── Card ─────────────
 Widget buildCreditCardForm() {
   return Column(
     key: const ValueKey('card'),
-    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      // شكل الكارت الفخم
       Container(
-        padding: const EdgeInsets.all(10),
+        width: double.infinity,
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-            colors: [Color(0xFF1E1E1E), Color(0xFF3A3A3A)], // تدرج أسود فخم
+            colors: [Color(0xFF1E1E1E), Color(0xFF434343)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withAlpha(51),
@@ -110,38 +111,39 @@ Widget buildCreditCardForm() {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Icon(
+                Icon(
                   Icons.contactless_rounded,
                   color: Colors.white70,
                   size: 28,
                 ),
+                Icon(Icons.credit_card, color: Colors.white70, size: 28),
               ],
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 28),
             const Text(
-              '**** **** **** 1234',
+              '••••  ••••  ••••  ••••',
+              textDirection: TextDirection.ltr,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 22,
+                fontSize: 21,
                 letterSpacing: 2,
                 fontFamily: 'Courier',
               ),
-              textDirection: TextDirection.ltr,
             ),
-            const SizedBox(height: 20),
-            Row(
+            const SizedBox(height: 22),
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'MOHAMED AHMED',
-                  style: TextStyle(color: Colors.white70, fontSize: 14),
+                Text(
+                  'CARD HOLDER',
+                  style: TextStyle(color: Colors.white70, fontSize: 12),
                 ),
-                const Text(
-                  '12/24',
-                  style: TextStyle(color: Colors.white70, fontSize: 14),
+                Text(
+                  'MM/YY',
+                  style: TextStyle(color: Colors.white70, fontSize: 12),
                 ),
               ],
             ),
@@ -152,51 +154,83 @@ Widget buildCreditCardForm() {
   );
 }
 
-Widget buildCODForm() {
-  return buildInfoBox(
-    'الدفع عند الاستلام متاح.\nسوف تقوم بدفع قيمة الطلب نقداً للمندوب عند التوصيل.',
-    key: const ValueKey('cash'),
-    icon: Icons.local_shipping_outlined,
-  );
-}
-
+// ───────────── Wallet ─────────────
 Widget buildmobileForm() {
   return buildInfoBox(
-    'الدفع عند الاستلام متاح.\nسوف تقوم بدفع قيمة الطلب نقداً للمندوب عند التوصيل.',
     key: const ValueKey('wallet'),
-    icon: Icons.mobile_friendly_outlined,
+    title: 'محفظة إلكترونية',
+    message:
+        'بعد تأكيد الطلب سيتم تحويلك إلى صفحة الدفع لإكمال العملية عبر '
+        'فودافون كاش أو أورنج كاش أو اتصالات كاش.',
+    icon: Icons.account_balance_wallet_outlined,
+    color: const Color(0xFFE53935),
   );
 }
 
-// ==========================================
-// ويدجتس مساعدة (Helper Widgets)
-// ==========================================
+// ───────────── Cash on Delivery ─────────────
+Widget buildCODForm() {
+  return buildInfoBox(
+    key: const ValueKey('cash'),
+    title: 'الدفع عند الاستلام',
+    message:
+        'ادفع قيمة الطلب نقداً للمندوب عند التوصيل. '
+        'يُرجى تجهيز المبلغ المناسب قدر الإمكان.',
+    icon: Icons.local_shipping_outlined,
+    color: const Color(0xFF2E7D32),
+  );
+}
 
-Widget buildInfoBox(
-  String text, {
+// ───────────── Shared ─────────────
+Widget buildInfoBox({
   Key? key,
-  IconData icon = Icons.info_outline,
+  required String title,
+  required String message,
+  required IconData icon,
+  required Color color,
 }) {
   return Container(
     key: key,
+    width: double.infinity,
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(12),
+      color: color.withAlpha(20),
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(color: color.withAlpha(70)),
     ),
     child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon),
-        const SizedBox(width: 12),
+        Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+          child: Icon(icon, color: Colors.white, size: 22),
+        ),
+        const SizedBox(width: 14),
         Expanded(
-          child: Text(
-            text,
-            // style: TextStyle(color: Colors.grey.shade800, height: 1.5),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(message, style: const TextStyle(fontSize: 13, height: 1.5)),
+            ],
           ),
         ),
       ],
     ),
   );
 }
+
+// ==========================================
+// ويدجتس مساعدة (Helper Widgets)
+// ==========================================
 
 Widget buildTextField({
   required String label,

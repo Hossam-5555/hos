@@ -8,71 +8,130 @@ import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/functions/upload_image.dart';
 import 'package:hos/data/datasource/admindata/categoriesdata.dart';
+import 'package:hos/data/model/categoriesmodel.dart';
 
-class Addcatcontroller extends GetxController {
+class CategoryFormController extends GetxController {
+  CategoryFormController(this.category);
+
+  /// null => Add mode, non-null => Edit mode
+  final CategoriesModel? category;
+  bool get isEdit => category != null;
+
+  final AdmindaTaCaregores _data = AdmindaTaCaregores(Get.find());
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  late final TextEditingController name;
+  late final TextEditingController namear;
+  late final TextEditingController description;
+
   Statusrequest statusrequest = Statusrequest.none;
-  AdmindaTaCaregores admindaTaCaregores = AdmindaTaCaregores(Get.find());
-  late TextEditingController name;
-  late TextEditingController namear;
-  GlobalKey<FormState> validkey = GlobalKey<FormState>();
+  bool get isLoading => statusrequest == Statusrequest.loading;
+
   File? file;
-
-  Future<void> chooseimage() async {
-    file = await fileUploadGallery();
-    update();
-  }
-
-  Future<void> addcategories() async {
-    if (validkey.currentState!.validate()) {
-      if (file == null) {
-        showSnackBar(
-          Get.context!,
-          "من فضلك اختر صورة أولاً",
-          Icon(Icons.image_search_rounded),
-        );
-        return;
-      }
-
-      statusrequest = Statusrequest.loading;
-      update();
-
-      var response = await admindaTaCaregores.addcat(
-        name.text,
-        namear.text,
-        file!, // دلوقتي آمن نستخدمها
-      );
-      statusrequest = handling(response);
-      if (statusrequest == Statusrequest.success) {
-        if (response['status'] == true) {
-          showSnackBar(
-            Get.context!,
-            "تم إضافة الفئة بنجاح",
-            Icon(Icons.check_circle),
-          );
-          Get.find<ViewCatController>().viewCat();
-
-          Future.delayed(Duration(seconds: 1), () {
-            Get.back(); // ارجع بعد ثانية
-          });
-        }
-      } else {
-        statusrequest = Statusrequest.failure;
-      }
-    }
-    update();
-  }
+  String? existingImageUrl; // image already on the server (Edit mode)
+  bool isActive = true;
 
   @override
   void onInit() {
-    name = TextEditingController();
-    namear = TextEditingController();
+    name = TextEditingController(text: category?.name ?? '');
+    namear = TextEditingController(text: category?.nameAr ?? '');
+    description = TextEditingController();
+
+    if (isEdit) {
+      // TODO: adapt to your model/link. Add `description` and `active`
+      // (nullable) to CategoriesModel if the backend supports them.
+      // description.text = category!.description ?? '';
+      // isActive = category!.active == 1;
+      // existingImageUrl = '${AppLink.categoriesImages}/${category!.image}';
+    }
     super.onInit();
+  }
+
+  Future<void> chooseImage() async {
+    final picked = await fileUploadGallery();
+    if (picked != null) {
+      file = picked;
+      update();
+    }
+  }
+
+  void toggleActive(bool v) {
+    isActive = v;
+    update();
+  }
+
+  String? requiredValidator(String? v) =>
+      (v == null || v.trim().isEmpty) ? 'field_required'.tr : null;
+
+  Future<void> submit() async {
+    if (isLoading) return;
+    if (!formKey.currentState!.validate()) return;
+
+    if (!isEdit && file == null) {
+      showSnackBar(
+        Get.context!,
+        'image_required'.tr,
+        const Icon(Icons.image_search_rounded),
+      );
+      return;
+    }
+
+    statusrequest = Statusrequest.loading;
+    update();
+
+    try {
+      // NOTE: `description` / `isActive` are new optional named params —
+      // add them to addcat/editcat in the datasource and send them to the API.
+      final response = isEdit
+          ? await _data.editcat(
+              category!.id!,
+              name.text.trim(),
+              namear.text.trim(),
+              file,
+              // description: description.text.trim(),
+              // isActive: isActive,
+            )
+          : await _data.addcat(
+              name.text.trim(),
+              namear.text.trim(),
+              file!,
+              // description: description.text.trim(),
+              // isActive: isActive,
+            );
+
+      statusrequest = handling(response);
+print('Response: $response');
+      if (statusrequest == Statusrequest.success &&
+          response['status'] == true) {
+        showSnackBar(
+          Get.context!,
+          (isEdit ? 'updated_success' : 'added_success').tr,
+          const Icon(Icons.check_circle),
+        );
+        Get.find<ViewCatController>().viewCat();
+        update();
+        await Future.delayed(const Duration(milliseconds: 600));
+        Get.back();
+        return;
+      }
+      statusrequest = Statusrequest.failure;
+    } catch (_) {
+      statusrequest = Statusrequest.failure;
+    }
+
+    showSnackBar(
+      Get.context!,
+      'something_went_wrong'.tr,
+      const Icon(Icons.error_outline),
+    );
+    update();
   }
 
   @override
   void onClose() {
     name.dispose();
     namear.dispose();
+    description.dispose();
     super.onClose();
   }
 }

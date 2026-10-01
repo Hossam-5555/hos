@@ -310,11 +310,7 @@ class HandlingDataView extends StatelessWidget {
   Widget _buildStyle2(BuildContext context) {
     final title = _getTitle();
     final subtitle = _getSubtitle();
-    final canRetry =
-        (statusrequest == Statusrequest.checkinterner ||
-            statusrequest == Statusrequest.serverfailure) &&
-        onRetry != null &&
-        showRetryButton;
+    final canRetry = onRetry != null && showRetryButton;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Center(
@@ -343,13 +339,14 @@ class HandlingDataView extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                shape: BoxShape.circle,boxShadow: [   BoxShadow(
-                color: Colors.black.withAlpha(20),
-                offset: const Offset(0, 4),
-              ),],
-                color: isDark
-                    ? Colors.white.withAlpha(13)
-                    : Color(0xFFE0E3E8),
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(20),
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+                color: isDark ? Colors.white.withAlpha(13) : Color(0xFFE0E3E8),
               ),
               child: _buildMedia(width: 120, height: 120),
             ),
@@ -377,14 +374,14 @@ class HandlingDataView extends StatelessWidget {
               ),
             ],
             if (canRetry)
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: Checkbutton(
-                  width: context.width * 0.4,
-                  onTap: onRetry!,
-                  buttonName: "Try again".tr,
-                ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Checkbutton(
+                width: context.width * 0.4,
+                onTap: onRetry!,
+                buttonName: "Try again".tr,
               ),
+            ),
           ],
         ),
       ),

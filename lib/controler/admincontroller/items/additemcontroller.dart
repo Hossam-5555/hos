@@ -1,157 +1,198 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart'; // 👈 تأكد من وجود هذا الإنبورت لاختيار الصور المتعددة
-import 'package:hos/controler/admincontroller/items/viewitemcontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/functions/snackbar.dart';
-import 'package:hos/core/functions/upload_image.dart';
 import 'package:hos/data/datasource/admindata/itemdata.dart';
+import 'package:hos/data/model/itemsmodel.dart';
+import 'package:image_picker/image_picker.dart';
 
-class Additemcontroller extends GetxController {
+/// TODO: put your items images base URL here (e.g. AppLink.imagesitems).
+/// While empty, Edit mode shows a placeholder instead of the current image.
+const String _itemsImagesBase = '';
+
+class ItemFormController extends GetxController {
+  ItemFormController({this.item, this.categoryId, this.categoryName});
+
+  /// null => Add mode, non-null => Edit mode
+  final ItemsModel? item;
+  final Object? categoryId; // required in Add mode
+  final String? categoryName;
+
+  bool get isEdit => item != null;
+  String get catId => (item?.categoryId ?? categoryId).toString();
+
+  static const int maxImages = 3;
+
+  final Admindataitem _data = Admindataitem(Get.find());
+  final ImagePicker _picker = ImagePicker();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  late final TextEditingController name;
+  late final TextEditingController namear;
+  late final TextEditingController description;
+  late final TextEditingController descriptionar;
+  late final TextEditingController price;
+  late final TextEditingController discount;
+
   Statusrequest statusrequest = Statusrequest.none;
-  Admindataitem dataitem = Admindataitem(Get.find());
-  late TextEditingController name;
-  late TextEditingController namear;
-  late TextEditingController description;
-  late TextEditingController descriptionar;
-  late TextEditingController count;
-  late TextEditingController price;
-  late TextEditingController descount;
-  late TextEditingController itemcat;
+  bool get isLoading => statusrequest == Statusrequest.loading;
+
+  /// Newly picked images. Index 0 is always the main image.
+  final List<File> images = [];
+  int stock = 0;
   int active = 1;
-  GlobalKey<FormState> itemvalidKey = GlobalKey<FormState>();
-  File? file;
 
-  final ImagePicker _picker = ImagePicker(); // 👈 كائن اختيار الصور
+  String? get existingImageUrl {
+    final img = item?.itemsImage;
+    if (img == null || img.toString().isEmpty || _itemsImagesBase.isEmpty) {
+      return null;
+    }
+    return '$_itemsImagesBase/$img';
+  }
 
-  // مصفوفة الصور ثابتة الحجم (3 صور كحد أقصى) لكي لا يتأثر كود الـ additem الخاص بك
-  List<File?> selectedImages = List<File?>.filled(3, null);
+  @override
+  void onInit() {
+    name = TextEditingController(text: item?.itemsName ?? '');
+    namear = TextEditingController(text: item?.itemsNameAr ?? '');
+    description = TextEditingController(text: item?.itemsDesc ?? '');
+    descriptionar = TextEditingController(text: item?.itemsDescAr ?? '');
+    price = TextEditingController(text: item?.itemsPrice?.toString() ?? '');
+    discount =
+        TextEditingController(text: item?.itemsDiscount?.toString() ?? '0');
+    stock = int.tryParse('${item?.stock ?? 0}') ?? 0;
+    active = item?.itemsActive ?? 1;
+    super.onInit();
+  }
 
-  /// 👈 الدالة الجديدة التي ستقوم باستدعائها من زر الواجهة الجديد
-  Future<void> pickMultipleImagesFromGallery() async {
+  // ---------------- images ----------------
+  Future<void> pickImages() async {
+    final remaining = maxImages - images.length;
+    if (remaining <= 0) {
+      _snack('max_images_reached'.tr, Icons.info_outline);
+      return;
+    }
     try {
-      // تفتح معرض الهاتف وتسمح للمستخدم بتحديد عدة صور دفعة واحدة
-      // ignore: unnecessary_nullable_for_final_variable_declarations
-      final List<XFile>? pickedFiles = await _picker.pickMultiImage(
-        imageQuality: 80, // لتقليل الحجم والحفاظ على سرعة الرفع
-      );
-
-      if (pickedFiles != null && pickedFiles.isNotEmpty) {
-        // تفريغ المصفوفة أولاً عند اختيار صور جديدة
-        selectedImages = List<File?>.filled(3, null);
-
-        // ملء المصفوفة بأول 3 صور اختارها المستخدم كحد أقصى
-        for (int i = 0; i < pickedFiles.length && i < 3; i++) {
-          selectedImages[i] = File(pickedFiles[i].path);
-        }
-        update(); // تحديث الواجهة (GetBuilder) لرؤية الصور فوراً
-      }
-    } catch (e) {
-      Get.snackbar("خطأ", "حدث خطأ أثناء اختيار الصور: $e");
+      final picked = await _picker.pickMultiImage(imageQuality: 80);
+      if (picked.isEmpty) return;
+      images.addAll(picked.take(remaining).map((x) => File(x.path)));
+      update();
+    } catch (_) {
+      _snack('image_pick_error'.tr, Icons.error_outline);
     }
   }
 
-  // دالة لحذف صورة معينة من الواجهة عند الضغط على زر X
   void removeImage(int index) {
-    selectedImages[index] = null;
+    images.removeAt(index); // remaining images shift left, so [0] stays main
     update();
   }
 
-  // 🛑 ملاحظة: تركت لك الدوال القديمة لربما تحتاجها في مكان آخر (أو يمكنك حذفها)
-  void showoptionimage() {
-    showImagePickerBottomSheet(
-      chooseFromCamera as VoidCallback,
-      chooseFromGallery as VoidCallback,
-    );
+  // ---------------- stock / status ----------------
+  void incStock() {
+    stock++;
+    update();
   }
 
-  Future<void> chooseFromCamera(int index) async {
-    File? file = await imageUploadCamera();
-    if (file != null) {
-      selectedImages[index] = file;
+  void decStock() {
+    if (stock > 0) {
+      stock--;
       update();
     }
   }
 
-  Future<void> chooseFromGallery(int index) async {
-    File? file = await fileUploadGallery();
-    if (file != null) {
-      selectedImages[index] = file;
-      update();
-    }
+  void toggleActive(bool v) {
+    active = v ? 1 : 0;
+    update();
   }
 
-  Future<void> additem() async {
-    if (itemvalidKey.currentState!.validate()) {
-      // التأكد من اختيار الصورة الرئيسية (المربع الأول) أولاً
-      if (selectedImages[0] == null) {
-        Get.snackbar("تنبيه", "من فضلك اختر الصورة الرئيسية للمنتج (أول صورة)");
-        return;
-      }
+  // ---------------- validators ----------------
+  String? requiredValidator(String? v) =>
+      (v == null || v.trim().isEmpty) ? 'field_required'.tr : null;
 
-      statusrequest = Statusrequest.loading;
-      update();
+  String? priceValidator(String? v) {
+    if (v == null || v.trim().isEmpty) return 'field_required'.tr;
+    final n = double.tryParse(v.trim());
+    return (n == null || n <= 0) ? 'invalid_number'.tr : null;
+  }
 
-      Map data = {
-        "items_name": name.text,
-        "items_name_ar": namear.text,
-        "items_desc": description.text,
-        "items_desc_ar": descriptionar.text,
-        "items_active": "1",
-        "stock": count.text,
-        "items_price": price.text,
-        "items_discount": descount.text,
-        "category_id": itemcat.text,
-      };
+  String? discountValidator(String? v) {
+    if (v == null || v.trim().isEmpty) return 'field_required'.tr;
+    final n = double.tryParse(v.trim());
+    return (n == null || n < 0 || n > 100) ? 'invalid_discount'.tr : null;
+  }
 
-      // يتم إرسال لستة الصور كالمعتاد دون أي تغيير في الـ Data Layer أو الباك إند
-      var response = await dataitem.additem(data, selectedImages);
+  // ---------------- submit ----------------
+  Future<void> submit() async {
+    if (isLoading) return;
+    if (!formKey.currentState!.validate()) return;
+
+    if (!isEdit && images.isEmpty) {
+      _snack('item_main_image_required'.tr, Icons.image_search_rounded);
+      return;
+    }
+
+    statusrequest = Statusrequest.loading;
+    update();
+
+    final data = {
+      "items_name": name.text.trim(),
+      "items_name_ar": namear.text.trim(),
+      "items_desc": description.text.trim(),
+      "items_desc_ar": descriptionar.text.trim(),
+      "items_active": active.toString(),
+      "stock": stock.toString(),
+      "items_price": price.text.trim(),
+      "items_discount": discount.text.trim(),
+      "category_id": catId,
+    };
+
+    try {
+      final response = isEdit
+          // edititem accepts a single file => we send the main image
+          ? await _data.edititem(
+              data,
+              images.isEmpty ? null : images.first,
+              item!.id!,
+            )
+          // additem expects a fixed list of 3 slots
+          : await _data.additem(
+              data,
+              List<File?>.generate(
+                maxImages,
+                (i) => i < images.length ? images[i] : null,
+              ),
+            );
+
       statusrequest = handling(response);
 
-      if (statusrequest == Statusrequest.success) {
-        if (response['status'] == true) {
-          showSnackBar(
-            Get.context!,
-            "Product Added Successfully",
-            Icon(Icons.check,color: Colors.green,),
-          );
-
-          selectedImages = List<File?>.filled(3, null);
-
-          Get.find<ViewItemController>().viewCategoryItems(
-            Get.arguments["catid"],
-          );
-          Future.delayed(const Duration(seconds: 1), () {
-            Get.back();
-          });
-        } else {
-          statusrequest = Statusrequest.failure;
-          Get.snackbar("فشل", response['message'] ?? "لم يتم حفظ المنتج");
-        }
-      } else {
-        statusrequest = Statusrequest.failure;
+      if (statusrequest == Statusrequest.success &&
+          response['status'] == true) {
+        _snack(
+          (isEdit ? 'item_updated_success' : 'item_added_success').tr,
+          Icons.check_circle,
+        );
+        update();
+        await Future.delayed(const Duration(milliseconds: 600));
+        Get.back(result: true); // the list page refreshes on `true`
+        return;
       }
-      update();
+      statusrequest = Statusrequest.failure;
+      _snack(
+        (response is Map ? response['message'] : null)?.toString() ??
+            'something_went_wrong'.tr,
+        Icons.error_outline,
+      );
+    } catch (_) {
+      statusrequest = Statusrequest.failure;
+      _snack('something_went_wrong'.tr, Icons.error_outline);
     }
+    update();
   }
 
-  String? catname;
-  @override
-  void onInit() {
-    name = TextEditingController();
-    namear = TextEditingController();
-    description = TextEditingController();
-    descriptionar = TextEditingController();
-    count = TextEditingController();
-    price = TextEditingController();
-    descount = TextEditingController();
-    itemcat = TextEditingController();
-    itemcat.text = Get.arguments["catid"].toString();
-    catname = Get.arguments["catname"];
-    super.onInit();
-  }
+  void _snack(String msg, IconData icon) =>
+      showSnackBar(Get.context!, msg, Icon(icon));
 
   @override
   void onClose() {
@@ -159,10 +200,8 @@ class Additemcontroller extends GetxController {
     namear.dispose();
     description.dispose();
     descriptionar.dispose();
-    count.dispose();
     price.dispose();
-    descount.dispose();
-    itemcat.dispose();
+    discount.dispose();
     super.onClose();
   }
 }

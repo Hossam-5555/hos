@@ -8,12 +8,11 @@ import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/veiw/adminscreen/admin_homescreen.dart';
 import 'package:hos/veiw/adminscreen/Home/itemsview/additem.dart';
-import 'package:hos/veiw/adminscreen/Home/itemsview/edititem.dart';
 
 class ViewItemController extends GetxController {
   Admindataitem admindata = Admindataitem(Get.find());
   Statusrequest statusrequest = Statusrequest.none;
-    Myservisec myservisec = Get.find();
+  Myservisec myservisec = Get.find();
 
   bool get isarabic => myservisec.sharedPreferences.getString("lang") == "ar";
 
@@ -79,21 +78,26 @@ class ViewItemController extends GetxController {
 
   void delete(int itemid) {
     admindata.deleteitem(itemid);
-    
+
     itemlist.removeWhere((element) => element.id == itemid);
     update();
   }
 
-  void gotoeditpage(ItemsModel itemsmodel) {
-    Get.to(() => EditItem(), arguments: {"itemsmodel": itemsmodel});
+  // void gotoeditpage(ItemsModel itemsmodel) {
+  //   Get.to(() => EditItem(), arguments: {"itemsmodel": itemsmodel});
+  // }
+
+  // من صفحة الـ view
+  Future<void> goToAddItem() async {
+    final changed = await Get.to(
+      () => ItemFormScreen(categoryId: selectedCat, categoryName: catname),
+    );
+    if (changed == true) viewCategoryItems(selectedCat);
   }
 
-  void goToAddPage() async {
-    await Get.to(
-      () => Additem(),
-      arguments: {"catid": selectedCat, "catname": catname},
-    );
-    viewCategoryItems(selectedCat); // تحديث القائمة بعد إضافة منتج جديد
+  Future<void> goToEditItem(ItemsModel m) async {
+    final changed = await Get.to(() => ItemFormScreen(item: m));
+    if (changed == true) viewCategoryItems(m.categoryId!);
   }
 
   void backtohomebage() {

@@ -7,7 +7,6 @@ import 'package:hos/data/datasource/admindata/categoriesdata.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/veiw/adminscreen/admin_homescreen.dart';
 import 'package:hos/veiw/adminscreen/Home/categories/addcat.dart';
-import 'package:hos/veiw/adminscreen/Home/categories/editcat.dart';
 
 class ViewCatController extends GetxController {
   AdmindaTaCaregores admindata = AdmindaTaCaregores(Get.find());
@@ -49,14 +48,18 @@ class ViewCatController extends GetxController {
     update();
   }
 
-  void gotoeditpage(CategoriesModel catmodel) {
-    Get.to(() => Editcat(), arguments: {"catmodel": catmodel});
+  // void goToEditPage(CategoriesModel catmodel) {
+  //   Get.to(() => Editcat(), arguments: {"catmodel": catmodel});
+  // }
+
+  Future<void> goToAddPage() async {
+    await Get.to(() => const CategoryFormScreen());
+    viewCat();
   }
 
-  void goToAddPage() async {
-    /// ✳️ بعد ما ترجع من صفحة الإضافة، اعمل refresh تلقائي
-    await Get.to(() => Addcategories());
-    viewCat(); // أعد تحميل البيانات بعد العودة
+  Future<void> goToEditPage(CategoriesModel cat) async {
+    await Get.to(() => CategoryFormScreen(category: cat));
+    viewCat();
   }
 
   void gotoproducts(CategoriesModel catmodel) {

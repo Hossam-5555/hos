@@ -13,29 +13,134 @@ class ViewItemScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // double screenWidth = MediaQuery.of(context).size.width;
     final controller = Get.put(ViewItemController());
     final w = MediaQuery.of(context).size.width;
-    final h = MediaQuery.of(context).size.height;
+   bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      // عرض اسم القسم المختار ديناميكياً في الـ AppBar
       appBar: Appbarbackicon(
         title: controller.catname ?? "المنتجات",
-        herotag: "",
+        herotag: "veiwproducts",
       ),
       body: SafeArea(
         child: Column(
           children: [
             /// 🔍 1. شريط البحث
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 6),
               child: Searchbar(
                 title: "ابحث عن منتج، رمز، أو قسم...",
                 mycontroller: controller.controller,
               ),
             ),
 
-            /// 🛍️ 2. شبكة المنتجات (تحديث تلقائي)
+            /// 📊 2. كارت معلومات القسم وزر "إضافة منتج"
+            GetBuilder<ViewItemController>(
+              builder: (controller) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: isDark ? Color(0xFF323538) : Color(0xFFE0E3E8),
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.03),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // إحصائية عدد المنتجات
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF00F2FE).withOpacity(0.12),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.inventory_2_outlined,
+                              color: Color(0xFF0284C7),
+                              size: 18,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "إجمالي المنتجات",
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                "${controller.itemlist.length} منتج",
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.grey.shade500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+
+                      // ➕ زر إضافة منتج متناسق مع التدرج
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF00F2FE), Color(0xFF4FACFE)],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF4FACFE).withOpacity(0.35),
+                              blurRadius: 8,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(12),
+                            onTap: controller.goToAddItem,
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.add_rounded, color: Colors.white, size: 18),
+                                  SizedBox(width: 4),
+                                  Text(
+                                    "إضافة منتج",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            /// 🛍️ 3. شبكة المنتجات
             Expanded(
               child: GetBuilder<ViewItemController>(
                 builder: (controller) {
@@ -46,16 +151,13 @@ class ViewItemScreen extends StatelessWidget {
                     statusrequest: controller.statusrequest,
                     widget: GridView.builder(
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent:
-                            0.45 * w, // أقصى عرض للكرت يكون 45% من عرض الهاتف
-                        childAspectRatio:
-                            0.78, // النسب تثبت زي ما هي (نسبة عرض الكرت لطوله)
-                        crossAxisSpacing:
-                            0.02 * w, // مسافة بين الأعمدة 2% من عرض الهاتف
-                        mainAxisSpacing: 0.01 * h,
+                        maxCrossAxisExtent: 0.48 * w, // تجاوب ممتاز مع الشاشات
+                        childAspectRatio: 0.76,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
                       ),
                       physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       itemCount: controller.itemlist.length,
                       itemBuilder: (context, index) {
                         final item = controller.itemlist[index];
@@ -66,7 +168,7 @@ class ViewItemScreen extends StatelessWidget {
                           name: controller.isarabic
                               ? item.itemsNameAr
                               : item.itemsName,
-                          onEdit: () => controller.gotoeditpage(item),
+                          onEdit: () => controller.goToEditItem(item),
                           onDelete: () {
                             AppCupertinoDialog.show(
                               title: "حذف المنتج",
@@ -85,49 +187,6 @@ class ViewItemScreen extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-
-      /// ➕ 3. الزر العائم المستقبلي (Neon FAB)
-      floatingActionButton: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.cyanAccent.withAlpha(102),
-              blurRadius: 15,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: FloatingActionButton(
-          onPressed: controller.goToAddPage,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-            side: BorderSide(
-              color: Colors.cyanAccent.withAlpha(128),
-              width: 1.5,
-            ),
-          ),
-          child: Ink(
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFF00F2FE), Color(0xFF4FACFE)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Center(
-              child: Icon(
-                Icons.add_circle,
-                color: Colors.white,
-                size: 0.07 * w,
-              ),
-            ),
-          ),
         ),
       ),
     );

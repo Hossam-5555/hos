@@ -24,7 +24,7 @@ class Searchbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return TextFormField(
       focusNode: focusNode,
@@ -37,11 +37,12 @@ class Searchbar extends StatelessWidget {
         hintStyle: TextStyle(color: Colors.grey),
 
         suffixIcon: Homescrenaction(
+          color: isDarkMode ? Colors.white : Colors.black,
           herotag: "",
           onPressed: onPressedIcon,
           child: SvgPicture.asset(
             Imageasset.search,
-            color: Colors.black,
+            color:isDarkMode ? Colors.black : Colors.white,
             height: 20,
             width: 20,
           ),

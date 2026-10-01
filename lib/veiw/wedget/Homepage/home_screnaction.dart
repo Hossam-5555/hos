@@ -7,7 +7,9 @@ class Homescrenaction extends StatelessWidget {
     required this.herotag,
     this.onPressed,
     required this.child,
+    this.color,
   });
+  Color? color;
   String herotag;
   void Function()? onPressed;
   Widget child;
@@ -20,7 +22,7 @@ class Homescrenaction extends StatelessWidget {
         height: 50,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Color(0xFFE0E3E8),
+          color:color?? Color(0xFFE0E3E8),
         ),
         child: MaterialButton(
           shape: const CircleBorder(),

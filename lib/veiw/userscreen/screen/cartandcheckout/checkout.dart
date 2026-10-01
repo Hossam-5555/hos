@@ -182,7 +182,7 @@ class Checkout extends StatelessWidget {
   Widget _buildCard({required Widget child}) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Theme.of(Get.context!).cardColor,
         borderRadius: BorderRadius.circular(20),
