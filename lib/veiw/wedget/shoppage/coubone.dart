@@ -27,7 +27,7 @@ class Coubone extends GetView<CartController> {
                             width: 90,
                             onTap: () {},
 
-                            buttonName: "Apply",
+                            buttonName: "Apply".tr,
                           ),
                           hintText: "أدخل كود الخصم",
                           border: OutlineInputBorder(

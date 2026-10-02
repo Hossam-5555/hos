@@ -27,7 +27,9 @@ class ViewItemScreen extends StatelessWidget {
             /// 🔍 1. شريط البحث
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 6),
-              child: Searchbar(
+              child: Searchbar(onPressedIcon: () {
+                print("Search icon pressed");
+              },
                 title: "ابحث عن منتج، رمز، أو قسم...",
                 mycontroller: controller.controller,
               ),

@@ -84,11 +84,7 @@ class OrderCard extends StatelessWidget {
                   bottom: 8,
                   left: 8,
                   child: _glassBadge(
-                    text: Jiffy.parse(
-                      isUtc: true,
-                      order.createdAt,
-                      pattern: 'yyyy-MM-dd hh:mm a',
-                    ).fromNow(),
+                    text:  Jiffy.parse(order.createdAt!).fromNow(),
                     textColor: Colors.white,
                   ),
                 ),

@@ -16,8 +16,7 @@ Widget buildCartItemCard(
 ) {
   return GetBuilder<CartController>(
     builder: (controller) => Container(
-      margin: const EdgeInsets.all(5),
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
@@ -64,30 +63,33 @@ Widget buildCartItemCard(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  cart.itemsname ?? "بدون اسم",
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        cart.itemsname ?? "بدون اسم",
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Flexible(
+                      child: Text(
+                        cart.createdAt == null
+                            ? 'منذ مدة'
+                            : Jiffy.parse(cart.createdAt!).fromNow(),
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 6),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ToggleInfoChips(isDark: isdark),
-
-                    Text(
-                      style: TextStyle(fontSize: 10),
-                      Jiffy.parse(
-                        isUtc: true,
-                        cart.createdAt!,
-                        pattern: 'yyyy-MM-dd hh:mm a',
-                      ).fromNow(),
-                    ),
-                  ],
+                  children: [ToggleInfoChips(isDark: isdark)],
                 ),
 
                 const SizedBox(height: 6),

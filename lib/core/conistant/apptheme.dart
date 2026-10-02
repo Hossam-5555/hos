@@ -7,7 +7,7 @@ class AppTheme {
   static const Color _lightBg = Colors.white; // خلفية مريحة جداً تبرز المنتجات
   static const Color _lightSurface = Color(0xFFFFFFFF); // لون البطاقات أبيض نقي
   static const Color _lightTextMain = Color(0xFF111827); // أسود مطفأ (لا يرهق العين)
-  static const Color _lightTextSec = Color(0xFF6B7280); // رمادي للنصوص الثانوية والأسعار القديمة
+  static const Color _lightTextSec = Color.fromARGB(255, 28, 29, 32); // رمادي للنصوص الثانوية والأسعار القديمة
 
   // 2. ألوان احترافية للثيم الداكن (Dark Palette)
   static const Color _darkBg = Color(0xFF1A1C22); // أسود فخم وعميق للخلفية

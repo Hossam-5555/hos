@@ -81,7 +81,7 @@ class ShoppingCartPage extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            Titles(title: "Order Summary"),
+                                            Titles(title: "Order Details".tr),
                                           ],
                                         ),
                                         SizedBox(
@@ -97,7 +97,7 @@ class ShoppingCartPage extends StatelessWidget {
                                             Padding(
                                               padding: const EdgeInsets.all(5),
                                               child: Text(
-                                                'Sub Total',
+                                                'Subtotal'.tr,
                                                 style: TextStyle(
                                                   fontSize: (width * 0.04)
                                                       .clamp(14.0, 18.0),
@@ -106,7 +106,7 @@ class ShoppingCartPage extends StatelessWidget {
                                               ),
                                             ),
                                             Text(
-                                              '${controller.totalprice}${" EGP".tr}',
+                                              '${controller.totalprice}${"EGP".tr}',
                                               style: TextStyle(
                                                 fontSize: (width * 0.045).clamp(
                                                   16.0,
@@ -197,7 +197,7 @@ class ShoppingCartPage extends StatelessWidget {
                                         curve: Curves.easeOut,
                                         builder: (context, value, child) {
                                           return Text(
-                                            '${value.toStringAsFixed(0)}${" EGP".tr}',
+                                            '${value.toStringAsFixed(0)}${"EGP".tr}',
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(

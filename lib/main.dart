@@ -6,6 +6,7 @@ import 'package:hos/core/localization/transilation.dart';
 import 'package:hos/core/serveces/binding.dart';
 
 import 'package:hos/core/serveces/myservisec.dart';
+import 'package:jiffy/jiffy.dart';
 
 import 'core/localization/changlocal.dart';
 
@@ -13,6 +14,8 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await initialservisec();
+  final lang = Get.find<Myservisec>().sharedPreferences.getString('lang') ?? 'en';
+  await Jiffy.setLocale(lang);
 FlutterNativeSplash.remove();
   runApp(const MyApp());
 }

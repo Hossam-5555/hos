@@ -310,7 +310,12 @@ class HandlingDataView extends StatelessWidget {
   Widget _buildStyle2(BuildContext context) {
     final title = _getTitle();
     final subtitle = _getSubtitle();
-    final canRetry = onRetry != null && showRetryButton;
+    final canRetry = (subtitle.isNotEmpty &&
+            (statusrequest == Statusrequest.checkinterner ||
+                statusrequest == Statusrequest.serverfailure)) &&
+        onRetry != null &&
+        showRetryButton;
+    onRetry != null && showRetryButton;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Center(

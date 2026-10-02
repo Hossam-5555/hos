@@ -108,7 +108,7 @@ class Homescreen extends StatelessWidget {
             child: Container(
               alignment: Alignment.bottomCenter,
               padding: EdgeInsets.all(5),
-              margin: EdgeInsets.all(10),
+              margin: EdgeInsets.all(6),
               child: GetBuilder<Homescreencontroller>(
                 builder: (controller) => CustomBottomNavBar(
                   items: [

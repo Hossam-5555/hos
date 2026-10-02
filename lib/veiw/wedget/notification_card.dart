@@ -167,11 +167,7 @@ class NotificationCard extends StatelessWidget {
                           if (!isLoading && time.isNotEmpty) ...[
                             const SizedBox(width: 8),
                             Text(
-                              Jiffy.parse(
-                                pattern: 'yyyy-MM-dd hh:mm a',
-                                isUtc: true,
-                                time,
-                              ).fromNow(),
+                              Jiffy.parse(time).fromNow(),
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,

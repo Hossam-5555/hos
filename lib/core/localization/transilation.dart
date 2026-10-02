@@ -7,6 +7,11 @@ class Mytransilation extends Translations {
       "Home": "الرئيسيه",
       'Cart': "السله",
       "Profile": "الحساب",
+      "Apply": "تطبيق",
+      "Recent Searches": "عمليات البحث الاخيره",
+      "Clear All": "مسح الكل",
+      "Popular Categories": "الفئات الشائعه",
+      "Order Summary": "ملخص الطلب",
       //Homepage
       "Choose language": "اختر اللغه",
       'continue': 'متابعه',
@@ -23,6 +28,7 @@ class Mytransilation extends Translations {
       "Change address": "اضغط لتغيير العنوان",
       "Sipping": "رسوم التوصيل",
       "Have A Code?": "هل لديك كود خصم؟",
+      "Pay Now": "ادفع الان",
       //Homepage
       //orderpage
       "Order numper": "طلب رقم ",
@@ -31,6 +37,10 @@ class Mytransilation extends Translations {
       "Subtotal": "سعر المتجات",
       "Total price": "الاجمالي  ",
       "Discount": "الخصم",
+      "Order Details": "تفاصيل الطلب",
+      "wallet": "المحفظه",
+      "card": "البطاقة",
+      "cash on delivery": "الدفع عند الاستلام",
       //orderpage
       //profile
       "Orders": "طلباتي",
@@ -54,7 +64,7 @@ class Mytransilation extends Translations {
       //search
       "Search": "اكتشف",
       "Search products...": "ابحث عن منتج...",
-      "EGP": "جنيه",
+      "EGP": "ج.م",
       //رسائل حاله الصفح الفارغه
       "Start shopping now": "ابد التسوق الان",
       "No items in your favorites": "لا توجد منتجات في المفضلة",
@@ -117,6 +127,12 @@ class Mytransilation extends Translations {
       "Home": "Home",
       "Cart": "Cart",
       "Profile": "Profile",
+      "Apply": "Apply",
+      "Order Details": "Order Details",
+      "Recent Searches": "Recent Searches",
+      "Clear All": "Clear All",
+      "Popular Categories": "Popular Categories",
+      "Order Summary": "Order Summary",
       //Homepage
       "Choose language": "Choose language",
       'continue': 'continue',
@@ -134,12 +150,17 @@ class Mytransilation extends Translations {
       "Change address": "Change address",
       "Sipping": "Sipping",
       "Have A Code?": "Have A Code?",
+      //Homepage
       //orderpage
       "Order numper": "Order numper: ",
       "Payment": "Payment",
       "Status": "Status",
       "Subtotal": "Subtotal",
       "Total price": "Total price",
+      "pay Now": "Pay Now",
+        "wallet": "wallet",
+      "card": "Card",
+      "cash on delivery": "Cash on Delivery",
       //orderpage
       //profie
       "Orders": "Orders",

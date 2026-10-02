@@ -18,8 +18,7 @@ class Checkout extends StatelessWidget {
     final c = Get.put(Checkoutcontroller());
 
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Padding(
+      bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GetBuilder<Checkoutcontroller>(
           builder: (controller) => Checkbutton(
@@ -28,7 +27,7 @@ class Checkout extends StatelessWidget {
             onTap: () {
               c.checkoutoder();
             },
-            buttonName: "Pay Now".tr,
+            buttonName:"Pay Now".tr,
             statusrequest: c.statusrequest,
           ),
         ),
@@ -44,7 +43,8 @@ class Checkout extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   GetBuilder<Checkoutcontroller>(
-                    builder: (c) => Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    builder: (c) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Payment Methods".tr,
@@ -53,10 +53,10 @@ class Checkout extends StatelessWidget {
                             fontWeight: FontWeight.w800,
                           ),
                         ),
-                        SizedBox(height: 15,),
+                        SizedBox(height: 15),
                         buildPaymentMethod(
                           controller: c,
-                          title: 'بطاقة ائتمان',
+                          title: 'card'.tr,
                           subtitle: '******** 8463',
                           icon: Icons.credit_card_rounded,
                           iconColor: const Color(0xFFEB5757),
@@ -64,7 +64,7 @@ class Checkout extends StatelessWidget {
                         ),
                         buildPaymentMethod(
                           controller: c,
-                          title: 'محفظة',
+                          title: 'wallet'.tr,
                           subtitle: 'orb****@gmail.com',
                           icon: Icons.account_balance_wallet_rounded,
                           iconColor: const Color(0xFF2D9CDB),
@@ -72,7 +72,7 @@ class Checkout extends StatelessWidget {
                         ),
                         buildPaymentMethod(
                           controller: c,
-                          title: 'كاش',
+                          title: 'cash on delivery'.tr,
                           icon: Icons.attach_money_rounded,
                           iconColor: Colors.green,
                           method: "cash",
@@ -139,9 +139,9 @@ class Checkout extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  _buildPriceRow("Order Amount".tr, "\$${c.totalprice}"),
+                  _buildPriceRow("Subtotal".tr, "\$${c.totalprice}"),
                   const SizedBox(height: 10),
-                  _buildPriceRow("Delivery".tr, "\$50"),
+                  _buildPriceRow("Sipping".tr, "\$50"),
                   const SizedBox(height: 16),
                   const Divider(height: 1),
                   const SizedBox(height: 16),
@@ -149,7 +149,7 @@ class Checkout extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Total Amount".tr,
+                        "Total price".tr,
                         style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w800,
@@ -221,7 +221,7 @@ class Checkout extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Delivery Address".tr,
+            "shipping address".tr,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
           ),
           const SizedBox(height: 12),
@@ -230,7 +230,19 @@ class Checkout extends StatelessWidget {
             onTap: () => _showAddressesSheet(c, con),
             child: Row(
               children: [
-                const Icon(Icons.location_on_rounded, size: 20),
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: (Colors.green).withAlpha(25),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.location_on_rounded,
+                    color: Colors.green ,
+                    size: 20,
+                  ),
+                ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
@@ -240,7 +252,7 @@ class Checkout extends StatelessWidget {
                         addr.street ?? "غير معروف",
                         style: const TextStyle(
                           fontWeight: FontWeight.w600,
-                          fontSize: 14,
+                          fontSize: 12,
                         ),
                       ),
                       const SizedBox(height: 2),

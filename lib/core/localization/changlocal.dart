@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/core/conistant/apptheme.dart';
 import 'package:hos/core/functions/appmassaging.dart';
 import 'package:hos/core/serveces/myservisec.dart';
+import 'package:jiffy/jiffy.dart';
 
 class LocalController extends GetxController {
   Myservisec myservisec = Get.find();
@@ -12,17 +13,19 @@ class LocalController extends GetxController {
   ThemeData apptheme = AppTheme.darkEn;
 
   // تغيير اللغة
-  void changeLang(String codeLang) {
+  void changeLang(String codeLang) async {
     Locale locale = Locale(codeLang);
     myservisec.sharedPreferences.setString('lang', codeLang);
+    await Jiffy.setLocale(codeLang);
+
     Get.updateLocale(locale);
     _updateThemeLogic(); // تحديث الثيم عشان يغير نوع الخط فوراً
   }
 
   // تغيير الثيم من الـ Dropdown
- void changeTheme(bool? newTheme) {
+  void changeTheme(bool? newTheme) {
     if (newTheme == null) return;
-   String theme = newTheme ? 'Dark' : 'Light';
+    String theme = newTheme ? 'Dark' : 'Light';
     selectedTheme.value = theme;
     myservisec.sharedPreferences.setString("theme_mode", theme);
     _updateThemeLogic();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 
 // ==========================================
@@ -158,7 +159,7 @@ Widget buildCreditCardForm() {
 Widget buildmobileForm() {
   return buildInfoBox(
     key: const ValueKey('wallet'),
-    title: 'محفظة إلكترونية',
+    title: 'wallet'.tr,
     message:
         'بعد تأكيد الطلب سيتم تحويلك إلى صفحة الدفع لإكمال العملية عبر '
         'فودافون كاش أو أورنج كاش أو اتصالات كاش.',
@@ -171,7 +172,7 @@ Widget buildmobileForm() {
 Widget buildCODForm() {
   return buildInfoBox(
     key: const ValueKey('cash'),
-    title: 'الدفع عند الاستلام',
+    title: 'cash on delivery'.tr,
     message:
         'ادفع قيمة الطلب نقداً للمندوب عند التوصيل. '
         'يُرجى تجهيز المبلغ المناسب قدر الإمكان.',
