@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
+import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 /// ==================================================
 ///                 PROFILE CONTROLLER
@@ -87,7 +88,6 @@ class _EPColors {
   static const border = Color(0xFFE5E7EB);
   static const title = Color(0xFF111827);
   static const subtitle = Color(0xFF6B7280);
-  static const badge = Color(0xFFFF6A3D);
 }
 
 /// ==================================================
@@ -126,8 +126,8 @@ class _EditProfileViewState extends State<EditProfileView> {
     super.dispose();
   }
 
-  bool get _canSave =>
-      _firstCtrl.text.trim().isNotEmpty && _lastCtrl.text.trim().isNotEmpty;
+  // bool get _canSave =>
+  //     _firstCtrl.text.trim().isNotEmpty && _lastCtrl.text.trim().isNotEmpty;
 
   // ---------------- Actions ----------------
   Future<void> _pickBirthday() async {
@@ -510,90 +510,10 @@ class _EditProfileViewState extends State<EditProfileView> {
   Widget _buildBottomBar() {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.06),
-            blurRadius: 10,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Obx(() {
-            final pct = controller.completion(_firstCtrl.text, _lastCtrl.text);
-            return Row(
-              children: [
-                const Expanded(
-                  child: Text(
-                    "Complete your profile",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: _EPColors.title,
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 3,
-                  ),
-                  decoration: BoxDecoration(
-                    color: _EPColors.badge,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    "$pct%",
-                    style: const TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            );
-          }),
-          const SizedBox(height: 12),
-          Obx(
-            () => SizedBox(
-              width: double.infinity,
-              height: 52,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                onPressed: (!_canSave || controller.isSaving.value)
-                    ? null
-                    : () => controller.saveProfile(
-                        firstName: _firstCtrl.text,
-                        lastName: _lastCtrl.text,
-                      ),
-                child: controller.isSaving.value
-                    ? const SizedBox(
-                        width: 22,
-                        height: 22,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2.4,
-                        ),
-                      )
-                    : const Text(
-                        "Save",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-              ),
-            ),
-          ),
-        ],
+
+      child: SizedBox(
+        width: double.infinity,
+        child: Checkbutton(onTap: () {}, buttonName: "Save"),
       ),
     );
   }

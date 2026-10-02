@@ -16,7 +16,7 @@ final bool isen;
 
   @override
   Widget build(BuildContext context) {
-     String? name = isen? catmodel.name : catmodel.nameAr;
+     String?  name = isen? catmodel.name : catmodel.nameAr;
 
     final isDarkMode =
         Theme.of(context).brightness == Brightness.dark;

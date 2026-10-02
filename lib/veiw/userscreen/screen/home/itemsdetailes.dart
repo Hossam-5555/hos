@@ -79,9 +79,9 @@ class Itemsdetailes extends StatelessWidget {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withAlpha(40),
+                              color: Colors.black.withAlpha(30),
                               blurRadius: 10,
-                              offset: const Offset(0, 4),
+                              offset: const Offset(0, 2),
                             ),
                           ],
                         ),
@@ -293,11 +293,8 @@ class Itemsdetailes extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+        color: isDark ? const Color(0xFF1E1E1E) : Color(0xFFE0E3E8),
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withAlpha(13), blurRadius: 10),
-        ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -55,7 +55,7 @@ Widget buildCartItemCard(
             ),
           ),
 
-          const SizedBox(width: 16),
+          const SizedBox(width: 8),
 
           // 2. تفاصيل المنتج
           Expanded(
@@ -65,23 +65,23 @@ Widget buildCartItemCard(
               children: [
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Flexible(
+                    Flexible(flex: 2,
                       child: Text(
                         cart.itemsname ?? "بدون اسم",
                         style: const TextStyle(
-                          fontSize: 13,
+                          fontSize: 12,
                           fontWeight: FontWeight.bold,
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    Flexible(
+                    Flexible(flex: 1,
                       child: Text(
                         cart.createdAt == null
                             ? 'منذ مدة'
                             : Jiffy.parse(cart.createdAt!).fromNow(),
-                        style: const TextStyle(fontSize: 12),
+                        style: const TextStyle(fontSize: 10),
                       ),
                     ),
                   ],
@@ -99,7 +99,7 @@ Widget buildCartItemCard(
                     Text(
                       '${double.parse(controller.data[i].subtotal.toString()).toStringAsFixed(2)} \$',
                       style: const TextStyle(
-                        fontSize: 15,
+                        fontSize: 14,
                         color: Color(0xFFB65030),
                         fontWeight: FontWeight.w800,
                       ),

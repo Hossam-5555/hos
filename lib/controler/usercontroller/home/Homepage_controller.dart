@@ -18,7 +18,7 @@ class HomepageController extends GetxController {
   String? username;
   List<ItemsModel> mostsaleitem = [];
   List<ItemsModel> newArival = [];
-  List<CategoriesModel> categories = [];
+  List<CategoriesModel>   categories = [];
   Statusrequest statusrequest = Statusrequest.none;
   bool get isarabic => myservisec.sharedPreferences.getString("lang") == "ar";
 

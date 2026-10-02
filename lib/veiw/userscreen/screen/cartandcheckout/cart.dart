@@ -39,10 +39,10 @@ class ShoppingCartPage extends StatelessWidget {
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            blurRadius: 10,
-                            offset: Offset(0, 4),
+                            blurRadius: 20,
+                            offset: Offset(0, 2),
                             blurStyle: BlurStyle.outer,
-                            color: Colors.black.withAlpha(80),
+                            color: Colors.black.withAlpha(20),
                           ),
                         ],
                         borderRadius: const BorderRadius.only(
@@ -259,18 +259,15 @@ class ShoppingCartPage extends StatelessWidget {
                   child: ListView.builder(
                  
                     physics: const BouncingScrollPhysics(),
-                    padding: EdgeInsets.fromLTRB(
-                      width * 0.04,
-                      5,
-                      width * 0.04,
-                      5,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: width * 0.04,
                     ),
                     itemCount: controller.data.length,
                     itemBuilder: (context, index) {
                       final item = controller.data[index];
                       bool isdark = context.isDarkMode ? true : false;
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 4),
+                        padding: const EdgeInsets.only(bottom: 5),
                         child: buildCartItemCard(
                           context,
                           item,

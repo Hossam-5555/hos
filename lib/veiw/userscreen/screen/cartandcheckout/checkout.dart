@@ -18,8 +18,10 @@ class Checkout extends StatelessWidget {
     final c = Get.put(Checkoutcontroller());
 
     return Scaffold(
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(8.0),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(8),
         child: GetBuilder<Checkoutcontroller>(
           builder: (controller) => Checkbutton(
             width: MediaQuery.of(context).size.width * 0.9,
@@ -27,7 +29,7 @@ class Checkout extends StatelessWidget {
             onTap: () {
               c.checkoutoder();
             },
-            buttonName:"Pay Now".tr,
+            buttonName: "Pay Now".tr,
             statusrequest: c.statusrequest,
           ),
         ),
@@ -239,7 +241,7 @@ class Checkout extends StatelessWidget {
                   ),
                   child: Icon(
                     Icons.location_on_rounded,
-                    color: Colors.green ,
+                    color: Colors.green,
                     size: 20,
                   ),
                 ),
