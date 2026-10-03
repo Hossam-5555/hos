@@ -9,6 +9,7 @@ import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 import 'package:hos/veiw/wedget/paymentmethods.dart';
+import 'package:hos/veiw/wedget/pricecard.dart';
 
 class Checkout extends StatelessWidget {
   const Checkout({super.key});
@@ -141,9 +142,9 @@ class Checkout extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  _buildPriceRow("Subtotal".tr, "\$${c.totalprice}"),
+                  _buildPriceRow("Subtotal".tr, c.totalprice),
                   const SizedBox(height: 10),
-                  _buildPriceRow("Sipping".tr, "\$50"),
+                  _buildPriceRow("Sipping".tr, "50"),
                   const SizedBox(height: 16),
                   const Divider(height: 1),
                   const SizedBox(height: 16),
@@ -157,14 +158,7 @@ class Checkout extends StatelessWidget {
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-                      Text(
-                        '\$${c.total}',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w900,
-                          color: Color(0xFFFF7A45),
-                        ),
-                      ),
+                      PriceText("${c.total}", fontSize: 20),
                     ],
                   ),
                 ],
@@ -360,10 +354,7 @@ class Checkout extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
-        Text(
-          value,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-        ),
+        PriceText(value),
       ],
     );
   }

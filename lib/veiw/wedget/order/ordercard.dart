@@ -1,6 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hos/data/model/ordersmodel.dart';
+import 'package:hos/veiw/wedget/pricecard.dart';
 import 'package:jiffy/jiffy.dart';
 
 class OrderCard extends StatelessWidget {
@@ -16,7 +18,7 @@ class OrderCard extends StatelessWidget {
 
   final void Function()? onTap;
   final double w;
-  final dynamic order;
+  final OrderModel order;
   final String status;
   final Color color;
   final Map<String, dynamic> orderimage;
@@ -84,7 +86,7 @@ class OrderCard extends StatelessWidget {
                   bottom: 8,
                   left: 8,
                   child: _glassBadge(
-                    text:  Jiffy.parse(order.createdAt!).fromNow(),
+                    text: Jiffy.parse(order.createdAt).fromNow(),
                     textColor: Colors.white,
                   ),
                 ),
@@ -111,23 +113,23 @@ class OrderCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: w * 0.015),
-                  Text(
-                    "\$${order.totalAmount}",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: w * 0.048,
-                      color: primaryTextColor,
-                    ),
-                  ),
+                  PriceText(order.totalAmount),
                   SizedBox(height: w * 0.015),
                   Row(
                     children: [
-                      Icon(Icons.credit_card, size: w * 0.032, color: Colors.grey),
+                      Icon(
+                        Icons.credit_card,
+                        size: w * 0.032,
+                        color: Colors.grey,
+                      ),
                       SizedBox(width: w * 0.01),
                       Expanded(
                         child: Text(
                           order.paymentMethod,
-                          style: TextStyle(fontSize: w * 0.028, color: Colors.grey),
+                          style: TextStyle(
+                            fontSize: w * 0.028,
+                            color: Colors.grey,
+                          ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -137,7 +139,11 @@ class OrderCard extends StatelessWidget {
                   SizedBox(height: 4),
                   Row(
                     children: [
-                      Icon(Icons.receipt_long, size: w * 0.032, color: isDark ? Colors.blue[300] : Colors.green[700]),
+                      Icon(
+                        Icons.receipt_long,
+                        size: w * 0.032,
+                        color: isDark ? Colors.blue[300] : Colors.green[700],
+                      ),
                       SizedBox(width: w * 0.01),
                       Expanded(
                         child: Text(
@@ -145,7 +151,9 @@ class OrderCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: w * 0.028,
                             fontWeight: FontWeight.w600,
-                            color: isDark ? Colors.blue[300] : const Color.fromARGB(255, 31, 56, 16),
+                            color: isDark
+                                ? Colors.blue[300]
+                                : const Color.fromARGB(255, 31, 56, 16),
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

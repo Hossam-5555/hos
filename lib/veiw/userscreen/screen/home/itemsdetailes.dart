@@ -14,6 +14,7 @@ import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/anmationbutton.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/countofproduct.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/description.dart';
+import 'package:hos/veiw/wedget/pricecard.dart';
 import 'package:lottie/lottie.dart';
 
 class Itemsdetailes extends StatelessWidget {
@@ -477,25 +478,10 @@ class Itemsdetailes extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          "\$${priceDiscount.toStringAsFixed(2)}",
-          style: const TextStyle(
-            fontSize: 26,
-            fontWeight: FontWeight.bold,
-            color: Colors.green,
-          ),
-        ),
-        const SizedBox(width: 12),
+        PriceText(priceDiscount, color: Colors.green, fontSize: 20),
+        const SizedBox(width: 6),
         if (discount > 0) ...[
-          Text(
-            "\$${price.toStringAsFixed(2)}",
-            style: const TextStyle(
-              fontSize: 16,
-              color: Colors.grey,
-              decoration: TextDecoration.lineThrough,
-              decorationThickness: 1,
-            ),
-          ),
+          PriceText(price, color: Colors.grey, fontSize: 16, isOld: true),
           const SizedBox(width: 8),
           Transform.rotate(
             angle: 0.20,

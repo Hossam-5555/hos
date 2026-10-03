@@ -7,6 +7,7 @@ import 'package:hos/controler/usercontroller/profile/order/orderdetailescontroll
 import 'package:hos/data/model/ordersmodel.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
+import 'package:hos/veiw/wedget/pricecard.dart';
 
 class Orderdetailes extends StatelessWidget {
   const Orderdetailes({super.key});
@@ -23,10 +24,7 @@ class Orderdetailes extends StatelessWidget {
 
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
-        child: Appbarbackicon(
-          herotag: '',
-          title: c.order?.orderNumber ?? '',
-        ),
+        child: Appbarbackicon(herotag: '', title: c.order?.orderNumber ?? ''),
       ),
 
       body: GetBuilder<Orderdetailescontroller>(
@@ -34,26 +32,17 @@ class Orderdetailes extends StatelessWidget {
           final order = c.order;
 
           if (order == null) {
-            return const Center(
-              child: Text("No Data"),
-            );
+            return const Center(child: Text("No Data"));
           }
 
           c.Getcolorandstause(order.status);
 
           return ListView(
-            padding: EdgeInsets.fromLTRB(
-              w * 0.04,
-              10,
-              w * 0.04,
-              30,
-            ),
+            padding: EdgeInsets.fromLTRB(w * 0.04, 10, w * 0.04, 30),
             children: [
-
               // ============================================================
               // ORDER STATUS
               // ============================================================
-
               orderStatusSection(
                 order,
                 c.statusColor ?? Colors.black,
@@ -65,7 +54,6 @@ class Orderdetailes extends StatelessWidget {
               // ============================================================
               // PAYMENT
               // ============================================================
-
               paymentSection(
                 context: context,
                 order: order,
@@ -78,7 +66,6 @@ class Orderdetailes extends StatelessWidget {
               // ============================================================
               // ITEMS
               // ============================================================
-
               sectionCard(
                 context,
                 title: "Items",
@@ -91,7 +78,6 @@ class Orderdetailes extends StatelessWidget {
               // ============================================================
               // DELIVERY DETAILS
               // ============================================================
-
               sectionCard(
                 context,
                 title: "Delivery Details",
@@ -104,7 +90,6 @@ class Orderdetailes extends StatelessWidget {
               // ============================================================
               // ORDER SUMMARY
               // ============================================================
-
               sectionCard(
                 context,
                 title: "Order Summary",
@@ -117,7 +102,6 @@ class Orderdetailes extends StatelessWidget {
               // ============================================================
               // CANCEL ORDER
               // ============================================================
-
               if (order.status.toLowerCase() == "pending")
                 GetBuilder<Ordercontroller>(
                   builder: (controller) {
@@ -155,29 +139,20 @@ Widget sectionCard(
     decoration: BoxDecoration(
       color: Theme.of(context).cardColor,
       borderRadius: BorderRadius.circular(20),
-      border: Border.all(
-        color: Colors.grey.withAlpha(40),
-      ),
+      border: Border.all(color: Colors.grey.withAlpha(40)),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-
         Row(
           children: [
-            Icon(
-              icon,
-              size: 21,
-            ),
+            Icon(icon, size: 21),
 
             const SizedBox(width: 9),
 
             Text(
               title,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -226,16 +201,9 @@ Widget orderStatusSection(
     },
   ];
 
-  final statuses = [
-    "pending",
-    "processing",
-    "shipped",
-    "delivered",
-  ];
+  final statuses = ["pending", "processing", "shipped", "delivered"];
 
-  final current = statuses.indexOf(
-    order.status.toLowerCase(),
-  );
+  final current = statuses.indexOf(order.status.toLowerCase());
 
   return Builder(
     builder: (context) {
@@ -244,24 +212,17 @@ Widget orderStatusSection(
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: Colors.grey.withAlpha(40),
-          ),
+          border: Border.all(color: Colors.grey.withAlpha(40)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
                 Row(
                   children: [
-                    Icon(
-                      Icons.info_outline,
-                      size: 21,
-                    ),
+                    Icon(Icons.info_outline, size: 21),
 
                     const SizedBox(width: 9),
 
@@ -299,97 +260,83 @@ Widget orderStatusSection(
             const SizedBox(height: 20),
 
             Row(
-              children: List.generate(
-                steps.length,
-                (i) {
-                  final active = current >= 0 && i <= current;
-                  final last = i == steps.length - 1;
+              children: List.generate(steps.length, (i) {
+                final active = current >= 0 && i <= current;
+                final last = i == steps.length - 1;
 
-                  final color = steps[i]["color"] as Color;
+                final color = steps[i]["color"] as Color;
 
-                  return Expanded(
-                    child: Column(
-                      children: [
-
-                        Row(
-                          children: [
-
-                            Expanded(
-                              child: Container(
-                                height: 2,
-                                color: i == 0
-                                    ? Colors.transparent
-                                    : i <= current
-                                        ? steps[i - 1]["color"] as Color
-                                        : Colors.grey.shade300,
-                              ),
+                return Expanded(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: 2,
+                              color: i == 0
+                                  ? Colors.transparent
+                                  : i <= current
+                                  ? steps[i - 1]["color"] as Color
+                                  : Colors.grey.shade300,
                             ),
-
-                            AnimatedContainer(
-                              duration: const Duration(
-                                milliseconds: 300,
-                              ),
-                              width: 34,
-                              height: 34,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: active
-                                    ? color
-                                    : Colors.grey.shade200,
-                                boxShadow: active
-                                    ? [
-                                        BoxShadow(
-                                          color:
-                                              color.withAlpha(60),
-                                          blurRadius: 8,
-                                        ),
-                                      ]
-                                    : null,
-                              ),
-                              child: Icon(
-                                active
-                                    ? Icons.check
-                                    : steps[i]["icon"] as IconData,
-                                size: 16,
-                                color: active
-                                    ? Colors.white
-                                    : Colors.grey,
-                              ),
-                            ),
-
-                            Expanded(
-                              child: Container(
-                                height: 2,
-                                color: last
-                                    ? Colors.transparent
-                                    : i < current
-                                        ? color
-                                        : Colors.grey.shade300,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 7),
-
-                        Text(
-                          steps[i]["label"].toString(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 10,
-                            fontWeight: active
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                            color: active
-                                ? color
-                                : Colors.grey,
                           ),
+
+                          AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            width: 34,
+                            height: 34,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: active ? color : Colors.grey.shade200,
+                              boxShadow: active
+                                  ? [
+                                      BoxShadow(
+                                        color: color.withAlpha(60),
+                                        blurRadius: 8,
+                                      ),
+                                    ]
+                                  : null,
+                            ),
+                            child: Icon(
+                              active
+                                  ? Icons.check
+                                  : steps[i]["icon"] as IconData,
+                              size: 16,
+                              color: active ? Colors.white : Colors.grey,
+                            ),
+                          ),
+
+                          Expanded(
+                            child: Container(
+                              height: 2,
+                              color: last
+                                  ? Colors.transparent
+                                  : i < current
+                                  ? color
+                                  : Colors.grey.shade300,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 7),
+
+                      Text(
+                        steps[i]["label"].toString(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: active
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                          color: active ? color : Colors.grey,
                         ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
             ),
           ],
         ),
@@ -408,18 +355,13 @@ Widget paymentSection({
   required Orderdetailescontroller controller,
   required double width,
 }) {
-  final paymentStatus =
-      order.paymentStatus.toLowerCase();
+  final paymentStatus = order.paymentStatus.toLowerCase();
 
-  final isFailed =
-      paymentStatus == "failed" ||
-      paymentStatus == "unpaid";
+  final isFailed = paymentStatus == "failed" || paymentStatus == "unpaid";
 
-  final isPaid =
-      paymentStatus == "paid";
+  final isPaid = paymentStatus == "paid";
 
-  final isPending =
-      paymentStatus == "pending";
+  final isPending = paymentStatus == "pending";
 
   Color color;
 
@@ -437,17 +379,13 @@ Widget paymentSection({
       color: Theme.of(context).cardColor,
       borderRadius: BorderRadius.circular(20),
       border: Border.all(
-        color: isFailed
-            ? Colors.red.withAlpha(50)
-            : Colors.grey.withAlpha(40),
+        color: isFailed ? Colors.red.withAlpha(50) : Colors.grey.withAlpha(40),
       ),
     ),
     child: Column(
       children: [
-
         Row(
           children: [
-
             Container(
               width: 42,
               height: 42,
@@ -459,8 +397,8 @@ Widget paymentSection({
                 isPaid
                     ? Icons.check
                     : isFailed
-                        ? Icons.error_outline
-                        : Icons.payment,
+                    ? Icons.error_outline
+                    : Icons.payment,
                 color: color,
               ),
             ),
@@ -469,16 +407,11 @@ Widget paymentSection({
 
             Expanded(
               child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   const Text(
                     "Payment",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                   ),
 
                   const SizedBox(height: 3),
@@ -487,10 +420,10 @@ Widget paymentSection({
                     isPaid
                         ? "Payment successful"
                         : isFailed
-                            ? "Payment failed"
-                            : isPending
-                                ? "Payment is pending"
-                                : "Payment not completed",
+                        ? "Payment failed"
+                        : isPending
+                        ? "Payment is pending"
+                        : "Payment not completed",
                     style: TextStyle(
                       color: color,
                       fontWeight: FontWeight.w600,
@@ -503,10 +436,7 @@ Widget paymentSection({
 
             Text(
               order.paymentMethod,
-              style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-              ),
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
             ),
           ],
         ),
@@ -524,8 +454,7 @@ Widget paymentSection({
               buttonColor: color,
               width: width,
               onTap: () {
-                controller.paymentController
-                    .retryPayment(order.orderId);
+                controller.paymentController.retryPayment(order.orderId);
               },
               buttonName: "Retry Payment",
             ),
@@ -543,103 +472,81 @@ Widget paymentSection({
 Widget itemsSection(OrderModel order) {
   return Column(
     children: [
-
-      ...order.items.map<Widget>(
-        (item) {
-          return Padding(
-            padding: const EdgeInsets.only(
-              bottom: 14,
-            ),
-            child: Row(
-              crossAxisAlignment:
-                  CrossAxisAlignment.center,
-              children: [
-
-                Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Color(0xFFFFFFFF),
-                        Color(0xFFF2F4F7),
-                        Color(0xFFD0D5DD),
-                      ],
-                    ),
-                    borderRadius:
-                        BorderRadius.circular(16),
-                  ),
-                  child: CachedNetworkImage(
-                    imageUrl: item.image.toString(),
-                    fit: BoxFit.contain,
-                    placeholder: (_, __) {
-                      return const Center(
-                        child: SizedBox(
-                          width: 18,
-                          height: 18,
-                          child:
-                              CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ),
-                        ),
-                      );
-                    },
-                    errorWidget: (_, __, ___) {
-                      return const Icon(
-                        Icons.image_not_supported_outlined,
-                      );
-                    },
-                  ),
-                ),
-
-                const SizedBox(width: 12),
-
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
-                    children: [
-
-                      Text(
-                        item.productName ?? "",
-                        maxLines: 2,
-                        overflow:
-                            TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                        ),
-                      ),
-
-                      const SizedBox(height: 7),
-
-                      Text(
-                        "Quantity: ${item.quantity}",
-                        style: TextStyle(
-                          color: Colors.grey.shade600,
-                          fontSize: 12,
-                        ),
-                      ),
+      ...order.items.map<Widget>((item) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 14),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xFFFFFFFF),
+                      Color(0xFFF2F4F7),
+                      Color(0xFFD0D5DD),
                     ],
                   ),
+                  borderRadius: BorderRadius.circular(16),
                 ),
-
-                const SizedBox(width: 8),
-
-                Text(
-                  "${item.price}\$",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
+                child: CachedNetworkImage(
+                  imageUrl: item.image.toString(),
+                  fit: BoxFit.contain,
+                  placeholder: (_, __) {
+                    return const Center(
+                      child: SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    );
+                  },
+                  errorWidget: (_, __, ___) {
+                    return const Icon(Icons.image_not_supported_outlined);
+                  },
                 ),
-              ],
-            ),
-          );
-        },
-      ),
+              ),
+
+              const SizedBox(width: 12),
+
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.productName ?? "",
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
+                    ),
+
+                    const SizedBox(height: 7),
+
+                    Text(
+                      "Quantity: ${item.quantity}",
+                      style: TextStyle(
+                        color: Colors.grey.shade600,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(width: 8),
+
+             PriceText(item.price),
+            ],
+          ),
+        );
+      }),
 
       const Divider(),
 
@@ -649,10 +556,7 @@ Widget itemsSection(OrderModel order) {
         alignment: Alignment.centerLeft,
         child: Text(
           "${order.items.length} Items",
-          style: TextStyle(
-            color: Colors.grey.shade600,
-            fontSize: 12,
-          ),
+          style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
         ),
       ),
     ],
@@ -668,7 +572,6 @@ Widget deliveryDetails(OrderModel order) {
 
   return Column(
     children: [
-
       detailRow(
         icon: Icons.person_outline,
         title: "Name",
@@ -688,8 +591,7 @@ Widget deliveryDetails(OrderModel order) {
       detailRow(
         icon: Icons.location_on_outlined,
         title: "Address",
-        value:
-            "${address.city ?? ""} - ${address.street ?? ""}",
+        value: "${address.city ?? ""} - ${address.street ?? ""}",
       ),
     ],
   );
@@ -705,10 +607,8 @@ Widget detailRow({
   required String value,
 }) {
   return Row(
-    crossAxisAlignment:
-        CrossAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-
       Container(
         width: 38,
         height: 38,
@@ -716,26 +616,18 @@ Widget detailRow({
           color: Colors.grey.withAlpha(20),
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Icon(
-          icon,
-          size: 19,
-        ),
+        child: Icon(icon, size: 19),
       ),
 
       const SizedBox(width: 12),
 
       Expanded(
         child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Text(
               title,
-              style: TextStyle(
-                color: Colors.grey.shade600,
-                fontSize: 11,
-              ),
+              style: TextStyle(color: Colors.grey.shade600, fontSize: 11),
             ),
 
             const SizedBox(height: 3),
@@ -762,54 +654,30 @@ Widget detailRow({
 Widget orderSummary(OrderModel order) {
   return Column(
     children: [
-
-      summaryRow(
-        "Subtotal",
-        order.subtotal,
-      ),
+      summaryRow("Subtotal", order.subtotal),
 
       const SizedBox(height: 10),
 
-      summaryRow(
-        "Shipping",
-        order.shippingFee,
-      ),
+      summaryRow("Shipping", order.shippingFee),
 
       const SizedBox(height: 10),
 
-      summaryRow(
-        "Tax",
-        order.taxAmount,
-      ),
+      summaryRow("Tax", order.taxAmount),
 
       const Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: 12,
-        ),
+        padding: EdgeInsets.symmetric(vertical: 12),
         child: Divider(),
       ),
 
       Row(
-        mainAxisAlignment:
-            MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-
           const Text(
             "Total",
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
           ),
 
-          Text(
-            "${order.totalAmount}\$",
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.green,
-            ),
-          ),
+          PriceText(order.totalAmount),
         ],
       ),
     ],
@@ -820,30 +688,13 @@ Widget orderSummary(OrderModel order) {
 // SUMMARY ROW
 // ============================================================================
 
-Widget summaryRow(
-  String title,
-  dynamic value,
-) {
+Widget summaryRow(String title, dynamic value) {
   return Row(
-    mainAxisAlignment:
-        MainAxisAlignment.spaceBetween,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
+      Text(title, style: TextStyle(color: Colors.grey.shade600, fontSize: 13)),
 
-      Text(
-        title,
-        style: TextStyle(
-          color: Colors.grey.shade600,
-          fontSize: 13,
-        ),
-      ),
-
-      Text(
-        "$value\$",
-        style: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
+      PriceText(value),
     ],
   );
 }

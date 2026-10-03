@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hos/data/model/itemsmodel.dart';
+import 'package:hos/veiw/wedget/pricecard.dart';
 
 // ignore: must_be_immutable
 class SharedProductCard extends StatelessWidget {
@@ -26,13 +27,13 @@ class SharedProductCard extends StatelessWidget {
 
     // ألوان الكارت الأساسية بتتغير حسب الوضع (ليلي / نهاري)
     final Color cardBorderColor = Colors.grey.withAlpha(50);
-    final Color cardShadow = Colors.black.withAlpha(20);
+    final Color cardShadow = Colors.black.withAlpha(60);
 
     // الشارات (title chip / rating badge / price bar) عايمة فوق الصورة
     // فبنخليها "زجاج غامق" ثابت في الوضعين، عشان تفضل واضحة أياً كانت ألوان
     // صورة المنتج نفسها (فاتحة أو غامقة)
-    final Color chipBackground = Colors.black.withAlpha(81);
-    final Color chipBorder = Colors.white.withAlpha(46);
+    final Color chipBackground = Colors.black.withAlpha(100);
+    final Color chipBorder = Colors.white.withAlpha(150);
     const Color chipTextColor = Colors.white;
 
     return GestureDetector(
@@ -65,7 +66,7 @@ class SharedProductCard extends StatelessWidget {
 
           final double bottomBarWidth = (cardWidth * 0.9).clamp(140.0, 230.0);
           final double bottomBarHeight = (height * 0.16).clamp(40.0, 54.0);
-          final double priceFontSize = (cardWidth * 0.06).clamp(12.0, 15.0);
+          // final double priceFontSize = (cardWidth * 0.06).clamp(12.0, 15.0);
 
           return Container(
             padding: const EdgeInsets.all(5),
@@ -224,18 +225,7 @@ class SharedProductCard extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Flexible(
-                                      child: Text(
-                                        "${items.itemsPrice}",
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: priceFontSize,
-                                          color: Colors.greenAccent.shade400,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
+                                    PriceText(items.itemsPrice ?? 0),
                                     const SizedBox(width: 8),
                                     actionButton, // 👈 هنا هيتعرض الزرار اللي هتبعتهوله
                                   ],

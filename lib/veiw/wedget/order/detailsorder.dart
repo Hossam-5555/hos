@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hos/data/model/ordersmodel.dart';
+import 'package:hos/veiw/wedget/pricecard.dart';
 
 // ignore: must_be_immutable
 class CardWidget extends StatelessWidget {
@@ -249,7 +250,7 @@ Widget info(order) {
           ),
         ],
       ),
-  
+
       // --- البيانات ---
       row(
         icon: Icons.person_outline_rounded,
@@ -257,14 +258,14 @@ Widget info(order) {
         value: order.username ?? "Unknown",
         iconColor: Colors.purple,
       ),
-  
+
       row(
         icon: Icons.phone_android_rounded,
         title: "Phone Number",
         value: order.shippingAddress.phone ?? "-",
         iconColor: Colors.green,
       ),
-  
+
       row(
         icon: Icons.location_on_outlined,
         title: "Shipping Address",
@@ -310,15 +311,5 @@ Widget row({
 
 Widget priceRow(String t, dynamic v, {bool big = false}) => Row(
   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    Text(t),
-    Text(
-      "$v\$",
-      style: TextStyle(
-        fontSize: big ? 18 : 16,
-        fontWeight: FontWeight.bold,
-        color: Colors.green,
-      ),
-    ),
-  ],
+  children: [Text(t), PriceText(v)],
 );

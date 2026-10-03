@@ -7,6 +7,7 @@ import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/wedget/Homepage/titles.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
+import 'package:hos/veiw/wedget/pricecard.dart';
 import 'package:hos/veiw/wedget/shoppage/carditem.dart';
 import 'package:hos/veiw/wedget/shoppage/coubone.dart';
 
@@ -105,14 +106,11 @@ class ShoppingCartPage extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-                                            Text(
-                                              '${controller.totalprice}${"EGP".tr}',
-                                              style: TextStyle(
-                                                fontSize: (width * 0.045).clamp(
-                                                  16.0,
-                                                  22.0,
-                                                ),
-                                                fontWeight: FontWeight.bold,
+                                            PriceText(
+                                              controller.totalprice,
+                                              fontSize: (width * 0.045).clamp(
+                                                14.0,
+                                                18.0,
                                               ),
                                             ),
                                           ],
@@ -196,16 +194,11 @@ class ShoppingCartPage extends StatelessWidget {
                                         duration: const Duration(seconds: 1),
                                         curve: Curves.easeOut,
                                         builder: (context, value, child) {
-                                          return Text(
-                                            '${value.toStringAsFixed(0)}${"EGP".tr}',
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: (width * 0.05).clamp(
-                                                20.0,
-                                                26.0,
-                                              ),
-                                              fontWeight: FontWeight.bold,
+                                          return PriceText(
+                                            value,
+                                            fontSize: (width * 0.05).clamp(
+                                              14.0,
+                                              18.0,
                                             ),
                                           );
                                         },
@@ -257,11 +250,8 @@ class ShoppingCartPage extends StatelessWidget {
                 // =========================================================
                 Expanded(
                   child: ListView.builder(
-                 
                     physics: const BouncingScrollPhysics(),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: width * 0.04,
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: width * 0.04),
                     itemCount: controller.data.length,
                     itemBuilder: (context, index) {
                       final item = controller.data[index];

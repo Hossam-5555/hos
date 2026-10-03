@@ -340,7 +340,7 @@ class _AddDetailsButton extends StatelessWidget {
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
-                    'Add New Address',
+                    'Add new address'.tr,
                     maxLines: 1,
                     style: TextStyle(
                       color: Colors.white,
@@ -505,7 +505,7 @@ class _LocationDetailsSheet extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'إضافة عنوان جديد',
+                    'Add new address'.tr,
                     style: TextStyle(
                       fontSize: 18 * s,
                       fontWeight: FontWeight.w700,
@@ -515,7 +515,7 @@ class _LocationDetailsSheet extends StatelessWidget {
                   SizedBox(height: 4 * s),
 
                   Text(
-                    'أدخل تفاصيل العنوان لتسهيل توصيل طلباتك',
+                    'Enter address details to facilitate your order delivery'.tr,
                     style: TextStyle(
                       fontSize: 12.5 * s,
                       color: Colors.grey.shade600,
@@ -534,7 +534,7 @@ class _LocationDetailsSheet extends StatelessWidget {
         // Location section
         // =========================
         Text(
-          'معلومات الموقع',
+          'Location Information'.tr,
           style: TextStyle(
             fontSize: 14 * s,
             fontWeight: FontWeight.w700,
@@ -570,7 +570,7 @@ class _LocationDetailsSheet extends StatelessWidget {
                   width: 1.2,
                 ),
               ),
-              labelText: 'المحافظة' ,
+              labelText: 'Governorate'.tr,
               prefixIcon: const Icon(Icons.map_outlined),
             ),
           ),
@@ -586,7 +586,7 @@ class _LocationDetailsSheet extends StatelessWidget {
                 isExpanded: true,
                 decoration: InputDecoration(
                   filled: true,alignLabelWithHint: false,
-                  labelText: 'نوع المكان',
+                  labelText: 'Location Type'.tr,
                   prefixIcon: const Icon(Icons.place_outlined),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12 * s),
@@ -632,7 +632,7 @@ class _LocationDetailsSheet extends StatelessWidget {
                 decoratorProps: DropDownDecoratorProps(
                   decoration: InputDecoration(
                     filled: true,
-                    labelText: 'المركز',
+                    labelText: 'City'.tr,
                     prefixIcon: const Icon(Icons.location_city_outlined),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12 * s),
@@ -659,11 +659,10 @@ class _LocationDetailsSheet extends StatelessWidget {
         // Address details
         // =========================
         Text(
-          'تفاصيل العنوان',
+          'Address Details'.tr,
           style: TextStyle(
             fontSize: 14 * s,
             fontWeight: FontWeight.w700,
-            color: Colors.black87,
           ),
         ),
 
@@ -672,7 +671,7 @@ class _LocationDetailsSheet extends StatelessWidget {
         Textfealdauth(
           obscureText: false,
           suffixIcon: Icons.location_on_outlined,
-          hint: 'الشارع، رقم المبنى، الدور، الشقة...',
+          hint: 'Street, Building Number, Floor, Apartment'.tr,
           textEditingController: c.street!,
           valid: (val) => null,
         ),
@@ -683,7 +682,7 @@ class _LocationDetailsSheet extends StatelessWidget {
           phone: true,
           obscureText: false,
           suffixIcon: Icons.phone_outlined,
-          hint: 'رقم الهاتف',
+          hint: 'Phone Number'.tr,
           textEditingController: c.phone!,
           valid: (val) => null,
         ),
@@ -701,7 +700,7 @@ class _LocationDetailsSheet extends StatelessWidget {
             FocusManager.instance.primaryFocus?.unfocus();
             c.addaddres(context);
           },
-          buttonName: "Save location",
+          buttonName: "save".tr,
         ),
       ],
     ),
@@ -753,7 +752,7 @@ class _LocationDetailsSheet extends StatelessWidget {
               c.phone?.clear();
               c.isuccess.value = false;
             },
-            buttonName: "New Address",
+            buttonName: "New Address".tr,
           ),
         ),
         SizedBox(height: 12 * s),

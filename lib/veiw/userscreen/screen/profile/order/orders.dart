@@ -31,7 +31,7 @@ class Orders extends StatelessWidget {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(h * 0.08),
-        child: Appbarbackicon(herotag: '', title: "My Orders"),
+        child: Appbarbackicon(herotag: '', title: "Orders".tr),
       ),
       body: GetBuilder<Ordercontroller>(
         builder: (controller) => HandlingDataView(

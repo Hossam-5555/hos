@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/cart_controller.dart';
 import 'package:hos/data/model/cartmodel.dart';
+import 'package:hos/veiw/wedget/pricecard.dart';
 import 'package:jiffy/jiffy.dart';
 
 Widget buildCartItemCard(
@@ -63,9 +64,11 @@ Widget buildCartItemCard(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Flexible(flex: 2,
+                    Flexible(
+                      flex: 2,
                       child: Text(
                         cart.itemsname ?? "بدون اسم",
                         style: const TextStyle(
@@ -76,7 +79,8 @@ Widget buildCartItemCard(
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    Flexible(flex: 1,
+                    Flexible(
+                      flex: 1,
                       child: Text(
                         cart.createdAt == null
                             ? 'منذ مدة'
@@ -96,14 +100,7 @@ Widget buildCartItemCard(
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      '${double.parse(controller.data[i].subtotal.toString()).toStringAsFixed(2)} \$',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFFB65030),
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
+                    PriceText(controller.data[i].subtotal ?? 0, fontSize: 14),
                     // كبسولة التحكم في الكمية
                     Container(
                       height: 40, // جعلنا الارتفاع مناسب للزرار (بدل 80)
@@ -236,7 +233,7 @@ class _ToggleInfoChipsState extends State<ToggleInfoChips> {
         transitionBuilder: (Widget child, Animation<double> animation) {
           // تحديد اتجاه الحركة (من اليمين/اليسار)
           final offsetAnimation = Tween<Offset>(
-            begin: const Offset(1.0, 0.0), // يبدأ من جهة اليمين خارج الشاشة
+            begin: const Offset(0.0, 1.0), // يبدأ من جهة اليمين خارج الشاشة
             end: Offset.zero, // ينتهي في المنتصف
           ).animate(animation);
 

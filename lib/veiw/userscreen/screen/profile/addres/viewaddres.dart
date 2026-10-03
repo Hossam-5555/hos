@@ -17,14 +17,14 @@ class ViewMyAddres extends StatelessWidget {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
-        child: Appbarbackicon(herotag: '', title: "My Addresses",),
+        child: Appbarbackicon(herotag: '', title: "Saved Addresses".tr,),
       ),
 
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Theme.of(context).colorScheme.onSecondary,
         onPressed: () => Get.toNamed(Approute.addnewaddres),
         icon: const Icon(Icons.add_location_alt_outlined, ),
-        label: const Text("Add Address", ),
+        label:  Text("add".tr, ),
       ),
 
       body: GetBuilder<AddressController>(

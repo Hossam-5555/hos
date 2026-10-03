@@ -343,20 +343,12 @@ class _ProfileHeader extends StatelessWidget {
             IconButton(
               constraints: BoxConstraints(maxHeight: context.height * 0.1),
               style: ButtonStyle(
-                shape: context.isPhone
-                    ? MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      )
-                    : MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                backgroundColor: MaterialStateProperty.all(
-                  Color(0xFFE0E3E8),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
+                backgroundColor: MaterialStateProperty.all(Color(0xFFE0E3E8)),
                 padding: MaterialStateProperty.all(const EdgeInsets.all(8)),
               ),
               onPressed: () {

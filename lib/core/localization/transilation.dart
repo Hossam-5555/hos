@@ -121,6 +121,17 @@ class Mytransilation extends Translations {
       "invalid_discount": "الخصم يجب أن يكون بين 0 و 100",
       "item_added_success": "تمت إضافة المنتج بنجاح",
       "item_updated_success": "تم تعديل المنتج بنجاح",
+      //اضافه عنوان
+      "City": "المركز",
+      "Governorate": "المحافظة",
+      "Location Type": "نوع المكان",
+      'Enter address details to facilitate your order delivery':
+          'أدخل تفاصيل العنوان لتسهيل توصيل طلباتك',
+      "Location Information": "معلومات الموقع",
+      "Address Details": "تفاصيل العنوان",
+      "Street, Building Number, Floor, Apartment":
+          "الشارع، رقم المبنى، الدور، الشقة...",
+      "Phone Number": "رقم الهاتف",
     },
 
     "en": {
@@ -158,7 +169,7 @@ class Mytransilation extends Translations {
       "Subtotal": "Subtotal",
       "Total price": "Total price",
       "pay Now": "Pay Now",
-        "wallet": "wallet",
+      "wallet": "wallet",
       "card": "Card",
       "cash on delivery": "Cash on Delivery",
       //orderpage
@@ -241,6 +252,17 @@ class Mytransilation extends Translations {
       "invalid_discount": "Discount must be between 0 and 100",
       "item_added_success": "Item added successfully",
       "item_updated_success": "Item updated successfully",
+      //اضافه عنوان
+      "City": "City",
+      "Governorate": "Governorate",
+      "Location Type": "Location Type",
+      'Enter address details to facilitate your order delivery':
+          'Enter address details to facilitate your order delivery',
+      "Location Information": "Location Information",
+      "Address Details": "Address Details",
+      "Street, Building Number, Floor, Apartment":
+          "Street, Building Number, Floor, Apartment...",
+          "Phone Number": "Phone Number",
     },
   };
 }
