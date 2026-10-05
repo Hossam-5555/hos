@@ -11,7 +11,7 @@ class AdminPindingController extends GetxController {
   Myservisec myservisec = Get.find();
   AdminDataOrder orderdata = Get.put(AdminDataOrder(Get.find()));
   Statusrequest statusrequest = Statusrequest.none;
-
+  final ScrollController scrollController = ScrollController();
   List<OrderModel> orderspending = [];
   int selectedStatus = 0;
 
@@ -21,12 +21,18 @@ class AdminPindingController extends GetxController {
     "processing", // 2
     "shipped", // 3
     "delivered", // 4
-    "cancelled"
+    "cancelled",
   ];
 
   @override
   void onInit() {
     super.onInit();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 300) {
+        viewOrders(statusKeys[selectedStatus], loadMore: true);
+      }
+    });
     // جلب كل الطلبات عند فتح الشاشة
     viewOrders(statusKeys[0]);
   }
@@ -37,33 +43,89 @@ class AdminPindingController extends GetxController {
     viewOrders(statusKeys[index]);
   }
 
-  Future<void> viewOrders(String status) async {
-    orderspending.clear();
-    statusrequest = Statusrequest.loading;
-    update();
+  int currentPage = 1;
+  int lastPage = 1;
 
-    var response = await orderdata.pendingdata(status);
+  bool isLoadingMore = false;
+
+  Future<void> viewOrders(String status, {bool loadMore = false}) async {
+    // =========================
+    // تحميل الصفحة الأولى
+    // =========================
+    if (!loadMore) {
+      currentPage = 1;
+      lastPage = 1;
+
+      orderspending.clear();
+
+      statusrequest = Statusrequest.loading;
+      update();
+    } else {
+      // منع طلب أكثر من صفحة في نفس الوقت
+      if (isLoadingMore) return;
+
+      // التأكد أن هناك صفحة أخرى
+      if (currentPage >= lastPage) return;
+
+      isLoadingMore = true;
+      update();
+    }
+
+    // الصفحة المطلوبة
+    final int requestedPage = loadMore ? currentPage + 1 : 1;
+
+    var response = await orderdata.pendingdata(status, page: requestedPage);
+
     statusrequest = handling(response);
+
     if (Statusrequest.success == statusrequest) {
-      // ✳️ التحقق من نجاح حالة الرد من السيرفر
       if (response['status'] == true && response['data'] != null) {
+        // =========================
+        // بيانات الـPagination
+        // =========================
+        final pagination = response['data'];
+
         List data = [];
-        // هنا نقوم بفحص الهيكل: إذا كان يحتوي على مصفوفة داخلية بسبب الـ Pagination
-        if (response['data'] is Map && response['data']['data'] != null) {
-          data = response['data']['data'];
-        } else if (response['data'] is List) {
-          data = response['data'];
+
+        if (pagination is Map && pagination['data'] != null) {
+          data = pagination['data'];
         }
 
-        orderspending.addAll(data.map((e) => OrderModel.fromJson(e)));
+        // =========================
+        // معرفة آخر صفحة
+        // =========================
+        if (pagination is Map && pagination['meta'] != null) {
+          lastPage = pagination['meta']['last_page'] ?? 1;
+        }
+
+        // =========================
+        // إضافة البيانات الجديدة
+        // =========================
+        final existingIds = orderspending.map((e) => e.orderId).toSet();
+
+        for (var e in data) {
+          final order = OrderModel.fromJson(e);
+
+          if (existingIds.add(order.orderId)) {
+            orderspending.add(order);
+          }
+        }
+
+        // تحديث الصفحة بعد نجاح الطلب فقط
+        currentPage = requestedPage;
 
         if (orderspending.isEmpty) {
           statusrequest = Statusrequest.nodata;
+        } else {
+          statusrequest = Statusrequest.success;
         }
       } else {
         statusrequest = Statusrequest.failure;
       }
     }
+
+    isLoadingMore = false;
+
     update();
   }
 
@@ -82,9 +144,9 @@ class AdminPindingController extends GetxController {
           "قيد التجهيز",
           "في الطريق",
           "تم التسليم",
-          "ملغي"
+          "ملغي",
         ]
-      : ["All", "Pending", "Processing", "Shipped", "Delivered","Cancelled"];
+      : ["All", "Pending", "Processing", "Shipped", "Delivered", "Cancelled"];
 
   void getcolorandstause(String status) {
     if (status == "pending") {
@@ -99,7 +161,7 @@ class AdminPindingController extends GetxController {
     } else if (status == "delivered") {
       statusColor = const Color.fromARGB(255, 33, 201, 10);
       statusText = lang ? "تم التسليم" : "Delivered";
-    }else if (status == "cancelled") {
+    } else if (status == "cancelled") {
       statusColor = Colors.red;
       statusText = lang ? "ملغي" : "Cancelled";
     } else {
@@ -107,28 +169,6 @@ class AdminPindingController extends GetxController {
       statusText = lang ? "غير معروف" : "Unknown";
     }
   }
-
-  // --- دوال التحكم في الطلبات ---
-
-  // Future<void> approvependingorder(String userid, String orderid) async {
-  //   statusrequest = Statusrequest.loading;
-  //   update();
-
-  //   var response = await orderdata.approveorder(orderid, userid);
-  //   statusrequest = handling(response);
-
-  //   if (Statusrequest.success == statusrequest) {
-  //     if (response['status'] == true) {
-  //       Get.snackbar("نجاح", "تم قبول الطلب بنجاح");
-  //       // تحديث القسم الحالي الذي يقف عليه الأدمن
-  //       viewOrders(statusKeys[selectedStatus]);
-  //     } else {
-  //       Get.snackbar("حدث خطأ", "الرجاء إعادة المحاولة");
-  //       viewOrders(statusKeys[selectedStatus]);
-  //     }
-  //   }
-  //   update();
-  // }
 
   void gotodetails(OrderModel order) {
     Get.to(

@@ -5,15 +5,21 @@ class AdminDataOrder {
   Crud crud;
   AdminDataOrder(this.crud);
 
-  pendingdata(String status) async {
-    // إرسال الـ status لكي يفلتر السيرفر بناءً عليها
-    var response = await crud.getrequset(
-      "${LinkApi.order}?status=$status", // أو حسب إعدادات الرابط عندك
-    );
-    return response.fold((l) => l, (r) => r);
-  }
+ Future pendingdata(
+  String status, {
+  int page = 1,
+}) async {
+  var response = await crud.getrequset(
+    "${LinkApi.order}?status=$status&page=$page",
+  );
 
-  changestatus(int orderid,String status) async {
+  return response.fold(
+    (l) => l,
+    (r) => r,
+  );
+}
+
+ Future changestatus(int orderid,String status) async {
     var response = await crud.putandpacth("${LinkApi.order}/$orderid", {
       "status":status
     });

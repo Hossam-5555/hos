@@ -41,7 +41,6 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
     const Adminhomedashboard(),
     const ViewCategories(),
     const Adminpending(),
-
     ProfilePage(),
   ];
 

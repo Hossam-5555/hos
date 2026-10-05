@@ -4,6 +4,7 @@ class Mytransilation extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
     "ar": {
+      "Dashboard": "لوحة التحكم",
       "Home": "الرئيسيه",
       'Cart': "السله",
       "Profile": "الحساب",
@@ -132,9 +133,14 @@ class Mytransilation extends Translations {
       "Street, Building Number, Floor, Apartment":
           "الشارع، رقم المبنى، الدور، الشقة...",
       "Phone Number": "رقم الهاتف",
+      "delete": "حذف",
+      "edit": "تعديل",
+      "Set as default": "تعيين كافتراضي",
+      "default_address": "العنوان الافتراضي",
     },
 
     "en": {
+      "Dashboard": "Dashboard",
       "Home": "Home",
       "Cart": "Cart",
       "Profile": "Profile",
@@ -262,7 +268,11 @@ class Mytransilation extends Translations {
       "Address Details": "Address Details",
       "Street, Building Number, Floor, Apartment":
           "Street, Building Number, Floor, Apartment...",
-          "Phone Number": "Phone Number",
+      "Phone Number": "Phone Number",
+      "delete": "Delete",
+      "edit": "Edit",
+      "Set as default": "Set as default",
+      "default_address": "Default Address",
     },
   };
 }

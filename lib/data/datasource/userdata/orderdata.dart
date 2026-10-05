@@ -5,14 +5,23 @@ class Orderdata {
   Crud crud;
   Orderdata(this.crud);
 
-  order() async {
-    var response = await crud.getrequset(LinkApi.viewmyorder);
-    return response.fold((l) => l, (r) => r);
-  }
+Future order({
+  String? status,
+  int page = 1,
+}) async {
+  var response = await crud.getrequset(
+    "${LinkApi.viewmyorder}?status=${status ?? 'all'}&page=$page",
+  );
+
+  return response.fold(
+    (l) => l,
+    (r) => r,
+  );
+}
 
 
 
-  deletedata(int orderid) async {
+ Future deletedata(int orderid) async {
     var response = await crud.putandpacth("${LinkApi.order}/$orderid", {
       "status": "cancelled",
     });

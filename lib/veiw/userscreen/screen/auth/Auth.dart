@@ -11,7 +11,6 @@ import 'package:hos/core/functions/validinput.dart';
 import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
-import 'package:hos/veiw/wedget/auth/forgetpassbutton.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -281,10 +280,21 @@ class AuthPage extends StatelessWidget {
                                           child: controller.isLogin
                                               ? Align(
                                                   alignment:
-                                                      Alignment.centerRight,
-                                                  child: Forgetpassbutton(
-                                                    onPressed: () => controller
-                                                        .checkemailpage(),
+                                                      AlignmentDirectional
+                                                          .centerEnd,
+                                                  child: TextButton(
+                                                    onPressed: () {
+                                                      controller
+                                                          .checkemailpage();
+                                                    },
+                                                    // الـ icon يأخذ الأيقونة
+                                                    // الـ label يأخذ النص
+                                                    child: Text(
+                                                      'Forgot password',
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                      ),
+                                                    ),
                                                   ),
                                                 )
                                               : SizedBox(
@@ -405,7 +415,9 @@ class _ModeSwitcher extends StatelessWidget {
           AnimatedAlign(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeOutCubic,
-            alignment: isLogin ? Alignment.centerLeft : Alignment.centerRight,
+            alignment: isLogin
+                ? AlignmentDirectional.centerStart
+                : AlignmentDirectional.centerEnd,
             child: FractionallySizedBox(
               widthFactor: 0.5,
               child: Container(

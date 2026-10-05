@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 
 import 'package:hos/controler/admincontroller/order/orderdetailscontroller.dart';
 import 'package:hos/core/class/crud.dart';
+import 'package:hos/veiw/userscreen/screen/profile/order/orderdetailes.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
-import 'package:hos/veiw/wedget/order/detailsorder.dart';
 
 class AdminOrderdetails extends StatelessWidget {
   const AdminOrderdetails({super.key});
@@ -16,6 +16,8 @@ class AdminOrderdetails extends StatelessWidget {
     final w = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: Appbarbackicon(
@@ -35,51 +37,67 @@ class AdminOrderdetails extends StatelessWidget {
           controller.getcolorandstause(o.status);
 
           return ListView(
+            // 100 سفلي عشان زرار تغيير الحالة العايم
             padding: EdgeInsets.fromLTRB(w * 0.04, 10, w * 0.04, 100),
             children: [
               // ============================================================
               // ORDER STATUS
               // ============================================================
-              statusorder(
-                controller.currentStatus,
-                controller.statusColor!,
-                controller.statusText!,
+              orderStatusSection(
+                o,
+                controller.statusColor ?? Colors.black,
+                controller.statusText ?? o.status,
               ),
 
               const SizedBox(height: 12),
 
               // ============================================================
-              // QUICK ACTIONS
+              // QUICK ACTIONS (admin only)
               // ============================================================
-              _quickActions(context, o, controller,o.username,),
-
-              const SizedBox(height: 12),
-
-              // ============================================================
-              // CUSTOMER DETAILS
-              // ============================================================
-              CardWidget(child: info(o)),
-
-              const SizedBox(height: 12),
-
-              // ============================================================
-              // ORDER ITEMS
-              // ============================================================
-              CardWidget(child: items(o)),
+              _quickActions(context, o, controller, o.username),
 
               const SizedBox(height: 12),
 
               // ============================================================
               // PAYMENT
               // ============================================================
-              _paymentCard(context, o),
+              _paymentSection(context, o),
+
+              const SizedBox(height: 12),
+
+              // ============================================================
+              // ITEMS
+              // ============================================================
+              sectionCard(
+                context,
+                title: "Items",
+                icon: Icons.shopping_bag_outlined,
+                child: itemsSection(o),
+              ),
+
+              const SizedBox(height: 12),
+
+              // ============================================================
+              // DELIVERY DETAILS
+              // ============================================================
+              sectionCard(
+                context,
+                title: "Delivery Details",
+                icon: Icons.location_on_outlined,
+                child: deliveryDetails(o),
+              ),
 
               const SizedBox(height: 12),
 
               // ============================================================
               // ORDER SUMMARY
               // ============================================================
-              CardWidget(child: price(o)),
+              sectionCard(
+                context,
+                title: "Order Summary",
+                icon: Icons.receipt_long_outlined,
+                child: orderSummary(o),
+              ),
 
               const SizedBox(height: 20),
             ],
@@ -88,7 +106,7 @@ class AdminOrderdetails extends StatelessWidget {
       ),
 
       // ================================================================
-      // CHANGE STATUS BUTTON
+      // CHANGE STATUS BUTTON (admin only)
       // ================================================================
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
@@ -153,22 +171,21 @@ class AdminOrderdetails extends StatelessWidget {
     BuildContext context,
     dynamic order,
     AdminOrderDetailesController controller,
-     String customerName,
+    String customerName,
   ) {
-    // Change this to wherever your customer name lives on the order
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: isDark?Theme.of(context).cardColor: Color(0xFFE0E3E8),
+        color: isDark ? Theme.of(context).cardColor : const Color(0xFFE0E3E8),
         borderRadius: BorderRadius.circular(40),
       ),
       child: Row(
         children: [
           const CircleAvatar(
             radius: 24,
-            backgroundColor:Colors.white,
+            backgroundColor: Colors.white,
             child: Icon(Icons.person, color: Colors.grey),
           ),
           const SizedBox(width: 12),
@@ -228,111 +245,99 @@ class AdminOrderdetails extends StatelessWidget {
       child: InkWell(
         customBorder: const CircleBorder(),
         onTap: onTap,
-        child: SizedBox(width: 44, height: 44, child: Icon(icon, size: 20,color: Colors.black,)),
+        child: SizedBox(
+          width: 44,
+          height: 44,
+          child: Icon(icon, size: 20, color: Colors.black),
+        ),
       ),
     );
   }
-  // ========================================================================
-  // ACTION BUTTON
-  // ========================================================================
 
   // ========================================================================
-  // PAYMENT CARD
+  // PAYMENT (نفس تصميم المستخدم بدون زرار Retry)
   // ========================================================================
 
-  Widget _paymentCard(BuildContext context, dynamic order) {
+  Widget _paymentSection(BuildContext context, dynamic order) {
     final paymentStatus = order.paymentStatus.toString().toLowerCase();
 
+    final isFailed = paymentStatus == "failed" || paymentStatus == "unpaid";
     final isPaid = paymentStatus == "paid";
+    final isPending = paymentStatus == "pending";
 
-    final isFailed = paymentStatus == "unpaid";
-
-    final Color statusColor = isPaid
+    final Color color = isPaid
         ? Colors.green
         : isFailed
         ? Colors.red
         : Colors.orange;
 
-    return CardWidget(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: isFailed
+              ? Colors.red.withAlpha(50)
+              : Colors.grey.withAlpha(40),
+        ),
+      ),
+      child: Row(
         children: [
-          Row(
-            children: [
-              const Icon(Icons.payment_outlined, size: 21),
-
-              const SizedBox(width: 9),
-
-              const Text(
-                "Payment",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ],
+          Container(
+            width: 42,
+            height: 42,
+            decoration: BoxDecoration(
+              color: color.withAlpha(25),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              isPaid
+                  ? Icons.check
+                  : isFailed
+                  ? Icons.error_outline
+                  : Icons.payment,
+              color: color,
+            ),
           ),
 
-          const SizedBox(height: 15),
+          const SizedBox(width: 12),
 
-          _paymentRow(
-            "Status",
-            isPaid
-                ? "Paid"
-                : isFailed
-                ? "Failed"
-                : "Pending",
-            statusColor,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Payment",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                ),
+
+                const SizedBox(height: 3),
+
+                Text(
+                  isPaid
+                      ? "Payment successful"
+                      : isFailed
+                      ? "Payment failed"
+                      : isPending
+                      ? "Payment is pending"
+                      : "Payment not completed",
+                  style: TextStyle(
+                    color: color,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13,
+                  ),
+                ),
+              ],
+            ),
           ),
 
-          const SizedBox(height: 10),
-
-          _paymentRow(
-            "Method",
+          Text(
             order.paymentMethod.toString(),
-            Colors.grey.shade700,
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
           ),
-
-          // Transaction ID
-          //
-          // لما تضيف transactionId في الـ Model
-          // نقدر نعرضه هنا.
         ],
       ),
-    );
-  }
-
-  // ========================================================================
-  // PAYMENT ROW
-  // ========================================================================
-
-  Widget _paymentRow(String title, String value, Color color) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
-        ),
-
-        Row(
-          children: [
-            if (title == "Status")
-              Container(
-                width: 8,
-                height: 8,
-                margin: const EdgeInsets.only(right: 7),
-                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-              ),
-
-            Text(
-              value,
-              style: TextStyle(
-                color: color,
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 

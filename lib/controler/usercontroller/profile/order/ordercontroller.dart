@@ -8,7 +8,7 @@ import 'package:hos/data/model/ordersmodel.dart';
 
 class Ordercontroller extends GetxController {
   List<OrderModel> orders = [];
-
+  final ScrollController scrollController = ScrollController();
   RxInt get orderscount => orders.length.obs;
   Statusrequest statusrequest = Statusrequest.none;
   Myservisec myservisec = Get.find();
@@ -48,41 +48,104 @@ class Ordercontroller extends GetxController {
     }
   }
 
-  // Future<void> viewrating(String id, String rating) async {
-  //   orders.clear();
-  //   statusrequest = Statusrequest.loading;
-  //   update();
-  //   var response = await orderdata.ratingdata(id, rating, comment!.text);
-  //   statusrequest = handling(response);
-  //   if (Statusrequest.success == statusrequest) {
-  //     if (response['status'] == 'success') {
-  //       viewmyorders();
-  //       Get.back();
-  //     } else {
-  //       statusrequest = Statusrequest.failure;
-  //     }
-  //   }
-  //   update();
-  // }
+  List<OrderModel> orderspending = [];
+  int selectedStatus = 0;
 
-  Future<void> viewmyorders() async {
-    orders.clear();
-    statusrequest = Statusrequest.loading;
+  List<String> statusKeys = [
+    "all", // 0
+    "pending", // 1
+    "processing", // 2
+    "shipped", // 3
+    "delivered", // 4
+    "cancelled",
+  ];
+
+  void changeSelectedStatus(int index) {
+    selectedStatus = index;
     update();
-    var response = await orderdata.order();
+    viewmyorders();
+  }
+
+  List<String> get orderstatus => lang
+      ? [
+          "الكل",
+          "قيد الانتظار",
+          "قيد التجهيز",
+          "في الطريق",
+          "تم التسليم",
+          "ملغي",
+        ]
+      : ["All", "Pending", "Processing", "Shipped", "Delivered", "Cancelled"];
+
+  int page = 1;
+  int lastPage = 1;
+
+  bool isLoadingMore = false;
+  Future<void> viewmyorders({bool isLoadMore = false}) async {
+    // لو بنحمل صفحة جديدة
+    if (isLoadMore) {
+      if (isLoadingMore) return;
+
+      // مفيش صفحات تانية
+      if (page >= lastPage) return;
+
+      isLoadingMore = true;
+      update();
+
+      page++;
+    } else {
+      // تحميل أول صفحة
+      page = 1;
+      orders.clear();
+
+      statusrequest = Statusrequest.loading;
+      update();
+    }
+
+    var response = await orderdata.order(
+      status: statusKeys[selectedStatus],
+      page: page,
+    );
+
+    if (isLoadMore) {
+      isLoadingMore = false;
+    }
+
     statusrequest = handling(response);
+
     if (Statusrequest.success == statusrequest) {
       if (response['status'] == true) {
         List data = response["data"]["data"];
+
+        // معلومات الـPagination
+        final meta = response["data"]["meta"];
+
+        lastPage = meta["last_page"] ?? 1;
+        // إضافة الطلبات الجديدة
         orders.addAll(data.map((e) => OrderModel.fromJson(e)));
-        data.isEmpty
-            ? statusrequest = Statusrequest.nodata
-            : statusrequest = Statusrequest.success;
+
+        if (orders.isEmpty) {
+          statusrequest = Statusrequest.nodata;
+        } else {
+          statusrequest = Statusrequest.success;
+        }
       } else {
         statusrequest = Statusrequest.failure;
       }
     }
+
     update();
+  }
+
+  void onScroll() {
+    if (!scrollController.hasClients) return;
+
+    final position = scrollController.position;
+
+    // لما نوصل قبل نهاية القائمة بـ 300px
+    if (position.pixels >= position.maxScrollExtent - 300) {
+      viewmyorders(isLoadMore: true);
+    }
   }
 
   //هي الي هتخلي الاوردر ملغي
@@ -126,7 +189,16 @@ class Ordercontroller extends GetxController {
   @override
   void onInit() {
     comment = TextEditingController();
+    scrollController.addListener(onScroll);
+
     viewmyorders();
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+
+    super.onClose();
   }
 }

@@ -17,14 +17,14 @@ class ViewMyAddres extends StatelessWidget {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
-        child: Appbarbackicon(herotag: '', title: "Saved Addresses".tr,),
+        child: Appbarbackicon(herotag: '', title: "Saved Addresses".tr),
       ),
 
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Theme.of(context).colorScheme.onSecondary,
         onPressed: () => Get.toNamed(Approute.addnewaddres),
-        icon: const Icon(Icons.add_location_alt_outlined, ),
-        label:  Text("add".tr, ),
+        icon: const Icon(Icons.add_location_alt_outlined),
+        label: Text("add".tr),
       ),
 
       body: GetBuilder<AddressController>(
@@ -33,7 +33,8 @@ class ViewMyAddres extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
 
-          return HandlingDataView(emptyStyle: EmptyStateStyle.style2,
+          return HandlingDataView(
+            emptyStyle: EmptyStateStyle.style2,
             statusrequest: controller.statusrequest!,
             mediaType: HandlingMediaType.svgImage,
             mode: HandlingMode.fullScreen,
@@ -58,7 +59,7 @@ class ViewMyAddres extends StatelessWidget {
                       isDefault: controller.isdefault == address.id,
                       onDelete: () {
                         if (address.id != null) {
-                          controller.deleteAddres(address.id!,context);
+                          controller.deleteAddres(address.id!, context);
                         }
                       },
                       onSetDefault: () {
@@ -154,8 +155,8 @@ class AddressCard extends StatelessWidget {
                   color: Colors.tealAccent.withOpacity(0.9),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Text(
-                  "DEFAULT ADDRESS",
+                child: Text(
+                  "default_address".tr,
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
@@ -166,7 +167,8 @@ class AddressCard extends StatelessWidget {
             ),
 
           PositionedDirectional(
-            top: 12,end: 12,
+            top: 12,
+            end: 12,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30),
               child: Container(
@@ -181,7 +183,7 @@ class AddressCard extends StatelessWidget {
                   itemBuilder: (context) => [
                     PopupMenuItem(
                       onTap: onDelete,
-                      value: 'delete',
+                      value: 'delete'.tr,
                       child: Row(
                         children: [
                           Icon(
@@ -191,7 +193,7 @@ class AddressCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 12),
                           Text(
-                            "حذف",
+                            "delete".tr,
                             style: TextStyle(
                               color: Colors.red.shade600,
                               fontWeight: FontWeight.w500,
@@ -254,8 +256,8 @@ class AddressCard extends StatelessWidget {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(30),
                           ),
-                          child: const Text(
-                            "Set as default",
+                          child: Text(
+                            "Set as default".tr,
                             style: TextStyle(
                               color: Colors.black87,
                               fontSize: 12,

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get/utils.dart';
+import 'package:get/get.dart';
+import 'package:hos/veiw/wedget/pricecard.dart';
 
 // ignore: must_be_immutable
 class CategoryCard extends StatefulWidget {
@@ -154,18 +155,9 @@ class _CategoryCardState extends State<CategoryCard> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  Text(
-                                    "${widget.price!} "
-                                            "EGP"
-                                        .tr,
-                                    textAlign: TextAlign.center,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      color: Colors.green,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  PriceText(
+                                    widget.price!,
+                                    color: Colors.amberAccent,
                                   ),
                                   Text(
                                     widget.stock!,
@@ -201,7 +193,7 @@ class _CategoryCardState extends State<CategoryCard> {
                       Expanded(
                         child: _buildActionButton(
                           icon: Icons.edit_rounded,
-                          label: "تعديل",
+                          label: "edit".tr,
                           color: Colors.blueAccent,
                           onTap: widget.onEdit,
                         ),
@@ -210,7 +202,7 @@ class _CategoryCardState extends State<CategoryCard> {
                       Expanded(
                         child: _buildActionButton(
                           icon: Icons.delete_rounded,
-                          label: "حذف",
+                          label: "delete".tr,
                           color: Colors.redAccent,
                           onTap: widget.onDelete,
                         ),

@@ -29,6 +29,7 @@ class Adminpending extends StatelessWidget {
               margin: const EdgeInsets.symmetric(vertical: 2),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
+                 controller: controller.scrollController,
                 itemCount: controller.orderstatus.length,
                 itemBuilder: (context, index) {
                   return InkWell(

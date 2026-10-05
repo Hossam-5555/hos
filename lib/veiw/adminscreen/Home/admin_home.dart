@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/admin_controller.dart';
-
-const String kCurrency = 'EGP ';
+import 'package:hos/veiw/wedget/pricecard.dart';
 
 class _AppColors {
   static const primary = Color(0xFF3F6FFF);
@@ -140,7 +139,7 @@ class _OverviewGrid extends StatelessWidget {
       children: [
         _KpiCard(
           'إجمالي الإيرادات',
-          '$kCurrency${_compact(totalSales)}',
+          _compact(totalSales),
           Icons.payments_rounded,
           _AppColors.primary,
         ),
@@ -152,7 +151,7 @@ class _OverviewGrid extends StatelessWidget {
         ),
         _KpiCard(
           'متوسط الطلب',
-          '$kCurrency${avgOrderValue.toStringAsFixed(0)}',
+          avgOrderValue.toStringAsFixed(0),
           Icons.shopping_bag_rounded,
           _AppColors.success,
         ),
@@ -195,12 +194,7 @@ class _KpiCard extends StatelessWidget {
               Icon(icon, color: color, size: 18),
             ],
           ),
-          Text(
-            value,
-            style: Theme.of(
-              context,
-            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-          ),
+          PriceText(value,fontSize: 18, color: color),
         ],
       ),
     );
@@ -365,7 +359,7 @@ class _SalesByCategoryCard extends StatelessWidget {
             return _BarRow(
               label: c['name'] ?? 'غير معروف',
               percent: 0.5, // قيمة تقريبية للمؤشر
-              trailing: '$kCurrency${_compact(total).toString()}',
+              trailing: _compact(total).toString(),
               color: _AppColors.primary,
             );
           }),
@@ -403,7 +397,7 @@ class _SalesByProductCard extends StatelessWidget {
             return _BarRow(
               label: p['name'] ?? 'غير معروف',
               percent: 0.6,
-              trailing: '$kCurrency${_compact(total).toString()}',
+              trailing: '${_compact(total).toString()}',
               color: _AppColors.purple,
             );
           }),
@@ -488,7 +482,7 @@ class _TopCustomersCard extends StatelessWidget {
                     style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    '$ordersCount طلبات | $kCurrency${_compact(totalSpent)}',
+                    '$ordersCount طلبات | ${_compact(totalSpent)}',
                   ),
                 ],
               ),
@@ -530,13 +524,7 @@ class _BestSellingProductsCard extends StatelessWidget {
               ),
               title: Text(p['product_name'] ?? ''),
               subtitle: Text('${p['sold_count']} مباع'),
-              trailing: Text(
-                '$kCurrency${_compact(revenue)}',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: _AppColors.success,
-                ),
-              ),
+              trailing: PriceText(revenue, color: _AppColors.success),
             );
           }),
         ],
@@ -748,10 +736,7 @@ class _BarRow extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(label, style: Theme.of(context).textTheme.bodySmall),
-              Text(
-                trailing,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
+              PriceText(trailing),
             ],
           ),
           const SizedBox(height: 4),

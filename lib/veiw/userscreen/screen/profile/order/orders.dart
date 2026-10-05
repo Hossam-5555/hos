@@ -43,31 +43,91 @@ class Orders extends StatelessWidget {
           onRetry: controller.viewmyorders,
           widget: RefreshIndicator(
             onRefresh: () async => await controller.viewmyorders(),
-            child: MasonryGridView.builder(
-              padding: EdgeInsets.all(horizontalPadding),
-              gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: gridCrossAxisCount,
-              ),
-              mainAxisSpacing: w * 0.025,
-              crossAxisSpacing: w * 0.025,
-              itemCount: controller.orders.length,
-              itemBuilder: (context, index) {
-                final order = controller.orders[index];
-                controller.Getcolorandstause(order.status);
-                final color = controller.statusColor;
-                final status = order.status;
+            child: Column(
+              children: [
+                Container(
+                  height: 40,
+                  margin: const EdgeInsets.symmetric(vertical: 2),
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: controller.orderstatus.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          // تغيير الحالة وجلب بياناتها فوراً من الباك إند
+                          controller.changeSelectedStatus(index);
+                        },
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          margin: const EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                            gradient: controller.selectedStatus == index
+                                ? const LinearGradient(
+                                    colors: [
+                                      Colors.blueAccent,
+                                      Colors.lightBlueAccent,
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  )
+                                : null,
+                            color: controller.selectedStatus == index
+                                ? null
+                                : (Get.isDarkMode
+                                      ? Colors.grey[800]
+                                      : Colors.grey[200]),
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            controller.orderstatus[index],
+                            style: TextStyle(
+                              color: controller.selectedStatus == index
+                                  ? Colors.white
+                                  : (Get.isDarkMode
+                                        ? Colors.white70
+                                        : Colors.black54),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: MasonryGridView.builder(
+                    controller: controller.scrollController,
+                    padding: EdgeInsets.all(horizontalPadding),
+                    gridDelegate:
+                        SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: gridCrossAxisCount,
+                        ),
+                    mainAxisSpacing: w * 0.025,
+                    crossAxisSpacing: w * 0.025,
+                    itemCount: controller.orders.length,
+                    itemBuilder: (context, index) {
+                      final order = controller.orders[index];
+                      controller.Getcolorandstause(order.status);
+                      final color = controller.statusColor;
+                      final status = order.status;
 
-                return OrderCard(
-                  w: w,
-                  order: order,
-                  status: status,
-                  color: color!,
-                  orderimage: orderimage,
-                  onTap: () {
-                    Get.to(Orderdetailes(), arguments: {"order": order});
-                  },
-                );
-              },
+                      return OrderCard(
+                        w: w,
+                        order: order,
+                        status: status,
+                        color: color!,
+                        orderimage: orderimage,
+                        onTap: () {
+                          Get.to(Orderdetailes(), arguments: {"order": order});
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         ),
