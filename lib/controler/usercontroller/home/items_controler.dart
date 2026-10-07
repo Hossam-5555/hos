@@ -11,7 +11,7 @@ import 'package:hos/data/model/itemsmodel.dart';
 // import 'package:hos/data/model/brandmodel.dart';
 
 class ItemsController extends SearchMix {
-    String? get lang => myservisec.sharedPreferences.getString('lang');
+    bool get isarabic => myservisec.sharedPreferences.getString("lang") == "ar";
 
   List<CategoriesModel> categories = [];
   int? selecteditem;

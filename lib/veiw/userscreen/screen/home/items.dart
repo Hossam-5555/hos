@@ -93,8 +93,7 @@ class _CategoryBar extends StatelessWidget {
           return GetBuilder<ItemsController>(
             builder: (controller) {
               return BuildCategoryItems(
-                isen: controller.lang == "en" ? true : false,
-                catmodel: catmodel,
+                name: controller.isarabic ? catmodel.nameAr : catmodel.name,
 
                 isSelected: controller.selecteditem == i,
 
@@ -148,7 +147,7 @@ class _ProductGrid extends StatelessWidget {
           final cardHeight = i.isEven ? baseHeight : baseHeight * 1.2;
 
           return SharedProductCard(
-            isen: controller.lang == "en" ? true : false,
+            isen: controller.isarabic ? false : true,
             items: item,
 
             onTap: () => controller.gotoitemsdatails(item),

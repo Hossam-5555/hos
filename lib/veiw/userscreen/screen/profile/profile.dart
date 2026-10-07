@@ -26,7 +26,7 @@ class ProfilePage extends StatelessWidget {
 
     final maxContentWidth = isTablet ? 720.0 : double.infinity;
     final horizontalPadding = isTablet ? 24.0 : 8.0;
-    final avatarRadius = isTablet ? 58.0 : 46.0;
+    final avatarRadius = isTablet ? 40.0 : 25.0;
     final cardGap = isTablet ? 20.0 : 10.0;
     final cardWidth =
         (width.clamp(0, maxContentWidth) -
@@ -294,30 +294,12 @@ class _ProfileHeader extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: Container(
-        padding: const EdgeInsets.all(10),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              padding: const EdgeInsets.all(3),
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [Colors.black54, Colors.black],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              child: CircleAvatar(
-                radius: avatarRadius,
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                backgroundImage: AssetImage(Imageasset.twetter),
-              ),
-            ),
-            const SizedBox(height: 16),
             SizedBox(
-              width: context.width * 0.5,
+              width: context.width * 0.6,
               child: ListTile(
                 title: Text(
                   userName,

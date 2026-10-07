@@ -16,7 +16,7 @@ class SearchMix extends GetxController {
 
   bool issearch = false;
   TextInputAction textInputAction = TextInputAction.search;
-  String? get lang => myservisec.sharedPreferences.getString('lang');
+  bool get isarabic => myservisec.sharedPreferences.getString("lang") == "ar";
 
   FocusNode focusNode = FocusNode();
 

@@ -34,14 +34,7 @@ class Orders extends StatelessWidget {
         child: Appbarbackicon(herotag: '', title: "Orders".tr),
       ),
       body: GetBuilder<Ordercontroller>(
-        builder: (controller) => HandlingDataView(
-          emptyStyle: EmptyStateStyle.style2,
-          statusrequest: controller.statusrequest,
-          mediaType: HandlingMediaType.svgImage,
-          mode: HandlingMode.fullScreen,
-          showRetryButton: true,
-          onRetry: controller.viewmyorders,
-          widget: RefreshIndicator(
+        builder: (controller) =>  RefreshIndicator(
             onRefresh: () async => await controller.viewmyorders(),
             child: Column(
               children: [
@@ -98,39 +91,49 @@ class Orders extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: MasonryGridView.builder(
-                    controller: controller.scrollController,
-                    padding: EdgeInsets.all(horizontalPadding),
-                    gridDelegate:
-                        SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: gridCrossAxisCount,
-                        ),
-                    mainAxisSpacing: w * 0.025,
-                    crossAxisSpacing: w * 0.025,
-                    itemCount: controller.orders.length,
-                    itemBuilder: (context, index) {
-                      final order = controller.orders[index];
-                      controller.Getcolorandstause(order.status);
-                      final color = controller.statusColor;
-                      final status = order.status;
+                  child: HandlingDataView(
+                        emptyStyle: EmptyStateStyle.style2,
+          statusrequest: controller.statusrequest,
+          mediaType: HandlingMediaType.svgImage,
+          mode: HandlingMode.fullScreen,
+          showRetryButton: true,
+          onRetry: controller.viewmyorders,
+                    widget: MasonryGridView.builder(
+                      controller: controller.scrollController,
+                      padding: EdgeInsets.all(horizontalPadding),
+                      gridDelegate:
+                          SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: gridCrossAxisCount,
+                          ),
+                      mainAxisSpacing: w * 0.025,
+                      crossAxisSpacing: w * 0.025,
+                      itemCount: controller.orders.length,
+                      itemBuilder: (context, index) {
+                        final order = controller.orders[index];
+                        controller.Getcolorandstause(order.status);
+                        final color = controller.statusColor;
+                        final status = order.status;
 
-                      return OrderCard(
-                        w: w,
-                        order: order,
-                        status: status,
-                        color: color!,
-                        orderimage: orderimage,
-                        onTap: () {
-                          Get.to(Orderdetailes(), arguments: {"order": order});
-                        },
-                      );
-                    },
+                        return OrderCard(
+                          w: w,
+                          order: order,
+                          status: status,
+                          color: color!,
+                          orderimage: orderimage,
+                          onTap: () {
+                            Get.to(
+                              Orderdetailes(),
+                              arguments: {"order": order},
+                            );
+                          },
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-        ),
       ),
     );
   }

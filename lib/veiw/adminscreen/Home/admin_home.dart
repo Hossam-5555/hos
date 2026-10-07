@@ -194,7 +194,14 @@ class _KpiCard extends StatelessWidget {
               Icon(icon, color: color, size: 18),
             ],
           ),
-          PriceText(value,fontSize: 18, color: color),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
         ],
       ),
     );
@@ -481,9 +488,7 @@ class _TopCustomersCard extends StatelessWidget {
                     c['name'] ?? '',
                     style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
-                  Text(
-                    '$ordersCount طلبات | ${_compact(totalSpent)}',
-                  ),
+                  Text('$ordersCount طلبات | ${_compact(totalSpent)}'),
                 ],
               ),
             );

@@ -136,7 +136,7 @@ class HandlingDataView extends StatelessWidget {
       title: "You haven't placed any orders".tr,
       subtitle:
           "Once you place an order, you can track its status right here.".tr,
-      imagePath: Imageasset.emptyNotification,
+      imagePath: Imageasset.emptyorder,
     ),
     Approute.Items: EmptyStateModel(
       title: "No products in this category".tr,

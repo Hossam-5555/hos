@@ -262,13 +262,7 @@ class Itemsdetailes extends StatelessWidget {
                                 ),
                         ),
 
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 20),
-                          child: Divider(height: 1),
-                        ),
-
-                        // ─── Often Order With ───
-                        _buildOftenOrderWith(isDark),
+                     
 
                         const SizedBox(height: 40),
                       ],
@@ -277,11 +271,7 @@ class Itemsdetailes extends StatelessWidget {
                 ],
               ),
 
-              // ─── AppBar فوق الصورة ───
-              // PositionedDirectional(
-              //   top: 30,
-              //   child:
-              // ),
+             
             ],
           ),
         );
@@ -337,94 +327,6 @@ class Itemsdetailes extends StatelessWidget {
   }
 
   // ─── Often Order With ───
-  Widget _buildOftenOrderWith(bool isDark) {
-    // بيانات ثابتة مؤقتة
-    final List<Map<String, String>> suggestions = [
-      {'name': 'Cola', 'price': '\$1.50', 'image': Imageasset.twetter},
-      {'name': 'Fries', 'price': '\$2.00', 'image': Imageasset.twetter},
-      {'name': 'Salad', 'price': '\$3.00', 'image': Imageasset.twetter},
-      {'name': 'Juice', 'price': '\$2.50', 'image': Imageasset.twetter},
-    ];
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Often order with",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black87,
-              ),
-            ),
-            Text(
-              "See all >",
-              style: TextStyle(
-                fontSize: 13,
-                color: Appcolor.primaryColor,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 14),
-        SizedBox(
-          height: 120,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemCount: suggestions.length,
-            separatorBuilder: (_, _) => const SizedBox(width: 12),
-            itemBuilder: (context, index) {
-              final s = suggestions[index];
-              return Container(
-                width: 90,
-                decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(color: Colors.black.withAlpha(13), blurRadius: 8),
-                  ],
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.asset(
-                        s['image']!,
-                        width: 55,
-                        height: 55,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      s['name']!,
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: isDark ? Colors.white : Colors.black87,
-                      ),
-                    ),
-                    Text(
-                      s['price']!,
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: Colors.grey.shade500,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
 
   // ─── Bottom Bar ───
   Widget _buildBottomBar(Itemdetailscontroller controller, bool isDark) {
@@ -432,7 +334,7 @@ class Itemsdetailes extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(),
       child: SafeArea(
-        child: Row(
+        child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Flexible(child: Countofproduct(count: controller.itemcount)),
             const SizedBox(width: 12),

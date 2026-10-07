@@ -177,16 +177,16 @@ class Notificationcontroller extends GetxController {
  late Color colors;
  void iconstype(String title) {
     switch (title) {
-      case "طلب جديد 🛒":
+      case "new Order":
         iconData = Icons.card_giftcard;
         colors = Colors.lightGreen;
         break;
-      case "نتبيه":
+      case "notification":
         iconData = Icons.notification_add;
         colors = Colors.deepOrange;
 
         break;
-      case "تقدم":
+      case "progress":
         iconData = Icons.pending;
         colors = Colors.yellow;
 

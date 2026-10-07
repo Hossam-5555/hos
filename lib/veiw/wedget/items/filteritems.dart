@@ -57,14 +57,10 @@ void showFilterSheet(BuildContext context, ItemsController c) {
           return Container(
             decoration: BoxDecoration(
               color: p.bg,
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(28),
-              ),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
             ),
             child: Column(
               children: [
-                // _buildHeader(sheetContext, p),
-                Divider(height: 1, color: p.border),
                 Expanded(
                   child: ListView(
                     controller: scrollController,

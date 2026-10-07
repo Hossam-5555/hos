@@ -315,7 +315,7 @@ class _SearchResults extends StatelessWidget {
                         itemsImage: "",
                         itemsName: '',
                         itemsNameAr: '',
-                        itemsPrice: 200
+                        itemsPrice: 200,
                       ),
 
                       onTap: () {},
@@ -443,7 +443,7 @@ class _SearchResults extends StatelessWidget {
                       : baseHeight * 1.15;
 
                   return SharedProductCard(
-                    isen: controller.lang == "en" ? true : false,
+                    isen: controller.isarabic ? false : true,
                     items: item,
 
                     onTap: () {
@@ -519,8 +519,7 @@ class PopularCategoriesSection extends StatelessWidget {
             children: List.generate(displayCategories.length, (index) {
               final item = displayCategories[index];
               return BuildCategoryItems(
-                isen: c.lang == "en" ? true : false,
-                catmodel: item,
+                name: c.isarabic ? item.nameAr : item.name,
                 isSelected: true,
                 onTap: () {
                   c.search!.text = item.name!;

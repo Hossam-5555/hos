@@ -141,37 +141,6 @@ class _EditProfileViewState extends State<EditProfileView> {
     if (picked != null) controller.birthday.value = picked;
   }
 
-  Future<void> _verifyPhone() async {
-    final ctrl = TextEditingController(text: controller.phone.value);
-    final result = await Get.dialog<String>(
-      AlertDialog(
-        title: const Text("Phone number"),
-        content: TextField(
-          controller: ctrl,
-          keyboardType: TextInputType.phone,
-          autofocus: true,
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly,
-            LengthLimitingTextInputFormatter(11),
-          ],
-          decoration: const InputDecoration(hintText: "01xxxxxxxxx"),
-        ),
-        actions: [
-          TextButton(onPressed: () => Get.back(), child: const Text("Cancel")),
-          TextButton(
-            onPressed: () => Get.back(result: ctrl.text.trim()),
-            child: const Text("Verify"),
-          ),
-        ],
-      ),
-    );
-    if (result != null && result.length == 11) {
-      controller.phone.value = result;
-      // TODO: أضف خطوة التحقق (OTP) هنا ثم اجعلها true
-      controller.isPhoneVerified.value = true;
-    }
-  }
-
   void _showAllNationalities() {
     Get.bottomSheet(
       Container(
@@ -220,8 +189,6 @@ class _EditProfileViewState extends State<EditProfileView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildNameRow(),
-                      const SizedBox(height: 28),
-                      _buildPhoneSection(),
                       const SizedBox(height: 28),
                       _buildGenderSection(),
                       const SizedBox(height: 28),
@@ -321,46 +288,6 @@ class _EditProfileViewState extends State<EditProfileView> {
   }
 
   // Phone number
-  Widget _buildPhoneSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _sectionHeader(
-          "Phone number",
-          subtitle: "We only use this for important updates",
-        ),
-        const SizedBox(height: 14),
-        Obx(
-          () => _outlinedBox(
-            onTap: _verifyPhone,
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.phone_outlined,
-                  size: 20,
-                  color: _EPColors.subtitle,
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    controller.isPhoneVerified.value
-                        ? controller.phone.value
-                        : "Tap to verify",
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: _EPColors.subtitle,
-                    ),
-                  ),
-                ),
-                if (controller.isPhoneVerified.value)
-                  const Icon(Icons.verified, color: Colors.green, size: 20),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   // Gender
   Widget _buildGenderSection() {

@@ -19,6 +19,7 @@ class Imageasset {
   static String emptyAddress = "$routeImage/undraw_delivery-address_409g.svg";
   static String emptyfavorite = "$routeImage/empty_favorites.svg";
   static String emptystate = "$routeImage/Empty State.json";
+  static String emptyorder = "$routeImage/empty_orders.svg";
   //Animation
   static String category = "$routeImage/category-alt-svgrepo-com.svg";
   static String visa = "$routeImage/visa.png";
