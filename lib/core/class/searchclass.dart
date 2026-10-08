@@ -19,37 +19,75 @@ class SearchMix extends GetxController {
   bool get isarabic => myservisec.sharedPreferences.getString("lang") == "ar";
 
   FocusNode focusNode = FocusNode();
+  int currentSearchPage = 1;
+  bool hasMoreSearchData = true;
+  bool isSearchLoadingMore = false;
+  int _searchToken = 0; // يلغي أي رد قديم لما يبدأ بحث جديد
+ Future<void> getsearchdata({bool isRefresh = false}) async {
+  final query = search?.text.trim() ?? '';
+  if (query.isEmpty) return;
 
-  Future<void> getsearhdata() async {
-    if (search == null || search!.text.trim().isEmpty) {
-      return;
-    }
-
-    searchlist.clear();
-    statusrequest = Statusrequest.loading;
-    update();
-
-    var response = await homedata.searchdata(search!.text);
-
-    statusrequest = handling(response);
-
-    if (Statusrequest.success == statusrequest) {
-      if (response["status"] == true) {
-        List responsebody = response['data'];
-        searchlist.addAll(responsebody.map((e) => ItemsModel.fromJson(e)));
-
-        focusNode.unfocus();
-      } else {
-        statusrequest = Statusrequest.failure;
-      }
-    }
-    update();
+  if (isRefresh) {
+    _searchToken++;
+    currentSearchPage = 1;
+    hasMoreSearchData = true;
+    isSearchLoadingMore = false;
   }
 
+  if (!hasMoreSearchData || isSearchLoadingMore) return;
+
+  final int token = _searchToken;
+  final bool isFirstPage = currentSearchPage == 1;
+
+  if (isFirstPage) {
+    searchlist.clear();
+    statusrequest = Statusrequest.loading;
+  } else {
+    isSearchLoadingMore = true;
+  }
+  update();
+
+  final response = await homedata.searchdata(query, page: currentSearchPage);
+
+  // بحث جديد بدأ أثناء الانتظار: تجاهل الرد القديم
+  if (token != _searchToken) return;
+
+  final status = handling(response);
+
+  if (status == Statusrequest.success && response["status"] == true) {
+    final List body = response["data"]["data"];
+    final int lastPage = response["data"]["meta"]["last_page"];
+
+    searchlist.addAll(body.map((e) => ItemsModel.fromJson(e)));
+
+    if (currentSearchPage >= lastPage) {
+      hasMoreSearchData = false;
+    } else {
+      currentSearchPage++;
+    }
+
+    statusrequest =
+        searchlist.isEmpty ? Statusrequest.nodata : Statusrequest.success;
+    focusNode.unfocus();
+  } else if (isFirstPage) {
+    // الفشل بيأثر على الشاشة بس في الصفحة الأولى
+    statusrequest =
+        status == Statusrequest.success ? Statusrequest.failure : status;
+  }
+  // فشل في صفحة تانية: نسيب النتائج الحالية زي ما هي
+
+  isSearchLoadingMore = false;
+  update();
+}
   void checksearch(String val) {
-    if (val.isEmpty) {
+    if (val.trim().isEmpty) {
+      _searchToken++;
       issearch = false;
       focusNode.unfocus();
+      searchlist.clear();
+      currentSearchPage = 1;
+      hasMoreSearchData = true;
+      isSearchLoadingMore = false;
       statusrequest = Statusrequest.none;
     }
     update();
@@ -65,6 +103,7 @@ class SearchMix extends GetxController {
   @override
   void dispose() {
     search?.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 
@@ -75,8 +114,7 @@ class SearchMix extends GetxController {
     }
 
     issearch = true;
-    getsearhdata();
-    update();
+    getsearchdata(isRefresh: true); // كل بحث جديد يبدأ من الصفحة 1
   }
 
   void gotoitemsdatails(ItemsModel itemsmodel) {

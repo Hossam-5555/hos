@@ -27,7 +27,7 @@ class Mytransilation extends Translations {
       "shipping address": "عنوان الشحن",
       "Add new address": "اضافة عنوان جديد",
       "Change address": "اضغط لتغيير العنوان",
-      "Sipping": "رسوم التوصيل",
+      "Shipping": "رسوم التوصيل",
       "Have A Code?": "هل لديك كود خصم؟",
       "Pay Now": "ادفع الان",
       //Homepage
@@ -165,7 +165,7 @@ class Mytransilation extends Translations {
       "shipping address": "Shipping Address",
       "Add new address": "Add new address",
       "Change address": "Change address",
-      "Sipping": "Sipping",
+      "Shipping": "Shipping",
       "Have A Code?": "Have A Code?",
       //Homepage
       //orderpage

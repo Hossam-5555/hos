@@ -11,7 +11,7 @@ import 'package:hos/data/model/itemsmodel.dart';
 // import 'package:hos/data/model/brandmodel.dart';
 
 class ItemsController extends SearchMix {
-    bool get isarabic => myservisec.sharedPreferences.getString("lang") == "ar";
+  bool get isarabic => myservisec.sharedPreferences.getString("lang") == "ar";
 
   List<CategoriesModel> categories = [];
   int? selecteditem;
@@ -69,7 +69,6 @@ class ItemsController extends SearchMix {
     categories = Get.arguments["categories"] ?? [];
     selecteditem = Get.arguments['selecteditem'] ?? 0;
     selectedCategory.value = int.tryParse(catid) ?? 0; // إعطاء قيمة مبدئية
-
     getitems(catid);
   }
 

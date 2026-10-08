@@ -12,10 +12,15 @@ class Homedata {
     return response.fold((l) => l, (r) => r);
   }
 
-  searchdata(String search) async {
-    var response = await crud.postrequset(LinkApi.search, {
+ Future searchdata(String search, {int page = 1}) async {
+  var response = await crud.postrequset(
+    LinkApi.search,
+    {
       'query': search,
-    });
-    return response.fold((l) => l, (r) => r);
-  }
+      'page': page.toString(),
+    },
+  );
+
+  return response.fold((l) => l, (r) => r);
+}
 }

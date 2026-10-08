@@ -144,7 +144,7 @@ class Checkout extends StatelessWidget {
                   const SizedBox(height: 16),
                   _buildPriceRow("Subtotal".tr, c.totalprice),
                   const SizedBox(height: 10),
-                  _buildPriceRow("Sipping".tr, "50"),
+                  _buildPriceRow("Shipping".tr, "50"),
                   const SizedBox(height: 16),
                   const Divider(height: 1),
                   const SizedBox(height: 16),

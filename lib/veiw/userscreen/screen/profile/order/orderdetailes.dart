@@ -68,7 +68,7 @@ class Orderdetailes extends StatelessWidget {
               // ============================================================
               sectionCard(
                 context,
-                title: "Items",
+                title: "product".tr,
                 icon: Icons.shopping_bag_outlined,
                 child: itemsSection(order),
               ),
@@ -92,7 +92,7 @@ class Orderdetailes extends StatelessWidget {
               // ============================================================
               sectionCard(
                 context,
-                title: "Order Summary",
+                title: "Order Summary".tr,
                 icon: Icons.receipt_long_outlined,
                 child: orderSummary(order),
               ),
@@ -226,8 +226,8 @@ Widget orderStatusSection(
 
                     const SizedBox(width: 9),
 
-                    const Text(
-                      "Order Status",
+                     Text(
+                      "Status".tr,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -409,8 +409,8 @@ Widget paymentSection({
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Payment",
+                   Text(
+                    "Payment".tr,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                   ),
 
@@ -574,7 +574,7 @@ Widget deliveryDetails(OrderModel order) {
     children: [
       detailRow(
         icon: Icons.person_outline,
-        title: "Name",
+        title: "Name".tr,
         value: order.username,
       ),
 
@@ -582,7 +582,7 @@ Widget deliveryDetails(OrderModel order) {
 
       detailRow(
         icon: Icons.phone_outlined,
-        title: "Phone",
+        title: "Phone Number".tr,
         value: address.phone ?? "-",
       ),
 
@@ -590,7 +590,7 @@ Widget deliveryDetails(OrderModel order) {
 
       detailRow(
         icon: Icons.location_on_outlined,
-        title: "Address",
+        title: "shipping address".tr,
         value: "${address.city ?? ""} - ${address.street ?? ""}",
       ),
     ],
@@ -654,11 +654,11 @@ Widget detailRow({
 Widget orderSummary(OrderModel order) {
   return Column(
     children: [
-      summaryRow("Subtotal", order.subtotal),
+      summaryRow("Subtotal".tr, order.subtotal),
 
       const SizedBox(height: 10),
 
-      summaryRow("Shipping", order.shippingFee),
+      summaryRow("Shipping".tr, order.shippingFee),
 
       const SizedBox(height: 10),
 
@@ -672,8 +672,8 @@ Widget orderSummary(OrderModel order) {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            "Total",
+           Text(
+            "Total price".tr,
             style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
           ),
 
