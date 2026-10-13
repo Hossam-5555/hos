@@ -4,6 +4,7 @@ import 'package:hos/controler/usercontroller/profile/settingscontroller.dart';
 import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
+import 'package:hos/core/conistant/static.dart';
 import 'package:hos/core/localization/changlocal.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/veiw/userscreen/screen/profile/Editprofile.dart';
@@ -25,7 +26,8 @@ class ProfilePage extends StatelessWidget {
     final maxContentWidth = width >= 900 ? 900.0 : double.infinity;
     final horizontalPadding = isTablet ? 20.0 : 8.0;
     final avatarRadius = isTablet ? 36.0 : 25.0;
-    final contentWidth = (width < maxContentWidth ? width : maxContentWidth) -
+    final contentWidth =
+        (width < maxContentWidth ? width : maxContentWidth) -
         horizontalPadding * 2;
     final cardWidth = (contentWidth - 12) / 2;
     final cardHeight = (cardWidth * 1.35).clamp(140.0, 240.0);
@@ -50,7 +52,7 @@ class ProfilePage extends StatelessWidget {
                     avatarRadius: avatarRadius,
                   ),
                   const SizedBox(height: 20),
-                  settingsController.usrtype == "user"
+                  settingsController.usrtype == Static.user1
                       ? Row(
                           children: [
                             orderCard(
@@ -72,7 +74,29 @@ class ProfilePage extends StatelessWidget {
                             ),
                           ],
                         )
-                      : SizedBox.shrink(),
+                      : _GradientGroup(
+                          isDarkMode: isDarkMode,
+                          children: [
+                            _ListTile(
+                              gradientColors: const [
+                                AppColors.aboutStart,
+                                AppColors.danger,
+                              ],
+                              icon: Icons.discount,
+                              title: "Coupone",
+                              onTap: () => Get.toNamed(Approute.myfavorite),
+                            ),
+                            _ListTile(
+                              gradientColors: const [
+                                AppColors.lightBorder,
+                                AppColors.contactStart,
+                              ],
+                              icon: Icons.discount,
+                              title: "brands",
+                              onTap: () => Get.toNamed(Approute.myfavorite),
+                            ),
+                          ],
+                        ),
                   const SizedBox(height: 20),
                   _GroupLabel(title: "General"),
 
@@ -80,7 +104,7 @@ class ProfilePage extends StatelessWidget {
                   _GradientGroup(
                     isDarkMode: isDarkMode,
                     children: [
-                      settingsController.usrtype == "user"
+                      settingsController.usrtype == Static.user1
                           ? _ListTile(
                               gradientColors: const [
                                 AppColors.favoriteStart,
@@ -323,7 +347,9 @@ class _ProfileHeader extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                backgroundColor: MaterialStateProperty.all(AppColors.editBackground),
+                backgroundColor: MaterialStateProperty.all(
+                  AppColors.editBackground,
+                ),
                 padding: MaterialStateProperty.all(const EdgeInsets.all(8)),
               ),
               onPressed: () {
@@ -620,9 +646,7 @@ Widget orderCard(
             ? AppGradients.darkTitanium
             : AppGradients.lightPlatinum,
         border: Border.all(
-          color: isDarkMode
-              ? AppColors.darkBorder
-              : AppColors.lightBorder,
+          color: isDarkMode ? AppColors.darkBorder : AppColors.lightBorder,
           width: 1,
         ),
         boxShadow: [
@@ -694,4 +718,3 @@ Widget orderCard(
     ),
   );
 }
-
