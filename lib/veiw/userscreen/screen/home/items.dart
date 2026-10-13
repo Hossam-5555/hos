@@ -9,7 +9,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hos/controler/usercontroller/home/favorite/fav_controller.dart';
 import 'package:hos/controler/usercontroller/home/items_controler.dart';
 import 'package:hos/core/class/handlingdataview.dart';
-import 'package:hos/core/conistant/appcolor.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/userscreen/screen/home/home_page.dart';
 import 'package:hos/veiw/wedget/shared_product_card.dart';
@@ -136,7 +136,7 @@ class _ProductGrid extends StatelessWidget {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: CircularProgressIndicator(color: Appcolor.primaryColor),
+                child: CircularProgressIndicator(color: AppColors.primaryColor),
               ),
             );
           }

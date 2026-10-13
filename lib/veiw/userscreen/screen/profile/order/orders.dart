@@ -39,7 +39,7 @@ class Orders extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  height: 40,
+                  height: h * 0.05,
                   margin: const EdgeInsets.symmetric(vertical: 2),
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,

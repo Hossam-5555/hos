@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/auth/forgetpass/checkemail_controller.dart';
 import 'package:hos/core/class/crud.dart';
-import 'package:hos/core/conistant/appcolor.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/validinput.dart';
 import 'package:hos/veiw/wedget/animation.dart';
@@ -22,7 +22,7 @@ class ForgetPass extends StatelessWidget {
 
     final glassColor = isDark
         ? Colors.white.withAlpha(15)
-        : Appcolor.glass.withAlpha(51);
+        : AppColors.glass.withAlpha(51);
     final glassBorder = isDark
         ? Colors.white.withAlpha(40)
         : const Color.fromARGB(240, 145, 222, 255).withAlpha(77);
@@ -169,7 +169,7 @@ class ForgetPass extends StatelessWidget {
                                   statusrequest: controller.statusrequest,
                                   onTap: () => controller.checkemail(),
                                   buttonName: 'Send Code',
-                                  buttonColor: Appcolor.primaryColor,
+                                  buttonColor: AppColors.primaryColor,
                                 );
                               },
                             ),

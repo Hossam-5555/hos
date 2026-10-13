@@ -2,16 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/admin_controller.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/veiw/wedget/pricecard.dart';
-
-class _AppColors {
-  static const primary = Color(0xFF3F6FFF);
-  static const purple = Color(0xFF9B59B6);
-  static const success = Color(0xFF2ECC71);
-  static const warning = Color(0xFFFFA500);
-  static const danger = Color(0xFFFF5252);
-  static const orange = Color(0xFFFF9F43);
-}
 
 String _compact(num value) {
   if (value >= 1000000) return '${(value / 1000000).toStringAsFixed(1)}M';
@@ -141,25 +133,25 @@ class _OverviewGrid extends StatelessWidget {
           'إجمالي الإيرادات',
           _compact(totalSales),
           Icons.payments_rounded,
-          _AppColors.primary,
+          AppColors.primary,
         ),
         _KpiCard(
           'إجمالي الطلبات',
           _compact(totalOrders),
           Icons.receipt_long_rounded,
-          _AppColors.purple,
+          AppColors.purple,
         ),
         _KpiCard(
           'متوسط الطلب',
           avgOrderValue.toStringAsFixed(0),
           Icons.shopping_bag_rounded,
-          _AppColors.success,
+          AppColors.success,
         ),
         _KpiCard(
           'معدل الاسترجاع',
           '$refundRate%',
           Icons.trending_up_rounded,
-          _AppColors.orange,
+          AppColors.orange,
         ),
       ],
     );
@@ -253,11 +245,11 @@ class _RevenueChartCard extends StatelessWidget {
                             final lineBarData = LineChartBarData(
                               spots: controller.salesSpots,
                               isCurved: true,
-                              color: _AppColors.success,
+                              color: AppColors.success,
                               barWidth: 3,
                               belowBarData: BarAreaData(
                                 show: true,
-                                color: _AppColors.warning.withAlpha(38),
+                                color: AppColors.warning.withAlpha(38),
                               ),
                             );
 
@@ -367,7 +359,7 @@ class _SalesByCategoryCard extends StatelessWidget {
               label: c['name'] ?? 'غير معروف',
               percent: 0.5, // قيمة تقريبية للمؤشر
               trailing: _compact(total).toString(),
-              color: _AppColors.primary,
+              color: AppColors.primary,
             );
           }),
         ],
@@ -405,7 +397,7 @@ class _SalesByProductCard extends StatelessWidget {
               label: p['name'] ?? 'غير معروف',
               percent: 0.6,
               trailing: '${_compact(total).toString()}',
-              color: _AppColors.purple,
+              color: AppColors.purple,
             );
           }),
         ],
@@ -428,19 +420,19 @@ class _CustomersOverviewRow extends StatelessWidget {
             'إجمالي العملاء',
             '${customers['total_customers'] ?? 0}',
             Icons.group_rounded,
-            _AppColors.primary,
+            AppColors.primary,
           ),
           _MiniStat(
             'عملاء جدد (30 يوم)',
             '${customers['new_customers'] ?? 0}',
             Icons.person_add_rounded,
-            _AppColors.success,
+            AppColors.success,
           ),
           _MiniStat(
             'نسبة التكرار',
             '${customers['returning_customers_pct'] ?? 0}%',
             Icons.repeat_rounded,
-            _AppColors.orange,
+            AppColors.orange,
           ),
         ],
       ),
@@ -525,11 +517,11 @@ class _BestSellingProductsCard extends StatelessWidget {
               contentPadding: EdgeInsets.zero,
               leading: const Icon(
                 Icons.shopping_bag_outlined,
-                color: _AppColors.primary,
+                color: AppColors.primary,
               ),
               title: Text(p['product_name'] ?? ''),
               subtitle: Text('${p['sold_count']} مباع'),
-              trailing: PriceText(revenue, color: _AppColors.success),
+              trailing: PriceText(revenue, color: AppColors.success),
             );
           }),
         ],
@@ -567,7 +559,7 @@ class _StockStatusCard extends StatelessWidget {
                   Text(
                     isOut ? 'نفذ' : '${item['stock']} متبقي',
                     style: TextStyle(
-                      color: isOut ? _AppColors.danger : _AppColors.warning,
+                      color: isOut ? AppColors.danger : AppColors.warning,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -605,9 +597,9 @@ class _OrderStatsPieCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _StatusText('مكتمل', '$fulfilled%', _AppColors.success),
-              _StatusText('معلق', '$pending%', _AppColors.warning),
-              _StatusText('ملغي', '$cancelled%', _AppColors.danger),
+              _StatusText('مكتمل', '$fulfilled%', AppColors.success),
+              _StatusText('معلق', '$pending%', AppColors.warning),
+              _StatusText('ملغي', '$cancelled%', AppColors.danger),
             ],
           ),
         ],

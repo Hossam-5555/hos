@@ -9,14 +9,11 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 class Myfavorite extends StatelessWidget {
   Myfavorite({super.key});
+
   final c = Get.put(Myfavcontroler());
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final height = size.height;
-    final width = size.width;
-
     return Scaffold(
       appBar: Appbarbackicon(
         herotag: "Favorite".tr,
@@ -24,66 +21,97 @@ class Myfavorite extends StatelessWidget {
         selected: false,
       ),
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: GetBuilder<Myfavcontroler>(
-                builder: (controller) => HandlingDataView(
-                  emptyStyle: EmptyStateStyle.style2,
-                  statusrequest: controller.statusrequest,
-                  mediaType: HandlingMediaType.svgImage,
-                  mode: HandlingMode.fullScreen,
-                  widget: Skeletonizer(
-                    containersColor: Colors.grey.withAlpha(90),
-                    enabled: controller.statusrequest == Statusrequest.loading,
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: controller.data.length,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: width * 0.03,
-                        vertical: height * 0.015,
-                      ),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: width / (height * 0.70), // نسبي
-                        crossAxisSpacing: width * 0.03,
-                        mainAxisSpacing: height * 0.015,
-                      ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            // المساحة المتاحة فعلياً بعد خصم الـ AppBar
+            final width = constraints.maxWidth;
 
-                      itemBuilder: (context, i) {
-                        final items = controller.data[i];
-                        return SharedProductCard(
-                          height: 220,
-                          items: items.item!,
+            // تحديد عدد الأعمدة حسب عرض الشاشة
+            final int crossAxisCount;
 
-                          onTap: () {
-                            // controller.gotoitemsdatails(items);
-                          },
-                          // 👈 هنا بنصمم الزرار الخاص بصفحة المفضلة (زرار الحذف)
-                          actionButton: IconButton(
-                            padding: EdgeInsets.zero,
-                            constraints:
-                                const BoxConstraints(), // عشان نشيل المسافات الافتراضية للزرار
-                            onPressed: () {
-                              controller.deletefromfavpage(items.item!.id!);
-                            },
-                            icon: const Icon(
-                              Icons.delete_outline_rounded,
-                              color: Colors.redAccent,
-                              size: 24,
-                            ),
-                          ),
-                          isen: c.lang == "en" ? true : false,
-                        );
-                      },
+            if (width >= 1100) {
+              crossAxisCount = 5;
+            } else if (width >= 850) {
+              crossAxisCount = 4;
+            } else if (width >= 600) {
+              crossAxisCount = 3;
+            } else {
+              crossAxisCount = 2;
+            }
+
+            // الحفاظ على عرض مناسب للكارت
+            const horizontalPadding = 12.0;
+            const crossAxisSpacing = 12.0;
+
+            final availableWidth =
+                width - (horizontalPadding * 2);
+
+            final cardWidth =
+                (availableWidth -
+                    (crossAxisSpacing * (crossAxisCount - 1))) /
+                crossAxisCount;
+
+            // ارتفاع الكارت يتناسب مع عرضه
+            final cardHeight = cardWidth * 1.48;
+
+            return GetBuilder<Myfavcontroler>(
+              builder: (controller) => HandlingDataView(
+                emptyStyle: EmptyStateStyle.style2,
+                statusrequest: controller.statusrequest,
+                mediaType: HandlingMediaType.svgImage,
+                mode: HandlingMode.fullScreen,
+                widget: Skeletonizer(
+                  containersColor: Colors.grey.withAlpha(90),
+                  enabled:
+                      controller.statusrequest == Statusrequest.loading,
+                  child: GridView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: horizontalPadding,
+                      vertical: 12,
                     ),
+                    itemCount: controller.data.length,
+                    gridDelegate:
+                        SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      crossAxisSpacing: crossAxisSpacing,
+                      mainAxisSpacing: 14,
+                      mainAxisExtent: cardHeight,
+                    ),
+                    itemBuilder: (context, i) {
+                      final items = controller.data[i];
+
+                      return SharedProductCard(
+                        height: cardHeight,
+                        items: items.item!,
+                        onTap: () {
+                          controller.gotoitemsdatails(items.item!);
+                        },
+                        actionButton: IconButton(
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(
+                            minWidth: 36,
+                            minHeight: 36,
+                          ),
+                          onPressed: () {
+                            controller.deletefromfavpage(
+                              items.item!.id!,
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.delete_outline_rounded,
+                            color: Colors.redAccent,
+                            size: 24,
+                          ),
+                        ),
+                        isen: c.lang == "en",
+                      );
+                    },
                   ),
                 ),
               ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

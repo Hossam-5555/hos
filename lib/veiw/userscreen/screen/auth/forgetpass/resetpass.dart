@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/auth/forgetpass/resetpasscontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
-import 'package:hos/core/conistant/appcolor.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/core/functions/validinput.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
@@ -50,12 +50,12 @@ class Resetpass extends StatelessWidget {
                         width: 84,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Appcolor.primaryColor.withAlpha(isDark ? 40 : 25),
+                          color: AppColors.primaryColor.withAlpha(isDark ? 40 : 25),
                         ),
                         child: Icon(
                           Icons.lock_reset_rounded,
                           size: 40,
-                          color: Appcolor.primaryColor,
+                          color: AppColors.primaryColor,
                         ),
                       ),
 
@@ -110,7 +110,7 @@ class Resetpass extends StatelessWidget {
                           statusrequest: controller.statusrequest,
                           onTap: () => controller.gotosuccesreset(),
                           buttonName: 'Reset Password',
-                          buttonColor: Appcolor.primaryColor,
+                          buttonColor: AppColors.primaryColor,
                         ),
                       ),
 

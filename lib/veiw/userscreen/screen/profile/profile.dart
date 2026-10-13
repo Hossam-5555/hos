@@ -1,8 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/settingscontroller.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/localization/changlocal.dart';
@@ -21,23 +20,18 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
     final isTablet = width >= 600;
-
-    final maxContentWidth = isTablet ? 720.0 : double.infinity;
-    final horizontalPadding = isTablet ? 24.0 : 8.0;
-    final avatarRadius = isTablet ? 40.0 : 25.0;
-    final cardGap = isTablet ? 20.0 : 10.0;
-    final cardWidth =
-        (width.clamp(0, maxContentWidth) -
-            horizontalPadding * 2 -
-            cardGap * 2) /
-        2;
-    final cardHeight = (cardWidth * (isTablet ? 1.3 : 1.9)).clamp(120.0, 240.0);
+    final maxContentWidth = width >= 900 ? 900.0 : double.infinity;
+    final horizontalPadding = isTablet ? 20.0 : 8.0;
+    final avatarRadius = isTablet ? 36.0 : 25.0;
+    final contentWidth = (width < maxContentWidth ? width : maxContentWidth) -
+        horizontalPadding * 2;
+    final cardWidth = (contentWidth - 12) / 2;
+    final cardHeight = (cardWidth * 1.35).clamp(140.0, 240.0);
 
     return Scaffold(
       body: SafeArea(
-        top: false,
         child: Center(
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: maxContentWidth),
@@ -58,7 +52,6 @@ class ProfilePage extends StatelessWidget {
                   const SizedBox(height: 20),
                   settingsController.usrtype == "user"
                       ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             orderCard(
                               "Orders".tr,
@@ -68,6 +61,7 @@ class ProfilePage extends StatelessWidget {
                               width: cardWidth,
                               height: cardHeight,
                             ),
+                            const SizedBox(width: 12),
                             orderCard(
                               "Saved Addresses".tr,
                               Imageasset.settings,
@@ -89,8 +83,8 @@ class ProfilePage extends StatelessWidget {
                       settingsController.usrtype == "user"
                           ? _ListTile(
                               gradientColors: const [
-                                Color.fromARGB(255, 243, 9, 9),
-                                Colors.red,
+                                AppColors.favoriteStart,
+                                AppColors.favoriteEnd,
                               ],
                               icon: Icons.favorite_border,
                               title: "Favorite".tr,
@@ -99,8 +93,8 @@ class ProfilePage extends StatelessWidget {
                           : SizedBox.shrink(),
                       _ListTile(
                         gradientColors: [
-                          Colors.orange.shade400,
-                          Colors.orange.shade700,
+                          AppColors.languageStart,
+                          AppColors.languageEnd,
                         ],
                         icon: Icons.language_outlined,
                         title: "Languages".tr,
@@ -121,8 +115,8 @@ class ProfilePage extends StatelessWidget {
                     children: [
                       _ListTile(
                         gradientColors: [
-                          Colors.teal.shade400,
-                          Colors.teal.shade700,
+                          AppColors.aboutStart,
+                          AppColors.aboutEnd,
                         ],
                         icon: Icons.info_outline,
                         title: "About App".tr,
@@ -135,8 +129,8 @@ class ProfilePage extends StatelessWidget {
 
                       _ListTile(
                         gradientColors: [
-                          Colors.cyan.shade400,
-                          Colors.cyan.shade700,
+                          AppColors.contactStart,
+                          AppColors.contactEnd,
                         ],
                         icon: Icons.headset_mic_outlined,
                         title: "Contact Us".tr,
@@ -160,19 +154,19 @@ class ProfilePage extends StatelessWidget {
                                 )
                               : Icon(
                                   Icons.arrow_forward_ios_rounded,
-                                  color: Colors.grey[400],
+                                  color: AppColors.mutedText,
                                   size: 16,
                                 ),
                         ),
                       ),
                       _ListTile(
                         gradientColors: [
-                          Colors.red.shade400,
-                          Colors.red.shade700,
+                          AppColors.logoutStart,
+                          AppColors.logoutEnd,
                         ],
                         icon: Icons.logout_rounded,
                         title: "Logout".tr,
-                        titleColor: Colors.red.shade600,
+                        titleColor: AppColors.logout,
                         showArrow: false,
                         onTap: () =>
                             _confirmLogout(context, settingsController),
@@ -201,11 +195,11 @@ class ProfilePage extends StatelessWidget {
       radius: 16,
       cancel: TextButton(
         onPressed: () => Get.back(),
-        child: Text("Cancel".tr, style: TextStyle(color: Colors.grey.shade600)),
+        child: Text("Cancel".tr, style: TextStyle(color: AppColors.mutedText)),
       ),
       confirm: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.red.shade500,
+          backgroundColor: AppColors.logout,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -230,7 +224,7 @@ class ProfilePage extends StatelessWidget {
           _languageOption(
             label: "العربية",
             icon: Icons.language,
-            color: Colors.green,
+            color: AppColors.arabic,
             onTap: () {
               localController.changeLang('ar');
               Get.back();
@@ -240,7 +234,7 @@ class ProfilePage extends StatelessWidget {
           _languageOption(
             label: "English",
             icon: Icons.language,
-            color: Colors.blue,
+            color: AppColors.english,
             onTap: () {
               localController.changeLang('en');
               Get.back();
@@ -298,8 +292,7 @@ class _ProfileHeader extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              width: context.width * 0.6,
+            Expanded(
               child: ListTile(
                 title: Text(
                   userName,
@@ -330,7 +323,7 @@ class _ProfileHeader extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                backgroundColor: MaterialStateProperty.all(Color(0xFFE0E3E8)),
+                backgroundColor: MaterialStateProperty.all(AppColors.editBackground),
                 padding: MaterialStateProperty.all(const EdgeInsets.all(8)),
               ),
               onPressed: () {
@@ -341,7 +334,7 @@ class _ProfileHeader extends StatelessWidget {
                   curve: Curves.fastOutSlowIn,
                 );
               },
-              icon: const Icon(Icons.edit, color: Colors.blue),
+              icon: const Icon(Icons.edit, color: AppColors.english),
             ),
           ],
         ),
@@ -367,7 +360,7 @@ class _GroupLabel extends StatelessWidget {
             fontWeight: FontWeight.bold,
             fontSize: 12.5,
             letterSpacing: 0.6,
-            color: Colors.grey.shade500,
+            color: AppColors.mutedText,
           ),
         ),
       ),
@@ -390,7 +383,7 @@ class _GradientGroup extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             blurRadius: 6,
-            color: Colors.black.withAlpha(20),
+            color: AppColors.shadow,
             offset: Offset(0, 0.2),
           ),
         ],
@@ -398,7 +391,7 @@ class _GradientGroup extends StatelessWidget {
             ? AppGradients.darkTitanium
             : AppGradients.lightPlatinum,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.grey.withAlpha(50)),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(children: children),
     );
@@ -441,13 +434,13 @@ class _ListTile extends StatelessWidget {
                 gradient: LinearGradient(
                   colors:
                       gradientColors ??
-                      [Colors.blue.shade400, Colors.blue.shade700],
+                      [AppColors.primaryStart, AppColors.primaryEnd],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: (gradientColors?.last ?? Colors.blue.shade700)
+                    color: (gradientColors?.last ?? AppColors.primaryEnd)
                         .withOpacity(0.3),
                     blurRadius: 5,
                     offset: const Offset(0, 2),
@@ -476,7 +469,7 @@ class _ListTile extends StatelessWidget {
                       subtitle!,
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey.shade500,
+                        color: AppColors.mutedText,
                       ),
                     ),
                   ],
@@ -487,7 +480,7 @@ class _ListTile extends StatelessWidget {
                 (showArrow
                     ? Icon(
                         Icons.arrow_forward_ios_rounded,
-                        color: Colors.grey[400],
+                        color: AppColors.mutedText,
                         size: 16,
                       )
                     : const SizedBox.shrink()),
@@ -517,13 +510,13 @@ class _ThemeTile extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 gradient: LinearGradient(
-                  colors: [Colors.purple.shade400, Colors.purple.shade700],
+                  colors: [AppColors.themeStart, AppColors.themeEnd],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.purple.withOpacity(0.3),
+                    color: AppColors.themeEnd.withOpacity(0.3),
                     blurRadius: 5,
                     offset: const Offset(0, 2),
                   ),
@@ -551,7 +544,7 @@ class _ThemeTile extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     (isDark ? 'Dark mode' : 'Light mode').tr,
-                    style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+                    style: TextStyle(fontSize: 12, color: AppColors.mutedText),
                   ),
                 ],
               ),
@@ -592,7 +585,7 @@ class _ThemeTile extends StatelessWidget {
                         : const Icon(
                             Icons.lightbulb_outline_rounded,
                             key: ValueKey('light'),
-                            color: Colors.orange,
+                            color: AppColors.themeLightIcon,
                             size: 20,
                           ),
                   ),
@@ -628,13 +621,13 @@ Widget orderCard(
             : AppGradients.lightPlatinum,
         border: Border.all(
           color: isDarkMode
-              ? Colors.white.withOpacity(0.10)
-              : Colors.black.withOpacity(0.09),
+              ? AppColors.darkBorder
+              : AppColors.lightBorder,
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(isDarkMode ? 0.35 : 0.12),
+            color: isDarkMode ? AppColors.darkShadow : AppColors.lightShadow,
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -653,8 +646,8 @@ Widget orderCard(
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: isDarkMode
-                      ? Colors.white.withOpacity(0.04)
-                      : Colors.black.withOpacity(0.025),
+                      ? AppColors.darkImageSurface
+                      : AppColors.lightImageSurface,
                 ),
                 child: Image.asset(image, fit: BoxFit.cover),
               ),
@@ -673,8 +666,8 @@ Widget orderCard(
                 ),
                 decoration: BoxDecoration(
                   color: isDarkMode
-                      ? Colors.black.withOpacity(0.18)
-                      : Colors.white.withOpacity(0.45),
+                      ? AppColors.darkCardSurface
+                      : AppColors.lightCardSurface,
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(24),
                     bottomRight: Radius.circular(24),
@@ -702,16 +695,3 @@ Widget orderCard(
   );
 }
 
-class AppGradients {
-  static const LinearGradient darkTitanium = LinearGradient(
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-    colors: [Color(0xFF4A4B4D), Color(0xFF232526), Color(0xFF111314)],
-  );
-
-  static const LinearGradient lightPlatinum = LinearGradient(
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-    colors: [Color(0xFFFFFFFF), Color(0xFFF1F3F5), Color(0xFFDDE1E6)],
-  );
-}

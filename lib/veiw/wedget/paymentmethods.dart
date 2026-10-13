@@ -229,33 +229,4 @@ Widget buildInfoBox({
   );
 }
 
-// ==========================================
-// ويدجتس مساعدة (Helper Widgets)
-// ==========================================
 
-Widget buildTextField({
-  required String label,
-  required IconData icon,
-  required TextInputType type,
-  bool isSecure = false,
-}) {
-  return TextFormField(
-    keyboardType: type,
-    obscureText: isSecure,
-    decoration: InputDecoration(
-      labelText: label,
-      prefixIcon: Icon(icon, color: Colors.black, size: 20),
-      filled: true,
-      contentPadding: const EdgeInsets.symmetric(vertical: 16),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none,
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Colors.black, width: 1.5),
-      ),
-    ),
-    validator: (v) => v!.trim().isEmpty ? 'مطلوب' : null,
-  );
-}

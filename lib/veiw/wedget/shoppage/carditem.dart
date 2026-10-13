@@ -1,9 +1,8 @@
-import 'dart:async';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/cart_controller.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/data/model/cartmodel.dart';
 import 'package:hos/veiw/wedget/pricecard.dart';
 import 'package:jiffy/jiffy.dart';
@@ -15,176 +14,279 @@ Widget buildCartItemCard(
   int i,
   bool isdark,
 ) {
-  return GetBuilder<CartController>(
-    builder: (controller) => Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(77),
-            blurRadius: 2,
-            offset: const Offset(0, 0.2),
-          ),
-        ],
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        children: [
-          // 1. صورة المنتج
-          Container(
-            width: 110,
-            height: 100,
-            margin: EdgeInsetsDirectional.all(1),
+  return LayoutBuilder(
+    builder: (context, constraints) {
+      final width = constraints.maxWidth;
+      final isCompact = width < 340;
+      final isTablet = width >= 600;
+
+      final imageSize = isCompact ? 110.0 : (isTablet ? 120.0 : 96.0);
+      final imageHeight = isCompact ? 100.0 : (isTablet ? 112.0 : 96.0);
+      final padding = isCompact ? 6.0 : 10.0;
+      final gap = isCompact ? 6.0 : 10.0;
+      final titleSize = isCompact ? 8.0 : (isTablet ? 15.0 : 13.0);
+      final priceSize = isCompact ? 12.0 : (isTablet ? 16.0 : 14.0);
+
+      return GetBuilder<CartController>(
+        builder: (cartController) {
+          if (i >= cartController.data.length) {
+            return const SizedBox.shrink();
+          }
+
+          final currentCart = cartController.data[i];
+
+          return Container(
+            padding: EdgeInsets.all(padding),
             decoration: BoxDecoration(
-              color: Color(0xFFE0E3E8),
-
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(20),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: CachedNetworkImage(
-                alignment: Alignment.center,
-                imageUrl: cart.itemimage!,
-                fit: BoxFit.contain,
-                placeholder: (context, url) => const Center(
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-                errorWidget: (context, url, error) =>
-                    const Icon(Icons.error_outline),
+              border: Border.all(
+                color: isdark ? AppColors.darkBorder : AppColors.lightBorder,
               ),
-            ),
-          ),
-
-          const SizedBox(width: 8),
-
-          // 2. تفاصيل المنتج
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      flex: 2,
-                      child: Text(
-                        cart.itemsname ?? "بدون اسم",
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: Text(
-                        cart.createdAt == null
-                            ? 'منذ مدة'
-                            : Jiffy.parse(cart.createdAt!).fromNow(),
-                        style: const TextStyle(fontSize: 10),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 6),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [ToggleInfoChips(isDark: isdark)],
-                ),
-
-                const SizedBox(height: 6),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    PriceText(controller.data[i].subtotal ?? 0, fontSize: 14),
-                    // كبسولة التحكم في الكمية
-                    Container(
-                      height: 40, // جعلنا الارتفاع مناسب للزرار (بدل 80)
-                      decoration: BoxDecoration(
-                        color: Color(0xFFE0E3E8),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            iconSize: 20,
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(
-                              minWidth: 30,
-                              minHeight: 30,
-                            ),
-                            style: IconButton.styleFrom(
-                              backgroundColor:
-                                  Colors.white, // اللون اللي أنت عايزه
-                              shape: const CircleBorder(),
-                            ),
-                            icon: const Icon(
-                              Icons.remove_rounded,
-                              color: Colors.black,
-                            ),
-                            onPressed: () => controller.decrement(cart.itemid!),
-                          ),
-                          Text(
-                            '${controller.data[i].cartCount}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () => controller.increment(cart.itemid!),
-                            iconSize: 20,
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(
-                              minWidth: 30,
-                              minHeight: 30,
-                            ),
-                            style: IconButton.styleFrom(
-                              backgroundColor:
-                                  Colors.black, // اللون اللي أنت عايزه
-                              shape: const CircleBorder(),
-                            ),
-                            icon: const Icon(
-                              Icons.add_rounded,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+              boxShadow: [
+                BoxShadow(
+                  color: isdark ? AppColors.darkShadow : AppColors.lightShadow,
+                  blurRadius: 6,
+                  offset: const Offset(0, 2),
                 ),
               ],
             ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Product image
+                Container(
+                  width: imageSize,
+                  height: imageHeight,
+                  decoration: BoxDecoration(
+                    color: isdark
+                        ? AppColors.darkImageSurface
+                        : AppColors.editBackground,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: CachedNetworkImage(
+                      imageUrl: currentCart.itemimage ?? '',
+                      fit: BoxFit.contain,
+                      placeholder: (context, url) => const Center(
+                        child: SizedBox(
+                          width: 22,
+                          height: 22,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => Icon(
+                        Icons.image_not_supported_outlined,
+                        color: AppColors.mutedText,
+                        size: 28,
+                      ),
+                    ),
+                  ),
+                ),
+
+                SizedBox(width: gap),
+
+                // Product details
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              currentCart.itemsname ?? 'بدون اسم',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: titleSize,
+                                fontWeight: FontWeight.bold,
+                                height: 1.2,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          if (!isCompact)
+                            Flexible(
+                              child: Text(
+                                currentCart.createdAt == null
+                                    ? 'منذ مدة'
+                                    : Jiffy.parse(
+                                        currentCart.createdAt!,
+                                      ).fromNow(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.end,
+                                style: TextStyle(
+                                  fontSize: isTablet ? 12 : 10,
+                                  color: AppColors.mutedText,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+
+                      SizedBox(height: isCompact ? 6 : 10),
+
+                      // Price and quantity controls
+                      Row(
+                        children: [
+                          Expanded(
+                            child: PriceText(
+                              currentCart.subtotal ?? 0,
+                              fontSize: priceSize,
+                            ),
+                          ),
+                          _QuantityControl(
+                            count: currentCart.cartCount ?? 0,
+                            compact: isCompact,
+                            isDark: isdark,
+                            onDecrease: () {
+                              if (currentCart.itemid != null) {
+                                cartController.decrement(currentCart.itemid!);
+                              }
+                            },
+                            onIncrease: () {
+                              if (currentCart.itemid != null) {
+                                cartController.increment(currentCart.itemid!);
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    },
+  );
+}
+
+class _QuantityControl extends StatelessWidget {
+  final int count;
+  final bool compact;
+  final bool isDark;
+  final VoidCallback onDecrease;
+  final VoidCallback onIncrease;
+
+  const _QuantityControl({
+    required this.count,
+    required this.compact,
+    required this.isDark,
+    required this.onDecrease,
+    required this.onIncrease,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final buttonSize = compact ? 27.0 : 30.0;
+    final iconSize = compact ? 16.0 : 19.0;
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: compact ? 3 : 4, vertical: 4),
+      decoration: BoxDecoration(
+        color: AppColors.editBackground,
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _QuantityButton(
+            icon: Icons.remove_rounded,
+            size: buttonSize,
+            iconSize: iconSize,
+            background: AppColors.lightSurface,
+            foreground: AppColors.darkSurface,
+            onPressed: onDecrease,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: compact ? 6 : 9),
+            child: Text(
+              '$count',
+              style: const TextStyle(
+                color: AppColors.darkSurface,
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+              ),
+            ),
+          ),
+          _QuantityButton(
+            icon: Icons.add_rounded,
+            size: buttonSize,
+            iconSize: iconSize,
+            background: AppColors.darkSurface,
+            foreground: AppColors.lightSurface,
+            onPressed: onIncrease,
           ),
         ],
       ),
-    ),
-  );
+    );
+  }
+}
+
+class _QuantityButton extends StatelessWidget {
+  final IconData icon;
+  final double size;
+  final double iconSize;
+  final Color background;
+  final Color foreground;
+  final VoidCallback onPressed;
+
+  const _QuantityButton({
+    required this.icon,
+    required this.size,
+    required this.iconSize,
+    required this.background,
+    required this.foreground,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: size,
+      height: size,
+      child: IconButton(
+        onPressed: onPressed,
+        padding: EdgeInsets.zero,
+        constraints: BoxConstraints.tightFor(width: size, height: size),
+        style: IconButton.styleFrom(
+          backgroundColor: background,
+          foregroundColor: foreground,
+          shape: const CircleBorder(),
+        ),
+        icon: Icon(icon, size: iconSize),
+      ),
+    );
+  }
 }
 
 Widget infoChip(IconData icon, String label, bool isDark, Key key) {
   return Column(
-    key: key, // استخدام المفتاح القادم مباشرة
+    key: key,
     mainAxisSize: MainAxisSize.min,
     children: [
       Icon(
         icon,
         size: 15,
-        color: isDark ? Colors.green : const Color(0xFF555555),
+        color: isDark ? AppColors.arabic : AppColors.mutedText,
       ),
-      const SizedBox(height: 4),
+      const SizedBox(height: 3),
       Text(
         label,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
         style: TextStyle(
           fontSize: 10,
           fontWeight: FontWeight.w600,
-          color: isDark ? Colors.white60 : const Color(0xFF555555),
+          color: isDark ? Colors.white60 : AppColors.mutedText,
         ),
       ),
     ],
@@ -192,73 +294,5 @@ Widget infoChip(IconData icon, String label, bool isDark, Key key) {
 }
 
 Widget verticalDivider() {
-  return Container(height: 35, width: 1, color: Colors.grey.withAlpha(51));
-}
-
-class ToggleInfoChips extends StatefulWidget {
-  final bool isDark;
-
-  const ToggleInfoChips({super.key, required this.isDark});
-
-  @override
-  State<ToggleInfoChips> createState() => _ToggleInfoChipsState();
-}
-
-class _ToggleInfoChipsState extends State<ToggleInfoChips> {
-  Timer? _timer;
-  bool _showFirst = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      setState(() {
-        _showFirst = !_showFirst;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 80,
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 600), // مدة الحركة
-        transitionBuilder: (Widget child, Animation<double> animation) {
-          // تحديد اتجاه الحركة (من اليمين/اليسار)
-          final offsetAnimation = Tween<Offset>(
-            begin: const Offset(0.0, 1.0), // يبدأ من جهة اليمين خارج الشاشة
-            end: Offset.zero, // ينتهي في المنتصف
-          ).animate(animation);
-
-          return SlideTransition(
-            position: offsetAnimation,
-            child: FadeTransition(
-              opacity: animation, // إضافة شفافيه خفيفة أثناء السحب
-              child: child,
-            ),
-          );
-        },
-        child: _showFirst
-            ? infoChip(
-                Icons.local_shipping_outlined,
-                "Free Delivery",
-                widget.isDark,
-                const ValueKey('delivery'),
-              )
-            : infoChip(
-                Icons.access_time_rounded,
-                "20-25 min",
-                widget.isDark,
-                const ValueKey('time'),
-              ),
-      ),
-    );
-  }
+  return Container(height: 35, width: 1, color: AppColors.border);
 }

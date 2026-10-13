@@ -11,117 +11,123 @@ class Adminpending extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // حقن الكنترولر للتأكد من توفره في الذاكرة ومطابقة الاسم الصحيح للكلاس
+    // حقن الكنترولر للتأكد من توفره في الذاكرة
     Get.put(AdminPindingController());
-    final size = MediaQuery.of(context).size;
-
-    return GetBuilder<AdminPindingController>(
-      builder: (controller) => RefreshIndicator(
-        // جلب وتحديث بيانات القسم الحالي المفتوح بدقة عند سحب الشاشة للأسفل
-        onRefresh: () async => await controller.viewOrders(
-          controller.statusKeys[controller.selectedStatus],
-        ),
-        child: Column(
-          children: [
-            /// 🗂️ 1. أقسام حالات الطلبات (Status Tabs)
-            Container(
-              height: 40,
-              margin: const EdgeInsets.symmetric(vertical: 2),
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                 controller: controller.scrollController,
-                itemCount: controller.orderstatus.length,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      // تغيير الحالة وجلب بياناتها فوراً من الباك إند
-                      controller.changeSelectedStatus(index);
-                    },
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      margin: const EdgeInsets.only(left: 10),
-                      decoration: BoxDecoration(
-                        gradient: controller.selectedStatus == index
-                            ? const LinearGradient(
-                                colors: [
-                                  Colors.blueAccent,
-                                  Colors.lightBlueAccent,
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              )
-                            : null,
-                        color: controller.selectedStatus == index
-                            ? null
-                            : (Get.isDarkMode
-                                  ? Colors.grey[800]
-                                  : Colors.grey[200]),
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        controller.orderstatus[index],
-                        style: TextStyle(
-                          color: controller.selectedStatus == index
-                              ? Colors.white
-                              : (Get.isDarkMode
-                                    ? Colors.white70
-                                    : Colors.black54),
-                          fontWeight: FontWeight.bold,
+    
+    // استخدام LayoutBuilder و MediaQuery لتكييف التصميم بسلاسة مع كافة الشاشات
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final screenWidth = constraints.maxWidth;
+        final screenHeight = constraints.maxHeight;
+        // حساب عدد الأعمدة الديناميكي بناءً على عرض الشاشة (مثلاً تابلت أو موبايل)
+        final crossAxisCount = screenWidth > 600 ? 3 : 2;
+        
+        return GetBuilder<AdminPindingController>(
+          builder: (controller) => RefreshIndicator(
+            onRefresh: () async => await controller.viewOrders(
+              controller.statusKeys[controller.selectedStatus],
+            ),
+            child: Column(
+              children: [
+                /// 🗂️ 1. أقسام حالات الطلبات (Status Tabs)
+                Container(
+                  height: screenHeight*0.07,
+                  margin: const EdgeInsets.symmetric(vertical: 6),
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    controller: controller.scrollController,
+                    itemCount: controller.orderstatus.length,
+                    itemBuilder: (context, index) {
+                      final isSelected = controller.selectedStatus == index;
+                      return InkWell(
+                        onTap: () {
+                          controller.changeSelectedStatus(index);
+                        },
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.05,
+                          ),
+                          margin: const EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                            gradient: isSelected
+                                ? const LinearGradient(
+                                    colors: [
+                                      Colors.blueAccent,
+                                      Colors.lightBlueAccent,
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  )
+                                : null,
+                            color: isSelected
+                                ? null
+                                : (Get.isDarkMode
+                                    ? Colors.grey[800]
+                                    : Colors.grey[200]),
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            controller.orderstatus[index],
+                            style: TextStyle(
+                              color: isSelected
+                                  ? Colors.white
+                                  : (Get.isDarkMode
+                                      ? Colors.white70
+                                      : Colors.black54),
+                              fontWeight: FontWeight.bold,
+                              fontSize: screenWidth > 600 ? 16 : 14,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-
-            /// 📦 2. قائمة عرض الطلبات المستلمة (Grid)
-            Expanded(
-              child: HandlingDataView(
-                emptyStyle: EmptyStateStyle.style2,
-                mediaType: HandlingMediaType.animation,
-                message:
-                    "لا توجد طلبات حالياً", // رسالة توضيحية عند عدم وجود بيانات
-                imagePath:
-                    Imageasset.nodata, // صورة توضيحية عند عدم وجود بيانات
-                statusrequest: controller
-                    .statusrequest, // يتكفل تلقائياً بالـ Loading، والـ No Data بناءً على استجابة السيرفر
-                widget: MasonryGridView.builder(
-                  physics:
-                      const AlwaysScrollableScrollPhysics(), // لضمان بقاء الـ RefreshIndicator يعمل بكفاءة
-                  padding: EdgeInsets.all(size.width * 0.03),
-                  gridDelegate:
-                      const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                      ),
-                  mainAxisSpacing: size.width * 0.025,
-                  crossAxisSpacing: size.width * 0.025,
-                  itemCount: controller.orderspending.length,
-                  itemBuilder: (context, index) {
-                    final order = controller.orderspending[index];
-
-                    // استخراج حالة التصميم والترجمة الخاصة بهذا الكارت بأسلوب آمن
-                    controller.getcolorandstause(order.status);
-                    final statuscolor = controller.statusColor ?? Colors.grey;
-
-                    return OrderCard(
-                      orderimage: orderimage,
-                      order: order,
-                      status: order.status,
-                      color: statuscolor,
-                      w: size.width,
-                      onTap: () => controller.gotodetails(order),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
-              ),
+
+                /// 📦 2. قائمة عرض الطلبات (Grid) متجاوبة
+                Expanded(
+                  child: HandlingDataView(
+                    emptyStyle: EmptyStateStyle.style2,
+                    mediaType: HandlingMediaType.animation,
+                    message: "لا توجد طلبات حالياً",
+                    imagePath: Imageasset.nodata,
+                    statusrequest: controller.statusrequest,
+                    widget: MasonryGridView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: EdgeInsets.all(screenWidth * 0.03),
+                      gridDelegate:
+                          SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: crossAxisCount,
+                      ),
+                      mainAxisSpacing: screenWidth * 0.025,
+                      crossAxisSpacing: screenWidth * 0.025,
+                      itemCount: controller.orderspending.length,
+                      itemBuilder: (context, index) {
+                        final order = controller.orderspending[index];
+
+                        controller.getcolorandstause(order.status);
+                        final statuscolor = controller.statusColor ?? Colors.grey;
+
+                        return OrderCard(
+                          orderimage: orderimage,
+                          order: order,
+                          status: order.status,
+                          color: statuscolor,
+                          w: screenWidth,
+                          onTap: () => controller.gotodetails(order),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

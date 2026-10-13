@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:hos/core/conistant/appcolor.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 
 class AppTheme {
   // 1. ألوان احترافية للثيم الفاتح (Light Palette)
@@ -46,7 +46,7 @@ class AppTheme {
   static ElevatedButtonThemeData _elevatedButtonTheme() {
     return ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Appcolor.black, // لون أزرق داكن أنيق للأزرار
+        backgroundColor: AppColors.black, // لون أزرق داكن أنيق للأزرار
         foregroundColor: Colors.white, // نص الزر أبيض ليكون واضحاً
         elevation: 0,
         padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
@@ -80,7 +80,7 @@ class AppTheme {
     appBarTheme: _appBar(_lightBg, _lightTextMain, 'RobotoMono'),
     textTheme: _getTextTheme('RobotoMono', false),
     colorScheme: ColorScheme.fromSeed(
-      seedColor: Appcolor.primaryColor,
+      seedColor: AppColors.primaryColor,
       surface: _lightSurface,
     ),
     elevatedButtonTheme: _elevatedButtonTheme(),
@@ -93,7 +93,7 @@ class AppTheme {
     appBarTheme: _appBar(_darkBg, _darkTextMain, 'RobotoMono'),
     textTheme: _getTextTheme('RobotoMono', true),
     colorScheme: ColorScheme.fromSeed(
-      seedColor: Appcolor.primaryColor,
+      seedColor: AppColors.primaryColor,
       brightness: Brightness.dark,
       surface: _darkSurface,
     ),
@@ -107,7 +107,7 @@ class AppTheme {
     appBarTheme: _appBar(_lightBg, _lightTextMain, 'cairo'),
     textTheme: _getTextTheme('cairo', false),
     colorScheme: ColorScheme.fromSeed(
-      seedColor: Appcolor.primaryColor,
+      seedColor: AppColors.primaryColor,
       surface: _lightSurface,
     ),
     elevatedButtonTheme: _elevatedButtonTheme(),
@@ -120,7 +120,7 @@ class AppTheme {
     appBarTheme: _appBar(_darkBg, _darkTextMain, 'cairo'),
     textTheme: _getTextTheme('cairo', true),
     colorScheme: ColorScheme.fromSeed(
-      seedColor: Appcolor.primaryColor,
+      seedColor: AppColors.primaryColor,
       brightness: Brightness.dark,
       surface: _darkSurface,
     ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hos/core/conistant/appcolor.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 
 // ignore: must_be_immutable
 class Custumlang extends StatelessWidget {
@@ -14,7 +14,7 @@ class Custumlang extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Appcolor.deepPurple,
+        color: AppColors.deepPurple,
       ),
       child: TextButton(
         onPressed: onPressed,

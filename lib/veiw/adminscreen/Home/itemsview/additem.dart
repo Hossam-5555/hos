@@ -38,16 +38,18 @@ class ItemFormScreen extends GetView<ItemFormController> {
         body: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) {
-              final wide = constraints.maxWidth >= 800;
-              final hPad = wide ? 32.0 : 16.0;
+              final w = constraints.maxWidth;
+              final wide = w >= 800; // two-column layout
+              final pairs = wide || w >= 560; // fields side by side
+              final hPad = wide ? 32.0 : (w < 360 ? 12.0 : 16.0);
 
               final images = _Card(child: _ImagesSection(c: c));
               final status = _Card(child: _StatusTile(c: c));
               final basic = _Card(
-                child: _BasicSection(c: c, wide: wide),
+                child: _BasicSection(c: c, wide: pairs),
               );
               final pricing = _Card(
-                child: _PricingSection(c: c, wide: wide),
+                child: _PricingSection(c: c, wide: pairs),
               );
 
               return Align(
@@ -71,8 +73,8 @@ class ItemFormScreen extends GetView<ItemFormController> {
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(
-                                  width: 340,
+                                Expanded(
+                                  flex: 4,
                                   child: Column(
                                     children: [
                                       images,
@@ -83,6 +85,7 @@ class ItemFormScreen extends GetView<ItemFormController> {
                                 ),
                                 const SizedBox(width: 20),
                                 Expanded(
+                                  flex: 7,
                                   child: Column(
                                     children: [
                                       basic,
@@ -105,10 +108,10 @@ class ItemFormScreen extends GetView<ItemFormController> {
                           const SizedBox(height: 24),
                           SizedBox(
                             width: double.infinity,
-                            height: 52,
                             child: FilledButton(
                               onPressed: c.isLoading ? null : c.submit,
                               style: FilledButton.styleFrom(
+                                minimumSize: const Size.fromHeight(52),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(14),
                                 ),
@@ -154,9 +157,10 @@ class _Card extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final narrow = MediaQuery.sizeOf(context).width < 360;
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(narrow ? 14 : 20),
       decoration: BoxDecoration(
         color: cs.surface,
         borderRadius: BorderRadius.circular(20),
@@ -252,7 +256,8 @@ class _ImagesSection extends StatelessWidget {
           onTap: c.pickImages,
           child: Container(
             width: double.infinity,
-            height: 110,
+            constraints: const BoxConstraints(minHeight: 110),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
             decoration: BoxDecoration(
               color: cs.primary.withAlpha(15),
               borderRadius: BorderRadius.circular(14),
@@ -269,6 +274,7 @@ class _ImagesSection extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   'tap_to_select_images'.tr,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     color: cs.primary,
                     fontWeight: FontWeight.bold,
@@ -277,6 +283,7 @@ class _ImagesSection extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   'select_multiple_hint'.tr,
+                  textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 11, color: cs.outline),
                 ),
               ],
@@ -492,6 +499,8 @@ class _PricingSection extends StatelessWidget {
                 child: Text(
                   'stock_quantity'.tr,
                   style: const TextStyle(fontSize: 16),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               IconButton(

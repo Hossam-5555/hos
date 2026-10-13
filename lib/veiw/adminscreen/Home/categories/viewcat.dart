@@ -14,7 +14,6 @@ class ViewCategories extends StatelessWidget {
   Widget build(BuildContext context) {
     // حقن الـ Controller
     final c = Get.put(ViewCatController());
-    final w = MediaQuery.of(context).size.width;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -29,165 +28,211 @@ class ViewCategories extends StatelessWidget {
                 ? Statusrequest.failure
                 : controller.statusrequest,
             widget: SafeArea(
-              child: Column(
-                children: [
-                  // --- كارت علوي يعرض إحصائية الأقسام ---
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 5, 16, 12),
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: isDark ? Color(0xFF323538) : Color(0xFFE0E3E8),
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.03),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF00F2FE).withOpacity(0.12),
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.inventory_2_outlined,
-                              color: Color(0xFF0284C7),
-                              size: 18,
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Categories'.tr,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                '${controller.catdata.length} ${'categories'.tr}',
-                                style: const TextStyle(
-                                  fontSize: 13,
-                                  color: Color(0xFF6B7280),
-                                ),
-                              ),
-                            ],
-                          ),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final w = constraints.maxWidth;
+                  final compact = w < 360;
 
-                          // شارة عدد الأقسام الحالية
+                  // padding أفقي حسب حجم الشاشة
+                  final hPad = w >= 800 ? 32.0 : (compact ? 12.0 : 16.0);
+
+                  // عدد الأعمدة حسب العرض (2 على الموبايل، وأكتر على التابلت/الويب)
+                  final columns = (w / 200).floor().clamp(2, 6);
+                  final gap = compact ? 8.0 : 12.0;
+
+                  return Align(
+                    alignment: Alignment.topCenter,
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 1200),
+                      child: Column(
+                        children: [
+                          // --- كارت علوي يعرض إحصائية الأقسام ---
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 14.0,
-                              vertical: 5.0,
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                              hPad,
+                              5,
+                              hPad,
+                              12,
                             ),
                             child: Container(
+                              padding: EdgeInsets.all(compact ? 12 : 16),
                               decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                  colors: [
-                                    Color(0xFF00F2FE),
-                                    Color(0xFF4FACFE),
-                                  ],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                ),
-                                borderRadius: BorderRadius.circular(12),
+                                color: isDark
+                                    ? const Color(0xFF323538)
+                                    : const Color(0xFFE0E3E8),
+                                borderRadius: BorderRadius.circular(16),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: const Color(
-                                      0xFF4FACFE,
-                                    ).withOpacity(0.35),
-                                    blurRadius: 8,
-                                    offset: const Offset(0, 3),
+                                    color: Colors.black.withAlpha(8),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 4),
                                   ),
                                 ],
                               ),
-                              child: Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  borderRadius: BorderRadius.circular(12),
-                                  onTap: () => c.goToAddPage(),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 5,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: const Color(
+                                        0xFF00F2FE,
+                                      ).withAlpha(31),
+                                      shape: BoxShape.circle,
                                     ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
+                                    child: const Icon(
+                                      Icons.inventory_2_outlined,
+                                      color: Color(0xFF0284C7),
+                                      size: 18,
+                                    ),
+                                  ),
+                                  SizedBox(width: compact ? 8 : 12),
+
+                                  // النصوص تاخد المساحة المتاحة
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        const Icon(
-                                          Icons.add_rounded,
-                                          color: Colors.white,
-                                          size: 20,
-                                        ),
-                                        const SizedBox(width: 4),
                                         Text(
-                                          'add_category'.tr,
+                                          'Categories'.tr,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
-                                            color: Colors.white,
+                                            fontSize: 15,
                                             fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          '${controller.catdata.length} ${'categories'.tr}',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
                                             fontSize: 13,
+                                            color: Color(0xFF6B7280),
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                ),
+                                  SizedBox(width: compact ? 8 : 12),
+
+                                  // زر إضافة قسم
+                                  Flexible(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        gradient: const LinearGradient(
+                                          colors: [
+                                            Color(0xFF00F2FE),
+                                            Color(0xFF4FACFE),
+                                          ],
+                                          begin: AlignmentDirectional
+                                              .centerStart,
+                                          end: AlignmentDirectional.centerEnd,
+                                        ),
+                                        borderRadius: BorderRadius.circular(12),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color(
+                                              0xFF4FACFE,
+                                            ).withAlpha(89),
+                                            blurRadius: 8,
+                                            offset: const Offset(0, 3),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        child: InkWell(
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                          onTap: () => c.goToAddPage(),
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: compact ? 8 : 12,
+                                              vertical: 8,
+                                            ),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                const Icon(
+                                                  Icons.add_rounded,
+                                                  color: Colors.white,
+                                                  size: 20,
+                                                ),
+                                                const SizedBox(width: 4),
+                                                Flexible(
+                                                  child: FittedBox(
+                                                    fit: BoxFit.scaleDown,
+                                                    child: Text(
+                                                      'add_category'.tr,
+                                                      maxLines: 1,
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 13,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
+                            ),
+                          ),
+
+                          // --- شبكة الأقسام (GridView) ---
+                          Expanded(
+                            child: GridView.builder(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: hPad,
+                                vertical: 8,
+                              ),
+                              itemCount: controller.catdata.length,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: columns,
+                                    childAspectRatio: 0.82,
+                                    crossAxisSpacing: gap,
+                                    mainAxisSpacing: gap,
+                                  ),
+                              itemBuilder: (context, index) {
+                                final categoryItem = controller.catdata[index];
+                                return CategoryCard(
+                                  onTap: () {
+                                    controller.gotoproducts(categoryItem);
+                                  },
+                                  name: controller.isarabic
+                                      ? categoryItem.nameAr
+                                      : categoryItem.name,
+                                  onEdit: () =>
+                                      controller.goToEditPage(categoryItem),
+                                  onDelete: () {
+                                    AppCupertinoDialog.show(
+                                      title: "حذف القسم",
+                                      message: "هل أنت متأكد من حذف هذا القسم؟",
+                                      onConfirm: () {
+                                        controller.delete(categoryItem.id!);
+                                      },
+                                    );
+                                  },
+                                  imageUrl: categoryItem.image!,
+                                );
+                              },
                             ),
                           ),
                         ],
                       ),
                     ),
-                  ),
-
-                  // --- شبكة الأقسام (GridView) ---
-                  Expanded(
-                    child: GridView.builder(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      itemCount: controller.catdata.length,
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent:
-                            0.48 * w, // تجاوب ديناميكي مع الشاشات
-                        childAspectRatio: 0.82,
-                        crossAxisSpacing: 12,
-                        mainAxisSpacing: 12,
-                      ),
-                      itemBuilder: (context, index) {
-                        final categoryItem = controller.catdata[index];
-                        return CategoryCard(
-                          onTap: () {
-                            controller.gotoproducts(categoryItem);
-                          },
-                          name: controller.isarabic
-                              ? categoryItem.nameAr
-                              : categoryItem.name,
-                          onEdit: () => controller.goToEditPage(categoryItem),
-                          onDelete: () {
-                            AppCupertinoDialog.show(
-                              title: "حذف القسم",
-                              message: "هل أنت متأكد من حذف هذا القسم؟",
-                              onConfirm: () {
-                                controller.delete(categoryItem.id!);
-                              },
-                            );
-                          },
-                          imageUrl: categoryItem.image!,
-                        );
-                      },
-                    ),
-                  ),
-                ],
+                  );
+                },
               ),
             ),
           );

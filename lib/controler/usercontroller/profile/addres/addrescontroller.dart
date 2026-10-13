@@ -12,7 +12,6 @@ import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/addresdata.dart';
 import 'package:hos/data/model/addres_model.dart';
-import 'package:hos/veiw/userscreen/screen/profile/addres/viewaddres.dart';
 import 'package:latlong2/latlong.dart';
 
 class AddressController extends GetxController {
@@ -218,31 +217,11 @@ class AddressController extends GetxController {
   }
 
   // ignore: non_constant_identifier_names
-  final GlobalKey<AnimatedListState> Addressket =
-      GlobalKey<AnimatedListState>();
 
   void deleteAddres(int addresid, BuildContext context) {
     int index = listaddresdata.indexWhere((e) => e.id == addresid);
 
     if (index != -1) {
-      var removedItem = listaddresdata[index];
-
-      if (Addressket.currentState != null) {
-        Addressket.currentState!.removeItem(
-          index,
-          (context, animation) => SizeTransition(
-            sizeFactor: animation,
-            child: AddressCard(
-              address: removedItem,
-              isDefault: false,
-              onDelete: () {},
-              onSetDefault: () {},
-            ),
-          ),
-          duration: const Duration(milliseconds: 300),
-        );
-      }
-
       listaddresdata.removeAt(index);
       addresdata.deleteAddresdata(addresid);
 

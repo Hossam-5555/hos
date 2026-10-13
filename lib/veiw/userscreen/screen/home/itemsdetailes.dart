@@ -6,7 +6,7 @@ import 'package:hos/controler/usercontroller/checkout&cart/cart_controller.dart'
 import 'package:hos/controler/usercontroller/home/favorite/fav_controller.dart';
 import 'package:hos/controler/usercontroller/home/itemsdetailscontroller.dart';
 import 'package:hos/core/class/crud.dart';
-import 'package:hos/core/conistant/appcolor.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
@@ -141,7 +141,7 @@ class Itemsdetailes extends StatelessWidget {
                                         : 5,
                                     height: 8,
                                     decoration: BoxDecoration(
-                                      color: Appcolor.primaryColor,
+                                      color: AppColors.primaryColor,
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     duration: const Duration(milliseconds: 500),
@@ -233,7 +233,7 @@ class Itemsdetailes extends StatelessWidget {
                                         ? "See less".tr
                                         : "More...".tr,
                                     style: TextStyle(
-                                      color: Appcolor.primaryColor,
+                                      color: AppColors.primaryColor,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 13,
                                     ),

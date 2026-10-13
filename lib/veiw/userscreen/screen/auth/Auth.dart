@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/auth/auth_controller.dart';
 import 'package:hos/core/class/crud.dart';
-import 'package:hos/core/conistant/appcolor.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/appexitalert.dart';
 import 'package:hos/core/functions/validinput.dart';
@@ -25,7 +25,7 @@ class AuthPage extends StatelessWidget {
 
     final glassColor = isDark
         ? Colors.white.withAlpha(15)
-        : Appcolor.glass.withAlpha(51);
+        : AppColors.glass.withAlpha(51);
     final glassBorder = isDark
         ? Colors.white.withAlpha(40)
         : const Color.fromARGB(240, 145, 222, 255).withAlpha(77);
@@ -312,7 +312,7 @@ class AuthPage extends StatelessWidget {
                                               ? 'Login'
                                               : 'Create Account',
                                           width: width * 0.75,
-                                          buttonColor: Appcolor.primaryColor,
+                                          buttonColor: AppColors.primaryColor,
                                         ),
 
                                         SizedBox(height: height * 0.015),
@@ -422,11 +422,11 @@ class _ModeSwitcher extends StatelessWidget {
               widthFactor: 0.5,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Appcolor.primaryColor,
+                  color: AppColors.primaryColor,
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: Appcolor.primaryColor.withAlpha(100),
+                      color: AppColors.primaryColor.withAlpha(100),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),

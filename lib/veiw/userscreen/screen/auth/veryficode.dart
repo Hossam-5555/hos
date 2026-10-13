@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/auth/forgetpass/veryficodecontroller.dart';
 import 'package:hos/core/class/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
-import 'package:hos/core/conistant/appcolor.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
 class Veryficode extends StatelessWidget {
@@ -47,14 +47,14 @@ class Veryficode extends StatelessWidget {
                       width: 84,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Appcolor.primaryColor.withAlpha(
+                        color: AppColors.primaryColor.withAlpha(
                           isDark ? 40 : 25,
                         ),
                       ),
                       child: Icon(
                         Icons.mark_email_read_rounded,
                         size: 40,
-                        color: Appcolor.primaryColor,
+                        color: AppColors.primaryColor,
                       ),
                     ),
 
@@ -85,9 +85,9 @@ class Veryficode extends StatelessWidget {
                       borderRadius: BorderRadius.circular(14),
                       borderColor: fieldEnabledColor,
                       enabledBorderColor: fieldEnabledColor,
-                      focusedBorderColor: Appcolor.primaryColor,
+                      focusedBorderColor: AppColors.primaryColor,
                       showFieldAsBox: true,
-                      cursorColor: Appcolor.primaryColor,
+                      cursorColor: AppColors.primaryColor,
                       textStyle: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -125,7 +125,7 @@ class Veryficode extends StatelessWidget {
                           child: Text(
                             "Resend",
                             style: TextStyle(
-                              color: Appcolor.primaryColor,
+                              color: AppColors.primaryColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 13,
                             ),
