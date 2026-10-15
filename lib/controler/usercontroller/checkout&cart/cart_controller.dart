@@ -6,7 +6,6 @@ import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/cartdata.dart';
-import 'package:hos/data/model/coupone_model.dart';
 import 'package:hos/data/model/cartmodel.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/checkout.dart';
 
@@ -27,7 +26,7 @@ class CartController extends GetxController {
   // الكوبون
   var coupone = true.obs;
   TextEditingController? coubonecontroller;
-  CouponeModel? couponeModel;
+  // CouponeModel? couponeModel;
   double couponediscount = 0;
   String? couponename;
   String? couponeID;

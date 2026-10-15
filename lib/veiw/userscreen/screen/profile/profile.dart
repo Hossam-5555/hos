@@ -7,6 +7,8 @@ import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/conistant/static.dart';
 import 'package:hos/core/localization/changlocal.dart';
 import 'package:hos/core/serveces/myservisec.dart';
+import 'package:hos/veiw/adminscreen/coupon/addcoupon.dart';
+import 'package:hos/veiw/adminscreen/coupon/coupone.dart';
 import 'package:hos/veiw/userscreen/screen/profile/Editprofile.dart';
 import 'package:hos/veiw/userscreen/screen/profile/about_us_page.dart';
 import 'package:hos/veiw/wedget/bulidfooter.dart';
@@ -83,17 +85,17 @@ class ProfilePage extends StatelessWidget {
                                 AppColors.danger,
                               ],
                               icon: Icons.discount,
-                              title: "Coupone",
+                              title: "brands",
                               onTap: () => Get.toNamed(Approute.myfavorite),
                             ),
                             _ListTile(
                               gradientColors: const [
-                                AppColors.lightBorder,
-                                AppColors.contactStart,
+                                Color.fromARGB(172, 158, 4, 125),
+                                Color.fromARGB(255, 180, 85, 61),
                               ],
                               icon: Icons.discount,
-                              title: "brands",
-                              onTap: () => Get.toNamed(Approute.myfavorite),
+                              title: "Coupone",
+                              onTap: () => Get.to(()=>ViewCoupons()),
                             ),
                           ],
                         ),
