@@ -423,11 +423,10 @@ class PopularCategoriesSection extends StatelessWidget {
         Skeletonizer(
           enabled: showSkeleton,
           child: Wrap(
-            runSpacing: 4,
             children: displayCategories.map((item) {
-              return BuildCategoryItems(
-                name: c.isarabic ? item.nameAr : item.name,
-                isSelected: true,
+              return AppChip(
+                label: (c.isarabic ? item.nameAr : item.name) ?? "",
+                isSelected: false,
                 onTap: () {
                   c.search!.text = item.name!;
                   c.onsearch();

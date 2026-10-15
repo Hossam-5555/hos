@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 
 import 'package:hos/controler/admincontroller/order/orderdetailscontroller.dart';
 import 'package:hos/core/class/crud.dart';
-import 'package:hos/veiw/userscreen/screen/profile/order/orderdetailes.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
+import 'package:hos/veiw/wedget/order/ordersdetails.dart';
 
 class AdminOrderdetails extends StatelessWidget {
   const AdminOrderdetails({super.key});

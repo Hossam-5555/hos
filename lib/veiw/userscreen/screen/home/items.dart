@@ -45,8 +45,16 @@ class Items extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            _CategoryBar(controller: controller, height: height, width: width),
-
+            GetBuilder<ItemsController>(
+              builder: (c) => ChipsBar(
+                labels: c.categories
+                    .map((cat) => (c.isarabic ? cat.nameAr : cat.name) ?? "")
+                    .toList(),
+                selectedIndex: c.selecteditem!,
+                onSelected: (i) => c.changcat(i, c.categories[i].id.toString()),
+              ),
+            ),
+            SizedBox(height: height * 0.01),
             Expanded(
               child: GetBuilder<ItemsController>(
                 builder: (controller) => HandlingDataView(
@@ -66,48 +74,6 @@ class Items extends StatelessWidget {
   }
 }
 
-class _CategoryBar extends StatelessWidget {
-  const _CategoryBar({
-    required this.controller,
-    required this.height,
-    required this.width,
-  });
-
-  final ItemsController controller;
-  final double height;
-  final double width;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: height * 0.01, bottom: height * 0.01),
-      height: height * 0.07,
-      width: width,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: width * 0.02),
-        itemCount: controller.categories.length,
-        itemBuilder: (_, i) {
-          final catmodel = controller.categories[i];
-          controller.indexofcategrry = i;
-          return GetBuilder<ItemsController>(
-            builder: (controller) {
-              return BuildCategoryItems(
-                name: controller.isarabic ? catmodel.nameAr : catmodel.name,
-
-                isSelected: controller.selecteditem == i,
-
-                onTap: () {
-                  controller.changcat(i, catmodel.id.toString());
-                },
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-}
 
 class _ProductGrid extends StatelessWidget {
   const _ProductGrid({required this.controller, required this.width});

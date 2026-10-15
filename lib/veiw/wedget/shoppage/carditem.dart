@@ -22,8 +22,8 @@ Widget buildCartItemCard(
 
       final imageSize = isCompact ? 110.0 : (isTablet ? 120.0 : 96.0);
       final imageHeight = isCompact ? 100.0 : (isTablet ? 112.0 : 96.0);
-      final padding = isCompact ? 6.0 : 10.0;
-      final gap = isCompact ? 6.0 : 10.0;
+      final padding = isCompact ? 5.0 : 10.0;
+      final gap = isCompact ? 15.0 : 14.0;
       final titleSize = isCompact ? 8.0 : (isTablet ? 15.0 : 13.0);
       final priceSize = isCompact ? 12.0 : (isTablet ? 16.0 : 14.0);
 
@@ -90,7 +90,8 @@ Widget buildCartItemCard(
                 // Product details
                 Expanded(
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
+                    // mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
@@ -129,7 +130,7 @@ Widget buildCartItemCard(
                         ],
                       ),
 
-                      SizedBox(height: isCompact ? 6 : 10),
+                      SizedBox(height: isCompact ? 15 : 20),
 
                       // Price and quantity controls
                       Row(

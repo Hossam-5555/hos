@@ -1,43 +1,79 @@
 import 'package:flutter/material.dart';
 
-class BuildCategoryItems extends StatelessWidget {
-  final String? name;
-  final bool isSelected;
-  final VoidCallback onTap;
-  BuildCategoryItems({
+/// شريط chips أفقي قابل لإعادة الاستخدام في أي مكان.
+/// ياخد القائمة والـ index المختار وخلاص، من غير أي controller.
+class ChipsBar extends StatelessWidget {
+  const ChipsBar({
     super.key,
-    required this.name,
+    required this.labels,
+    required this.selectedIndex,
+    required this.onSelected,
+    this.height = 52,
+    this.padding = const EdgeInsets.symmetric(horizontal: 8),
+  });
+
+  final List<String> labels;
+  final int selectedIndex;
+  final ValueChanged<int> onSelected;
+  final double height;
+  final EdgeInsetsGeometry padding;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: padding,
+        itemCount: labels.length,
+        itemBuilder: (_, i) => AppChip(
+          label: labels[i],
+          isSelected: i == selectedIndex,
+          onTap: () => onSelected(i),
+        ),
+      ),
+    );
+  }
+}
+
+/// chip واحد (نفس تصميم BuildCategoryItems).
+class AppChip extends StatelessWidget {
+  const AppChip({
+    super.key,
+    required this.label,
     required this.isSelected,
     required this.onTap,
   });
 
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+
   @override
   Widget build(BuildContext context) {
-    
-
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final borderGradient = LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
       stops: const [0.0, 0.5, 1.0],
       colors: isSelected
-          ? (isDarkMode
+          ? (isDark
                 ? [
-                    const Color.fromARGB(255, 78, 78, 78).withOpacity(0.8),
+                    const Color.fromARGB(255, 78, 78, 78).withAlpha(204),
                     Colors.transparent,
-                    Colors.white.withOpacity(0.3),
+                    Colors.white.withAlpha(77),
                   ]
                 : [
                     const Color.fromARGB(255, 63, 65, 66).withAlpha(125),
                     Colors.transparent,
-                    Colors.blueAccent.withOpacity(0.2),
+                    Colors.blueAccent.withAlpha(51),
                   ])
-          : (isDarkMode
+          : (isDark
                 ? [
-                    Colors.white.withOpacity(0.1),
+                    Colors.white.withAlpha(26),
                     Colors.transparent,
-                    Colors.white.withOpacity(0.02),
+                    Colors.white.withAlpha(5),
                   ]
                 : [
                     Colors.grey.shade300,
@@ -47,33 +83,37 @@ class BuildCategoryItems extends StatelessWidget {
     );
 
     final innerColor = isSelected
-        ? (isDarkMode ? const Color(0xFF120F11) : Colors.white)
-        : (isDarkMode ? Colors.white.withOpacity(0.03) : Colors.grey.shade50);
+        ? (isDark ? const Color(0xFF120F11) : Colors.white)
+        : (isDark ? Colors.white.withAlpha(8) : Colors.grey.shade50);
 
     final boxShadow = isSelected
         ? [
             BoxShadow(
-              color: isDarkMode
-                  ? Colors.black.withOpacity(0.3)
-                  : Colors.black.withOpacity(0.05),
+              color: isDark
+                  ? Colors.black.withAlpha(77)
+                  : Colors.black.withAlpha(13),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
           ]
         : <BoxShadow>[];
 
+    final activeColor = isDark ? Colors.white : Colors.blue;
+    final inactiveColor = isDark ? Colors.grey.shade400 : Colors.grey.shade600;
+
     return Padding(
-      padding: const EdgeInsets.only(right: 5, bottom: 5, top: 5),
+      // Directional: يشتغل صح مع العربي والإنجليزي
+      padding: const EdgeInsetsDirectional.only(end: 6, top: 5, bottom: 5),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.fastLinearToSlowEaseIn,
+        padding: const EdgeInsets.all(1),
         decoration: BoxDecoration(
-          color: Color(0xFF767D84),
+          color: const Color(0xFF767D84),
           borderRadius: BorderRadius.circular(30),
           gradient: borderGradient,
           boxShadow: boxShadow,
         ),
-        padding: const EdgeInsets.all(1),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           curve: Curves.fastLinearToSlowEaseIn,
@@ -85,46 +125,32 @@ class BuildCategoryItems extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(28.5),
-
-              // هنا الـ Widget مش عارف إيه اللي هيحصل
               onTap: onTap,
-
-              // splashColor:
-              //     isDarkMode ? Colors.white10 : Colors.black12,
-              // highlightColor: Colors.transparent,
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 10,
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [_buildTextSection(isSelected, name!, isDarkMode)],
+                child: Center(
+                  widthFactor: 1,
+                  child: AnimatedDefaultTextStyle(
+                    duration: const Duration(milliseconds: 300),
+                    style: TextStyle(
+                      color: isSelected ? activeColor : inactiveColor,
+                      fontSize: 14,
+                      fontWeight: isSelected
+                          ? FontWeight.bold
+                          : FontWeight.w500,
+                      letterSpacing: 0.3,
+                    ),
+                    child: Text(label, maxLines: 1),
+                  ),
                 ),
               ),
             ),
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildTextSection(bool isSelected, String title, bool isDarkMode) {
-    final activeColor = isDarkMode ? Colors.white : Colors.blue;
-
-    final inactiveColor = isDarkMode
-        ? Colors.grey.shade400
-        : Colors.grey.shade600;
-
-    return AnimatedDefaultTextStyle(
-      duration: const Duration(milliseconds: 300),
-      style: TextStyle(
-        color: isSelected ? activeColor : inactiveColor,
-        fontSize: 14,
-        fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-        letterSpacing: 0.3,
-      ),
-      child: Text(title),
     );
   }
 }
