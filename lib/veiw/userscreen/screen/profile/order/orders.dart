@@ -66,7 +66,7 @@ class Orders extends StatelessWidget {
                     itemCount: controller.orders.length,
                     itemBuilder: (context, index) {
                       final order = controller.orders[index];
-                      controller.Getcolorandstause(order.status);
+                      controller.getcolorandstause(order.status);
                       final color = controller.statusColor;
                       final status = order.status;
 

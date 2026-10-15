@@ -34,8 +34,6 @@ class AdminOrderdetails extends StatelessWidget {
             return const Center(child: Text("No Data"));
           }
 
-          controller.getcolorandstause(o.status);
-
           return ListView(
             // 100 سفلي عشان زرار تغيير الحالة العايم
             padding: EdgeInsets.fromLTRB(w * 0.04, 10, w * 0.04, 100),
@@ -99,7 +97,7 @@ class AdminOrderdetails extends StatelessWidget {
                 child: orderSummary(o),
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 12),
             ],
           );
         },
@@ -108,9 +106,7 @@ class AdminOrderdetails extends StatelessWidget {
       // ================================================================
       // CHANGE STATUS BUTTON (admin only)
       // ================================================================
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
-      floatingActionButton: GetBuilder<AdminOrderDetailesController>(
+      bottomNavigationBar: GetBuilder<AdminOrderDetailesController>(
         builder: (_) {
           final o = controller.order;
 
@@ -123,11 +119,11 @@ class AdminOrderdetails extends StatelessWidget {
               left: w * 0.04,
               right: w * 0.04,
               top: 12,
-              bottom: MediaQuery.of(context).padding.bottom + 12,
+              bottom: MediaQuery.of(context).padding.bottom,
             ),
             child: Checkbutton.widget(
               width: w * 0.9,
-              h: 50,
+              h: 60,
               buttonColor:
                   controller.statusColor ?? Theme.of(context).primaryColor,
               statusrequest: Statusrequest.none,

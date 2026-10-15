@@ -88,27 +88,19 @@ Widget orderStatusSection(
   String statusText,
 ) {
   final steps = [
-    {
-      "icon": Icons.receipt_long,
-      "label": "Pending",
-      "status": "pending",
-      "color": Colors.orange,
-    },
+    {"icon": Icons.receipt_long, "status": "pending", "color": Colors.orange},
     {
       "icon": Icons.inventory_2_outlined,
-      "label": "Processing",
       "status": "processing",
       "color": Colors.blue,
     },
     {
       "icon": Icons.local_shipping_outlined,
-      "label": "Shipped",
       "status": "shipped",
       "color": const Color.fromARGB(255, 179, 123, 39),
     },
     {
       "icon": Icons.check_circle_outline,
-      "label": "Delivered",
       "status": "delivered",
       "color": const Color.fromARGB(255, 33, 201, 10),
     },
@@ -231,25 +223,6 @@ Widget orderStatusSection(
                             ),
                           ),
                         ],
-                      ),
-
-                      SizedBox(height: r.s(7)),
-
-                      // FittedBox: لو الاسم مش داخل في المساحة يصغر بدل ما يعمل overflow
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          steps[i]["label"].toString(),
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          style: TextStyle(
-                            fontSize: r.s(10),
-                            fontWeight: active
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                            color: active ? color : Colors.grey,
-                          ),
-                        ),
                       ),
                     ],
                   ),
@@ -699,10 +672,7 @@ Widget summaryRow(String title, dynamic value) {
               title,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Colors.grey.shade600,
-                fontSize: r.s(13),
-              ),
+              style: TextStyle(color: Colors.grey.shade600, fontSize: r.s(13)),
             ),
           ),
 
