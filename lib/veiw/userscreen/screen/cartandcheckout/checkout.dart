@@ -17,15 +17,19 @@ class Checkout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = Get.put(Checkoutcontroller());
-
+    final w = MediaQuery.of(context).size.width;
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(8),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.only(
+          left: w * 0.04,
+          right: w * 0.04,
+          bottom: MediaQuery.of(context).padding.bottom,
+        ),
         child: GetBuilder<Checkoutcontroller>(
           builder: (controller) => Checkbutton(
-            width: MediaQuery.of(context).size.width * 0.9,
+            width: w * 0.9,
             buttonColor: Colors.black,
             onTap: () {
               c.checkoutoder();

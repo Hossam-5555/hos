@@ -143,6 +143,11 @@ class HandlingDataView extends StatelessWidget {
       subtitle: "Check back later or try exploring another category.".tr,
       imagePath: Imageasset.nodata,
     ),
+    Approute.coupon: EmptyStateModel(
+      title: "No coupons yet".tr,
+      subtitle: "Tap + to add your first coupon.".tr,
+      imagePath: Imageasset.nodata,
+    ),
     AdminApproate.viewitemscreen: EmptyStateModel(
       title: "Category is empty".tr,
       subtitle:

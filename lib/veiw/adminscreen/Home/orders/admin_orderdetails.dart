@@ -114,44 +114,44 @@ class AdminOrderdetails extends StatelessWidget {
             return const SizedBox.shrink();
           }
 
-          return Padding(
-            padding: EdgeInsets.only(
-              left: w * 0.04,
-              right: w * 0.04,
-              top: 12,
-              bottom: MediaQuery.of(context).padding.bottom,
-            ),
-            child: Checkbutton.widget(
-              width: w * 0.9,
-              h: 60,
-              buttonColor:
-                  controller.statusColor ?? Theme.of(context).primaryColor,
-              statusrequest: Statusrequest.none,
-              widget: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.edit_note, color: Colors.white, size: 24),
-
-                  const SizedBox(width: 8),
-
-                  Text(
-                    controller.currentStatus == 'delivered' ||
-                            controller.currentStatus == 'cancelled'
-                        ? "لا يمكن التعديل علي حاله الطلب"
-                        : "Change Order Status",
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontFamily: 'Cairo',
-                    ),
-                  ),
-                ],
+          return SafeArea(
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: w * 0.04,
+                right: w * 0.04,
+                bottom: MediaQuery.of(context).padding.bottom+10,
               ),
-              onTap: () {
-                _showStatusBottomSheet(context, controller);
-              },
-              buttonName: "orderstate",
+              child: Checkbutton.widget(
+                width: w * 0.9,
+                buttonColor:
+                    controller.statusColor ?? Theme.of(context).primaryColor,
+                statusrequest: Statusrequest.none,
+                widget: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.edit_note, color: Colors.white, size: 24),
+            
+                    const SizedBox(width: 8),
+            
+                    Text(
+                      controller.currentStatus == 'delivered' ||
+                              controller.currentStatus == 'cancelled'
+                          ? "لا يمكن التعديل علي حاله الطلب"
+                          : "Change Order Status",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontFamily: 'Cairo',
+                      ),
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  _showStatusBottomSheet(context, controller);
+                },
+                buttonName: "orderstate",
+              ),
             ),
           );
         },

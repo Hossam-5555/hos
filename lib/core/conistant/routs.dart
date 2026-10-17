@@ -10,6 +10,7 @@ import 'package:hos/controler/usercontroller/profile/addres/addrescontroller.dar
 import 'package:hos/controler/usercontroller/profile/order/ordercontroller.dart';
 import 'package:hos/veiw/adminscreen/admin_homescreen.dart';
 import 'package:hos/veiw/adminscreen/Home/itemsview/viewitem.dart';
+import 'package:hos/veiw/adminscreen/coupon/coupone.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/cart.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/checkout.dart';
 import 'package:hos/veiw/userscreen/screen/home/home_page.dart';
@@ -115,6 +116,7 @@ List<GetPage<dynamic>>? routes = [
     }),
   ),
   GetPage(name: Approute.addnewaddres, page: () => AddNewAddres()),
+  GetPage(name: Approute.coupon, page: () => CouponsPage()),
 ];
 
 // ─────────────────────────────────────────
@@ -136,6 +138,7 @@ class Approute {
   static String language = "/language";
   static String viewmyaddres = "/viewmyaddres";
   static String addnewaddres = "/addnewaddres";
+  static String coupon = "/coupon";
 }
 
 class AdminApproate {

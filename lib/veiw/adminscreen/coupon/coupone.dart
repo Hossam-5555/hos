@@ -1,292 +1,416 @@
+// المسار المقترح: lib/veiw/screen/admin/coupon/couponspage.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/admincontroller/profile/addcouponcontroller.dart';
-import 'package:hos/core/class/crud.dart';
+import 'package:hos/controler/admincontroller/profile/couponecontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
+import 'package:hos/data/model/coupone_model.dart';
 import 'package:hos/veiw/adminscreen/coupon/addcoupon.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
+import 'package:hos/veiw/wedget/items/itemslist.dart';
+import 'package:hos/veiw/wedget/order/ordersdetails.dart';
 
-class ViewCoupons extends StatelessWidget {
-  const ViewCoupons({super.key});
+class CouponsPage extends StatelessWidget {
+  const CouponsPage({super.key});
 
-  static const Color primaryColor = Color(0xFF0A192F);
-  static const Color accentColor = Color(0xFFE9E4DB);
-
-  final List<Map<String, dynamic>> coupons = const [
-    {
-      'code': 'WELCOME20',
-      'discount': 20,
-      'type': 'percentage',
-      'min_order': 500,
-      'expiry': '2026-12-30',
-      'active': true,
-    },
-    {
-      'code': 'SAVE100',
-      'discount': 100,
-      'type': 'fixed',
-      'min_order': 1000,
-      'expiry': '2026-11-15',
-      'active': true,
-    },
-    {
-      'code': 'FREESHIP',
-      'discount': 15,
-      'type': 'percentage',
-      'min_order': 300,
-      'expiry': '2026-09-01',
-      'active': false,
-    },
-  ];
+  Future<void> _openAdd(CouponsController c) async {
+    final added = await Get.to(() => const AddCouponPage());
+    if (added == true) c.load(silent: true);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final c = Get.put(CouponsController());
+    final r = Rsp.of(context);
+
     return Scaffold(
-      appBar: Appbarbackicon(title: "manage coupon", herotag: "manage"),
-      body: SafeArea(
-        child: Column(
-          children: [
-            _buildHeader(),
-            Expanded(
-              child: HandlingDataView(
-                statusrequest: Statusrequest.none,
-                widget: ListView.separated(
-                  padding: const EdgeInsets.fromLTRB(16, 20, 16, 100),
-                  itemCount: coupons.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 16),
-                  itemBuilder: (context, index) {
-                    return _buildCouponCard(coupons[index], context);
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: Appbarbackicon(title: "Coupons".tr, herotag: "Coupons"),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Get.to(() => AddCouponPage());
-        },
-        backgroundColor: primaryColor,
-        foregroundColor: Colors.white,
+        onPressed: () => _openAdd(c),
         icon: const Icon(Icons.add),
-        label: const Text(
-          'إضافة كوبون',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        label: Text("Add Coupon".tr),
       ),
-    );
-  }
-
-  Widget _buildHeader() {
-    final activeCount = coupons.where((coupon) {
-      return coupon['active'] == true &&
-          DateTime.tryParse(coupon['expiry']) != null &&
-          !DateTime.parse(coupon['expiry']).isBefore(DateTime.now());
-    }).length;
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(22),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(28)),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 58,
-            height: 58,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(18),
-            ),
-            child: const Icon(
-              Icons.confirmation_number_outlined,
-              size: 30,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'كوبونات الخصم',
-                  style: TextStyle(
-                    fontSize: 19,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  '${coupons.length} كوبون • $activeCount نشط',
-                  style: TextStyle(
-                    fontSize: 13,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCouponCard(Map<String, dynamic> coupon, context) {
-    final expiry = DateTime.tryParse(coupon['expiry']);
-    final expired = expiry == null || expiry.isBefore(DateTime.now());
-
-    final isActive = coupon['active'] == true && !expired;
-    final isPercentage = coupon['type'] == 'percentage';
-
-    final discountText = isPercentage
-        ? '${coupon['discount']}%'
-        : '${coupon['discount']} ج.م';
-
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: const Color(0xFFE8EAF0)),
-        boxShadow: [
-          BoxShadow(
-            color: primaryColor.withValues(alpha: 0.04),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(18),
-            child: Row(
-              children: [
-                Container(
-                  width: 68,
-                  height: 68,
-                  decoration: BoxDecoration(
-                    color: accentColor.withValues(alpha: 0.6),
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                  child: const Icon(
-                    Icons.local_offer_outlined,
-                    // color: primaryColor,
-                    size: 32,
-                  ),
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        coupon['code'],
-                        style: const TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.5,
+      body: GetBuilder<CouponsController>(
+        builder: (_) {
+          return Center(
+            child: ConstrainedBox(
+              // على الشاشات الكبيرة المحتوى ميتمططش
+              constraints: const BoxConstraints(maxWidth: 1100),
+              child: Column(
+                children: [
+                  // ------------------------------------------------ SEARCH
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(r.s(16), r.s(8), r.s(16), 0),
+                    child: TextField(
+                      controller: c.search,
+                      onChanged: c.onSearch,
+                      decoration: InputDecoration(
+                        hintText: "Search by code".tr,
+                        prefixIcon: const Icon(Icons.search),
+                        suffixIcon: c.search.text.isEmpty
+                            ? null
+                            : IconButton(
+                                icon: const Icon(Icons.close),
+                                onPressed: c.clearSearch,
+                              ),
+                        filled: true,
+                        fillColor: Colors.grey.withAlpha(20),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: r.s(14),
+                          vertical: r.s(12),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(r.s(14)),
+                          borderSide: BorderSide.none,
                         ),
                       ),
-                      const SizedBox(height: 6),
-                      Text(
-                        isPercentage
-                            ? 'خصم بنسبة ${coupon['discount']}%'
-                            : 'خصم ${coupon['discount']} جنيه',
-                        style: const TextStyle(fontSize: 13),
-                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: r.s(6)),
+
+                  // ------------------------------------------------ FILTERS
+                  ChipsBar(
+                    labels: [
+                      "${"All".tr} (${c.countOf('all')})",
+                      "${"Active".tr} (${c.countOf('active')})",
+                      "${"Inactive".tr} (${c.countOf('inactive')})",
+                      "${"Expired".tr} (${c.countOf('expired')})",
                     ],
+                    selectedIndex: c.filterIndex,
+                    onSelected: c.changeFilter,
+                    height: r.s(52),
+                    padding: EdgeInsets.symmetric(horizontal: r.s(12)),
+                  ),
+
+                  // -------------------------------------------------- BODY
+                  Expanded(child: _body(c, r)),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // ==========================================================================
+  // BODY  (HandlingDataView بيتولى التحميل والخطأ والفراغ)
+  // ==========================================================================
+
+  Widget _body(CouponsController c, Rsp r) {
+    final status = c.viewStatus;
+
+    return HandlingDataView(
+      statusrequest: status,
+      emptyStyle: EmptyStateStyle.style2,
+      onRetry: () => c.load(),
+
+      widget: RefreshIndicator(
+        onRefresh: c.refreshList,
+        child: LayoutBuilder(
+          builder: (context, box) {
+            final items = c.visible;
+            final pad = r.s(16);
+            final gap = r.s(12);
+
+            // عدد الأعمدة حسب العرض المتاح
+            final cols = box.maxWidth >= 900
+                ? 3
+                : box.maxWidth >= 600
+                ? 2
+                : 1;
+            final cardWidth =
+                (box.maxWidth - pad * 2 - gap * (cols - 1)) / cols;
+
+            return SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              // 100 سفلي عشان زرار الإضافة العايم
+              padding: EdgeInsets.fromLTRB(pad, r.s(8), pad, r.s(100)),
+              child: Wrap(
+                spacing: gap,
+                runSpacing: gap,
+                children: [
+                  for (final coupon in items)
+                    SizedBox(
+                      width: cardWidth,
+                      child: _CouponCard(coupon: coupon, controller: c),
+                    ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+// ============================================================================
+// COUPON CARD
+// ============================================================================
+
+class _CouponCard extends StatelessWidget {
+  const _CouponCard({required this.coupon, required this.controller});
+
+  final CouponModel coupon;
+  final CouponsController controller;
+
+  Color get _color {
+    switch (coupon.status) {
+      case CouponStatus.active:
+        return Colors.green;
+      case CouponStatus.inactive:
+        return Colors.grey;
+      case CouponStatus.expired:
+        return Colors.red;
+      case CouponStatus.usedUp:
+        return Colors.orange;
+    }
+  }
+
+  String get _statusLabel {
+    switch (coupon.status) {
+      case CouponStatus.active:
+        return "Active".tr;
+      case CouponStatus.inactive:
+        return "Inactive".tr;
+      case CouponStatus.expired:
+        return "Expired".tr;
+      case CouponStatus.usedUp:
+        return "Used up".tr;
+    }
+  }
+
+  String _num(double v) =>
+      v % 1 == 0 ? v.toInt().toString() : v.toStringAsFixed(2);
+
+  String get _discountText => coupon.isPercentage
+      ? "${_num(coupon.value)}% ${"off".tr}"
+      : "${_num(coupon.value)} EGP ${"off".tr}";
+
+  String _date(DateTime d) => d.toIso8601String().split('T').first;
+
+  Future<void> _confirmDelete(BuildContext context) async {
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text("Delete coupon".tr),
+        content: Text("${coupon.code}  ${"will be permanently deleted".tr}"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text("Cancel".tr),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text("Delete".tr, style: const TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+    if (ok == true) controller.delete(coupon);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final r = Rsp.of(context);
+    final color = _color;
+    final busy = controller.busyIds.contains(coupon.id);
+
+    return Container(
+      padding: EdgeInsets.all(r.s(14)),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(r.s(20)),
+        border: Border.all(color: Colors.grey.withAlpha(40)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // ------------------------------------------------------ HEADER
+          Row(
+            children: [
+              Container(
+                width: r.s(44),
+                height: r.s(44),
+                decoration: BoxDecoration(
+                  color: color.withAlpha(25),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.confirmation_number_outlined,
+                  color: color,
+                  size: r.s(22),
+                ),
+              ),
+
+              SizedBox(width: r.s(12)),
+
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // الضغط على الكود ينسخه
+                    InkWell(
+                      onTap: () {
+                        Clipboard.setData(ClipboardData(text: coupon.code));
+                        Get.snackbar(
+                          "Copied".tr,
+                          coupon.code,
+                          snackPosition: SnackPosition.BOTTOM,
+                          duration: const Duration(seconds: 1),
+                        );
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              coupon.code,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: r.s(16),
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 0.8,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: r.s(6)),
+                          Icon(
+                            Icons.copy_rounded,
+                            size: r.s(14),
+                            color: Colors.grey,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: r.s(3)),
+
+                    Text(
+                      _discountText,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: r.s(13),
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(width: r.s(8)),
+
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: r.s(10),
+                  vertical: r.s(5),
+                ),
+                decoration: BoxDecoration(
+                  color: color.withAlpha(25),
+                  borderRadius: BorderRadius.circular(r.s(20)),
+                ),
+                child: Text(
+                  _statusLabel,
+                  maxLines: 1,
+                  style: TextStyle(
+                    color: color,
+                    fontWeight: FontWeight.bold,
+                    fontSize: r.s(11),
                   ),
                 ),
-                IconButton(
-                  tooltip: 'نسخ الكود',
-                  onPressed: () {
-                    Clipboard.setData(ClipboardData(text: coupon['code']));
-                    Get.snackbar(
-                      'تم النسخ',
-                      'تم نسخ كود ${coupon['code']}',
-                      snackPosition: SnackPosition.BOTTOM,
-                      backgroundColor: primaryColor,
-                      colorText: Colors.white,
-                      margin: const EdgeInsets.all(16),
-                    );
-                  },
-                  icon: const Icon(Icons.copy_rounded, color: primaryColor),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          const Divider(height: 1, color: Color(0xFFEDEFF3)),
-          Padding(
-            padding: const EdgeInsets.all(18),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    const Icon(Icons.shopping_bag_outlined, size: 19),
-                    const SizedBox(width: 8),
-                    const Expanded(child: Text('الحد الأدنى للطلب')),
-                    Text(
-                      '${coupon['min_order']} ج.م',
-                      style: const TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                  ],
+
+          SizedBox(height: r.s(12)),
+
+          // ------------------------------------------------------- INFO
+          Wrap(
+            spacing: r.s(8),
+            runSpacing: r.s(8),
+            children: [
+              if (coupon.minOrderAmount != null)
+                _pill(
+                  r,
+                  Icons.shopping_cart_outlined,
+                  "${"Min".tr} ${_num(coupon.minOrderAmount!)} EGP",
                 ),
-                const SizedBox(height: 14),
-                Row(
-                  children: [
-                    const Icon(Icons.calendar_month_outlined, size: 19),
-                    const SizedBox(width: 8),
-                    const Expanded(
-                      child: Text(
-                        'تاريخ الانتهاء',
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ),
-                    Text(
-                      coupon['expiry'],
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
+              if (coupon.isPercentage && coupon.maxDiscount != null)
+                _pill(
+                  r,
+                  Icons.vertical_align_top,
+                  "${"Max".tr} ${_num(coupon.maxDiscount!)} EGP",
                 ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Container(
-                      width: 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: isActive ? Colors.green : Colors.redAccent,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      isActive ? 'نشط' : 'غير متاح',
-                      style: TextStyle(
-                        color: isActive
-                            ? Colors.green.shade700
-                            : Colors.redAccent,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13,
-                      ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      'قيمة الخصم: $discountText',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+              _pill(
+                r,
+                Icons.group_outlined,
+                coupon.usageLimit == null
+                    ? "${coupon.usedCount} ${"used".tr}"
+                    : "${coupon.usedCount} / ${coupon.usageLimit}",
+              ),
+              _pill(
+                r,
+                Icons.event_outlined,
+                coupon.expiresAt == null
+                    ? "No expiry".tr
+                    : _date(coupon.expiresAt!),
+              ),
+            ],
           ),
+
+          Divider(height: r.s(24)),
+
+          // ----------------------------------------------------- ACTIONS
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  coupon.isActive ? "Enabled".tr : "Disabled".tr,
+                  style: TextStyle(
+                    fontSize: r.s(13),
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+              ),
+              Switch.adaptive(
+                value: coupon.isActive,
+                onChanged: busy ? null : (v) => controller.toggle(coupon, v),
+              ),
+              IconButton(
+                tooltip: "Delete".tr,
+                onPressed: busy ? null : () => _confirmDelete(context),
+                icon: Icon(
+                  Icons.delete_outline,
+                  color: Colors.red,
+                  size: r.s(22),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _pill(Rsp r, IconData icon, String text) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: r.s(10), vertical: r.s(6)),
+      decoration: BoxDecoration(
+        color: Colors.grey.withAlpha(20),
+        borderRadius: BorderRadius.circular(r.s(10)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: r.s(14), color: Colors.grey.shade600),
+          SizedBox(width: r.s(5)),
+          Text(text, style: TextStyle(fontSize: r.s(12))),
         ],
       ),
     );

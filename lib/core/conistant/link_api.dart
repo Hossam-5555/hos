@@ -59,4 +59,9 @@ class LinkApi {
   //Admin //items
   static String cruditemsadmin = '$lravelserver/items';
   static String adminviewitem = '$lravelserver/category';
+  //coupons (admin)
+  static String addCoupon = '$lravelserver/admin/coupons/add';
+  static String viewCoupons = '$lravelserver/admin/coupons/view';
+  static String toggleCoupon = '$lravelserver/admin/coupons/toggle';
+  static String deleteCoupon = '$lravelserver/admin/coupons/delete';
 }

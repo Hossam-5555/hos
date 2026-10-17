@@ -6,10 +6,6 @@ import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/conistant/static.dart';
 import 'package:hos/core/localization/changlocal.dart';
-import 'package:hos/core/serveces/myservisec.dart';
-import 'package:hos/veiw/adminscreen/coupon/addcoupon.dart';
-import 'package:hos/veiw/adminscreen/coupon/coupone.dart';
-import 'package:hos/veiw/userscreen/screen/profile/Editprofile.dart';
 import 'package:hos/veiw/userscreen/screen/profile/about_us_page.dart';
 import 'package:hos/veiw/wedget/bulidfooter.dart';
 
@@ -27,7 +23,6 @@ class ProfilePage extends StatelessWidget {
     final isTablet = width >= 600;
     final maxContentWidth = width >= 900 ? 900.0 : double.infinity;
     final horizontalPadding = isTablet ? 20.0 : 8.0;
-    final avatarRadius = isTablet ? 36.0 : 25.0;
     final contentWidth =
         (width < maxContentWidth ? width : maxContentWidth) -
         horizontalPadding * 2;
@@ -49,10 +44,6 @@ class ProfilePage extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  _ProfileHeader(
-                    myservisec: settingsController.myservisec,
-                    avatarRadius: avatarRadius,
-                  ),
                   const SizedBox(height: 20),
                   settingsController.usrtype == Static.user1
                       ? Row(
@@ -94,8 +85,8 @@ class ProfilePage extends StatelessWidget {
                                 Color.fromARGB(255, 180, 85, 61),
                               ],
                               icon: Icons.discount,
-                              title: "Coupone",
-                              onTap: () => Get.to(()=>ViewCoupons()),
+                              title: "Coupons".tr,
+                              onTap: () => Get.toNamed(Approute.coupon),
                             ),
                           ],
                         ),
@@ -292,79 +283,6 @@ class ProfilePage extends StatelessWidget {
             label,
             style: const TextStyle(fontWeight: FontWeight.w600),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ProfileHeader extends StatelessWidget {
-  final Myservisec myservisec;
-  final double avatarRadius;
-
-  const _ProfileHeader({required this.myservisec, required this.avatarRadius});
-
-  @override
-  Widget build(BuildContext context) {
-    final userName =
-        myservisec.sharedPreferences.getString("usersname") ?? "User Name";
-    final email =
-        myservisec.sharedPreferences.getString("email") ?? "user@email.com";
-
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: ListTile(
-                title: Text(
-                  userName,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.3,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                subtitle: Text(
-                  email,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(
-                      context,
-                    ).textTheme.bodySmall?.color?.withValues(alpha: 0.7),
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ),
-            IconButton(
-              constraints: BoxConstraints(maxHeight: context.height * 0.1),
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                backgroundColor: MaterialStateProperty.all(
-                  AppColors.editBackground,
-                ),
-                padding: MaterialStateProperty.all(const EdgeInsets.all(8)),
-              ),
-              onPressed: () {
-                Get.to(
-                  () => EditProfileView(),
-                  transition: Transition.cupertino,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.fastOutSlowIn,
-                );
-              },
-              icon: const Icon(Icons.edit, color: AppColors.english),
-            ),
-          ],
         ),
       ),
     );
