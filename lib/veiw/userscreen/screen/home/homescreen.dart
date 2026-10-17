@@ -46,26 +46,12 @@ class Homescreen extends StatelessWidget {
               centerTitle: false,
               scrolledUnderElevation: 0,
               title: ProfileHeader(myservisec: controller.myservisec),
-              //  Row(
-              //   mainAxisAlignment: MainAxisAlignment.start,
-              //   children: [
-              //     const SizedBox(width: 10),
-              //     Text(
-              //       "LUXE",
-              //       style: TextStyle(
-              //         fontSize: (w * 0.065).clamp(20.0, 26.0),
-              //         fontWeight: FontWeight.w800,
-              //         letterSpacing: 1.2,
-              //         color: const Color(0xFF3E5FFF),
-              //       ),
-              //     ),
-              //   ],
-              // ),
+        
               actions: [
                 controller.Currentpage != 1
                     ? Padding(
                         padding: const EdgeInsetsDirectional.symmetric(
-                          horizontal: 10,
+                          horizontal: 5,
                         ),
                         child: Homescrenaction(
                           herotag: "notification",
@@ -106,7 +92,7 @@ class Homescreen extends StatelessWidget {
                 controller.Currentpage == 3
                     ? Padding(
                         padding: const EdgeInsetsDirectional.symmetric(
-                          horizontal: 10,
+                          horizontal: 5,
                         ),
                         child: Homescrenaction(
                           herotag: "editprofile",
