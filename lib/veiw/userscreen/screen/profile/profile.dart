@@ -6,6 +6,7 @@ import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/conistant/static.dart';
 import 'package:hos/core/localization/changlocal.dart';
+import 'package:hos/veiw/adminscreen/brands/brandveiw.dart';
 import 'package:hos/veiw/userscreen/screen/profile/about_us_page.dart';
 import 'package:hos/veiw/wedget/bulidfooter.dart';
 
@@ -15,6 +16,7 @@ class ProfilePage extends StatelessWidget {
   // final Myservisec myservisec = Get.find();
   final SettingsController settingsController = Get.put(SettingsController());
   final LocalController localController = Get.put(LocalController());
+  bool get isadmin => settingsController.usrtype == Static.admin;
 
   @override
   Widget build(BuildContext context) {
@@ -45,53 +47,38 @@ class ProfilePage extends StatelessWidget {
               child: Column(
                 children: [
                   const SizedBox(height: 20),
-                  settingsController.usrtype == Static.user1
-                      ? Row(
-                          children: [
-                            orderCard(
-                              "Orders".tr,
-                              Imageasset.order,
-                              () => Get.toNamed(Approute.Orders),
-                              context,
-                              width: cardWidth,
-                              height: cardHeight,
-                            ),
-                            const SizedBox(width: 12),
-                            orderCard(
-                              "Saved Addresses".tr,
-                              Imageasset.settings,
-                              () => Get.toNamed(Approute.viewmyaddres),
-                              context,
-                              width: cardWidth,
-                              height: cardHeight,
-                            ),
-                          ],
-                        )
-                      : _GradientGroup(
-                          isDarkMode: isDarkMode,
-                          children: [
-                            _ListTile(
-                              gradientColors: const [
-                                AppColors.aboutStart,
-                                AppColors.danger,
-                              ],
-                              icon: Icons.discount,
-                              title: "brands",
-                              onTap: () => Get.toNamed(Approute.myfavorite),
-                            ),
-                            _ListTile(
-                              gradientColors: const [
-                                Color.fromARGB(172, 158, 4, 125),
-                                Color.fromARGB(255, 180, 85, 61),
-                              ],
-                              icon: Icons.discount,
-                              title: "Coupons".tr,
-                              onTap: () => Get.toNamed(Approute.coupon),
-                            ),
-                          ],
-                        ),
+                  Row(
+                    children: [
+                      orderCard(
+                        !isadmin ? "Orders".tr : "Brands".tr,
+                        isadmin ? Imageasset.pending : Imageasset.order,
+                        () {
+                          isadmin
+                              ? Get.to(() => const AdminBrandsPage())
+                              : Get.toNamed(Approute.Orders);
+                        },
+                        context,
+                        width: cardWidth,
+                        height: cardHeight,
+                      ),
+                      const SizedBox(width: 12),
+                      orderCard(
+                        isadmin ? "Coupons".tr : "Saved Addresses".tr,
+                        isadmin ? Imageasset.processing : Imageasset.settings,
+                        () {
+                          isadmin
+                              ? Get.toNamed(Approute.coupon)
+                              : Get.toNamed(Approute.viewmyaddres);
+                        },
+                        context,
+                        width: cardWidth,
+                        height: cardHeight,
+                      ),
+                    ],
+                  ),
+
                   const SizedBox(height: 20),
-                  _GroupLabel(title: "General"),
+                  _GroupLabel(title: "General".tr),
 
                   // ------- المفضلة / العناوين / المراجعات -------
                   _GradientGroup(

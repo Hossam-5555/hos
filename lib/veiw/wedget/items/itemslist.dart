@@ -60,46 +60,61 @@ class AppChip extends StatelessWidget {
       colors: isSelected
           ? (isDark
                 ? [
-                    const Color.fromARGB(255, 78, 78, 78).withAlpha(204),
-                    Colors.transparent,
-                    Colors.white.withAlpha(77),
+                    const Color(0xFFE9E4DB).withAlpha(210),
+                    const Color.fromARGB(255, 2, 101, 240),
+                    const Color(0xFFB8A98F).withAlpha(150),
                   ]
                 : [
-                    const Color.fromARGB(255, 63, 65, 66).withAlpha(125),
-                    Colors.transparent,
-                    Colors.blueAccent.withAlpha(51),
+                    const Color(0xFF0A192F),
+                    const Color(0xFF526782),
+                    const Color(0xFFE9E4DB),
                   ])
           : (isDark
                 ? [
-                    Colors.white.withAlpha(26),
-                    Colors.transparent,
-                    Colors.white.withAlpha(5),
+                    const Color(0xFF526782).withAlpha(150),
+                    const Color.fromARGB(255, 52, 56, 63),
+                    Colors.white.withAlpha(25),
                   ]
                 : [
-                    Colors.grey.shade300,
-                    Colors.transparent,
-                    Colors.grey.shade100,
+                    const Color(0xFFD6DCE5),
+                    const Color(0xFFF7F9FF),
+                    const Color(0xFFE9E4DB),
                   ]),
     );
 
-    final innerColor = isSelected
-        ? (isDark ? const Color(0xFF120F11) : Colors.white)
-        : (isDark ? Colors.white.withAlpha(8) : Colors.grey.shade50);
+   final innerColor = isSelected
+    ? (isDark
+        ? const Color.fromARGB(255, 10, 4, 90)
+        : const Color(0xFF0A192F))
+    : (isDark
+        ? const Color.fromARGB(255, 44, 49, 56)
+        : const Color(0xFFF7F9FF));
 
     final boxShadow = isSelected
         ? [
             BoxShadow(
               color: isDark
-                  ? Colors.black.withAlpha(77)
-                  : Colors.black.withAlpha(13),
-              blurRadius: 8,
+                  ? Colors.black.withAlpha(90)
+                  : const Color(0xFF0A192F).withAlpha(24),
+              blurRadius: 12,
+              spreadRadius: 0,
               offset: const Offset(0, 4),
+            ),
+            BoxShadow(
+              color: isDark
+                  ? const Color(0xFFE9E4DB).withAlpha(12)
+                  : const Color(0xFFE9E4DB).withAlpha(100),
+              blurRadius: 6,
+              offset: const Offset(0, 1),
             ),
           ]
         : <BoxShadow>[];
 
-    final activeColor = isDark ? Colors.white : Colors.blue;
-    final inactiveColor = isDark ? Colors.grey.shade400 : Colors.grey.shade600;
+    final activeColor = const Color(0xFFE9E4DB);
+
+    final inactiveColor = isDark
+        ? const Color(0xFFB8C2D1)
+        : const Color(0xFF737F91);
 
     return Padding(
       // Directional: يشتغل صح مع العربي والإنجليزي
@@ -109,7 +124,7 @@ class AppChip extends StatelessWidget {
         curve: Curves.fastLinearToSlowEaseIn,
         padding: const EdgeInsets.all(1),
         decoration: BoxDecoration(
-          color: const Color(0xFF767D84),
+          color: isDark ? const Color.fromARGB(255, 215, 15, 255) : const Color(0xFFD6DCE5),
           borderRadius: BorderRadius.circular(30),
           gradient: borderGradient,
           boxShadow: boxShadow,
