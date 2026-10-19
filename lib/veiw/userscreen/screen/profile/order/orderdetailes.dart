@@ -24,20 +24,22 @@ class Orderdetailes extends StatelessWidget {
       bottomNavigationBar: c.order!.status.toLowerCase() == "pending"
           ? GetBuilder<Ordercontroller>(
               builder: (controller) {
-                return Padding(
-                  padding: EdgeInsets.only(
-                    left: w * 0.04,
-                    right: w * 0.04,
-                    bottom: MediaQuery.of(context).padding.bottom,
-                  ),
-                  child: Checkbutton(
-                    statusrequest: controller.statusrequest,
-                    buttonColor: Colors.black,
-                    width: w,
-                    onTap: () {
-                      controller.deleteorders(c.order!.orderId);
-                    },
-                    buttonName: "Cancel Order",
+                return SafeArea(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: w * 0.04,
+                      right: w * 0.04,
+                      bottom: 10,
+                    ),
+                    child: Checkbutton(
+                      statusrequest: controller.statusrequest,
+                      buttonColor: Colors.black,
+                      width: w,
+                      onTap: () {
+                        controller.deleteorders(c.order!.orderId);
+                      },
+                      buttonName: "Cancel Order",
+                    ),
                   ),
                 );
               },

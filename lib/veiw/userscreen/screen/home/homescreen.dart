@@ -9,7 +9,6 @@ import 'package:hos/controler/usercontroller/notificationcontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/appexitalert.dart';
-import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/veiw/userscreen/screen/profile/Editprofile.dart';
 import 'package:hos/veiw/wedget/Homepage/buttomAppbar.dart';
 import 'package:hos/veiw/wedget/Homepage/home_screnaction.dart';
@@ -45,8 +44,10 @@ class Homescreen extends StatelessWidget {
                   : Theme.of(context).appBarTheme.backgroundColor,
               centerTitle: false,
               scrolledUnderElevation: 0,
-              title: ProfileHeader(myservisec: controller.myservisec),
-        
+              title: Text.rich(
+                TextSpan(children: [TextSpan(text: controller.userName)]),
+              ),
+
               actions: [
                 controller.Currentpage != 1
                     ? Padding(
@@ -117,7 +118,11 @@ class Homescreen extends StatelessWidget {
           floatingActionButton: SafeArea(
             child: Container(
               alignment: Alignment.bottomCenter,
-              padding: EdgeInsets.only(left: w * 0.04, right: w * 0.04),
+              padding: EdgeInsets.only(
+                left: w * 0.04,
+                right: w * 0.04,
+                bottom: 10
+              ),
               child: GetBuilder<Homescreencontroller>(
                 builder: (controller) => CustomBottomNavBar(
                   items: [
@@ -173,54 +178,6 @@ class Homescreen extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class ProfileHeader extends StatelessWidget {
-  final Myservisec myservisec;
-  // final double avatarRadius;
-
-  const ProfileHeader({required this.myservisec});
-
-  @override
-  Widget build(BuildContext context) {
-    final userName =
-        myservisec.sharedPreferences.getString("usersname") ?? "User Name";
-    final email =
-        myservisec.sharedPreferences.getString("email") ?? "user@email.com";
-
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: ListTile(
-              title: Text(
-                userName,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.3,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              subtitle: Text(
-                email,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(
-                    context,
-                  ).textTheme.bodySmall?.color?.withValues(alpha: 0.7),
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

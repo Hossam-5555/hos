@@ -49,9 +49,9 @@ void showFilterSheet(BuildContext context, ItemsController c) {
     builder: (sheetContext) {
       final p = _Palette.of(sheetContext);
       return DraggableScrollableSheet(
-        initialChildSize: 0.70,
+        initialChildSize: 0.65,
         minChildSize: 0.5,
-        maxChildSize: 0.70,
+        maxChildSize: 0.65,
         expand: false,
         builder: (_, scrollController) {
           return Container(

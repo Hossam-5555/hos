@@ -4,6 +4,7 @@ class Mytransilation extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
     "ar": {
+      "QUICK ACCESS": "وصول سريع",
       "Dashboard": "لوحة التحكم",
       "Home": "الرئيسيه",
       'Cart': "السله",
@@ -184,7 +185,7 @@ class Mytransilation extends Translations {
       "Something went wrong": "حدث خطأ ما",
       "Success": "تم بنجاح",
       "Error": "خطأ",
-            // ---------- Brands ----------
+      // ---------- Brands ----------
       "Brands": "العلامات التجارية",
       "Add Brand": "إضافة علامة تجارية",
       "Edit Brand": "تعديل العلامة التجارية",
@@ -388,7 +389,7 @@ class Mytransilation extends Translations {
       "Something went wrong": "Something went wrong",
       "Success": "Success",
       "Error": "Error",
-            // ---------- Brands ----------
+      // ---------- Brands ----------
       "Brands": "Brands",
       "Add Brand": "Add Brand",
       "Edit Brand": "Edit Brand",
@@ -409,6 +410,7 @@ class Mytransilation extends Translations {
       "Save changes": "Save changes",
       "At least 2 characters": "At least 2 characters",
       "Maximum 100 characters": "Maximum 100 characters",
+      "QUICK ACCESS": "QUICK ACCESS",
     },
   };
 }

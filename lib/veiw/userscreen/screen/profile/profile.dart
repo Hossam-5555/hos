@@ -47,6 +47,8 @@ class ProfilePage extends StatelessWidget {
               child: Column(
                 children: [
                   const SizedBox(height: 20),
+                  _GroupLabel(title: "QUICK ACCESS".tr),
+
                   Row(
                     children: [
                       orderCard(

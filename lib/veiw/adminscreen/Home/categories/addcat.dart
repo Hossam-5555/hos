@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/categories/addcatcontroller.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
+import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 /// Add:  Get.to(() => const CategoryFormScreen());
 /// Edit: Get.to(() => CategoryFormScreen(category: model));
@@ -14,7 +15,6 @@ class CategoryFormScreen extends GetView<CategoryFormController> {
   @override
   Widget build(BuildContext context) {
     Get.put(CategoryFormController(category));
-    final theme = Theme.of(context);
 
     return GetBuilder<CategoryFormController>(
       builder: (c) => Scaffold(
@@ -65,31 +65,11 @@ class CategoryFormScreen extends GetView<CategoryFormController> {
                           const SizedBox(height: 24),
                           SizedBox(
                             width: double.infinity,
-                            height: 52,
-                            child: FilledButton(
-                              onPressed: c.isLoading ? null : c.submit,
-                              style: FilledButton.styleFrom(
-                                backgroundColor: theme.colorScheme.primary,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14),
-                                ),
-                              ),
-                              child: c.isLoading
-                                  ? const SizedBox(
-                                      height: 22,
-                                      width: 22,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2.5,
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : Text(
-                                      (c.isEdit ? 'update' : 'add').tr,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
+                            child: Checkbutton(
+                              onTap: () {
+                                c.submit();
+                              },
+                              buttonName: (c.isEdit ? 'update' : 'add').tr,
                             ),
                           ),
                         ],

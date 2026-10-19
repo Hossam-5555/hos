@@ -19,6 +19,8 @@ class Homescreencontroller extends SearchMix {
     update();
   }
 
+   String get userName => myservisec.sharedPreferences.getString("usersname") ?? "User Name";
+    String get email => myservisec.sharedPreferences.getString("email") ?? "user@email.com";
   void changpage(int i) {
     pageControllers.jumpToPage(i);
     Currentpage = i;

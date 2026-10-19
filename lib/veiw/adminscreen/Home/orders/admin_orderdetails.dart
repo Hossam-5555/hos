@@ -119,7 +119,7 @@ class AdminOrderdetails extends StatelessWidget {
               padding: EdgeInsets.only(
                 left: w * 0.04,
                 right: w * 0.04,
-                bottom: MediaQuery.of(context).padding.bottom+10,
+                bottom: 10
               ),
               child: Checkbutton.widget(
                 width: w * 0.9,

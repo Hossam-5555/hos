@@ -65,7 +65,6 @@ class ProfileController extends GetxController {
   }) async {
     isSaving.value = true;
     try {
-      // TODO: استبدلها بالنداء الفعلي للـ backend
       await Future.delayed(const Duration(milliseconds: 900));
       Get.back();
       Get.snackbar(
@@ -441,6 +440,53 @@ class _EditProfileViewState extends State<EditProfileView> {
       child: SizedBox(
         width: double.infinity,
         child: Checkbutton(onTap: () {}, buttonName: "Save"),
+      ),
+    );
+  }
+}
+class ProfileHeader extends StatelessWidget {
+  final Myservisec myservisec;
+  // final double avatarRadius;
+
+  const ProfileHeader({required this.myservisec});
+
+  @override
+  Widget build(BuildContext context) {
+    final userName =
+        myservisec.sharedPreferences.getString("usersname") ?? "User Name";
+    final email =
+        myservisec.sharedPreferences.getString("email") ?? "user@email.com";
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: ListTile(
+              title: Text(
+                userName,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.2,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              subtitle: Text(
+                email,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.color?.withValues(alpha: 0.7),
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

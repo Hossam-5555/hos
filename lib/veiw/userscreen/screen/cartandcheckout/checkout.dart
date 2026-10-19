@@ -22,20 +22,18 @@ class Checkout extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.only(
-          left: w * 0.04,
-          right: w * 0.04,
-          bottom: MediaQuery.of(context).padding.bottom,
-        ),
-        child: GetBuilder<Checkoutcontroller>(
-          builder: (controller) => Checkbutton(
-            width: w * 0.9,
-            buttonColor: Colors.black,
-            onTap: () {
-              c.checkoutoder();
-            },
-            buttonName: "Pay Now".tr,
-            statusrequest: c.statusrequest,
+        padding: EdgeInsets.only(left: w * 0.04, right: w * 0.04, bottom: 10),
+        child: SafeArea(
+          child: GetBuilder<Checkoutcontroller>(
+            builder: (controller) => Checkbutton(
+              width: w * 0.9,
+              buttonColor: Colors.black,
+              onTap: () {
+                c.checkoutoder();
+              },
+              buttonName: "Pay Now".tr,
+              statusrequest: c.statusrequest,
+            ),
           ),
         ),
       ),
@@ -291,7 +289,7 @@ class Checkout extends StatelessWidget {
       Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: context.isDarkMode ? const Color(0xff323538) : Colors.white,
+          color: context.isDarkMode ? const Color(0xFF121212) : Colors.white,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: SingleChildScrollView(
