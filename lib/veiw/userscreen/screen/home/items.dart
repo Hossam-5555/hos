@@ -1,6 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -26,20 +23,22 @@ class Items extends StatelessWidget {
     final height = size.height;
     final width = size.width;
 
-    final controller = Get.put(ItemsController());
+    Get.put(ItemsController());
     Get.put(FavController());
 
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: _FilterButton(
-        bottomMargin: height * 0.02,
-        onTap: () => showFilterSheet(context, controller),
-      ),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: GetBuilder<ItemsController>(
-          builder: (controller) =>
-              Appbarbackicon(herotag: "items", title: "LUXE"),
+          builder: (controller) => Appbarbackicon.nedicon(
+            needicon: true,
+            herotag: "items",
+            title: "LUXE",
+            iconButton: _FilterButton(
+              bottomMargin: 0,
+              onTap: () => showFilterSheet(context, controller),
+            ),
+          ),
         ),
       ),
       body: SafeArea(
@@ -73,7 +72,6 @@ class Items extends StatelessWidget {
     );
   }
 }
-
 
 class _ProductGrid extends StatelessWidget {
   const _ProductGrid({required this.controller, required this.width});
@@ -136,58 +134,33 @@ class _FilterButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final primary = Colors.grey;
 
-    return Container(
-      margin: EdgeInsets.only(bottom: bottomMargin, right: 16),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(30),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-          child: Material(
-            color: Color.fromARGB(255, 21, 92, 214).withAlpha(80),
-            borderRadius: BorderRadius.circular(30),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(30),
-              onTap: onTap,
-              child: Container(
-                height: 52,
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(color: Colors.grey.withOpacity(.22)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: primary.withOpacity(0.25),
-                      blurRadius: 16,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Transform.rotate(
-                      angle: 90,
-                      alignment: Alignment.center,
-                      child: SvgPicture.asset(
-                        Imageasset.filter,
-                        width: 18,
-                        height: 18,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      "Filter",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+    return InkWell(
+      onTap: onTap,
+      child: Container(alignment: AlignmentDirectional.center,
+        margin: EdgeInsetsDirectional.symmetric(horizontal: 10),
+        height: 50,
+        width: 50,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Color(0xFFE0E3E8),
+          border: Border.all(color: Colors.grey.withAlpha(62)),
+          boxShadow: [
+            BoxShadow(
+              color: primary.withAlpha(64),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
             ),
-          ),
+          ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Transform.rotate(
+              angle: 90,
+              alignment: Alignment.center,
+              child: SvgPicture.asset(Imageasset.filter, width: 18, height: 18),
+            ),
+          ],
         ),
       ),
     );

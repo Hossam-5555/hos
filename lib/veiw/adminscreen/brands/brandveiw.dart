@@ -172,10 +172,10 @@ class _BrandCard extends StatelessWidget {
   final AdminBrandsController controller;
   final VoidCallback onEdit;
 
-  String get _initial {
-    final t = brand.name.trim();
-    return t.isEmpty ? '?' : String.fromCharCode(t.runes.first).toUpperCase();
-  }
+  // String get _initial {كويسه جربها
+  //   final t = brand.name.trim();
+  //   return t.isEmpty ? '?' : String.fromCharCode(t.runes.first).toUpperCase();
+  // }
 
   Future<void> _onDelete(BuildContext context) async {
     // البراند مربوط بمنتجات: نشرح السبب بدل ما نبعت طلب هيترفض
@@ -226,7 +226,6 @@ class _BrandCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final r = Rsp.of(context);
-    final primary = Theme.of(context).primaryColor;
     final busy = controller.busyIds.contains(brand.id);
 
     return Material(
@@ -243,18 +242,18 @@ class _BrandCard extends StatelessWidget {
           child: Row(
             children: [
               // ---------------------------------------------------- AVATAR
-              CircleAvatar(
-                radius: r.s(24),
-                backgroundColor: primary.withAlpha(25),
-                child: Text(
-                  _initial,
-                  style: TextStyle(
-                    color: primary,
-                    fontWeight: FontWeight.bold,
-                    fontSize: r.s(18),
-                  ),
-                ),
-              ),
+              // CircleAvatar(
+              //   radius: r.s(24),
+              //   backgroundColor: primary.withAlpha(25),
+              //   child: Text(
+              //     _initial,
+              //     style: TextStyle(
+              //       color: primary,
+              //       fontWeight: FontWeight.bold,
+              //       fontSize: r.s(18),
+              //     ),
+              //   ),
+              // ),
 
               SizedBox(width: r.s(12)),
 
