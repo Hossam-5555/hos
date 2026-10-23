@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -30,13 +29,16 @@ class Items extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: GetBuilder<ItemsController>(
-          builder: (controller) => Appbarbackicon.nedicon(
+          builder: (controller) => Appbarbackicon.nedicon(ontap: () {
+            showFilterSheet(context, controller);
+          },
             needicon: true,
             herotag: "items",
             title: "LUXE",
-            iconButton: _FilterButton(
-              bottomMargin: 0,
-              onTap: () => showFilterSheet(context, controller),
+            iconButton: Transform.rotate(
+              angle: 90,
+              alignment: Alignment.center,
+              child: SvgPicture.asset(Imageasset.filter),
             ),
           ),
         ),
@@ -119,49 +121,6 @@ class _ProductGrid extends StatelessWidget {
             height: cardHeight,
           );
         },
-      ),
-    );
-  }
-}
-
-class _FilterButton extends StatelessWidget {
-  const _FilterButton({required this.onTap, required this.bottomMargin});
-
-  final VoidCallback onTap;
-  final double bottomMargin;
-
-  @override
-  Widget build(BuildContext context) {
-    final primary = Colors.grey;
-
-    return InkWell(
-      onTap: onTap,
-      child: Container(alignment: AlignmentDirectional.center,
-        margin: EdgeInsetsDirectional.symmetric(horizontal: 10),
-        height: 50,
-        width: 50,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Color(0xFFE0E3E8),
-          border: Border.all(color: Colors.grey.withAlpha(62)),
-          boxShadow: [
-            BoxShadow(
-              color: primary.withAlpha(64),
-              blurRadius: 16,
-              offset: const Offset(0, 6),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Transform.rotate(
-              angle: 90,
-              alignment: Alignment.center,
-              child: SvgPicture.asset(Imageasset.filter, width: 18, height: 18),
-            ),
-          ],
-        ),
       ),
     );
   }

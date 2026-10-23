@@ -19,30 +19,23 @@ class NotificationPage extends StatelessWidget {
         bool isLoading = controller.statusrequest == Statusrequest.loading;
 
         return Scaffold(
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(60),
-            child: Appbarbackicon(
-              selected: controller.selectionMode,
-              title: controller.selectionMode
-                  ? "${controller.selectedIds.length} ${"Selected".tr}"
-                  : "Notifications".tr,
-              herotag: "notification",
-              iconButton: controller.selectionMode
-                  ? IconButton(
-                      icon: const Icon(
-                        Icons.delete_sweep_rounded,
-                        color: Colors.redAccent,
-                      ),
-                      onPressed: () {
-                        controller.deleteSelected(context);
-                      },
-                    )
-                  : null,
-              // عند الضغط على X سيقوم بالاستدعاء وتحديث الواجهة بالكامل فوراً
-              onPressed: () {
-                controller.closeselected();
-              },
-            ),
+          appBar: Appbarbackicon(
+            selected: controller.selectionMode,
+            title: controller.selectionMode
+                ? "${controller.selectedIds.length} ${"Selected".tr}"
+                : "Notifications".tr,
+            herotag: "notification",
+            iconButton: controller.selectionMode
+                ? Icon(Icons.delete_sweep_rounded, color: Colors.redAccent)
+                : null,
+            ontap: () {
+              controller.deleteSelected(context);
+            },
+          
+            // عند الضغط على X سيقوم بالاستدعاء وتحديث الواجهة بالكامل فوراً
+            onPressed: () {
+              controller.closeselected();
+            },
           ),
           body: HandlingDataView(
             emptyStyle: EmptyStateStyle.style2,

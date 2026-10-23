@@ -11,7 +11,7 @@ import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/appexitalert.dart';
 import 'package:hos/veiw/userscreen/screen/profile/Editprofile.dart';
 import 'package:hos/veiw/wedget/Homepage/buttomAppbar.dart';
-import 'package:hos/veiw/wedget/Homepage/home_screnaction.dart';
+import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
 class Homescreen extends StatelessWidget {
   Homescreen({super.key});
@@ -50,63 +50,50 @@ class Homescreen extends StatelessWidget {
 
               actions: [
                 controller.Currentpage != 1
-                    ? Padding(
-                        padding: const EdgeInsetsDirectional.symmetric(
-                          horizontal: 5,
-                        ),
-                        child: Homescrenaction(
-                          herotag: "notification",
-                          onPressed: () {
-                            Get.toNamed(Approute.notificationPage);
-                          },
-                          child: GetBuilder<Notificationcontroller>(
-                            builder: (controller) {
-                              int hasUnread =
-                                  controller.notificationcount.value;
+                    ? Homescrenaction(
+                        herotag: "notification",
+                        onPressed: () {
+                          Get.toNamed(Approute.notificationPage);
+                        },
+                        child: GetBuilder<Notificationcontroller>(
+                          builder: (controller) {
+                            int hasUnread = controller.notificationcount.value;
 
-                              return Badge(
-                                isLabelVisible: hasUnread > 0,
-                                alignment: const Alignment(0.1, 0.90),
-                                label: Text(
-                                  hasUnread.toString(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                  ),
+                            return Badge(
+                              isLabelVisible: hasUnread > 0,
+                              alignment: const Alignment(0.1, 0.90),
+                              label: Text(
+                                hasUnread.toString(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
                                 ),
-                                smallSize: 9,
-                                backgroundColor: Colors.redAccent,
-                                child: SvgPicture.asset(
-                                  Imageasset.notification,
-                                  height: 24,
-                                  width: 24,
-                                  // ignore: deprecated_member_use
-                                  color: Colors.black,
-                                ),
-                              );
-                            },
-                          ),
+                              ),
+                              smallSize: 9,
+                              backgroundColor: Colors.redAccent,
+                              child: SvgPicture.asset(
+                                Imageasset.notification,
+                                // ignore: deprecated_member_use
+                                color: Colors.black,
+                              ),
+                            );
+                          },
                         ),
                       )
                     : SizedBox.shrink(),
-
+                SizedBox(width: 5,),
                 controller.Currentpage == 3
-                    ? Padding(
-                        padding: const EdgeInsetsDirectional.symmetric(
-                          horizontal: 5,
-                        ),
-                        child: Homescrenaction(
-                          herotag: "editprofile",
-                          onPressed: () {
-                            Get.to(() => EditProfileView());
-                          },
-                          child: SvgPicture.asset(
-                            Imageasset.profile,
-                            height: 24,
-                            width: 24,
-                            // ignore: deprecated_member_use
-                            color: Colors.black,
-                          ),
+                    ? Homescrenaction(
+                        herotag: "editprofile",
+                        onPressed: () {
+                          Get.to(() => EditProfileView());
+                        },
+                        child: SvgPicture.asset(
+                          Imageasset.profile,
+                          height: 25,
+                          width: 25,
+                          // ignore: deprecated_member_use
+                          color: Colors.black,
                         ),
                       )
                     : SizedBox.shrink(),
@@ -121,7 +108,7 @@ class Homescreen extends StatelessWidget {
               padding: EdgeInsets.only(
                 left: w * 0.04,
                 right: w * 0.04,
-                bottom: 10
+                bottom: 10,
               ),
               child: GetBuilder<Homescreencontroller>(
                 builder: (controller) => CustomBottomNavBar(

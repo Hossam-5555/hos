@@ -60,9 +60,9 @@ class AppChip extends StatelessWidget {
       colors: isSelected
           ? (isDark
                 ? [
-                    const Color(0xFFE9E4DB).withAlpha(210),
-                    const Color.fromARGB(255, 2, 101, 240),
-                    const Color(0xFFB8A98F).withAlpha(150),
+                    const Color.fromARGB(255, 5, 5, 5).withAlpha(210),
+                    const Color.fromARGB(255, 0, 0, 0),
+                    const Color.fromARGB(255, 8, 8, 8).withAlpha(150),
                   ]
                 : [
                     const Color(0xFF0A192F),
@@ -84,7 +84,7 @@ class AppChip extends StatelessWidget {
 
    final innerColor = isSelected
     ? (isDark
-        ? const Color.fromARGB(255, 10, 4, 90)
+        ?  Colors.black
         : const Color(0xFF0A192F))
     : (isDark
         ? const Color.fromARGB(255, 44, 49, 56)
