@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/core/class/crud.dart';
+import 'package:hos/data/services/crud.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/conistant/static.dart';
 import 'package:hos/core/functions/handlingdata.dart';

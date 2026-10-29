@@ -1,4 +1,4 @@
-import 'package:hos/core/class/crud.dart';
+import 'package:hos/data/services/crud.dart';
 import 'package:hos/core/conistant/link_api.dart';
 
 class Addresdata {

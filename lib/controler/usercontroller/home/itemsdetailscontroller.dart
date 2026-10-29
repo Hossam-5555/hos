@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/core/class/crud.dart';
+import 'package:hos/data/services/crud.dart';
 
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/cartdata.dart';

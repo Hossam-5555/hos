@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/favorite/myfavcontroler.dart';
-import 'package:hos/core/class/crud.dart';
+import 'package:hos/data/services/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/shared_product_card.dart';
@@ -43,12 +43,10 @@ class Myfavorite extends StatelessWidget {
             const horizontalPadding = 12.0;
             const crossAxisSpacing = 12.0;
 
-            final availableWidth =
-                width - (horizontalPadding * 2);
+            final availableWidth = width - (horizontalPadding * 2);
 
             final cardWidth =
-                (availableWidth -
-                    (crossAxisSpacing * (crossAxisCount - 1))) /
+                (availableWidth - (crossAxisSpacing * (crossAxisCount - 1))) /
                 crossAxisCount;
 
             // ارتفاع الكارت يتناسب مع عرضه
@@ -62,8 +60,7 @@ class Myfavorite extends StatelessWidget {
                 mode: HandlingMode.fullScreen,
                 widget: Skeletonizer(
                   containersColor: Colors.grey.withAlpha(90),
-                  enabled:
-                      controller.statusrequest == Statusrequest.loading,
+                  enabled: controller.statusrequest == Statusrequest.loading,
                   child: GridView.builder(
                     physics: const BouncingScrollPhysics(),
                     padding: const EdgeInsets.symmetric(
@@ -71,8 +68,7 @@ class Myfavorite extends StatelessWidget {
                       vertical: 12,
                     ),
                     itemCount: controller.data.length,
-                    gridDelegate:
-                        SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: crossAxisCount,
                       crossAxisSpacing: crossAxisSpacing,
                       mainAxisSpacing: 14,
@@ -87,18 +83,12 @@ class Myfavorite extends StatelessWidget {
                         onTap: () {
                           controller.gotoitemsdatails(items.item!);
                         },
-                        actionButton: IconButton(
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(
-                            minWidth: 36,
-                            minHeight: 36,
-                          ),
+                        actionButton: Homescrenaction(
                           onPressed: () {
-                            controller.deletefromfavpage(
-                              items.item!.id!,
-                            );
+                            controller.deletefromfavpage(items.item!.id!);
                           },
-                          icon: const Icon(
+                          herotag: "deletefav",
+                          child: Icon(
                             Icons.delete_outline_rounded,
                             color: Colors.redAccent,
                             size: 24,

@@ -5,7 +5,7 @@ import 'package:hos/controler/usercontroller/checkout&cart/cart_controller.dart'
 import 'package:hos/controler/usercontroller/home/itemsdetailscontroller.dart';
 import 'package:hos/controler/usercontroller/notificationcontroller.dart';
 
-import 'package:hos/core/class/crud.dart';
+import 'package:hos/data/services/crud.dart';
 
 class MyBinding extends Bindings {
   @override

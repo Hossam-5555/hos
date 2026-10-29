@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/homepage_controller.dart';
-import 'package:hos/core/class/searchclass.dart';
+import 'package:hos/controler/usercontroller/searchclass.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/veiw/userscreen/screen/cartandcheckout/cart.dart';

@@ -9,7 +9,7 @@ import 'package:hos/data/datasource/admindata/orderdata.dart';
 import 'package:hos/data/model/ordersmodel.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../core/class/crud.dart';
+import '../../../data/services/crud.dart';
 
 class AdminOrderDetailesController extends GetxController {
   OrderModel? order;

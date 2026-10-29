@@ -1,4 +1,4 @@
-import 'package:hos/core/class/crud.dart';
+import 'package:hos/data/services/crud.dart';
 
 handling(response) {
   if (response is Statusrequest) {

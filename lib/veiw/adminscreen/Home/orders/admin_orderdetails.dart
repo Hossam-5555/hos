@@ -118,7 +118,7 @@ class AdminOrderdetails extends StatelessWidget {
               padding: EdgeInsets.only(
                 left: w * 0.04,
                 right: w * 0.04,
-                bottom: 10
+                bottom: 10,
               ),
               child: Checkbutton.widget(
                 width: w * 0.9,
@@ -129,9 +129,9 @@ class AdminOrderdetails extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Icon(Icons.edit_note, color: Colors.white, size: 24),
-            
+
                     const SizedBox(width: 8),
-            
+
                     Text(
                       controller.currentStatus == 'delivered' ||
                               controller.currentStatus == 'cancelled'
@@ -219,32 +219,26 @@ class AdminOrderdetails extends StatelessWidget {
                       ),
                     ),
                   )
-                : _circleButton(Icons.location_on, () {
-                    controller.openMap(
-                      lat: controller.order!.shippingAddress.lat ?? 0.0,
-                      lng: controller.order!.shippingAddress.lng ?? 0.0,
-                    );
-                  });
+                : Homescrenaction(
+                    herotag: "location",
+                    backgroundColor: Colors.white,
+                    child: Icon(Icons.location_on,color: Colors.black,),
+                    onPressed: () {
+                      controller.openMap(
+                        lat: controller.order!.shippingAddress.lat ?? 0.0,
+                        lng: controller.order!.shippingAddress.lng ?? 0.0,
+                      );
+                    },
+                  );
           }),
           const SizedBox(width: 8),
-          _circleButton(Icons.phone, () => controller.makePhoneCall()),
+          Homescrenaction(
+            herotag: "phone",
+            backgroundColor: Colors.white,
+            child: Icon(Icons.phone,color: Colors.black),
+            onPressed: () => controller.makePhoneCall(),
+          ),
         ],
-      ),
-    );
-  }
-
-  Widget _circleButton(IconData icon, VoidCallback onTap) {
-    return Material(
-      color: Colors.white,
-      shape: const CircleBorder(),
-      child: InkWell(
-        customBorder: const CircleBorder(),
-        onTap: onTap,
-        child: SizedBox(
-          width: 44,
-          height: 44,
-          child: Icon(icon, size: 20, color: Colors.black),
-        ),
       ),
     );
   }

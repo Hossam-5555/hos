@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/paymentcontroller.dart';
 import 'package:hos/controler/usercontroller/home/homescreen_controller.dart';
-import 'package:hos/core/class/crud.dart';
+import 'package:hos/data/services/crud.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hos/core/class/crud.dart';
+import 'package:hos/data/services/crud.dart';
 
 // ignore: must_be_immutable
 class Checkbutton extends StatelessWidget {

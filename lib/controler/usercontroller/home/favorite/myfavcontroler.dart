@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:hos/core/class/crud.dart';
-import 'package:hos/core/class/searchclass.dart';
+import 'package:hos/data/services/crud.dart';
+import 'package:hos/controler/usercontroller/searchclass.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 // import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/userdata/fav_data.dart';

@@ -1,7 +1,7 @@
 // المسار المقترح: lib/controler/admincontroller/coupon/couponscontroller.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/core/class/crud.dart';
+import 'package:hos/data/services/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/data/datasource/admindata/addcoupondata.dart';
 import 'package:hos/data/model/coupone_model.dart';

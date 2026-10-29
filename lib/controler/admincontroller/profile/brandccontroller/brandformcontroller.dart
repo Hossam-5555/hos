@@ -1,7 +1,7 @@
 // المسار المقترح: lib/controler/admincontroller/brand/adminbrandformcontroller.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/core/class/crud.dart';
+import 'package:hos/data/services/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/data/datasource/admindata/branddata.dart';
 import 'package:hos/data/model/brandmodel.dart';
