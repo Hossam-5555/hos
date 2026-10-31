@@ -655,6 +655,8 @@ class _Card extends StatelessWidget {
       width: double.infinity,
       padding: padding,
       decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.withAlpha(40)),
+
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(18),
         boxShadow: [

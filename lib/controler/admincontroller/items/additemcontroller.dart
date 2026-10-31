@@ -9,7 +9,6 @@ import 'package:hos/data/datasource/admindata/itemdata.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 import 'package:image_picker/image_picker.dart';
 
-/// TODO: put your items images base URL here (e.g. AppLink.imagesitems).
 /// While empty, Edit mode shows a placeholder instead of the current image.
 const String _itemsImagesBase = '';
 

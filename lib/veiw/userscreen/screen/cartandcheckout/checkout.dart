@@ -182,6 +182,8 @@ class Checkout extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.withAlpha(40)),
+
         color: Theme.of(Get.context!).cardColor,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [

@@ -38,7 +38,6 @@ class CategoryFormController extends GetxController {
     description = TextEditingController();
 
     if (isEdit) {
-      // TODO: adapt to your model/link. Add `description` and `active`
       // (nullable) to CategoriesModel if the backend supports them.
       // description.text = category!.description ?? '';
       // isActive = category!.active == 1;
@@ -100,7 +99,6 @@ class CategoryFormController extends GetxController {
             );
 
       statusrequest = handling(response);
-print('Response: $response');
       if (statusrequest == Statusrequest.success &&
           response['status'] == true) {
         showSnackBar(
