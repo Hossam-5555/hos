@@ -13,9 +13,6 @@ A full-stack e-commerce platform built from scratch: a Flutter mobile app (about
 
 > **Note:** These repositories are shared for viewing and evaluation only. See [License](#license).
 
-<!--
-Add your screenshots to docs/screenshots/ and uncomment this block.
-
 ## Screenshots
 
 | Splash | Login | Home | Items | Item details |
@@ -29,9 +26,6 @@ Add your screenshots to docs/screenshots/ and uncomment this block.
 | Order details | Notifications | Profile |
 |:---:|:---:|:---:|
 | <img src="docs/screenshots/ordersdetails.png" width="150"> | <img src="docs/screenshots/notification.png" width="150"> | <img src="docs/screenshots/profile.png" width="150"> |
-
-Demo video / APK: <link>
--->
 
 ## Features
 
