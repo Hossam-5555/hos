@@ -127,7 +127,7 @@ class _OverviewGrid extends StatelessWidget {
       crossAxisCount: 2,
       mainAxisSpacing: 12,
       crossAxisSpacing: 12,
-      childAspectRatio: 1.5,
+      childAspectRatio: 2,
       children: [
         _KpiCard(
           'إجمالي الإيرادات',
@@ -169,7 +169,7 @@ class _KpiCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _Card(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -245,7 +245,7 @@ class _RevenueChartCard extends StatelessWidget {
                             final lineBarData = LineChartBarData(
                               spots: controller.salesSpots,
                               isCurved: true,
-                              color: AppColors.success,
+                              color: AppColors.english,
                               barWidth: 3,
                               belowBarData: BarAreaData(
                                 show: true,
@@ -516,7 +516,7 @@ class _BestSellingProductsCard extends StatelessWidget {
             return ListTile(
               contentPadding: EdgeInsets.zero,
               leading: const Icon(
-                Icons.shopping_bag_outlined,
+                Icons.trending_up_outlined,
                 color: AppColors.primary,
               ),
               title: Text(p['product_name'] ?? ''),
@@ -610,6 +610,7 @@ class _OrderStatsPieCard extends StatelessWidget {
 
 class _PaymentMethodsCard extends StatelessWidget {
   final List<Map<String, dynamic>> payments;
+
   const _PaymentMethodsCard({required this.payments});
 
   @override
@@ -624,18 +625,64 @@ class _PaymentMethodsCard extends StatelessWidget {
               context,
             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 8),
-          ...payments.map(
-            (p) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(p['payment_method'] ?? 'غير محدد'),
-                  Text('${p['count']} طلب'),
-                ],
-              ),
+          const SizedBox(height: 16),
+
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: payments.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 0.9,
             ),
+            itemBuilder: (context, index) {
+              final payment = payments[index];
+
+              return Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerLow,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(
+                    color: Theme.of(context).dividerColor.withAlpha(40),
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      payment['payment_method'] == "credit"
+                          ? Icons.wallet
+                          : payment['payment_method'] == "card"
+                          ? Icons.credit_card_rounded
+                          : Icons.monetization_on_outlined,
+                      size: 26,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      payment['payment_method']?.toString() ?? 'غير محدد',
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      '${payment['count'] ?? 0} طلب',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ],
       ),

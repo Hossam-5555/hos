@@ -9,6 +9,7 @@ import 'package:hos/core/localization/changlocal.dart';
 import 'package:hos/veiw/adminscreen/brands/brandveiw.dart';
 import 'package:hos/veiw/userscreen/screen/profile/about_us_page.dart';
 import 'package:hos/veiw/wedget/bulidfooter.dart';
+import 'package:hos/veiw/wedget/language.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
@@ -97,15 +98,16 @@ class ProfilePage extends StatelessWidget {
                               onTap: () => Get.toNamed(Approute.myfavorite),
                             )
                           : SizedBox.shrink(),
-                      _ListTile(
-                        gradientColors: [
-                          AppColors.languageStart,
-                          AppColors.languageEnd,
-                        ],
-                        icon: Icons.language_outlined,
-                        title: "Languages".tr,
-                        onTap: () => _showLanguageDialog(context),
-                      ),
+                      // _ListTile(
+                      //   gradientColors: [
+                      //     AppColors.languageStart,
+                      //     AppColors.languageEnd,
+                      //   ],
+                      //   icon: Icons.language_outlined,
+                      //   title: "Languages".tr,
+                      //   onTap: () => _showLanguageDialog(context),
+                      // ),
+                      LanguageTile(controller: localController),
                       _ThemeTile(controller: localController),
                     ],
                   ),
@@ -215,64 +217,6 @@ class ProfilePage extends StatelessWidget {
           controller.logout();
         },
         child: Text("Logout".tr, style: const TextStyle(color: Colors.white)),
-      ),
-    );
-  }
-
-  void _showLanguageDialog(BuildContext context) {
-    Get.defaultDialog(
-      title: "Choose Language".tr,
-      titleStyle: const TextStyle(fontWeight: FontWeight.bold),
-      radius: 16,
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _languageOption(
-            label: "العربية",
-            icon: Icons.language,
-            color: AppColors.arabic,
-            onTap: () {
-              localController.changeLang('ar');
-              Get.back();
-            },
-          ),
-          const SizedBox(height: 4),
-          _languageOption(
-            label: "English",
-            icon: Icons.language,
-            color: AppColors.english,
-            onTap: () {
-              localController.changeLang('en');
-              Get.back();
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _languageOption({
-    required String label,
-    required IconData icon,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: onTap,
-        child: ListTile(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          tileColor: color.withOpacity(0.06),
-          leading: Icon(icon, color: color),
-          title: Text(
-            label,
-            style: const TextStyle(fontWeight: FontWeight.w600),
-          ),
-        ),
       ),
     );
   }

@@ -99,7 +99,7 @@ class AdminBrandsPage extends StatelessWidget {
     final isEmpty = status == Statusrequest.nodata;
     final noBrands = c.brands.isEmpty;
 
-    return HandlingDataView(
+    return HandlingDataView(emptyStyle: EmptyStateStyle.style2,
       statusrequest: status,
       onRetry: () => c.load(),
       // الرسائل المخصصة بتظهر في حالة "فاضي" بس

@@ -206,6 +206,12 @@ class Mytransilation extends Translations {
       "Save changes": "حفظ التغييرات",
       "At least 2 characters": "حرفان على الأقل",
       "Maximum 100 characters": "100 حرف كحد أقصى",
+            "Select all": "تحديد الكل",
+      "Clear": "مسح",
+      "Select at least one category": "اختر قسماً واحداً على الأقل",
+      "No categories yet": "لا توجد أقسام بعد",
+      "Add a category first, then link the brand to it.":
+          "أضف قسماً أولاً، ثم اربط العلامة التجارية به.",
     },
 
     "en": {
@@ -411,6 +417,12 @@ class Mytransilation extends Translations {
       "At least 2 characters": "At least 2 characters",
       "Maximum 100 characters": "Maximum 100 characters",
       "QUICK ACCESS": "QUICK ACCESS",
+            "Select all": "Select all",
+      "Clear": "Clear",
+      "Select at least one category": "Select at least one category",
+      "No categories yet": "No categories yet",
+      "Add a category first, then link the brand to it.":
+          "Add a category first, then link the brand to it.",
     },
   };
 }

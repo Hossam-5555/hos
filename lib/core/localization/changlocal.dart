@@ -11,15 +11,18 @@ class LocalController extends GetxController {
   late Locale language;
   var selectedTheme = 'System'.obs;
   ThemeData apptheme = AppTheme.darkEn;
-
+  var selectedLanguage = 'en'.obs;
   // تغيير اللغة
   void changeLang(String codeLang) async {
+    selectedLanguage.value = codeLang;
+
     Locale locale = Locale(codeLang);
     myservisec.sharedPreferences.setString('lang', codeLang);
+
     await Jiffy.setLocale(codeLang);
 
     Get.updateLocale(locale);
-    _updateThemeLogic(); // تحديث الثيم عشان يغير نوع الخط فوراً
+    _updateThemeLogic();
   }
 
   // تغيير الثيم من الـ Dropdown
@@ -61,13 +64,15 @@ class LocalController extends GetxController {
     Get.changeTheme(themeData);
   }
 
+  String? sharedPreflang;
   @override
   void onInit() {
     // 1. استعادة اللغة
-    String? sharedPreflang = myservisec.sharedPreferences.getString("lang");
-    language = (sharedPreflang == "ar")
-        ? const Locale('ar')
-        : const Locale('en');
+    sharedPreflang = myservisec.sharedPreferences.getString("lang");
+
+    selectedLanguage.value = sharedPreflang ?? 'en';
+
+    language = Locale(selectedLanguage.value);
 
     // 2. استعادة الثيم
     selectedTheme.value =

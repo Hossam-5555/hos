@@ -69,4 +69,5 @@ class LinkApi {
   static String addBrand = '$lravelserver/admin/brands/add';
   static String updateBrand = '$lravelserver/admin/brands/update';
   static String deleteBrand = '$lravelserver/admin/brands/delete';
+    static String brandCategories = '$lravelserver/admin/brands/categories';
 }
