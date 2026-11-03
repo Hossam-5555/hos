@@ -46,9 +46,7 @@ class AdminHome extends StatelessWidget {
                       ),
                       smallSize: 9,
                       backgroundColor: Colors.redAccent,
-                      child: SvgPicture.asset(
-                        Imageasset.notification,
-                      ),
+                      child: SvgPicture.asset(Imageasset.notification),
                     ),
                   );
                 },
@@ -68,11 +66,12 @@ class AdminHome extends StatelessWidget {
                     label: controller.title[0][0],
                     svgAsset: controller.title[0][1],
                   ),
-                 
+
                   NavItem(
                     label: controller.title[2][0],
                     svgAsset: controller.title[2][1],
-                  ), NavItem(
+                  ),
+                  NavItem(
                     label: controller.title[1][0],
                     svgAsset: controller.title[1][1],
                   ),
@@ -83,7 +82,7 @@ class AdminHome extends StatelessWidget {
                 ],
                 currentIndex: controller.currentpage,
                 onTap: controller.changePage,
-                cartcount: 0,
+                cartcount: controller.overviewData['total_orders'],
                 isbadgeActive: false,
               ),
             ),

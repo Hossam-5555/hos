@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/admin_controller.dart';
 import 'package:hos/core/conistant/app_colors.dart';
+import 'package:hos/data/datasource/admindata/dashboarddata.dart';
 import 'package:hos/veiw/wedget/pricecard.dart';
 
 String _compact(num value) {
@@ -48,13 +50,9 @@ class Adminhomedashboard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  _SalesByProductCard(
-                    products: List<Map<String, dynamic>>.from(
-                      c.detailsData['sales_by_product'] ?? [],
-                    ),
-                  ),
-                  const SizedBox(height: 22),
 
+                  // _SalesByProductCard(products: c.salesByProduct),
+                  // const SizedBox(height: 22),
                   const _SectionTitle('العملاء'),
                   const SizedBox(height: 12),
                   _CustomersOverviewRow(
@@ -72,11 +70,7 @@ class Adminhomedashboard extends StatelessWidget {
 
                   const _SectionTitle('المنتجات والمخزون'),
                   const SizedBox(height: 12),
-                  _BestSellingProductsCard(
-                    products: List<Map<String, dynamic>>.from(
-                      c.detailsData['best_selling_products'] ?? [],
-                    ),
-                  ),
+                  _BestSellingProductsCard(products: c.salesByProduct),
                   const SizedBox(height: 12),
                   _StockStatusCard(
                     stockList: List<Map<String, dynamic>>.from(
@@ -368,43 +362,41 @@ class _SalesByCategoryCard extends StatelessWidget {
   }
 }
 
-class _SalesByProductCard extends StatelessWidget {
-  final List<Map<String, dynamic>> products;
-  const _SalesByProductCard({required this.products});
+// class _SalesByProductCard extends StatelessWidget {
+//   final List<SalesByProductModel> products;
+//   const _SalesByProductCard({required this.products});
 
-  @override
-  Widget build(BuildContext context) {
-    return _Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'المبيعات حسب المنتج',
-            style: Theme.of(
-              context,
-            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          if (products.isEmpty) const Text('لا توجد بيانات متاحة'),
-          ...products.map((p) {
-            // تحويل آمن من String إلى num
-            final rawTotal = p['total'];
-            final num total = rawTotal is num
-                ? rawTotal
-                : (num.tryParse(rawTotal?.toString() ?? '0') ?? 0);
+//   @override
+//   Widget build(BuildContext context) {
+//     return _Card(
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Text(
+//             'المبيعات حسب المنتج',
+//             style: Theme.of(
+//               context,
+//             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+//           ),
+//           const SizedBox(height: 8),
+//           if (products.isEmpty) const Text('لا توجد بيانات متاحة'),
+//           ...products.map((p) {
+//             // تحويل آمن من String إلى num
+//             final rawTotal = p.total;
+//             final num total = rawTotal;
 
-            return _BarRow(
-              label: p['name'] ?? 'غير معروف',
-              percent: 0.6,
-              trailing: '${_compact(total).toString()}',
-              color: AppColors.purple,
-            );
-          }),
-        ],
-      ),
-    );
-  }
-}
+//             return _BarRow(
+//               label: p.name,
+//               percent: 0.6,
+//               trailing: _compact(total).toString(),
+//               color: AppColors.purple,
+//             );
+//           }),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 class _CustomersOverviewRow extends StatelessWidget {
   final Map<String, dynamic> customers;
@@ -492,39 +484,81 @@ class _TopCustomersCard extends StatelessWidget {
 }
 
 class _BestSellingProductsCard extends StatelessWidget {
-  final List<Map<String, dynamic>> products;
+  final List<SalesByProductModel> products;
   const _BestSellingProductsCard({required this.products});
 
   @override
   Widget build(BuildContext context) {
     return _Card(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'الأكثر مبيعاً',
-            style: Theme.of(
-              context,
-            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          ...products.map((p) {
-            final rawRevenue = p['revenue'];
-            final num revenue = rawRevenue is num
-                ? rawRevenue
-                : (num.tryParse(rawRevenue?.toString() ?? '0') ?? 0);
-            return ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: const Icon(
-                Icons.trending_up_outlined,
-                color: AppColors.primary,
-              ),
-              title: Text(p['product_name'] ?? ''),
-              subtitle: Text('${p['sold_count']} مباع'),
-              trailing: PriceText(revenue, color: AppColors.success),
-            );
-          }),
-        ],
+        children: List.generate(products.length, (index) {
+          final product = products[index];
+
+          return Padding(
+            padding: EdgeInsets.only(
+              bottom: index == products.length - 1 ? 0 : 16,
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 75,
+                  height: 75,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF7F9FF),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: const Color(0xFFE0E5ED),
+                      width: 1,
+                    ),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(11),
+                    child: CachedNetworkImage(
+                      imageUrl: product.image ?? '',
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => const Center(
+                        child: SizedBox(
+                          width: 22,
+                          height: 22,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => const Icon(
+                        Icons.image_not_supported_rounded,
+                        color: Colors.grey,
+                        size: 28,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(width: 14),
+
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        product.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                     PriceText(
+                       product.total,
+                      color: Colors.grey,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }

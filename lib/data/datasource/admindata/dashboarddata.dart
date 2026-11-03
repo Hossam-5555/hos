@@ -65,3 +65,26 @@ class RevenueChartModel {
     return RevenueChartModel(date: json['date'].toString(), total: total);
   }
 }
+
+class SalesByProductModel {
+  final int productId;
+  final String name;
+  final String? image;
+  final double total;
+
+  SalesByProductModel({
+    required this.productId,
+    required this.name,
+    this.image,
+    required this.total,
+  });
+
+  factory SalesByProductModel.fromJson(Map<String, dynamic> json) {
+    return SalesByProductModel(
+      productId: int.parse(json['product_id'].toString()),
+      name: json['name'] ?? '',
+      image: json['image'],
+      total: double.parse(json['total'].toString()),
+    );
+  }
+}

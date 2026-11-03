@@ -19,7 +19,7 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
   Map<String, dynamic> overviewData = {};
   List<RevenueChartModel> chartData = [];
   Map<String, dynamic> detailsData = {};
-
+  List<SalesByProductModel> salesByProduct = [];
   // ─────────────────── Navigation / Pages ──────────────────────
   int currentpage = 0;
   late PageController controller;
@@ -44,7 +44,7 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
     ProfilePage(),
   ];
 
-   List<List<dynamic>> get title => [
+  List<List<dynamic>> get title => [
     ["Dashboard".tr, Imageasset.homesvg],
     ["Orders".tr, Imageasset.cart],
     ["Categories".tr, Imageasset.category],
@@ -76,7 +76,6 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
         _data.getChartData(period: 'monthly', isRefresh: isRefresh),
         _data.getDetails(isRefresh: isRefresh),
       ]);
-
       final overviewRes = results[0];
       final chartRes = results[1];
       final detailsRes = results[2];
@@ -100,6 +99,11 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
 
       if (detailsRes['status'] == true) {
         detailsData = Map<String, dynamic>.from(detailsRes['data'] ?? {});
+        List<dynamic> salesByProductList =
+            detailsData['sales_by_product'] ?? [];
+        salesByProduct = salesByProductList
+            .map((e) => SalesByProductModel.fromJson(e))
+            .toList();
       }
 
       statusrequest = Statusrequest.success;
