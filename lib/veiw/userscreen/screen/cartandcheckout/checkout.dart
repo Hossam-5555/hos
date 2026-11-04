@@ -10,6 +10,7 @@ import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 import 'package:hos/veiw/wedget/paymentmethods.dart';
 import 'package:hos/veiw/wedget/pricecard.dart';
+import 'package:hos/veiw/wedget/shoppage/coubone.dart';
 
 class Checkout extends StatelessWidget {
   const Checkout({super.key});
@@ -129,7 +130,14 @@ class Checkout extends StatelessWidget {
                     : _buildAddressSelector(c, context),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 10),
+            Coubone(
+              c: c,
+              onChanged: (val) {
+                // controller.havecoupone(val);
+              },
+            ),
+            const SizedBox(height: 10),
 
             // ================= ملخص الطلب =================
             _buildCard(

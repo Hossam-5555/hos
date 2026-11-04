@@ -36,7 +36,8 @@ class Checkoutcontroller extends GetxController {
   Myservisec myservisec = Get.find();
   Statusrequest statusrequest = Statusrequest.none;
   List<AddressModel> listaddresdata = [];
-
+TextEditingController? coubonecontroller ;
+bool isactive = false;
   // ✨ المتغير السحري: شايل الـ Object بتاع العنوان المختار حالياً للشحن
   var selectedAddress = Rxn<AddressModel>();
 
@@ -185,9 +186,8 @@ class Checkoutcontroller extends GetxController {
   List<CartModel> cartdata = [];
   @override
   void onInit() {
-    couponeid = Get.arguments['couponeID'].toString();
+     coubonecontroller = TextEditingController();
     totalprice = Get.arguments['totalprice'].toString();
-    couponediscount = Get.arguments['couponediscount'].toString();
     cartdata = Get.arguments['Cartdata'];
     getaddress();
     super.onInit();

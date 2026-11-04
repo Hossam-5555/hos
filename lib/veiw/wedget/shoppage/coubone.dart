@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hos/controler/usercontroller/checkout&cart/cart_controller.dart';
+import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
-class Coubone extends GetView<CartController> {
+// ignore: must_be_immutable
+class Coubone extends StatelessWidget {
   final void Function(bool)? onChanged;
-  const Coubone({super.key, this.onChanged});
+  Coubone({super.key, this.onChanged, required this.c});
+  Checkoutcontroller c;
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +16,12 @@ class Coubone extends GetView<CartController> {
       children: [
         Padding(
           padding: const EdgeInsets.all(6),
-          child: controller.couponename == null
+          child: c.isactive
               ? Row(
                   children: [
                     Expanded(
                       child: TextField(
-                        controller: controller.coubonecontroller,
+                        controller: c.coubonecontroller,
                         decoration: InputDecoration(
                           filled: true,
                           suffixIcon: Checkbutton.widget(
@@ -52,7 +54,7 @@ class Coubone extends GetView<CartController> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    "Code: ${controller.couponename} Applied! ✅",
+                    "Code: ${c.coubonecontroller!.text} Applied! ✅",
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,

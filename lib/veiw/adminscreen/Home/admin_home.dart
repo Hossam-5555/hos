@@ -68,7 +68,7 @@ class Adminhomedashboard extends StatelessWidget {
                   ),
                   const SizedBox(height: 22),
 
-                  const _SectionTitle('المنتجات والمخزون'),
+                  const _SectionTitle('Most Sale'),
                   const SizedBox(height: 12),
                   _BestSellingProductsCard(products: c.salesByProduct),
                   const SizedBox(height: 12),

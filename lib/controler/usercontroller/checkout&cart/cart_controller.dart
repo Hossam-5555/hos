@@ -24,12 +24,7 @@ class CartController extends GetxController {
   late Animation<double> priceAnimation;
 
   // الكوبون
-  var coupone = true.obs;
-  TextEditingController? coubonecontroller;
-  // CouponeModel? couponeModel;
-  double couponediscount = 0;
-  String? couponename;
-  String? couponeID;
+
 
   // بيانات السلة
   List<CartModel> data = [];
@@ -37,17 +32,14 @@ class CartController extends GetxController {
   int totalcount = 0;
   double totalprice = 0.0;
 
-  double gettotalprice() {
-    return (totalprice - totalprice * couponediscount / 100);
-  }
+ 
 
-  double get totalpriceafterdiscount => gettotalprice();
 
-  void havecoupone(bool value) async {
-    coupone.value = value;
-    final prefs = myservisec.sharedPreferences;
-    await prefs.setBool('cop', value);
-  }
+  // void havecoupone(bool value) async {
+  //   coupone.value = value;
+  //   final prefs = myservisec.sharedPreferences;
+  //   await prefs.setBool('cop', value);
+  // }
 
   /// ================== دالة عرض السلة (مع تحديث صامت) ==================
   // 🌟 أضفنا showLoading عشان نقدر نحدث البيانات في الخلفية بدون ما نوقف الشاشة
@@ -212,9 +204,7 @@ class CartController extends GetxController {
       transition: Transition.fadeIn,
       arguments: {
         "Cartdata": data,
-        "totalprice": totalpriceafterdiscount.toString(),
-        "couponeID": couponeID ?? "0",
-        "couponediscount": couponediscount.toString(),
+        "totalprice":totalprice,
       },
       duration: const Duration(milliseconds: 400),
     );
@@ -222,17 +212,11 @@ class CartController extends GetxController {
 
   @override
   void onInit() {
-    coubonecontroller = TextEditingController();
-    coupone.value = myservisec.sharedPreferences.getBool('cop') ?? false;
 
     // نستدعي البيانات أول مرة يفتح فيها التطبيق
     view();
     super.onInit();
   }
 
-  @override
-  void onClose() {
-    coubonecontroller!.dispose();
-    super.onClose();
-  }
+
 }

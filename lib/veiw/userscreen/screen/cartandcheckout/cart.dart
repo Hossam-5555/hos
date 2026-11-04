@@ -9,7 +9,6 @@ import 'package:hos/veiw/wedget/Homepage/titles.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 import 'package:hos/veiw/wedget/pricecard.dart';
 import 'package:hos/veiw/wedget/shoppage/carditem.dart';
-import 'package:hos/veiw/wedget/shoppage/coubone.dart';
 
 class ShoppingCartPage extends StatelessWidget {
   const ShoppingCartPage({super.key});
@@ -127,40 +126,7 @@ class ShoppingCartPage extends StatelessWidget {
                                             16.0,
                                           ),
                                         ),
-                                        controller.couponediscount <= 0
-                                            ? Coubone(
-                                                onChanged: (val) {
-                                                  controller.havecoupone(val);
-                                                },
-                                              )
-                                            : Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(5),
-                                                    child: Text(
-                                                      'Discount'.tr,
-                                                      style: TextStyle(
-                                                        fontSize: (width * 0.04)
-                                                            .clamp(14.0, 18.0),
-                                                        color: Colors.grey,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    '${controller.couponediscount} %',
-                                                    style: TextStyle(
-                                                      fontSize: (width * 0.045)
-                                                          .clamp(16.0, 22.0),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
+
                                         Divider(
                                           height: (height * 0.02).clamp(
                                             20.0,
@@ -191,11 +157,7 @@ class ShoppingCartPage extends StatelessWidget {
                                       TweenAnimationBuilder<double>(
                                         tween: Tween<double>(
                                           begin: controller.totalprice,
-                                          end:
-                                              controller.totalprice -
-                                              (controller.totalprice *
-                                                  controller.couponediscount /
-                                                  100),
+                                          end: controller.totalprice,
                                         ),
                                         duration: const Duration(seconds: 1),
                                         curve: Curves.easeOut,

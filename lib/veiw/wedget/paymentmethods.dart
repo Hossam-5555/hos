@@ -199,7 +199,7 @@ Widget buildInfoBox({
       border: Border.all(color: color.withAlpha(70)),
     ),
     child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
           padding: const EdgeInsets.all(10),
