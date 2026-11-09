@@ -23,7 +23,7 @@ class Checkout extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.only(left: w * 0.04, right: w * 0.04, bottom: 10),
+        padding: EdgeInsets.only(left: w * 0.04, right: w * 0.04, bottom: 5),
         child: SafeArea(
           child: GetBuilder<Checkoutcontroller>(
             builder: (controller) => Checkbutton(

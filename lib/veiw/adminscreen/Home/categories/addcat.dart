@@ -15,9 +15,24 @@ class CategoryFormScreen extends GetView<CategoryFormController> {
   @override
   Widget build(BuildContext context) {
     Get.put(CategoryFormController(category));
+    final w = MediaQuery.of(context).size.width;
 
     return GetBuilder<CategoryFormController>(
       builder: (c) => Scaffold(
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.only(left: w * 0.04, right: w * 0.04,bottom: 5),
+          // width: double.infinity,
+          child: SafeArea(
+            child: Checkbutton(
+              statusrequest: c.statusrequest,
+              width: w * 0.9,
+              onTap: () {
+                c.submit();
+              },
+              buttonName: (c.isEdit ? 'update' : 'add').tr,
+            ),
+          ),
+        ),
         appBar: Appbarbackicon(
           title: (c.isEdit ? 'edit_category' : 'add_category').tr,
           herotag: "addcategory",
@@ -63,15 +78,6 @@ class CategoryFormScreen extends GetView<CategoryFormController> {
                             fieldsCard,
                           ],
                           const SizedBox(height: 24),
-                          SizedBox(
-                            width: double.infinity,
-                            child: Checkbutton(
-                              onTap: () {
-                                c.submit();
-                              },
-                              buttonName: (c.isEdit ? 'update' : 'add').tr,
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -199,6 +205,7 @@ class _Fields extends StatelessWidget {
     IconData icon,
   ) {
     return InputDecoration(
+      filled: true,
       labelText: label,
       hintText: hint,
       prefixIcon: Icon(icon),

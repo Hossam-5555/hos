@@ -197,7 +197,10 @@ class _AddNewAddresState extends State<AddNewAddres>
             ],
           ),
           PositionedDirectional(
-            top: 16 * s,
+            bottom: selectedPoint == null
+                ? 24 * s
+                : (detailsButtonHeight + bottomInset + 24 * s),
+            // 16 * s,
             end: 16 * s,
             child: SafeArea(
               child: GestureDetector(
@@ -459,253 +462,230 @@ class _LocationDetailsSheet extends StatelessWidget {
 
   // 1. واجهة كتابة البيانات
   Widget _buildFormContent(BuildContext context) {
-  final s = _scaleOf(context);
-  final contentWidth = _contentWidth(context, s);
+    final s = _scaleOf(context);
+    final contentWidth = _contentWidth(context, s);
 
-  return Container(
-    width: double.infinity,
-    padding: EdgeInsets.all(5 * s),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(20 * s),
-    
-      // boxShadow: [
-      //   BoxShadow(
-      //     color: Colors.black.withOpacity(0.05),
-      //     blurRadius: 20,
-      //     offset: const Offset(0, 6),
-      //   ),
-      // ],
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // =========================
-        // Header
-        // =========================
-        Row(
-          children: [
-            Container(
-              width: 48 * s,
-              height: 48 * s,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(14 * s),
-              ),
-              child: Icon(
-                Icons.location_on_rounded,
-                color: Colors.white,
-                size: 25 * s,
-              ),
-            ),
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(5 * s),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20 * s),
 
-            SizedBox(width: 12 * s),
-
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Add new address'.tr,
-                    style: TextStyle(
-                      fontSize: 18 * s,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-
-                  SizedBox(height: 4 * s),
-
-                  Text(
-                    'Enter address details to facilitate your order delivery'.tr,
-                    style: TextStyle(
-                      fontSize: 12.5 * s,
-                      color: Colors.grey.shade600,
-                      height: 1.4,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-
-        SizedBox(height: 22 * s),
-
-        // =========================
-        // Location section
-        // =========================
-        Text(
-          'Location Information'.tr,
-          style: TextStyle(
-            fontSize: 14 * s,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-
-        SizedBox(height: 10 * s),
-
-        DropdownSearch<String>(
-          items: (f, cs) => EgyptLocations.governorates.keys.toList(),
-          selectedItem: c.selectedGovernorate,
-          onChanged: c.onGovernorateChanged,
-          decoratorProps: DropDownDecoratorProps(
-            decoration: InputDecoration(
-              filled: true,
-
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12 * s),
-                borderSide: BorderSide(
-                  color: Colors.grey.shade200,
-                ),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12 * s),
-                borderSide: BorderSide(
-                  color: Colors.grey.shade200,
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12 * s),
-                borderSide: const BorderSide(
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: Colors.black.withOpacity(0.05),
+        //     blurRadius: 20,
+        //     offset: const Offset(0, 6),
+        //   ),
+        // ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // =========================
+          // Header
+          // =========================
+          Row(
+            children: [
+              Container(
+                width: 48 * s,
+                height: 48 * s,
+                decoration: BoxDecoration(
                   color: Colors.black,
-                  width: 1.2,
+                  borderRadius: BorderRadius.circular(14 * s),
+                ),
+                child: Icon(
+                  Icons.location_on_rounded,
+                  color: Colors.white,
+                  size: 25 * s,
                 ),
               ),
-              labelText: 'Governorate'.tr,
-              prefixIcon: const Icon(Icons.map_outlined),
+
+              SizedBox(width: 12 * s),
+
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Add new address'.tr,
+                      style: TextStyle(
+                        fontSize: 18 * s,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+
+                    SizedBox(height: 4 * s),
+
+                    Text(
+                      'Enter address details to facilitate your order delivery'
+                          .tr,
+                      style: TextStyle(
+                        fontSize: 12.5 * s,
+                        color: Colors.grey.shade600,
+                        height: 1.4,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          SizedBox(height: 22 * s),
+
+          // =========================
+          // Location section
+          // =========================
+          Text(
+            'Location Information'.tr,
+            style: TextStyle(fontSize: 14 * s, fontWeight: FontWeight.w700),
+          ),
+
+          SizedBox(height: 10 * s),
+
+          DropdownSearch<String>(
+            items: (f, cs) => EgyptLocations.governorates.keys.toList(),
+            selectedItem: c.selectedGovernorate,
+            onChanged: c.onGovernorateChanged,
+            decoratorProps: DropDownDecoratorProps(
+              decoration: InputDecoration(
+                filled: true,
+
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12 * s),
+                  borderSide: BorderSide(color: Colors.grey.shade200),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12 * s),
+                  borderSide: BorderSide(color: Colors.grey.shade200),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12 * s),
+                  borderSide: const BorderSide(color: Colors.black, width: 1.2),
+                ),
+                labelText: 'Governorate'.tr,
+                prefixIcon: const Icon(Icons.map_outlined),
+              ),
             ),
           ),
-        ),
 
-        SizedBox(height: 12 * s),
+          SizedBox(height: 12 * s),
 
-        Row(
-          children: [
-            // نوع المكان
-            Expanded(
-              child: DropdownButtonFormField<String>(
-                isExpanded: true,
-                decoration: InputDecoration(
-                  filled: true,alignLabelWithHint: false,
-                  labelText: 'Location Type'.tr,
-                  prefixIcon: const Icon(Icons.place_outlined),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12 * s),
-                    borderSide: BorderSide(
-                      color: Colors.grey.shade200,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12 * s),
-                    borderSide: BorderSide(
-                      color: Colors.grey.shade200,
-                    ),
-                  ),
-                ),
-                value: c.selectedLocationType,
-                items: c.locationTypes
-                    .map(
-                      (String type) => DropdownMenuItem<String>(
-                        value: type,
-                        child: Text(
-                          type,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    )
-                    .toList(),
-                onChanged: c.onLocationTypeChanged,
-              ),
-            ),
-
-            SizedBox(width: 10 * s),
-
-            // المركز
-            Expanded(
-              child: DropdownSearch<String>(
-                items: (f, cs) => c.selectedGovernorate == null
-                    ? []
-                    : (EgyptLocations
-                            .governorates[c.selectedGovernorate] ??
-                        []),
-                selectedItem: c.selectedCity,
-                onChanged: c.onCityChanged,
-                decoratorProps: DropDownDecoratorProps(
+          Row(
+            children: [
+              // نوع المكان
+              Expanded(
+                child: DropdownButtonFormField<String>(
+                  isExpanded: true,
                   decoration: InputDecoration(
                     filled: true,
-                    labelText: 'City'.tr,
-                    prefixIcon: const Icon(Icons.location_city_outlined),
+                    alignLabelWithHint: false,
+                    labelText: 'Location Type'.tr,
+                    prefixIcon: const Icon(Icons.place_outlined),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12 * s),
-                      borderSide: BorderSide(
-                        color: Colors.grey.shade200,
-                      ),
+                      borderSide: BorderSide(color: Colors.grey.shade200),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12 * s),
-                      borderSide: BorderSide(
-                        color: Colors.grey.shade200,
+                      borderSide: BorderSide(color: Colors.grey.shade200),
+                    ),
+                  ),
+                  value: c.selectedLocationType,
+                  items: c.locationTypes
+                      .map(
+                        (String type) => DropdownMenuItem<String>(
+                          value: type,
+                          child: Text(type, overflow: TextOverflow.ellipsis),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: c.onLocationTypeChanged,
+                ),
+              ),
+
+              SizedBox(width: 10 * s),
+
+              // المركز
+              Expanded(
+                child: DropdownSearch<String>(
+                  items: (f, cs) => c.selectedGovernorate == null
+                      ? []
+                      : (EgyptLocations.governorates[c.selectedGovernorate] ??
+                            []),
+                  selectedItem: c.selectedCity,
+                  onChanged: c.onCityChanged,
+                  decoratorProps: DropDownDecoratorProps(
+                    decoration: InputDecoration(
+                      filled: true,
+                      labelText: 'City'.tr,
+                      prefixIcon: const Icon(Icons.location_city_outlined),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12 * s),
+                        borderSide: BorderSide(color: Colors.grey.shade200),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12 * s),
+                        borderSide: BorderSide(color: Colors.grey.shade200),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-
-        SizedBox(height: 20 * s),
-
-        // =========================
-        // Address details
-        // =========================
-        Text(
-          'Address Details'.tr,
-          style: TextStyle(
-            fontSize: 14 * s,
-            fontWeight: FontWeight.w700,
+            ],
           ),
-        ),
 
-        SizedBox(height: 10 * s),
+          SizedBox(height: 20 * s),
 
-        Textfealdauth(
-          obscureText: false,
-          suffixIcon: Icons.location_on_outlined,
-          hint: 'Street, Building Number, Floor, Apartment'.tr,
-          textEditingController: c.street!,
-          valid: (val) => null,
-        ),
+          // =========================
+          // Address details
+          // =========================
+          Text(
+            'Address Details'.tr,
+            style: TextStyle(fontSize: 14 * s, fontWeight: FontWeight.w700),
+          ),
 
-        SizedBox(height: 12 * s),
+          SizedBox(height: 10 * s),
 
-        Textfealdauth.phone(
-          phone: true,
-          obscureText: false,
-          suffixIcon: Icons.phone_outlined,
-          hint: 'Phone Number'.tr,
-          textEditingController: c.phone!,
-          valid: (val) => null,
-        ),
+          Textfealdauth(
+            obscureText: false,
+            suffixIcon: Icons.location_on_outlined,
+            hint: 'Street, Building Number, Floor, Apartment'.tr,
+            textEditingController: c.street!,
+            valid: (val) => null,
+          ),
 
-        SizedBox(height: 20 * s),
+          SizedBox(height: 12 * s),
 
-        // =========================
-        // Save button
-        // =========================
-        Checkbutton(
-          statusrequest: c.statusrequest ?? Statusrequest.none,
-          buttonColor: Colors.black,
-          width: contentWidth,
-          onTap: () {
-            FocusManager.instance.primaryFocus?.unfocus();
-            c.addaddres(context);
-          },
-          buttonName: "save".tr,
-        ),
-      ],
-    ),
-  );
-}
+          Textfealdauth.phone(
+            phone: true,
+            obscureText: false,
+            suffixIcon: Icons.phone_outlined,
+            hint: 'Phone Number'.tr,
+            textEditingController: c.phone!,
+            valid: (val) => null,
+          ),
+
+          SizedBox(height: 20 * s),
+
+          // =========================
+          // Save button
+          // =========================
+          Checkbutton(
+            statusrequest: c.statusrequest ?? Statusrequest.none,
+            buttonColor: Colors.black,
+            width: contentWidth,
+            onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
+              c.addaddres(context);
+            },
+            buttonName: "save".tr,
+          ),
+        ],
+      ),
+    );
+  }
 
   // 2. واجهة النجاح المباشرة
   Widget _buildSuccessContent(BuildContext context) {

@@ -75,7 +75,7 @@ class ItemsController extends SearchMix {
   // دالة لتطبيق الفلاتر والبحث من جديد
   void applyFilters() {
     getitems(catid, isRefresh: true);
-    Get.back();
+    // Get.back();
   }
 
   Future<void> getitems(

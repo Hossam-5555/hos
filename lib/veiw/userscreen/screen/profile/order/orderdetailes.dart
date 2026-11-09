@@ -29,7 +29,7 @@ class Orderdetailes extends StatelessWidget {
                     padding: EdgeInsets.only(
                       left: w * 0.04,
                       right: w * 0.04,
-                      bottom: 10,
+                      bottom: 5,
                     ),
                     child: Checkbutton(
                       statusrequest: controller.statusrequest,
@@ -100,7 +100,7 @@ class Orderdetailes extends StatelessWidget {
                 context,
                 title: "Delivery Details",
                 icon: Icons.location_on_outlined,
-                child: deliveryDetails(order),
+                child: deliveryDetails(order,),
               ),
 
               const SizedBox(height: 12),

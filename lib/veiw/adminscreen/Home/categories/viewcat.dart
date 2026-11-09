@@ -50,7 +50,7 @@ class ViewCategories extends StatelessWidget {
                           Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(
                               hPad,
-                              5,
+                              6,
                               hPad,
                               12,
                             ),
@@ -80,7 +80,7 @@ class ViewCategories extends StatelessWidget {
                                       shape: BoxShape.circle,
                                     ),
                                     child: const Icon(
-                                      Icons.inventory_2_outlined,
+                                      Icons.category_rounded,
                                       color: Color(0xFF0284C7),
                                       size: 18,
                                     ),

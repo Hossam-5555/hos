@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/profile/brandccontroller/brandcontroller.dart';
+import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/data/services/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/data/model/brandmodel.dart';
@@ -9,6 +10,7 @@ import 'package:hos/veiw/adminscreen/brands/brandformpage.dart';
 import 'package:hos/veiw/wedget/Admin/brandcard.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/order/ordersdetails.dart';
+import 'package:hos/veiw/wedget/searchbar.dart';
 
 class AdminBrandsPage extends StatelessWidget {
   const AdminBrandsPage({super.key});
@@ -54,29 +56,12 @@ class AdminBrandsPage extends StatelessWidget {
                       r.s(16),
                       r.s(8),
                     ),
-                    child: TextField(
-                      controller: c.search,
+                    child: Searchbar.reset(
+                      ressetfeaild: c.search.text.isNotEmpty,
+                      onPressedIcon: c.search.text.isEmpty ? null : c.clearSearch,
+                      title: "Search brands".tr,
+                      mycontroller: c.search,
                       onChanged: c.onSearch,
-                      decoration: InputDecoration(
-                        hintText: "Search brands".tr,
-                        prefixIcon: const Icon(Icons.search),
-                        suffixIcon: c.search.text.isEmpty
-                            ? null
-                            : IconButton(
-                                icon: const Icon(Icons.close),
-                                onPressed: c.clearSearch,
-                              ),
-                        filled: true,
-                        fillColor: Colors.grey.withAlpha(20),
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: r.s(14),
-                          vertical: r.s(12),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(r.s(14)),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
                     ),
                   ),
 
@@ -95,65 +80,62 @@ class AdminBrandsPage extends StatelessWidget {
   // BODY  (HandlingDataView بيتولى التحميل والخطأ والفراغ)
   // ==========================================================================
 
-Widget _body(AdminBrandsController c, Rsp r) {
-  final status = c.viewStatus;
-  final isEmpty = status == Statusrequest.nodata;
-  final noBrands = c.brands.isEmpty;
+  Widget _body(AdminBrandsController c, Rsp r) {
+    final status = c.viewStatus;
+    final isEmpty = status == Statusrequest.nodata;
+    final noBrands = c.brands.isEmpty;
 
-  return HandlingDataView(
-    emptyStyle: EmptyStateStyle.style2,
-    statusrequest: status,
-    onRetry: () => c.load(),
-    message: !isEmpty
-        ? null
-        : noBrands
-            ? "No brands yet".tr
-            : "No results".tr,
-    subMessage: !isEmpty
-        ? null
-        : noBrands
-            ? "Tap + to add your first brand.".tr
-            : "Try a different search.".tr,
-    widget: RefreshIndicator(
-      onRefresh: c.refreshList,
-      child: LayoutBuilder(
-        builder: (context, box) {
-          final items = c.visible;
-          final pad = r.s(16);
-          final gap = r.s(12);
+    return HandlingDataView(
+      imagePath: Imageasset.animation3,
+      emptyStyle: EmptyStateStyle.style2,
+      statusrequest: status,
+      onRetry: () => c.load(),
+      message: !isEmpty
+          ? null
+          : noBrands
+          ? "No brands yet".tr
+          : "No results".tr,
+      subMessage: !isEmpty
+          ? null
+          : noBrands
+          ? "Tap + to add your first brand.".tr
+          : "Try a different search.".tr,
+      widget: RefreshIndicator(
+        onRefresh: c.refreshList,
+        child: LayoutBuilder(
+          builder: (context, box) {
+            final items = c.visible;
+            final pad = r.s(16);
+            final gap = r.s(12);
 
-          // ثلاثة براندات في كل صف
-          const cols = 3;
+            // ثلاثة براندات في كل صف
+            const cols = 3;
 
-          final cardWidth =
-              (box.maxWidth - pad * 2 - gap * (cols - 1)) / cols;
+            final cardWidth =
+                (box.maxWidth - pad * 2 - gap * (cols - 1)) / cols;
 
-          return SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: EdgeInsets.fromLTRB(
-              pad,
-              r.s(8),
-              pad,
-              r.s(100),
-            ),
-            child: Wrap(
-              spacing: gap,
-              runSpacing: gap,
-              children: [
-                for (final brand in items)
-                  SizedBox(
-                    width: cardWidth,
-                    child: Brandcard(
-                      brand: brand,
-                      controller: c,
-                      onEdit: () => _openForm(c, brand: brand),
+            return SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: EdgeInsets.fromLTRB(pad, r.s(8), pad, r.s(100)),
+              child: Wrap(
+                spacing: gap,
+                runSpacing: gap,
+                children: [
+                  for (final brand in items)
+                    SizedBox(
+                      width: cardWidth,
+                      child: Brandcard(
+                        brand: brand,
+                        controller: c,
+                        onEdit: () => _openForm(c, brand: brand),
+                      ),
                     ),
-                  ),
-              ],
-            ),
-          );
-        },
+                ],
+              ),
+            );
+          },
+        ),
       ),
-    ),
-  );
-}}
+    );
+  }
+}

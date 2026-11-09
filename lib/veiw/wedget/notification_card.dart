@@ -74,15 +74,15 @@ class NotificationCard extends StatelessWidget {
                   ? [
                       BoxShadow(
                         color: primaryColor.withOpacity(0.12),
-                        blurRadius: 16,
-                        offset: const Offset(0, 4),
+                        blurRadius: 8,
+                        offset: const Offset(0, 0.5),
                       ),
                     ]
                   : [
                       BoxShadow(
                         color: Colors.black.withOpacity(isDark ? 0.3 : 0.03),
-                        blurRadius: 20,
-                        offset: const Offset(0, 8),
+                        blurRadius: 8,
+                        offset: const Offset(0, 0.5),
                       ),
                     ],
             ),
@@ -96,7 +96,7 @@ class NotificationCard extends StatelessWidget {
                       ScaleTransition(scale: anim, child: child),
                   child: selectionMode
                       ? Container(
-                          margin: const EdgeInsets.only(right: 12),
+                          margin: const EdgeInsetsDirectional.only(end: 12),
                           width: 22,
                           height: 22,
                           decoration: BoxDecoration(

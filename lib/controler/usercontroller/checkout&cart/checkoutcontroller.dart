@@ -37,7 +37,7 @@ class Checkoutcontroller extends GetxController {
   Statusrequest statusrequest = Statusrequest.none;
   List<AddressModel> listaddresdata = [];
 TextEditingController? coubonecontroller ;
-bool isactive = false;
+bool isactive = true;
   // ✨ المتغير السحري: شايل الـ Object بتاع العنوان المختار حالياً للشحن
   var selectedAddress = Rxn<AddressModel>();
 

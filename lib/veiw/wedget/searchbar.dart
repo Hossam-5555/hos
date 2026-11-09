@@ -11,8 +11,8 @@ class Searchbar extends StatelessWidget {
   final String title;
   final TextInputAction? textInputAction;
   final FocusNode? focusNode;
-
-  const Searchbar({
+  bool ressetfeaild = false;
+  Searchbar({
     super.key,
     this.onPressedIcon,
     required this.title,
@@ -20,6 +20,16 @@ class Searchbar extends StatelessWidget {
     required this.mycontroller,
     this.textInputAction,
     this.focusNode,
+  });
+   Searchbar.reset({
+    super.key,
+    this.onPressedIcon,
+    required this.title,
+    this.onChanged,
+    required this.mycontroller,
+    this.textInputAction,
+    this.focusNode,
+    this.ressetfeaild=true,
   });
 
   @override
@@ -41,8 +51,8 @@ class Searchbar extends StatelessWidget {
           herotag: "",
           onPressed: onPressedIcon,
           child: SvgPicture.asset(
-            Imageasset.search,
-            color:isDarkMode ? Colors.black : Colors.white,
+            ressetfeaild ? Imageasset.filter : Imageasset.search,
+            color: isDarkMode ? Colors.black : Colors.white,
             height: 20,
             width: 20,
           ),

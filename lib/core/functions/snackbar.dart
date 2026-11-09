@@ -6,11 +6,11 @@ class AppSnackBar extends SnackBar {
     required String message,
     required Widget icon,
     super.action,
-    super.duration = const Duration(seconds: 2),
-    Color? backgroundColor,
+    super.duration = const Duration(seconds: 4),
   }) : super(
          behavior: SnackBarBehavior.floating,
-         backgroundColor: backgroundColor ?? Colors.grey.shade700,
+         margin: EdgeInsets.symmetric(horizontal: 30),
+         backgroundColor: Color(0xFF1C1C22),
          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
          content: Row(
            mainAxisAlignment: MainAxisAlignment.center,

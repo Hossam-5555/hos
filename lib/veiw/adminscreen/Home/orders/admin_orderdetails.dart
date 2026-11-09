@@ -37,6 +37,9 @@ class AdminOrderdetails extends StatelessWidget {
             // 100 سفلي عشان زرار تغيير الحالة العايم
             padding: EdgeInsets.fromLTRB(w * 0.04, 10, w * 0.04, 100),
             children: [
+              _quickActions(context, o, controller, o.username),
+              const SizedBox(height: 12),
+
               // ============================================================
               // ORDER STATUS
               // ============================================================
@@ -46,13 +49,9 @@ class AdminOrderdetails extends StatelessWidget {
                 controller.statusText ?? o.status,
               ),
 
-              const SizedBox(height: 12),
-
               // ============================================================
               // QUICK ACTIONS (admin only)
               // ============================================================
-              _quickActions(context, o, controller, o.username),
-
               const SizedBox(height: 12),
 
               // ============================================================
@@ -222,7 +221,7 @@ class AdminOrderdetails extends StatelessWidget {
                 : Homescrenaction(
                     herotag: "location",
                     backgroundColor: Colors.white,
-                    child: Icon(Icons.location_on,color: Colors.black,),
+                    child: Icon(Icons.location_on, color: Colors.black),
                     onPressed: () {
                       controller.openMap(
                         lat: controller.order!.shippingAddress.lat ?? 0.0,
@@ -235,7 +234,7 @@ class AdminOrderdetails extends StatelessWidget {
           Homescrenaction(
             herotag: "phone",
             backgroundColor: Colors.white,
-            child: Icon(Icons.phone,color: Colors.black),
+            child: Icon(Icons.phone, color: Colors.black),
             onPressed: () => controller.makePhoneCall(),
           ),
         ],

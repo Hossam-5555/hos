@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/items/additemcontroller.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
+import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 /// Add:  Get.to(() => ItemFormScreen(categoryId: catid, categoryName: catname));
 /// Edit: Get.to(() => ItemFormScreen(item: model));
@@ -21,6 +22,8 @@ class ItemFormScreen extends GetView<ItemFormController> {
 
   @override
   Widget build(BuildContext context) {
+    final w = MediaQuery.of(context).size.width;
+
     Get.put(
       ItemFormController(
         item: item,
@@ -31,6 +34,19 @@ class ItemFormScreen extends GetView<ItemFormController> {
 
     return GetBuilder<ItemFormController>(
       builder: (c) => Scaffold(
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.only(left: w * 0.04, right: w * 0.04,bottom: 5),
+          child: SafeArea(
+            child: Checkbutton(
+              width: w * 0.8,
+              statusrequest: c.statusrequest,
+              onTap: () {
+                c.isLoading ? null : c.submit();
+              },
+              buttonName: (c.isEdit ? 'update' : 'add').tr,
+            ),
+          ),
+        ),
         appBar: Appbarbackicon(
           title: (c.isEdit ? 'edit_item' : 'add_item').tr,
           herotag: "viewproducts",
@@ -105,35 +121,6 @@ class ItemFormScreen extends GetView<ItemFormController> {
                             const SizedBox(height: 16),
                             status,
                           ],
-                          const SizedBox(height: 24),
-                          SizedBox(
-                            width: double.infinity,
-                            child: FilledButton(
-                              onPressed: c.isLoading ? null : c.submit,
-                              style: FilledButton.styleFrom(
-                                minimumSize: const Size.fromHeight(52),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14),
-                                ),
-                              ),
-                              child: c.isLoading
-                                  ? const SizedBox(
-                                      height: 22,
-                                      width: 22,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2.5,
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : Text(
-                                      (c.isEdit ? 'update' : 'add').tr,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -226,6 +213,7 @@ Widget _field({
           : null,
       validator: validator,
       decoration: InputDecoration(
+        filled: true,
         labelText: label,
         prefixIcon: Icon(icon),
         alignLabelWithHint: maxLines > 1,

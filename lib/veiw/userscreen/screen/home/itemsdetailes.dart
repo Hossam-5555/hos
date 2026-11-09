@@ -247,6 +247,7 @@ class Itemsdetailes extends StatelessWidget {
                         Obx(
                           () => isDescriptionExpanded.value
                               ? SmartDescriptionView(
+                                  isDark: isDark,
                                   rawText: "${item.itemsDesc}",
                                 )
                               : Text(
@@ -262,16 +263,12 @@ class Itemsdetailes extends StatelessWidget {
                                 ),
                         ),
 
-                     
-
                         const SizedBox(height: 40),
                       ],
                     ),
                   ),
                 ],
               ),
-
-             
             ],
           ),
         );
@@ -334,9 +331,10 @@ class Itemsdetailes extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(),
       child: SafeArea(
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Flexible(child: Countofproduct(count: controller.itemcount)),
+            Flexible(child: Countofproduct(count: controller.itemcount,isdark: isDark,)),
             const SizedBox(width: 12),
             Flexible(
               flex: 1,
@@ -360,7 +358,7 @@ class Itemsdetailes extends StatelessWidget {
                       );
                     }
                   },
-                  buttonName: "Add to Cart",
+                  buttonName: "Add to Cart".tr,
                 ),
               ),
             ),

@@ -117,19 +117,12 @@ class OrderCard extends StatelessWidget {
                   SizedBox(height: w * 0.015),
                   Row(
                     children: [
-                      Icon(
-                        Icons.credit_card,
-                        size: w * 0.032,
-                        color: Colors.grey,
-                      ),
+                      Icon(Icons.payments_sharp, size: w * 0.032),
                       SizedBox(width: w * 0.01),
                       Expanded(
                         child: Text(
                           order.paymentMethod,
-                          style: TextStyle(
-                            fontSize: w * 0.028,
-                            color: Colors.grey,
-                          ),
+                          style: TextStyle(fontSize: w * 0.028),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),

@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/bulidfooter.dart';
 
@@ -113,7 +114,7 @@ class AboutHeader extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: const LinearGradient(
-                colors: [Color(0xFF6A5AE0), Color(0xFF8B7CF6)],
+                colors: [AppColors.primary,AppColors.contactStart],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -126,7 +127,7 @@ class AboutHeader extends StatelessWidget {
               ],
             ),
             child: const Icon(
-              Icons.storefront_rounded,
+              Icons.category_outlined,
               color: Colors.white,
               size: 42,
             ),

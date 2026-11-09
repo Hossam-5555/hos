@@ -219,7 +219,7 @@ class ShoppingCartPage extends StatelessWidget {
                 Expanded(
                   child: ListView.builder(
                     physics: const BouncingScrollPhysics(),
-                    padding: EdgeInsets.symmetric(horizontal: width * 0.04),
+                    padding: EdgeInsets.symmetric(horizontal: width * 0.02),
                     itemCount: controller.data.length,
                     itemBuilder: (context, index) {
                       final item = controller.data[index];

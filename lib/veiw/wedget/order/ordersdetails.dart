@@ -556,6 +556,7 @@ Widget detailRow({
   return Builder(
     builder: (context) {
       final r = Rsp.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -564,7 +565,7 @@ Widget detailRow({
             width: r.s(38),
             height: r.s(38),
             decoration: BoxDecoration(
-              color: Colors.grey.withAlpha(20),
+              color: isDark ? Theme.of(context).cardColor : const Color(0xFFE0E3E8),
               borderRadius: BorderRadius.circular(r.s(12)),
             ),
             child: Icon(icon, size: r.s(19)),

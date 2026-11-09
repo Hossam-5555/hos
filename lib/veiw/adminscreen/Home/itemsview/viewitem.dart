@@ -36,21 +36,6 @@ class ViewItemScreen extends StatelessWidget {
                 constraints: BoxConstraints(maxWidth: contentMaxWidth),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(
-                        horizontalPadding,
-                        12,
-                        horizontalPadding,
-                        6,
-                      ),
-                      child: Searchbar(
-                        onPressedIcon: () {
-                          debugPrint('Search icon pressed');
-                        },
-                        title: 'ابحث عن منتج، رمز، أو قسم...',
-                        mycontroller: controller.controller,
-                      ),
-                    ),
                     GetBuilder<ViewItemController>(
                       builder: (controller) => Padding(
                         padding: EdgeInsets.symmetric(
@@ -64,19 +49,12 @@ class ViewItemScreen extends StatelessWidget {
                           ),
                           decoration: BoxDecoration(
                             color: isDark
-                                ? AppColors.darkCardSurface
-                                : AppColors.editBackground,
+                                ? const Color(0xFF323538)
+                                : const Color(0xFFE0E3E8),
                             borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: isDark
-                                  ? AppColors.darkBorder
-                                  : AppColors.lightBorder,
-                            ),
                             boxShadow: [
                               BoxShadow(
-                                color: isDark
-                                    ? AppColors.darkShadow
-                                    : AppColors.lightShadow,
+                                color: Colors.black.withAlpha(8),
                                 blurRadius: 10,
                                 offset: const Offset(0, 4),
                               ),
@@ -88,7 +66,9 @@ class ViewItemScreen extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Container(
-                                      padding: EdgeInsets.all(isCompact ? 6 : 8),
+                                      padding: EdgeInsets.all(
+                                        isCompact ? 6 : 8,
+                                      ),
                                       decoration: BoxDecoration(
                                         color: const Color(0x1F00F2FE),
                                         shape: BoxShape.circle,
@@ -102,7 +82,8 @@ class ViewItemScreen extends StatelessWidget {
                                     SizedBox(width: isCompact ? 7 : 10),
                                     Expanded(
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           Text(
@@ -135,18 +116,20 @@ class ViewItemScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   gradient: const LinearGradient(
                                     colors: [
-                                      AppColors.primaryStart,
-                                      AppColors.primaryEnd,
+                                      Color(0xFF00F2FE),
+                                      Color(0xFF4FACFE),
                                     ],
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
+                                    begin: AlignmentDirectional.centerStart,
+                                    end: AlignmentDirectional.centerEnd,
                                   ),
                                   borderRadius: BorderRadius.circular(12),
-                                  boxShadow: const [
+                                  boxShadow: [
                                     BoxShadow(
-                                      color: Color(0x594FACFE),
+                                      color: const Color(
+                                        0xFF4FACFE,
+                                      ).withAlpha(89),
                                       blurRadius: 8,
-                                      offset: Offset(0, 3),
+                                      offset: const Offset(0, 3),
                                     ),
                                   ],
                                 ),
@@ -190,11 +173,26 @@ class ViewItemScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(
+                        horizontalPadding,
+                        12,
+                        horizontalPadding,
+                        6,
+                      ),
+                      child: Searchbar(
+                        onPressedIcon: () {
+                          debugPrint('Search icon pressed');
+                        },
+                        title: 'ابحث عن منتج، رمز، أو قسم...',
+                        mycontroller: controller.controller,
+                      ),
+                    ),
                     Expanded(
                       child: GetBuilder<ViewItemController>(
                         builder: (controller) {
                           return HandlingDataView(
-                            imagePath: Imageasset.animation2,
+                            imagePath: Imageasset.nodata,
                             emptyStyle: EmptyStateStyle.style2,
                             mediaType: HandlingMediaType.animation,
                             statusrequest: controller.statusrequest,
@@ -204,30 +202,31 @@ class ViewItemScreen extends StatelessWidget {
                                 final columns = gridWidth < 420
                                     ? 2
                                     : gridWidth < 700
-                                        ? 3
-                                        : gridWidth < 1000
-                                            ? 4
-                                            : 5;
-                                final availableWidth = gridWidth -
+                                    ? 3
+                                    : gridWidth < 1000
+                                    ? 4
+                                    : 5;
+                                final availableWidth =
+                                    gridWidth -
                                     (horizontalPadding * 2) -
                                     (12 * (columns - 1));
                                 final tileWidth = availableWidth / columns;
                                 final ratio = tileWidth < 155
                                     ? 0.68
                                     : tileWidth < 210
-                                        ? 0.74
-                                        : tileWidth < 270
-                                            ? 0.80
-                                            : 0.88;
+                                    ? 0.74
+                                    : tileWidth < 270
+                                    ? 0.80
+                                    : 0.88;
 
                                 return GridView.builder(
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: columns,
-                                    childAspectRatio: ratio,
-                                    crossAxisSpacing: 12,
-                                    mainAxisSpacing: 12,
-                                  ),
+                                        crossAxisCount: columns,
+                                        childAspectRatio: ratio,
+                                        crossAxisSpacing: 12,
+                                        mainAxisSpacing: 12,
+                                      ),
                                   physics: const BouncingScrollPhysics(),
                                   padding: EdgeInsets.symmetric(
                                     horizontal: horizontalPadding,
@@ -243,11 +242,13 @@ class ViewItemScreen extends StatelessWidget {
                                       name: controller.isarabic
                                           ? item.itemsNameAr
                                           : item.itemsName,
-                                      onEdit: () => controller.goToEditItem(item),
+                                      onEdit: () =>
+                                          controller.goToEditItem(item),
                                       onDelete: () {
                                         AppCupertinoDialog.show(
                                           title: 'حذف المنتج',
-                                          message: 'هل أنت متأكد من حذف المنتج؟',
+                                          message:
+                                              'هل أنت متأكد من حذف المنتج؟',
                                           onConfirm: () {
                                             if (item.id != null) {
                                               controller.delete(item.id!);

@@ -97,6 +97,8 @@ class Homescreen extends StatelessWidget {
                         ),
                       )
                     : SizedBox.shrink(),
+                                    SizedBox(width: 5,),
+
               ],
             ),
           ),

@@ -9,6 +9,7 @@ import 'package:hos/veiw/adminscreen/coupon/addcoupon.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/items/itemslist.dart';
 import 'package:hos/veiw/wedget/order/ordersdetails.dart';
+import 'package:hos/veiw/wedget/searchbar.dart';
 
 class CouponsPage extends StatelessWidget {
   const CouponsPage({super.key});
@@ -42,29 +43,14 @@ class CouponsPage extends StatelessWidget {
                   // ------------------------------------------------ SEARCH
                   Padding(
                     padding: EdgeInsets.fromLTRB(r.s(16), r.s(8), r.s(16), 0),
-                    child: TextField(
-                      controller: c.search,
+                    child: Searchbar.reset(
+                      ressetfeaild: c.search.text.isNotEmpty,
+                      onPressedIcon: c.search.text.isEmpty
+                          ? null
+                          : c.clearSearch,
+                      title: "Search by code".tr,
+                      mycontroller: c.search,
                       onChanged: c.onSearch,
-                      decoration: InputDecoration(
-                        hintText: "Search by code".tr,
-                        prefixIcon: const Icon(Icons.search),
-                        suffixIcon: c.search.text.isEmpty
-                            ? null
-                            : IconButton(
-                                icon: const Icon(Icons.close),
-                                onPressed: c.clearSearch,
-                              ),
-                        filled: true,
-                        fillColor: Colors.grey.withAlpha(20),
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: r.s(14),
-                          vertical: r.s(12),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(r.s(14)),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
                     ),
                   ),
 
