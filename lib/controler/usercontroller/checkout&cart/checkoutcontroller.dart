@@ -16,7 +16,6 @@ import 'package:hos/veiw/userscreen/screen/cartandcheckout/paymentwepview.dart';
 class Checkoutcontroller extends GetxController {
   final formKey = GlobalKey<FormState>();
   String selectedMethod = "cash";
- double get total => double.tryParse(totalprice)! + 50;
   // مفتاح الفورم للتحقق من صحة البيانات
   // دالة لتغيير طريقة الدفع
   void changePaymentMethod(String method) {
@@ -36,12 +35,52 @@ class Checkoutcontroller extends GetxController {
   Myservisec myservisec = Get.find();
   Statusrequest statusrequest = Statusrequest.none;
   List<AddressModel> listaddresdata = [];
-TextEditingController? coubonecontroller ;
-bool isactive = true;
+  TextEditingController? coubonecontroller;
+  bool isactive = true;
   // ✨ المتغير السحري: شايل الـ Object بتاع العنوان المختار حالياً للشحن
   var selectedAddress = Rxn<AddressModel>();
+  String? appliedCode;
+  double couponDiscount = 0;
+  bool isCouponLoading = false;
+  String? couponError;
+  double get productsTotal => double.tryParse(totalprice) ?? 0;
+  double get total => productsTotal - couponDiscount + 50;
+  Future<void> applyCoupon() async {
+    final code = coubonecontroller!.text.trim();
+    if (code.isEmpty) {
+      couponError = "ادخل كود الكوبون";
+      update();
+      return;
+    }
 
-  // دالة بتهيا العنوان الابتدائي أول ما البيانات تيجي من الـ API
+    isCouponLoading = true;
+    couponError = null;
+    update();
+
+    var response = await checkoutdata.apply(code, productsTotal);
+
+    if (response is Map) {
+      if (response['status'] == true) {
+        appliedCode = response['data']['code'];
+        couponDiscount = double.parse(response['data']['discount'].toString());
+      } else {
+        couponError = response['message']?.toString() ?? "كوبون غير صالح";
+      }
+    } else {
+      couponError = "تعذر الاتصال بالخادم";
+    }
+
+    isCouponLoading = false;
+    update();
+  }
+
+  void removeCoupon() {
+    appliedCode = null;
+    couponDiscount = 0;
+    couponError = null;
+    coubonecontroller?.clear();
+    update();
+  }
 
   // دالة الاختيار لما المستخدم يغير العنوان من الـ Sheet
   void chooseAddres(AddressModel address) {
@@ -72,6 +111,12 @@ bool isactive = true;
             orElse: () => listaddresdata.first,
           );
         }
+      } else {
+        showSnackBar(
+          Get.context!,
+          response['message']?.toString() ?? "فشل في جلب العناوين",
+          Icon(Icons.error, color: Colors.red),
+        );
       }
     } else {
       statusrequest = Statusrequest.failure;
@@ -103,6 +148,8 @@ bool isactive = true;
       Map<String, dynamic> data = {
         "address_id": selectedAddress.value?.id,
         "payment_method": selectedMethod,
+        if (appliedCode != null) "coupon_code": appliedCode,
+
         "items": cartdata
             .map((e) => {"product_id": e.itemid, "quantity": e.cartCount})
             .toList(),
@@ -176,8 +223,6 @@ bool isactive = true;
     }
   }
 
-  
-
   //============================ متغيرات الكوبون والسعر
   String? couponeid;
   String couponediscount = "0";
@@ -186,7 +231,7 @@ bool isactive = true;
   List<CartModel> cartdata = [];
   @override
   void onInit() {
-     coubonecontroller = TextEditingController();
+    coubonecontroller = TextEditingController();
     totalprice = Get.arguments['totalprice'].toString();
     cartdata = Get.arguments['Cartdata'];
     getaddress();

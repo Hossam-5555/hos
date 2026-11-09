@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/data/services/crud.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/handlingdata.dart';
@@ -45,6 +47,11 @@ class ViewCatController extends GetxController {
     admindata.deletecat(catid);
 
     catdata.removeWhere((element) => element.id == catid);
+    showSnackBar(
+      Get.context!,
+      "Success".tr,
+      Icon(Icons.check, color: Colors.green),
+    );
     update();
   }
 

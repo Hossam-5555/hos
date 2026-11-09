@@ -1,6 +1,7 @@
 // المسار المقترح: lib/controler/admincontroller/brand/adminbrandscontroller.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/data/services/crud.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/data/datasource/admindata/branddata.dart';
@@ -91,10 +92,11 @@ class AdminBrandsController extends GetxController {
 
     if (_ok(response, st)) {
       brands.removeWhere((b) => b.id == brand.id);
-      Get.snackbar(
+
+      showSnackBar(
+        Get.context!,
         "Success".tr,
-        "Brand deleted".tr,
-        snackPosition: SnackPosition.BOTTOM,
+        Icon(Icons.check, color: Colors.green),
       );
     } else {
       Get.snackbar(

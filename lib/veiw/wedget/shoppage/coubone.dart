@@ -1,69 +1,94 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
-import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
-// ignore: must_be_immutable
 class Coubone extends StatelessWidget {
-  final void Function(bool)? onChanged;
-  Coubone({super.key, this.onChanged, required this.c});
-  Checkoutcontroller c;
+  final Checkoutcontroller c;
+  const Coubone({super.key, required this.c});
 
   @override
   Widget build(BuildContext context) {
-    // وضعنا الـ Obx هنا لتراقب أي تغيير في الحالة
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(6),
-          child: c.isactive
-              ? Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: c.coubonecontroller,
-                        decoration: InputDecoration(
-                          filled: true,
-                          suffixIcon: Checkbutton.widget(
-                            h: 40,
-                            width: 90,
-                            onTap: () {},
+    final applied = c.appliedCode != null;
 
-                            buttonName: "Apply".tr,
-                          ),
-                          hintText: "أدخل كود الخصم",
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            gapPadding: 6,
-                            borderRadius: BorderRadius.circular(40),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12,
-                            horizontal: 12,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              : Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.green.withAlpha(25),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    "Code: ${c.coubonecontroller!.text} Applied! ✅",
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.withAlpha(40)),
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(80),
+            blurRadius: 5,
+            offset: const Offset(0, 0.2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: c.coubonecontroller,
+                  enabled: !applied && !c.isCouponLoading,
+                  textCapitalization: TextCapitalization.characters,
+                  textInputAction: TextInputAction.done,
+                  onSubmitted: (_) => applied ? null : c.applyCoupon(),
+                  decoration: InputDecoration(
+                    hintText: "Coupon code".tr,
+                    prefixIcon: const Icon(Icons.local_offer_outlined),
+                    isDense: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                 ),
-        ),
-      ],
+              ),
+              const SizedBox(width: 10),
+              SizedBox(
+                height: 48,
+                child: ElevatedButton(
+                  onPressed: c.isCouponLoading
+                      ? null
+                      : (applied ? c.removeCoupon : c.applyCoupon),
+                  child: c.isCouponLoading
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : Text(applied ? "Remove".tr : "Apply".tr),
+                ),
+              ),
+            ],
+          ),
+          if (c.couponError != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                c.couponError!,
+                style: const TextStyle(color: Colors.red, fontSize: 12),
+              ),
+            ),
+          if (applied)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Row(
+                children: [
+                  const Icon(Icons.check_circle, color: Colors.green, size: 16),
+                  const SizedBox(width: 6),
+                  Text(
+                    "Coupon applied".tr,
+                    style: const TextStyle(color: Colors.green, fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

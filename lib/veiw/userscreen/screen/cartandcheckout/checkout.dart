@@ -131,12 +131,7 @@ class Checkout extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            Coubone(
-              c: c,
-              onChanged: (val) {
-                // controller.havecoupone(val);
-              },
-            ),
+            Coubone(c: c),
             const SizedBox(height: 10),
 
             // ================= ملخص الطلب =================
@@ -152,8 +147,14 @@ class Checkout extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  _buildPriceRow("Subtotal".tr, c.totalprice),
-                  const SizedBox(height: 10),
+                  if (c.couponDiscount > 0) ...[
+                    const SizedBox(height: 10),
+                    _buildPriceRow(
+                      "Discount".tr,
+                      "-${c.couponDiscount.toStringAsFixed(2)}",
+                    ),
+                  ],
+                  const SizedBox(height: 16),
                   _buildPriceRow("Shipping".tr, "50"),
                   const SizedBox(height: 16),
                   const Divider(height: 1),

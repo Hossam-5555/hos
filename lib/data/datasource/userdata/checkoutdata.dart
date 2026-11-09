@@ -25,4 +25,12 @@ class Checkoutdata {
     });
     return response.fold((l) => l, (r) => r);
   }
+  Future apply(String code, double subtotal) async {
+    var response = await crud.postrequset(LinkApi.couponApply, {
+      "code": code,
+      "subtotal": subtotal,
+    });
+    return response.fold((l) => l, (r) => r);
+  }
 }
+

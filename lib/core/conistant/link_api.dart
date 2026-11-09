@@ -64,6 +64,7 @@ class LinkApi {
   static String viewCoupons = '$lravelserver/admin/coupons/view';
   static String toggleCoupon = '$lravelserver/admin/coupons/toggle';
   static String deleteCoupon = '$lravelserver/admin/coupons/delete';
+  static String couponApply = "$lravelserver/apply";
   //brands (admin)
   static String viewBrands = '$lravelserver/admin/brands/view';
   static String addBrand = '$lravelserver/admin/brands/add';
