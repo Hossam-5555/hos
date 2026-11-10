@@ -29,7 +29,6 @@ class Textfealdauth extends StatelessWidget {
   void Function()? onTapIcon;
   bool? obscureText;
   bool phone;
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -39,6 +38,7 @@ class Textfealdauth extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: height * 0.01),
       child: TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         keyboardType: phone ? TextInputType.phone : TextInputType.text,
         style: TextStyle(
           fontSize: width * 0.045, // حجم الخط متناسب مع العرض
