@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -101,6 +102,8 @@ class AuthPage extends StatelessWidget {
                                     ),
                                   ],
                                 ),
+
+                                // ... (باقي الكود الخاص بك كما هو حتى نصل إلى الـ Form)
                                 child: Form(
                                   key: controller.formKey,
                                   child: Padding(
@@ -108,266 +111,231 @@ class AuthPage extends StatelessWidget {
                                       horizontal: width * 0.05,
                                       vertical: height * 0.02,
                                     ),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        _ModeSwitcher(
-                                          isLogin: controller.isLogin,
-                                          onChanged: (value) {
-                                            if (value != controller.isLogin) {
-                                              controller.toggleMode();
-                                            }
-                                          },
-                                        ),
-
-                                        SizedBox(height: height * 0.020),
-
-                                        AnimatedSwitcher(
-                                          duration: const Duration(
-                                            milliseconds: 300,
+                                    child: Builder(
+                                      // استخدمنا Builder عشان نعرف المتغيرات جواه
+                                      builder: (context) {
+                                        // 2. قمنا بتجميع الـ 400 سطر (العناصر) في هذه القائمة
+                                        final List<Widget> formChildren = [
+                                          _ModeSwitcher(
+                                            isLogin: controller.isLogin,
+                                            onChanged: (value) {
+                                              if (value != controller.isLogin) {
+                                                controller.toggleMode();
+                                              }
+                                            },
                                           ),
-                                          child: Text(
+                                          SizedBox(height: height * 0.020),
+                                          AnimatedSwitcher(
+                                            duration: const Duration(
+                                              milliseconds: 300,
+                                            ),
+                                            child: Text(
+                                              controller.isLogin
+                                                  ? "Welcome Back".tr
+                                                  : "Create New Account".tr,
+                                              key: ValueKey(controller.isLogin),
+                                              style: TextStyle(
+                                                fontSize: width * 0.055 > 24
+                                                    ? 24
+                                                    : width * 0.055,
+                                                fontWeight: FontWeight.bold,
+                                                color: titleColor,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: height * 0.006),
+                                          Text(
                                             controller.isLogin
-                                                ? "Welcome Back".tr
-                                                : "Create New Account".tr,
-                                            key: ValueKey(controller.isLogin),
+                                                ? "Login to continue shopping"
+                                                      .tr
+                                                : "Sign up to start shopping"
+                                                      .tr,
                                             style: TextStyle(
-                                              fontSize: width * 0.055 > 24
-                                                  ? 24
-                                                  : width * 0.055,
-                                              fontWeight: FontWeight.bold,
-                                              color: titleColor,
+                                              fontSize: width * 0.032 > 13
+                                                  ? 13
+                                                  : width * 0.032,
+                                              color: subTextColor,
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(height: height * 0.006),
-                                        Text(
-                                          controller.isLogin
-                                              ? "Login to continue shopping".tr
-                                              : "Sign up to start shopping".tr,
-                                          style: TextStyle(
-                                            fontSize: width * 0.032 > 13
-                                                ? 13
-                                                : width * 0.032,
-                                            color: subTextColor,
-                                          ),
-                                        ),
-                                        SizedBox(height: height * 0.020),
-
-                                        AnimatedSize(
-                                          duration: const Duration(
-                                            milliseconds: 300,
-                                          ),
-                                          curve: Curves.easeOutCubic,
-                                          child: !controller.isLogin
-                                              ? Column(
-                                                  children: [
-                                                    Textfealdauth(
-                                                      valid: (val) =>
-                                                          validInput(
-                                                            val!,
-                                                            3,
-                                                            20,
-                                                            "username",
-                                                          ),
-                                                      textEditingController:
-                                                          controller.username,
-                                                      suffixIcon:
-                                                          Icons.person_outline,
-                                                      hint:
-                                                          "Enter Your username",
-                                                    ),
-                                                    SizedBox(
-                                                      height: height * 0.01,
-                                                    ),
-                                                  ],
-                                                )
-                                              : const SizedBox.shrink(),
-                                        ),
-
-                                        Textfealdauth(
-                                          valid: (val) =>
-                                              validInput(val!, 6, 50, 'email'),
-                                          textEditingController:
-                                              controller.email,
-                                          suffixIcon: Icons.email_outlined,
-                                          hint: 'Email Address',
-                                        ),
-                                        SizedBox(height: height * 0.01),
-
-                                        Textfealdauth(
-                                          obscureText: controller.showpass,
-                                          onTapIcon: () =>
-                                              controller.isshowpass(),
-                                          valid: (val) => validInput(
-                                            val!,
-                                            6,
-                                            30,
-                                            'password',
-                                          ),
-                                          textEditingController:
-                                              controller.passward,
-                                          suffixIcon: controller.showpass
-                                              ? Icons.visibility_off
-                                              : Icons.visibility,
-                                          hint: "Password",
-                                        ),
-
-                                        if (controller.statusrequest ==
-                                                Statusrequest.failure ||
-                                            controller.statusrequest ==
-                                                Statusrequest.checkinterner)
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              top: height * 0.01,
+                                          SizedBox(height: height * 0.020),
+                                          AnimatedSize(
+                                            duration: const Duration(
+                                              milliseconds: 300,
                                             ),
-                                            child: Container(
-                                              width: double.infinity,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                    horizontal: 14,
-                                                    vertical: 10,
-                                                  ),
-                                              decoration: BoxDecoration(
-                                                color: Colors.red.withAlpha(
-                                                  isDark ? 40 : 20,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                border: Border.all(
-                                                  color: Colors.red.shade300,
-                                                ),
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    controller.statusrequest ==
-                                                            Statusrequest
-                                                                .checkinterner
-                                                        ? Icons.wifi_off_rounded
-                                                        : Icons.error_outline,
-                                                    color: Colors.red.shade400,
-                                                    size: 18,
-                                                  ),
-                                                  const SizedBox(width: 8),
-                                                  Expanded(
-                                                    child: Text(
-                                                      controller.statusrequest ==
-                                                              Statusrequest
-                                                                  .checkinterner
-                                                          ? "تأكد من اتصالك بالإنترنت وحاول مرة أخرى"
-                                                          : (controller.isLogin
-                                                                ? "البريد الإلكتروني أو كلمة المرور غير صحيحة"
-                                                                : "حدث خطأ، من فضلك حاول مرة أخرى"),
-                                                      style: TextStyle(
-                                                        color:
-                                                            Colors.red.shade400,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 13,
+                                            curve: Curves.easeOutCubic,
+                                            child: !controller.isLogin
+                                                ? Column(
+                                                    children: [
+                                                      Textfealdauth(
+                                                        valid: (val) =>
+                                                            validInput(
+                                                              val!,
+                                                              3,
+                                                              20,
+                                                              "username",
+                                                            ),
+                                                        textEditingController:
+                                                            controller.username,
+                                                        suffixIcon: Icons
+                                                            .person_outline,
+                                                        hint:
+                                                            "Enter Your username",
+                                                      ),
+                                                      SizedBox(
+                                                        height: height * 0.01,
+                                                      ),
+                                                    ],
+                                                  )
+                                                : const SizedBox.shrink(),
+                                          ),
+                                          Textfealdauth(
+                                            valid: (val) => validInput(
+                                              val!,
+                                              6,
+                                              50,
+                                              'email',
+                                            ),
+                                            textEditingController:
+                                                controller.email,
+                                            suffixIcon: Icons.email_outlined,
+                                            hint: 'Email Address',
+                                          ),
+                                          SizedBox(height: height * 0.01),
+                                          Textfealdauth(
+                                            obscureText: controller.showpass,
+                                            onTapIcon: () =>
+                                                controller.isshowpass(),
+                                            valid: (val) => validInput(
+                                              val!,
+                                              6,
+                                              30,
+                                              'password',
+                                            ),
+                                            textEditingController:
+                                                controller.passward,
+                                            suffixIcon: controller.showpass
+                                                ? Icons.visibility_off
+                                                : Icons.visibility,
+                                            hint: "Password",
+                                          ),
+                                          AnimatedSize(
+                                            duration: const Duration(
+                                              milliseconds: 300,
+                                            ),
+                                            child: controller.isLogin
+                                                ? Align(
+                                                    alignment:
+                                                        AlignmentDirectional
+                                                            .centerEnd,
+                                                    child: TextButton(
+                                                      onPressed: () {
+                                                        controller
+                                                            .checkemailpage();
+                                                      },
+                                                      // الـ icon يأخذ الأيقونة
+                                                      // الـ label يأخذ النص
+                                                      child: Text(
+                                                        'Forgot password',
+                                                        style: TextStyle(
+                                                          fontSize: 12,
+                                                        ),
                                                       ),
                                                     ),
+                                                  )
+                                                : SizedBox(
+                                                    height: height * 0.012,
                                                   ),
-                                                ],
-                                              ),
-                                            ),
                                           ),
 
-                                        AnimatedSize(
-                                          duration: const Duration(
-                                            milliseconds: 300,
+                                          SizedBox(height: height * 0.01),
+
+                                          Checkbutton(
+                                            statusrequest:
+                                                controller.statusrequest,
+                                            onTap: () => controller.submit(),
+                                            buttonName: controller.isLogin
+                                                ? 'Login'
+                                                : 'Create Account',
+                                            width: width * 0.75,
+                                            buttonColor: AppColors.primaryColor,
                                           ),
-                                          child: controller.isLogin
-                                              ? Align(
-                                                  alignment:
-                                                      AlignmentDirectional
-                                                          .centerEnd,
-                                                  child: TextButton(
-                                                    onPressed: () {
-                                                      controller
-                                                          .checkemailpage();
-                                                    },
-                                                    // الـ icon يأخذ الأيقونة
-                                                    // الـ label يأخذ النص
-                                                    child: Text(
-                                                      'Forgot password',
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                      ),
+
+                                          SizedBox(height: height * 0.015),
+
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Divider(
+                                                  color: subTextColor.withAlpha(
+                                                    80,
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      horizontal: 10,
                                                     ),
+                                                child: Text(
+                                                  "or continue with".tr,
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: subTextColor,
                                                   ),
-                                                )
-                                              : SizedBox(
-                                                  height: height * 0.012,
-                                                ),
-                                        ),
-
-                                        SizedBox(height: height * 0.01),
-
-                                        Checkbutton(
-                                          statusrequest:
-                                              controller.statusrequest,
-                                          onTap: () => controller.submit(),
-                                          buttonName: controller.isLogin
-                                              ? 'Login'
-                                              : 'Create Account',
-                                          width: width * 0.75,
-                                          buttonColor: AppColors.primaryColor,
-                                        ),
-
-                                        SizedBox(height: height * 0.015),
-
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                              child: Divider(
-                                                color: subTextColor.withAlpha(
-                                                  80,
                                                 ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                    horizontal: 10,
+                                              Expanded(
+                                                child: Divider(
+                                                  color: subTextColor.withAlpha(
+                                                    80,
                                                   ),
-                                              child: Text(
-                                                "or continue with".tr,
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: subTextColor,
                                                 ),
                                               ),
-                                            ),
-                                            Expanded(
-                                              child: Divider(
-                                                color: subTextColor.withAlpha(
-                                                  80,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-
-                                        SizedBox(height: height * 0.015),
-
-                                        Checkbutton.widget(
-                                          widget: SvgPicture.asset(
-                                            Imageasset.googlepay,
-                                            height: 20,
-                                            width: 20,
+                                            ],
                                           ),
-                                          statusrequest: Statusrequest.none,
-                                          onTap: () => controller.submit(),
-                                          buttonName: 'google',
-                                          width: width * 0.75,
-                                          buttonColor: isDark
-                                              ? Colors.white.withAlpha(20)
-                                              : Colors.white.withAlpha(140),
-                                        ),
 
-                                        SizedBox(height: height * 0.01),
-                                      ],
+                                          SizedBox(height: height * 0.015),
+
+                                          Checkbutton.widget(
+                                            widget: SvgPicture.asset(
+                                              Imageasset.googlepay,
+                                              height: 20,
+                                              width: 20,
+                                            ),
+                                            statusrequest: Statusrequest.none,
+                                            onTap: () => controller.submit(),
+                                            buttonName: 'google',
+                                            width: width * 0.75,
+                                            buttonColor: isDark
+                                                ? Colors.white.withAlpha(20)
+                                                : Colors.white.withAlpha(140),
+                                          ),
+
+                                          SizedBox(height: height * 0.01),
+                                          // يمكنك إكمال باقي العناصر هنا (رسائل الخطأ، زر الدخول، جوجل، إلخ)...
+                                        ];
+
+                                        // 3. هنا يتم رسم العناصر وتطبيق الأنيميشن المتسلسل عليها أوتوماتيكياً
+                                        return Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: List.generate(
+                                            formChildren.length,
+                                            (index) {
+                                              return FadeInUp(
+                                                // السر هنا: نضرب رقم العنصر (index) في 100 ملي ثانية
+                                                // لزيادة أو تقليل الوقت بين كل عنصر، غير رقم 100
+                                                delay: Duration(
+                                                  milliseconds: index * 50,
+                                                ),
+                                                duration: const Duration(
+                                                  milliseconds: 500,
+                                                ),
+                                                child: formChildren[index],
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ),
                                 ),

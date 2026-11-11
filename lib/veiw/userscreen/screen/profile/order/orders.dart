@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart'; // 1. إضافة استدعاء المكتبة
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
@@ -19,14 +20,8 @@ class Orders extends StatelessWidget {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.height;
 
-    // نقاط توقف بسيطة: هاتف صغير / هاتف عادي / تابلت
     final bool isTablet = w >= 600;
-
-    // مسافات متجاوبة اعتماداً على العرض (أثبت من الطول بين الأجهزة)
-    // مع حدود دنيا وقصوى عشان ماتبقاش صغيرة أوي أو كبيرة أوي
     final double horizontalPadding = (w * 0.045).clamp(12.0, 32.0);
-
-    // عدد أعمدة الجريد: 2 للهاتف، 3 للتابلت الصغير، 4 للتابلت الكبير
     final int gridCrossAxisCount = isTablet ? (w >= 900 ? 4 : 3) : 2;
 
     return Scaffold(
@@ -59,8 +54,8 @@ class Orders extends StatelessWidget {
                     padding: EdgeInsets.all(horizontalPadding),
                     gridDelegate:
                         SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: gridCrossAxisCount,
-                        ),
+                      crossAxisCount: gridCrossAxisCount,
+                    ),
                     mainAxisSpacing: w * 0.025,
                     crossAxisSpacing: w * 0.025,
                     itemCount: controller.orders.length,
@@ -70,15 +65,26 @@ class Orders extends StatelessWidget {
                       final color = controller.statusColor;
                       final status = order.status;
 
-                      return OrderCard(
-                        w: w,
-                        order: order,
-                        status: status,
-                        color: color!,
-                        orderimage: orderimage,
-                        onTap: () {
-                          Get.to(Orderdetailes(), arguments: {"order": order});
-                        },
+                      // 2. تغليف الكارت بأنيميشن متسلسل للـ Grid
+                      return FadeInUp(
+                        // استخدام id الطلب كـ key يمنع إعادة الأنيميشن عند أي Update عادية في الكنترولر
+                        key: ValueKey(order.orderId ),
+                        
+                        // نستخدم ضرب مؤشر العناصر (index) في 50 ملي ثانية
+                        // لتسريع تتابع ظهور الكروت بشكل انسيابي وشلالي
+                        delay: Duration(milliseconds: (index % 10) * 35),
+                        duration: const Duration(milliseconds: 450),
+                        
+                        child: OrderCard(
+                          w: w,
+                          order: order,
+                          status: status,
+                          color: color!,
+                          orderimage: orderimage,
+                          onTap: () {
+                            Get.to(Orderdetailes(), arguments: {"order": order});
+                          },
+                        ),
                       );
                     },
                   ),

@@ -75,6 +75,7 @@ dependencies:
   flutter_map_location_marker: ^10.2.0
   webview_flutter: ^4.14.1
   flutter_native_splash: ^2.4.7
+  animate_do: ^5.1.0
 
 
 flutter_native_splash:

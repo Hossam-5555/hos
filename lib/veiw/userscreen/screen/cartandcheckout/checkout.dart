@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart'; // 1. استدعاء مكتبة الأنيميشن
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
@@ -40,10 +41,10 @@ class Checkout extends StatelessWidget {
       ),
       appBar: Appbarbackicon(title: "confirm order".tr, herotag: "checkout"),
       body: GetBuilder<Checkoutcontroller>(
-        builder: (c) => ListView(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-          children: [
-            // ================= طرق الدفع =================
+        builder: (c) {
+          // 2. تجميع أقسام الصفحة الكبيرة في قائمة Widgets
+          final List<Widget> checkoutSections = [
+            // ================= قسم طرق الدفع =================
             _buildCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,7 +60,7 @@ class Checkout extends StatelessWidget {
                             fontWeight: FontWeight.w800,
                           ),
                         ),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         buildPaymentMethod(
                           controller: c,
                           title: 'card'.tr,
@@ -89,7 +90,8 @@ class Checkout extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+
+            // ================= قسم المحتوى التفاعلي =================
             GetBuilder<Checkoutcontroller>(
               builder: (c) => AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
@@ -107,9 +109,8 @@ class Checkout extends StatelessWidget {
                 child: buildFormContent(c),
               ),
             ),
-            const SizedBox(height: 16),
 
-            // ================= عنوان التوصيل =================
+            // ================= قسم عنوان التوصيل =================
             HandlingDataView(
               mode: HandlingMode.skeleton,
               statusrequest: Statusrequest.none,
@@ -130,11 +131,11 @@ class Checkout extends StatelessWidget {
                     : _buildAddressSelector(c, context),
               ),
             ),
-            const SizedBox(height: 10),
-            Coubone(c: c),
-            const SizedBox(height: 10),
 
-            // ================= ملخص الطلب =================
+            // ================= قسم الكوبون =================
+            Coubone(c: c),
+
+            // ================= قسم ملخص الطلب =================
             _buildCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,11 +176,23 @@ class Checkout extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 24),
+          ];
 
-            // ================= الفورم الديناميكي + زرار التأكيد =================
-          ],
-        ),
+          // 3. بناء القائمة مع إضافة الـ Staggered Animation لكل قسم أوتوماتيكياً
+          return ListView.separated(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+            itemCount: checkoutSections.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 16),
+            itemBuilder: (context, index) {
+              return FadeInUp(
+                // حساب التأخير بناءً على ترتيب الكارت (120 ملي ثانية بين كل كارت والثاني)
+                delay: Duration(milliseconds: index * 40),
+                duration: const Duration(milliseconds: 500),
+                child: checkoutSections[index],
+              );
+            },
+          );
+        },
       ),
     );
   }
@@ -192,7 +205,6 @@ class Checkout extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.withAlpha(40)),
-
         color: Theme.of(Get.context!).cardColor,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
@@ -214,7 +226,6 @@ class Checkout extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text("جاري تحميل العنوان الافتراضي..."),
-
             SizedBox(
               width: 40,
               height: 40,
@@ -246,7 +257,7 @@ class Checkout extends StatelessWidget {
                     color: (Colors.green).withAlpha(25),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(
+                  child: const Icon(
                     Icons.location_on_rounded,
                     color: Colors.green,
                     size: 20,
@@ -319,7 +330,6 @@ class Checkout extends StatelessWidget {
                 (addr) => Obx(
                   () => RadioListTile<int>(
                     value: addr.id ?? 0,
-                    // ignore: deprecated_member_use
                     groupValue: c.selectedAddress.value?.id,
                     activeColor: Colors.green,
                     title: Text(addr.city ?? ""),
@@ -327,7 +337,6 @@ class Checkout extends StatelessWidget {
                       addr.street ?? "",
                       style: const TextStyle(color: Colors.grey),
                     ),
-                    // ignore: deprecated_member_use
                     onChanged: (val) {
                       if (val != null) {
                         c.chooseAddres(addr);
@@ -338,7 +347,6 @@ class Checkout extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-
               Checkbutton(
                 width: MediaQuery.of(context).size.width,
                 buttonColor: Colors.black,

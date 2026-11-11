@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart'; // 1. إضافة المكتبة
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/notificationcontroller.dart';
@@ -12,8 +13,6 @@ class NotificationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // نقوم بإنشاء الكنترولر أو إيجاده هنا لمرة واحدة لضمان استخدام نفس النسخة في الصفحة بأكملها
-
     return GetBuilder<Notificationcontroller>(
       builder: (s) {
         bool isLoading = controller.statusrequest == Statusrequest.loading;
@@ -26,13 +25,11 @@ class NotificationPage extends StatelessWidget {
                 : "Notifications".tr,
             herotag: "notification",
             iconButton: controller.selectionMode
-                ? Icon(Icons.delete_sweep_rounded, color: Colors.redAccent)
+                ? const Icon(Icons.delete_sweep_rounded, color: Colors.redAccent)
                 : null,
             ontap: () {
               controller.deleteSelected(context);
             },
-          
-            // عند الضغط على X سيقوم بالاستدعاء وتحديث الواجهة بالكامل فوراً
             onPressed: () {
               controller.closeselected();
             },
@@ -50,35 +47,49 @@ class NotificationPage extends StatelessWidget {
                 String body = "";
                 int id = 0;
                 String time = "";
+                bool isRead = false;
 
-                // تجهيز البيانات
+                // تجهيز البيانات بحماية أثناء التحميل
                 if (isLoading) {
                   title = "Loading Notification Title";
-                  body =
-                      "This is a dummy description for skeleton loading effect.";
+                  body = "This is a dummy description for skeleton loading effect.";
                   time = "2024-01-01 10:00 AM";
+                  isRead = true;
                 } else {
                   final item = controller.notificationlist[index];
                   id = item.id!;
                   title = item.title ?? '';
                   body = item.body ?? '';
                   time = item.createdAt ?? '';
+                  isRead = item.isActive ?? false;
                 }
 
                 bool isSelected = controller.isSelected(id);
                 controller.iconstype(title);
-                return NotificationCard(
-                  title: title,
-                  body: body,
-                  colors: controller.colors,
-                  iconData: controller.iconData,
-                  isread: controller.notificationlist[index].isActive!,
-                  time: time,
-                  isSelected: isSelected,
-                  isLoading: isLoading,
-                  selectionMode: controller.selectionMode,
-                  onLongPress: () => controller.onLongPress(id),
-                  onTap: () => controller.onTap(id),
+
+                // 2. تغليف الكارت بالأنيميشن المتسلسل
+                return FadeInUp(
+                  // لضمان عمل الأنيميشن مرة واحدة عند فتح الصفحة ومش مع كل update في Controller
+                  key: ValueKey(id != 0 ? id : index), 
+                  
+                  // حساب وقت التأخير بناءً على ترتيب الإشعار
+                  // اخترنا 60 ملي ثانية لسرعة انسيابية ومريحة للعين
+                  delay: Duration(milliseconds: isLoading ? 0 : index * 40), 
+                  duration: const Duration(milliseconds: 400),
+                  
+                  child: NotificationCard(
+                    title: title,
+                    body: body,
+                    colors: controller.colors,
+                    iconData: controller.iconData,
+                    isread: isRead,
+                    time: time,
+                    isSelected: isSelected,
+                    isLoading: isLoading,
+                    selectionMode: controller.selectionMode,
+                    onLongPress: () => controller.onLongPress(id),
+                    onTap: () => controller.onTap(id),
+                  ),
                 );
               },
             ),
