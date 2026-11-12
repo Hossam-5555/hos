@@ -218,6 +218,7 @@ class AuthPage extends StatelessWidget {
                                                 : Icons.visibility,
                                             hint: "Password",
                                           ),
+                                          
                                           AnimatedSize(
                                             duration: const Duration(
                                               milliseconds: 300,
@@ -325,7 +326,7 @@ class AuthPage extends StatelessWidget {
                                                 // السر هنا: نضرب رقم العنصر (index) في 100 ملي ثانية
                                                 // لزيادة أو تقليل الوقت بين كل عنصر، غير رقم 100
                                                 delay: Duration(
-                                                  milliseconds: index * 50,
+                                                  milliseconds: index * 20,
                                                 ),
                                                 duration: const Duration(
                                                   milliseconds: 500,

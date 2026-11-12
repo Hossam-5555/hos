@@ -5,7 +5,7 @@ import 'package:hos/controler/usercontroller/home/itemsdetailscontroller.dart';
 // ignore: must_be_immutable
 class Countofproduct extends GetView<Itemdetailscontroller> {
   Countofproduct({super.key, required this.count, required this.isdark});
-  final count;
+  int count;
   bool? isdark;
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class Countofproduct extends GetView<Itemdetailscontroller> {
       height: 55,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(40),
-        color: isdark! ? const Color(0xFF1C1C22) : Colors.black,
+        color: isdark! ? const Color(0xFF1C1C22) : const Color(0xFFE0E3E8),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,

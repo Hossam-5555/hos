@@ -8,7 +8,7 @@ class Admindataitem {
   Crud crud;
   Admindataitem(this.crud);
 
-  additem(Map data,List<File?> files) async {
+ Future additem(Map data,List<File?> files) async {
     var response = await crud.addRequestWithMultipleImages("POST",
       LinkApi.cruditemsadmin,
       data,
@@ -18,7 +18,7 @@ class Admindataitem {
     return response.fold((l) => l, (r) => r);
   }
 
-  edititem(Map data, File? file,int id) async {
+Future edititem(Map data, File? file,int id) async {
     Either<Statusrequest, Map<dynamic, dynamic>> response;
     if (file == null) {
       response = await crud.putandpacth("${LinkApi.cruditemsadmin}/$id", data);
@@ -32,13 +32,18 @@ class Admindataitem {
     return response.fold((l) => l, (r) => r);
   }
 
-  deleteitem(int itemid,) async {
+ Future deleteitem(int itemid,) async {
     var response = await crud.deleterequwst("${LinkApi.cruditemsadmin}/$itemid",{});
     return response.fold((l) => l, (r) => r);
   }
 
-  viewitem(String categoryId) async {
+ Future viewitem(String categoryId) async {
     var response = await crud.getrequset("${LinkApi.adminviewitem}/$categoryId");
+    return response.fold((l) => l, (r) => r);
+  }
+
+  Future getbrandsbycategory(int categoryId) async {
+    var response = await crud.postrequset(LinkApi.getbrandsbycategory, {"category_id": categoryId});
     return response.fold((l) => l, (r) => r);
   }
 }

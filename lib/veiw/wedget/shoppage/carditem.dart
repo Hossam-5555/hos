@@ -45,7 +45,7 @@ Widget buildCartItemCard(
               ),
               boxShadow: [
                 BoxShadow(
-                  color: isdark ? AppColors.darkShadow : AppColors.lightShadow,
+                  color: isdark ? AppColors.darkShadow.withAlpha(100) : AppColors.lightShadow.withAlpha(100),
                   blurRadius: 6,
                   offset: const Offset(0, 2),
                 ),

@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/cart_controller.dart';
@@ -14,6 +13,7 @@ import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/anmationbutton.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/countofproduct.dart';
 import 'package:hos/veiw/wedget/items/itemsdetails/description.dart';
+import 'package:hos/veiw/wedget/items/swapitem.dart';
 import 'package:hos/veiw/wedget/pricecard.dart';
 import 'package:lottie/lottie.dart';
 
@@ -70,13 +70,14 @@ class Itemsdetailes extends StatelessWidget {
                     alignment: Alignment.center,
                     children: [
                       Container(
-                        height: h * 0.48,
+                        height: h * 0.55,
                         width: double.infinity,
                         margin: const EdgeInsets.only(bottom: 20),
                         decoration: BoxDecoration(
                           color: Theme.of(context).appBarTheme.backgroundColor,
                           borderRadius: const BorderRadius.vertical(
                             bottom: Radius.circular(30),
+                            
                           ),
                           boxShadow: [
                             BoxShadow(
@@ -86,48 +87,20 @@ class Itemsdetailes extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.vertical(
-                            bottom: Radius.circular(30),
-                          ),
-                          child: PageView.builder(
-                            onPageChanged: controller.onimagechange,
-                            itemCount: item.images!.length,
-                            itemBuilder: (context, index) => Center(
-                              child: Hero(
-                                tag: '${item.id}',
-                                child: CachedNetworkImage(
-                                  imageUrl: item.images![index],
-                                  imageBuilder: (context, imageProvider) =>
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: imageProvider,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
-                                  placeholder: (context, url) => const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
-                                ),
-                              ),
-                            ),
-                            controller: controller.controller,
-                          ),
+                        child: NativeSwipeCards(
+                          images: item.images ?? [],
+                          onTap: controller.onimagechange,
                         ),
                       ),
                       Positioned(
                         bottom: 0,
                         child: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(10),
                             color: Colors.white.withAlpha(76),
                           ),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(10),
                             child: BackdropFilter(
                               filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                               child: Row(
@@ -142,7 +115,7 @@ class Itemsdetailes extends StatelessWidget {
                                     height: 8,
                                     decoration: BoxDecoration(
                                       color: AppColors.primaryColor,
-                                      borderRadius: BorderRadius.circular(20),
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
                                     duration: const Duration(milliseconds: 500),
                                   ),
@@ -281,7 +254,7 @@ class Itemsdetailes extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E1E1E) : Color(0xFFE0E3E8),
+        color: isDark ? const Color(0xFF1C1C22) : Color(0xFFE0E3E8),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -334,7 +307,12 @@ class Itemsdetailes extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Flexible(child: Countofproduct(count: controller.itemcount,isdark: isDark,)),
+            Flexible(
+              child: Countofproduct(
+                count: controller.itemcount,
+                isdark: isDark,
+              ),
+            ),
             const SizedBox(width: 12),
             Flexible(
               flex: 1,

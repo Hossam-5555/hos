@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
+import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 class Coubone extends StatelessWidget {
   final Checkoutcontroller c;
@@ -41,27 +42,28 @@ class Coubone extends StatelessWidget {
                     hintText: "Coupon code".tr,
                     prefixIcon: const Icon(Icons.local_offer_outlined),
                     isDense: true,
+                    filled: true,
                     border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                 ),
               ),
               const SizedBox(width: 10),
-              SizedBox(
-                height: 48,
-                child: ElevatedButton(
-                  onPressed: c.isCouponLoading
-                      ? null
-                      : (applied ? c.removeCoupon : c.applyCoupon),
-                  child: c.isCouponLoading
-                      ? const SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : Text(applied ? "Remove".tr : "Apply".tr),
-                ),
+              Checkbutton.widget(
+                h: 48,
+                statusrequest: c.statusrequest,
+                buttonColor: Colors.black,
+                width: 100,
+                onTap: () {
+                  if (applied) {
+                    c.removeCoupon();
+                  } else {
+                    c.applyCoupon();
+                  }
+                },
+                buttonName: applied ? "Remove".tr : "Apply".tr,
               ),
             ],
           ),

@@ -38,3 +38,5 @@ class AdminBrandModel {
   /// البراند مربوط بمنتجات، والباك إند هيرفض حذفه
   bool get isInUse => itemsCount > 0;
 }
+
+

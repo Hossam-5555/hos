@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/items/additemcontroller.dart';
 import 'package:hos/data/model/itemsmodel.dart';
+import 'package:hos/veiw/wedget/Admin/selectbrand.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
@@ -35,7 +36,7 @@ class ItemFormScreen extends GetView<ItemFormController> {
     return GetBuilder<ItemFormController>(
       builder: (c) => Scaffold(
         bottomNavigationBar: Padding(
-          padding: EdgeInsets.only(left: w * 0.04, right: w * 0.04,bottom: 5),
+          padding: EdgeInsets.only(left: w * 0.04, right: w * 0.04, bottom: 5),
           child: SafeArea(
             child: Checkbutton(
               width: w * 0.8,
@@ -217,7 +218,10 @@ Widget _field({
         labelText: label,
         prefixIcon: Icon(icon),
         alignLabelWithHint: maxLines > 1,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+        border: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(14),
+        ),
       ),
     ),
   );
@@ -387,14 +391,29 @@ class _BasicSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _SectionTitle('basic_info'.tr),
-        if (c.categoryName != null)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 16),
+        if (c.categoryName != null) ...[
+          Align(
+            alignment: AlignmentDirectional.centerStart,
             child: Chip(
               avatar: const Icon(Icons.category_outlined, size: 18),
               label: Text('${'category'.tr}: ${c.categoryName}'),
             ),
           ),
+          const SizedBox(height: 12),
+          GetBuilder<ItemFormController>(
+            builder: (c) => BrandPicker(
+              brands: c.brandsList,
+              selected: c.selectedBrand,
+              isLoading: c.isBrandsLoading,
+              onChanged: (b) {
+                c.selectedBrand = b;
+                c.update();
+              },
+            ),
+          ),
+          const SizedBox(height: 16),
+        ],
+
         _pair(
           wide,
           _field(

@@ -10,11 +10,11 @@ import 'package:hos/veiw/adminscreen/brands/brandveiw.dart';
 import 'package:hos/veiw/userscreen/screen/profile/about_us_page.dart';
 import 'package:hos/veiw/wedget/bulidfooter.dart';
 import 'package:hos/veiw/wedget/language.dart';
+import 'package:hos/veiw/wedget/profile/themetile.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
 
-  // final Myservisec myservisec = Get.find();
   final SettingsController settingsController = Get.put(SettingsController());
   final LocalController localController = Get.put(LocalController());
   bool get isadmin => settingsController.usrtype == Static.admin;
@@ -22,15 +22,26 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final width = MediaQuery.sizeOf(context).width;
+    final size = MediaQuery.sizeOf(context);
+    final width = size.width;
+    final height = size.height;
+
     final isTablet = width >= 600;
-    final maxContentWidth = width >= 900 ? 900.0 : double.infinity;
-    final horizontalPadding = isTablet ? 20.0 : 8.0;
-    final contentWidth =
-        (width < maxContentWidth ? width : maxContentWidth) -
-        horizontalPadding * 2;
-    final cardWidth = (contentWidth - 12) / 2;
-    final cardHeight = (cardWidth * 1.35).clamp(140.0, 240.0);
+    final maxContentWidth = width >= 900 ? 850.0 : double.infinity;
+
+    // دوال التناسب الديناميكية بدلاً من القيم الثابتة
+    double wp(double percent) => width * percent;
+    double hp(double percent) => height * percent;
+    double sp(double baseSize) =>
+        (width * (baseSize / 375)).clamp(baseSize * 0.85, baseSize * 1.3);
+
+    final horizontalPadding = isTablet ? wp(0.03) : wp(0.035);
+    final gapBetweenCards = (width * 0.03).clamp(10.0, 20.0);
+
+    final effectiveWidth = width < maxContentWidth ? width : maxContentWidth;
+    final contentWidth = effectiveWidth - (horizontalPadding * 2);
+    final cardWidth = (contentWidth - gapBetweenCards) / 2;
+    final cardHeight = (cardWidth * 1.15).clamp(135.0, 240.0);
 
     return Scaffold(
       body: SafeArea(
@@ -42,15 +53,16 @@ class ProfilePage extends StatelessWidget {
               padding: EdgeInsets.only(
                 left: horizontalPadding,
                 right: horizontalPadding,
-                top: 0,
-                bottom: 20,
+                top: hp(0.01),
+                bottom: hp(0.02),
               ),
               child: Column(
                 children: [
-                  const SizedBox(height: 20),
-                  _GroupLabel(title: "QUICK ACCESS".tr),
+                  SizedBox(height: hp(0.012)),
+                  _GroupLabel(title: "QUICK ACCESS".tr, w: width, sp: sp),
 
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       orderCard(
                         !isadmin ? "Orders".tr : "Brands".tr,
@@ -63,8 +75,9 @@ class ProfilePage extends StatelessWidget {
                         context,
                         width: cardWidth,
                         height: cardHeight,
+                        sp: sp,
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: gapBetweenCards),
                       orderCard(
                         isadmin ? "Coupons".tr : "Saved Addresses".tr,
                         isadmin ? Imageasset.processing : Imageasset.settings,
@@ -76,53 +89,48 @@ class ProfilePage extends StatelessWidget {
                         context,
                         width: cardWidth,
                         height: cardHeight,
+                        sp: sp,
                       ),
                     ],
                   ),
 
-                  const SizedBox(height: 20),
-                  _GroupLabel(title: "General".tr),
+                  SizedBox(height: hp(0.018)),
+                  _GroupLabel(title: "General".tr, w: width, sp: sp),
 
-                  // ------- المفضلة / العناوين / المراجعات -------
+                  // ------- المفضلة / اللغة / الثيم -------
                   _GradientGroup(
                     isDarkMode: isDarkMode,
+                    w: width,
                     children: [
-                      settingsController.usrtype == Static.user1
-                          ? _ListTile(
-                              gradientColors: const [
-                                AppColors.favoriteStart,
-                                AppColors.favoriteEnd,
-                              ],
-                              icon: Icons.favorite_border,
-                              title: "Favorite".tr,
-                              onTap: () => Get.toNamed(Approute.myfavorite),
-                            )
-                          : SizedBox.shrink(),
-                      // _ListTile(
-                      //   gradientColors: [
-                      //     AppColors.languageStart,
-                      //     AppColors.languageEnd,
-                      //   ],
-                      //   icon: Icons.language_outlined,
-                      //   title: "Languages".tr,
-                      //   onTap: () => _showLanguageDialog(context),
-                      // ),
+                      if (settingsController.usrtype == Static.user1)
+                        _ListTile(
+                          w: width,
+                          sp: sp,
+                          gradientColors: const [
+                            AppColors.favoriteStart,
+                            AppColors.favoriteEnd,
+                          ],
+                          icon: Icons.favorite_border,
+                          title: "Favorite".tr,
+                          onTap: () => Get.toNamed(Approute.myfavorite),
+                        ),
                       LanguageTile(controller: localController),
-                      _ThemeTile(controller: localController),
+                      ThemeTile(controller: localController),
                     ],
                   ),
 
-                  const SizedBox(height: 20),
-
-                  // ------- الإعدادات: الثيم -------
+                  SizedBox(height: hp(0.018)),
 
                   // ------- الإعدادات: الدعم -------
-                  _GroupLabel(title: "Support".tr),
+                  _GroupLabel(title: "Support".tr, w: width, sp: sp),
                   _GradientGroup(
                     isDarkMode: isDarkMode,
+                    w: width,
                     children: [
                       _ListTile(
-                        gradientColors: [
+                        w: width,
+                        sp: sp,
+                        gradientColors: const [
                           AppColors.aboutStart,
                           AppColors.aboutEnd,
                         ],
@@ -134,9 +142,10 @@ class ProfilePage extends StatelessWidget {
                           transition: Transition.cupertino,
                         ),
                       ),
-
                       _ListTile(
-                        gradientColors: [
+                        w: width,
+                        sp: sp,
+                        gradientColors: const [
                           AppColors.contactStart,
                           AppColors.contactEnd,
                         ],
@@ -144,31 +153,31 @@ class ProfilePage extends StatelessWidget {
                         title: "Contact Us".tr,
                         onTap: () {
                           settingsController.openWhatsApp(
-                            phone:
-                                '201023426561', // اكتب رقمك هنا مع كود الدولة
-                            message:
-                                'مرحباً، أود الاستفسار عن بعض الخدمات', // رسالة ترحيبية اختيارية
+                            phone: '201023426561',
+                            message: 'مرحباً، أود الاستفسار عن بعض الخدمات',
                           );
                         },
                         subtitle: "Chat with our support team",
                         trailing: Obx(
                           () => settingsController.isLoading.value
-                              ? const SizedBox(
-                                  width: 18,
-                                  height: 18,
-                                  child: CircularProgressIndicator(
+                              ? SizedBox(
+                                  width: sp(18),
+                                  height: sp(18),
+                                  child: const CircularProgressIndicator(
                                     strokeWidth: 2,
                                   ),
                                 )
                               : Icon(
                                   Icons.arrow_forward_ios_rounded,
                                   color: AppColors.mutedText,
-                                  size: 16,
+                                  size: sp(16),
                                 ),
                         ),
                       ),
                       _ListTile(
-                        gradientColors: [
+                        w: width,
+                        sp: sp,
+                        gradientColors: const [
                           AppColors.logoutStart,
                           AppColors.logoutEnd,
                         ],
@@ -177,13 +186,12 @@ class ProfilePage extends StatelessWidget {
                         titleColor: AppColors.logout,
                         showArrow: false,
                         onTap: () =>
-                            _confirmLogout(context, settingsController),
+                            _confirmLogout(context, settingsController, width, sp),
                       ),
                     ],
                   ),
 
-                  // ------- تسجيل الخروج -------
-                  const SizedBox(height: 20),
+                  SizedBox(height: hp(0.025)),
                   buildFooter(),
                 ],
               ),
@@ -195,28 +203,44 @@ class ProfilePage extends StatelessWidget {
   }
 
   // ---------------- تأكيد تسجيل الخروج ----------------
-  void _confirmLogout(BuildContext context, SettingsController controller) {
+  void _confirmLogout(
+    BuildContext context,
+    SettingsController controller,
+    double w,
+    double Function(double) sp,
+  ) {
     Get.defaultDialog(
       title: "Logout".tr,
-      titleStyle: const TextStyle(fontWeight: FontWeight.bold),
+      titleStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: sp(18)),
       middleText: "Are you sure you want to logout?".tr,
-      radius: 16,
+      middleTextStyle: TextStyle(fontSize: sp(14)),
+      radius: (w * 0.04).clamp(14.0, 22.0),
       cancel: TextButton(
         onPressed: () => Get.back(),
-        child: Text("Cancel".tr, style: TextStyle(color: AppColors.mutedText)),
+        child: Text(
+          "Cancel".tr,
+          style: TextStyle(color: AppColors.mutedText, fontSize: sp(14)),
+        ),
       ),
       confirm: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.logout,
+          padding: EdgeInsets.symmetric(
+            horizontal: (w * 0.05).clamp(16.0, 28.0),
+            vertical: (w * 0.02).clamp(8.0, 14.0),
+          ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular((w * 0.03).clamp(10.0, 16.0)),
           ),
         ),
         onPressed: () {
           Get.back();
           controller.logout();
         },
-        child: Text("Logout".tr, style: const TextStyle(color: Colors.white)),
+        child: Text(
+          "Logout".tr,
+          style: TextStyle(color: Colors.white, fontSize: sp(14)),
+        ),
       ),
     );
   }
@@ -225,19 +249,29 @@ class ProfilePage extends StatelessWidget {
 // ---------------- عنوان مجموعة (Account / Support / Session) ----------------
 class _GroupLabel extends StatelessWidget {
   final String title;
-  const _GroupLabel({required this.title});
+  final double w;
+  final double Function(double) sp;
+
+  const _GroupLabel({
+    required this.title,
+    required this.w,
+    required this.sp,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsetsDirectional.only(start: 6, bottom: 8),
+      padding: EdgeInsetsDirectional.only(
+        start: (w * 0.018).clamp(6.0, 14.0),
+        bottom: (w * 0.02).clamp(6.0, 12.0),
+      ),
       child: Align(
         alignment: AlignmentDirectional.centerStart,
         child: Text(
           title.toUpperCase(),
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 12.5,
+            fontSize: sp(12.5),
             letterSpacing: 0.6,
             color: AppColors.mutedText,
           ),
@@ -251,15 +285,21 @@ class _GroupLabel extends StatelessWidget {
 class _GradientGroup extends StatelessWidget {
   final bool isDarkMode;
   final List<Widget> children;
+  final double w;
 
-  const _GradientGroup({required this.isDarkMode, required this.children});
+  const _GradientGroup({
+    required this.isDarkMode,
+    required this.children,
+    required this.w,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final radius = (w * 0.05).clamp(16.0, 26.0);
     return Container(
-      padding: const EdgeInsets.all(5),
+      padding: EdgeInsets.all((w * 0.015).clamp(4.0, 10.0)),
       decoration: BoxDecoration(
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             blurRadius: 6,
             color: AppColors.shadow,
@@ -269,7 +309,7 @@ class _GradientGroup extends StatelessWidget {
         gradient: isDarkMode
             ? AppGradients.darkTitanium
             : AppGradients.lightPlatinum,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(radius),
         border: Border.all(color: AppColors.border),
       ),
       child: Column(children: children),
@@ -286,11 +326,15 @@ class _ListTile extends StatelessWidget {
   final Widget? trailing;
   final Color? titleColor;
   final bool showArrow;
+  final double w;
+  final double Function(double) sp;
 
   const _ListTile({
     required this.icon,
     required this.title,
     required this.onTap,
+    required this.w,
+    required this.sp,
     this.subtitle,
     this.gradientColors,
     this.trailing,
@@ -300,16 +344,22 @@ class _ListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tilePadding = (w * 0.028).clamp(10.0, 16.0);
+    final iconPadding = (w * 0.018).clamp(6.0, 10.0);
+    final iconRadius = (w * 0.028).clamp(10.0, 14.0);
+
     return InkWell(
+      borderRadius: BorderRadius.circular(iconRadius),
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: EdgeInsets.all(tilePadding),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(5),
+              padding: EdgeInsets.all(iconPadding),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(iconRadius),
                 gradient: LinearGradient(
                   colors:
                       gradientColors ??
@@ -320,15 +370,15 @@ class _ListTile extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     color: (gradientColors?.last ?? AppColors.primaryEnd)
-                        .withOpacity(0.3),
+                        .withAlpha(76),
                     blurRadius: 5,
                     offset: const Offset(0, 2),
                   ),
                 ],
               ),
-              child: Icon(icon, color: Colors.white, size: 22),
+              child: Icon(icon, color: Colors.white, size: sp(22)),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: (w * 0.04).clamp(12.0, 20.0)),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -337,17 +387,17 @@ class _ListTile extends StatelessWidget {
                   Text(
                     title,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: sp(15.5),
                       fontWeight: FontWeight.w500,
                       color: titleColor,
                     ),
                   ),
                   if (subtitle != null) ...[
-                    const SizedBox(height: 2),
+                    SizedBox(height: (w * 0.006).clamp(2.0, 5.0)),
                     Text(
                       subtitle!,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: sp(12),
                         color: AppColors.mutedText,
                       ),
                     ),
@@ -360,7 +410,7 @@ class _ListTile extends StatelessWidget {
                     ? Icon(
                         Icons.arrow_forward_ios_rounded,
                         color: AppColors.mutedText,
-                        size: 16,
+                        size: sp(16),
                       )
                     : const SizedBox.shrink()),
           ],
@@ -370,123 +420,17 @@ class _ListTile extends StatelessWidget {
   }
 }
 
-// ---------------- عنصر الثيم (Dark/Light) بنفس منطق GetX الأصلي ----------------
-class _ThemeTile extends StatelessWidget {
-  final LocalController controller;
-  const _ThemeTile({required this.controller});
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() {
-      bool isDark = controller.selectedTheme.value == 'Dark';
-
-      return Padding(
-        padding: const EdgeInsets.all(10),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                gradient: LinearGradient(
-                  colors: [AppColors.themeStart, AppColors.themeEnd],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.themeEnd.withOpacity(0.3),
-                    blurRadius: 5,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: const Icon(
-                Icons.palette_outlined,
-                color: Colors.white,
-                size: 22,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Theme'.tr,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    (isDark ? 'Dark mode' : 'Light mode').tr,
-                    style: TextStyle(fontSize: 12, color: AppColors.mutedText),
-                  ),
-                ],
-              ),
-            ),
-            GestureDetector(
-              onTap: () => controller.changeTheme(!isDark),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                width: 55,
-                height: 32,
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: isDark ? Colors.black : Colors.white,
-                ),
-                child: AnimatedAlign(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                  alignment: isDark
-                      ? Alignment.centerRight
-                      : Alignment.centerLeft,
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    transitionBuilder: (child, animation) {
-                      return RotationTransition(
-                        turns: animation,
-                        child: ScaleTransition(scale: animation, child: child),
-                      );
-                    },
-                    key: ValueKey<bool>(isDark),
-                    child: isDark
-                        ? const Icon(
-                            Icons.dark_mode_outlined,
-                            key: ValueKey('dark'),
-                            color: Colors.white,
-                            size: 20,
-                          )
-                        : const Icon(
-                            Icons.lightbulb_outline_rounded,
-                            key: ValueKey('light'),
-                            color: AppColors.themeLightIcon,
-                            size: 20,
-                          ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    });
-  }
-}
-
 Widget orderCard(
   String title,
   String image,
   VoidCallback onTap,
   BuildContext context, {
-  double width = 250,
-  double height = 200,
+  required double width,
+  required double height,
+  required double Function(double) sp,
 }) {
   final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+  final cardRadius = (width * 0.12).clamp(18.0, 28.0);
 
   return GestureDetector(
     onTap: onTap,
@@ -494,7 +438,7 @@ Widget orderCard(
       width: width,
       height: height,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(cardRadius),
         gradient: isDarkMode
             ? AppGradients.darkTitanium
             : AppGradients.lightPlatinum,
@@ -504,18 +448,20 @@ Widget orderCard(
         ),
         boxShadow: [
           BoxShadow(
-            color: isDarkMode ? AppColors.darkShadow : AppColors.lightShadow,
-            blurRadius: 20,
-            offset: const Offset(0, 8),
+            color: isDarkMode
+                ? AppColors.darkShadow.withAlpha(20)
+                : AppColors.lightShadow,
+            blurRadius: 8,
+            offset: const Offset(0, 0.2),
           ),
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(cardRadius),
         child: Column(
           children: [
             // =========================
-            // صورة المنتج
+            // صورة البطاقة
             // =========================
             Expanded(
               flex: 6,
@@ -531,23 +477,23 @@ Widget orderCard(
             ),
 
             // =========================
-            // اسم المنتج
+            // عنوان البطاقة
             // =========================
             Expanded(
               flex: 3,
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 10,
+                padding: EdgeInsets.symmetric(
+                  horizontal: (width * 0.06).clamp(8.0, 16.0),
+                  vertical: (height * 0.04).clamp(6.0, 12.0),
                 ),
                 decoration: BoxDecoration(
                   color: isDarkMode
                       ? AppColors.darkCardSurface
                       : AppColors.lightCardSurface,
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(24),
-                    bottomRight: Radius.circular(24),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(cardRadius),
+                    bottomRight: Radius.circular(cardRadius),
                   ),
                 ),
                 alignment: Alignment.center,
@@ -557,7 +503,7 @@ Widget orderCard(
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 15,
+                    fontSize: sp(14.5),
                     height: 1.2,
                     fontWeight: FontWeight.w700,
                     color: isDarkMode ? Colors.white : Colors.black87,

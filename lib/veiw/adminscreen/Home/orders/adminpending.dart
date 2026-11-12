@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart'; // 1. استدعاء مكتبة الأنيميشن
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
@@ -12,16 +13,21 @@ class Adminpending extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // حقن الكنترولر للتأكد من توفره في الذاكرة
     Get.put(AdminPindingController());
 
-    // استخدام LayoutBuilder و MediaQuery لتكييف التصميم بسلاسة مع كافة الشاشات
     return LayoutBuilder(
       builder: (context, constraints) {
         final screenWidth = constraints.maxWidth;
-        // final screenHeight = constraints.maxHeight;
-        // حساب عدد الأعمدة الديناميكي بناءً على عرض الشاشة (مثلاً تابلت أو موبايل)
-        final crossAxisCount = screenWidth > 600 ? 3 : 2;
+        final screenHeight = constraints.maxHeight;
+
+        // 2. نقاط توقف متوافقة مع الهواتف والتابلت الصغير والكبير
+        final bool isTablet = screenWidth >= 600;
+        final int crossAxisCount = isTablet ? (screenWidth >= 900 ? 4 : 3) : 2;
+
+        // 3. مسافات متجاوبة بحدود دنيا وقصوى آمنة
+        final double gridPadding = (screenWidth * 0.035).clamp(12.0, 28.0);
+        final double gridSpacing = (screenWidth * 0.025).clamp(8.0, 18.0);
+        final double topSpacing = (screenHeight * 0.008).clamp(4.0, 12.0);
 
         return GetBuilder<AdminPindingController>(
           builder: (controller) => RefreshIndicator(
@@ -31,15 +37,15 @@ class Adminpending extends StatelessWidget {
             child: Column(
               children: [
                 /// 🗂️ 1. أقسام حالات الطلبات (Status Tabs)
-                GetBuilder<AdminPindingController>(
-                  builder: (controller) => ChipsBar(
-                    labels: controller.orderstatus,
-                    selectedIndex: controller.selectedStatus,
-                    onSelected: controller.changeSelectedStatus,
-                  ),
+                ChipsBar(
+                  labels: controller.orderstatus,
+                  selectedIndex: controller.selectedStatus,
+                  onSelected: controller.changeSelectedStatus,
                 ),
 
-                /// 📦 2. قائمة عرض الطلبات (Grid) متجاوبة
+                SizedBox(height: topSpacing),
+
+                /// 📦 2. قائمة عرض الطلبات (Grid) متجاوبة + أنيميشن متسلسل
                 Expanded(
                   child: HandlingDataView(
                     emptyStyle: EmptyStateStyle.style2,
@@ -49,13 +55,18 @@ class Adminpending extends StatelessWidget {
                     statusrequest: controller.statusrequest,
                     widget: MasonryGridView.builder(
                       physics: const AlwaysScrollableScrollPhysics(),
-                      padding: EdgeInsets.all(screenWidth * 0.03),
+                      padding: EdgeInsets.fromLTRB(
+                        gridPadding,
+                        topSpacing,
+                        gridPadding,
+                        (screenHeight * 0.1).clamp(70.0, 110.0), // مساحة سفلية مريحة للسكرول
+                      ),
                       gridDelegate:
                           SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: crossAxisCount,
-                          ),
-                      mainAxisSpacing: screenWidth * 0.025,
-                      crossAxisSpacing: screenWidth * 0.025,
+                        crossAxisCount: crossAxisCount,
+                      ),
+                      mainAxisSpacing: gridSpacing,
+                      crossAxisSpacing: gridSpacing,
                       itemCount: controller.orderspending.length,
                       itemBuilder: (context, index) {
                         final order = controller.orderspending[index];
@@ -64,13 +75,19 @@ class Adminpending extends StatelessWidget {
                         final statuscolor =
                             controller.statusColor ?? Colors.grey;
 
-                        return OrderCard(
-                          orderimage: orderimage,
-                          order: order,
-                          status: order.status,
-                          color: statuscolor,
-                          w: screenWidth,
-                          onTap: () => controller.gotodetails(order),
+                        // 4. تغليف الكارت بـ FadeInUp مع حماية التحديثات
+                        return FadeInUp(
+                          key: ValueKey(order.orderId ),
+                          delay: Duration(milliseconds: (index % 10) * 50),
+                          duration: const Duration(milliseconds: 450),
+                          child: OrderCard(
+                            orderimage: orderimage,
+                            order: order,
+                            status: order.status,
+                            color: statuscolor,
+                            w: screenWidth,
+                            onTap: () => controller.gotodetails(order),
+                          ),
                         );
                       },
                     ),

@@ -49,6 +49,23 @@ class Homescreen extends StatelessWidget {
               ),
 
               actions: [
+                controller.Currentpage == 3
+                    ? Homescrenaction(
+                        herotag: "editprofile",
+                        onPressed: () {
+                          Get.to(() => EditProfileView());
+                        },
+                        child: SvgPicture.asset(
+                          Imageasset.profile,
+                          height: 25,
+                          width: 25,
+                          // ignore: deprecated_member_use
+                          color: Colors.black,
+                        ),
+                      )
+                    : SizedBox.shrink(),
+                SizedBox(width: 5),
+
                 controller.Currentpage != 1
                     ? Homescrenaction(
                         herotag: "notification",
@@ -81,24 +98,8 @@ class Homescreen extends StatelessWidget {
                         ),
                       )
                     : SizedBox.shrink(),
-                SizedBox(width: 5,),
-                controller.Currentpage == 3
-                    ? Homescrenaction(
-                        herotag: "editprofile",
-                        onPressed: () {
-                          Get.to(() => EditProfileView());
-                        },
-                        child: SvgPicture.asset(
-                          Imageasset.profile,
-                          height: 25,
-                          width: 25,
-                          // ignore: deprecated_member_use
-                          color: Colors.black,
-                        ),
-                      )
-                    : SizedBox.shrink(),
-                                    SizedBox(width: 5,),
 
+                SizedBox(width: 5),
               ],
             ),
           ),

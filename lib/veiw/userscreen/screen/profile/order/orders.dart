@@ -72,7 +72,7 @@ class Orders extends StatelessWidget {
                         
                         // نستخدم ضرب مؤشر العناصر (index) في 50 ملي ثانية
                         // لتسريع تتابع ظهور الكروت بشكل انسيابي وشلالي
-                        delay: Duration(milliseconds: (index % 10) * 35),
+                        delay: Duration(milliseconds: (index % 10) * 25),
                         duration: const Duration(milliseconds: 450),
                         
                         child: OrderCard(

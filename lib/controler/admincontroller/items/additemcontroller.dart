@@ -59,10 +59,12 @@ class ItemFormController extends GetxController {
     description = TextEditingController(text: item?.itemsDesc ?? '');
     descriptionar = TextEditingController(text: item?.itemsDescAr ?? '');
     price = TextEditingController(text: item?.itemsPrice?.toString() ?? '');
-    discount =
-        TextEditingController(text: item?.itemsDiscount?.toString() ?? '0');
+    discount = TextEditingController(
+      text: item?.itemsDiscount?.toString() ?? '0',
+    );
     stock = int.tryParse('${item?.stock ?? 0}') ?? 0;
     active = item?.itemsActive ?? 1;
+    getbrand();
     super.onInit();
   }
 
@@ -145,6 +147,7 @@ class ItemFormController extends GetxController {
       "items_price": price.text.trim(),
       "items_discount": discount.text.trim(),
       "category_id": catId,
+      "brand_id": selectedBrand?.id,
     };
 
     try {
@@ -192,6 +195,34 @@ class ItemFormController extends GetxController {
 
   void _snack(String msg, IconData icon) =>
       showSnackBar(Get.context!, msg, Icon(icon));
+
+  List<Brandmodel> brandsList = [];
+  Brandmodel? selectedBrand;
+  bool isBrandsLoading = false;
+  Future getbrand() async {
+    isBrandsLoading = true;
+    selectedBrand = null;
+    update();
+
+    var response = await _data.getbrandsbycategory(int.parse(catId));
+
+    statusrequest = handling(response);
+    if (statusrequest == Statusrequest.success) {
+      if (response['status'] == true) {
+        brandsList.clear();
+        brandsList.addAll(
+          (response['data'] as List)
+              .map((e) => Brandmodel.fromjson(e))
+              .toList(),
+        );
+      } else {
+        _snack('failed_to_load_brands'.tr, Icons.error_outline);
+      }
+    }
+    isBrandsLoading = false;
+
+    update();
+  }
 
   @override
   void onClose() {

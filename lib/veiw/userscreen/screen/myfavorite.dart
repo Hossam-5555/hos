@@ -84,10 +84,11 @@ class Myfavorite extends StatelessWidget {
                           controller.gotoitemsdatails(items.item!);
                         },
                         actionButton: Homescrenaction(
+                          backgroundColor: Colors.black,
                           onPressed: () {
                             controller.deletefromfavpage(items.item!.id!);
                           },
-                          herotag: "deletefav",
+                          herotag: "itemdelete${items.item!.id}",
                           child: Icon(
                             Icons.delete_outline_rounded,
                             color: Colors.redAccent,

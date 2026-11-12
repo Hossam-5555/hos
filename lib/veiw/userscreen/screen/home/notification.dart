@@ -74,7 +74,7 @@ class NotificationPage extends StatelessWidget {
                   
                   // حساب وقت التأخير بناءً على ترتيب الإشعار
                   // اخترنا 60 ملي ثانية لسرعة انسيابية ومريحة للعين
-                  delay: Duration(milliseconds: isLoading ? 0 : index * 40), 
+                  delay: Duration(milliseconds: isLoading ? 0 : index * 30), 
                   duration: const Duration(milliseconds: 400),
                   
                   child: NotificationCard(

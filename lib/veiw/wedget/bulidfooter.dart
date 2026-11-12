@@ -8,11 +8,11 @@ Widget buildFooter() {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Color(0xFF2962FF).withOpacity(0.08),
+              color: Color.fromARGB(255, 104, 126, 185),
               shape: BoxShape.circle,
             ),
             child: const Icon(
-              Icons.storefront_outlined,
+              Icons.copyright,
               color: Color(0xFF2962FF),
               size: 22,
             ),
