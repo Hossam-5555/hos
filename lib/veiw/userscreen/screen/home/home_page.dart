@@ -7,10 +7,9 @@ import 'package:hos/controler/usercontroller/home/homepage_controller.dart';
 import 'package:hos/data/services/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/imageasset.dart';
-import 'package:hos/veiw/wedget/Admin/SheardCard.dart';
 import 'package:hos/veiw/wedget/Homepage/Ads.dart';
-import 'package:hos/veiw/wedget/Homepage/CurvedItemsView.dart';
-import 'package:hos/veiw/wedget/Homepage/dicountcard.dart';
+import 'package:hos/veiw/wedget/Homepage/curved_items_view.dart';
+import 'package:hos/veiw/wedget/Homepage/homesection.dart';
 import 'package:hos/veiw/wedget/Homepage/titles.dart';
 import 'package:hos/veiw/wedget/shared_product_card.dart';
 import 'package:hos/veiw/wedget/bulidfooter.dart';
@@ -37,15 +36,14 @@ class HomePage extends StatelessWidget {
                 final bool isSmallPhone = width < 360;
                 final bool isTablet = width >= 600;
 
-                // مسافات متجاوبة اعتماداً على العرض (أثبت من الطول بين الأجهزة)
-                // مع حدود دنيا وقصوى عشان ماتبقاش صغيرة أوي أو كبيرة أوي
+                // مسافات متجاوبة اعتماداً على العرض
                 final double horizontalPadding = (width * 0.035).clamp(
                   12.0,
                   32.0,
                 );
                 final double sectionSpacing = (width * 0.05).clamp(14.0, 26.0);
 
-                // ارتفاع قائمة التصنيفات الأفقية: نسبة من العرض مش من الطول
+                // ارتفاع قائمة التصنيفات الأفقية: نسبة من العرض
                 final double categoryHeight = (width * 0.3).clamp(92.0, 132.0);
 
                 // عدد أعمدة الجريد: 2 للهاتف، 3 للتابلت الصغير، 4 للتابلت الكبير
@@ -54,13 +52,12 @@ class HomePage extends StatelessWidget {
                     : 2;
                 final double gridSpacing = isSmallPhone ? 6.0 : 8.0;
 
-                // عرض الكارت الفعلي بعد خصم الـ padding والمسافات بين الأعمدة
+                // عرض الكارت الفعلي بعد خصم الـ padding والمسافات
                 final double cardWidth =
                     (width -
                         (horizontalPadding * 2) -
                         (gridSpacing * (gridCrossAxisCount - 1))) /
                     gridCrossAxisCount;
-                final itemWidth = (width - 40) / 3;
 
                 return HandlingDataView(
                   emptyStyle: EmptyStateStyle.style2,
@@ -85,59 +82,48 @@ class HomePage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          /// Main Offer
-                          AutoRotatingOffers(),
+                          // ═════════ 1) البانر السلايدر ═════════
+                          Skeletonizer(
+                            enabled: showSkeleton,
+                            child: HomeBannerSlider(
+                              banners: HomeMock.banners,
+                              isArabic: controller.isarabic,
+                              onTap: (banner) {},
+                            ),
+                          ),
 
                           SizedBox(height: sectionSpacing),
                           Titles(title: "Categories".tr),
                           SizedBox(height: sectionSpacing * 0.6),
 
-                          SizedBox(
-                            height: (categoryHeight * 2),
-                            child: HandlingDataView(
-                              statusrequest: controller.statusrequest,
-                              mode: HandlingMode.skeleton,
-                              widget: GridView.builder(
-                                scrollDirection: Axis.horizontal,
-                                physics: const ClampingScrollPhysics(),
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2, // صفين
-                                      mainAxisSpacing: 8,
-                                      crossAxisSpacing: 8,
-                                      childAspectRatio:
-                                          categoryHeight / itemWidth,
-                                    ),
-                                itemCount: controller.categories.length,
-                                itemBuilder: (context, index) {
-                                  final cat = controller.categories[index];
-
-                                  return CategoryCard.Homepage(
-                                    inHome: true,
-                                    onTap: () {
-                                      controller.gotoitems(
-                                        controller.categories,
-                                        index,
-                                        controller.categories[index].id
-                                            .toString(),
-                                      );
-                                    },
-                                    name: controller.isarabic
-                                        ? cat.nameAr
-                                        : cat.name,
-                                    onEdit: () {},
-                                    onDelete: () {},
-                                    imageUrl: cat.image!,
-                                  );
-                                },
-                              ),
+                          CurvedCategoriesView(categoryHeight: categoryHeight),
+                          // ═════════ 2) صف البراندات ═════════
+                          SizedBox(height: sectionSpacing),
+                          Titles(title: "Brands".tr),
+                          SizedBox(height: sectionSpacing * 0.6),
+                          Skeletonizer(
+                            enabled: showSkeleton,
+                            child: HomeBrandsRow(
+                              brands: HomeMock.brands,
+                              onTap: (brand) {},
                             ),
                           ),
 
-                          /// New Items Header
+                          // ═════════ 3) وصل حديثاً ═════════
+                          SizedBox(height: sectionSpacing),
                           Titles(title: "New Items".tr),
-                          CurvedItemsView(
-                            isen: controller.isarabic ? false : true,
+                          SizedBox(height: sectionSpacing * 0.6),
+                          Skeletonizer(
+                            enabled: showSkeleton,
+                            child: HomeNewArrivals(
+                              items: controller.newArival,
+                              isArabic: controller.isarabic,
+                              onTap: (item) {
+                                controller.gotoitemsdetails(item);
+                              },
+                              // فعّله بعد الربط بمنتجات حقيقية:
+                              // actionBuilder: (item) => AddToCartButton(itemId: item.id),
+                            ),
                           ),
 
                           SizedBox(height: sectionSpacing),
@@ -151,7 +137,7 @@ class HomePage extends StatelessWidget {
                           Skeletonizer(
                             enabled: showSkeleton,
                             child: AdsSection(),
-                          ), // ← ضيف ده هنا[]
+                          ),
 
                           SizedBox(height: sectionSpacing * 0.5),
                           Skeletonizer(
@@ -178,8 +164,7 @@ class HomePage extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 final item = controller.mostsaleitem[index];
 
-                                // ارتفاع الكارت نسبي لعرضه الفعلي، مش رقم ثابت،
-                                // فبكده بيتصرف صح على أي مقاس شاشة
+                                // ارتفاع الكارت نسبي لعرضه الفعلي
                                 final double baseHeight = cardWidth * 1.55;
                                 final double cardHeight = index.isEven
                                     ? baseHeight
@@ -188,16 +173,12 @@ class HomePage extends StatelessWidget {
                                 return SharedProductCard(
                                   isen: controller.isarabic ? false : true,
                                   items: item,
-                            
                                   onTap: () {
                                     controller.gotoitemsdetails(item);
                                   },
-
                                   actionButton: AddToCartButton(
                                     itemId: item.id!,
                                   ),
-
-                                  /// 🔥 أهم سطر
                                   height: cardHeight,
                                 );
                               },

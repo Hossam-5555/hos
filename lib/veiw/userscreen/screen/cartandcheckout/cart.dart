@@ -225,7 +225,7 @@ class ShoppingCartPage extends StatelessWidget {
                       final item = controller.data[index];
                       bool isdark = context.isDarkMode ? true : false;
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 5),
+                        padding: const EdgeInsets.only(bottom: 10),
                         child: buildCartItemCard(
                           context,
                           item,

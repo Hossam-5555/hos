@@ -60,7 +60,7 @@ class Textfealdauth extends StatelessWidget {
           ),
           suffixIcon: InkWell(
             onTap: onTapIcon,
-            child: Icon(suffixIcon, size: width * 0.060),
+            child: Icon(suffixIcon, size: width * 0.05),
           ),
 
           hintText: hint,

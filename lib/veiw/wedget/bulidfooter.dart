@@ -8,7 +8,7 @@ Widget buildFooter() {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 104, 126, 185),
+              color: Color.fromARGB(255, 0, 0, 0),
               shape: BoxShape.circle,
             ),
             child: const Icon(

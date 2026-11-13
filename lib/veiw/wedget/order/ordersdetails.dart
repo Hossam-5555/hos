@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:hos/controler/usercontroller/profile/order/orderdetailescontroller.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/data/model/ordersmodel.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 import 'package:hos/veiw/wedget/pricecard.dart';
@@ -565,7 +566,7 @@ Widget detailRow({
             width: r.s(38),
             height: r.s(38),
             decoration: BoxDecoration(
-              color: isDark ? Theme.of(context).cardColor : const Color(0xFFE0E3E8),
+              color: isDark ?AppColors.darkShadow.withAlpha(100) : const Color(0xFFE0E3E8),
               borderRadius: BorderRadius.circular(r.s(12)),
             ),
             child: Icon(icon, size: r.s(19)),

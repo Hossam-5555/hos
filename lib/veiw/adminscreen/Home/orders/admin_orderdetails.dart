@@ -167,19 +167,18 @@ class AdminOrderdetails extends StatelessWidget {
     AdminOrderDetailesController controller,
     String customerName,
   ) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Container(
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: isDark ? Theme.of(context).cardColor : const Color(0xFFE0E3E8),
-        borderRadius: BorderRadius.circular(40),
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.grey.withAlpha(40)),
       ),
       child: Row(
         children: [
           const CircleAvatar(
             radius: 24,
-            backgroundColor: Colors.white,
+            backgroundColor: Color(0xFFE0E3E8),
             child: Icon(Icons.person, color: Colors.grey),
           ),
           const SizedBox(width: 12),
@@ -220,7 +219,7 @@ class AdminOrderdetails extends StatelessWidget {
                   )
                 : Homescrenaction(
                     herotag: "location",
-                    backgroundColor: Colors.white,
+                    backgroundColor: Color(0xFFE0E3E8),
                     child: Icon(Icons.location_on, color: Colors.black),
                     onPressed: () {
                       controller.openMap(
@@ -233,7 +232,7 @@ class AdminOrderdetails extends StatelessWidget {
           const SizedBox(width: 8),
           Homescrenaction(
             herotag: "phone",
-            backgroundColor: Colors.white,
+            backgroundColor: Color(0xFFE0E3E8),
             child: Icon(Icons.phone, color: Colors.black),
             onPressed: () => controller.makePhoneCall(),
           ),

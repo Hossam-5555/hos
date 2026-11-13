@@ -209,7 +209,10 @@ class _Fields extends StatelessWidget {
       labelText: label,
       hintText: hint,
       prefixIcon: Icon(icon),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
+      ),
     );
   }
 

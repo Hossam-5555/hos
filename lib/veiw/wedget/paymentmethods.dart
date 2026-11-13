@@ -19,7 +19,7 @@ Widget buildPaymentMethod({
   required Checkoutcontroller controller,
 }) {
   final isSelected = controller.selectedMethod == method;
-  final checkSize = (w * 0.058).clamp(20.0, 26.0);
+  final checkSize = (w * 0.055).clamp(20.0, 26.0);
   final r = Rsp.of(context);
 
   return GestureDetector(
@@ -31,6 +31,8 @@ Widget buildPaymentMethod({
         borderRadius: BorderRadius.circular((w * 0.035).clamp(12.0, 18.0)),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             padding: EdgeInsets.all(r.s(10)),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
     static const primary = Color(0xFF3F6FFF);
+    static const Color iconscolor=Color(0xFFE0E3E8);
   static const purple = Color(0xFF9B59B6);
   static const success = Color(0xFF2ECC71);
   static const warning = Color(0xFFFFA500);

@@ -9,8 +9,7 @@ import 'package:hos/core/localization/changlocal.dart';
 import 'package:hos/veiw/adminscreen/brands/brandveiw.dart';
 import 'package:hos/veiw/userscreen/screen/profile/about_us_page.dart';
 import 'package:hos/veiw/wedget/bulidfooter.dart';
-import 'package:hos/veiw/wedget/language.dart';
-import 'package:hos/veiw/wedget/profile/themetile.dart';
+import 'package:hos/veiw/wedget/profile/swicthsetting.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
@@ -114,8 +113,65 @@ class ProfilePage extends StatelessWidget {
                           title: "Favorite".tr,
                           onTap: () => Get.toNamed(Approute.myfavorite),
                         ),
-                      LanguageTile(controller: localController),
-                      ThemeTile(controller: localController),
+                      // التيم
+                      Obx(() {
+                        final isDark =
+                            localController.selectedTheme.value == 'Dark';
+                        return SettingSwitchTile(
+                          icon: Icons.palette_outlined,
+                          gradient: [AppColors.themeStart, AppColors.themeEnd],
+                          title: 'Theme'.tr,
+                          subtitle: (isDark ? 'Dark mode' : 'Light mode').tr,
+                          value: isDark,
+                          onChanged: localController.changeTheme,
+                          activeColor: Colors.black,
+                          inactiveColor: Colors.white,
+                          onThumb: const Icon(
+                            Icons.dark_mode_outlined,
+                            color: Colors.white,
+                          ),
+                          offThumb: const Icon(
+                            Icons.sunny,
+                            color: AppColors.themeLightIcon,
+                          ),
+                        );
+                      }),
+
+                      // اللغة
+                      Obx(() {
+                        final isArabic =
+                            localController.selectedLanguage.value == 'ar';
+                        return SettingSwitchTile(
+                          icon: Icons.language_rounded,
+                          gradient: [
+                            AppColors.languageStart,
+                            AppColors.languageEnd,
+                          ],
+                          title: 'Language'.tr,
+                          subtitle: isArabic ? 'العربية' : 'English',
+                          value: isArabic,
+                          onChanged: (v) =>
+                              localController.changeLang(v ? 'ar' : 'en'),
+                          activeColor: AppColors.languageStart,
+                          inactiveColor: AppColors.iconscolor,
+                          onThumb: const Text(
+                            'ع',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          offThumb: const Text(
+                            'EN',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 11,
+                            ),
+                          ),
+                        );
+                      }),
                     ],
                   ),
 
@@ -185,8 +241,12 @@ class ProfilePage extends StatelessWidget {
                         title: "Logout".tr,
                         titleColor: AppColors.logout,
                         showArrow: false,
-                        onTap: () =>
-                            _confirmLogout(context, settingsController, width, sp),
+                        onTap: () => _confirmLogout(
+                          context,
+                          settingsController,
+                          width,
+                          sp,
+                        ),
                       ),
                     ],
                   ),
@@ -252,11 +312,7 @@ class _GroupLabel extends StatelessWidget {
   final double w;
   final double Function(double) sp;
 
-  const _GroupLabel({
-    required this.title,
-    required this.w,
-    required this.sp,
-  });
+  const _GroupLabel({required this.title, required this.w, required this.sp});
 
   @override
   Widget build(BuildContext context) {

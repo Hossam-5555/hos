@@ -9,7 +9,6 @@ import 'package:hos/controler/usercontroller/notificationcontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/functions/appexitalert.dart';
-import 'package:hos/veiw/userscreen/screen/profile/Editprofile.dart';
 import 'package:hos/veiw/wedget/Homepage/buttomAppbar.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
@@ -45,25 +44,30 @@ class Homescreen extends StatelessWidget {
               centerTitle: false,
               scrolledUnderElevation: 0,
               title: Text.rich(
-                TextSpan(children: [TextSpan(text: controller.userName)]),
+                TextSpan(
+                  children: [
+                    TextSpan(text: " hi!,👋"),
+                    TextSpan(text: controller.userName),
+                  ],
+                ),
               ),
 
               actions: [
-                controller.Currentpage == 3
-                    ? Homescrenaction(
-                        herotag: "editprofile",
-                        onPressed: () {
-                          Get.to(() => EditProfileView());
-                        },
-                        child: SvgPicture.asset(
-                          Imageasset.profile,
-                          height: 25,
-                          width: 25,
-                          // ignore: deprecated_member_use
-                          color: Colors.black,
-                        ),
-                      )
-                    : SizedBox.shrink(),
+                // controller.Currentpage == 3
+                //     ? Homescrenaction(
+                //         herotag: "editprofile",
+                //         onPressed: () {
+                //           Get.to(() => EditProfileView());
+                //         },
+                //         child: SvgPicture.asset(
+                //           Imageasset.profile,
+                //           height: 25,
+                //           width: 25,
+                //           // ignore: deprecated_member_use
+                //           color: Colors.black,
+                //         ),
+                //       )
+                //     : SizedBox.shrink(),
                 SizedBox(width: 5),
 
                 controller.Currentpage != 1
