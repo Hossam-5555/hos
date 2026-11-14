@@ -51,19 +51,3 @@ class AppColors {
   static const darkSurface = Color(0xFF111314);
   static const lightSurface = Color(0xFFFFFFFF);
 }
-
-class AppGradients {
-  AppGradients._();
-
-  static const darkTitanium = LinearGradient(
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-    colors: [Color(0xFF4A4B4D), AppColors.darkSurface],
-  );
-
-  static const lightPlatinum = LinearGradient(
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-    colors: [AppColors.lightSurface, AppColors.iconscolor],
-  );
-}

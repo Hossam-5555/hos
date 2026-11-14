@@ -376,9 +376,8 @@ class _GradientGroup extends StatelessWidget {
             offset: Offset(0, 0.2),
           ),
         ],
-        gradient: isDarkMode
-            ? AppGradients.darkTitanium
-            : AppGradients.lightPlatinum,
+        color: isDarkMode ? Color(0xFF242527) : Color(0xFFF5F5F5),
+
         borderRadius: BorderRadius.circular(radius),
         border: Border.all(color: AppColors.border),
       ),
@@ -509,9 +508,7 @@ Widget orderCard(
       height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(cardRadius),
-        gradient: isDarkMode
-            ? AppGradients.darkTitanium
-            : AppGradients.lightPlatinum,
+        color:  isDarkMode ? Color(0xFF242527) : Color(0xFFF5F5F5),
         border: Border.all(
           color: isDarkMode ? AppColors.darkBorder : AppColors.lightBorder,
           width: 1,
