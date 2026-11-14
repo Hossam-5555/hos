@@ -38,7 +38,7 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
 
   // ─────────────────── Static Data ─────────────────────────────
   final List<Widget> pages = [
-    const Adminhomedashboard(),
+    Adminhomedashboard(),
     const ViewCategories(),
     const Adminpending(),
     ProfilePage(),
@@ -107,9 +107,7 @@ class Adminhome extends GetxController with GetSingleTickerProviderStateMixin {
       }
 
       statusrequest = Statusrequest.success;
-    } catch (e, stack) {
-      debugPrint('getdashboardapi error: $e\n$stack');
-
+    } catch (e) {
       statusrequest = Statusrequest.serverfailure;
     }
 

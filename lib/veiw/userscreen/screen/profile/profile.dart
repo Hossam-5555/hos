@@ -34,7 +34,7 @@ class ProfilePage extends StatelessWidget {
     double sp(double baseSize) =>
         (width * (baseSize / 375)).clamp(baseSize * 0.85, baseSize * 1.3);
 
-    final horizontalPadding = isTablet ? wp(0.03) : wp(0.035);
+    final horizontalPadding = isTablet ? wp(0.02) : wp(0.0250);
     final gapBetweenCards = (width * 0.03).clamp(10.0, 20.0);
 
     final effectiveWidth = width < maxContentWidth ? width : maxContentWidth;
@@ -234,6 +234,20 @@ class ProfilePage extends StatelessWidget {
                         w: width,
                         sp: sp,
                         gradientColors: const [
+                          AppColors.border,
+                          AppColors.border,
+                        ],
+                        icon: Icons.security_outlined,
+                        title: "Acount Securty".tr,
+                        onTap: () => Get.to(
+                          () => EnglishAbout(),
+                          transition: Transition.cupertino,
+                        ),
+                      ),
+                      _ListTile(
+                        w: width,
+                        sp: sp,
+                        gradientColors: const [
                           AppColors.logoutStart,
                           AppColors.logoutEnd,
                         ],
@@ -353,7 +367,7 @@ class _GradientGroup extends StatelessWidget {
   Widget build(BuildContext context) {
     final radius = (w * 0.05).clamp(16.0, 26.0);
     return Container(
-      padding: EdgeInsets.all((w * 0.015).clamp(4.0, 10.0)),
+      padding: EdgeInsets.all((w * 0.010)),
       decoration: BoxDecoration(
         boxShadow: const [
           BoxShadow(
@@ -400,8 +414,8 @@ class _ListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tilePadding = (w * 0.028).clamp(10.0, 16.0);
-    final iconPadding = (w * 0.018).clamp(6.0, 10.0);
+    final tilePadding = (w * 0.010).clamp(10.0, 16.0);
+    final iconPadding = (w * 0.010).clamp(6.0, 10.0);
     final iconRadius = (w * 0.028).clamp(10.0, 14.0);
 
     return InkWell(
@@ -466,7 +480,7 @@ class _ListTile extends StatelessWidget {
                     ? Icon(
                         Icons.arrow_forward_ios_rounded,
                         color: AppColors.mutedText,
-                        size: sp(16),
+                        size: sp(13),
                       )
                     : const SizedBox.shrink()),
           ],

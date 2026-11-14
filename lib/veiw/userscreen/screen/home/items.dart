@@ -117,8 +117,7 @@ class _ProductGrid extends StatelessWidget {
 
           // مسافات متجاوبة كنسبة من العرض مع حدود آمنة
           final double horizontalPadding = (width * 0.04).clamp(12.0, 32.0);
-          final double crossAxisSpacing = (width * 0.035).clamp(10.0, 22.0);
-          final double mainAxisSpacing = (width * 0.03).clamp(10.0, 20.0);
+          final double crossAxisSpacing = (width * 0.01).clamp(10.0, 22.0);
           final double bottomPadding = (screenHeight * 0.11).clamp(75.0, 120.0);
 
           // المعادلة الدقيقة لحساب العرض الفعلي للكارت الواحد بناءً على عدد الأعمدة
@@ -134,7 +133,7 @@ class _ProductGrid extends StatelessWidget {
 
           return MasonryGridView.count(
             crossAxisCount: gridCrossAxisCount,
-            mainAxisSpacing: mainAxisSpacing,
+            mainAxisSpacing: crossAxisSpacing,
             crossAxisSpacing: crossAxisSpacing,
             padding: EdgeInsets.fromLTRB(
               horizontalPadding,

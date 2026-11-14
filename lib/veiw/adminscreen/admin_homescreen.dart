@@ -82,7 +82,7 @@ class AdminHome extends StatelessWidget {
                 ],
                 currentIndex: controller.currentpage,
                 onTap: controller.changePage,
-                cartcount: controller.overviewData['total_orders'],
+                cartcount: controller.overviewData['total_orders']??0,
                 isbadgeActive: false,
               ),
             ),

@@ -274,7 +274,7 @@ class _SearchResults extends StatelessWidget {
 
         // ~190px per card, between 2 and 6 columns
         final int crossAxisCount = (width / 190).floor().clamp(2, 6);
-        final double spacing = isSmallPhone ? 9 : 12;
+        final double spacing = isSmallPhone ? 6 : 8;
 
         final double cardWidth =
             (width - (spacing * (crossAxisCount - 1))) / crossAxisCount;

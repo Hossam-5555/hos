@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 /// Central palette: edit colors here to update the profile screen.
 class AppColors {
   AppColors._();
-    static const primary = Color(0xFF3F6FFF);
-    static const Color iconscolor=Color(0xFFE0E3E8);
+  static const primary = Color(0xFF3F6FFF);
+  static const Color iconscolor = Color(0xFFE0E3E8);
   static const purple = Color(0xFF9B59B6);
   static const success = Color(0xFF2ECC71);
   static const warning = Color(0xFFFFA500);
   static const danger = Color(0xFFFF5252);
   static const orange = Color(0xFFFF9F43);
- static Color grey = const Color.fromARGB(255, 113, 113, 113);
+  static Color grey = const Color.fromARGB(255, 113, 113, 113);
   static Color primaryColor = Colors.lightBlue;
   static Color black = Colors.black;
   static Color white = Colors.white;
@@ -58,12 +58,12 @@ class AppGradients {
   static const darkTitanium = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [Color(0xFF4A4B4D), Color(0xFF232526), AppColors.darkSurface],
+    colors: [Color(0xFF4A4B4D), AppColors.darkSurface],
   );
 
   static const lightPlatinum = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [AppColors.lightSurface, Color(0xFFF1F3F5), Color(0xFFDDE1E6)],
+    colors: [AppColors.lightSurface, AppColors.iconscolor],
   );
 }

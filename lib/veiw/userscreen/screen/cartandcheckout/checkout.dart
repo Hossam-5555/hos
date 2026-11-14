@@ -38,9 +38,9 @@ class Checkout extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: Padding(
         padding: EdgeInsets.only(
-          left: wp(0.04),
-          right: wp(0.04),
-          bottom: hp(0.01).clamp(5.0, 15.0),
+          // left: wp(0.04),
+          // right: wp(0.04),
+          bottom: hp(0.008).clamp(5.0, 15.0),
         ),
         child: SafeArea(
           child: Center(
@@ -83,8 +83,9 @@ class Checkout extends StatelessWidget {
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-                      SizedBox(height: hp(0.015)),
-                      buildPaymentMethod(context: context,
+                      SizedBox(height: hp(0.010)),
+                      buildPaymentMethod(
+                        context: context,
                         controller: c,
                         w: w,
                         h: h,
@@ -95,7 +96,8 @@ class Checkout extends StatelessWidget {
                         iconColor: const Color(0xFFEB5757),
                         method: "card",
                       ),
-                      buildPaymentMethod(context: context,
+                      buildPaymentMethod(
+                        context: context,
                         controller: c,
                         w: w,
                         h: h,
@@ -106,7 +108,8 @@ class Checkout extends StatelessWidget {
                         iconColor: const Color(0xFF2D9CDB),
                         method: "wallet",
                       ),
-                      buildPaymentMethod(context: context,
+                      buildPaymentMethod(
+                        context: context,
                         controller: c,
                         w: w,
                         h: h,
@@ -171,7 +174,7 @@ class Checkout extends StatelessWidget {
                           "-${c.couponDiscount.toStringAsFixed(2)}",
                           sp,
                         ),
-                        SizedBox(height: hp(0.015)),
+                        SizedBox(height: hp(0.010)),
                       ],
                       _buildPriceRow("Shipping".tr, "50", sp),
                       SizedBox(height: hp(0.018)),
@@ -196,12 +199,7 @@ class Checkout extends StatelessWidget {
               ];
 
               return ListView.separated(
-                padding: EdgeInsets.fromLTRB(
-                  wp(0.04),
-                  hp(0.01),
-                  wp(0.04),
-                  hp(0.03),
-                ),
+                padding: EdgeInsets.all(wp(0.012)),
                 itemCount: checkoutSections.length,
                 separatorBuilder: (context, index) =>
                     SizedBox(height: hp(0.02)),
@@ -227,7 +225,7 @@ class Checkout extends StatelessWidget {
     required double w,
     required Widget child,
   }) {
-    final padding = (w * 0.020).clamp(10.0, 20.0);
+    final padding = (w * 0.010).clamp(10.0, 20.0);
     final radius = (w * 0.05).clamp(16.0, 24.0);
 
     return Container(
@@ -313,7 +311,7 @@ class Checkout extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: h * 0.013),
+          SizedBox(height: h * 0.010),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

@@ -77,7 +77,6 @@ class Itemsdetailes extends StatelessWidget {
                           color: Theme.of(context).appBarTheme.backgroundColor,
                           borderRadius: const BorderRadius.vertical(
                             bottom: Radius.circular(30),
-                            
                           ),
                           boxShadow: [
                             BoxShadow(
@@ -94,33 +93,21 @@ class Itemsdetailes extends StatelessWidget {
                       ),
                       Positioned(
                         bottom: 0,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white.withAlpha(76),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: List.generate(
-                                  item.images!.length,
-                                  (index) => AnimatedContainer(
-                                    margin: const EdgeInsets.all(10),
-                                    width: controller.curentpage == index
-                                        ? 15
-                                        : 5,
-                                    height: 8,
-                                    decoration: BoxDecoration(
-                                      color: AppColors.primaryColor,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    duration: const Duration(milliseconds: 500),
-                                  ),
-                                ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(
+                            item.images!.length,
+                            (index) => AnimatedContainer(
+                              margin: const EdgeInsets.symmetric(horizontal: 3),
+                              width: controller.curentpage == index ? 18 : 6,
+                              height: 6,
+                              decoration: BoxDecoration(
+                                color: controller.curentpage == index
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Colors.grey.withAlpha(110),
+                                borderRadius: BorderRadius.circular(10),
                               ),
+                              duration: const Duration(milliseconds: 500),
                             ),
                           ),
                         ),

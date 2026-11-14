@@ -101,88 +101,70 @@ class HomePage extends StatelessWidget {
                           SizedBox(height: sectionSpacing),
                           Titles(title: "Brands".tr),
                           SizedBox(height: sectionSpacing * 0.6),
-                          Skeletonizer(
-                            enabled: showSkeleton,
-                            child: HomeBrandsRow(
-                              brands: HomeMock.brands,
-                              onTap: (brand) {},
-                            ),
+                          HomeBrandsRow(
+                            brands: HomeMock.brands,
+                            onTap: (brand) {},
                           ),
 
                           // ═════════ 3) وصل حديثاً ═════════
                           SizedBox(height: sectionSpacing),
                           Titles(title: "New Items".tr),
                           SizedBox(height: sectionSpacing * 0.6),
-                          Skeletonizer(
-                            enabled: showSkeleton,
-                            child: HomeNewArrivals(
-                              items: controller.newArival,
-                              isArabic: controller.isarabic,
-                              onTap: (item) {
-                                controller.gotoitemsdetails(item);
-                              },
-                              // فعّله بعد الربط بمنتجات حقيقية:
-                              // actionBuilder: (item) => AddToCartButton(itemId: item.id),
-                            ),
+                          HomeNewArrivals(
+                            items: controller.newArival,
+                            isArabic: controller.isarabic,
+                            onTap: (item) {
+                              controller.gotoitemsdetails(item);
+                            },
+                            // فعّله بعد الربط بمنتجات حقيقية:
+                            // actionBuilder: (item) => AddToCartButton(itemId: item.id),
                           ),
 
                           SizedBox(height: sectionSpacing),
 
                           // ─── إعلانات ───
-                          Skeletonizer(
-                            enabled: showSkeleton,
-                            child: Titles(title: "Special Offers".tr),
-                          ),
+                          Titles(title: "Special Offers".tr),
                           SizedBox(height: sectionSpacing * 0.6),
-                          Skeletonizer(
-                            enabled: showSkeleton,
-                            child: AdsSection(),
-                          ),
+                          AdsSection(),
 
                           SizedBox(height: sectionSpacing * 0.5),
-                          Skeletonizer(
-                            enabled: showSkeleton,
-                            child: Titles(title: "Most Sale".tr),
-                          ),
+                          Titles(title: "Most Sale".tr),
                           SizedBox(height: sectionSpacing * 0.6),
 
-                          Skeletonizer(
-                            enabled: showSkeleton,
-                            child: MasonryGridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              padding: EdgeInsets.symmetric(
-                                vertical: sectionSpacing * 0.2,
-                              ),
-                              gridDelegate:
-                                  SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: gridCrossAxisCount,
-                                  ),
-                              mainAxisSpacing: gridSpacing,
-                              crossAxisSpacing: gridSpacing,
-                              itemCount: controller.mostsaleitem.length,
-                              itemBuilder: (context, index) {
-                                final item = controller.mostsaleitem[index];
-
-                                // ارتفاع الكارت نسبي لعرضه الفعلي
-                                final double baseHeight = cardWidth * 1.55;
-                                final double cardHeight = index.isEven
-                                    ? baseHeight
-                                    : baseHeight * 1.2;
-
-                                return SharedProductCard(
-                                  isen: controller.isarabic ? false : true,
-                                  items: item,
-                                  onTap: () {
-                                    controller.gotoitemsdetails(item);
-                                  },
-                                  actionButton: AddToCartButton(
-                                    itemId: item.id!,
-                                  ),
-                                  height: cardHeight,
-                                );
-                              },
+                          MasonryGridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.symmetric(
+                              vertical: sectionSpacing * 0.2,
                             ),
+                            gridDelegate:
+                                SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: gridCrossAxisCount,
+                                ),
+                            mainAxisSpacing: gridSpacing,
+                            crossAxisSpacing: gridSpacing,
+                            itemCount: controller.mostsaleitem.length,
+                            itemBuilder: (context, index) {
+                              final item = controller.mostsaleitem[index];
+                          
+                              // ارتفاع الكارت نسبي لعرضه الفعلي
+                              final double baseHeight = cardWidth * 1.55;
+                              final double cardHeight = index.isEven
+                                  ? baseHeight
+                                  : baseHeight * 1.2;
+                          
+                              return SharedProductCard(
+                                isen: controller.isarabic ? false : true,
+                                items: item,
+                                onTap: () {
+                                  controller.gotoitemsdetails(item);
+                                },
+                                actionButton: AddToCartButton(
+                                  itemId: item.id!,
+                                ),
+                                height: cardHeight,
+                              );
+                            },
                           ),
 
                           //footer
