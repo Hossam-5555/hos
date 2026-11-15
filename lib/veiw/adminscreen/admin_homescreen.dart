@@ -5,6 +5,8 @@ import 'package:hos/controler/admincontroller/admin_controller.dart';
 import 'package:hos/controler/usercontroller/notificationcontroller.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/conistant/routs.dart';
+import 'package:hos/core/conistant/app_colors.dart';
+import 'package:hos/core/conistant/app_dimensions.dart';
 import 'package:hos/veiw/wedget/Homepage/buttomAppbar.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
@@ -21,7 +23,7 @@ class AdminHome extends StatelessWidget {
               const SizedBox(width: 10),
               const Text(
                 "Hello, Admin",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: AppDimensions.fontTitle, fontWeight: FontWeight.bold),
               ),
               const Spacer(),
 
@@ -39,13 +41,13 @@ class AdminHome extends StatelessWidget {
                       alignment: const Alignment(0.1, 0.90),
                       label: Text(
                         hasUnread.toString(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
+                        style:  TextStyle(
+                          color: AppColors.white,
+                          fontSize: AppDimensions.fontBodySmall,
                         ),
                       ),
                       smallSize: 9,
-                      backgroundColor: Colors.redAccent,
+                      backgroundColor: AppColors.danger,
                       child: SvgPicture.asset(Imageasset.notification),
                     ),
                   );

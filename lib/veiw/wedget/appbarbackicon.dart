@@ -2,6 +2,7 @@
 
 // Reusable responsive AppBar with back/close action.
 import 'package:flutter/material.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 
 class Appbarbackicon extends StatelessWidget implements PreferredSizeWidget {
   const Appbarbackicon({
@@ -73,7 +74,7 @@ class Appbarbackicon extends StatelessWidget implements PreferredSizeWidget {
             child: Icon(
               selected ? Icons.close_rounded : Icons.arrow_back_ios_new_rounded,
               size: iconSize,
-              color:Colors.black87 ,
+              color: AppColors.black,
             ),
           ),
         ),
@@ -138,13 +139,13 @@ class Homescrenaction extends StatelessWidget {
           height: buttonSize,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: backgroundColor ?? color ?? const Color(0xFFE0E3E8),
+            color: backgroundColor ?? color ?? AppColors.editBackground,
             border: Border.all(
               color:
                   borderColor ??
                   (isDark
-                      ? Colors.white.withAlpha(18)
-                      : Colors.black.withAlpha(12)),
+                      ? AppColors.white.withAlpha(18)
+                      : AppColors.black.withAlpha(12)),
               width: 1,
             ),
           ),
@@ -156,7 +157,7 @@ class Homescrenaction extends StatelessWidget {
               child: IconTheme.merge(
                 data: IconThemeData(
                   size: (buttonSize * 0.40).clamp(18.0, 21.0),
-                  color: isDark ? const Color(0xFFE8ECF5) : Colors.black87,
+                  color: isDark ? AppColors.editBackground : AppColors.black,
                 ),
                 child: child,
               ),

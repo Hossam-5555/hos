@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 import 'package:hos/veiw/wedget/order/ordersdetails.dart';
 
@@ -38,9 +39,9 @@ Widget buildPaymentMethod({
             padding: EdgeInsets.all(r.s(10)),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(r.s(12)),
-              color: (iconColor ?? Colors.black).withAlpha(25),
+              color: (iconColor ?? AppColors.black).withAlpha(25),
             ),
-            child: Icon(icon, color: iconColor ?? Colors.white, size: sp(19)),
+            child: Icon(icon, color: iconColor ?? AppColors.white, size: sp(19)),
           ),
           SizedBox(width: r.s(10)),
           Expanded(
@@ -59,7 +60,7 @@ Widget buildPaymentMethod({
                     subtitle,
                     style: TextStyle(
                       fontSize: sp(12),
-                      color: Colors.grey.shade600,
+                      color: AppColors.grey,
                     ),
                   ),
                 ],
@@ -72,11 +73,11 @@ Widget buildPaymentMethod({
             height: checkSize,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: isSelected ? Colors.green : Colors.transparent,
-              border: Border.all(color: Colors.grey),
+              color: isSelected ? AppColors.success : Colors.transparent,
+              border: Border.all(color: AppColors.grey),
             ),
             child: isSelected
-                ? Icon(Icons.check_rounded, size: sp(14), color: Colors.white)
+                ? Icon(Icons.check_rounded, size: sp(14), color: AppColors.white)
                 : null,
           ),
         ],

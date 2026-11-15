@@ -77,8 +77,8 @@ class AppTheme {
   static ThemeData lightEn = ThemeData(
     brightness: Brightness.light,
     scaffoldBackgroundColor: _lightBg,
-    appBarTheme: _appBar(_lightBg, _lightTextMain, 'RobotoMono'),
-    textTheme: _getTextTheme('RobotoMono', false),
+    appBarTheme: _appBar(_lightBg, _lightTextMain, 'SFProDisplay'),
+    textTheme: _getTextTheme('SFProDisplay', false),
     colorScheme: ColorScheme.fromSeed(
       seedColor: AppColors.primaryColor,
       surface: _lightSurface,
@@ -90,8 +90,8 @@ class AppTheme {
   static ThemeData darkEn = ThemeData(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: _darkBg,
-    appBarTheme: _appBar(_darkBg, _darkTextMain, 'RobotoMono'),
-    textTheme: _getTextTheme('RobotoMono', true),
+    appBarTheme: _appBar(_darkBg, _darkTextMain, 'SFProDisplay'),
+    textTheme: _getTextTheme('SFProDisplay', true),
     colorScheme: ColorScheme.fromSeed(
       seedColor: AppColors.primaryColor,
       brightness: Brightness.dark,

@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:hos/core/conistant/app_colors.dart';
+import 'package:hos/core/conistant/app_dimensions.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/veiw/wedget/pricecard.dart';
 
@@ -26,15 +28,15 @@ class SharedProductCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     // ألوان الكارت الأساسية بتتغير حسب الوضع (ليلي / نهاري)
-    final Color cardBorderColor = Colors.grey.withAlpha(50);
-    final Color cardShadow = Colors.black.withAlpha(60);
+    final Color cardBorderColor = AppColors.grey.withAlpha(50);
+    final Color cardShadow = AppColors.black.withAlpha(60);
 
     // الشارات (title chip / rating badge / price bar) عايمة فوق الصورة
     // فبنخليها "زجاج غامق" ثابت في الوضعين، عشان تفضل واضحة أياً كانت ألوان
     // صورة المنتج نفسها (فاتحة أو غامقة)
-    final Color chipBackground = Colors.black.withAlpha(100);
-    final Color chipBorder = Colors.white.withAlpha(150);
-    const Color chipTextColor = Colors.white;
+    final Color chipBackground = AppColors.black.withAlpha(100);
+    final Color chipBorder = AppColors.white.withAlpha(150);
+    final Color chipTextColor = AppColors.white;
 
     return GestureDetector(
       onTap: onTap,
@@ -54,14 +56,14 @@ class SharedProductCard extends StatelessWidget {
             110.0,
             240.0,
           );
-          final double titleFontSize = (cardWidth * 0.062).clamp(11.0, 14.0);
+          final double titleFontSize = (cardWidth * 0.062).clamp(AppDimensions.fontBodySmall, AppDimensions.fontBodyMedium);
 
           final double ratingBadgeWidth = (cardWidth * 0.27).clamp(42.0, 56.0);
           final double ratingBadgeHeight = (ratingBadgeWidth * 0.6).clamp(
             24.0,
             30.0,
           );
-          final double ratingFontSize = (cardWidth * 0.045).clamp(10.0, 13.0);
+          final double ratingFontSize = (cardWidth * 0.045).clamp(AppDimensions.fontBodySmall, 13.0);
           final double ratingIconSize = (cardWidth * 0.05).clamp(12.0, 16.0);
 
           final double bottomBarWidth = (cardWidth * 0.9).clamp(140.0, 230.0);
@@ -73,7 +75,7 @@ class SharedProductCard extends StatelessWidget {
             height: height,
             decoration: BoxDecoration(
               boxShadow: [BoxShadow(color: cardShadow, blurRadius: 2)],
-              color: Color(0xFFE0E3E8),
+              color: AppColors.editBackground,
               borderRadius: const BorderRadius.all(Radius.circular(25)),
               border: Border.all(
                 color: cardBorderColor,
@@ -122,7 +124,7 @@ class SharedProductCard extends StatelessWidget {
 
                         /// شارة الاسم + التقييم أعلى الصورة
                         Positioned(
-                          top: 8,
+                          top: AppDimensions.sm,
                           child: ConstrainedBox(
                             constraints: BoxConstraints(
                               maxWidth: titleChipMaxWidth,
@@ -171,7 +173,7 @@ class SharedProductCard extends StatelessWidget {
                                           borderRadius: BorderRadius.circular(
                                             20,
                                           ),
-                                          color: Colors.white.withAlpha(46),
+                                          color: AppColors.white.withAlpha(46),
                                         ),
                                         child: Row(
                                           mainAxisAlignment:
@@ -180,7 +182,7 @@ class SharedProductCard extends StatelessWidget {
                                             Icon(
                                               Icons.star_purple500_outlined,
                                               size: ratingIconSize,
-                                              color: Colors.amber,
+                                              color: AppColors.warning,
                                             ),
                                             const SizedBox(width: 3),
                                             Text(
@@ -226,7 +228,7 @@ class SharedProductCard extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     PriceText(items.itemsPrice ?? 0),
-                                    const SizedBox(width: 8),
+                                    const SizedBox(width: AppDimensions.sm),
                                     actionButton, // 👈 هنا هيتعرض الزرار اللي هتبعتهوله
                                   ],
                                 ),

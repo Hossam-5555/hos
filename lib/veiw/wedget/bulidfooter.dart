@@ -1,4 +1,6 @@
  import 'package:flutter/material.dart';
+import 'package:hos/core/conistant/app_colors.dart';
+import 'package:hos/core/conistant/app_dimensions.dart';
 
 Widget buildFooter() {
     return Padding(
@@ -8,12 +10,12 @@ Widget buildFooter() {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 0, 0, 0),
+              color: AppColors.black,
               shape: BoxShape.circle,
             ),
             child: const Icon(
               Icons.copyright,
-              color: Color(0xFF2962FF),
+              color: AppColors.primary,
               size: 22,
             ),
           ),
@@ -22,7 +24,7 @@ Widget buildFooter() {
             "HOS App",
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.grey[500],
+              color: AppColors.grey,
               letterSpacing: 1.2,
               fontSize: 13,
             ),
@@ -30,7 +32,7 @@ Widget buildFooter() {
           const SizedBox(height: 4),
           Text(
             "© 2026 All Rights Reserved",
-            style: TextStyle(color: Colors.grey[400], fontSize: 11),
+            style: TextStyle(color: AppColors.grey, fontSize: AppDimensions.fontBodySmall),
           ),
         ],
       ),

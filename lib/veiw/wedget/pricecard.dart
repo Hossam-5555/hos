@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hos/core/conistant/app_colors.dart';
+import 'package:hos/core/conistant/app_dimensions.dart';
 import 'package:get/get.dart';
 
 class PriceText extends StatelessWidget {
   const PriceText(
     this.price, {
     super.key,
-    this.fontSize = 14,
-    this.color =  Colors.greenAccent,
+    this.fontSize = AppDimensions.fontBodyMedium,
+    this.color = AppColors.success,
     this.isOld = false, // السعر القديم (رمادي ومشطوب)
   });
 
@@ -24,7 +26,7 @@ class PriceText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = isOld ? Colors.grey : color;
+    final c = isOld ? AppColors.grey : color;
 
     return Text.rich(
       TextSpan(

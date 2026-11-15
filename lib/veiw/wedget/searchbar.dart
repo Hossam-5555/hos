@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
@@ -44,15 +45,15 @@ class Searchbar extends StatelessWidget {
 
       decoration: InputDecoration(
         hintText: title,
-        hintStyle: TextStyle(color: Colors.grey),
+        hintStyle: TextStyle(color: AppColors.grey),
 
         suffixIcon: Homescrenaction(
-          color: isDarkMode ? Colors.white : Colors.black,
+          color: isDarkMode ? AppColors.white : AppColors.black,
           herotag: "",
           onPressed: onPressedIcon,
           child: SvgPicture.asset(
             ressetfeaild ? Imageasset.filter : Imageasset.search,
-            color: isDarkMode ? Colors.black : Colors.white,
+            color: isDarkMode ? AppColors.black : AppColors.white,
             height: 20,
             width: 20,
           ),

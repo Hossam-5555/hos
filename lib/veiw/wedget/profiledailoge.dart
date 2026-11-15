@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 
 class ComingSoonOverlay {
@@ -7,7 +8,7 @@ class ComingSoonOverlay {
     Get.dialog(
       const _ComingSoonDialog(),
       barrierDismissible: true,
-      barrierColor: Colors.black.withAlpha(90),
+      barrierColor: AppColors.black.withAlpha(90),
       transitionDuration: const Duration(milliseconds: 350),
     );
   }
@@ -35,7 +36,7 @@ class _ComingSoonDialog extends StatelessWidget {
             borderRadius: BorderRadius.circular(28),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withAlpha(38),
+                color: AppColors.black.withAlpha(38),
                 blurRadius: 30,
                 offset: const Offset(0, 15),
               ),
@@ -53,12 +54,12 @@ class _ComingSoonDialog extends StatelessWidget {
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.white,
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
+                    child:  Icon(
                       Icons.close_rounded,
-                      color: Colors.black,
+                      color: AppColors.black,
                       size: 18,
                     ),
                   ),
@@ -73,7 +74,7 @@ class _ComingSoonDialog extends StatelessWidget {
                 height: 115,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: const Color(0xFFFFF4D6),
+                  color: AppColors.warning,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(15),
@@ -83,12 +84,12 @@ class _ComingSoonDialog extends StatelessWidget {
 
               const SizedBox(height: 18),
 
-              const Text(
+               Text(
                 'Coming Soon',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w800,
-                  color: Colors.grey,
+                  color: AppColors.grey,
                   decoration: TextDecoration.none, // ✅ شيل أي underline
                 ),
               ),
@@ -101,7 +102,7 @@ class _ComingSoonDialog extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 14,
                   height: 1.5,
-                  color: Colors.grey.shade600,
+                  color: AppColors.grey,
                   decoration: TextDecoration.none, // ✅ هنا برضو
                 ),
               ),
@@ -115,8 +116,8 @@ class _ComingSoonDialog extends StatelessWidget {
                   onPressed: Get.back,
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
-                    backgroundColor: const Color(0xFFFFB703),
-                    foregroundColor: Colors.white,
+                    backgroundColor: AppColors.warning,
+                    foregroundColor: AppColors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),

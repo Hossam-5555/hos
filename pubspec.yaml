@@ -128,10 +128,32 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: RobotoMono
+    - family: SFProDisplay
       fonts:
+        - asset: assets/fonts/RobotoMono/SFPRODISPLAYREGULAR.OTF
+          weight: 400
+        - asset: assets/fonts/RobotoMono/SFPRODISPLAYMEDIUM.OTF
+          weight: 500
+        - asset: assets/fonts/RobotoMono/SFPRODISPLAYSEMIBOLDITALIC.OTF
+          weight: 600
         - asset: assets/fonts/RobotoMono/SFPRODISPLAYBOLD.OTF
-        # - asset: assets/fonts/Italic/PlayfairDisplay-SemiBold.ttf
+          weight: 700
+        - asset: assets/fonts/RobotoMono/SFPRODISPLAYBLACKITALIC.OTF
+          weight: 900
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/cairo/Cairo-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/cairo/Cairo-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/cairo/Cairo-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/cairo/Cairo-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/cairo/Cairo-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/cairo/Cairo-Black.ttf
+          weight: 900
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
