@@ -103,10 +103,10 @@ class OrderCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "${'Order numper'.tr} #${order.orderNumber}",
+                    "#${order.orderNumber}",
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
-                      fontSize: w * 0.032,
+                      fontSize: w * 0.029,
                       color: primaryTextColor,
                     ),
                     maxLines: 1,

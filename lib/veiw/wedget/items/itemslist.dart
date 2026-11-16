@@ -43,8 +43,16 @@ class AppChip extends StatelessWidget {
     required this.label,
     required this.isSelected,
     required this.onTap,
+    this.icon = false,
   });
-
+  const AppChip.brand({
+    super.key,
+    required this.label,
+    this.icon,
+    required this.isSelected,
+    required this.onTap,
+  });
+  final bool? icon;
   final String label;
   final bool isSelected;
   final VoidCallback onTap;
@@ -82,13 +90,11 @@ class AppChip extends StatelessWidget {
                   ]),
     );
 
-   final innerColor = isSelected
-    ? (isDark
-        ?  Colors.black
-        : const Color(0xFF0A192F))
-    : (isDark
-        ? const Color.fromARGB(255, 44, 49, 56)
-        : const Color(0xFFF7F9FF));
+    final innerColor = isSelected
+        ? (isDark ? Colors.black : const Color(0xFF0A192F))
+        : (isDark
+              ? const Color.fromARGB(255, 44, 49, 56)
+              : const Color(0xFFF7F9FF));
 
     final boxShadow = isSelected
         ? [
@@ -124,7 +130,9 @@ class AppChip extends StatelessWidget {
         curve: Curves.fastLinearToSlowEaseIn,
         padding: const EdgeInsets.all(1),
         decoration: BoxDecoration(
-          color: isDark ? const Color.fromARGB(255, 215, 15, 255) : const Color(0xFFD6DCE5),
+          color: isDark
+              ? const Color.fromARGB(255, 215, 15, 255)
+              : const Color(0xFFD6DCE5),
           borderRadius: BorderRadius.circular(30),
           gradient: borderGradient,
           boxShadow: boxShadow,
@@ -158,7 +166,16 @@ class AppChip extends StatelessWidget {
                           : FontWeight.w500,
                       letterSpacing: 0.3,
                     ),
-                    child: Text(label, maxLines: 1),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        icon == true
+                            ? Icon(Icons.discount, size: 16)
+                            : SizedBox.shrink(),
+                        SizedBox(width: 5),
+                        Text(label, maxLines: 1),
+                      ],
+                    ),
                   ),
                 ),
               ),

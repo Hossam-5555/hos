@@ -97,14 +97,6 @@ class HomePage extends StatelessWidget {
                           SizedBox(height: sectionSpacing * 0.6),
 
                           CurvedCategoriesView(categoryHeight: categoryHeight),
-                          // ═════════ 2) صف البراندات ═════════
-                          SizedBox(height: sectionSpacing),
-                          Titles(title: "Brands".tr),
-                          SizedBox(height: sectionSpacing * 0.6),
-                          HomeBrandsRow(
-                            brands: HomeMock.brands,
-                            onTap: (brand) {},
-                          ),
 
                           // ═════════ 3) وصل حديثاً ═════════
                           SizedBox(height: sectionSpacing),
@@ -146,22 +138,20 @@ class HomePage extends StatelessWidget {
                             itemCount: controller.mostsaleitem.length,
                             itemBuilder: (context, index) {
                               final item = controller.mostsaleitem[index];
-                          
+
                               // ارتفاع الكارت نسبي لعرضه الفعلي
                               final double baseHeight = cardWidth * 1.55;
                               final double cardHeight = index.isEven
                                   ? baseHeight
                                   : baseHeight * 1.2;
-                          
+
                               return SharedProductCard(
                                 isen: controller.isarabic ? false : true,
                                 items: item,
                                 onTap: () {
                                   controller.gotoitemsdetails(item);
                                 },
-                                actionButton: AddToCartButton(
-                                  itemId: item.id!,
-                                ),
+                                actionButton: AddToCartButton(itemId: item.id!),
                                 height: cardHeight,
                               );
                             },

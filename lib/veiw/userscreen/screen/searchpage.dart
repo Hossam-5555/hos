@@ -8,6 +8,7 @@ import 'package:hos/controler/usercontroller/searchclass.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/veiw/userscreen/screen/home/home_page.dart';
+import 'package:hos/veiw/wedget/Homepage/homesection.dart';
 import 'package:hos/veiw/wedget/shared_product_card.dart';
 import 'package:hos/veiw/wedget/items/itemslist.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';
@@ -230,6 +231,8 @@ class _IdleState extends StatelessWidget {
             const SizedBox(height: 28),
           ],
           PopularCategoriesSection(
+            brands: HomeMock.brands,
+            onTap: (brand) {},
             c: controller,
             categories: categories,
             isLoading: isLoading,
@@ -381,8 +384,11 @@ class PopularCategoriesSection extends StatelessWidget {
     required this.cardBg,
     required this.borderColor,
     required this.c,
+    required this.brands,
+    this.onTap,
   });
-
+  final List<HomeBrand> brands;
+  final ValueChanged<HomeBrand>? onTap;
   final SearchMix c;
   final List<CategoriesModel> categories;
   final bool isLoading;
@@ -429,6 +435,35 @@ class PopularCategoriesSection extends StatelessWidget {
                 isSelected: false,
                 onTap: () {
                   c.search!.text = item.name!;
+                  c.onsearch();
+                },
+              );
+            }).toList(),
+          ),
+        ),
+        const SizedBox(height: 14),
+
+        Skeletonizer(
+          enabled: showSkeleton,
+          child: Text(
+            "Popular Brand",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              color: textPrimary,
+            ),
+          ),
+        ),
+        const SizedBox(height: 14),
+        Skeletonizer(
+          enabled: showSkeleton,
+          child: Wrap(
+            children: brands.map((item) {
+              return AppChip.brand(icon: true,
+                label: (c.isarabic ? item.name : item.name),
+                isSelected: false,
+                onTap: () {
+                  c.search!.text = item.name;
                   c.onsearch();
                 },
               );

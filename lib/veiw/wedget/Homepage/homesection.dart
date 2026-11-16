@@ -342,56 +342,6 @@ class _BannerCard extends StatelessWidget {
 //  2) صف البراندات
 // ═══════════════════════════════════════════════════════════════
 
-class HomeBrandsRow extends StatelessWidget {
-  final List<HomeBrand> brands;
-  final ValueChanged<HomeBrand>? onTap;
-
-  const HomeBrandsRow({super.key, required this.brands, this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    if (brands.isEmpty) return const SizedBox.shrink();
-
-    return SizedBox(
-      height: 44,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: brands.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
-        itemBuilder: (context, i) {
-          final brand = brands[i];
-          return Material(
-            color: Theme.of(context).cardColor,
-            shape: StadiumBorder(
-              side: BorderSide(color: Colors.grey.withAlpha(70)),
-            ),
-            child: InkWell(
-              customBorder: const StadiumBorder(),
-              onTap: onTap == null ? null : () => onTap!(brand),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.sell_outlined, size: 16),
-                    const SizedBox(width: 6),
-                    Text(
-                      brand.name,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
 
 // ═══════════════════════════════════════════════════════════════
 //  3) وصل حديثاً
