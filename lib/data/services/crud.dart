@@ -3,9 +3,12 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get_instance/get_instance.dart';
+import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
 import 'package:hos/core/functions/checkinternet.dart';
+import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
@@ -45,6 +48,11 @@ class Crud {
         return Left(Statusrequest.failure);
       }
     } else {
+      showSnackBar(
+        Get.context!,
+        "check network conection",
+        Icon(Icons.network_wifi_2_bar_rounded, color: Colors.grey),
+      );
       return Left(Statusrequest.checkinterner);
     }
   }
@@ -57,7 +65,7 @@ class Crud {
           "Content-Type": "application/json",
           "Accept": "application/json",
           "Authorization": "Bearer $token",
-          'ngrok-skip-browser-warning': 'true'
+          'ngrok-skip-browser-warning': 'true',
         },
       );
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -67,6 +75,11 @@ class Crud {
         return Left(Statusrequest.failure);
       }
     } else {
+      showSnackBar(
+        Get.context!,
+        "check network conection",
+        Icon(Icons.network_wifi_2_bar_rounded, color: Colors.grey),
+      );
       return Left(Statusrequest.checkinterner);
     }
   }
@@ -93,6 +106,11 @@ class Crud {
           return Left(Statusrequest.failure);
         }
       } else {
+        showSnackBar(
+          Get.context!,
+          "check network conection",
+          Icon(Icons.network_wifi_2_bar_rounded, color: Colors.grey),
+        );
         return Left(Statusrequest.checkinterner);
       }
     } catch (e) {
@@ -114,10 +132,10 @@ class Crud {
     var uri = Uri.parse(url);
     var request = http.MultipartRequest("POST", uri);
     request.fields['_method'] = method;
-     request.headers.addAll({
-    'Accept': 'application/json',
-    'Authorization': 'Bearer $token',
-  });
+    request.headers.addAll({
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
     // 📁 لف على قائمة الصور وأضف الصور الصالحة (المش null) فقط
     for (var image in images) {
       if (image != null) {

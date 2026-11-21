@@ -507,21 +507,17 @@ Widget orderCard(
       width: width,
       height: height,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(cardRadius),
-        color:  isDarkMode ? Color(0xFF242527) : Color(0xFFF5F5F5),
-        border: Border.all(
-          color: isDarkMode ? AppColors.darkBorder : AppColors.lightBorder,
-          width: 1,
-        ),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
-            color: isDarkMode
-                ? AppColors.darkShadow.withAlpha(20)
-                : AppColors.lightShadow,
-            blurRadius: 8,
-            offset: const Offset(0, 0.2),
+            blurRadius: 6,
+            color: AppColors.shadow,
+            offset: Offset(0, 0.2),
           ),
         ],
+        color: isDarkMode ? Color(0xFF242527) : Color(0xFFF5F5F5),
+
+        borderRadius: BorderRadius.circular(cardRadius),
+        border: Border.all(color: AppColors.border),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(cardRadius),
@@ -532,13 +528,8 @@ Widget orderCard(
             // =========================
             Expanded(
               flex: 6,
-              child: Container(
+              child: SizedBox(
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  color: isDarkMode
-                      ? AppColors.darkImageSurface
-                      : AppColors.lightImageSurface,
-                ),
                 child: Image.asset(image, fit: BoxFit.cover),
               ),
             ),

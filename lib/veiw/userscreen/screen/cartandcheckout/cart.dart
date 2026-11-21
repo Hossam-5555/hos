@@ -126,7 +126,32 @@ class ShoppingCartPage extends StatelessWidget {
                                             16.0,
                                           ),
                                         ),
-
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(5),
+                                              child: Text(
+                                                'المنتجات في السله',
+                                                style: TextStyle(
+                                                  fontSize: (width * 0.04)
+                                                      .clamp(14.0, 18.0),
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              "عدد ${controller.data.length}",
+                                              style: TextStyle(
+                                                fontSize: (width * 0.045).clamp(
+                                                  14.0,
+                                                  18.0,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                         Divider(
                                           height: (height * 0.02).clamp(
                                             20.0,

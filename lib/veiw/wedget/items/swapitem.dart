@@ -95,7 +95,7 @@ class _NativeSwipeCardsState extends State<NativeSwipeCards>
         currentIndex = (currentIndex + 1) % widget.images.length;
         position = Offset.zero;
       });
-      widget.onTap; // استدعاء الدالة عند السحب
+      widget.onTap!(currentIndex); // استدعاء الدالة عند السحب
     });
   }
 

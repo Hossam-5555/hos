@@ -43,13 +43,6 @@ Widget buildCartItemCard(
               border: Border.all(
                 color: isdark ? AppColors.darkBorder : AppColors.lightBorder,
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: isdark ? AppColors.darkShadow.withAlpha(100) : AppColors.lightShadow.withAlpha(100),
-                  blurRadius: 6,
-                  offset: const Offset(0, 2),
-                ),
-              ],
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,

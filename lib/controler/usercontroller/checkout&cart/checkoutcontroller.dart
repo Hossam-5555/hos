@@ -202,13 +202,6 @@ class Checkoutcontroller extends GetxController {
 
           Get.find<CartController>().view();
         }
-      } else {
-        // التعامل مع أخطاء السيرفر أو الإنترنت
-        showSnackBar(
-          Get.context!,
-          "حدث خطأ في الاتصال بالخادم",
-          Icon(Icons.question_mark, color: Colors.red),
-        );
       }
     } catch (e) {
       // حماية التطبيق من الانهيار في حال حدث خطأ غير متوقع

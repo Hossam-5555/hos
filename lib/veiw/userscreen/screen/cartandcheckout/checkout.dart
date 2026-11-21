@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
 import 'package:hos/data/services/crud.dart';
-import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/userscreen/screen/profile/addres/add.dart';
 import 'package:hos/veiw/wedget/animation.dart';
@@ -123,33 +122,27 @@ class Checkout extends StatelessWidget {
                   ),
                 ),
 
-                // ================= قسم عنوان التوصيل =================
-                HandlingDataView(
-                  mode: HandlingMode.skeleton,
-                  statusrequest: Statusrequest.none,
-                  widget: _buildCard(
-                    context: context,
-                    w: w,
-                    child:
-                        c.listaddresdata.isEmpty &&
-                            c.statusrequest == Statusrequest.success
-                        ? ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            onTap: () => Get.to(() => AddNewAddres()),
-                            leading: Icon(Icons.add_location_alt, size: sp(24)),
-                            title: Text(
-                              "Add new address".tr,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: sp(14),
-                              ),
+                _buildCard(
+                  context: context,
+                  w: w,
+                  child:
+                      c.listaddresdata.isEmpty &&
+                          c.statusrequest == Statusrequest.success
+                      ? ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          onTap: () => Get.to(() => AddNewAddres()),
+                          leading: Icon(Icons.add_location_alt, size: sp(24)),
+                          title: Text(
+                            "Add new address".tr,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: sp(14),
                             ),
-                            trailing: Icon(Icons.add_circle, size: sp(22)),
-                          )
-                        : _buildAddressSelector(c, context, w, h, sp),
-                  ),
+                          ),
+                          trailing: Icon(Icons.add_circle, size: sp(22)),
+                        )
+                      : _buildAddressSelector(c, context, w, h, sp),
                 ),
-
                 // ================= قسم الكوبون =================
                 Coubone(c: c),
 
@@ -199,10 +192,10 @@ class Checkout extends StatelessWidget {
               ];
 
               return ListView.separated(
-                padding: EdgeInsets.all(wp(0.012)),
+                padding: EdgeInsets.all(wp(0.01)),
                 itemCount: checkoutSections.length,
                 separatorBuilder: (context, index) =>
-                    SizedBox(height: hp(0.02)),
+                    SizedBox(height: hp(0.01)),
                 itemBuilder: (context, index) {
                   return FadeInUp(
                     delay: Duration(milliseconds: index * 40),

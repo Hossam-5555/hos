@@ -17,7 +17,7 @@ class AddCouponPage extends StatelessWidget {
     final w = MediaQuery.sizeOf(context).width;
 
     return Scaffold(
-      appBar: Appbarbackicon(title: "Add Coupon", herotag: "Add Coupon"),
+      appBar: Appbarbackicon(title: "Add Coupon".tr, herotag: "Add Coupon"),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: GetBuilder<AddCouponController>(

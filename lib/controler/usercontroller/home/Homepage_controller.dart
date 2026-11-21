@@ -18,7 +18,7 @@ class HomepageController extends GetxController {
   String? username;
   List<ItemsModel> mostsaleitem = [];
   List<ItemsModel> newArival = [];
-  List<CategoriesModel>   categories = [];
+  List<CategoriesModel> categories = [];
   Statusrequest statusrequest = Statusrequest.none;
   bool get isarabic => myservisec.sharedPreferences.getString("lang") == "ar";
 
@@ -32,7 +32,6 @@ class HomepageController extends GetxController {
       var response = await homedata.postdata();
 
       statusrequest = handling(response);
-
       if (Statusrequest.success == statusrequest) {
         if (response["status"] == true) {
           // 1. مسح البيانات القديمة قبل إضافة الجديدة لتجنب التكرار
@@ -61,13 +60,12 @@ class HomepageController extends GetxController {
               data["new_arrivals"].map((e) => ItemsModel.fromJson(e)),
             ),
           );
-          statusrequest = Statusrequest.success;
         } else {
-          statusrequest = Statusrequest.failure;
+          // statusrequest = Statusrequest.failure;
         }
       }
     } catch (e) {
-      statusrequest = Statusrequest.serverfailure;
+      print(e);
     }
 
     update();

@@ -59,7 +59,7 @@ class NotificationCard extends StatelessWidget {
         ? primaryColor.withAlpha(102) // بدلاً من 0.4
         : (isDark
               ? AppColors.white.withAlpha(13) // بدلاً من 0.05
-              : AppColors.black.withAlpha(10)); // بدلاً من 0.04
+              : AppColors.black.withAlpha(40)); // بدلاً من 0.04
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -96,9 +96,9 @@ class NotificationCard extends StatelessWidget {
                   : [
                       BoxShadow(
                         color: AppColors.black.withAlpha(
-                          isDark ? 77 : 8,
+                          8,
                         ), // بدلاً من 0.3 و 0.03
-                        blurRadius: 8,
+                        blurRadius: 5,
                         offset: const Offset(0, 0.5),
                       ),
                     ],
