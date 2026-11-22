@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 
 /// شريط chips أفقي قابل لإعادة الاستخدام في أي مكان.
 /// ياخد القائمة والـ index المختار وخلاص، من غير أي controller.
@@ -45,6 +46,7 @@ class AppChip extends StatelessWidget {
     required this.onTap,
     this.icon = false,
   });
+
   const AppChip.brand({
     super.key,
     required this.label,
@@ -52,6 +54,7 @@ class AppChip extends StatelessWidget {
     required this.isSelected,
     required this.onTap,
   });
+
   final bool? icon;
   final String label;
   final bool isSelected;
@@ -61,125 +64,55 @@ class AppChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final borderGradient = LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      stops: const [0.0, 0.5, 1.0],
-      colors: isSelected
-          ? (isDark
-                ? [
-                    const Color.fromARGB(255, 5, 5, 5).withAlpha(210),
-                    const Color.fromARGB(255, 0, 0, 0),
-                    const Color.fromARGB(255, 8, 8, 8).withAlpha(150),
-                  ]
-                : [
-                    const Color(0xFF0A192F),
-                    const Color(0xFF526782),
-                    const Color(0xFFE9E4DB),
-                  ])
-          : (isDark
-                ? [
-                    const Color(0xFF526782).withAlpha(150),
-                    const Color.fromARGB(255, 52, 56, 63),
-                    Colors.white.withAlpha(25),
-                  ]
-                : [
-                    const Color(0xFFD6DCE5),
-                    const Color(0xFFF7F9FF),
-                    const Color(0xFFE9E4DB),
-                  ]),
-    );
-
-    final innerColor = isSelected
-        ? (isDark ? Colors.black : const Color(0xFF0A192F))
-        : (isDark
-              ? const Color.fromARGB(255, 44, 49, 56)
-              : const Color(0xFFF7F9FF));
-
-    final boxShadow = isSelected
-        ? [
-            BoxShadow(
-              color: isDark
-                  ? Colors.black.withAlpha(90)
-                  : const Color(0xFF0A192F).withAlpha(24),
-              blurRadius: 12,
-              spreadRadius: 0,
-              offset: const Offset(0, 4),
-            ),
-            BoxShadow(
-              color: isDark
-                  ? const Color(0xFFE9E4DB).withAlpha(12)
-                  : const Color(0xFFE9E4DB).withAlpha(100),
-              blurRadius: 6,
-              offset: const Offset(0, 1),
-            ),
-          ]
-        : <BoxShadow>[];
-
-    final activeColor = const Color(0xFFE9E4DB);
-
-    final inactiveColor = isDark
-        ? const Color(0xFFB8C2D1)
-        : const Color(0xFF737F91);
+    final chipBg = isDark
+        ? AppColors.sortChipDarkBg
+        : AppColors.sortChipLightBg;
+    final chipBorder = isDark
+        ? AppColors.sortChipDarkBorder
+        : AppColors.sortChipLightBorder;
+    final chipPrimary = isDark
+        ? AppColors.sortChipDarkPrimary
+        : AppColors.sortChipLightPrimary;
+    final chipOnPrimary = isDark
+        ? AppColors.sortChipDarkOnPrimary
+        : AppColors.sortChipLightOnPrimary;
+    final chipTextSecondary = isDark
+        ? AppColors.sortChipDarkTextSecondary
+        : AppColors.sortChipLightTextSecondary;
 
     return Padding(
-      // Directional: يشتغل صح مع العربي والإنجليزي
-      padding: const EdgeInsetsDirectional.only(end: 6, top: 5, bottom: 5),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.fastLinearToSlowEaseIn,
-        padding: const EdgeInsets.all(1),
-        decoration: BoxDecoration(
-          color: isDark
-              ? const Color.fromARGB(255, 215, 15, 255)
-              : const Color(0xFFD6DCE5),
-          borderRadius: BorderRadius.circular(30),
-          gradient: borderGradient,
-          boxShadow: boxShadow,
-        ),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.fastLinearToSlowEaseIn,
+      padding: const EdgeInsetsDirectional.only(end: 10),
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(margin: EdgeInsets.all(2),
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(28.5),
-            color: innerColor,
+            color: isSelected ? chipPrimary : chipBg,
+            borderRadius: BorderRadius.circular(30),
+            border: Border.all(color: isSelected ? chipPrimary : chipBorder),
           ),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              borderRadius: BorderRadius.circular(28.5),
-              onTap: onTap,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 10,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (icon == true) ...[
+                Icon(
+                  Icons.discount,
+                  size: 16,
+                  color: isSelected ? chipOnPrimary : chipTextSecondary,
                 ),
-                child: Center(
-                  widthFactor: 1,
-                  child: AnimatedDefaultTextStyle(
-                    duration: const Duration(milliseconds: 300),
-                    style: TextStyle(
-                      color: isSelected ? activeColor : inactiveColor,
-                      fontSize: 14,
-                      fontWeight: isSelected
-                          ? FontWeight.bold
-                          : FontWeight.w500,
-                      letterSpacing: 0.3,
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        icon == true
-                            ? Icon(Icons.discount, size: 16)
-                            : SizedBox.shrink(),
-                        SizedBox(width: 5),
-                        Text(label, maxLines: 1),
-                      ],
-                    ),
-                  ),
+                const SizedBox(width: 5),
+              ],
+              Text(
+                label,
+                maxLines: 1,
+                style: TextStyle(
+                  fontSize: 13.5,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                  color: isSelected ? chipOnPrimary : chipTextSecondary,
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ),

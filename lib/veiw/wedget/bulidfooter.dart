@@ -10,12 +10,12 @@ Widget buildFooter() {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.black,
+              color: AppColors.darkBorder,
               shape: BoxShape.circle,
             ),
             child: const Icon(
               Icons.copyright,
-              color: AppColors.primary,
+              color: AppColors.darkCardSurface,
               size: 22,
             ),
           ),

@@ -50,4 +50,20 @@ class AppColors {
 
   static const darkSurface = Color(0xFF111314);
   static const lightSurface = Color(0xFFFFFFFF);
+
+  // أضف هذه الثوابت داخل كلاس AppColors للحفاظ على نفس قيم الألوان:
+static const Color sortChipLightBg = Colors.white;
+static const Color sortChipDarkBg = Color(0xFF121212);
+
+static const Color sortChipLightBorder = Color(0xFFE8E8E8);
+static const Color sortChipDarkBorder = Color(0xFF2E2E2E);
+
+static const Color sortChipLightPrimary = Color(0xFF1A1A1A);
+static const Color sortChipDarkPrimary = Color(0xFFF5F5F5);
+
+static const Color sortChipLightOnPrimary = Colors.white;
+static const Color sortChipDarkOnPrimary = Color(0xFF121212);
+
+static const Color sortChipLightTextSecondary = Color(0xFF9A9A9A);
+static const Color sortChipDarkTextSecondary = Color(0xFF8E8E93);
 }

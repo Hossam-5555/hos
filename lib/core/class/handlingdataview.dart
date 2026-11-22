@@ -315,7 +315,8 @@ class HandlingDataView extends StatelessWidget {
   Widget _buildStyle2(BuildContext context) {
     final title = _getTitle();
     final subtitle = _getSubtitle();
-    final canRetry = (subtitle.isNotEmpty &&
+    final canRetry =
+        (subtitle.isNotEmpty &&
             (statusrequest == Statusrequest.checkinterner ||
                 statusrequest == Statusrequest.serverfailure)) &&
         onRetry != null &&
@@ -326,7 +327,7 @@ class HandlingDataView extends StatelessWidget {
     return Center(
       child: Container(
         margin: const EdgeInsets.all(20),
-        padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 24),
+        padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
         decoration: BoxDecoration(
           color: isDark ? const Color(0xFF1E2026) : Colors.grey.shade50,
           borderRadius: BorderRadius.circular(24),
@@ -384,14 +385,14 @@ class HandlingDataView extends StatelessWidget {
               ),
             ],
             if (canRetry)
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Checkbutton(
-                width: context.width * 0.4,
-                onTap: onRetry!,
-                buttonName: "Try again".tr,
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Checkbutton(
+                  width: context.width * 0.4,
+                  onTap: onRetry!,
+                  buttonName: "Try again".tr,
+                ),
               ),
-            ),
           ],
         ),
       ),

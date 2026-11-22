@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/items_controler.dart';
+import 'package:hos/veiw/wedget/items/itemslist.dart';
 
 // ───────────────────────── الألوان (غيّرها من هنا بس) ─────────────────────────
 class _Palette {
@@ -73,7 +74,7 @@ void showFilterSheet(BuildContext context, ItemsController c) {
                       _buildPriceRange(c, p),
                       const SizedBox(height: 28),
                       _buildSectionTitle("Sort By", p),
-                      _buildSortOptions(c, p),
+                      _buildSortOptions(c, context),
                     ],
                   ),
                 ),
@@ -400,7 +401,7 @@ class _RingThumb extends RangeSliderThumbShape {
 }
 
 // ───────────────────────────── Sort By ─────────────────────────────
-Widget _buildSortOptions(ItemsController c, _Palette p) {
+Widget _buildSortOptions(ItemsController c, BuildContext con) {
   const options = {
     "newest": "Newest",
     "oldest": "Oldest",
@@ -416,31 +417,12 @@ Widget _buildSortOptions(ItemsController c, _Palette p) {
       child: Row(
         children: options.entries.map((e) {
           final selected = current == e.key;
-          return Padding(
-            padding: const EdgeInsetsDirectional.only(end: 10),
-            child: GestureDetector(
-              onTap: () => c.selectedSort.value = e.key,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 11,
-                ),
-                decoration: BoxDecoration(
-                  color: selected ? p.primary : p.bg,
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(color: selected ? p.primary : p.border),
-                ),
-                child: Text(
-                  e.value,
-                  style: TextStyle(
-                    fontSize: 13.5,
-                    fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
-                    color: selected ? p.onPrimary : p.textSecondary,
-                  ),
-                ),
-              ),
-            ),
+          return AppChip(
+            label: e.value,
+            isSelected: selected,
+            onTap: () {
+              c.selectedSort.value = e.key;
+            },
           );
         }).toList(),
       ),

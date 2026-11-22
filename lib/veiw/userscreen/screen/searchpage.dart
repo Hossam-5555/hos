@@ -458,8 +458,11 @@ class PopularCategoriesSection extends StatelessWidget {
         Skeletonizer(
           enabled: showSkeleton,
           child: Wrap(
+            spacing: 3,
+            alignment: WrapAlignment.start,
             children: brands.map((item) {
-              return AppChip.brand(icon: true,
+              return AppChip.brand(
+                icon: true,
                 label: (c.isarabic ? item.name : item.name),
                 isSelected: false,
                 onTap: () {
