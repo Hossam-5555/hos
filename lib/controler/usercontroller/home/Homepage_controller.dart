@@ -11,7 +11,7 @@ import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/veiw/userscreen/screen/home/items.dart';
 import 'package:hos/veiw/userscreen/screen/home/itemsdetailes.dart';
-import 'package:hos/veiw/wedget/Homepage/dicountcard.dart';
+import 'package:hos/veiw/wedget/Homepage/homesection.dart';
 
 class HomepageController extends GetxController {
   Myservisec myservisec = Get.put(Myservisec());
@@ -19,6 +19,9 @@ class HomepageController extends GetxController {
   List<ItemsModel> mostsaleitem = [];
   List<ItemsModel> newArival = [];
   List<CategoriesModel> categories = [];
+  List<HomeBanner> banners = [];
+  List<OfferItem> offers = []; // للعرض
+  List<ItemsModel> offerItems = [];
   Statusrequest statusrequest = Statusrequest.none;
   bool get isarabic => myservisec.sharedPreferences.getString("lang") == "ar";
 
@@ -60,6 +63,22 @@ class HomepageController extends GetxController {
               data["new_arrivals"].map((e) => ItemsModel.fromJson(e)),
             ),
           );
+
+          // داخل getdata() بعد قراءة باقي القوائم:
+          final rawBanners = data['banners'];
+          banners = rawBanners is List
+              ? rawBanners
+                    .map(
+                      (e) => HomeBanner.fromJson(Map<String, dynamic>.from(e)),
+                    )
+                    .toList()
+              : [];
+
+          final rawOffers = (response['data']['offers'] as List?) ?? [];
+          offers = rawOffers
+              .map((e) => OfferItem.fromJson(Map<String, dynamic>.from(e)))
+              .toList();
+          offerItems = rawOffers.map((e) => ItemsModel.fromJson(e)).toList();
         } else {
           // statusrequest = Statusrequest.failure;
         }
@@ -107,43 +126,6 @@ class HomepageController extends GetxController {
   }
   //==================================================cart
 
-  final List<OfferModel> offers = [
-    OfferModel(
-      image:
-          "https://images.unsplash.com/photo-1616348436168-de43ad0db179?q=80&w=1000&auto=format&fit=crop", // صورة iPhone/Smartphone
-      title: 'أحدث إصدارات الهواتف',
-      description: 'اكتشف قوة الأداء مع كاميرا فائقة الدقة ومعالج هو الأسرع.',
-      discount: 'خصم 15%',
-      colors: const [
-        Color(0xFF000000), // أسود ملكي
-        Color(0xFF1A1A1B), // رمادي داكن جداً
-      ],
-    ),
-
-    OfferModel(
-      image:
-          "https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?q=80&w=1000&auto=format&fit=crop", // صورة Laptop احترافي
-      title: 'أجهزة الـ Laptop الاحترافية',
-      description: 'ارفع مستوى إنتاجيتك مع أجهزة مخصصة للمبرمجين والمصممين.',
-      discount: 'وفر حتى 500 ريال',
-      colors: const [
-        Color(0xFF0F2027), // أزرق ليلي داكن
-        Color(0xFF203A43),
-      ],
-    ),
-
-    OfferModel(
-      image:
-          "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop", // صورة سماعات Headphones
-      title: 'عالم الصوتيات الذكي',
-      description: 'تجربة صوتية محيطية مع تقنية عزل الضجيج النشطة.',
-      discount: 'لفترة محدودة',
-      colors: const [
-        Color(0xFF141E30), // مزيج بين الكحلي والأسود
-        Color(0xFF243B55),
-      ],
-    ),
-  ];
   int i = 0; // متغير لتغيير cross Axis gridview  العرض الحالي
   int currentIndex = 0;
   Timer? timer;

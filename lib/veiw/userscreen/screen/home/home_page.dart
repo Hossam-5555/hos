@@ -85,9 +85,24 @@ class HomePage extends StatelessWidget {
                           Skeletonizer(
                             enabled: showSkeleton,
                             child: HomeBannerSlider(
-                              banners: HomeMock.banners,
+                              banners: controller.banners,
+                              //  HomeMock.banners
                               isArabic: controller.isarabic,
-                              onTap: (banner) {},
+                              onTap: (banner) {
+                                if (banner.targetType == 'category' &&
+                                    banner.targetId != null) {
+                                  final i = controller.categories.indexWhere(
+                                    (c) => '${c.id}' == '${banner.targetId}',
+                                  );
+                                  if (i >= 0) {
+                                    controller.gotoitems(
+                                      controller.categories,
+                                      i,
+                                      '${banner.targetId}',
+                                    );
+                                  }
+                                }
+                              },
                             ),
                           ),
 
@@ -122,11 +137,12 @@ class HomePage extends StatelessWidget {
                             Skeletonizer(
                               enabled: showSkeleton,
                               child: SpecialOffersRow(
-                                items: HomeMock.offers,
+                                items: controller.offers,
                                 isArabic: controller.isarabic,
-                                onTap: (offer, index) {
-                                  // TODO: controller.gotoitemsdetails(المنتج الحقيقي)
-                                },
+                                onTap: (offer, index) =>
+                                    controller.gotoitemsdetails(
+                                      controller.offerItems[index],
+                                    ),
                                 // فعّله بعد الربط بمنتجات حقيقية:
                                 // actionBuilder: (o) => AddToCartButton(itemId: o.id),
                               ),
