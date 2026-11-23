@@ -1,68 +1,84 @@
-
 import 'package:flutter/material.dart';
 import 'package:hos/core/conistant/app_colors.dart';
 
 class AppTheme {
-  // 1. ألوان احترافية للثيم الفاتح (Light Palette)
-  static const Color _lightBg = Colors.white; // خلفية مريحة جداً تبرز المنتجات
-  static const Color _lightSurface = Color(0xFFFFFFFF); // لون البطاقات أبيض نقي
-  static const Color _lightTextMain = Color(0xFF111827); // أسود مطفأ (لا يرهق العين)
-  static const Color _lightTextSec = Color.fromARGB(255, 28, 29, 32); // رمادي للنصوص الثانوية والأسعار القديمة
-
-  // 2. ألوان احترافية للثيم الداكن (Dark Palette)
-  static const Color _darkBg = Color(0xFF1A1C22); // أسود فخم وعميق للخلفية
-  static const Color _darkSurface = Color(0xFF161616); // درجة أفتح للبطاقات لخلق عمق
-  static const Color _darkTextMain = Color(0xFFF5F5F7); // أبيض عاجي يمنع التشتت
-  static const Color _darkTextSec = Color.fromARGB(255, 247, 247, 247); // رمادي فاتح للنصوص الثانوية
-
-  // دالة مساعدة لإنشاء مقاسات النصوص الموحدة
-  static TextTheme _getTextTheme(String fontFamily, bool isDark) {
-    Color mainColor = isDark ? _darkTextMain : _lightTextMain;
-    Color secColor = isDark ? _darkTextSec : _lightTextSec;
-
+  static TextTheme _getTextTheme(String fontFamily, AppPalette palette) {
     return TextTheme(
-      headlineLarge: TextStyle(fontWeight: FontWeight.bold, fontSize: 32, fontFamily: fontFamily, color: mainColor),
-      headlineMedium: TextStyle(fontWeight: FontWeight.bold, fontSize: 28, fontFamily: fontFamily, color: mainColor),
-      headlineSmall: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, fontFamily: fontFamily, color: mainColor),
-      titleLarge: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, fontFamily: fontFamily, color: mainColor),
-      bodyLarge: TextStyle(fontSize: 16, fontFamily: fontFamily, color: mainColor, height: 1.5),
-      bodyMedium: TextStyle(fontSize: 14, fontFamily: fontFamily, color: secColor, height: 1.4),
+      headlineLarge: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 32,
+        fontFamily: fontFamily,
+        color: palette.textPrimary,
+      ),
+      headlineMedium: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 28,
+        fontFamily: fontFamily,
+        color: palette.textPrimary,
+      ),
+      headlineSmall: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 20,
+        fontFamily: fontFamily,
+        color: palette.textPrimary,
+      ),
+      titleLarge: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 22,
+        fontFamily: fontFamily,
+        color: palette.textPrimary,
+      ),
+      bodyLarge: TextStyle(
+        fontSize: 16,
+        fontFamily: fontFamily,
+        color: palette.textPrimary,
+        height: 1.5,
+      ),
+      bodyMedium: TextStyle(
+        fontSize: 14,
+        fontFamily: fontFamily,
+        color: palette.textSecondary,
+        height: 1.4,
+      ),
     );
   }
 
-  // دالة مساعدة للـ AppBar
-  static AppBarTheme _appBar(Color bg, Color content, String font) {
+  static AppBarTheme _appBar(AppPalette palette, String font) {
     return AppBarTheme(
-      backgroundColor: bg,
+      backgroundColor: palette.background,
       elevation: 0.0,
-      scrolledUnderElevation: 0.0, // تمنع تغير اللون عند الـ Scroll
+      scrolledUnderElevation: 0.0,
       centerTitle: true,
-      iconTheme: IconThemeData(color: content, size: 24),
-      titleTextStyle: TextStyle(color: content, fontSize: 22, fontFamily: font, fontWeight: FontWeight.bold),
+      iconTheme: IconThemeData(color: palette.textPrimary, size: 24),
+      titleTextStyle: TextStyle(
+        color: palette.textPrimary,
+        fontSize: 22,
+        fontFamily: font,
+        fontWeight: FontWeight.bold,
+      ),
     );
   }
 
-  // دالة مساعدة لتوحيد شكل أزرار التطبيق (مثل زر إضافة للسلة)
-  static ElevatedButtonThemeData _elevatedButtonTheme() {
+  static ElevatedButtonThemeData _elevatedButtonTheme(AppPalette palette) {
     return ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.black, // لون أزرق داكن أنيق للأزرار
-        foregroundColor: Colors.white, // نص الزر أبيض ليكون واضحاً
+        backgroundColor: palette.primary,
+        foregroundColor: palette.onPrimary,
         elevation: 0,
         padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
-        shape: RoundedRectangleBorder(side: BorderSide(color: Colors.grey[300]!),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: palette.separator),
           borderRadius: BorderRadius.circular(40),
         ),
       ),
     );
   }
 
-  // دالة مساعدة لتوحيد شكل بطاقات المنتجات (Cards)
-  static CardThemeData _cardTheme(Color color, double elevation) {
+  static CardThemeData _cardTheme(AppPalette palette, double elevation) {
     return CardThemeData(
-      color: color,
+      color: palette.surface,
       elevation: elevation,
-      shadowColor: Colors.black.withAlpha(13), // ظل خفيف جداً وأنيق
+      shadowColor: palette.shadow,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(40),
       ),
@@ -70,61 +86,71 @@ class AppTheme {
     );
   }
 
-  // ==========================================
-  // الـ 4 قوالب الأساسية للتطبيق (لا تغيير في الأسماء)
-  // ==========================================
+  static ColorScheme _colorScheme(AppPalette palette, Brightness brightness) {
+    return ColorScheme(
+      brightness: brightness,
+      primary: palette.primary,
+      onPrimary: palette.onPrimary,
+      secondary: palette.tint,
+      onSecondary: palette.onImage,
+      error: palette.danger,
+      onError: palette.onImage,
+      surface: palette.surface,
+      onSurface: palette.textPrimary,
+    );
+  }
 
-  static ThemeData lightEn = ThemeData(
-    brightness: Brightness.light,
-    scaffoldBackgroundColor: _lightBg,
-    appBarTheme: _appBar(_lightBg, _lightTextMain, 'SFProDisplay'),
-    textTheme: _getTextTheme('SFProDisplay', false),
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: AppColors.primaryColor,
-      surface: _lightSurface,
-    ),
-    elevatedButtonTheme: _elevatedButtonTheme(),
-    cardTheme: _cardTheme(_lightSurface, 2.0), // إضافة ظل خفيف للكروت في الفاتح
+  static ThemeData _theme({
+    required AppPalette palette,
+    required String fontFamily,
+    required bool isDark,
+  }) {
+    final brightness = isDark ? Brightness.dark : Brightness.light;
+    return ThemeData(
+      brightness: brightness,
+      scaffoldBackgroundColor: palette.background,
+      canvasColor: palette.background,
+      dividerColor: palette.separator,
+      appBarTheme: _appBar(palette, fontFamily),
+      textTheme: _getTextTheme(fontFamily, palette),
+      colorScheme: _colorScheme(palette, brightness),
+      elevatedButtonTheme: _elevatedButtonTheme(palette),
+      cardTheme: _cardTheme(palette, isDark ? 0.0 : 2.0),
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) return palette.onImage;
+          return palette.surfaceElevated;
+        }),
+        trackColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) return palette.tint;
+          return palette.fill;
+        }),
+      ),
+      extensions: <ThemeExtension<dynamic>>[palette],
+    );
+  }
+
+  static ThemeData lightEn = _theme(
+    palette: AppPalette.light,
+    fontFamily: 'SFProDisplay',
+    isDark: false,
   );
 
-  static ThemeData darkEn = ThemeData(
-    brightness: Brightness.dark,
-    scaffoldBackgroundColor: _darkBg,
-    appBarTheme: _appBar(_darkBg, _darkTextMain, 'SFProDisplay'),
-    textTheme: _getTextTheme('SFProDisplay', true),
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: AppColors.primaryColor,
-      brightness: Brightness.dark,
-      surface: _darkSurface,
-    ),
-    elevatedButtonTheme: _elevatedButtonTheme(),
-    cardTheme: _cardTheme(_darkSurface, 0.0), // بدون ظل في الداكن (العمق يأتي من اللون)
+  static ThemeData darkEn = _theme(
+    palette: AppPalette.dark,
+    fontFamily: 'SFProDisplay',
+    isDark: true,
   );
 
-  static ThemeData lightAr = ThemeData(
-    brightness: Brightness.light,
-    scaffoldBackgroundColor: _lightBg,
-    appBarTheme: _appBar(_lightBg, _lightTextMain, 'cairo'),
-    textTheme: _getTextTheme('cairo', false),
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: AppColors.primaryColor,
-      surface: _lightSurface,
-    ),
-    elevatedButtonTheme: _elevatedButtonTheme(),
-    cardTheme: _cardTheme(_lightSurface, 2.0),
+  static ThemeData lightAr = _theme(
+    palette: AppPalette.light,
+    fontFamily: 'cairo',
+    isDark: false,
   );
 
-  static ThemeData darkAr = ThemeData(
-    brightness: Brightness.dark,
-    scaffoldBackgroundColor: _darkBg,
-    appBarTheme: _appBar(_darkBg, _darkTextMain, 'cairo'),
-    textTheme: _getTextTheme('cairo', true),
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: AppColors.primaryColor,
-      brightness: Brightness.dark,
-      surface: _darkSurface,
-    ),
-    elevatedButtonTheme: _elevatedButtonTheme(),
-    cardTheme: _cardTheme(_darkSurface, 0.0),
+  static ThemeData darkAr = _theme(
+    palette: AppPalette.dark,
+    fontFamily: 'cairo',
+    isDark: true,
   );
 }

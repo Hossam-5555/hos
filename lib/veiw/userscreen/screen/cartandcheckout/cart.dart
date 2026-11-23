@@ -133,16 +133,15 @@ class ShoppingCartPage extends StatelessWidget {
                                             Padding(
                                               padding: const EdgeInsets.all(5),
                                               child: Text(
-                                                'المنتجات في السله',
+                                                'Items in the cart'.tr,
                                                 style: TextStyle(
                                                   fontSize: (width * 0.04)
                                                       .clamp(14.0, 18.0),
-                                                  color: Colors.grey,
                                                 ),
                                               ),
                                             ),
                                             Text(
-                                              "عدد ${controller.data.length}",
+                                              "${controller.data.length}",
                                               style: TextStyle(
                                                 fontSize: (width * 0.045).clamp(
                                                   14.0,

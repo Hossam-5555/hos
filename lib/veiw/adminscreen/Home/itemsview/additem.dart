@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/items/additemcontroller.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/veiw/wedget/Admin/selectbrand.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
@@ -39,6 +40,9 @@ class ItemFormScreen extends GetView<ItemFormController> {
           padding: EdgeInsets.only(left: w * 0.04, right: w * 0.04, bottom: 5),
           child: SafeArea(
             child: Checkbutton(
+              buttonColor: context.isDarkMode
+                  ? AppColors.darkSurface
+                  : Colors.black,
               width: w * 0.8,
               statusrequest: c.statusrequest,
               onTap: () {
@@ -152,7 +156,6 @@ class _Card extends StatelessWidget {
       decoration: BoxDecoration(
         color: cs.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: cs.outlineVariant),
       ),
       child: child,
     );
@@ -215,6 +218,7 @@ Widget _field({
       validator: validator,
       decoration: InputDecoration(
         filled: true,
+        fillColor: AppColors.glass,
         labelText: label,
         prefixIcon: Icon(icon),
         alignLabelWithHint: maxLines > 1,

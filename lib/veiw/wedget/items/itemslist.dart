@@ -84,7 +84,8 @@ class AppChip extends StatelessWidget {
       padding: const EdgeInsetsDirectional.only(end: 10),
       child: GestureDetector(
         onTap: onTap,
-        child: AnimatedContainer(margin: EdgeInsets.all(2),
+        child: AnimatedContainer(
+          margin: EdgeInsets.only(right: 2, bottom: 10, top: 2),
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
           decoration: BoxDecoration(

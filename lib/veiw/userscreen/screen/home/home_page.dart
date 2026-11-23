@@ -12,7 +12,6 @@ import 'package:hos/veiw/wedget/Homepage/homesection.dart';
 import 'package:hos/veiw/wedget/Homepage/titles.dart';
 import 'package:hos/veiw/wedget/shared_product_card.dart';
 import 'package:hos/veiw/wedget/bulidfooter.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -20,7 +19,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomepageController controller = Get.find<HomepageController>();
-    final bool showSkeleton = controller.statusrequest == Statusrequest.loading;
     return GetBuilder<HomepageController>(
       builder: (_) => Scaffold(
         resizeToAvoidBottomInset: true, // مهم مع الكيبورد
@@ -82,28 +80,25 @@ class HomePage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // ═════════ 1) البانر السلايدر ═════════
-                          Skeletonizer(
-                            enabled: showSkeleton,
-                            child: HomeBannerSlider(
-                              banners: controller.banners,
-                              //  HomeMock.banners
-                              isArabic: controller.isarabic,
-                              onTap: (banner) {
-                                if (banner.targetType == 'category' &&
-                                    banner.targetId != null) {
-                                  final i = controller.categories.indexWhere(
-                                    (c) => '${c.id}' == '${banner.targetId}',
+                          HomeBannerSlider(
+                            banners: controller.banners,
+                            //  HomeMock.banners
+                            isArabic: controller.isarabic,
+                            onTap: (banner) {
+                              if (banner.targetType == 'category' &&
+                                  banner.targetId != null) {
+                                final i = controller.categories.indexWhere(
+                                  (c) => '${c.id}' == '${banner.targetId}',
+                                );
+                                if (i >= 0) {
+                                  controller.gotoitems(
+                                    controller.categories,
+                                    i,
+                                    '${banner.targetId}',
                                   );
-                                  if (i >= 0) {
-                                    controller.gotoitems(
-                                      controller.categories,
-                                      i,
-                                      '${banner.targetId}',
-                                    );
-                                  }
                                 }
-                              },
-                            ),
+                              }
+                            },
                           ),
 
                           SizedBox(height: sectionSpacing),
@@ -129,23 +124,18 @@ class HomePage extends StatelessWidget {
                           SizedBox(height: sectionSpacing),
 
                           if (HomeMock.offers.isNotEmpty) ...[
-                            Skeletonizer(
-                              enabled: showSkeleton,
-                              child: Titles(title: "Special Offers".tr),
-                            ),
+                            Titles(title: "Special Offers".tr),
                             SizedBox(height: sectionSpacing * 0.6),
-                            Skeletonizer(
-                              enabled: showSkeleton,
-                              child: SpecialOffersRow(
-                                items: controller.offers,
-                                isArabic: controller.isarabic,
-                                onTap: (offer, index) =>
-                                    controller.gotoitemsdetails(
-                                      controller.offerItems[index],
-                                    ),
-                                // فعّله بعد الربط بمنتجات حقيقية:
-                                // actionBuilder: (o) => AddToCartButton(itemId: o.id),
-                              ),
+
+                            SpecialOffersRow(
+                              items: controller.offers,
+                              isArabic: controller.isarabic,
+                              onTap: (offer, index) =>
+                                  controller.gotoitemsdetails(
+                                    controller.offerItems[index],
+                                  ),
+                              // فعّله بعد الربط بمنتجات حقيقية:
+                              // actionBuilder: (o) => AddToCartButton(itemId: o.id),
                             ),
                             SizedBox(height: sectionSpacing * 0.5),
                           ],

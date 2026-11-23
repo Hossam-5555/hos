@@ -25,6 +25,7 @@ class Mytransilation extends Translations {
       "Checkout": "اتمام الشراء",
       "product Details": "تفاصيل المنتج",
       //cart&&checkout
+      "Items in the cart": "المنتجات في السله",
       "confirm order": "تأكيد الطلب",
       "shipping address": "عنوان الشحن",
       "Add new address": "اضافة عنوان جديد",
@@ -216,6 +217,7 @@ class Mytransilation extends Translations {
     },
 
     "en": {
+      "Items in the cart": "Items in the cart",
       "Dashboard": "Dashboard",
       "Home": "Home",
       "Add to Cart": "Add to Cart",

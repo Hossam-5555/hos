@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/categories/addcatcontroller.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
@@ -20,10 +21,13 @@ class CategoryFormScreen extends GetView<CategoryFormController> {
     return GetBuilder<CategoryFormController>(
       builder: (c) => Scaffold(
         bottomNavigationBar: Padding(
-          padding: EdgeInsets.only(left: w * 0.04, right: w * 0.04,bottom: 5),
+          padding: EdgeInsets.only(left: w * 0.04, right: w * 0.04, bottom: 5),
           // width: double.infinity,
           child: SafeArea(
             child: Checkbutton(
+              buttonColor: context.isDarkMode
+                  ? AppColors.darkSurface
+                  : Colors.black,
               statusrequest: c.statusrequest,
               width: w * 0.9,
               onTap: () {
@@ -103,9 +107,8 @@ class _Card extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: theme.colorScheme.outlineVariant),
       ),
       child: child,
     );
@@ -206,6 +209,7 @@ class _Fields extends StatelessWidget {
   ) {
     return InputDecoration(
       filled: true,
+      fillColor: AppColors.glass,
       labelText: label,
       hintText: hint,
       prefixIcon: Icon(icon),

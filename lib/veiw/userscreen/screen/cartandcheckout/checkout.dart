@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/data/services/crud.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/veiw/userscreen/screen/profile/addres/add.dart';
@@ -49,7 +50,9 @@ class Checkout extends StatelessWidget {
               child: GetBuilder<Checkoutcontroller>(
                 builder: (controller) => Checkbutton(
                   width: w > 600 ? 550 : wp(0.92),
-                  buttonColor: Colors.black,
+                  buttonColor: context.isDarkMode
+                      ? AppColors.darkSurface
+                      : Colors.black,
                   onTap: () => c.checkoutoder(),
                   buttonName: "Pay Now".tr,
                   statusrequest: c.statusrequest,

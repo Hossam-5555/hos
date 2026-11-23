@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+import 'package:hos/core/conistant/apptheme.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/localization/transilation.dart';
 import 'package:hos/core/serveces/binding.dart';
@@ -32,7 +33,12 @@ class MyApp extends StatelessWidget {
       locale: controller.language,
       getPages: routes,
       translations: Mytransilation(),
-      theme: controller.apptheme,
+      theme: controller.selectedLanguage.value == 'ar'
+          ? AppTheme.lightAr
+          : AppTheme.lightEn,
+      darkTheme: controller.selectedLanguage.value == 'ar'
+          ? AppTheme.darkAr
+          : AppTheme.darkEn,
       themeMode: controller.selectedTheme.value == 'Light'
           ? ThemeMode.light
           : controller.selectedTheme.value == 'Dark'

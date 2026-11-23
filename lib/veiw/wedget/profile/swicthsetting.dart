@@ -73,7 +73,7 @@ class SettingSwitchTile extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   subtitle,
-                  style: TextStyle(fontSize: 12, color: AppColors.mutedText),
+                  style: TextStyle(fontSize: 12, color: const Color.fromARGB(153, 93, 93, 102)),
                 ),
               ],
             ),

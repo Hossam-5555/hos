@@ -379,7 +379,7 @@ class _GradientGroup extends StatelessWidget {
         color: isDarkMode ? Color(0xFF242527) : Color(0xFFF5F5F5),
 
         borderRadius: BorderRadius.circular(radius),
-        border: Border.all(color: AppColors.border),
+        // border: Border.all(color: AppColors.border),
       ),
       child: Column(children: children),
     );
@@ -507,17 +507,9 @@ Widget orderCard(
       width: width,
       height: height,
       decoration: BoxDecoration(
-        boxShadow: const [
-          BoxShadow(
-            blurRadius: 6,
-            color: AppColors.shadow,
-            offset: Offset(0, 0.2),
-          ),
-        ],
         color: isDarkMode ? Color(0xFF242527) : Color(0xFFF5F5F5),
 
         borderRadius: BorderRadius.circular(cardRadius),
-        border: Border.all(color: AppColors.border),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(cardRadius),

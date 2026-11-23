@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/profile/order/ordercontroller.dart';
 import 'package:hos/controler/usercontroller/profile/order/orderdetailescontroller.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 import 'package:hos/veiw/wedget/order/ordersdetails.dart';
@@ -38,7 +39,9 @@ class Orderdetailes extends StatelessWidget {
                       duration: const Duration(milliseconds: 400),
                       child: Checkbutton(
                         statusrequest: controller.statusrequest,
-                        buttonColor: Colors.black,
+                        buttonColor: context.isDarkMode
+                            ? AppColors.darkSurface
+                            : Colors.black,
                         width: w,
                         onTap: () {
                           controller.deleteorders(c.order!.orderId);

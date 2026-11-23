@@ -116,7 +116,6 @@ Widget buildCartItemCard(
                                 textAlign: TextAlign.end,
                                 style: TextStyle(
                                   fontSize: isTablet ? 12 : 10,
-                                  color: AppColors.mutedText,
                                 ),
                               ),
                             ),
