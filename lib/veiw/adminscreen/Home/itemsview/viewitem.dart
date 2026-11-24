@@ -1,4 +1,7 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/items/viewitemcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
@@ -16,9 +19,25 @@ class ViewItemScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(ViewItemController());
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final size = MediaQuery.sizeOf(context);
+    final width = size.width;
+
+    // ارتفاع متجاوب للـ AppBar بحد أدنى وأقصى آمن
+    final double filterIconSize = (width * 0.055).clamp(20.0, 26.0);
 
     return Scaffold(
-      appBar: Appbarbackicon(
+      appBar: Appbarbackicon.nedicon(
+        ontap: () {},
+        needicon: true,
+        iconButton: Transform.rotate(
+          angle: math.pi / 2, // زاوية 90 درجة دقيقة بالراديان
+          alignment: Alignment.center,
+          child: SvgPicture.asset(
+            Imageasset.filter,
+            width: filterIconSize,
+            height: filterIconSize,
+          ),
+        ),
         title: controller.catname ?? 'المنتجات',
         herotag: 'veiwproducts',
       ),
@@ -78,7 +97,7 @@ class ViewItemScreen extends StatelessWidget {
                                 final columns = gridWidth < 420
                                     ? 2
                                     : gridWidth < 700
-                                    ? 3
+                                    ? 2
                                     : gridWidth < 1000
                                     ? 4
                                     : 5;

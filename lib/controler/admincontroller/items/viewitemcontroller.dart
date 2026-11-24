@@ -83,6 +83,7 @@ class ViewItemController extends GetxController {
     update();
   }
 
+ 
   // void gotoeditpage(ItemsModel itemsmodel) {
   //   Get.to(() => EditItem(), arguments: {"itemsmodel": itemsmodel});
   // }

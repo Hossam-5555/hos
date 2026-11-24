@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hos/core/conistant/app_colors.dart';
+import 'package:hos/veiw/wedget/appbarbackicon.dart';
 
 // ignore: must_be_immutable
 class Textfealdauth extends StatelessWidget {
@@ -58,9 +60,10 @@ class Textfealdauth extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide.none,
           ),
-          suffixIcon: InkWell(
-            onTap: onTapIcon,
-            child: Icon(suffixIcon, size: width * 0.05),
+          suffixIcon: Homescrenaction(
+            onPressed: onTapIcon,
+            herotag: "sufexicons",
+            child: Icon(suffixIcon, size: width * 0.05,color: AppColors.black,),
           ),
 
           hintText: hint,

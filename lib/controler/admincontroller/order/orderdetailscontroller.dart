@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:hos/controler/admincontroller/order/pindingcontroller.dart';
 import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/functions/orderstatus.dart';
+import 'package:hos/core/functions/snackbar.dart';
 import 'package:hos/core/serveces/myservisec.dart';
 import 'package:hos/data/datasource/admindata/orderdata.dart';
 import 'package:hos/data/model/ordersmodel.dart';
@@ -67,6 +68,11 @@ class AdminOrderDetailesController extends GetxController {
             int currentstat = pendingCtrl.statusKeys.indexWhere((e) => e == s);
             pendingCtrl.selectedStatus = currentstat;
           }
+          showSnackBar(
+            Get.context!,
+            "Updated Successfully",
+            Icon(Icons.check_circle, color: Colors.white),
+          );
         } catch (e) {
           if (kDebugMode) print("Error: $e");
         }

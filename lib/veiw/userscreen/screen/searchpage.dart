@@ -442,37 +442,6 @@ class PopularCategoriesSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 14),
-
-        Skeletonizer(
-          enabled: showSkeleton,
-          child: Text(
-            "Popular Brand",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-              color: textPrimary,
-            ),
-          ),
-        ),
-        const SizedBox(height: 14),
-        Skeletonizer(
-          enabled: showSkeleton,
-          child: Wrap(
-            spacing: 3,
-            alignment: WrapAlignment.start,
-            children: brands.map((item) {
-              return AppChip.brand(
-                icon: true,
-                label: (c.isarabic ? item.name : item.name),
-                isSelected: false,
-                onTap: () {
-                  c.search!.text = item.name;
-                  c.onsearch();
-                },
-              );
-            }).toList(),
-          ),
-        ),
       ],
     );
   }
