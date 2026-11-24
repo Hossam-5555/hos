@@ -351,13 +351,14 @@ class _BannerCard extends StatelessWidget {
 //  2) Special Offers — منتجات عليها خصم فعلي
 // ═══════════════════════════════════════════════════════════════
 
+/// صف أفقي من منتجات عليها خصم، بنفس كارت المنتج المستخدم في كل التطبيق.
 class SpecialOffersRow extends StatelessWidget {
-  final List<OfferItem> items;
+  final List<ItemsModel> items;
   final bool isArabic;
-  final void Function(OfferItem item, int index)? onTap;
+  final ValueChanged<ItemsModel>? onTap;
 
-  /// اختياري: زر في ركن الكارت (مثلاً AddToCartButton)
-  final Widget Function(OfferItem item)? actionBuilder;
+  /// الزر في ركن الكارت (مثلاً AddToCartButton(itemId: item.id!))
+  final Widget Function(ItemsModel item)? actionBuilder;
 
   const SpecialOffersRow({
     super.key,
@@ -373,27 +374,31 @@ class SpecialOffersRow extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final w = constraints.maxWidth;
-        // كل الأحجام نسبية لعرض الشاشة (موبايل / تابلت)
-        final imageSize = (w * 0.26).clamp(88.0, 120.0);
-        final cardWidth = (w * 0.82).clamp(240.0, 380.0);
+        const double gap = 10;
+        // نفس مقاس كارت الجريد: نص العرض تقريباً، بحدود للموبايل والتابلت
+        final double cardWidth = ((constraints.maxWidth - gap) / 2).clamp(
+          150.0,
+          220.0,
+        );
+        final double cardHeight = cardWidth * 1.55;
 
         return SizedBox(
-          height: imageSize + 20,
+          height: cardHeight,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: items.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 12),
+            separatorBuilder: (_, __) => const SizedBox(width: gap),
             itemBuilder: (_, i) {
               final item = items[i];
               return SizedBox(
                 width: cardWidth,
-                child: _OfferCard(
-                  item: item,
-                  isArabic: isArabic,
-                  imageSize: imageSize,
-                  onTap: onTap == null ? null : () => onTap!(item, i),
-                  action: actionBuilder?.call(item),
+                child: SharedProductCard(
+                  isen: !isArabic,
+                  items: item,
+                  height: cardHeight,
+                  onTap: onTap == null ? null : () => onTap!(item),
+                  actionButton:
+                      actionBuilder?.call(item) ?? const SizedBox.shrink(),
                 ),
               );
             },
@@ -403,155 +408,6 @@ class SpecialOffersRow extends StatelessWidget {
     );
   }
 }
-
-class _OfferCard extends StatelessWidget {
-  final OfferItem item;
-  final bool isArabic;
-  final double imageSize;
-  final VoidCallback? onTap;
-  final Widget? action;
-
-  const _OfferCard({
-    required this.item,
-    required this.isArabic,
-    required this.imageSize,
-    this.onTap,
-    this.action,
-  });
-
-  String _fmt(double v) =>
-      v == v.roundToDouble() ? v.toStringAsFixed(0) : v.toStringAsFixed(2);
-
-  @override
-  Widget build(BuildContext context) {
-    final name = isArabic ? item.nameAr : item.name;
-    final currency = 'EGP';
-
-    return InkWell(
-      borderRadius: BorderRadius.circular(20),
-      onTap: onTap,
-      child: Ink(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          gradient: const LinearGradient(
-            colors: [Color(0xFF1C1C22), Color(0xFF3A3A4A)],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
-        ),
-        child: Row(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(14),
-              child: SizedBox(
-                width: imageSize,
-                height: imageSize,
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    _OfferImage(url: item.imageUrl),
-                    PositionedDirectional(
-                      top: 6,
-                      start: 6,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 7,
-                          vertical: 3,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          '-${item.discount}%',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      height: 1.25,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: '${_fmt(item.finalPrice)} $currency',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '  ${_fmt(item.price)}',
-                          style: const TextStyle(
-                            color: Colors.white54,
-                            fontSize: 12,
-                            decoration: TextDecoration.lineThrough,
-                          ),
-                        ),
-                      ],
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-            if (action != null) ...[const SizedBox(width: 8), action!],
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _OfferImage extends StatelessWidget {
-  final String? url;
-  const _OfferImage({this.url});
-
-  Widget _placeholder() => Container(
-    color: Colors.white12,
-    child: const Center(
-      child: Icon(Icons.image_outlined, color: Colors.white38, size: 30),
-    ),
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    if (url == null || url!.isEmpty) return _placeholder();
-    return Image.network(
-      url!,
-      fit: BoxFit.cover,
-      errorBuilder: (_, __, ___) => _placeholder(),
-    );
-  }
-}
-
 // ═══════════════════════════════════════════════════════════════
 //  3) وصل حديثاً
 // ═══════════════════════════════════════════════════════════════
@@ -608,27 +464,3 @@ class HomeNewArrivals extends StatelessWidget {
     );
   }
 }
-
-// class _Badge extends StatelessWidget {
-//   final String text;
-//   final Color color;
-//   const _Badge({required this.text, required this.color});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-//       decoration: BoxDecoration(
-//         color: color,
-//         borderRadius: BorderRadius.circular(8),
-//       ),
-//       child: Text(
-//         text,
-//         style: const TextStyle(
-//           color: Colors.white,
-//           fontSize: 10,
-//           fontWeight: FontWeight.w800,
-//         ),
-//       ),
-//     );
-//   }

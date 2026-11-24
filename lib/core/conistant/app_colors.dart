@@ -50,6 +50,7 @@ abstract final class _Tok {
   static const contactEnd = Color(0xFF0040DD);
   static const logoutEnd = Color(0xFFD70015);
   static const themeEnd = Color(0xFF3634A3);
+  
 }
 
 /// Apple HIG semantic palette (Light / Dark). Access via [AppColors.of].
@@ -318,4 +319,6 @@ class AppColors {
   static const Color sortChipDarkOnPrimary = _Tok.darkOnPrimary;
   static const Color sortChipLightTextSecondary = _Tok.gray;
   static const Color sortChipDarkTextSecondary = _Tok.gray;
+    static const buttoncolor=Color(0xFF1C1C22);
+
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/cart_controller.dart';
@@ -128,14 +127,12 @@ class HomePage extends StatelessWidget {
                             SizedBox(height: sectionSpacing * 0.6),
 
                             SpecialOffersRow(
-                              items: controller.offers,
+                              items: controller.offerItems,
                               isArabic: controller.isarabic,
-                              onTap: (offer, index) =>
-                                  controller.gotoitemsdetails(
-                                    controller.offerItems[index],
-                                  ),
-                              // فعّله بعد الربط بمنتجات حقيقية:
-                              // actionBuilder: (o) => AddToCartButton(itemId: o.id),
+                              onTap: (item) =>
+                                  controller.gotoitemsdetails(item),
+                              actionBuilder: (item) =>
+                                  AddToCartButton(itemId: item.id!),
                             ),
                             SizedBox(height: sectionSpacing * 0.5),
                           ],
@@ -143,40 +140,52 @@ class HomePage extends StatelessWidget {
                           Titles(title: "Most Sale".tr),
                           SizedBox(height: sectionSpacing * 0.6),
 
-                          MasonryGridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.symmetric(
-                              vertical: sectionSpacing * 0.2,
+                          SizedBox(
+                            height:
+                                cardWidth *
+                                1.86, // ارتفاع مناسب لأطول كارت (baseHeight * 1.2) مع هامش بسيط
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              physics: const BouncingScrollPhysics(),
+                              padding: EdgeInsets.symmetric(
+                                vertical: sectionSpacing * 0.2,
+                              ),
+                              itemCount: controller.mostsaleitem.length,
+                              itemBuilder: (context, index) {
+                                final item = controller.mostsaleitem[index];
+
+                                // ارتفاع الكارت نسبي لعرضه الفعلي (بنفس منطقك السابق)
+                                final double baseHeight = cardWidth * 1.55;
+                                final double cardHeight = index.isEven
+                                    ? baseHeight
+                                    : baseHeight * 1.2;
+
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                    right:
+                                        index <
+                                            controller.mostsaleitem.length - 1
+                                        ? gridSpacing
+                                        : 0,
+                                  ),
+                                  child: SizedBox(
+                                    width: cardWidth,
+                                    child: SharedProductCard(
+                                      isen: controller.isarabic ? false : true,
+                                      items: item,
+                                      onTap: () {
+                                        controller.gotoitemsdetails(item);
+                                      },
+                                      actionButton: AddToCartButton(
+                                        itemId: item.id!,
+                                      ),
+                                      height: cardHeight,
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
-                            gridDelegate:
-                                SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: gridCrossAxisCount,
-                                ),
-                            mainAxisSpacing: gridSpacing,
-                            crossAxisSpacing: gridSpacing,
-                            itemCount: controller.mostsaleitem.length,
-                            itemBuilder: (context, index) {
-                              final item = controller.mostsaleitem[index];
-
-                              // ارتفاع الكارت نسبي لعرضه الفعلي
-                              final double baseHeight = cardWidth * 1.55;
-                              final double cardHeight = index.isEven
-                                  ? baseHeight
-                                  : baseHeight * 1.2;
-
-                              return SharedProductCard(
-                                isen: controller.isarabic ? false : true,
-                                items: item,
-                                onTap: () {
-                                  controller.gotoitemsdetails(item);
-                                },
-                                actionButton: AddToCartButton(itemId: item.id!),
-                                height: cardHeight,
-                              );
-                            },
                           ),
-
                           //footer
                           SizedBox(height: sectionSpacing * 0.6),
                           Center(child: buildFooter()),

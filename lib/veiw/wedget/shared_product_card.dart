@@ -23,10 +23,13 @@ class SharedProductCard extends StatelessWidget {
     required this.height, // ممكن تعدلها لو حبيت
   });
 
+  String _fmt(double v) =>
+      v == v.roundToDouble() ? v.toStringAsFixed(0) : v.toStringAsFixed(2);
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    final isdark = theme.brightness == Brightness.dark;
     // ألوان الكارت الأساسية بتتغير حسب الوضع (ليلي / نهاري)
     final Color cardBorderColor = AppColors.grey.withAlpha(50);
     final Color cardShadow = AppColors.black.withAlpha(60);
@@ -38,12 +41,18 @@ class SharedProductCard extends StatelessWidget {
     final Color chipBorder = AppColors.white.withAlpha(150);
     final Color chipTextColor = AppColors.white;
 
+    // ───── الخصم: السعر الأصلي + النسبة → السعر بعد الخصم ─────
+    final double price = (items.itemsPrice ?? 0).toDouble();
+    final int discount = (items.itemsDiscount ?? 0).toInt();
+    final bool hasDiscount = discount > 0;
+    final double finalPrice = hasDiscount
+        ? price - (price * discount / 100)
+        : price;
+
     return GestureDetector(
       onTap: onTap,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          // final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
           // نستخدم عرض الكارت الفعلي (مش عرض الشاشة كله) عشان الأبعاد
           // تتظبط صح مهما كان عدد أعمدة الجريد (2 هاتف / 3-4 تابلت)
           final double cardWidth = constraints.maxWidth.isFinite
@@ -56,26 +65,34 @@ class SharedProductCard extends StatelessWidget {
             110.0,
             240.0,
           );
-          final double titleFontSize = (cardWidth * 0.062).clamp(AppDimensions.fontBodySmall, AppDimensions.fontBodyMedium);
+          final double titleFontSize = (cardWidth * 0.062).clamp(
+            AppDimensions.fontBodySmall,
+            AppDimensions.fontBodyMedium,
+          );
 
           final double ratingBadgeWidth = (cardWidth * 0.27).clamp(42.0, 56.0);
           final double ratingBadgeHeight = (ratingBadgeWidth * 0.6).clamp(
             24.0,
             30.0,
           );
-          final double ratingFontSize = (cardWidth * 0.045).clamp(AppDimensions.fontBodySmall, 13.0);
+          final double ratingFontSize = (cardWidth * 0.045).clamp(
+            AppDimensions.fontBodySmall,
+            13.0,
+          );
           final double ratingIconSize = (cardWidth * 0.05).clamp(12.0, 16.0);
 
           final double bottomBarWidth = (cardWidth * 0.9).clamp(140.0, 230.0);
           final double bottomBarHeight = (height * 0.16).clamp(40.0, 54.0);
-          // final double priceFontSize = (cardWidth * 0.06).clamp(12.0, 15.0);
+
+          // حجم نص الشارة والسعر القديم نسبي لعرض الكارت
+          final double oldPriceFontSize = (cardWidth * 0.05).clamp(10.0, 12.0);
 
           return Container(
             padding: const EdgeInsets.all(5),
             height: height,
             decoration: BoxDecoration(
               boxShadow: [BoxShadow(color: cardShadow, blurRadius: 2)],
-              color: AppColors.editBackground,
+              color: isdark ? AppColors.buttoncolor : AppColors.editBackground,
               borderRadius: const BorderRadius.all(Radius.circular(25)),
               border: Border.all(
                 color: cardBorderColor,
@@ -204,36 +221,101 @@ class SharedProductCard extends StatelessWidget {
                           ),
                         ),
 
-                        /// شريط السعر + زرار السلة أسفل الصورة
+                        /// شارة الخصم + شريط السعر وزرار الإجراء أسفل الصورة
                         Positioned(
                           bottom: 10,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(40),
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                              child: Container(
-                                width: bottomBarWidth,
-                                height: bottomBarHeight,
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 5,
-                                  horizontal: 12,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (hasDiscount) ...[
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 3,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.error,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Text(
+                                    '-$discount%',
+                                    style: TextStyle(
+                                      color: theme.colorScheme.onError,
+                                      fontSize: ratingFontSize,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
                                 ),
-                                decoration: BoxDecoration(
-                                  color: chipBackground,
-                                  borderRadius: BorderRadius.circular(40),
-                                  border: Border.all(color: chipBorder),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    PriceText(items.itemsPrice ?? 0),
-                                    const SizedBox(width: AppDimensions.sm),
-                                    actionButton, // 👈 هنا هيتعرض الزرار اللي هتبعتهوله
-                                  ],
+                                const SizedBox(height: 6),
+                              ],
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(40),
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(
+                                    sigmaX: 10,
+                                    sigmaY: 10,
+                                  ),
+                                  child: Container(
+                                    width: bottomBarWidth,
+                                    height: bottomBarHeight,
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 5,
+                                      horizontal: 12,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: chipBackground,
+                                      borderRadius: BorderRadius.circular(40),
+                                      border: Border.all(color: chipBorder),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        // السعر بعد الخصم + السعر القديم مشطوب
+                                        // FittedBox: لو المساحة ضيقة يصغّر بدل ما يعمل overflow
+                                        Flexible(
+                                          child: FittedBox(
+                                            fit: BoxFit.scaleDown,
+                                            alignment:
+                                                AlignmentDirectional.centerStart,
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                PriceText(
+                                                  hasDiscount
+                                                      ? finalPrice
+                                                      : (items.itemsPrice ?? 0),
+                                                ),
+                                                if (hasDiscount) ...[
+                                                  const SizedBox(width: 6),
+                                                  Text(
+                                                    _fmt(price),
+                                                    style: TextStyle(
+                                                      fontSize:
+                                                          oldPriceFontSize,
+                                                      color: chipTextColor
+                                                          .withAlpha(170),
+                                                      decoration: TextDecoration
+                                                          .lineThrough,
+                                                      decorationColor:
+                                                          chipTextColor
+                                                              .withAlpha(170),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: AppDimensions.sm),
+                                        actionButton, // 👈 هنا هيتعرض الزرار اللي هتبعتهوله
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
                       ],

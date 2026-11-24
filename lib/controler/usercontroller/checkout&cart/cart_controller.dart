@@ -31,12 +31,6 @@ class CartController extends GetxController {
   int totalcount = 0;
   double totalprice = 0.0;
 
-  // void havecoupone(bool value) async {
-  //   coupone.value = value;
-  //   final prefs = myservisec.sharedPreferences;
-  //   await prefs.setBool('cop', value);
-  // }
-
   /// ================== دالة عرض السلة (مع تحديث صامت) ==================
   // 🌟 أضفنا showLoading عشان نقدر نحدث البيانات في الخلفية بدون ما نوقف الشاشة
   Future<void> view({bool showLoading = true}) async {

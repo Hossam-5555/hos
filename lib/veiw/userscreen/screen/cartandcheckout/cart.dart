@@ -141,7 +141,7 @@ class ShoppingCartPage extends StatelessWidget {
                                               ),
                                             ),
                                             Text(
-                                              "${controller.data.length}",
+                                              "${controller.totalcount}",
                                               style: TextStyle(
                                                 fontSize: (width * 0.045).clamp(
                                                   14.0,
@@ -183,7 +183,7 @@ class ShoppingCartPage extends StatelessWidget {
                                           begin: controller.totalprice,
                                           end: controller.totalprice,
                                         ),
-                                        duration: const Duration(seconds: 1),
+                                        duration: const Duration(milliseconds:500),
                                         curve: Curves.easeOut,
                                         builder: (context, value, child) {
                                           return PriceText(
