@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/checkout&cart/checkoutcontroller.dart';
+import 'package:hos/core/conistant/app_colors.dart';
+import 'package:hos/data/services/crud.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 class Coubone extends StatelessWidget {
@@ -36,6 +38,7 @@ class Coubone extends StatelessWidget {
                     prefixIcon: const Icon(Icons.local_offer_outlined),
                     isDense: true,
                     filled: true,
+                    fillColor: AppColors.glass,
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
                       borderRadius: BorderRadius.circular(12),
@@ -46,7 +49,9 @@ class Coubone extends StatelessWidget {
               const SizedBox(width: 10),
               Checkbutton.widget(
                 h: 48,
-                statusrequest: c.statusrequest,
+                statusrequest: c.isCouponLoading
+                    ? Statusrequest.loading
+                    : Statusrequest.none,
                 buttonColor: Colors.black,
                 width: 100,
                 onTap: () {

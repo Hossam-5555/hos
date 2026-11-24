@@ -76,6 +76,7 @@ class Checkout extends StatelessWidget {
                   context: context,
                   w: w,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -95,9 +96,10 @@ class Checkout extends StatelessWidget {
                         title: 'card'.tr,
                         subtitle: '******** 8463',
                         icon: Icons.credit_card_rounded,
-                        iconColor: const Color(0xFFEB5757),
                         method: "card",
                       ),
+                      SizedBox(height: h * 0.01),
+
                       buildPaymentMethod(
                         context: context,
                         controller: c,
@@ -107,9 +109,10 @@ class Checkout extends StatelessWidget {
                         title: 'wallet'.tr,
                         subtitle: 'orb****@gmail.com',
                         icon: Icons.account_balance_wallet_rounded,
-                        iconColor: const Color(0xFF2D9CDB),
                         method: "wallet",
                       ),
+                      SizedBox(height: h * 0.01),
+
                       buildPaymentMethod(
                         context: context,
                         controller: c,
@@ -118,7 +121,6 @@ class Checkout extends StatelessWidget {
                         sp: sp,
                         title: 'cash on delivery'.tr,
                         icon: Icons.attach_money_rounded,
-                        iconColor: Colors.green,
                         method: "cash",
                       ),
                     ],

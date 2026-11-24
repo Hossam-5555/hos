@@ -25,15 +25,11 @@ class CartController extends GetxController {
 
   // الكوبون
 
-
   // بيانات السلة
   List<CartModel> data = [];
   RxInt get countitem => data.length.obs;
   int totalcount = 0;
   double totalprice = 0.0;
-
- 
-
 
   // void havecoupone(bool value) async {
   //   coupone.value = value;
@@ -95,8 +91,7 @@ class CartController extends GetxController {
     if (index != -1) {
       data[index].cartCount = (data[index].cartCount ?? 0) + count;
       // حساب السعر محلياً (تأكد أن حقل itemsPrice موجود بالاسم الصحيح في المودل)
-      double itemPrice =
-          double.tryParse(data[index].itemsprice?.toString() ?? "0") ?? 0.0;
+      num itemPrice = data[index].itemsprice ?? 0.0;
       totalprice += (itemPrice * count);
     }
     update(); // التحديث اللحظي للواجهة 🚀
@@ -202,21 +197,15 @@ class CartController extends GetxController {
     Get.to(
       () => const Checkout(),
       transition: Transition.fadeIn,
-      arguments: {
-        "Cartdata": data,
-        "totalprice":totalprice,
-      },
+      arguments: {"Cartdata": data, "totalprice": totalprice},
       duration: const Duration(milliseconds: 400),
     );
   }
 
   @override
   void onInit() {
-
     // نستدعي البيانات أول مرة يفتح فيها التطبيق
     view();
     super.onInit();
   }
-
-
 }

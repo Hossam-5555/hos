@@ -15,35 +15,40 @@ Widget buildPaymentMethod({
   required double h,
   required double Function(double) sp,
   String? subtitle,
-  Color? iconColor,
   context,
   required Checkoutcontroller controller,
 }) {
   final isSelected = controller.selectedMethod == method;
   final checkSize = (w * 0.055).clamp(20.0, 26.0);
   final r = Rsp.of(context);
+  final isDark = Theme.of(context).brightness == Brightness.dark;
 
   return GestureDetector(
     onTap: () => controller.changePaymentMethod(method),
     child: AnimatedContainer(
       duration: const Duration(milliseconds: 200),
-      padding: EdgeInsets.all((r.s(4))),
+      // padding: EdgeInsets.all((r.s(4))),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular((w * 0.035).clamp(12.0, 18.0)),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            padding: EdgeInsets.all(r.s(10)),
+            width: r.s(38),
+            height: r.s(38),
             decoration: BoxDecoration(
+              color: isDark
+                  ? AppColors.darkShadow.withAlpha(100)
+                  : const Color(0xFFE0E3E8),
               borderRadius: BorderRadius.circular(r.s(12)),
-              color: (iconColor ?? AppColors.black).withAlpha(25),
             ),
-            child: Icon(icon, color: iconColor ?? AppColors.white, size: sp(19)),
+            child: Icon(icon, size: r.s(19)),
           ),
-          SizedBox(width: r.s(10)),
+
+          SizedBox(width: r.s(12)),
+
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,16 +56,20 @@ Widget buildPaymentMethod({
                 Text(
                   title,
                   style: TextStyle(
-                    fontSize: sp(12),
-                    fontWeight: FontWeight.w700,
+                    color: Colors.grey.shade600,
+                    fontSize: r.s(11),
                   ),
                 ),
+
+                SizedBox(height: r.s(3)),
+
                 if (subtitle != null) ...[
                   Text(
                     subtitle,
                     style: TextStyle(
-                      fontSize: sp(12),
-                      color: AppColors.grey,
+                      fontSize: r.s(13),
+                      fontWeight: FontWeight.w600,
+                      height: 1.3,
                     ),
                   ),
                 ],
@@ -77,7 +86,11 @@ Widget buildPaymentMethod({
               border: Border.all(color: AppColors.grey),
             ),
             child: isSelected
-                ? Icon(Icons.check_rounded, size: sp(14), color: AppColors.white)
+                ? Icon(
+                    Icons.check_rounded,
+                    size: sp(14),
+                    color: AppColors.white,
+                  )
                 : null,
           ),
         ],
