@@ -8,6 +8,7 @@ class LinkApi {
   static String login = '$lravelserver/login';
   static String veryfisign = '$lravelserver/verify';
   static String resend = '$lravelserver/resend';
+  static String deleteaccont = '$lravelserver/account';
 
   //forgetpassword====================
   static String checkemail = '$lravelserver/forgot-password';

@@ -130,9 +130,9 @@ class Checkout extends StatelessWidget {
                 _buildCard(
                   context: context,
                   w: w,
-                  child:
-                      c.listaddresdata.isEmpty &&
-                          c.statusrequest == Statusrequest.success
+                  child: c.statusrequest == Statusrequest.loading
+                      ? const Center(child: CircularProgressIndicator())
+                      : c.listaddresdata.isEmpty
                       ? ListTile(
                           contentPadding: EdgeInsets.zero,
                           onTap: () => Get.to(() => AddNewAddres()),
@@ -255,7 +255,8 @@ class Checkout extends StatelessWidget {
     final iconCircleSize = (w * 0.11).clamp(36.0, 48.0);
 
     return Obx(() {
-      if (c.selectedAddress.value == null) {
+      if (c.selectedAddress.value == null &&
+          c.statusrequest == Statusrequest.loading) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -274,8 +275,11 @@ class Checkout extends StatelessWidget {
         );
       }
 
-      final addr = c.selectedAddress.value!;
+      final addr = c.selectedAddress.value;
 
+      if (addr == null) {
+        return const SizedBox.shrink();
+      }
       return Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

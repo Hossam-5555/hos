@@ -78,6 +78,7 @@ class ViewCategories extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 final categoryItem = controller.catdata[index];
                                 return CategoryCard(
+                                  itemscount: categoryItem.itemscount,
                                   onTap: () {
                                     controller.gotoproducts(categoryItem);
                                   },

@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/auth/auth_controller.dart';
-import 'package:hos/data/services/crud.dart';
 import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/appexitalert.dart';
 import 'package:hos/core/functions/validinput.dart';
 import 'package:hos/veiw/wedget/animation.dart';
+import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
@@ -218,7 +218,7 @@ class AuthPage extends StatelessWidget {
                                                 : Icons.visibility,
                                             hint: "Password",
                                           ),
-                                          
+
                                           AnimatedSize(
                                             duration: const Duration(
                                               milliseconds: 300,
@@ -297,19 +297,32 @@ class AuthPage extends StatelessWidget {
 
                                           SizedBox(height: height * 0.015),
 
-                                          Checkbutton.widget(
-                                            widget: SvgPicture.asset(
-                                              Imageasset.googlepay,
-                                              height: 20,
-                                              width: 20,
-                                            ),
-                                            statusrequest: Statusrequest.none,
-                                            onTap: () => controller.submit(),
-                                            buttonName: 'google',
-                                            width: width * 0.75,
-                                            buttonColor: isDark
-                                                ? Colors.white.withAlpha(20)
-                                                : Colors.white.withAlpha(140),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Homescrenaction(
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                herotag: "google",
+                                                child: SvgPicture.asset(
+                                                  Imageasset.googlepay,
+                                                  height: 20,
+                                                  width: 20,
+                                                ),
+                                              ),
+                                              SizedBox(width: width * 0.02),
+                                              Homescrenaction(
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                herotag: "apple",
+                                                child: SvgPicture.asset(
+                                                  Imageasset.apple,
+                                                  height: 20,
+                                                  width: 20,
+                                                ),
+                                              ),
+                                            ],
                                           ),
 
                                           SizedBox(height: height * 0.01),

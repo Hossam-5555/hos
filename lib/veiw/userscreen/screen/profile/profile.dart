@@ -239,10 +239,78 @@ class ProfilePage extends StatelessWidget {
                         ],
                         icon: Icons.security_outlined,
                         title: "Acount Securty".tr,
-                        onTap: () => Get.to(
-                          () => EnglishAbout(),
-                          transition: Transition.cupertino,
-                        ),
+                        onTap: () {
+                          Get.defaultDialog(
+                            title: '',
+                            titlePadding: EdgeInsets.zero,
+                            contentPadding: const EdgeInsets.all(20),
+                            radius: 20,
+                            content: Column(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red.withAlpha(20),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.delete_forever_rounded,
+                                    color: Colors.red,
+                                    size: 38,
+                                  ),
+                                ),
+                                const SizedBox(height: 18),
+
+                                const Text(
+                                  'Delete Account?',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+
+                                const Text(
+                                  'Are you sure you want to delete your account? '
+                                  'This action cannot be undone and your account data '
+                                  'may be permanently lost.',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    height: 1.6,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                const SizedBox(height: 25),
+
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: OutlinedButton(
+                                        onPressed: () => Get.back(),
+                                        child: const Text('Cancel'),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                          foregroundColor: Colors.white,
+                                        ),
+                                        onPressed: () {
+                                          Get.back();
+                                          settingsController.deleteAccount();
+                                        },
+                                        child: const Text('Delete'),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
                       _ListTile(
                         w: width,

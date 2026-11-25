@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/veiw/wedget/pricecard.dart';
 
 // ignore: must_be_immutable
@@ -13,6 +14,7 @@ class CategoryCard extends StatefulWidget {
   final String? price;
   final String? stock;
   bool? inHome;
+  final int? itemscount;
   CategoryCard({
     super.key,
     required this.name,
@@ -20,8 +22,9 @@ class CategoryCard extends StatefulWidget {
     required this.onEdit,
     required this.onDelete,
     required this.onTap,
-    this.stock,
+    this.stock = "item",
     this.price,
+    this.itemscount,
   });
 
   CategoryCard.items({
@@ -33,6 +36,7 @@ class CategoryCard extends StatefulWidget {
     required this.onEdit,
     required this.onDelete,
     required this.onTap,
+    this.itemscount = 0,
   });
   CategoryCard.Homepage({
     super.key,
@@ -44,6 +48,7 @@ class CategoryCard extends StatefulWidget {
     required this.onEdit,
     required this.onDelete,
     required this.onTap,
+    this.itemscount = 0,
   });
   @override
   State<CategoryCard> createState() => _CategoryCardState();
@@ -171,12 +176,8 @@ class _CategoryCardState extends State<CategoryCard> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            if (hasPrice)
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Flexible(
+                            hasPrice && stockText != ""
+                                ? Flexible(
                                     child: FittedBox(
                                       fit: BoxFit.scaleDown,
                                       child: PriceText(
@@ -184,23 +185,31 @@ class _CategoryCardState extends State<CategoryCard> {
                                         color: Colors.amberAccent,
                                       ),
                                     ),
-                                  ),
-                                  if (stockText.isNotEmpty)
-                                    Flexible(
-                                      child: Text(
-                                        stockText,
-                                        textAlign: TextAlign.center,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          color: Colors.amberAccent,
-                                          fontSize: subSize,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                  )
+                                : SizedBox.shrink(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                if (stockText.isNotEmpty)
+                                  Flexible(
+                                    child: Text(
+                                      widget.inHome != true &&
+                                              hasPrice == false &&
+                                              stockText == "item"
+                                          ? "(${widget.itemscount}) Products"
+                                          : stockText,
+                                      textAlign: TextAlign.center,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: AppColors.aboutStart,
+                                        fontSize: subSize,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                ],
-                              ),
+                                  ),
+                              ],
+                            ),
                           ],
                         ),
                       ),

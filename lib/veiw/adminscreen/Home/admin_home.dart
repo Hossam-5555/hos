@@ -548,10 +548,7 @@ class _BestSellingProductsCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 8),
-                     PriceText(
-                       product.total,
-                      color: Colors.grey,
-                      ),
+                      PriceText(product.total, color: Colors.grey),
                     ],
                   ),
                 ),
@@ -647,77 +644,247 @@ class _PaymentMethodsCard extends StatelessWidget {
 
   const _PaymentMethodsCard({required this.payments});
 
+  Color _paymentColor(String method) {
+    switch (method.toLowerCase()) {
+      case 'credit':
+        return const Color(0xFF16A34A);
+      case 'card':
+        return const Color(0xFF6366F1);
+      default:
+        return const Color(0xFFD97706);
+    }
+  }
+
+  IconData _paymentIcon(String method) {
+    switch (method.toLowerCase()) {
+      case 'credit':
+        return Icons.account_balance_wallet_rounded;
+      case 'card':
+        return Icons.credit_card_rounded;
+      default:
+        return Icons.payments_rounded;
+    }
+  }
+
+  String _paymentName(String method) {
+    switch (method.toLowerCase()) {
+      case 'credit':
+        return 'المحفظة الإلكترونية';
+      case 'card':
+        return 'البطاقات البنكية';
+      default:
+        return 'الدفع عند الاستلام';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+
+    final sortedPayments = [...payments]
+      ..sort(
+        (a, b) => (b['count'] as num? ?? 0).compareTo(a['count'] as num? ?? 0),
+      );
+
+    final total = sortedPayments.fold<int>(
+      0,
+      (sum, item) => sum + ((item['count'] as num?)?.toInt() ?? 0),
+    );
+
     return _Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'طرق الدفع المستخدمة',
-            style: Theme.of(
-              context,
-            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 16),
-
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: payments.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              childAspectRatio: 0.9,
-            ),
-            itemBuilder: (context, index) {
-              final payment = payments[index];
-
-              return Container(
-                padding: const EdgeInsets.all(8),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerLow,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: Theme.of(context).dividerColor.withAlpha(40),
-                  ),
+                  color: colors.primary.withAlpha(20),
+                  borderRadius: BorderRadius.circular(12),
                 ),
+                child: Icon(
+                  Icons.analytics_rounded,
+                  color: colors.primary,
+                  size: 22,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
-                      payment['payment_method'] == "credit"
-                          ? Icons.wallet
-                          : payment['payment_method'] == "card"
-                          ? Icons.credit_card_rounded
-                          : Icons.monetization_on_outlined,
-                      size: 26,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    const SizedBox(height: 10),
                     Text(
-                      payment['payment_method']?.toString() ?? 'غير محدد',
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      'طرق الدفع',
+                      style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 6),
                     Text(
-                      '${payment['count'] ?? 0} طلب',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontWeight: FontWeight.w600,
+                      'تحليل استخدام وسائل الدفع',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: colors.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(Icons.trending_up_rounded, color: colors.primary),
+            ],
+          ),
+
+          const SizedBox(height: 22),
+
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: colors.primary.withAlpha(12),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: colors.primary.withAlpha(25)),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'إجمالي عمليات الدفع',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: colors.onSurfaceVariant,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        total.toString(),
+                        style: theme.textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: colors.surface,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Icon(
+                    Icons.account_balance_wallet_rounded,
+                    color: colors.primary,
+                    size: 26,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 22),
+
+          if (sortedPayments.isEmpty)
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Text(
+                  'لا توجد بيانات لطرق الدفع حالياً',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: colors.onSurfaceVariant,
+                  ),
+                ),
+              ),
+            )
+          else
+            ...sortedPayments.map((payment) {
+              final method = payment['payment_method']?.toString() ?? '';
+
+              final count = (payment['count'] as num?)?.toInt() ?? 0;
+
+              final percentage = total == 0 ? 0.0 : count / total;
+
+              final color = _paymentColor(method);
+
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: 46,
+                          height: 46,
+                          decoration: BoxDecoration(
+                            color: color.withAlpha(20),
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: Icon(
+                            _paymentIcon(method),
+                            color: color,
+                            size: 23,
+                          ),
+                        ),
+
+                        const SizedBox(width: 12),
+
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _paymentName(method),
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '${(percentage * 100).toStringAsFixed(1)}% من العمليات',
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: colors.onSurfaceVariant,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              count.toString(),
+                              style: theme.textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.w800,
+                                fontFeatures: const [],
+                              ),
+                            ),
+                            Text(
+                              'طلب',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: colors.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: LinearProgressIndicator(
+                        value: percentage,
+                        minHeight: 7,
+                        backgroundColor: colors.surfaceContainerHighest,
+                        valueColor: AlwaysStoppedAnimation<Color>(color),
                       ),
                     ),
                   ],
                 ),
               );
-            },
-          ),
+            }),
         ],
       ),
     );

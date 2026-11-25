@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/core/conistant/routs.dart';
 import 'package:hos/core/conistant/static.dart';
+import 'package:hos/core/functions/handlingdata.dart';
 import 'package:hos/core/serveces/myservisec.dart';
+import 'package:hos/data/datasource/userdata/auth/deleteacountdata.dart';
+import 'package:hos/data/services/crud.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -22,8 +25,10 @@ class SettingsController extends GetxController {
     loadSettings(); // تحميل الإعدادات عند بدء تشغيل الـ controller
   }
 
+  Statusrequest statusrequest = Statusrequest.none;
+
   //logout تسجيل الخروج من البرنامج
-  void logout() {
+  void logout() async {
     int id = myservisec.sharedPreferences.getInt("id")!;
 
     if (usrtype == Static.admin) {
@@ -34,7 +39,7 @@ class SettingsController extends GetxController {
       FirebaseMessaging.instance.unsubscribeFromTopic("${Static.user}_$id");
     }
 
-    myservisec.sharedPreferences.clear();
+    await myservisec.sharedPreferences.clear();
     Get.offAllNamed(Approute.login);
     update();
   }
@@ -86,5 +91,35 @@ class SettingsController extends GetxController {
       await prefs.setString('appTheme', newTheme);
       // يمكنك هنا إضافة الكود لتغيير مظهر التطبيق الفعلي باستخدام Get.changeThemeMode
     }
+  }
+
+  Deleteacountdata deleteacountdata = Deleteacountdata(Get.find());
+
+  Future<void> deleteAccount() async {
+    statusrequest = Statusrequest.loading;
+    update();
+
+    var response = await deleteacountdata.postdata();
+
+    statusrequest = handling(response);
+
+    if (Statusrequest.success == statusrequest) {
+      if (response['status'] == true) {
+      
+        await myservisec.sharedPreferences.clear();
+
+        Get.offAllNamed(Approute.login);
+
+        Get.snackbar('Success', 'Account deleted successfully');
+      } else {
+        statusrequest = Statusrequest.failure;
+        Get.snackbar(
+          'Error',
+          response['message'] ?? 'Failed to delete account',
+        );
+      }
+    }
+
+    update();
   }
 }

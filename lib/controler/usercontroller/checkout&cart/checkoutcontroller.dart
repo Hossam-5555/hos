@@ -90,8 +90,8 @@ class Checkoutcontroller extends GetxController {
   int isdafault = 0;
   //============================ جلب العناوين من السيرفر
   Future<void> getaddress() async {
-    // statusrequest = Statusrequest.loading;
-    // update();
+    statusrequest = Statusrequest.loading;
+    update();
 
     var response = await addresdata.viewAddresdata();
 
@@ -105,11 +105,12 @@ class Checkoutcontroller extends GetxController {
         listaddresdata.clear();
         listaddresdata.addAll(data.map((e) => AddressModel.fromJson(e)));
         if (listaddresdata.isNotEmpty) {
-          // بيبحث عن الافتراضي أو ياخد أول واحد ويخزنه كـ Object كامل
           selectedAddress.value = listaddresdata.firstWhere(
             (e) => e.id == isdafault,
             orElse: () => listaddresdata.first,
           );
+        } else {
+          selectedAddress.value = null;
         }
       } else {
         showSnackBar(

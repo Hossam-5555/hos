@@ -129,7 +129,7 @@ Widget buildCartItemCard(
                         children: [
                           Expanded(
                             child: PriceText(
-                              currentCart.subtotal ?? 0,
+                              currentCart.subtotal?? 0,
                               fontSize: priceSize,
                             ),
                           ),
