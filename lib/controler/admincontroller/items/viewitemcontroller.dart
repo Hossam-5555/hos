@@ -8,6 +8,7 @@ import 'package:hos/data/model/categoriesmodel.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/veiw/adminscreen/admin_homescreen.dart';
 import 'package:hos/veiw/adminscreen/Home/itemsview/additem.dart';
+import 'package:hos/veiw/wedget/Admin/filteradmin.dart';
 
 class ViewItemController extends GetxController {
   Admindataitem admindata = Admindataitem(Get.find());
@@ -22,7 +23,10 @@ class ViewItemController extends GetxController {
   int selectedCat = -1;
   String? catname;
 
-  TextEditingController controller = TextEditingController();
+  TextEditingController search = TextEditingController();
+  Future<void> onSearchSubmit() async {
+    await viewCategoryItems(selectedCat);
+  }
 
   @override
   void onInit() {
@@ -44,27 +48,37 @@ class ViewItemController extends GetxController {
     viewCategoryItems(selectedCat);
   }
 
-  // ✳️ تم تغيير اسم الدالة ومنطقها لتجلب منتجات قسم واحد فقط
-  Future<void> viewCategoryItems(int categoryId) async {
-    itemlist.clear(); // مسح منتجات القسم القديم من الشاشة لتجنب التداخل
+  Future<void> viewCategoryItems(int categoryId, {FilterResult? filter}) async {
+    itemlist.clear();
     statusrequest = Statusrequest.loading;
     update();
 
-    // ⚠️ ملاحظة: تأكد أن دالة viewitem في ملف admindata تستقبل الـ categoryId وترسله للرابط
-    var response = await admindata.viewitem(categoryId.toString());
+    final response = await admindata.viewitem(
+      categoryId.toString(),
+      filter: filter,
+      search: search.text,
+      minLimit: 0,
+      maxLimit: 1000,
+    );
+
+    if (response is! Map<String, dynamic>) {
+      statusrequest = Statusrequest.failure;
+      update();
+      return;
+    }
 
     statusrequest = handling(response);
 
-    if (Statusrequest.success == statusrequest) {
+    if (statusrequest == Statusrequest.success) {
       if (response['status'] == true) {
-        // جلب المنتجات من داخل كائن القسم الراجع من السيرفر
-        // افترضنا هنا أن Laravel يرجع المنتجات داخل key اسمه 'items'
-        if (response['data']['items'] != null) {
-          List items = response['data']['items'];
-          itemlist.addAll(items.map((e) => ItemsModel.fromJson(e)));
-        }
+        final data = response['data'] ?? {};
 
-        // لو القسم فارغ ولا يوجد به منتجات
+        final List items = data['data'] ?? [];
+        itemlist.addAll(items.map((e) => ItemsModel.fromJson(e)));
+
+        final List brandsJson = data['brands'] ?? [];
+        brands = brandsJson.map((b) => Brandmodel.fromjson(b)).toList();
+
         if (itemlist.isEmpty) {
           statusrequest = Statusrequest.nodata;
         }
@@ -76,6 +90,23 @@ class ViewItemController extends GetxController {
     update();
   }
 
+  FilterResult? _filter;
+  List<Brandmodel> brands = [];
+  Future<void> openFilter(BuildContext context) async {
+    final result = await showFilterSheet(
+      context,
+      brands: brands,
+      minLimit: 0,
+      maxLimit: 1000,
+      initial: _filter,
+    );
+
+    if (result == null) return; // المستخدم قفل الشيت من غير Apply
+
+    _filter = result;
+    await viewCategoryItems(selectedCat, filter: _filter);
+  }
+
   void delete(int itemid) {
     admindata.deleteitem(itemid);
 
@@ -83,7 +114,6 @@ class ViewItemController extends GetxController {
     update();
   }
 
- 
   // void gotoeditpage(ItemsModel itemsmodel) {
   //   Get.to(() => EditItem(), arguments: {"itemsmodel": itemsmodel});
   // }

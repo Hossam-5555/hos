@@ -56,6 +56,8 @@ class LinkApi {
   static String analyticsOverview = "$lravelserver/admin/analytics/overview";
   static String analyticsChart = "$lravelserver/admin/analytics/chart";
   static String analyticsDetails = "$lravelserver/admin/analytics/details";
+ static String getAdminItems = "$lravelserver/admin/analytics/getAdminItems";
+
   static String admincategrory = '$lravelserver/category';
   static String admindeletecat = '$lravelserver/deletecategory';
   //Admin //items

@@ -27,7 +27,9 @@ class ViewItemScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: Appbarbackicon.nedicon(
-        ontap: () {},
+        ontap: () {
+          controller.openFilter(context);
+        },
         needicon: true,
         iconButton: Transform.rotate(
           angle: math.pi / 2, // زاوية 90 درجة دقيقة بالراديان
@@ -38,14 +40,26 @@ class ViewItemScreen extends StatelessWidget {
             height: filterIconSize,
           ),
         ),
-        title: controller.catname ?? 'المنتجات',
+        title: '',
         herotag: 'veiwproducts',
+      ),
+      bottomNavigationBar: GetBuilder<ViewItemController>(
+        builder: (controller) => AdminSectionHeader(
+          title: controller.catname!,
+          subtitle: 'المنتجات الموجودة بالمخزن',
+          count: controller.itemlist.length,
+          countLabel: 'منتج',
+          icon: Icons.poll_rounded,
+          onAdd: controller.goToAddItem,
+          addButtonText: 'إضافة منتج',
+          isDark: isDark,
+        ),
       ),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
             final width = constraints.maxWidth;
-            final isCompact = width < 360;
+            // final isCompact = width < 360;
             final isTablet = width >= 600;
             final horizontalPadding = isTablet ? 24.0 : 16.0;
             final contentMaxWidth = width >= 1100 ? 1100.0 : double.infinity;
@@ -55,19 +69,6 @@ class ViewItemScreen extends StatelessWidget {
                 constraints: BoxConstraints(maxWidth: contentMaxWidth),
                 child: Column(
                   children: [
-                    GetBuilder<ViewItemController>(
-                      builder: (controller) => AdminSectionHeader(
-                        title: 'إجمالي المنتجات',
-                        subtitle: 'المنتجات الموجودة بالمخزن',
-                        count: controller.itemlist.length,
-                        countLabel: 'منتج',
-                        icon: Icons.poll_rounded,
-                        onAdd: controller.goToAddItem,
-                        addButtonText: 'إضافة منتج',
-                        isDark: isDark,
-                        isCompact: isCompact,
-                      ),
-                    ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(
                         horizontalPadding,
@@ -77,10 +78,10 @@ class ViewItemScreen extends StatelessWidget {
                       ),
                       child: Searchbar(
                         onPressedIcon: () {
-                          debugPrint('Search icon pressed');
+                          controller.onSearchSubmit();
                         },
                         title: 'ابحث عن منتج، رمز، أو قسم...',
-                        mycontroller: controller.controller,
+                        mycontroller: controller.search,
                       ),
                     ),
                     Expanded(

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class AdminSectionHeader extends StatelessWidget {
@@ -31,28 +30,13 @@ class AdminSectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: horizontalPadding,
-        vertical: 6,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 6),
       child: Container(
         padding: EdgeInsets.symmetric(
           horizontal: isCompact ? 10 : 14,
           vertical: 10,
         ),
-        decoration: BoxDecoration(
-          color: isDark
-              ? const Color(0xFF323538)
-              : const Color(0xFFE0E3E8),
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withAlpha(8),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
+
         child: Row(
           children: [
             Expanded(
@@ -105,12 +89,9 @@ class AdminSectionHeader extends StatelessWidget {
             DecoratedBox(
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [
-                    Color(0xFF00F2FE),
-                    Color(0xFF4FACFE),
-                  ],
+                  colors: [Color(0xFF00F2FE), Color(0xFF4FACFE)],
                 ),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
                     color: const Color(0xFF4FACFE).withAlpha(89),
@@ -122,12 +103,12 @@ class AdminSectionHeader extends StatelessWidget {
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(40),
                   onTap: onAdd,
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: isCompact ? 9 : 12,
-                      vertical: 9,
+                      vertical: 10,
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
