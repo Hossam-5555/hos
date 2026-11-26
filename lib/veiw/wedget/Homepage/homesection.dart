@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/data/model/itemsmodel.dart';
 import 'package:hos/veiw/userscreen/screen/home/home_page.dart';
 import 'package:hos/veiw/wedget/shared_product_card.dart';
@@ -287,10 +289,28 @@ class _BannerCard extends StatelessWidget {
               ),
             ),
             if (banner.imageUrl != null && banner.imageUrl!.isNotEmpty)
-              Image.network(
-                banner.imageUrl!,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+              CachedNetworkImage(
+                imageUrl: banner.imageUrl!,
+                imageBuilder: (context, imageProvider) => Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+                placeholder: (context, url) => Center(
+                  child: SizedBox(
+                    width: 22,
+                    height: 22,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: AppColors.black,
+                    ),
+                  ),
+                ),
+                errorWidget: (context, url, error) =>
+                    Icon(Icons.broken_image_outlined),
               ),
             // لو البانر صورة فقط من غير نص، منعتّمش الصورة
             if (hasText) ...[

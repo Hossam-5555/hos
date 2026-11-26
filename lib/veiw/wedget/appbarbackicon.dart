@@ -140,14 +140,6 @@ class Homescrenaction extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: backgroundColor ?? color ?? AppColors.editBackground,
-            border: Border.all(
-              color:
-                  borderColor ??
-                  (isDark
-                      ? AppColors.white.withAlpha(18)
-                      : AppColors.black.withAlpha(12)),
-              width: 1,
-            ),
           ),
           child: InkWell(
             customBorder: const CircleBorder(),

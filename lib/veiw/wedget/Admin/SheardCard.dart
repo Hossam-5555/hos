@@ -202,7 +202,7 @@ class _CategoryCardState extends State<CategoryCard> {
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
-                                        color: AppColors.aboutStart,
+                                        color: AppColors.black,
                                         fontSize: subSize,
                                         fontWeight: FontWeight.bold,
                                       ),

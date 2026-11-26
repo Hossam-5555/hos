@@ -54,7 +54,7 @@ class Textfealdauth extends StatelessWidget {
 
           contentPadding: EdgeInsets.symmetric(
             horizontal: width * 0.04,
-            vertical: height * 0.018,
+            vertical: height * 0.016,
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),

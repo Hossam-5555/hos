@@ -45,7 +45,7 @@ class AnimationlottieState extends State<Animationlottie>
       child: Lottie.asset(
         widget.animationPath,
         controller: animationController,
-        onLoaded: (composition) {
+        onLoaded: (LottieComposition composition) {
           animationController
             ..duration = composition.duration
             ..forward();

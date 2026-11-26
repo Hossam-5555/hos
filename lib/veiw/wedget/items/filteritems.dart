@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/items_controler.dart';
+import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/veiw/wedget/items/itemslist.dart';
 
 // ───────────────────────── الألوان (غيّرها من هنا بس) ─────────────────────────
@@ -18,7 +19,7 @@ class _Palette {
   });
 
   static const _light = _Palette(
-    bg: Colors.white,
+    bg: AppColors.editBackground,
     surface: Color(0xFFF4F4F4),
     border: Color(0xFFE8E8E8),
     primary: Color(0xFF1A1A1A),

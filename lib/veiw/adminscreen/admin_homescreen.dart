@@ -17,44 +17,49 @@ class AdminHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<Adminhome>(
       builder: (controller) => Scaffold(
-        appBar: AppBar(
+        appBar: controller.currentpage == 1
+              ? null
+              : AppBar(
           title: Row(
-            children: [
-              const SizedBox(width: 10),
-              const Text(
-                "Hello, Admin",
-                style: TextStyle(fontSize: AppDimensions.fontTitle, fontWeight: FontWeight.bold),
-              ),
-              const Spacer(),
-
-              GetBuilder<Notificationcontroller>(
-                builder: (controller) {
-                  int hasUnread = controller.notificationcount.value;
-
-                  return Homescrenaction(
-                    herotag: "notification",
-                    onPressed: () {
-                      Get.toNamed(Approute.notificationPage);
-                    },
-                    child: Badge(
-                      isLabelVisible: hasUnread > 0,
-                      alignment: const Alignment(0.1, 0.90),
-                      label: Text(
-                        hasUnread.toString(),
-                        style:  TextStyle(
-                          color: AppColors.white,
-                          fontSize: AppDimensions.fontBodySmall,
-                        ),
+                  children: [
+                    const SizedBox(width: 10),
+                    const Text(
+                      "Hello, Admin",
+                      style: TextStyle(
+                        fontSize: AppDimensions.fontTitle,
+                        fontWeight: FontWeight.bold,
                       ),
-                      smallSize: 9,
-                      backgroundColor: AppColors.danger,
-                      child: SvgPicture.asset(Imageasset.notification),
                     ),
-                  );
-                },
-              ),
-            ],
-          ),
+                    const Spacer(),
+
+                    GetBuilder<Notificationcontroller>(
+                      builder: (controller) {
+                        int hasUnread = controller.notificationcount.value;
+
+                        return Homescrenaction(
+                          herotag: "notification",
+                          onPressed: () {
+                            Get.toNamed(Approute.notificationPage);
+                          },
+                          child: Badge(
+                            isLabelVisible: hasUnread > 0,
+                            alignment: const Alignment(0.1, 0.90),
+                            label: Text(
+                              hasUnread.toString(),
+                              style: TextStyle(
+                                color: AppColors.white,
+                                fontSize: AppDimensions.fontBodySmall,
+                              ),
+                            ),
+                            smallSize: 9,
+                            backgroundColor: AppColors.danger,
+                            child: SvgPicture.asset(Imageasset.notification),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: GetBuilder<Adminhome>(
@@ -84,7 +89,7 @@ class AdminHome extends StatelessWidget {
                 ],
                 currentIndex: controller.currentpage,
                 onTap: controller.changePage,
-                cartcount: controller.overviewData['total_orders']??0,
+                cartcount: controller.overviewData['total_orders'] ?? 0,
                 isbadgeActive: false,
               ),
             ),

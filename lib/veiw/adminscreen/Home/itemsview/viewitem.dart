@@ -43,16 +43,18 @@ class ViewItemScreen extends StatelessWidget {
         title: '',
         herotag: 'veiwproducts',
       ),
-      bottomNavigationBar: GetBuilder<ViewItemController>(
-        builder: (controller) => AdminSectionHeader(
-          title: controller.catname!,
-          subtitle: 'المنتجات الموجودة بالمخزن',
-          count: controller.itemlist.length,
-          countLabel: 'منتج',
-          icon: Icons.poll_rounded,
-          onAdd: controller.goToAddItem,
-          addButtonText: 'إضافة منتج',
-          isDark: isDark,
+      bottomNavigationBar: SafeArea(
+        child: GetBuilder<ViewItemController>(
+          builder: (controller) => AdminSectionHeader(
+            title: controller.catname!,
+            subtitle: 'المنتجات الموجودة بالمخزن',
+            count: controller.itemlist.length,
+            countLabel: 'منتج',
+            icon: Icons.poll_rounded,
+            onAdd: controller.goToAddItem,
+            addButtonText: 'إضافة منتج',
+            isDark: isDark,
+          ),
         ),
       ),
       body: SafeArea(

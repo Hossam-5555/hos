@@ -67,9 +67,7 @@ class AppChip extends StatelessWidget {
     final chipBg = isDark
         ? AppColors.sortChipDarkBg
         : AppColors.sortChipLightBg;
-    final chipBorder = isDark
-        ? AppColors.sortChipDarkBorder
-        : AppColors.sortChipLightBorder;
+
     final chipPrimary = isDark
         ? AppColors.sortChipDarkPrimary
         : AppColors.sortChipLightPrimary;
@@ -91,7 +89,7 @@ class AppChip extends StatelessWidget {
           decoration: BoxDecoration(
             color: isSelected ? chipPrimary : chipBg,
             borderRadius: BorderRadius.circular(30),
-            border: Border.all(color: isSelected ? chipPrimary : chipBorder),
+            // border: Border.all(color: isSelected ? chipPrimary : chipBorder),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,

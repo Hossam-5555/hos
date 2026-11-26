@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hos/veiw/wedget/appbarbackicon.dart';
+import 'package:hos/veiw/wedget/items/itemslist.dart';
 
 class AdminSectionHeader extends StatelessWidget {
   final String title;
@@ -24,7 +26,7 @@ class AdminSectionHeader extends StatelessWidget {
     this.addButtonText = 'إضافة',
     this.isDark = false,
     this.isCompact = false,
-    this.horizontalPadding = 16,
+    this.horizontalPadding = 0,
   });
 
   @override
@@ -41,18 +43,12 @@ class AdminSectionHeader extends StatelessWidget {
           children: [
             Expanded(
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    padding: EdgeInsets.all(isCompact ? 6 : 8),
-                    decoration: const BoxDecoration(
-                      color: Color(0x1F00F2FE),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      icon,
-                      color: const Color(0xFF0284C7),
-                      size: isCompact ? 17 : 19,
-                    ),
+                  Homescrenaction(
+                    herotag: "Admincat",
+                    child: Icon(Icons.category_outlined, color: Colors.black),
                   ),
                   SizedBox(width: isCompact ? 7 : 10),
                   Expanded(
@@ -64,7 +60,7 @@ class AdminSectionHeader extends StatelessWidget {
                           title,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: TextStyle(color: Colors.black,
                             fontSize: isCompact ? 11 : 13,
                             fontWeight: FontWeight.bold,
                           ),
@@ -86,55 +82,7 @@ class AdminSectionHeader extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 8),
-            DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF00F2FE), Color(0xFF4FACFE)],
-                ),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF4FACFE).withAlpha(89),
-                    blurRadius: 8,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(40),
-                  onTap: onAdd,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: isCompact ? 9 : 12,
-                      vertical: 10,
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.add_rounded,
-                          color: Colors.white,
-                          size: 18,
-                        ),
-                        if (!isCompact) ...[
-                          const SizedBox(width: 4),
-                          Text(
-                            addButtonText,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            AppChip(label: addButtonText, isSelected: true, onTap: onAdd),
           ],
         ),
       ),

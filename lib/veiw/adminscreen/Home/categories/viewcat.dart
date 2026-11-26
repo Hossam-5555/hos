@@ -14,10 +14,25 @@ class ViewCategories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // حقن الـ Controller
-    Get.put(ViewCatController());
+    final controller = Get.put(ViewCatController());
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(100),
+        child: SafeArea(
+          child: AdminSectionHeader(
+            title: 'إجمالي التصنيفات',
+            subtitle: 'التصنيفات المتاحة',
+            count: controller.catdata.length,
+            countLabel: 'تصنيف',
+            icon: Icons.category_outlined,
+            onAdd: controller.goToAddPage,
+            addButtonText: 'add_category'.tr,
+            isDark: isDark,
+          ),
+        ),
+      ),
       body: GetBuilder<ViewCatController>(
         builder: (controller) {
           return HandlingDataView(
@@ -47,18 +62,18 @@ class ViewCategories extends StatelessWidget {
                       constraints: const BoxConstraints(maxWidth: 1200),
                       child: Column(
                         children: [
-                          // --- كارت علوي يعرض إحصائية الأقسام ---
-                          AdminSectionHeader(
-                            title: 'إجمالي التصنيفات',
-                            subtitle: 'التصنيفات المتاحة',
-                            count: controller.catdata.length,
-                            countLabel: 'تصنيف',
-                            icon: Icons.category_outlined,
-                            onAdd: controller.goToAddPage,
-                            addButtonText: 'إضافة تصنيف',
-                            isDark: isDark,
-                            isCompact: false,
-                          ),
+                          // // --- كارت علوي يعرض إحصائية الأقسام ---
+                          // AdminSectionHeader(
+                          //   title: 'إجمالي التصنيفات',
+                          //   subtitle: 'التصنيفات المتاحة',
+                          //   count: controller.catdata.length,
+                          //   countLabel: 'تصنيف',
+                          //   icon: Icons.category_outlined,
+                          //   onAdd: controller.goToAddPage,
+                          //   addButtonText: 'إضافة تصنيف',
+                          //   isDark: isDark,
+                          //   isCompact: false,
+                          // ),
 
                           // --- شبكة الأقسام (GridView) ---
                           Expanded(
