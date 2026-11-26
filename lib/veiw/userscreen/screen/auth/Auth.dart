@@ -10,7 +10,7 @@ import 'package:hos/core/functions/appexitalert.dart';
 import 'package:hos/core/functions/validinput.dart';
 import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
-import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
+import 'package:hos/veiw/wedget/auth/text_feald_auth.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 class AuthPage extends StatelessWidget {
@@ -297,33 +297,33 @@ class AuthPage extends StatelessWidget {
 
                                           SizedBox(height: height * 0.015),
 
-                                          // Row(
-                                          //   mainAxisAlignment:
-                                          //       MainAxisAlignment.center,
-                                          //   children: [
-                                          //     Homescrenaction(
-                                          //       backgroundColor:
-                                          //           Colors.transparent,
-                                          //       herotag: "google",
-                                          //       child: SvgPicture.asset(
-                                          //         Imageasset.googlepay,
-                                          //         height: 20,
-                                          //         width: 20,
-                                          //       ),
-                                          //     ),
-                                          //     SizedBox(width: width * 0.02),
-                                          //     Homescrenaction(
-                                          //       backgroundColor:
-                                          //           Colors.transparent,
-                                          //       herotag: "apple",
-                                          //       child: SvgPicture.asset(
-                                          //         Imageasset.apple,
-                                          //         height: 20,
-                                          //         width: 20,
-                                          //       ),
-                                          //     ),
-                                          //   ],
-                                          // ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Homescrenaction(
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                herotag: "google",
+                                                child: SvgPicture.asset(
+                                                  Imageasset.googlepay,
+                                                  height: 20,
+                                                  width: 20,
+                                                ),
+                                              ),
+                                              SizedBox(width: width * 0.02),
+                                              Homescrenaction(
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                herotag: "apple",
+                                                child: SvgPicture.asset(
+                                                  Imageasset.apple,
+                                                  height: 20,
+                                                  width: 20,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
 
                                           SizedBox(height: height * 0.01),
                                           // يمكنك إكمال باقي العناصر هنا (رسائل الخطأ، زر الدخول، جوجل، إلخ)...

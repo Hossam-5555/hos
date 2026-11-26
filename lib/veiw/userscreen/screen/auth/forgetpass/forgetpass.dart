@@ -8,7 +8,7 @@ import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/validinput.dart';
 import 'package:hos/veiw/wedget/animation.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
-import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
+import 'package:hos/veiw/wedget/auth/text_feald_auth.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 class ForgetPass extends StatelessWidget {

@@ -6,7 +6,7 @@ import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/app_colors.dart';
 import 'package:hos/core/functions/validinput.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
-import 'package:hos/veiw/wedget/auth/Textfealdauth.dart';
+import 'package:hos/veiw/wedget/auth/text_feald_auth.dart';
 import 'package:hos/veiw/wedget/auth/checkbutton.dart';
 
 class Resetpass extends StatelessWidget {
