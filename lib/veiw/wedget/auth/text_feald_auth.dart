@@ -58,10 +58,7 @@ class Textfealdauth extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide.none,
           ),
-          suffixIcon: IconButton(
-            icon: Icon(suffixIcon),
-            onPressed: () => onTapIcon,
-          ),
+          suffixIcon: IconButton(icon: Icon(suffixIcon), onPressed: onTapIcon),
 
           hintText: hint,
           hintStyle: TextStyle(

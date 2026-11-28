@@ -141,7 +141,7 @@ class HomePage extends StatelessWidget {
                           SizedBox(
                             height:
                                 cardWidth *
-                                1.86, // ارتفاع مناسب لأطول كارت (baseHeight * 1.2) مع هامش بسيط
+                                1.7, // ارتفاع مناسب لأطول كارت (baseHeight * 1.2) مع هامش بسيط
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               physics: const BouncingScrollPhysics(),
