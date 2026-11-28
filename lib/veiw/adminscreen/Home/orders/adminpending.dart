@@ -78,8 +78,8 @@ class Adminpending extends StatelessWidget {
                         // 4. تغليف الكارت بـ FadeInUp مع حماية التحديثات
                         return FadeInUp(
                           key: ValueKey(order.orderId ),
-                          delay: Duration(milliseconds: (index % 10) * 50),
-                          duration: const Duration(milliseconds: 450),
+                          delay: Duration(milliseconds: (index % 10) * 25),
+                          duration: const Duration(milliseconds: 250),
                           child: OrderCard(
                             orderimage: orderimage,
                             order: order,

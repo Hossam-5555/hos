@@ -76,6 +76,7 @@ dependencies:
   webview_flutter: ^4.14.1
   flutter_native_splash: ^2.4.7
   animate_do: ^5.1.0
+  liquid_glass_renderer: ^0.2.0-dev.4
 
 
 flutter_native_splash:

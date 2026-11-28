@@ -1,8 +1,7 @@
-// import 'package:flutter/material.dart';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 
 // ─────────────────────────────────────────
 // موديل الـ Tab
@@ -38,7 +37,7 @@ class CustomBottomNavBar extends StatelessWidget {
     required this.onTap,
     this.visible = true,
     this.cartcount = 0,
-    this.isbadgeActive
+    this.isbadgeActive,
   });
 
   @override
@@ -52,31 +51,15 @@ class CustomBottomNavBar extends StatelessWidget {
       curve: Curves.easeInQuad,
       child: IgnorePointer(
         ignoring: !visible,
-        child: ClipRRect(
-          borderRadius: BorderRadiusGeometry.circular(40),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
+        child: LiquidGlassLayer(
+          child: LiquidGlass(
+            shape: LiquidRoundedSuperellipse(borderRadius: 40),
             child: Container(
               padding: EdgeInsets.all(5),
               width: width * 0.9,
               height: 65,
               decoration: BoxDecoration(
-                color: Colors.white.withAlpha(30),
-
                 borderRadius: BorderRadius.circular(40),
-                border: Border.all(
-                  color: isDark
-                      ? Colors.white.withOpacity(0.28)
-                      : Colors.grey.shade300,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.12),
-                    blurRadius: 12,
-                    spreadRadius: -5,
-                    offset: Offset(0, 8),
-                  ),
-                ],
               ),
               child: Row(
                 children: List.generate(items.length, (index) {
@@ -98,7 +81,7 @@ class CustomBottomNavBar extends StatelessWidget {
                           children: [
                             // ── الأيقونة ──
                             Badge(
-                              isLabelVisible:index==2 ,
+                              isLabelVisible: index == 2,
                               label: Text("$cartcount"),
                               child: _buildIcon(item, isSelected, isDark),
                             ),
@@ -132,7 +115,7 @@ class CustomBottomNavBar extends StatelessWidget {
     );
   }
 
-  Widget _buildIcon(NavItem item, bool isSelected,bool isDark) {
+  Widget _buildIcon(NavItem item, bool isSelected, bool isDark) {
     final size = isSelected ? 25.0 : 22.0;
 
     // Image Asset
@@ -153,15 +136,15 @@ class CustomBottomNavBar extends StatelessWidget {
         height: size,
         width: size,
         colorFilter: ColorFilter.mode(
-          isSelected ? Colors.white  : isDark
-                                    ? Colors.grey.shade400
-                                    : Colors.black,
+          isSelected
+              ? Colors.white
+              : isDark
+              ? Colors.grey.shade400
+              : Colors.black,
           BlendMode.srcIn,
         ),
       );
     }
-
-
 
     return const SizedBox.shrink();
   }

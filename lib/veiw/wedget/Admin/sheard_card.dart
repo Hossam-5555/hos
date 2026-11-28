@@ -38,7 +38,7 @@ class CategoryCard extends StatefulWidget {
     required this.onTap,
     this.itemscount = 0,
   });
-  CategoryCard.Homepage({
+  CategoryCard.homepage({
     super.key,
     required this.name,
     required this.imageUrl,
@@ -196,13 +196,13 @@ class _CategoryCardState extends State<CategoryCard> {
                                       widget.inHome != true &&
                                               hasPrice == false &&
                                               stockText == "item"
-                                          ? "(${widget.itemscount}) Products"
+                                          ? "${widget.itemscount} Products"
                                           : stockText,
                                       textAlign: TextAlign.center,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
-                                        color: AppColors.black,
+                                        color: AppColors.white,
                                         fontSize: subSize,
                                         fontWeight: FontWeight.bold,
                                       ),

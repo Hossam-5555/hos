@@ -31,12 +31,8 @@ class SharedProductCard extends StatelessWidget {
     final theme = Theme.of(context);
     final isdark = theme.brightness == Brightness.dark;
     // ألوان الكارت الأساسية بتتغير حسب الوضع (ليلي / نهاري)
-    final Color cardBorderColor = AppColors.grey.withAlpha(50);
     final Color cardShadow = AppColors.black.withAlpha(60);
 
-    // الشارات (title chip / rating badge / price bar) عايمة فوق الصورة
-    // فبنخليها "زجاج غامق" ثابت في الوضعين، عشان تفضل واضحة أياً كانت ألوان
-    // صورة المنتج نفسها (فاتحة أو غامقة)
     final Color chipBackground = AppColors.black.withAlpha(100);
     final Color chipBorder = AppColors.white.withAlpha(150);
     final Color chipTextColor = AppColors.white;
@@ -94,10 +90,6 @@ class SharedProductCard extends StatelessWidget {
               boxShadow: [BoxShadow(color: cardShadow, blurRadius: 2)],
               color: isdark ? AppColors.buttoncolor : AppColors.editBackground,
               borderRadius: const BorderRadius.all(Radius.circular(25)),
-              border: Border.all(
-                color: cardBorderColor,
-                strokeAlign: BorderSide.strokeAlignCenter,
-              ),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -277,8 +269,8 @@ class SharedProductCard extends StatelessWidget {
                                         Flexible(
                                           child: FittedBox(
                                             fit: BoxFit.scaleDown,
-                                            alignment:
-                                                AlignmentDirectional.centerStart,
+                                            alignment: AlignmentDirectional
+                                                .centerStart,
                                             child: Row(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [

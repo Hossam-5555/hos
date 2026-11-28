@@ -7,7 +7,7 @@ import 'package:hos/controler/admincontroller/items/viewitemcontroller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/showdialoge.dart';
-import 'package:hos/veiw/wedget/Admin/SheardCard.dart';
+import 'package:hos/veiw/wedget/Admin/sheard_card.dart';
 import 'package:hos/veiw/wedget/Admin/adminsectionheader.dart';
 import 'package:hos/veiw/wedget/appbarbackicon.dart';
 import 'package:hos/veiw/wedget/searchbar.dart';

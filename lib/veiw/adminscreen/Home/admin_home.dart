@@ -125,28 +125,28 @@ class _OverviewGrid extends StatelessWidget {
       children: [
         _KpiCard(
           'إجمالي الإيرادات',
-          _compact(totalSales),
+          totalSales,
           Icons.payments_rounded,
-          AppColors.primary,
+          AppColors.arabic,
         ),
         _KpiCard(
           'إجمالي الطلبات',
-          _compact(totalOrders),
+          totalOrders,
           Icons.receipt_long_rounded,
           AppColors.purple,
         ),
         _KpiCard(
           'متوسط الطلب',
-          avgOrderValue.toStringAsFixed(0),
+          avgOrderValue,
           Icons.shopping_bag_rounded,
-          AppColors.success,
+          AppColors.languageEnd,
         ),
-        _KpiCard(
-          'معدل الاسترجاع',
-          '$refundRate%',
-          Icons.trending_up_rounded,
-          AppColors.orange,
-        ),
+        // _KpiCard(
+        //   'معدل الاسترجاع',
+        //   '$refundRate%' as num,
+        //   Icons.trending_up_rounded,
+        //   AppColors.orange,
+        // ),
       ],
     );
   }
@@ -154,7 +154,7 @@ class _OverviewGrid extends StatelessWidget {
 
 class _KpiCard extends StatelessWidget {
   final String label;
-  final String value;
+  final num value;
   final IconData icon;
   final Color color;
 
@@ -180,14 +180,29 @@ class _KpiCard extends StatelessWidget {
               Icon(icon, color: color, size: 18),
             ],
           ),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: color,
+          SizedBox(
+            height: 35,
+
+            child: GetBuilder<Adminhome>(
+              builder: (controller) => TweenAnimationBuilder<double>(
+                tween: Tween<double>(begin: 0, end: value.toDouble()),
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeOut,
+                builder: (context, value, child) {
+                  return 
+                  PriceText(value,color: color,);
+                },
+              ),
             ),
           ),
+          // Text(
+          //   value,
+          //   style: TextStyle(
+          //     fontSize: 20,
+          //     fontWeight: FontWeight.bold,
+          //     color: color,
+          //   ),
+          // ),
         ],
       ),
     );

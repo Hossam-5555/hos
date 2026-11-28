@@ -297,33 +297,33 @@ class AuthPage extends StatelessWidget {
 
                                           SizedBox(height: height * 0.015),
 
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Homescrenaction(
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                herotag: "google",
-                                                child: SvgPicture.asset(
-                                                  Imageasset.googlepay,
-                                                  height: 20,
-                                                  width: 20,
-                                                ),
-                                              ),
-                                              SizedBox(width: width * 0.02),
-                                              Homescrenaction(
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                herotag: "apple",
-                                                child: SvgPicture.asset(
-                                                  Imageasset.apple,
-                                                  height: 20,
-                                                  width: 20,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                          // Row(
+                                          //   mainAxisAlignment:
+                                          //       MainAxisAlignment.center,
+                                          //   children: [
+                                          //     Homescrenaction(
+                                          //       backgroundColor:
+                                          //           Colors.transparent,
+                                          //       herotag: "google",
+                                          //       child: SvgPicture.asset(
+                                          //         Imageasset.googlepay,
+                                          //         height: 20,
+                                          //         width: 20,
+                                          //       ),
+                                          //     ),
+                                          //     SizedBox(width: width * 0.02),
+                                          //     Homescrenaction(
+                                          //       backgroundColor:
+                                          //           Colors.transparent,
+                                          //       herotag: "apple",
+                                          //       child: SvgPicture.asset(
+                                          //         Imageasset.apple,
+                                          //         height: 20,
+                                          //         width: 20,
+                                          //       ),
+                                          //     ),
+                                          //   ],
+                                          // ),
 
                                           SizedBox(height: height * 0.01),
                                           // يمكنك إكمال باقي العناصر هنا (رسائل الخطأ، زر الدخول، جوجل، إلخ)...

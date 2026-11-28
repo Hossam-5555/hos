@@ -5,7 +5,7 @@ import 'package:hos/data/services/crud.dart';
 import 'package:hos/core/class/handlingdataview.dart';
 import 'package:hos/core/conistant/imageasset.dart';
 import 'package:hos/core/functions/showdialoge.dart';
-import 'package:hos/veiw/wedget/Admin/SheardCard.dart';
+import 'package:hos/veiw/wedget/Admin/sheard_card.dart';
 import 'package:hos/veiw/wedget/Admin/adminsectionheader.dart';
 
 class ViewCategories extends StatelessWidget {
@@ -22,7 +22,7 @@ class ViewCategories extends StatelessWidget {
         preferredSize: Size.fromHeight(100),
         child: SafeArea(
           child: AdminSectionHeader(
-            title: 'إجمالي التصنيفات',
+            title: 'Categories'.tr,
             subtitle: 'التصنيفات المتاحة',
             count: controller.catdata.length,
             countLabel: 'تصنيف',

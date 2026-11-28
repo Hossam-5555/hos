@@ -38,30 +38,29 @@ class Coubone extends StatelessWidget {
                     prefixIcon: const Icon(Icons.local_offer_outlined),
                     isDense: true,
                     filled: true,
+                    suffixIcon: Checkbutton.widget(
+                      h: 48,
+                      statusrequest: c.isCouponLoading
+                          ? Statusrequest.loading
+                          : Statusrequest.none,
+                      buttonColor: Colors.black,
+                      width: 100,
+                      onTap: () {
+                        if (applied) {
+                          c.removeCoupon();
+                        } else {
+                          c.applyCoupon();
+                        }
+                      },
+                      buttonName: applied ? "Remove".tr : "Apply".tr,
+                    ),
                     fillColor: AppColors.glass,
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(40),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 10),
-              Checkbutton.widget(
-                h: 48,
-                statusrequest: c.isCouponLoading
-                    ? Statusrequest.loading
-                    : Statusrequest.none,
-                buttonColor: Colors.black,
-                width: 100,
-                onTap: () {
-                  if (applied) {
-                    c.removeCoupon();
-                  } else {
-                    c.applyCoupon();
-                  }
-                },
-                buttonName: applied ? "Remove".tr : "Apply".tr,
               ),
             ],
           ),

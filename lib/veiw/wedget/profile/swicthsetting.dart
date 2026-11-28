@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hos/core/conistant/app_colors.dart';
 
 class SettingSwitchTile extends StatelessWidget {
   final IconData icon;
@@ -8,9 +7,9 @@ class SettingSwitchTile extends StatelessWidget {
   final String subtitle;
   final bool value;
   final ValueChanged<bool> onChanged;
-  final Widget onThumb;      // اللي يظهر داخل السويتش في حالة ON
-  final Widget offThumb;     // اللي يظهر في حالة OFF
-  final Color activeColor;   // لون خلفية السويتش ON
+  final Widget onThumb; // اللي يظهر داخل السويتش في حالة ON
+  final Widget offThumb; // اللي يظهر في حالة OFF
+  final Color activeColor; // لون خلفية السويتش ON
   final Color inactiveColor; // لون خلفية السويتش OFF
 
   const SettingSwitchTile({
@@ -73,7 +72,10 @@ class SettingSwitchTile extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   subtitle,
-                  style: TextStyle(fontSize: 12, color: const Color.fromARGB(153, 93, 93, 102)),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: const Color.fromARGB(153, 93, 93, 102),
+                  ),
                 ),
               ],
             ),
@@ -88,13 +90,11 @@ class SettingSwitchTile extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: value ? activeColor : inactiveColor,
-                border: Border.all(color: AppColors.mutedText.withAlpha(70)),
               ),
               child: AnimatedAlign(
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.easeInOut,
-                alignment:
-                    value ? Alignment.centerRight : Alignment.centerLeft,
+                alignment: value ? Alignment.centerRight : Alignment.centerLeft,
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
                   transitionBuilder: (child, animation) => RotationTransition(

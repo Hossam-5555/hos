@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hos/controler/usercontroller/home/homepage_controller.dart';
 import 'package:hos/core/class/handlingdataview.dart';
-import 'package:hos/veiw/wedget/Admin/SheardCard.dart';
+import 'package:hos/veiw/wedget/Admin/sheard_card.dart';
 
 // تأكد من استيراد ملف CategoryCard و HandlingDataView
 
@@ -71,7 +71,7 @@ class CurvedCategoriesView extends StatelessWidget {
                           angle: rotation,
                           child: Opacity(
                             opacity: value.clamp(0.6, 1.0),
-                            child: CategoryCard.Homepage(
+                            child: CategoryCard.homepage(
                               inHome: true,
                               onTap: () {
                                 controller.gotoitems(

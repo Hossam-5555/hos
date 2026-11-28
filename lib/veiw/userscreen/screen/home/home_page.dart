@@ -116,8 +116,6 @@ class HomePage extends StatelessWidget {
                             onTap: (item) {
                               controller.gotoitemsdetails(item);
                             },
-                            // فعّله بعد الربط بمنتجات حقيقية:
-                            // actionBuilder: (item) => AddToCartButton(itemId: item.id),
                           ),
 
                           SizedBox(height: sectionSpacing),

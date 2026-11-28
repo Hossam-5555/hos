@@ -60,7 +60,7 @@ class AdminSectionHeader extends StatelessWidget {
                           title,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(color: Colors.black,
+                          style: TextStyle(
                             fontSize: isCompact ? 11 : 13,
                             fontWeight: FontWeight.bold,
                           ),

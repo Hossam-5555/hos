@@ -40,9 +40,6 @@ Widget buildCartItemCard(
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: isdark ? AppColors.darkBorder : AppColors.lightBorder,
-              ),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -114,9 +111,7 @@ Widget buildCartItemCard(
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.end,
-                                style: TextStyle(
-                                  fontSize: isTablet ? 12 : 10,
-                                ),
+                                style: TextStyle(fontSize: isTablet ? 12 : 10),
                               ),
                             ),
                         ],
@@ -129,7 +124,7 @@ Widget buildCartItemCard(
                         children: [
                           Expanded(
                             child: PriceText(
-                              currentCart.subtotal?? 0,
+                              currentCart.subtotal ?? 0,
                               fontSize: priceSize,
                             ),
                           ),
@@ -185,7 +180,7 @@ class _QuantityControl extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: compact ? 3 : 4, vertical: 4),
       decoration: BoxDecoration(
-        color: AppColors.editBackground,
+        color: isDark ? AppColors.darkImageSurface : AppColors.editBackground,
         borderRadius: BorderRadius.circular(30),
       ),
       child: Row(
@@ -203,8 +198,8 @@ class _QuantityControl extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: compact ? 6 : 9),
             child: Text(
               '$count',
-              style: const TextStyle(
-                color: AppColors.darkSurface,
+              style: TextStyle(
+                color: isDark ? AppColors.white : AppColors.darkSurface,
                 fontWeight: FontWeight.bold,
                 fontSize: 13,
               ),

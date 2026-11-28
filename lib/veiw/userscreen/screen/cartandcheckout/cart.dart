@@ -37,12 +37,6 @@ class ShoppingCartPage extends StatelessWidget {
                   builder: (c) {
                     return Container(
                       decoration: BoxDecoration(
-                        border: Border.symmetric(
-                          vertical: BorderSide(
-                            color: Colors.grey.withAlpha(40),
-                          ),
-                        ),
-
                         boxShadow: [
                           BoxShadow(
                             blurRadius: 20,
@@ -183,7 +177,9 @@ class ShoppingCartPage extends StatelessWidget {
                                           begin: controller.totalprice,
                                           end: controller.totalprice,
                                         ),
-                                        duration: const Duration(milliseconds:500),
+                                        duration: const Duration(
+                                          milliseconds: 500,
+                                        ),
                                         curve: Curves.easeOut,
                                         builder: (context, value, child) {
                                           return PriceText(
